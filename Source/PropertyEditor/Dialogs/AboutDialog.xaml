@@ -1,0 +1,30 @@
+﻿<Window x:Class="OpenControls.AboutDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="About" Height="300" Width="500" Padding="16" 
+    WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+    <StackPanel Margin="8" Orientation="Horizontal">
+        <Image Name="Image1" MaxWidth="120" Margin="0 0 16 0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Vertical">
+            <Grid Name="Grid1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                </Grid.RowDefinitions>
+            </Grid>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button Content="Ok" Width="96" Margin="8 16 0 0" IsDefault="True" Click="Ok_Click"/>
+<!--                <Button Content="System Info..." Width="96" Margin="0 16 0 0" Click="SystemInfo_Click"/>
+                <Button Content="Copy" Width="96" Margin="8 16 0 0" Click="Copy_Click"/>-->
+            </StackPanel>
+            <StackPanel.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="System Info..." Click="SystemInfo_Click"/>
+                    <MenuItem Header="Copy" Click="Copy_Click"/>
+                </ContextMenu>
+            </StackPanel.ContextMenu>
+        </StackPanel>
+    </StackPanel>
+</Window>

@@ -1,0 +1,22 @@
+﻿<Window x:Class="SimpleDemo.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:pe="clr-namespace:OpenControls;assembly=PropertyEditor"
+    xmlns:local="clr-namespace:SimpleDemo"
+    Title="PropertyEditor" 
+    Width="400" 
+    SizeToContent="Height">
+    <Window.Resources>
+        <local:Person x:Key="Person1" FirstName="Anders" 
+                      LastName="Andersen" BirthDate="01.01.2000" 
+                      Age="9" Gender="Male" Weight="70kg"
+                      HairColor="Brown"
+                      SkinColor="White"
+                      />
+    </Window.Resources>
+    <StackPanel Margin="8">
+        <pe:PropertyEditor SelectedObject="{StaticResource Person1}"/>
+        <Button Content="Show values" Click="Show_Click" Margin="16" 
+                Padding="12 4 12 4" HorizontalAlignment="Center"/>
+    </StackPanel>
+</Window>

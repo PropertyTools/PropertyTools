@@ -1,0 +1,91 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:OpenPropertyEditor">
+
+    <!-- TabControl header -->
+    <DataTemplate x:Key="TabHeaderTemplate" DataType="{x:Type local:PropertyTab}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding Header}"/>
+        </StackPanel>        
+    </DataTemplate>
+    <!-- TODO: could also support icons on the tab headers
+        <StackPanel Orientation="Horizontal">
+            <Image Source="{Binding Image}" Margin="4 0 4 0"/>
+            <TextBlock Text="{Binding Header}"/>
+        </StackPanel>
+    -->
+
+    <!-- TabControl Content -->
+    <DataTemplate x:Key="TabPageTemplate">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
+                      VerticalScrollBarVisibility="Auto" 
+                      HorizontalAlignment="Stretch"
+                      Focusable="False">
+            <ItemsControl ItemsSource="{Binding Path=Categories}" 
+                          Focusable="False" 
+                          ItemTemplateSelector="{Binding CategoryTemplateSelector, Mode=OneTime}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+    </DataTemplate>
+       
+    <!-- GroupBox for the categories -->
+    <DataTemplate DataType="{x:Type local:PropertyCategory}">
+        <GroupBox Header="{Binding Header}" 
+                  ToolTip="{Binding ToolTip, Mode=OneTime}" 
+                  Focusable="False" 
+                  Margin="2 2 2 8"
+                  IsEnabled="{Binding IsEnabled}" 
+                  Visibility="{Binding Visibility}">
+            <ItemsControl ItemsSource="{Binding Path=Properties}" Focusable="False">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </GroupBox>
+    </DataTemplate>
+
+    <!-- Template for each property -->
+    <DataTemplate DataType="{x:Type local:Property}">
+        <DockPanel Margin="0 2 0 2" 
+                   IsEnabled="{Binding IsEnabled}" 
+                   Visibility="{Binding Visibility}">
+            <Grid MinWidth="{Binding CaptionWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}">
+              <!-- todo: use a template selector instead of changing visibility?  -->
+                
+                <!-- The property caption -->
+                <Label Content="{Binding Header, Mode=OneTime}" ToolTip="{Binding ToolTip, Mode=OneTime}"
+                       HorizontalAlignment="{Binding CaptionAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"
+                       Visibility="{Binding LabelVisibility, Mode=OneTime}"/>
+                  
+                <!-- Properties with the [Optional] attribute has a checkbox  -->
+                <CheckBox Content="{Binding Header, Mode=OneTime}" ToolTip="{Binding ToolTip, Mode=OneTime}"
+                       Margin="5 0 5 0"
+                       HorizontalAlignment="{Binding CaptionAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"
+                       IsChecked="{Binding IsOptionalChecked}" 
+                       Visibility="{Binding OptionVisibility, Mode=OneTime}"
+                       VerticalAlignment="Center"/>
+                </Grid>
+
+            <!-- The editor for the current property is contained in this ContentControl -->
+            <ContentControl Content="{Binding}"
+                            Focusable="False"
+                            ContentTemplateSelector="{Binding PropertyTemplateSelector}"
+                            IsEnabled="{Binding IsOptionalChecked}">               
+            </ContentControl>
+            <!--
+            TODO:this doesn't work...
+                            ContentTemplateSelector="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}, Path=PropertyTemplateSelector, Mode=OneTime}"            
+                            ContentTemplateSelector="{StaticResource propertyTemplateSelector}" 
+            <Rectangle DockPanel.Dock="Right" Fill="Firebrick" Margin="4" Width="8" Height="8" ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}, Path=PropertyTemplateSelector}"/>
+                -->
+        </DockPanel>
+    </DataTemplate>
+
+</ResourceDictionary>

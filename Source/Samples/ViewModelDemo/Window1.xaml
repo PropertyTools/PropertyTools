@@ -1,0 +1,17 @@
+﻿<Window x:Class="ViewModelDemo.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:pe="clr-namespace:OpenControls;assembly=PropertyEditor"
+    Title="View-Model demo" Height="400" Width="300">
+    <StackPanel Margin="8">
+        <GroupBox Header="Property editor" Padding="8">
+            <pe:PropertyEditor x:Name="editor1"/>
+        </GroupBox>
+        <GroupBox Header="WPF data binding" x:Name="group1" Padding="8" Margin="0 12 0 0">
+            <StackPanel>
+                <TextBox Text="{Binding Name}" Margin="4"/>
+                <TextBox Text="{Binding Age}" Margin="4"/>
+            </StackPanel>
+        </GroupBox>
+    </StackPanel>
+</Window>

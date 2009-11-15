@@ -64,7 +64,7 @@ namespace OpenControls
 
         private void OnSelectedValueChanged()
         {
-            var hsv = ColorHelper.ColorToHsv(SelectedColor);
+            var hsv = ColorHelper.ColorToHsvBytes(SelectedColor);
             _hue = hsv[0];
             _saturation = hsv[1];
             _brightness = hsv[2];
@@ -91,7 +91,7 @@ namespace OpenControls
                     var c = (Color)fi.GetValue(null,null);
                     if (SelectedColor==c)
                         return fi.Name;
-                    double d = ColorHelper.ColorDistance(SelectedColor, c);
+                    double d = ColorHelper.ColorDifference(SelectedColor, c);
                     if (d<bestDist)
                     {
                         best = fi.Name;

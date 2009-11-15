@@ -14,6 +14,24 @@ namespace PropertyEditorTests
         }
 
         [Test]
+        public void Interpolate_ValidColors_ReturnsCorrectValue()
+        {
+            Assert.AreEqual("#FF00594C", ColorHelper.ColorToHex(ColorHelper.Interpolate(Colors.Green, Colors.Blue, 0.3)));
+        }
+
+        [Test]
+        public void Complementary_ValidColors_ReturnsCorrectValue()
+        {
+            // http://en.wikipedia.org/wiki/Complementary_color
+         /*   Assert.AreEqual(Colors.Green, ColorHelper.Complementary(Colors.Red),"Red");
+            Assert.AreEqual(Colors.Red, ColorHelper.Complementary(Colors.Green),"Green");
+            Assert.AreEqual(Colors.Orange, ColorHelper.Complementary(Colors.Blue),"Blue");
+            Assert.AreEqual(Colors.Blue, ColorHelper.Complementary(Colors.Orange),"Orange");
+            Assert.AreEqual(Colors.Purple, ColorHelper.Complementary(Colors.Yellow),"Yellow");
+            Assert.AreEqual(Colors.Yellow, ColorHelper.Complementary(Colors.Purple),"Purple");*/
+        }
+
+        [Test]
         public void ColorToHex_ValidColors_ReturnsCorrectString()
         {
             Assert.AreEqual("#FF0000FF",ColorHelper.ColorToHex(Colors.Blue));
@@ -35,15 +53,15 @@ namespace PropertyEditorTests
         }
 
         [Test]
-        public void ColorDistance_ValidColors_ReturnsCorrectDistance()
+        public void ColorDifference_ValidColors_ReturnsCorrectDistance()
         {
-            Assert.AreEqual(277, ColorHelper.ColorDistance(Colors.Blue,Colors.LightBlue),1);
+            Assert.AreEqual(1.08, ColorHelper.ColorDifference(Colors.Blue,Colors.LightBlue),0.01);
         }
 
         [Test]
-        public void HueDistance_ValidColors_ReturnsCorrectDistance()
+        public void HueDifference_ValidColors_ReturnsCorrectDistance()
         {
-            Assert.AreEqual(33, ColorHelper.HueDistance(Colors.Blue, Colors.LightBlue), 1);
+            Assert.AreEqual(0.125, ColorHelper.HueDifference(Colors.Blue, Colors.LightBlue), 0.001);
         }
 
         [Test]
@@ -56,17 +74,17 @@ namespace PropertyEditorTests
         [Test]
         public void ColorToHsv_ValidColors_ReturnsCorrectValues()
         {
-            var hsv = ColorHelper.ColorToHsv(Colors.Red);
+            var hsv = ColorHelper.ColorToHsvBytes(Colors.Red);
             Assert.AreEqual(0, hsv[0]);
             Assert.AreEqual(255, hsv[1]);
             Assert.AreEqual(255, hsv[2]);
 
-            hsv = ColorHelper.ColorToHsv(Colors.Orange);
+            hsv = ColorHelper.ColorToHsvBytes(Colors.Orange);
             Assert.AreEqual(27, hsv[0],"hue");
             Assert.AreEqual(255, hsv[1],"sat");
             Assert.AreEqual(255, hsv[2],"value");
 
-            hsv = ColorHelper.ColorToHsv(Colors.Brown);
+            hsv = ColorHelper.ColorToHsvBytes(Colors.Brown);
             Assert.AreEqual(0, hsv[0], "hue");
             Assert.AreEqual(190, hsv[1], "sat");
             Assert.AreEqual(165, hsv[2], "value");

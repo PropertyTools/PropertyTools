@@ -55,6 +55,17 @@
                        Visibility="{Binding OptionVisibility, Mode=OneTime}"
                        VerticalAlignment="Center"/>
             </Grid>
+            
+            <Slider
+                Maximum="{Binding SliderMaximum}"
+                Minimum="{Binding SliderMinimum}"
+                SmallChange="{Binding SliderSmallChange}"
+                LargeChange="{Binding SliderLargeChange}"
+                MinWidth="80"
+                Focusable="False"
+                Value="{Binding Value, Converter={local:ToDoubleConverter}}"
+                Visibility="{Binding SliderVisibility}" DockPanel.Dock="Right"/>
+            
             <ContentControl Content="{Binding}"
                             Focusable="False"
                             ContentTemplateSelector="{Binding PropertyTemplateSelector, Mode=OneTime}"

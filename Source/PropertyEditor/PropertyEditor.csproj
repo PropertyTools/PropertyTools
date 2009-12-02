@@ -111,8 +111,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\SlidableAttribute.cs" />
     <Compile Include="Attributes\OptionalAttribute.cs" />
     <Compile Include="Attributes\RadioButtonsAttribute.cs" />
+    <Compile Include="Converters\ToDoubleConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Controls\ColorPicker\ColorPicker.cs" />
     <Compile Include="Controls\MicrosoftColorPicker\colorpicker.cs" />

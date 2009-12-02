@@ -69,7 +69,7 @@ namespace SimpleDemo
         
         public DateTime BirthDate { get; set; }
         public Color HairColor { get; set; }
-        public Brush SkinColor { get; set; }
+        public Brush FavouriteBrush { get; set; }
 
         public bool IsSmoking { get; set; }
         public bool HasBicycle { get; set; }
@@ -79,7 +79,6 @@ namespace SimpleDemo
 
         [Optional("HasCar")]
         public string Car { get; set; }
-        //public string Model { get; set; }
 
         public override string ToString()
         {

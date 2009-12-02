@@ -8,10 +8,10 @@
     SizeToContent="Height">
     <Window.Resources>
         <local:Person x:Key="Person1" FirstName="Anders" 
-                      LastName="Andersen" BirthDate="01.01.2000" 
-                      Age="9" Gender="Male" Weight="70kg"
+                      LastName="Andersen" BirthDate="01.01.1974" 
+                      Age="35" Gender="Male" Weight="70kg"
                       HairColor="Brown"
-                      SkinColor="White"
+                      FavouriteBrush="#804636f8"
                       />
     </Window.Resources>
     <StackPanel Margin="8">

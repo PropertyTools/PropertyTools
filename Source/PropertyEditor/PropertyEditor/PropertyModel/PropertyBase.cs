@@ -44,10 +44,10 @@ namespace OpenControls
         {
             Debug.IndentLevel++;
             Debug.WriteLine("PropertyBase.NotifyPropertyChanged");
-
-            if (PropertyChanged != null)
+            var handler = PropertyChanged;
+            if (handler!= null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
+                handler(this, new PropertyChangedEventArgs(property));
             }
             Debug.IndentLevel--;
         }

@@ -85,6 +85,38 @@ namespace OpenControls
 
         #endregion
 
+        #region Slidable
+        public Visibility SliderVisibility
+        {
+            get { return IsSlidable ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public bool IsSlidable { get; set; }
+
+        public double SliderMaximum { get; set; }
+        public double SliderMinimum { get; set; }
+        public double SliderSmallChange { get; set; }
+        public double SliderLargeChange { get; set; }
+
+        public void InitializeSlidable()
+        {
+            IsSlidable = false;
+            foreach (Attribute a in _descriptor.Attributes)
+            {
+                SlidableAttribute sa = a as SlidableAttribute;
+                if (sa != null)
+                {
+                    IsSlidable = true;
+                    SliderMaximum = sa.Maximum;
+                    SliderMinimum = sa.Minimum;
+                    SliderLargeChange = sa.LargeChange;
+                    SliderSmallChange = sa.SmallChange;
+                }
+            }
+        }
+
+        #endregion
+
         #region Initialization
 
         public Property(object instance, PropertyDescriptor descriptor, PropertyTemplateSelector pts)
@@ -99,12 +131,13 @@ namespace OpenControls
             _descriptor.AddValueChanged(_instance, instance_PropertyChanged);
 
             InitializeOptional();
+            InitializeSlidable();
         }
 
         #endregion
 
         #region Properties
-
+     
         /// <value>
         /// Initializes the reflected instance property
         /// </value>

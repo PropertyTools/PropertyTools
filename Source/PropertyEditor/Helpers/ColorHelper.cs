@@ -31,11 +31,11 @@ namespace OpenControls
         /// <returns></returns>
         public static Color Interpolate(Color c0, Color c1, double x)
         {
-            double r = c0.R*(1 - x) + c1.R*x;
-            double g = c0.G*(1 - x) + c1.G*x;
-            double b = c0.B*(1 - x) + c1.B*x;
-            double a = c0.A*(1 - x) + c1.A*x;
-            return Color.FromArgb((byte) a, (byte) r, (byte) g, (byte) b);
+            double r = c0.R * (1 - x) + c1.R * x;
+            double g = c0.G * (1 - x) + c1.G * x;
+            double b = c0.B * (1 - x) + c1.B * x;
+            double a = c0.A * (1 - x) + c1.A * x;
+            return Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
         }
 
         /// <summary>
@@ -59,11 +59,11 @@ namespace OpenControls
             // todo...
             // http://en.wikipedia.org/wiki/Color_difference
             // http://mathworld.wolfram.com/L2-Norm.html
-            double dr = (c1.R - c2.R)/255.0;
-            double dg = (c1.G - c2.G)/255.0;
-            double db = (c1.B - c2.B)/255.0;
-            double da = (c1.A - c2.A)/255.0;
-            double e = dr * dr + dg * dg + db * db+da*da;
+            double dr = (c1.R - c2.R) / 255.0;
+            double dg = (c1.G - c2.G) / 255.0;
+            double db = (c1.B - c2.B) / 255.0;
+            double da = (c1.A - c2.A) / 255.0;
+            double e = dr * dr + dg * dg + db * db + da * da;
             return Math.Sqrt(e);
         }
 
@@ -81,7 +81,7 @@ namespace OpenControls
             // clamp to [-0.5,0.5]
             if (dh > 0.5) dh -= 1.0;
             if (dh < -0.5) dh += 1.0;
-            double e = dh*dh;
+            double e = dh * dh;
             return Math.Sqrt(e);
         }
 
@@ -96,7 +96,7 @@ namespace OpenControls
             // todo...
             double[] hsv = ColorToHsv(c);
             double newHue = hsv[0] - 0.5;
-            
+
             // clamp to [0,1]
             if (newHue < 0) newHue += 1.0;
 
@@ -128,10 +128,10 @@ namespace OpenControls
         /// <returns></returns>
         public static Color UIntToColor(UInt32 color)
         {
-            var a = (byte) (color >> 24);
-            var r = (byte) (color >> 16);
-            var g = (byte) (color >> 8);
-            var b = (byte) (color >> 0);
+            var a = (byte)(color >> 24);
+            var r = (byte)(color >> 16);
+            var g = (byte)(color >> 8);
+            var b = (byte)(color >> 0);
             return Color.FromArgb(a, r, g, b);
         }
 
@@ -142,9 +142,9 @@ namespace OpenControls
         /// <returns></returns>
         public static UInt32 ColorToUint(Color c)
         {
-            UInt32 u = (UInt32) c.A << 24;
-            u += (UInt32) c.R << 16;
-            u += (UInt32) c.G << 8;
+            UInt32 u = (UInt32)c.A << 24;
+            u += (UInt32)c.R << 16;
+            u += (UInt32)c.G << 8;
             u += c.B;
             return u;
             //(UInt32)((UInt32)c.A << 24 + (UInt32)c.R << 16 + (UInt32)c.G << 8 + (UInt32)c.B);
@@ -160,9 +160,9 @@ namespace OpenControls
         {
             double[] hsv1 = ColorToHsv(color);
             var hsv2 = new byte[3];
-            hsv2[0] = (byte) (hsv1[0]*255);
-            hsv2[1] = (byte) (hsv1[1]*255);
-            hsv2[2] = (byte) (hsv1[2]*255);
+            hsv2[0] = (byte)(hsv1[0] * 255);
+            hsv2[1] = (byte)(hsv1[1] * 255);
+            hsv2[2] = (byte)(hsv1[2] * 255);
             return hsv2;
         }
 
@@ -189,7 +189,7 @@ namespace OpenControls
                 s = 0;
             }
             else
-                s = delta/v;
+                s = delta / v;
 
             if (s == 0)
                 h = 0.0;
@@ -197,11 +197,11 @@ namespace OpenControls
             else
             {
                 if (r == v)
-                    h = (g - b)/delta;
+                    h = (g - b) / delta;
                 else if (g == v)
-                    h = 2 + (b - r)/delta;
+                    h = 2 + (b - r) / delta;
                 else if (b == v)
-                    h = 4 + (r - g)/delta;
+                    h = 4 + (r - g) / delta;
 
                 h *= 60;
                 if (h < 0.0)
@@ -209,9 +209,9 @@ namespace OpenControls
             }
 
             var hsv = new double[3];
-            hsv[0] = h/360.0;
+            hsv[0] = h / 360.0;
             hsv[1] = s;
-            hsv[2] = v/255.0;
+            hsv[2] = v / 255.0;
             return hsv;
         }
 
@@ -225,9 +225,9 @@ namespace OpenControls
         public static Color HsvToColor(byte hue, byte saturation, byte value)
         {
             double r = 0, g = 0, b = 0;
-            double h = hue*360.0/255;
-            double s = saturation/255.0;
-            double v = value/255.0;
+            double h = hue * 360.0 / 255;
+            double s = saturation / 255.0;
+            double v = value / 255.0;
 
             if (s == 0)
             {
@@ -244,14 +244,14 @@ namespace OpenControls
                 if (h == 360)
                     h = 0;
                 else
-                    h = h/60;
+                    h = h / 60;
 
-                i = (int) Math.Truncate(h);
+                i = (int)Math.Truncate(h);
                 f = h - i;
 
-                p = v*(1.0 - s);
-                q = v*(1.0 - (s*f));
-                t = v*(1.0 - (s*(1.0 - f)));
+                p = v * (1.0 - s);
+                q = v * (1.0 - (s * f));
+                t = v * (1.0 - (s * (1.0 - f)));
 
                 switch (i)
                 {
@@ -294,7 +294,7 @@ namespace OpenControls
             }
 
 
-            return Color.FromArgb(255, (byte) (r*255), (byte) (g*255), (byte) (b*255));
+            return Color.FromArgb(255, (byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
         }
 
         /// <summary>
@@ -318,11 +318,11 @@ namespace OpenControls
             {
                 if (hue == 1.0) hue = 0;
                 hue *= 6.0;
-                i = (int) Math.Floor(hue);
+                i = (int)Math.Floor(hue);
                 f = hue - i;
-                aa = val*(1 - sat);
-                bb = val*(1 - (sat*f));
-                cc = val*(1 - (sat*(1 - f)));
+                aa = val * (1 - sat);
+                bb = val * (1 - (sat * f));
+                cc = val * (1 - (sat * (1 - f)));
                 switch (i)
                 {
                     case 0:
@@ -357,7 +357,7 @@ namespace OpenControls
                         break;
                 }
             }
-            return Color.FromRgb((byte) (r*255), (byte) (g*255), (byte) (b*255));
+            return Color.FromRgb((byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
         }
     }
 }

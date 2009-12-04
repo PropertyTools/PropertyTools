@@ -23,10 +23,10 @@ namespace OpenControls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorPicker), new FrameworkPropertyMetadata(typeof(ColorPicker)));
         }
 
-       /* public ColorPicker()
-        {
-                AddDefaultPalette();
-        }*/
+        /* public ColorPicker()
+         {
+                 AddDefaultPalette();
+         }*/
         public ObservableCollection<Color> Palette
         {
             get { return (ObservableCollection<Color>)GetValue(PaletteProperty); }
@@ -82,21 +82,29 @@ namespace OpenControls
         {
             get
             {
-                var t = typeof (Colors);
+                // todo: localize...
+                if (SelectedColor.A == 0)
+                    return "Transparent";
+                var t = typeof(Colors);
                 var fields = t.GetProperties(BindingFlags.Public | BindingFlags.Static);
                 string best = "Custom";
                 double bestDist = 30;
+                // find the color that is closest
                 foreach (var fi in fields)
                 {
-                    var c = (Color)fi.GetValue(null,null);
-                    if (SelectedColor==c)
+                    var c = (Color)fi.GetValue(null, null);
+                    if (SelectedColor == c)
                         return fi.Name;
                     double d = ColorHelper.ColorDifference(SelectedColor, c);
-                    if (d<bestDist)
+                    if (d < bestDist)
                     {
-                        best = fi.Name;
+                        best = "~ "+fi.Name; // 'kind of'
                         bestDist = d;
                     }
+                }
+                if (SelectedColor.A < 255)
+                {
+                    return String.Format("{0}, {1:0} %", best, SelectedColor.A / 2.55);
                 }
                 return best;
             }
@@ -129,7 +137,7 @@ namespace OpenControls
         public byte Hue
         {
             get { return _hue; }
-            set { SelectedColor = ColorHelper.HsvToColor(value,Saturation,Brightness); }
+            set { SelectedColor = ColorHelper.HsvToColor(value, Saturation, Brightness); }
         }
         public byte Saturation
         {
@@ -168,7 +176,7 @@ namespace OpenControls
             int N = 32 - 5;
             for (int i = 0; i < N; i++)
             {
-                double H = 0.8*i/(N - 1);
+                double H = 0.8 * i / (N - 1);
                 var c = ColorHelper.HsvToColor(H, 1.0, 1.0);
                 Palette.Add(c);
             }

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace OpenControls
 {
@@ -259,13 +260,17 @@ namespace OpenControls
 
         #endregion
 
+        private Dictionary<string, Property> propertyMap = null;
+
         public void UpdateContent()
         {
+            if (_tabs==null || _page==null)
+                return;
+
+            var propertyTabs = GetProperties(DataContext);
             if (UseTabs)
             {
-                if (_tabs == null)
-                    return;
-                _tabs.ItemsSource = GetProperties(DataContext);
+                _tabs.ItemsSource = propertyTabs;
                 if (_tabs.Items.Count > 0)
                     _tabs.SelectedIndex = 0;
                 _tabs.Visibility = Visibility.Visible;
@@ -273,14 +278,12 @@ namespace OpenControls
             }
             else
             {
-                if (_page == null)
-                    return;
-                Collection<PropertyTab> tabs = GetProperties(DataContext);
-                PropertyTab tab = tabs.Count > 0 ? tabs[0] : null;
+                var tab = propertyTabs.Count > 0 ? propertyTabs[0] : null;
                 _page.Content = tab;
                 _tabs.Visibility = Visibility.Collapsed;
                 _page.Visibility = Visibility.Visible;
             }
+            UpdatePropertyStates();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -296,7 +299,7 @@ namespace OpenControls
 
             Type t = instance.GetType();
 
-            // find the DeclaredOnly properties
+            // find the DeclaredOnly propertyTabs
             PropertyInfo[] declaredOnlyProperties =
                 t.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
 
@@ -311,6 +314,8 @@ namespace OpenControls
             string tab = instance.GetType().Name;
             
             PropertyTemplateSelector.ShowEnumAsComboBox = EnumAsComboBox;
+
+            propertyMap=new Dictionary<string, Property>();
 
             foreach (PropertyDescriptor descriptor in properties)
             {
@@ -351,13 +356,36 @@ namespace OpenControls
                     UpdateProperty(currentCategory, category);
                     currentTab.Categories.Add(currentCategory);
                 }
+                
+                var property = new Property(instance, descriptor, PropertyTemplateSelector);               
+                propertyMap.Add(descriptor.Name,property);
 
-                var property = new Property(instance, descriptor, PropertyTemplateSelector);
                 property.PropertyChanged += OnPropertyChanged;
                 UpdateProperty(property, descriptor.Name);
                 currentCategory.Properties.Add(property);
             }
             return tabs;
+        }
+
+        private void UpdatePropertyStates()
+        {
+            UpdatePropertyStates(DataContext);    
+        }
+
+        private void UpdatePropertyStates(object instance)
+        {
+            var psi = instance as IPropertyState;
+            if (psi==null)
+                return;
+            var ps = new PropertyState();
+            psi.GetPropertyStates(ps);
+            foreach (var ep in ps.EnabledProperties)
+            {
+                var p = propertyMap[ep.Key];
+                if (p.IsEnabled!=ep.Value)
+                    p.IsEnabled = ep.Value;
+            }
+            
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -369,6 +397,8 @@ namespace OpenControls
             if (property != null)
                 RaisePropertyChangedEvent(property.PropertyName, null, property.Value);
             Debug.IndentLevel--;
+            if (e.PropertyName!="IsEnabled")
+                UpdatePropertyStates();
         }
 
         private void UpdateProperty(PropertyBase property, string name)

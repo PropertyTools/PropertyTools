@@ -7,20 +7,47 @@
     <!-- CLR & Custom Types Data Templates -->
 
     <DataTemplate x:Key="default">
-        <TextBox IsReadOnly="{Binding Path=IsReadOnly}">
-            <TextBox.Text>
-                <Binding Mode="TwoWay" Path="Value">
-                    <Binding.ValidationRules>
+        <TextBox IsReadOnly="{Binding IsReadOnly}" 
+                 IsEnabled="{Binding IsEnabled}" 
+                 Text="{Binding Value, ValidatesOnDataErrors=True}">
+            <!--<TextBox.Text>
+                <Binding Mode="TwoWay" Path="Value" ValidatesOnDataErrors="True">
+                   <Binding.ValidationRules>
                         <ExceptionValidationRule />
                     </Binding.ValidationRules>
                 </Binding>
-            </TextBox.Text>
+            </TextBox.Text> -->
         </TextBox>
+    </DataTemplate>
+
+    <DataTemplate x:Key="sliderBox">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Slider 
+                Maximum="{Binding SliderMaximum}"
+                Minimum="{Binding SliderMinimum}"
+                SmallChange="{Binding SliderSmallChange}"
+                LargeChange="{Binding SliderLargeChange}"
+                IsEnabled="{Binding IsEnabled}" 
+                Focusable="False"
+                Margin="0 0 4 0"
+                Value="{Binding Value, Converter={local:ToDoubleConverter}}"
+                />
+            <!-- todo: need new type of binding that can bind to FormatString and 
+            pass the target datatype to the converter -->
+            <TextBox IsReadOnly="{Binding IsReadOnly}" 
+                     IsEnabled="{Binding IsEnabled}" 
+                     Grid.Column="1"
+                     Text="{Binding Value, ValidatesOnDataErrors=True}"/>
+        </Grid>
     </DataTemplate>
 
     <!-- bool -->
     <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr:Boolean}}">
-        <CheckBox IsEnabled="{Binding Path=IsWriteable}" IsChecked="{Binding Path=Value}" 
+        <CheckBox IsEnabled="{Binding IsWriteable}" IsChecked="{Binding Path=Value}" 
                   HorizontalAlignment="Left"
                   VerticalAlignment="Center"/>
     </DataTemplate>
@@ -31,9 +58,9 @@
     </DataTemplate>
 
     <!-- enum -->
-   <!-- <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr:Enum}}">-->
+    <!-- <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr:Enum}}">-->
     <DataTemplate x:Key="enumComboBox">
-            <ComboBox SelectedValue="{Binding Path=Value}">
+        <ComboBox SelectedValue="{Binding Path=Value}">
             <ComboBox.ItemsSource>
                 <Binding Path="Value">
                     <Binding.Converter>

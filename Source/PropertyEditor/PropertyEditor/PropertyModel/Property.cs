@@ -15,14 +15,9 @@ namespace OpenControls
     {
         public PropertyTemplateSelector PropertyTemplateSelector { get; set; }
 
-        #region Fields
-
-        private object _instance;
-        private PropertyDescriptor _descriptor;
-
-        #endregion
-
         #region Optional
+        public string OptionalProperty { get; set; }
+
         public Visibility OptionVisibility
         {
             get { return IsOptional ? Visibility.Visible : Visibility.Collapsed; }
@@ -33,40 +28,6 @@ namespace OpenControls
         }
 
         public bool IsOptional { get; set; }
-
-        public bool IsOptionalChecked
-        {
-            get
-            {
-                if (IsOptional)
-                    return (bool)GetProperty(OptionalProperty);
-                else
-                    return true; // default must be true (enable editor)
-            }
-            set
-            {
-                if (IsOptional)
-                {
-                    SetProperty(OptionalProperty, value);
-                    NotifyPropertyChanged("IsOptionalChecked");
-                }
-
-            }
-        }
-
-        private void SetProperty(string name, object value)
-        {
-            PropertyInfo pi = _instance.GetType().GetProperty(name);
-            pi.SetValue(_instance, value, null);
-        }
-
-        private object GetProperty(string name)
-        {
-            PropertyInfo pi = _instance.GetType().GetProperty(name);
-            return pi.GetValue(_instance, null);
-        }
-
-        public string OptionalProperty { get; set; }
 
         public void InitializeOptional()
         {
@@ -82,7 +43,42 @@ namespace OpenControls
                 }
             }
         }
+        public bool IsOptionalChecked
+        {
+            get
+            {
+                if (IsOptional)
+                    return (bool)GetProperty(OptionalProperty);
+                return true; // default must be true (enable editor)
+            }
+            set
+            {
+                if (IsOptional)
+                {
+                    SetProperty(OptionalProperty, value);
+                    NotifyPropertyChanged("IsOptionalChecked");
+                }
 
+            }
+        }  
+
+        #endregion
+
+        #region FormatString
+        public string FormatString { get; set; }
+
+        public void InitializeFormatString()
+        {
+            FormatString = null;
+            foreach (Attribute a in _descriptor.Attributes)
+            {
+                var fsa = a as FormatStringAttribute;
+                if (fsa != null)
+                {
+                    FormatString = fsa.FormatString;
+                }
+            }
+        }
         #endregion
 
         #region Slidable
@@ -117,7 +113,8 @@ namespace OpenControls
 
         #endregion
 
-        #region Initialization
+        #region Constructor
+        private object _instance;
 
         public Property(object instance, PropertyDescriptor descriptor, PropertyTemplateSelector pts)
         {
@@ -132,77 +129,12 @@ namespace OpenControls
 
             InitializeOptional();
             InitializeSlidable();
+            InitializeFormatString();
         }
-
         #endregion
 
-        #region Properties
-     
-        /// <value>
-        /// Initializes the reflected instance property
-        /// </value>
-        /// <exception cref="NotSupportedException">
-        /// The conversion cannot be performed
-        /// </exception>
-        public object Value
-        {
-            get
-            {
-                Debug.IndentLevel++;
-                Debug.WriteLine("Property.Value.Get("+PropertyName+")");
-                object returnValue;
-                if (_instance is IEnumerable)
-                    returnValue = GetMultiValue(_instance as IEnumerable);
-                else
-                    returnValue = GetSingleValue(_instance);
-                Debug.IndentLevel--;
-                return returnValue;
-            }
-            set
-            {
-                Debug.IndentLevel++;
-                Debug.WriteLine("Property.Value.Set(" + PropertyName + ")");
-                object currentValue = _descriptor.GetValue(_instance);
-                if (value != null && value.Equals(currentValue))
-                {
-                    return;
-                }
-                Type propertyType = _descriptor.PropertyType;
-                if (propertyType == typeof(object) ||
-                    value == null && propertyType.IsClass ||
-                    value != null && propertyType.IsAssignableFrom(value.GetType()))
-                {
-                    _descriptor.SetValue(_instance, value);
-                }
-                else
-                {
-                    TypeConverter converter = TypeDescriptor.GetConverter(_descriptor.PropertyType);
-                    object convertedValue = converter.ConvertFrom(value);
-                    _descriptor.SetValue(_instance, convertedValue);
-                }
-                Debug.IndentLevel--;
-            }
-        }
-
-        private object GetSingleValue(object component)
-        {
-            return _descriptor.GetValue(component);
-        }
-
-        // WIP
-        private object GetMultiValue(IEnumerable componentList)
-        {
-            object value = null;
-            foreach (object component in componentList)
-            {
-                object v = _descriptor.GetValue(component);
-                if (value == null)
-                    value = v;
-                if (value != null && !v.Equals(value))
-                    return null; // undetermined (todo...)
-            }
-            return null; // no value
-        }
+        #region Descriptor properties
+        private PropertyDescriptor _descriptor;
 
         public bool IsWriteable
         {
@@ -238,7 +170,6 @@ namespace OpenControls
         {
             get { return _descriptor.Description; }
         }
-
         #endregion
 
         #region Event Handlers
@@ -269,5 +200,93 @@ namespace OpenControls
         }
 
         #endregion
+
+        #region Set/Get
+        private void SetProperty(string name, object value)
+        {
+            PropertyInfo pi = _instance.GetType().GetProperty(name);
+            pi.SetValue(_instance, value, null);
+        }
+
+        private object GetProperty(string name)
+        {
+            PropertyInfo pi = _instance.GetType().GetProperty(name);
+            return pi.GetValue(_instance, null);
+        }
+
+        /// <value>
+        /// Initializes the reflected instance property
+        /// </value>
+        /// <exception cref="NotSupportedException">
+        /// The conversion cannot be performed
+        /// </exception>
+        public object Value
+        {
+            get
+            {
+                Debug.IndentLevel++;
+                Debug.WriteLine("Property.Value.Get("+PropertyName+")");
+                object value;
+                if (_instance is IEnumerable)
+                    value = GetMultiValue(_instance as IEnumerable);
+                else
+                    value=_descriptor.GetValue(_instance);
+                Debug.IndentLevel--;
+                return value;
+            }
+            set
+            {
+                Debug.IndentLevel++;
+                Debug.WriteLine("Property.Value.Set(" + PropertyName + ")");
+                object currentValue = _descriptor.GetValue(_instance);
+                if (value != null && value.Equals(currentValue))
+                {
+                    return;
+                }
+                Type propertyType = _descriptor.PropertyType;
+                bool multi = _instance is IEnumerable;
+                
+                if (propertyType == typeof(object) ||
+                    value == null && propertyType.IsClass ||
+                    value != null && propertyType.IsAssignableFrom(value.GetType()))
+                {
+                    if (multi)
+                        SetMultiValue(_instance as IEnumerable, value);
+                    else
+                        _descriptor.SetValue(_instance, value);
+                }
+                else
+                {
+                    TypeConverter converter = TypeDescriptor.GetConverter(_descriptor.PropertyType);
+                    object convertedValue = converter.ConvertFrom(value);
+                    _descriptor.SetValue(_instance, convertedValue);
+                }
+                Debug.IndentLevel--;
+            }
+        }
+
+        private void SetMultiValue(IEnumerable list, object value)
+        {
+            foreach (object item in list)
+            {
+                _descriptor.SetValue(item, value);
+            }
+        }
+
+        private object GetMultiValue(IEnumerable componentList)
+        {
+            object value = null;
+            foreach (object component in componentList)
+            {
+                object v = _descriptor.GetValue(component);
+                if (value == null)
+                    value = v;
+                if (value != null && !v.Equals(value))
+                    return null; // undetermined (todo...)
+            }
+            return null; // no value
+        }
+        #endregion
+
     }
 }

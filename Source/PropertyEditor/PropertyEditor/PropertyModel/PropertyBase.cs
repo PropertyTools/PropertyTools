@@ -43,7 +43,7 @@ namespace OpenControls
         protected void NotifyPropertyChanged(string property)
         {
             Debug.IndentLevel++;
-            Debug.WriteLine("PropertyBase.NotifyPropertyChanged");
+            Debug.WriteLine(String.Format("PropertyBase.NotifyPropertyChanged[{0}]",property));
             var handler = PropertyChanged;
             if (handler!= null)
             {

@@ -20,6 +20,7 @@
                                 </ResourceDictionary>
                             </Grid.Resources>
                             <TabControl Name="PART_Tabs" 
+                                        Focusable="False"
                                         ContentTemplate="{StaticResource TabPageTemplate}" 
                                         ItemTemplate="{StaticResource TabHeaderTemplate}"/>
                             <ContentControl Name="PART_Page" 

@@ -6,20 +6,20 @@
         <ResourceDictionary Source="/PropertyEditor;component/Controls/ColorPicker/Resources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <DrawingBrush x:Key="CheckerBoardBrush" Viewport="0,0,0.5,0.5" TileMode="Tile">
+    <DrawingBrush x:Key="CheckerBoardBrush" Viewport="0,0,14,14" ViewportUnits="Absolute" TileMode="Tile">
         <DrawingBrush.Drawing>
             <DrawingGroup>
                 <GeometryDrawing Brush="White">
                     <GeometryDrawing.Geometry>
-                        <RectangleGeometry Rect="0,0,100,100" />
+                        <RectangleGeometry Rect="0,0,1,1" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
 
                 <GeometryDrawing Brush="Black">
                     <GeometryDrawing.Geometry>
                         <GeometryGroup>
-                            <RectangleGeometry Rect="0,0,50,50" />
-                            <RectangleGeometry Rect="50,50,50,50" />
+                            <RectangleGeometry Rect="0,0,0.50,0.50" />
+                            <RectangleGeometry Rect="0.50,0.50,0.50,0.50" />
                         </GeometryGroup>
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
@@ -60,8 +60,25 @@
                             </StackPanel>
                             <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}"
                                AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
-                                <TabControl Margin="4,6,4,6" 
-                                        MinWidth="{TemplateBinding ActualWidth}"
+                                <Grid Width="{TemplateBinding ActualWidth}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Border CornerRadius="0,0,8,8" Background="White" BorderBrush="Black" BorderThickness="1,0,1,1"
+                                               Grid.ColumnSpan="2" SnapsToDevicePixels="True"/>
+                                    
+                                <Grid Width="40" Height="40" Margin="6,6,0,0" VerticalAlignment="Top" Grid.Column="0" Background="{StaticResource CheckerBoardBrush}">
+                                    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                                    
+                                   Fill="{TemplateBinding SelectedColor, Converter={local:ColorToBrushConverter}}" 
+                                    Stroke="Black"
+                                   SnapsToDevicePixels="True"
+                                   />
+                                </Grid>
+                                
+                                <TabControl Grid.Column="1" Margin="6" 
+                                       MaxWidth="300"
                                         MinHeight="140"
                                             TabStripPlacement="Bottom"
                                             SnapsToDevicePixels="True" 
@@ -119,8 +136,10 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="20"/>
                                                 <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="40"/>
+                                                <ColumnDefinition Width="Auto" MinWidth="40"/>
                                             </Grid.ColumnDefinitions>
+                                            
+
                                             <TextBlock Text="R" Grid.Row="0"/> 
                                             <TextBlock Text="G" Grid.Row="1"/> 
                                             <TextBlock Text="B" Grid.Row="2"/> 
@@ -133,8 +152,10 @@
                                             <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                                             <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                                             <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" 
+                                            <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
+                                                     HorizontalAlignment="Right"
                                                      FontFamily="Courier New"
+                                                     VerticalAlignment="Top"
                                                      Text="{Binding SelectedColor, Converter={local:ColorToHexConverter}, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                                         </Grid>
                                     </TabItem>
@@ -166,6 +187,7 @@
                                         </Grid>
                                     </TabItem>
                                 </TabControl>
+                                </Grid>
                             </Popup>
                         </Grid>
                     </Border>

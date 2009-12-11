@@ -10,7 +10,7 @@ namespace OpenControls
 {
     /// <summary>
     /// The PropertyTemplateSelector is used to select a DataTemplate based on a type
-    /// The dataTemplates must be defined in the BasicEditors/ExtendedEditors.xaml
+    /// The DataTemplates must be defined in the BasicEditors.xaml/ExtendedEditors.xaml
     /// or in the Editors collection of the PropertyEditor.
     /// </summary>
     public class PropertyTemplateSelector : DataTemplateSelector
@@ -37,7 +37,12 @@ namespace OpenControls
             foreach (TypeEditor editor in Editors)
             {
                 // todo: how to check if type is the same?
-                if (editor.EditedType.GUID == property.PropertyType.GUID)
+                bool r1 = Object.Equals(editor.EditedType, property.PropertyType);
+
+                bool r2 = editor.EditedType.GUID == property.PropertyType.GUID;
+                if (r1 != r2)
+                    Console.WriteLine("something wrong");
+                if (r2)
                     return editor.EditorTemplate;
             }
 
@@ -54,32 +59,47 @@ namespace OpenControls
         private DataTemplate FindDataTemplate(Property property, FrameworkElement element)
         {
             Type propertyType = property.PropertyType;
+
             // Try to find a template for the given type
-            DataTemplate template = TryFindDataTemplate(element, propertyType);
-            
-            if (template==null && propertyType.BaseType==typeof(Enum))
+            var template = TryToFindDataTemplate(element, propertyType);
+            if (template!=null)
+                return template;
+
+            // DataTemplates for enum types
+            if (propertyType.BaseType==typeof(Enum))
             {
                 if (ShowEnumAsComboBox)
-                    template = TryFindDataTemplate(element, "enumComboBox");
+                    template = TryToFindDataTemplate(element, "enumComboBox");
                 else
-                    template = TryFindDataTemplate(element, "enumRadioButtons");                
-            }
-            // Find a template for the base type
-            while (template == null && propertyType.BaseType != null)
-            {
-                propertyType = propertyType.BaseType;
-                template = TryFindDataTemplate(element, propertyType);
+                    template = TryToFindDataTemplate(element, "enumRadioButtons");
+                if (template != null)
+                    return template;
             }
 
-            // Use the default template (TextBox)
-            if (template == null)
+            // Try to find a template for the base type
+            while (propertyType.BaseType != null)
             {
-                template = TryFindDataTemplate(element, "default");
+                propertyType = propertyType.BaseType;
+                template = TryToFindDataTemplate(element, propertyType);
+                if (template != null)
+                    return template;
             }
+            
+            // If the Slidable attribute is set, use the 'sliderBox' template
+            if (property.IsSlidable)
+            {
+                template = TryToFindDataTemplate(element, "sliderBox");
+                if (template != null)
+                    return template;
+            }
+
+            // Use the 'default' template (TextBox)
+            template = TryToFindDataTemplate(element, "default");
+            
             return template;
         }
 
-        private static DataTemplate TryFindDataTemplate(FrameworkElement element, object dataTemplateKey)
+        private static DataTemplate TryToFindDataTemplate(FrameworkElement element, object dataTemplateKey)
         {
             object dataTemplate = element.TryFindResource(dataTemplateKey);
             if (dataTemplate == null)

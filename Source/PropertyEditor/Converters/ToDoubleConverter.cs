@@ -21,7 +21,7 @@ namespace OpenControls
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-          //  if (targetType==typeof(double))
+//            if (targetType==typeof(double))
                 return value;
 //            return Binding.DoNothing;
         }

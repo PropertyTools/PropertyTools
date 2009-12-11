@@ -16,7 +16,10 @@
                       VerticalScrollBarVisibility="Auto" 
                       HorizontalAlignment="Stretch"
                       Focusable="False">
-            <ItemsControl ItemsSource="{Binding Path=Categories}" Focusable="False" ItemTemplateSelector="{Binding CategoryTemplateSelector, Mode=OneTime}">
+            <ItemsControl ItemsSource="{Binding Categories}" 
+                          Focusable="False" 
+                          >
+                <!-- todo: ItemTemplateSelector="{Binding CategoryTemplateSelector, Mode=OneTime}" -->
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" IsItemsHost="True"/>
@@ -25,12 +28,13 @@
             </ItemsControl>
         </ScrollViewer>
     </DataTemplate>
-       
+    
+    <!-- todo: also support expander -->
     <!-- GroupBox for the categories -->
     <DataTemplate DataType="{x:Type local:PropertyCategory}">
         <GroupBox Header="{Binding Header}" ToolTip="{Binding ToolTip, Mode=OneTime}" Focusable="False" Margin="2 2 2 8"
                   IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
-            <ItemsControl ItemsSource="{Binding Path=Properties}" Focusable="False">
+            <ItemsControl ItemsSource="{Binding Properties}" Focusable="False">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel IsItemsHost="True"/>
@@ -45,6 +49,10 @@
         <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
             <Grid MinWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}, Path=CaptionWidth}">
                 <!-- todo: use a template selector instead of changing visibility? -->
+                <!--<ContentControl 
+                    Content="{Binding}" 
+                    ContentTemplateSelector="{Binding HeaderTemplateSelector, Mode=OneTime}"/>
+                -->
                 <Label Content="{Binding Header, Mode=OneTime}" ToolTip="{Binding ToolTip, Mode=OneTime}"
                        HorizontalAlignment="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}, Path=CaptionAlignment}"
                        Visibility="{Binding LabelVisibility, Mode=OneTime}"/>
@@ -55,7 +63,7 @@
                        Visibility="{Binding OptionVisibility, Mode=OneTime}"
                        VerticalAlignment="Center"/>
             </Grid>
-            
+           <!-- 
             <Slider
                 Maximum="{Binding SliderMaximum}"
                 Minimum="{Binding SliderMinimum}"
@@ -65,7 +73,7 @@
                 Focusable="False"
                 Value="{Binding Value, Converter={local:ToDoubleConverter}}"
                 Visibility="{Binding SliderVisibility}" DockPanel.Dock="Right"/>
-            
+            -->
             <ContentControl Content="{Binding}"
                             Focusable="False"
                             ContentTemplateSelector="{Binding PropertyTemplateSelector, Mode=OneTime}"

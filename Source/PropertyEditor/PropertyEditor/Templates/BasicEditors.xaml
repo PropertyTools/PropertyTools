@@ -47,9 +47,37 @@
 
     <!-- bool -->
     <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr:Boolean}}">
-        <CheckBox IsEnabled="{Binding IsWriteable}" IsChecked="{Binding Path=Value}" 
+        <CheckBox IsEnabled="{Binding IsWriteable}" IsChecked="{Binding Value}" 
+                  HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <!--  todo: Consider this. The alternative is to use YesNo Enum! -->
+        <!-- todo: localization... -->
+        <!-- <Grid>
+            <CheckBox IsEnabled="{Binding IsWriteable}" IsChecked="{Binding Path=Value}" 
                   HorizontalAlignment="Left"
-                  VerticalAlignment="Center"/>
+                  VerticalAlignment="Center"
+                  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}, Path=BoolAsCombo, Converter={local:BoolToVisibilityConverter InvertVisibility=True}}"/>
+            <ComboBox IsEnabled="{Binding IsWriteable}" 
+                  SelectedValuePath="Value"
+                  SelectedValue="{Binding Path=Value}"
+                      MinWidth="40"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Center"
+                  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}, Path=BoolAsCombo, Converter={local:BoolToVisibilityConverter InvertVisibility=False}}">
+                <ComboBox.ItemsSource>
+                    <x:Array Type="{x:Type clr2:DictionaryEntry}">
+                        <clr2:DictionaryEntry Key="Yes" Value="True" />
+                        <clr2:DictionaryEntry Key="No" Value="False" />
+                    </x:Array>
+                </ComboBox.ItemsSource>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Key}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+        -->
     </DataTemplate>
 
     <!-- list -->
@@ -60,7 +88,7 @@
     <!-- enum -->
     <!-- <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr:Enum}}">-->
     <DataTemplate x:Key="enumComboBox">
-        <ComboBox SelectedValue="{Binding Path=Value}">
+        <ComboBox SelectedValue="{Binding Path=Value}" IsEnabled="{Binding IsWriteable}">
             <ComboBox.ItemsSource>
                 <Binding Path="Value">
                     <Binding.Converter>

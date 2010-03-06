@@ -28,7 +28,7 @@
             </ItemsControl>
         </ScrollViewer>
     </DataTemplate>
-    
+
     <!-- todo: also support expander -->
     <!-- GroupBox for the categories -->
     <DataTemplate DataType="{x:Type local:PropertyCategory}">
@@ -63,7 +63,7 @@
                        Visibility="{Binding OptionVisibility, Mode=OneTime}"
                        VerticalAlignment="Center"/>
             </Grid>
-           <!-- 
+            <!-- 
             <Slider
                 Maximum="{Binding SliderMaximum}"
                 Minimum="{Binding SliderMinimum}"

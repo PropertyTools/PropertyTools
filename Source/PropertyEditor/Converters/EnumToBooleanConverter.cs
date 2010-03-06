@@ -7,7 +7,7 @@ namespace OpenControls
     /// <summary>
     /// Usage 'Converter={local:EnumToBooleanConverter}'
     /// </summary>
-    [ValueConversion(typeof (Enum), typeof (bool))]
+    [ValueConversion(typeof(Enum), typeof(bool))]
     public class EnumToBooleanConverter : SelfProvider, IValueConverter
     {
         #region IValueConverter Members

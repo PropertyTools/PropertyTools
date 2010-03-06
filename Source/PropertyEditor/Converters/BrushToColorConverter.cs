@@ -21,12 +21,12 @@ namespace OpenControls
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var scb = value as SolidColorBrush;
-            if (scb!=null)
+            if (scb != null)
                 return scb.Color;
 
             // todo: other brushes??
 
-            return Color.FromArgb(0,0,0,0);
+            return Color.FromArgb(0, 0, 0, 0);
         }
     }
 }

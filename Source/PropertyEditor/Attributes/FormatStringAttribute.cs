@@ -31,7 +31,7 @@ namespace OpenControls
         {
             return FormatString.GetHashCode();
         }
-      
+
         public override bool IsDefaultAttribute()
         {
             return Equals(Default);

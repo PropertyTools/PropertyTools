@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Diagnostics;
@@ -13,7 +9,7 @@ namespace OpenControls
     {
         public string Header { get; set; }
         public object ToolTip { get; set; }
-        
+
         #region Enabled/Visible
 
         private bool _IsEnabled;
@@ -42,10 +38,10 @@ namespace OpenControls
 
         protected void NotifyPropertyChanged(string property)
         {
-            Debug.IndentLevel++;
-            Debug.WriteLine(String.Format("PropertyBase.NotifyPropertyChanged[{0}]",property));
+            // Debug.IndentLevel++;
+            // Debug.WriteLine(String.Format("PropertyBase.NotifyPropertyChanged[{0}]",property));
             var handler = PropertyChanged;
-            if (handler!= null)
+            if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));
             }

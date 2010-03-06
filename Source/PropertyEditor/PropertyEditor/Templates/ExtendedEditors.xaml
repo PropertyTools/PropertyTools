@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:clr="clr-namespace:System;assembly=mscorlib"	
 	xmlns:media="clr-namespace:System.Windows.Media;assembly=PresentationCore"
     xmlns:ms="clr-namespace:Microsoft.Samples.CustomControls"
     xmlns:local="clr-namespace:OpenControls">

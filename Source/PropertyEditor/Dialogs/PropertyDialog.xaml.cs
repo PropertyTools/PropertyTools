@@ -176,7 +176,11 @@ namespace OpenControls
             {
                 object newValue = pi.GetValue(clone, null);
                 object oldValue = pi.GetValue(DataContext, null);
-                if (!oldValue.Equals(newValue))
+                
+                if (oldValue==null && newValue==null)
+                    continue;
+
+                if (oldValue!=null && !oldValue.Equals(newValue))
                     pi.SetValue(DataContext, newValue, null);
             }
         }

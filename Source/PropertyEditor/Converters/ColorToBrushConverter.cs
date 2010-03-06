@@ -19,7 +19,7 @@ namespace OpenControls
         }
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ((SolidColorBrush) value).Color;
+            return ((SolidColorBrush)value).Color;
         }
     }
 }

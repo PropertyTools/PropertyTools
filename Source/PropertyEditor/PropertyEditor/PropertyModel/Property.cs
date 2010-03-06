@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Reflection;
@@ -16,7 +12,23 @@ namespace OpenControls
         public PropertyTemplateSelector PropertyTemplateSelector { get; set; }
 
         #region Optional
-        public string OptionalProperty { get; set; }
+
+        private string _OptionalProperty;
+        public string OptionalProperty
+        {
+            get
+            {
+                return _OptionalProperty;
+            }
+            set
+            {
+                if (_OptionalProperty != value)
+                {
+                    _OptionalProperty = value;
+                    NotifyPropertyChanged("OptionalProperty");
+                }
+            }
+        }
 
         public Visibility OptionVisibility
         {
@@ -47,20 +59,20 @@ namespace OpenControls
         {
             get
             {
-                if (IsOptional)
+                if (!string.IsNullOrEmpty(OptionalProperty))
                     return (bool)GetProperty(OptionalProperty);
                 return true; // default must be true (enable editor)
             }
             set
             {
-                if (IsOptional)
+                if (!string.IsNullOrEmpty(OptionalProperty))
                 {
                     SetProperty(OptionalProperty, value);
                     NotifyPropertyChanged("IsOptionalChecked");
                 }
 
             }
-        }  
+        }
 
         #endregion
 
@@ -176,10 +188,10 @@ namespace OpenControls
 
         void instance_PropertyChanged(object sender, EventArgs e)
         {
-            Debug.IndentLevel++;
-            Debug.WriteLine("instance_PropertyChanged");
+            // Debug.IndentLevel++;
+            // Debug.WriteLine("instance_PropertyChanged");
             NotifyPropertyChanged("Value");
-            Debug.IndentLevel--;
+            // Debug.IndentLevel--;
         }
 
         #endregion
@@ -224,20 +236,20 @@ namespace OpenControls
         {
             get
             {
-                Debug.IndentLevel++;
-                Debug.WriteLine("Property.Value.Get("+PropertyName+")");
+                // Debug.IndentLevel++;
+                // Debug.WriteLine("Property.Value.Get("+PropertyName+")");
                 object value;
                 if (_instance is IEnumerable)
                     value = GetMultiValue(_instance as IEnumerable);
                 else
-                    value=_descriptor.GetValue(_instance);
+                    value = _descriptor.GetValue(_instance);
                 Debug.IndentLevel--;
                 return value;
             }
             set
             {
-                Debug.IndentLevel++;
-                Debug.WriteLine("Property.Value.Set(" + PropertyName + ")");
+                // Debug.IndentLevel++;
+                // Debug.WriteLine("Property.Value.Set(" + PropertyName + ")");
                 object currentValue = _descriptor.GetValue(_instance);
                 if (value != null && value.Equals(currentValue))
                 {
@@ -245,7 +257,7 @@ namespace OpenControls
                 }
                 Type propertyType = _descriptor.PropertyType;
                 bool multi = _instance is IEnumerable;
-                
+
                 if (propertyType == typeof(object) ||
                     value == null && propertyType.IsClass ||
                     value != null && propertyType.IsAssignableFrom(value.GetType()))

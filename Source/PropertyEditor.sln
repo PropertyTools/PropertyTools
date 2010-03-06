@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyEditorTests", "Prop
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModelDemo", "Samples\ViewModelDemo\ViewModelDemo.csproj", "{522FA563-CA84-4C0D-86F5-1CFF4EDA7000}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomEditorDemo", "Samples\CustomEditorDemo\CustomEditorDemo.csproj", "{15CB43E6-4DA9-43C8-840D-6F3865A7EB21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{522FA563-CA84-4C0D-86F5-1CFF4EDA7000}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{522FA563-CA84-4C0D-86F5-1CFF4EDA7000}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{522FA563-CA84-4C0D-86F5-1CFF4EDA7000}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15CB43E6-4DA9-43C8-840D-6F3865A7EB21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15CB43E6-4DA9-43C8-840D-6F3865A7EB21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15CB43E6-4DA9-43C8-840D-6F3865A7EB21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15CB43E6-4DA9-43C8-840D-6F3865A7EB21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,5 +53,6 @@ Global
 		{A5B4E9E1-EF77-485A-9446-0BFAC9CD502A} = {B179EEDB-BEBB-417C-A870-782A4B66F522}
 		{CFB2DADD-2021-46D8-90C1-D30B8A6457DB} = {B179EEDB-BEBB-417C-A870-782A4B66F522}
 		{522FA563-CA84-4C0D-86F5-1CFF4EDA7000} = {B179EEDB-BEBB-417C-A870-782A4B66F522}
+		{15CB43E6-4DA9-43C8-840D-6F3865A7EB21} = {B179EEDB-BEBB-417C-A870-782A4B66F522}
 	EndGlobalSection
 EndGlobal

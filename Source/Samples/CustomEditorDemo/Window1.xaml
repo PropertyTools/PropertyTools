@@ -1,0 +1,42 @@
+﻿<Window x:Class="CustomEditorDemo.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:pe="clr-namespace:OpenControls;assembly=PropertyEditor"
+    xmlns:toolkit="http://schemas.microsoft.com/wpf/2008/toolkit"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    Title="Custom editor" Height="300" Width="300">
+    <Window.Resources>
+        <!-- defining the custom editor here -->
+        <DataTemplate x:Key="CustomDateTimeEditor">
+            <toolkit:DatePicker SelectedDate="{Binding Value, Mode=TwoWay}" SnapsToDevicePixels="True"/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <!--
+        <Grid.LayoutTransform>
+            <ScaleTransform ScaleX="2" ScaleY="2"/>
+        </Grid.LayoutTransform>
+        -->
+        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Property editor" Margin="8">
+            <pe:PropertyEditor DataContext="{Binding CurrentPerson}" UseTabs="False">
+                <!-- list of custom editors -->
+                <pe:PropertyEditor.Editors>
+                    <pe:TypeEditor EditedType="{x:Type System:DateTime}" EditorTemplate="{StaticResource CustomDateTimeEditor}"/>
+                </pe:PropertyEditor.Editors>
+            </pe:PropertyEditor>
+        </GroupBox>
+        <GroupBox Header="WPF bindings" Grid.Row="1" Margin="8">
+            <StackPanel DataContext="{Binding CurrentPerson}">
+                <Label Content="Name"/>
+                <TextBox Text="{Binding Name}"/>
+                <Label Content="BirthDate"/>
+                <TextBox Text="{Binding BirthDate}"/>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</Window>

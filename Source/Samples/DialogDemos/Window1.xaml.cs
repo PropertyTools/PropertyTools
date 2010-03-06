@@ -32,7 +32,7 @@ namespace DialogDemos
 
         private void EditObject_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new PropertyDialog { SelectedObject = this };
+            var dlg = new PropertyDialog { DataContext = new Person() };
             dlg.ShowDialog();
         }
 

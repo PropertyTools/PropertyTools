@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
@@ -62,11 +59,11 @@ namespace OpenControls
 
             // Try to find a template for the given type
             var template = TryToFindDataTemplate(element, propertyType);
-            if (template!=null)
+            if (template != null)
                 return template;
 
             // DataTemplates for enum types
-            if (propertyType.BaseType==typeof(Enum))
+            if (propertyType.BaseType == typeof(Enum))
             {
                 if (ShowEnumAsComboBox)
                     template = TryToFindDataTemplate(element, "enumComboBox");
@@ -84,7 +81,7 @@ namespace OpenControls
                 if (template != null)
                     return template;
             }
-            
+
             // If the Slidable attribute is set, use the 'sliderBox' template
             if (property.IsSlidable)
             {
@@ -95,7 +92,7 @@ namespace OpenControls
 
             // Use the 'default' template (TextBox)
             template = TryToFindDataTemplate(element, "default");
-            
+
             return template;
         }
 

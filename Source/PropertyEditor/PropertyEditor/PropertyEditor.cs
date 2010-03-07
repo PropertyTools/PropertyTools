@@ -98,7 +98,7 @@ namespace PropertyEditorLibrary
         /// <summary>
         /// The width of the property labels
         /// </summary>
-        [Category(AppearanceCategory)]
+        [Category(AppearanceCategory), Slidable(40,400,1,10)]
         public double LabelWidth
         {
             get { return (double)GetValue(LabelWidthProperty); }

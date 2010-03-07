@@ -35,7 +35,7 @@
                 SmallChange="{Binding SliderSmallChange}"
                 LargeChange="{Binding SliderLargeChange}"
                 IsEnabled="{Binding IsEnabled}" 
-                Focusable="False"
+                Focusable="True"
                 Margin="0 0 4 0"
                 Value="{Binding Value, Converter={local:ToDoubleConverter}}"
                 />

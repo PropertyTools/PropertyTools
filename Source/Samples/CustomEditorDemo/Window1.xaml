@@ -16,7 +16,8 @@
                 SelectedValuePath="Value"
                 DisplayMemberPath="Key"
                 SelectedValue="{Binding Path=Value}"
-                MinWidth="40">
+                HorizontalAlignment="Left"
+                Width="60">
                 <ComboBox.ItemsSource>
                     <x:Array Type="{x:Type clr2:DictionaryEntry}">
                         <clr2:DictionaryEntry Key="Yes" Value="True" />

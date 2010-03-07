@@ -36,7 +36,7 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-        <Setter Property="MinWidth" Value="120"/>
+        <Setter Property="MinWidth" Value="30"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:ColorPicker}">
@@ -77,8 +77,10 @@
                             Name="Popup" 
                             Placement="Bottom" 
                             IsOpen="{TemplateBinding IsDropDownOpen}"
-                            AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
-                            <Grid Width="{TemplateBinding ActualWidth}">
+                            AllowsTransparency="True" 
+                            Focusable="False" 
+                            PopupAnimation="Slide">
+                            <Grid Width="{TemplateBinding ActualWidth}" MinWidth="240">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>

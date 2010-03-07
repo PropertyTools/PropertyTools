@@ -1,7 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:OpenControls">
+    xmlns:local="clr-namespace:PropertyEditorLibrary">
     <Style TargetType="{x:Type local:PropertyEditor}">
         <Setter Property="Template">
             <Setter.Value>
@@ -19,12 +19,14 @@
                                     </ResourceDictionary.MergedDictionaries>
                                 </ResourceDictionary>
                             </Grid.Resources>
-                            <TabControl Name="PART_Tabs" 
-                                        Focusable="False"
-                                        ContentTemplate="{StaticResource TabPageTemplate}" 
-                                        ItemTemplate="{StaticResource TabHeaderTemplate}"/>
-                            <ContentControl Name="PART_Page" 
-                                    ContentTemplate="{StaticResource TabPageTemplate}"/>
+                            <TabControl 
+                                Name="PART_Tabs" 
+                                Focusable="False"
+                                ContentTemplate="{StaticResource TabPageTemplate}" 
+                                ItemTemplate="{StaticResource TabHeaderTemplate}"/>
+                            <ContentControl 
+                                Name="PART_Page" 
+                                ContentTemplate="{StaticResource TabPageTemplate}"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>

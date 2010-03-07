@@ -1,73 +1,68 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
-using System.Diagnostics;
+using System;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
-    public abstract class PropertyBase : INotifyPropertyChanged, IDisposable
+    /// <summary>
+    /// Base class for tabs, categories and properties 
+    /// </summary>
+    public abstract class PropertyBase : INotifyPropertyChanged, IDisposable, IComparable
     {
+        protected PropertyEditor Owner { get; private set; }
+
+        public string Name { get; set; }
         public string Header { get; set; }
         public object ToolTip { get; set; }
+        public int SortOrder { get; set; }
 
         #region Enabled/Visible
 
-        private bool _IsEnabled;
+        private bool isEnabled;
         public bool IsEnabled
         {
-            get { return _IsEnabled; }
-            set { _IsEnabled = value; NotifyPropertyChanged("IsEnabled"); }
+            get { return isEnabled; }
+            set { isEnabled = value; NotifyPropertyChanged("IsEnabled"); }
         }
 
-        private Visibility _Visibility;
-        public Visibility Visibility
+        private Visibility isVisible;
+        public Visibility IsVisible
         {
-            get { return _Visibility; }
-            set { _Visibility = value; NotifyPropertyChanged("Visibility"); }
+            get { return isVisible; }
+            set { isVisible = value; NotifyPropertyChanged("IsVisible"); }
         }
 
         #endregion
 
-        public PropertyBase()
+        protected PropertyBase(PropertyEditor owner)
         {
-            _IsEnabled = true;
-            _Visibility = Visibility.Visible;
+            Owner = owner;
+            
+            isEnabled = true;
+            isVisible = Visibility.Visible;
+        }
+
+        public override string ToString()
+        {
+            return Header;
         }
 
         #region Notify Property Changed Members
 
         protected void NotifyPropertyChanged(string property)
         {
-            // Debug.IndentLevel++;
-            // Debug.WriteLine(String.Format("PropertyBase.NotifyPropertyChanged[{0}]",property));
             var handler = PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));
             }
-            Debug.IndentLevel--;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
-        #region IDisposable Members
-
-        private bool _disposed = false;
-
-        protected bool Disposed
-        {
-            get { return _disposed; }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!Disposed)
-            {
-                _disposed = true;
-            }
-        }
+        // http://msdn.microsoft.com/en-us/library/ms244737(VS.80).aspx
 
         public void Dispose()
         {
@@ -75,7 +70,33 @@ namespace OpenControls
             GC.SuppressFinalize(this);
         }
 
-        ~PropertyBase() { Dispose(false); }
+        // Leave out the finalizer altogether if this class doesn't 
+        // own unmanaged resources itself, but leave the other methods
+        // exactly as they are. 
+        ~PropertyBase()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// The bulk of the clean-up code is implemented in Dispose(bool)
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources
+            }
+            // free native resources if there are any.
+        }
+
+        #region IComparable Members
+
+        public int CompareTo(object obj)
+        {
+            return SortOrder.CompareTo(((PropertyBase)obj).SortOrder);
+        }
 
         #endregion
     }

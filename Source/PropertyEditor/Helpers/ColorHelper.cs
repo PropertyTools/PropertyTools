@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Media;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// Static <see cref="Color"/> helper methods.
@@ -56,7 +56,6 @@ namespace OpenControls
         /// <returns>L2-norm in RGBA space</returns>
         public static double ColorDifference(Color c1, Color c2)
         {
-            // todo...
             // http://en.wikipedia.org/wiki/Color_difference
             // http://mathworld.wolfram.com/L2-Norm.html
             double dr = (c1.R - c2.R) / 255.0;
@@ -177,12 +176,11 @@ namespace OpenControls
             byte g = color.G;
             byte b = color.B;
 
-            double delta, min;
             double h = 0, s, v;
 
-            min = Math.Min(Math.Min(r, g), b);
+            double min = Math.Min(Math.Min(r, g), b);
             v = Math.Max(Math.Max(r, g), b);
-            delta = v - min;
+            double delta = v - min;
 
             if (v == 0.0)
             {
@@ -224,7 +222,7 @@ namespace OpenControls
         /// <returns></returns>
         public static Color HsvToColor(byte hue, byte saturation, byte value)
         {
-            double r = 0, g = 0, b = 0;
+            double r, g, b;
             double h = hue * 360.0 / 255;
             double s = saturation / 255.0;
             double v = value / 255.0;
@@ -301,9 +299,9 @@ namespace OpenControls
         /// Convert from HSV to <see cref="Color"/>
         /// http://en.wikipedia.org/wiki/HSL_color_space
         /// </summary>
-        /// <param name="h">Hue [0,1]</param>
-        /// <param name="s">Saturation [0,1]</param>
-        /// <param name="v">Value [0,1]</param>
+        /// <param name="hue">Hue [0,1]</param>
+        /// <param name="sat">Saturation [0,1]</param>
+        /// <param name="val">Value [0,1]</param>
         /// <returns></returns>
         public static Color HsvToColor(double hue, double sat, double val)
         {

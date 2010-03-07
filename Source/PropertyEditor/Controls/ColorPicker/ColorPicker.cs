@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System;
 using System.Reflection;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     public class ColorPicker : Control, INotifyPropertyChanged
     {
@@ -47,7 +47,10 @@ namespace OpenControls
         }
 
         public static readonly DependencyProperty SelectedColorProperty =
-            DependencyProperty.Register("SelectedColor", typeof(Color), typeof(ColorPicker), new UIPropertyMetadata(Color.FromArgb(80, 255, 255, 0), SelectedColorChanged));
+            DependencyProperty.Register("SelectedColor", typeof(Color), typeof(ColorPicker),
+            new FrameworkPropertyMetadata(Color.FromArgb(80, 255, 255, 0), 
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
+                SelectedColorChanged));
 
         private static void SelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -57,9 +60,9 @@ namespace OpenControls
         private void OnSelectedValueChanged()
         {
             var hsv = ColorHelper.ColorToHsvBytes(SelectedColor);
-            _hue = hsv[0];
-            _saturation = hsv[1];
-            _brightness = hsv[2];
+            hue = hsv[0];
+            saturation = hsv[1];
+            brightness = hsv[2];
             OnPropertyChanged("Red");
             OnPropertyChanged("Green");
             OnPropertyChanged("Blue");
@@ -122,23 +125,23 @@ namespace OpenControls
             set { SelectedColor = Color.FromArgb(value, Red, Green, Blue); }
         }
 
-        private byte _hue;
-        private byte _saturation;
-        private byte _brightness;
+        private byte hue;
+        private byte saturation;
+        private byte brightness;
 
         public byte Hue
         {
-            get { return _hue; }
+            get { return hue; }
             set { SelectedColor = ColorHelper.HsvToColor(value, Saturation, Brightness); }
         }
         public byte Saturation
         {
-            get { return _saturation; }
+            get { return saturation; }
             set { SelectedColor = ColorHelper.HsvToColor(Hue, value, Brightness); }
         }
         public byte Brightness
         {
-            get { return _brightness; }
+            get { return brightness; }
             set { SelectedColor = ColorHelper.HsvToColor(Hue, Saturation, value); }
         }
         #region INotifyPropertyChanged Members
@@ -157,22 +160,22 @@ namespace OpenControls
 
         public static ObservableCollection<Color> CreateDefaultPalette()
         {
-            var Palette = new ObservableCollection<Color>();
-            Palette.Add(Colors.White);
-            Palette.Add(Color.FromRgb(192, 192, 192));
-            Palette.Add(Color.FromRgb(128, 128, 128));
-            Palette.Add(Color.FromRgb(64, 64, 64));
-            Palette.Add(Color.FromRgb(0, 0, 0));
+            var palette = new ObservableCollection<Color>();
+            palette.Add(Colors.White);
+            palette.Add(Color.FromRgb(192, 192, 192));
+            palette.Add(Color.FromRgb(128, 128, 128));
+            palette.Add(Color.FromRgb(64, 64, 64));
+            palette.Add(Color.FromRgb(0, 0, 0));
 
             // Add a rainbow of colors
             int N = 32 - 5;
             for (int i = 0; i < N; i++)
             {
-                double H = 0.8 * i / (N - 1);
-                var c = ColorHelper.HsvToColor(H, 1.0, 1.0);
-                Palette.Add(c);
+                double h = 0.8 * i / (N - 1);
+                var c = ColorHelper.HsvToColor(h, 1.0, 1.0);
+                palette.Add(c);
             }
-            return Palette;
+            return palette;
         }
     }
 }

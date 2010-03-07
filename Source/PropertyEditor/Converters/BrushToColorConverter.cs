@@ -2,7 +2,7 @@ using System;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// Usage 'Converter={local:BrushToColorConverter}'
@@ -24,7 +24,7 @@ namespace OpenControls
             if (scb != null)
                 return scb.Color;
 
-            // todo: other brushes??
+            // todo: other brush types??
 
             return Color.FromArgb(0, 0, 0, 0);
         }

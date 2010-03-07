@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// The [Slidable] attribute is used for slidable properties.

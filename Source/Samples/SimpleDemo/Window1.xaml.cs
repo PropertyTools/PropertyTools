@@ -14,8 +14,7 @@ namespace SimpleDemo
 
         private void Show_Click(object sender, RoutedEventArgs e)
         {
-            var p = Resources["Person1"];
-            MessageBox.Show(p.ToString());
+            MessageBox.Show(editor1.DataContext.ToString());
         }
     }
 }

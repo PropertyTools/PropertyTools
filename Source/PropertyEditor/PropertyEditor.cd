@@ -1,16 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="OpenControls.PropertyEditor">
+  <Class Name="PropertyEditorLibrary.PropertyEditor">
     <Position X="0.5" Y="0.5" Width="3.5" />
     <Members>
-      <Field Name="_grid" Hidden="true" />
-      <Field Name="_page" Hidden="true" />
-      <Field Name="_tabs" Hidden="true" />
-      <Field Name="CaptionAlignmentProperty" Hidden="true" />
-      <Field Name="CaptionWidthProperty" Hidden="true" />
+      <Field Name="AppearanceCategory" Hidden="true" />
+      <Method Name="AppearanceChanged" Hidden="true" />
+      <Property Name="CategoryTemplateSelector" Hidden="true" />
+      <Field Name="contentControl" Hidden="true" />
+      <Method Name="CreateProperty" Hidden="true" />
+      <Method Name="CreateTab" Hidden="true" />
       <Field Name="DeclaredOnlyProperty" Hidden="true" />
-      <Method Name="GetProperties" Hidden="true" />
-      <Field Name="GetPropertyDescriptionEvent" Hidden="true" />
+      <Property Name="DefaultCategoryName" Hidden="true" />
+      <Field Name="DefaultCategoryNameProperty" Hidden="true" />
+      <Method Name="GetLocalizedString" Hidden="true" />
+      <Method Name="GetLocalizedTooltip" Hidden="true" />
+      <Method Name="GetOrCreateCategory" Hidden="true" />
+      <Method Name="GetOrCreateTab" Hidden="true" />
+      <Method Name="GetPropertyModel" Hidden="true" />
+      <Field Name="grid" Hidden="true" />
+      <Field Name="ImageProviderProperty" Hidden="true" />
+      <Field Name="LabelAlignmentProperty" Hidden="true" />
+      <Field Name="LabelWidthProperty" Hidden="true" />
+      <Field Name="LocalizerProperty" Hidden="true" />
       <Method Name="OnApplyTemplate" Hidden="true" />
       <Method Name="OnDataContextChanged" Hidden="true" />
       <Method Name="OnPropertyChanged" Hidden="true" />
@@ -18,48 +29,82 @@
       <Field Name="PartGrid" Hidden="true" />
       <Field Name="PartPage" Hidden="true" />
       <Field Name="PartTabs" Hidden="true" />
+      <Field Name="PropertyAttributeProviderProperty" Hidden="true" />
       <Method Name="PropertyEditor" Hidden="true" />
+      <Field Name="propertyMap" Hidden="true" />
+      <Field Name="PropertySetterProperty" Hidden="true" />
+      <Property Name="PropertyTemplateSelector" Hidden="true" />
       <Field Name="PropertyValueChangedEvent" Hidden="true" />
-      <Method Name="RaiseGetPropertyDescription" Hidden="true" />
       <Method Name="RaisePropertyChangedEvent" Hidden="true" />
+      <Property Name="SelectedObject" Hidden="true" />
       <Method Name="SelectedObjectChanged" Hidden="true" />
       <Field Name="SelectedObjectProperty" Hidden="true" />
-      <Method Name="ShowReadOnlyPropertiesChanged" Hidden="true" />
+      <Field Name="ShowCategoriesAsProperty" Hidden="true" />
+      <Field Name="ShowEnumAsComboBoxProperty" Hidden="true" />
       <Field Name="ShowReadOnlyPropertiesProperty" Hidden="true" />
+      <Field Name="ShowTabsProperty" Hidden="true" />
+      <Method Name="SortPropertyModel" Hidden="true" />
+      <Field Name="tabControl" Hidden="true" />
+      <Method Name="UpdateCategoryHeader" Hidden="true" />
       <Method Name="UpdateContent" Hidden="true" />
-      <Method Name="UpdateProperty" Hidden="true" />
-      <Method Name="UseTabsChanged" Hidden="true" />
-      <Field Name="UseTabsProperty" Hidden="true" />
+      <Method Name="UpdateOptionalProperties" Hidden="true" />
+      <Method Name="UpdatePropertyHeader" Hidden="true" />
+      <Method Name="UpdatePropertyStates" Hidden="true" />
+      <Method Name="UpdateTabHeader" Hidden="true" />
     </Members>
-    <NestedTypes>
-      <Delegate Name="OpenControls.PropertyEditor.GetPropertyDescriptionRoutedEventHandler" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>PropertyEditor\PropertyEditor.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Delegate>
-      <Delegate Name="OpenControls.PropertyEditor.PropertyValueChangedEventHandler" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>PropertyEditor\PropertyEditor.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Delegate>
-    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AABgCABImAhAIJBQIIAACABwmAEEJAAABCQBAgAAgAA=</HashCode>
+      <HashCode>gYBkCoEKqApQIIFxIIAAGkPQvAMGBoEAAAAAhAAIACM=</HashCode>
       <FileName>PropertyEditor\PropertyEditor.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OpenControls.PropertyValueChangedEventArgs">
-    <Position X="7.75" Y="0.5" Width="2.75" />
+  <Class Name="PropertyEditorLibrary.PropertyBase" Collapsed="true">
+    <Position X="7.75" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAABAAAA=</HashCode>
-      <FileName>PropertyEditor\PropertyEditor.cs</FileName>
+      <HashCode>BAAABACAACAAEYQEABEAAAwAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyModel\PropertyBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PropertyEditorLibrary.Property" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAUAAABGggAAAQAAEAIAAAAAAAAKAAQACiAABACAA=</HashCode>
+      <FileName>PropertyEditor\PropertyModel\Property.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OpenControls.PropertyDescriptionArgs">
-    <Position X="4.75" Y="0.5" Width="2.75" />
+  <Class Name="PropertyEditorLibrary.OptionalProperty" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABAAAA=</HashCode>
-      <FileName>PropertyEditor\PropertyEditor.cs</FileName>
+      <HashCode>AAAAgAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>PropertyEditor\PropertyModel\OptionalProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyEditorLibrary.WideProperty" Collapsed="true">
+    <Position X="10" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyModel\WideProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyEditorLibrary.SlidableProperty" Collapsed="true">
+    <Position X="7.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAGIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyModel\SlidableProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyEditorLibrary.PropertyCategory" Collapsed="true">
+    <Position X="10.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyModel\PropertyCategory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyEditorLibrary.PropertyTab" Collapsed="true">
+    <Position X="12.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEQEAAAAAAAEAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyModel\PropertyTab.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

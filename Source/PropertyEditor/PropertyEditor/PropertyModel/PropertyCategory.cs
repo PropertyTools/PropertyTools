@@ -1,15 +1,17 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     public class PropertyCategory : PropertyBase
     {
-        public string Name { get; set; }
-        public ObservableCollection<PropertyBase> Properties { get; private set; }
+        public List<PropertyBase> Properties { get; private set; }
 
-        public PropertyCategory()
+        public PropertyCategory(string categoryName, PropertyEditor owner)
+            : base(owner)
         {
-            Properties = new ObservableCollection<PropertyBase>();
+            Name = Header = categoryName;
+            Properties = new List<PropertyBase>();
         }
+
     }
 }

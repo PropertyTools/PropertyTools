@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-using OpenControls;
+using PropertyEditorLibrary;
 
 namespace ViewModelDemo
 {
@@ -93,11 +93,11 @@ namespace ViewModelDemo
         #endregion
 
         #region IPropertyState members
-        public void GetPropertyStates(PropertyState state)
+        public void UpdatePropertyStates(PropertyStates states)
         {
-            state.Enable("Age", !String.IsNullOrEmpty(Name));
-            state.Enable("Height", !Anonymous);
-            state.Enable("Name", !Anonymous);
+            states.Enable("Age", !String.IsNullOrEmpty(Name));
+            states.Enable("Height", !Anonymous);
+            states.Enable("Name", !Anonymous);
         }
         #endregion
 

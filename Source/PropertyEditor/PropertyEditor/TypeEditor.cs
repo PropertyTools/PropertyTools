@@ -1,8 +1,11 @@
 using System;
 using System.Windows;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
+    /// <summary>
+    /// Define a datatemplate for a given type
+    /// </summary>
     public class TypeEditor
     {
         public Type EditedType { get; set; }

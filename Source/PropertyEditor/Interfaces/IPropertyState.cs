@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
+    /// <summary>
+    /// Updates the property enabled/visible states
+    /// This update is done after every property change of the same instance
+    /// </summary>
     public interface IPropertyState
     {
-        void GetPropertyStates(PropertyState state);
+        void UpdatePropertyStates(PropertyStates states);
     }
 
-    public class PropertyState
+    public class PropertyStates
     {
         public Dictionary<string, bool> EnabledProperties { get; private set; }
         public Dictionary<string, bool> VisibleProperties { get; private set; }
 
-        public PropertyState()
+        public PropertyStates()
         {
             EnabledProperties = new Dictionary<string, bool>();
             VisibleProperties = new Dictionary<string, bool>();

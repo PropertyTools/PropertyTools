@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// Wizard dialog

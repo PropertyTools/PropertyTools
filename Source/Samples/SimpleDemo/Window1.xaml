@@ -1,22 +1,41 @@
 ﻿<Window x:Class="SimpleDemo.Window1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:pe="clr-namespace:OpenControls;assembly=PropertyEditor"
+    xmlns:pe="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor"
     xmlns:local="clr-namespace:SimpleDemo"
     Title="PropertyEditor" 
-    Width="400" 
-    SizeToContent="Height">
+    Width="800"
+    Height="600">
     <Window.Resources>
         <local:Person x:Key="Person1" FirstName="Anders" 
                       LastName="Andersen" BirthDate="01.01.1974" 
                       Age="35" Gender="Male" Weight="70kg"
                       HairColor="Brown"
                       FavouriteBrush="#804636f8"
+                      Car="Toyota"
+                      History="Lorem ipsum dolor sit amet."
                       />
     </Window.Resources>
-    <StackPanel Margin="8">
-        <pe:PropertyEditor SelectedObject="{StaticResource Person1}"/>
-        <Button Content="Show values" Click="Show_Click" Margin="16" 
-                Padding="12 4 12 4" HorizontalAlignment="Center"/>
-    </StackPanel>
+
+    <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Property editor -->
+        <StackPanel>
+            <pe:PropertyEditor 
+                Margin="8" 
+                x:Name="editor1" 
+                DataContext="{StaticResource Person1}"/>
+            <Button Content="Show values" Click="Show_Click" Width="80" HorizontalAlignment="Center" Margin="20"/>
+        </StackPanel>
+
+        <!-- Settings for the PropertyEditor -->
+        <pe:PropertyEditor 
+            Grid.Column="2" Margin="8" LabelWidth="180"
+            DataContext="{Binding ElementName=editor1}"
+            DeclaredOnly="True" ShowTabs="True"/>
+    </Grid>
 </Window>

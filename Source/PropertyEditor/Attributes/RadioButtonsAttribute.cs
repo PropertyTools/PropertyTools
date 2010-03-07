@@ -1,12 +1,12 @@
 using System;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// The [Radiobutton] attribute defines if an enum property should use a 
     /// radiobutton list as its editor. The default is a combobox.
     /// </summary>
-    [AttributeUsage(AttributeTargets.All)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class RadioButtonsAttribute : Attribute
     {
         public static readonly RadioButtonsAttribute Default;

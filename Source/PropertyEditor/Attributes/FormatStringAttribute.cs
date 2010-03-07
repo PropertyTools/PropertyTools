@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// The [FormatString] attribute is used to provide a format string for numeric properties.
     /// </summary>
-    [AttributeUsage(AttributeTargets.All)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class FormatStringAttribute : Attribute
     {
         public static readonly OptionalAttribute Default;

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// Usage 'Converter={local:EnumToBooleanConverter}'

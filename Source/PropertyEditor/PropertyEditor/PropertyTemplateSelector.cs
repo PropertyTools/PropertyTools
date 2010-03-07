@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// The PropertyTemplateSelector is used to select a DataTemplate based on a type
@@ -24,22 +24,17 @@ namespace OpenControls
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            Property property = item as Property;
+            var property = item as Property;
             if (property == null)
             {
                 throw new ArgumentException("item must be of type Property");
             }
+            // Debug.WriteLine("Select template for " + property.PropertyName);
 
             // Check if an editor is defined for the given type
             foreach (TypeEditor editor in Editors)
             {
-                // todo: how to check if type is the same?
-                bool r1 = Object.Equals(editor.EditedType, property.PropertyType);
-
-                bool r2 = editor.EditedType.GUID == property.PropertyType.GUID;
-                if (r1 != r2)
-                    Console.WriteLine("something wrong");
-                if (r2)
+                if (editor.EditedType.IsAssignableFrom(property.PropertyType))
                     return editor.EditorTemplate;
             }
 
@@ -49,7 +44,12 @@ namespace OpenControls
                 return base.SelectTemplate(property.Value, container);
             }
 
-            DataTemplate template = FindDataTemplate(property, TemplateOwner);
+            // todo: this returns sometimes warnings like
+            // System.Windows.ResourceDictionary Warning: 9 : Resource not found; ResourceKey='TargetType=PropertyEditorLibrary.PropertyEditor ID=System.String'; ResourceKey.HashCode='2100452176'; ResourceKey.Type='System.Windows.ComponentResourceKey'
+            // System.Windows.ResourceDictionary Warning: 9 : Resource not found; ResourceKey='TargetType=PropertyEditorLibrary.PropertyEditor ID=System.Object'; ResourceKey.HashCode='2100451148'; ResourceKey.Type='System.Windows.ComponentResourceKey'
+
+            var template = FindDataTemplate(property, TemplateOwner);
+            // Debug.WriteLine("  Returning " + template);
             return template;
         }
 
@@ -66,9 +66,9 @@ namespace OpenControls
             if (propertyType.BaseType == typeof(Enum))
             {
                 if (ShowEnumAsComboBox)
-                    template = TryToFindDataTemplate(element, "enumComboBox");
+                    template = TryToFindDataTemplate(element, "ComboBoxEnumTemplate");
                 else
-                    template = TryToFindDataTemplate(element, "enumRadioButtons");
+                    template = TryToFindDataTemplate(element, "RadioButtonsEnumTemplate");
                 if (template != null)
                     return template;
             }
@@ -83,28 +83,29 @@ namespace OpenControls
             }
 
             // If the Slidable attribute is set, use the 'sliderBox' template
-            if (property.IsSlidable)
+            if (property is SlidableProperty)
             {
-                template = TryToFindDataTemplate(element, "sliderBox");
+                template = TryToFindDataTemplate(element, "SliderBoxTemplate");
                 if (template != null)
                     return template;
             }
 
-            // Use the 'default' template (TextBox)
-            template = TryToFindDataTemplate(element, "default");
+            // Use the default template (TextBox)
+            template = TryToFindDataTemplate(element, "DefaultTemplate");
 
             return template;
         }
 
-        private static DataTemplate TryToFindDataTemplate(FrameworkElement element, object dataTemplateKey)
+        private static DataTemplate TryToFindDataTemplate(FrameworkElement element, string key)
         {
-            object dataTemplate = element.TryFindResource(dataTemplateKey);
-            if (dataTemplate == null)
-            {
-                dataTemplateKey = new ComponentResourceKey(typeof(PropertyEditor), dataTemplateKey);
-                dataTemplate = element.TryFindResource(dataTemplateKey);
-            }
-            return dataTemplate as DataTemplate;
+            var resource = element.TryFindResource(key);
+            return resource as DataTemplate;
+        }
+
+        private static DataTemplate TryToFindDataTemplate(FrameworkElement element, Type type)
+        {
+            var key = new ComponentResourceKey(typeof(PropertyEditor), type);
+            return element.TryFindResource(key) as DataTemplate;
         }
     }
 }

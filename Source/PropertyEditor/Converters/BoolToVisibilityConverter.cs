@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// Usage 'Converter={local:BoolToVisibilityConverter}'

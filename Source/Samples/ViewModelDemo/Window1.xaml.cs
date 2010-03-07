@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ViewModelDemo
 {
@@ -28,7 +17,6 @@ namespace ViewModelDemo
             var people = new List<Person>();
             people.Add(p1);
             people.Add(p2);
-//            editor1.SelectedObjects = people;
 
             var pvm = new PersonViewModel(p1);
             editor1.SelectedObject = pvm;

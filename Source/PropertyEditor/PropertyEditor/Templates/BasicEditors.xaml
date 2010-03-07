@@ -1,15 +1,18 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:clr="clr-namespace:System;assembly=mscorlib"	
-	xmlns:clr2="clr-namespace:System.Collections;assembly=mscorlib"
-    xmlns:local="clr-namespace:OpenControls">
+    xmlns:local="clr-namespace:PropertyEditorLibrary"	
+    xmlns:Collections="clr-namespace:System.Collections;assembly=mscorlib">
 
     <!-- CLR & Custom Types Data Templates -->
 
-    <DataTemplate x:Key="default">
+    <DataTemplate x:Key="DefaultTemplate">
         <TextBox IsReadOnly="{Binding IsReadOnly}" 
                  IsEnabled="{Binding IsEnabled}" 
-                 Text="{Binding Value, ValidatesOnDataErrors=True}">
+                 Text="{Binding Value, ValidatesOnDataErrors=True}"
+                 AcceptsReturn="{Binding AcceptsReturn}"
+                 Height="{Binding Height}"
+                 >
             <!--<TextBox.Text>
                 <Binding Mode="TwoWay" Path="Value" ValidatesOnDataErrors="True">
                    <Binding.ValidationRules>
@@ -20,7 +23,7 @@
         </TextBox>
     </DataTemplate>
 
-    <DataTemplate x:Key="sliderBox">
+    <DataTemplate x:Key="SliderBoxTemplate">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
@@ -36,8 +39,7 @@
                 Margin="0 0 4 0"
                 Value="{Binding Value, Converter={local:ToDoubleConverter}}"
                 />
-            <!-- todo: need new type of binding that can bind to FormatString and 
-            pass the target datatype to the converter -->
+            <!-- todo: FormatString not implemented -->
             <TextBox IsReadOnly="{Binding IsReadOnly}" 
                      IsEnabled="{Binding IsEnabled}" 
                      Grid.Column="1"
@@ -47,47 +49,18 @@
 
     <!-- bool -->
     <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr:Boolean}}">
-        <CheckBox IsEnabled="{Binding IsWriteable}" IsChecked="{Binding Value}" 
-                  HorizontalAlignment="Left" VerticalAlignment="Center"/>
-
-        <!--  todo: Consider this. The alternative is to use YesNo Enum! -->
-        <!-- todo: localization... -->
-        <!-- <Grid>
-            <CheckBox IsEnabled="{Binding IsWriteable}" IsChecked="{Binding Path=Value}" 
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Center"
-                  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}, Path=BoolAsCombo, Converter={local:BoolToVisibilityConverter InvertVisibility=True}}"/>
-            <ComboBox IsEnabled="{Binding IsWriteable}" 
-                  SelectedValuePath="Value"
-                  SelectedValue="{Binding Path=Value}"
-                      MinWidth="40"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Center"
-                  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}, Path=BoolAsCombo, Converter={local:BoolToVisibilityConverter InvertVisibility=False}}">
-                <ComboBox.ItemsSource>
-                    <x:Array Type="{x:Type clr2:DictionaryEntry}">
-                        <clr2:DictionaryEntry Key="Yes" Value="True" />
-                        <clr2:DictionaryEntry Key="No" Value="False" />
-                    </x:Array>
-                </ComboBox.ItemsSource>
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Path=Key}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </Grid>
-        -->
+        <CheckBox 
+            IsEnabled="{Binding IsWriteable}" IsChecked="{Binding Value}" 
+            HorizontalAlignment="Left" VerticalAlignment="Center"/>
     </DataTemplate>
 
     <!-- list -->
-    <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr2:IList}}">
-        <ListBox ItemsSource="{Binding Path=Value}" />
+    <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type Collections:IList}}">
+        <ListBox ItemsSource="{Binding Value}" />
     </DataTemplate>
 
     <!-- enum -->
-    <!-- <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr:Enum}}">-->
-    <DataTemplate x:Key="enumComboBox">
+    <DataTemplate x:Key="ComboBoxEnumTemplate">
         <ComboBox SelectedValue="{Binding Path=Value}" IsEnabled="{Binding IsWriteable}">
             <ComboBox.ItemsSource>
                 <Binding Path="Value">
@@ -99,10 +72,7 @@
         </ComboBox>
     </DataTemplate>
 
-    <!--    
-   <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr:Enum}}">
--->
-    <DataTemplate x:Key="enumRadioButtons">
+    <DataTemplate x:Key="RadioButtonsEnumTemplate">
         <local:RadioButtonList Value="{Binding Value}"/>
     </DataTemplate>
 

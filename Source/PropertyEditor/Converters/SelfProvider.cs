@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Markup;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     public abstract class SelfProvider : MarkupExtension
     {

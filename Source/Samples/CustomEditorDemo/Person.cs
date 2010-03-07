@@ -31,6 +31,15 @@ namespace CustomEditorDemo
         }
         #endregion
 
+        #region CanSwim
+        private bool canSwim;
+        public bool CanSwim
+        {
+            get { return canSwim; }
+            set { canSwim = value; OnPropertyChanged("CanSwim"); }
+        }
+        #endregion
+
         public Person()
         {
             Name = "Joe";

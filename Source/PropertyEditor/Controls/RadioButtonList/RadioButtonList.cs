@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     // http://bea.stollnitz.com/blog/?p=28
 
@@ -11,32 +11,33 @@ namespace OpenControls
     {
         private const string PartPanel = "PART_Panel";
 
-        private StackPanel _panel;
+        private StackPanel panel;
 
         public override void OnApplyTemplate()
         {
-            if (_panel == null)
+            if (panel == null)
             {
-                _panel = Template.FindName(PartPanel, this) as StackPanel;
+                panel = Template.FindName(PartPanel, this) as StackPanel;
             }
             UpdateContent();
         }
 
         private void UpdateContent()
         {
-            if (_panel == null)
+            if (panel == null)
                 return;
-            _panel.Children.Clear();
+            panel.Children.Clear();
             if (Value == null)
                 return;
             var values = Enum.GetValues(Value.GetType());
             foreach (var value in values)
             {
-                var rb = new RadioButton() { Content = value, IsChecked = value == Value };
+                var rb = new RadioButton { Content = value, IsChecked = value == Value, Margin = new Thickness(0, 4, 0, 4) };
                 var b = new Binding("Value") { Converter = new EnumToBooleanConverter(), ConverterParameter = value };
+                
                 // todo: binding doesn't work?
                 rb.SetBinding(RadioButton.IsCheckedProperty, b);
-                _panel.Children.Add(rb);
+                panel.Children.Add(rb);
             }
         }
 

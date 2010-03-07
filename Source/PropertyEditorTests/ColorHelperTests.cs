@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using OpenControls;
+using PropertyEditorLibrary;
 using System.Windows.Media;
 
 namespace PropertyEditorTests

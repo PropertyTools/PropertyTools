@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// About Dialog
@@ -98,13 +98,13 @@ namespace OpenControls
 
         private readonly StringBuilder _content = new StringBuilder();
 
-        public void Add(string caption, object value)
+        public void Add(string label, object value)
         {
             if (value == null) return;
             string valueString = value.ToString().Trim();
             if (valueString.Length == 0) return;
 
-            var tb = new TextBlock { Text = caption, FontWeight = FontWeights.Bold, Margin = new Thickness(0, 0, 8, 0) };
+            var tb = new TextBlock { Text = label, FontWeight = FontWeights.Bold, Margin = new Thickness(0, 0, 8, 0) };
             var tv = new TextBlock { Text = valueString };
 
             Grid.SetRow(tb, _row);
@@ -116,7 +116,7 @@ namespace OpenControls
 
             Grid1.Children.Add(tb);
             Grid1.Children.Add(tv);
-            _content.Append(caption + ":\t" + valueString + "\r\n");
+            _content.Append(label + ":\t" + valueString + "\r\n");
         }
 
         private void AddSeparator()

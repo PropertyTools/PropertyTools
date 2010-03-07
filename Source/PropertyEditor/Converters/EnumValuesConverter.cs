@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.ComponentModel;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// Usage 'Converter={local:EnumValuesConverter}'

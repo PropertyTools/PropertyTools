@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
-using System.Windows.Media;
 
-namespace OpenControls
+namespace PropertyEditorLibrary
 {
     /// <summary>
     /// Usage 'Converter={local:ToDoubleConverter}'

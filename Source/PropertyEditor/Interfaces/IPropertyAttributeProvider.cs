@@ -10,15 +10,26 @@ namespace PropertyEditorLibrary
     /// </summary>
     public interface IPropertyAttributeProvider
     {
-        string GetOptionalProperty(PropertyDescriptor descriptor);
-        string GetFormatString(PropertyDescriptor descriptor);
-        double GetHeight(PropertyDescriptor descriptor);
-        int GetSortOrder(PropertyDescriptor descriptor);
-        bool IsWide(PropertyDescriptor descriptor, out bool noHeader);
-        bool IsSlidable(PropertyDescriptor descriptor,
-                        out double minimum,
-                        out double maximum,
-                        out double largeChange,
-                        out double smallChange);
+        PropertyAttributes GetAttributes(PropertyDescriptor descriptor);
+    }
+
+    public class PropertyAttributes
+    {
+        public string OptionalProperty { get; set; }
+        public string FormatString { get; set; }
+        public double Height { get; set; }
+        public int SortOrder { get; set; }
+        public bool IsWide { get; set; }
+        public bool NoHeader { get; set; }
+        public bool IsSlidable { get; set; }
+        public double SliderMinimum { get; set; }
+        public double SliderMaximum { get; set; }
+        public double SliderLargeChange { get; set; }
+        public double SliderSmallChange { get; set; }
+
+        public PropertyAttributes()
+        {
+            Height = double.NaN;
+        }
     }
 }

@@ -98,7 +98,7 @@ namespace PropertyEditorLibrary
         /// <summary>
         /// The width of the property labels
         /// </summary>
-        [Category(AppearanceCategory), Slidable(40,400,1,10)]
+        [Category(AppearanceCategory)]
         public double LabelWidth
         {
             get { return (double)GetValue(LabelWidthProperty); }
@@ -556,51 +556,41 @@ namespace PropertyEditorLibrary
         /// <returns></returns>
         private Property CreateProperty(PropertyDescriptor descriptor, object instance)
         {
-            bool noheader;
-
-            double sliderMaximum;
-            double sliderMinimum;
-            double sliderLargeChange;
-            double sliderSmallChange;
-
+            // If no provider is define, use the default provider
             if (PropertyAttributeProvider == null)
                 PropertyAttributeProvider = new DefaultPropertyAttributeProvider();
 
-            string optionalProperty = PropertyAttributeProvider.GetOptionalProperty(descriptor);
-            bool isWide = PropertyAttributeProvider.IsWide(descriptor, out noheader);
-            bool isSlidable = PropertyAttributeProvider.IsSlidable(descriptor, out sliderMinimum, out sliderMaximum,
-                                                                   out sliderLargeChange, out sliderSmallChange);
-
-
+            // Get the attributes from the provider
+            var pa = PropertyAttributeProvider.GetAttributes(descriptor);
 
             Property property = null;
 
             // Optional
-            if (optionalProperty != null)
-                property = new OptionalProperty(instance, descriptor, optionalProperty, this);
+            if (pa.OptionalProperty != null)
+                property = new OptionalProperty(instance, descriptor, pa.OptionalProperty, this);
 
             // Wide
-            if (isWide)
-                property = new WideProperty(instance, descriptor, noheader, this);
+            if (pa.IsWide)
+                property = new WideProperty(instance, descriptor, pa.NoHeader, this);
 
             // Slidable
-            if (isSlidable)
+            if (pa.IsSlidable)
                 property = new SlidableProperty(instance, descriptor, this)
                            {
-                               SliderMinimum = sliderMinimum,
-                               SliderMaximum = sliderMaximum,
-                               SliderLargeChange = sliderLargeChange,
-                               SliderSmallChange = sliderSmallChange
+                               SliderMinimum = pa.SliderMinimum,
+                               SliderMaximum = pa.SliderMaximum,
+                               SliderLargeChange = pa.SliderLargeChange,
+                               SliderSmallChange = pa.SliderSmallChange
                            };
 
-            // Normal
+            // Normal property
             if (property == null)
                 property = new Property(instance, descriptor, this);
 
-            property.SortOrder = PropertyAttributeProvider.GetSortOrder(descriptor);
-            property.Height = PropertyAttributeProvider.GetHeight(descriptor);
+            property.SortOrder = pa.SortOrder;
+            property.Height = pa.Height;
             property.AcceptsReturn = property.Height > 0;
-            property.FormatString = PropertyAttributeProvider.GetFormatString(descriptor);
+            property.FormatString = pa.FormatString;
 
             return property;
         }
@@ -644,6 +634,10 @@ namespace PropertyEditorLibrary
             return tab;
         }
 
+        /// <summary>
+        /// Updates the property header and tooltip
+        /// </summary>
+        /// <param name="property"></param>
         private void UpdatePropertyHeader(Property property)
         {
             var type = property.Descriptor.PropertyType;
@@ -660,12 +654,22 @@ namespace PropertyEditorLibrary
                 property.ToolTip = da.Description;
         }
 
+        /// <summary>
+        /// Updates the category (expander/groupbox) header and tooltip
+        /// </summary>
+        /// <param name="instanceType"></param>
+        /// <param name="category"></param>
         private void UpdateCategoryHeader(Type instanceType, PropertyCategory category)
         {
             category.Header = GetLocalizedString(instanceType, category.Name);
             category.ToolTip = GetLocalizedTooltip(instanceType, category.Name);
         }
 
+        /// <summary>
+        /// Updates the tab header and tooltip
+        /// </summary>
+        /// <param name="instanceType"></param>
+        /// <param name="tab"></param>
         private void UpdateTabHeader(Type instanceType, PropertyTab tab)
         {
             tab.Header = GetLocalizedString(instanceType, tab.Name);

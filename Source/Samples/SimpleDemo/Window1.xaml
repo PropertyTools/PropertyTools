@@ -28,14 +28,16 @@
             <pe:PropertyEditor 
                 Margin="8" 
                 x:Name="editor1" 
-                DataContext="{StaticResource Person1}"/>
+                SelectedObject="{StaticResource Person1}"/>
             <Button Content="Show values" Click="Show_Click" Width="80" HorizontalAlignment="Center" Margin="20"/>
         </StackPanel>
 
-        <!-- Settings for the PropertyEditor -->
-        <pe:PropertyEditor 
-            Grid.Column="2" Margin="8" LabelWidth="180"
-            DataContext="{Binding ElementName=editor1}"
+        <!-- Settings for the first PropertyEditor, using a PropertyEditor here also! -->
+        <StackPanel Grid.Column="2">
+            <pe:PropertyEditor 
+            Margin="8" LabelWidth="180"
+            SelectedObject="{Binding ElementName=editor1}"
             DeclaredOnly="True" ShowTabs="True"/>
+        </StackPanel>
     </Grid>
 </Window>

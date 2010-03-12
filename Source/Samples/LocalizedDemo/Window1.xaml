@@ -5,7 +5,8 @@
     Title="Localization demo" Height="200" Width="400">
     <Grid Margin="8">
         <pe:PropertyEditor x:Name="editor1" 
-                           DataContext="{Binding CurrentPerson}" 
+                           Localizer="{Binding MyLocalizer}"
+                           SelectedObject="{Binding CurrentPerson}" 
                            ShowTabs="False" LabelWidth="200"/>
     </Grid>
 </Window>

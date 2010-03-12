@@ -7,7 +7,8 @@
     <!-- CLR & Custom Types Data Templates -->
 
     <DataTemplate x:Key="DefaultTemplate">
-        <TextBox IsReadOnly="{Binding IsReadOnly}" 
+        <local:TextBox2 
+                 IsReadOnly="{Binding IsReadOnly}" 
                  IsEnabled="{Binding IsEnabled}" 
                  Text="{Binding Value, ValidatesOnDataErrors=True}"
                  AcceptsReturn="{Binding AcceptsReturn}"
@@ -20,7 +21,7 @@
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text> -->
-        </TextBox>
+        </local:TextBox2>
     </DataTemplate>
 
     <DataTemplate x:Key="SliderBoxTemplate">

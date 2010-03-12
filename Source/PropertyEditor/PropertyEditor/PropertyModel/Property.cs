@@ -82,10 +82,8 @@ namespace PropertyEditorLibrary
 
         void InstancePropertyChanged(object sender, EventArgs e)
         {
-            // Debug.IndentLevel++;
-            // Debug.WriteLine("InstancePropertyChanged");
+            // Sending notification when the instance has been changed
             NotifyPropertyChanged("Value");
-            // Debug.IndentLevel--;
         }
 
         #endregion
@@ -202,7 +200,7 @@ namespace PropertyEditorLibrary
                 if (value == null)
                     value = v;
                 if (value != null && !v.Equals(value))
-                    return null; 
+                    return null;
             }
             return null; // no value
         }

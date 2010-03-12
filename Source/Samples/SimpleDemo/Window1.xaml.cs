@@ -14,7 +14,7 @@ namespace SimpleDemo
 
         private void Show_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(editor1.DataContext.ToString());
+            MessageBox.Show(editor1.SelectedObject.ToString());
         }
     }
 }

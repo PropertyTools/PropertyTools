@@ -18,7 +18,7 @@ namespace PropertyEditorLibrary
 
     /// <summary>
     /// PropertyEditor control.
-    /// Set the DataContext to define the contents of the control.
+    /// Set the SelectedObject to define the contents of the control.
     /// </summary>
     public class PropertyEditor : Control
     {
@@ -162,24 +162,23 @@ namespace PropertyEditorLibrary
 
         #endregion
 
-        #region SelectedObject (obsolete)
+        #region SelectedObject
 
         public static readonly DependencyProperty SelectedObjectProperty =
             DependencyProperty.Register("SelectedObject", typeof(object), typeof(PropertyEditor),
                                         new UIPropertyMetadata(null, SelectedObjectChanged));
 
-        [Obsolete("Using DataContext is preferred.")]
         [Browsable(false)]
         public object SelectedObject
         {
-            get { return DataContext; }
-            set { DataContext = value; }
+            get { return GetValue(SelectedObjectProperty); }
+            set { SetValue(SelectedObjectProperty, value); }
         }
 
         private static void SelectedObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var pe = (PropertyEditor)d;
-            pe.DataContext = e.NewValue;
+            pe.UpdateContent();
         }
 
         #endregion
@@ -361,12 +360,11 @@ namespace PropertyEditorLibrary
 
             PropertyTemplateSelector = new PropertyTemplateSelector();
             CategoryTemplateSelector = new CategoryTemplateSelector();
-            DataContextChanged += OnDataContextChanged;
         }
 
         /// <summary>
         /// Updates the content of the control
-        /// (after initialization and DataContext changes)
+        /// (after initialization and SelectedObject changes)
         /// </summary>
         public void UpdateContent()
         {
@@ -374,7 +372,7 @@ namespace PropertyEditorLibrary
                 return;
 
             // Get the property model (tabs, categories and properties)
-            var propertyTabs = GetPropertyModel(DataContext);
+            var propertyTabs = GetPropertyModel(SelectedObject);
 
             if (ShowTabs)
             {
@@ -392,13 +390,9 @@ namespace PropertyEditorLibrary
                 contentControl.Visibility = Visibility.Visible;
             }
 
-            UpdatePropertyStates(DataContext);
+            UpdatePropertyStates(SelectedObject);
         }
 
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            UpdateContent();
-        }
 
         /// <summary>
         /// This method takes an object Instance and creates the property model.
@@ -630,7 +624,7 @@ namespace PropertyEditorLibrary
         {
             var tab = new PropertyTab(tabName, this);
             if (ImageProvider != null)
-                tab.Icon = ImageProvider.GetImage(DataContext.GetType(), Name);
+                tab.Icon = ImageProvider.GetImage(SelectedObject.GetType(), Name);
             return tab;
         }
 
@@ -688,7 +682,7 @@ namespace PropertyEditorLibrary
             }
 
             if (e.PropertyName != "IsEnabled" && e.PropertyName != "IsVisible")
-                UpdatePropertyStates(DataContext);
+                UpdatePropertyStates(SelectedObject);
         }
 
         private void UpdatePropertyStates(object instance)

@@ -12,14 +12,14 @@ namespace LocalizedDemo
     {
         public Person CurrentPerson { get; set; }
 
-        // todo: cannot bind to this? 
-        // public ILocalizer Localizer { get; set; }
+        public ILocalizer MyLocalizer { get; set; }
 
         public Window1()
         {
             InitializeComponent();
             CurrentPerson = new Person { Name = "Joe", Address = "Hong Kong", Occupation = "Student" };
-            editor1.Localizer = new MyLocalizer { CurrentLanguage = Languages.UbbiDubbi };
+            MyLocalizer = new MyLocalizer { CurrentLanguage = Languages.UbbiDubbi };
+
             DataContext = this;
         }
     }

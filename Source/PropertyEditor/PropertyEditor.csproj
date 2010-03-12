@@ -117,6 +117,7 @@
     <Compile Include="Attributes\SlidableAttribute.cs" />
     <Compile Include="Attributes\OptionalAttribute.cs" />
     <Compile Include="Attributes\RadioButtonsAttribute.cs" />
+    <Compile Include="Controls\TextBox2.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ToDoubleConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />

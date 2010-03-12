@@ -16,7 +16,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <pe:PropertyEditor DataContext="{Binding MyCollection}" Margin="8" >
+        <pe:PropertyEditor SelectedObject="{Binding MyCollection}" Margin="8" >
             <!-- custom editors -->
             <pe:PropertyEditor.Editors>
                 <pe:TypeEditor EditedType="{x:Type Collections:IList}" EditorTemplate="{StaticResource DatagridEditor}"/>

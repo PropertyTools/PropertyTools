@@ -39,7 +39,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         
-        <pe:PropertyEditor DataContext="{Binding CurrentPerson}" ShowTabs="False" Margin="8">
+        <pe:PropertyEditor SelectedObject="{Binding CurrentPerson}" ShowTabs="False" Margin="8">
             <!-- list of custom editors -->
             <pe:PropertyEditor.Editors>
                 <pe:TypeEditor EditedType="{x:Type System:DateTime}" EditorTemplate="{StaticResource CustomDateTimeEditor}"/>

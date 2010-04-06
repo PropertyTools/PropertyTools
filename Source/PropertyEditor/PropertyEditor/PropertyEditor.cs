@@ -467,7 +467,7 @@ namespace PropertyEditorLibrary
                 propertyMap.Add(descriptor.Name, property);
 
                 property.PropertyChanged += OnPropertyChanged;
-                UpdatePropertyHeader(property);
+                UpdatePropertyHeader(instanceType,property);
                 currentCategory.Properties.Add(property);
             }
 
@@ -632,12 +632,11 @@ namespace PropertyEditorLibrary
         /// Updates the property header and tooltip
         /// </summary>
         /// <param name="property"></param>
-        private void UpdatePropertyHeader(Property property)
+        private void UpdatePropertyHeader(Type instanceType, Property property)
         {
-            var type = property.Descriptor.PropertyType;
             var key = property.Descriptor.Name;
-            property.Header = GetLocalizedString(type, key);
-            property.ToolTip = GetLocalizedTooltip(type, key);
+            property.Header = GetLocalizedString(instanceType, key);
+            property.ToolTip = GetLocalizedTooltip(instanceType, key);
 
             // [DisplayName(..)] and [Description(...)] attributes overrides the localized strings
             var dna = PropertyHelper.GetAttribute<DisplayNameAttribute>(property.Descriptor);

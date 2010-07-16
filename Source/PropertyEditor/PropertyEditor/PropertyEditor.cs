@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -295,6 +296,24 @@ namespace PropertyEditorLibrary
 
         #endregion
 
+        #region RequiredAttribute Dependency Property
+
+        /// <summary>
+        /// Gets or sets the required attribute type.
+        /// If the required attribute type is set, only properties where this attribute is set will be shown.
+        /// </summary>
+        public Type RequiredAttribute
+        {
+            get { return (Type)GetValue(RequiredAttributeProperty); }
+            set { SetValue(RequiredAttributeProperty, value); }
+        }
+
+        public static readonly DependencyProperty RequiredAttributeProperty =
+            DependencyProperty.Register("RequiredAttribute", typeof(Type), typeof(PropertyEditor),
+            new UIPropertyMetadata(null));
+
+        #endregion
+        
         #region PropertyAttributeProvider Dependency Property
 
         public IPropertyAttributeProvider PropertyAttributeProvider
@@ -393,6 +412,24 @@ namespace PropertyEditorLibrary
             UpdatePropertyStates(SelectedObject);
         }
 
+        private Type FindBiggestCommonType(IEnumerable list)
+        {
+            Type type = null;
+            foreach (var item in list)
+            {
+                var itemType = item.GetType();
+                if (type == null)
+                {
+                    type = itemType;
+                    continue;
+                }
+                while (type.BaseType != null && !type.IsAssignableFrom(itemType))
+                {
+                    type = type.BaseType;
+                }
+            }
+            return type;
+        }
 
         /// <summary>
         /// This method takes an object Instance and creates the property model.
@@ -411,6 +448,12 @@ namespace PropertyEditorLibrary
                 return result;
 
             Type instanceType = instance.GetType();
+
+            // todo: if changing a collection of objects
+            //if (instance is IEnumerable)
+            //{
+            //    instanceType = FindBiggestCommonType(instance as IEnumerable);  
+            //}
 
             // The GetPropertyModel method does not return properties in a particular order, 
             // such as alphabetical or declaration order. Your code must not depend on the 
@@ -456,6 +499,10 @@ namespace PropertyEditorLibrary
                 if (!ShowReadOnlyProperties && descriptor.IsReadOnly)
                     continue;
 
+                // If RequiredAttribute is set, check if the property has the given attribute
+                if (RequiredAttribute != null && !ContainsAttributeOfType(descriptor.Attributes,RequiredAttribute))
+                    continue;
+
                 ParseTabAndCategory(descriptor, ref tabName, ref categoryName);
 
                 // Debug.WriteLine(String.Format("Adding property {0}.{1}.{2}", tabName, categoryName, descriptor.Name));
@@ -491,6 +538,20 @@ namespace PropertyEditorLibrary
             // todo: use sort algorithm that does not change order when sort order keys are equal
             SortPropertyModel(result);
             return result;
+        }
+
+        /// <summary>
+        /// Check if an attribute collection contains an attribute of the given type
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <param name="attributeType"></param>
+        /// <returns></returns>
+        private bool ContainsAttributeOfType(AttributeCollection attributes, Type attributeType)
+        {
+            foreach (var a in attributes)
+                if (attributeType.IsAssignableFrom(a.GetType()))
+                    return true;
+            return false;
         }
 
         void SortPropertyModel(List<PropertyTab> result)

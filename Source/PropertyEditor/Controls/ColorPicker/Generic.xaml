@@ -80,137 +80,154 @@
                             AllowsTransparency="True" 
                             Focusable="False" 
                             PopupAnimation="Slide">
-                            <Grid Width="{TemplateBinding ActualWidth}" MinWidth="240">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
 
-                                <Border CornerRadius="0,0,8,8" 
-                                        Background="White" 
-                                        BorderBrush="{StaticResource ColorPickerBorderBrush}" 
-                                        BorderThickness="1,0,1,1"
-                                        Grid.ColumnSpan="2" SnapsToDevicePixels="True"/>
-
-                                <Grid Width="40" Height="40" Margin="6,6,0,0" VerticalAlignment="Top" Grid.Column="0" Background="{StaticResource CheckerBoardBrush}">
-                                    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                                    
-                                   Fill="{TemplateBinding SelectedColor, Converter={local:ColorToBrushConverter}}" 
-                                    Stroke="Black"
-                                   SnapsToDevicePixels="True"
-                                   />
-                                </Grid>
-
-                                <TabControl Grid.Column="1" Margin="6" 
-                                       MaxWidth="300"
-                                        MinHeight="140"
+                            <TabControl Margin="6" 
+                                            Width="{TemplateBinding ActualWidth}" 
+                                            MaxWidth="300"
+                                            MinHeight="140"
                                             TabStripPlacement="Bottom"
                                             SnapsToDevicePixels="True" 
                                             KeyboardNavigation.DirectionalNavigation="Contained">
-                                    <TabControl.Resources>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Margin" Value="4"/>
-                                        </Style>
-                                        <Style TargetType="{x:Type TextBox}">
-                                            <Setter Property="Margin" Value="4"/>
-                                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                        </Style>
-                                        <Style TargetType="{x:Type Slider}">
-                                            <Setter Property="Margin" Value="4"/>
-                                        </Style>
-                                    </TabControl.Resources>
-                                    <TabItem Header="Palette">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
+                                <TabControl.Resources>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Margin" Value="4"/>
+                                    </Style>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="Margin" Value="4"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                    <Style TargetType="{x:Type Slider}">
+                                        <Setter Property="Margin" Value="4"/>
+                                    </Style>
+                                </TabControl.Resources>
+                                <TabItem Header="Palette">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
 
-                                            <ListBox 
+                                        <Grid Width="40" Height="40" Margin="6" VerticalAlignment="Top" Background="{StaticResource CheckerBoardBrush}">
+                                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                                    
+                                                Fill="{TemplateBinding SelectedColor, Converter={local:ColorToBrushConverter}}" 
+                                                Stroke="Black"
+                                                SnapsToDevicePixels="True"/>
+                                        </Grid>
+
+                                        <ListBox Grid.Column="1"
                                                 ItemsSource="{TemplateBinding Palette}" 
                                                 SelectedValue="{Binding SelectedColor, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                                 SnapsToDevicePixels="True"
                                                  >
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Rectangle Width="16" Height="16" Stroke="Black" HorizontalAlignment="Center"
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Rectangle Width="16" Height="16" Stroke="Black" HorizontalAlignment="Center"
                                                         Fill="{Binding Converter={local:ColorToBrushConverter}}" Margin="2"/>
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                                <ListBox.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <WrapPanel Width="{TemplateBinding ActualWidth}" Margin="0 2 0 2"/>
-                                                    </ItemsPanelTemplate>
-                                                </ListBox.ItemsPanel>
-                                            </ListBox>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Width="{TemplateBinding ActualWidth}" Margin="0 2 0 2"/>
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                        </ListBox>
 
-                                            <Slider Grid.Row="1" Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <Slider Grid.Column="1" Grid.Row="1" Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
 
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="RGBA">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto" MinWidth="40"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Width="40" Height="40" Margin="6" Grid.RowSpan="4" 
+                                              VerticalAlignment="Top" Background="{StaticResource CheckerBoardBrush}">
+                                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                                    
+                                                Fill="{TemplateBinding SelectedColor, Converter={local:ColorToBrushConverter}}" 
+                                                Stroke="Black"
+                                                SnapsToDevicePixels="True"/>
                                         </Grid>
-                                    </TabItem>
-                                    <TabItem Header="RGBA">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="20"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto" MinWidth="40"/>
-                                            </Grid.ColumnDefinitions>
 
+                                        <TextBlock Text="R" Grid.Column="1" Grid.Row="0"/>
+                                        <TextBlock Text="G" Grid.Column="1" Grid.Row="1"/>
+                                        <TextBlock Text="B" Grid.Column="1" Grid.Row="2"/>
+                                        <TextBlock Text="A" Grid.Column="1" Grid.Row="3"/>
+                                        <Slider Grid.Row="0" Grid.Column="2" Maximum="255" Value="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <Slider Grid.Row="1" Grid.Column="2" Maximum="255" Value="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <Slider Grid.Row="2" Grid.Column="2" Maximum="255" Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <Slider Grid.Row="3" Grid.Column="2" Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
 
-                                            <TextBlock Text="R" Grid.Row="0"/>
-                                            <TextBlock Text="G" Grid.Row="1"/>
-                                            <TextBlock Text="B" Grid.Row="2"/>
-                                            <TextBlock Text="A" Grid.Row="3"/>
-                                            <Slider Grid.Row="0" Grid.Column="1" Maximum="255" Value="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <Slider Grid.Row="1" Grid.Column="1" Maximum="255" Value="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <Slider Grid.Row="2" Grid.Column="1" Maximum="255" Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <Slider Grid.Row="3" Grid.Column="1" Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
-                                                     HorizontalAlignment="Right"
-                                                     FontFamily="Courier New"
+                                        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Right"                                                    >
+                                            <CheckBox Padding="4" Focusable="False"
+                                                      VerticalAlignment="Center"
+                                                      IsChecked="{Binding IsPicking, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                      ToolTip="Check the box and use 'SHIFT' to pick colors from the screen."/>
+                                            <TextBox FontFamily="Courier New"
                                                      VerticalAlignment="Top"
                                                      Text="{Binding SelectedColor, Converter={local:ColorToHexConverter}, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+
+                                        </StackPanel>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="HSV">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="40"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Width="40" Height="40" Margin="6" Grid.RowSpan="4" 
+                                              VerticalAlignment="Top" Background="{StaticResource CheckerBoardBrush}">
+                                            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                                    
+                                                Fill="{TemplateBinding SelectedColor, Converter={local:ColorToBrushConverter}}" 
+                                                Stroke="Black"
+                                                SnapsToDevicePixels="True"/>
                                         </Grid>
-                                    </TabItem>
-                                    <TabItem Header="HSV">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="20"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="40"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="H" Grid.Row="0"/>
-                                            <TextBlock Text="S" Grid.Row="1"/>
-                                            <TextBlock Text="V" Grid.Row="2"/>
-                                            <TextBlock Text="A" Grid.Row="3"/>
-                                            <Slider Grid.Row="0" Grid.Column="1" Maximum="255" Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <Slider Grid.Row="1" Grid.Column="1" Maximum="255" Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <Slider Grid.Row="2" Grid.Column="1" Maximum="255" Value="{Binding Brightness, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <Slider Grid.Row="3" Grid.Column="1" Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Brightness, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                            <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                        </Grid>
-                                    </TabItem>
-                                </TabControl>
-                            </Grid>
+
+                                        <TextBlock Text="H" Grid.Column="1" Grid.Row="0"/>
+                                        <TextBlock Text="S" Grid.Column="1" Grid.Row="1"/>
+                                        <TextBlock Text="V" Grid.Column="1" Grid.Row="2"/>
+                                        <TextBlock Text="A" Grid.Column="1" Grid.Row="3"/>
+                                        <Slider Grid.Row="0" Grid.Column="2" Maximum="255" Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <Slider Grid.Row="1" Grid.Column="2" Maximum="255" Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <Slider Grid.Row="2" Grid.Column="2" Maximum="255" Value="{Binding Brightness, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <Slider Grid.Row="3" Grid.Column="2" Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Brightness, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                            <!--  </Grid> -->
                         </Popup>
                     </Grid>
                     <ControlTemplate.Triggers>

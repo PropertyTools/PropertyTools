@@ -13,7 +13,7 @@ namespace PropertyEditorLibrary
     /// <summary>
     /// ColorPicker
     /// todo: 
-    /// - should disable color picking from screen when popup is down...
+    /// - close popup when clicking outside...
     /// - localize strings...
     /// - more palettes
     /// </summary>
@@ -129,20 +129,52 @@ namespace PropertyEditorLibrary
             ((ColorPicker)d).OnSelectedValueChanged();
         }
 
+        private bool updateHSV = true;
+
         private void OnSelectedValueChanged()
         {
-            var hsv = ColorHelper.ColorToHsvBytes(SelectedColor);
-            hue = hsv[0];
-            saturation = hsv[1];
-            brightness = hsv[2];
+            if (updateHSV)
+            {
+                var hsv = ColorHelper.ColorToHsvBytes(SelectedColor);
+                hue = hsv[0];
+                saturation = hsv[1];
+                brightness = hsv[2];
+                OnPropertyChanged("Hue");
+                OnPropertyChanged("Saturation");
+                OnPropertyChanged("Brightness");
+            }
             OnPropertyChanged("Red");
             OnPropertyChanged("Green");
             OnPropertyChanged("Blue");
             OnPropertyChanged("Alpha");
-            OnPropertyChanged("Hue");
-            OnPropertyChanged("Saturation");
-            OnPropertyChanged("Brightness");
             OnPropertyChanged("ColorName");
+            OnPropertyChanged("AlphaGradient");
+            OnPropertyChanged("SaturationGradient");
+            OnPropertyChanged("BrightnessGradient");
+        }
+
+        public Brush AlphaGradient
+        {
+            get
+            {
+                return new LinearGradientBrush(Colors.Transparent, Color.FromRgb(Red, Green, Blue), 0);
+            }
+        }
+
+        public Brush SaturationGradient
+        {
+            get
+            {
+                return new LinearGradientBrush(ColorHelper.HsvToColor(Hue, 0, Brightness), ColorHelper.HsvToColor(Hue, 255, Brightness), 0);
+            }
+        }
+
+        public Brush BrightnessGradient
+        {
+            get
+            {
+                return new LinearGradientBrush(ColorHelper.HsvToColor(Hue, Saturation, 0), ColorHelper.HsvToColor(Hue, Saturation, 255), 0);
+            }
         }
 
         public string ColorName
@@ -204,17 +236,37 @@ namespace PropertyEditorLibrary
         public byte Hue
         {
             get { return hue; }
-            set { SelectedColor = ColorHelper.HsvToColor(value, Saturation, Brightness); }
+            set
+            {
+                updateHSV = false;
+                SelectedColor = ColorHelper.HsvToColor(value, Saturation, Brightness);
+                hue = value;
+                OnPropertyChanged("Hue");
+            }
         }
         public byte Saturation
         {
             get { return saturation; }
-            set { SelectedColor = ColorHelper.HsvToColor(Hue, value, Brightness); }
+            set
+            {
+                updateHSV = false;
+                SelectedColor = ColorHelper.HsvToColor(Hue, value, Brightness);
+                updateHSV = true;
+                saturation = value;
+                OnPropertyChanged("Saturation");
+            }
         }
         public byte Brightness
         {
             get { return brightness; }
-            set { SelectedColor = ColorHelper.HsvToColor(Hue, Saturation, value); }
+            set
+            {
+                updateHSV = false;
+                SelectedColor = ColorHelper.HsvToColor(Hue, Saturation, value);
+                updateHSV = true;
+                brightness = value;
+                OnPropertyChanged("Brightness");
+            }
         }
         #region INotifyPropertyChanged Members
 
@@ -233,20 +285,34 @@ namespace PropertyEditorLibrary
         public static ObservableCollection<Color> CreateDefaultPalette()
         {
             var palette = new ObservableCollection<Color>();
+
+            // standard colors
+            palette.Add(Colors.Transparent);
             palette.Add(Colors.White);
-            palette.Add(Color.FromRgb(192, 192, 192));
-            palette.Add(Color.FromRgb(128, 128, 128));
-            palette.Add(Color.FromRgb(64, 64, 64));
-            palette.Add(Color.FromRgb(0, 0, 0));
+            palette.Add(Colors.Silver);
+            palette.Add(Colors.Gray);
+            palette.Add(Colors.DarkSlateGray);
+            palette.Add(Colors.Black);
+
+            palette.Add(Colors.Firebrick);
+            palette.Add(Colors.Red);
+            palette.Add(Colors.Gold);
+            palette.Add(Colors.Yellow);
+            palette.Add(Colors.YellowGreen);
+            palette.Add(Colors.SeaGreen);
+            palette.Add(Colors.DeepSkyBlue);
+            palette.Add(Colors.DarkCyan);
+            palette.Add(Colors.MidnightBlue);
+            palette.Add(Colors.DarkOrchid);
 
             // Add a rainbow of colors
-            int N = 32 - 5;
+            /*int N = 32 - 5;
             for (int i = 0; i < N; i++)
             {
                 double h = 0.8 * i / (N - 1);
                 var c = ColorHelper.HsvToColor(h, 1.0, 1.0);
                 palette.Add(c);
-            }
+            }*/
             return palette;
         }
     }

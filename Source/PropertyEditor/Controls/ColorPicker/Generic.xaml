@@ -27,9 +27,56 @@
         </DrawingBrush.Drawing>
     </DrawingBrush>
 
+    <DrawingBrush x:Key="SmallCheckerBoardBrush" Viewport="0,0,7,7" ViewportUnits="Absolute" TileMode="Tile">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="0,0,1,1" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+
+                <GeometryDrawing Brush="Black">
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+                            <RectangleGeometry Rect="0,0,0.50,0.50" />
+                            <RectangleGeometry Rect="0.50,0.50,0.50,0.50" />
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
     <!-- todo: reuse some system brush? -->
     <SolidColorBrush x:Key="ColorPickerBackgroundBrush" Color="White" />
     <SolidColorBrush x:Key="ColorPickerBorderBrush" Color="#FF7F9DB9" />
+
+    <LinearGradientBrush x:Key="RedGradient">
+        <GradientStop Offset="0" Color="Black"/>
+        <GradientStop Offset="1" Color="Red"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GreenGradient">
+        <GradientStop Offset="0" Color="Black"/>
+        <GradientStop Offset="1" Color="Green"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="BlueGradient">
+        <GradientStop Offset="0" Color="Black"/>
+        <GradientStop Offset="1" Color="Blue"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="AlphaGradient">
+        <GradientStop Offset="0" Color="#00FFFFFF"/>
+        <GradientStop Offset="1" Color="#FFFFFFFF"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="HueGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Offset="0.00" Color="#FF0000"/>
+        <GradientStop Offset="0.17" Color="#FFFF00"/>
+        <GradientStop Offset="0.33" Color="#00FF00"/>
+        <GradientStop Offset="0.50" Color="#00FFFF"/>
+        <GradientStop Offset="0.67" Color="#0000FF"/>
+        <GradientStop Offset="0.84" Color="#FF00FF"/>
+        <GradientStop Offset="1.00" Color="#FF0000"/>
+    </LinearGradientBrush>
 
     <Style TargetType="{x:Type local:ColorPicker}">
         <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -51,7 +98,7 @@
                                 <StackPanel Margin="4 0 20 0" Orientation="Horizontal">
                                     <Grid Width="14" Height="14"
                                           VerticalAlignment="Center"
-                                          Background="{StaticResource CheckerBoardBrush}">
+                                          Background="{StaticResource SmallCheckerBoardBrush}">
                                         <Rectangle 
                                             x:Name="PART_Rectangle" 
                                             HorizontalAlignment="Stretch" 
@@ -122,11 +169,13 @@
                                                 ItemsSource="{TemplateBinding Palette}" 
                                                 SelectedValue="{Binding SelectedColor, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                                 SnapsToDevicePixels="True"
+                                                 BorderThickness="0" Margin="1"
                                                  >
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Rectangle Width="16" Height="16" Stroke="Black" HorizontalAlignment="Center"
-                                                        Fill="{Binding Converter={local:ColorToBrushConverter}}" Margin="0 2 2 2"/>
+                                                    <Grid Background="{StaticResource SmallCheckerBoardBrush}" Margin="0 2 2 2" Width="16" Height="16" HorizontalAlignment="Center" >
+                                                        <Rectangle Stroke="Black" Fill="{Binding Converter={local:ColorToBrushConverter}}"/>
+                                                    </Grid>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                             <ListBox.ItemsPanel>
@@ -136,7 +185,21 @@
                                             </ListBox.ItemsPanel>
                                         </ListBox>
 
-                                        <Slider Grid.Column="1" Grid.Row="1" Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <!-- Alpha slider with background... -->
+                                        <!--  <Grid Grid.Row="1" Grid.Column="1" Margin="4">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid Background="{StaticResource CheckerBoardBrush}">
+                                                <Slider Maximum="255" Margin="0"
+                                                Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Background="{Binding AlphaGradient, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            </Grid>
+                                        </Grid>-->
+
+                                        <!-- But I prefer it simple... -->
+                                        <Slider Grid.Row="1" Grid.Column="1" Maximum="255" 
+                                                Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
 
                                     </Grid>
                                 </TabItem>
@@ -168,10 +231,27 @@
                                         <TextBlock Text="G" Grid.Column="1" Grid.Row="1"/>
                                         <TextBlock Text="B" Grid.Column="1" Grid.Row="2"/>
                                         <TextBlock Text="A" Grid.Column="1" Grid.Row="3"/>
-                                        <Slider Grid.Row="0" Grid.Column="2" Maximum="255" Value="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                        <Slider Grid.Row="1" Grid.Column="2" Maximum="255" Value="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                        <Slider Grid.Row="2" Grid.Column="2" Maximum="255" Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                        <Slider Grid.Row="3" Grid.Column="2" Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <Slider Grid.Row="0" Grid.Column="2" Maximum="255" 
+                                                Value="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                Background="{StaticResource RedGradient}"/>
+                                        <Slider Grid.Row="1" Grid.Column="2" Maximum="255" 
+                                                Value="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                Background="{StaticResource GreenGradient}"/>
+                                        <Slider Grid.Row="2" Grid.Column="2" Maximum="255" 
+                                                Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                Background="{StaticResource BlueGradient}"/>
+
+                                        <Grid Grid.Row="3" Grid.Column="2" Margin="4">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid Background="{StaticResource SmallCheckerBoardBrush}">
+                                                <Slider Maximum="255" Margin="0"
+                                                        Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                        Background="{Binding AlphaGradient, RelativeSource={RelativeSource TemplatedParent}}" >
+                                                </Slider>
+                                            </Grid>
+                                        </Grid>
                                         <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                                         <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                                         <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
@@ -216,10 +296,22 @@
                                         <TextBlock Text="S" Grid.Column="1" Grid.Row="1"/>
                                         <TextBlock Text="V" Grid.Column="1" Grid.Row="2"/>
                                         <TextBlock Text="A" Grid.Column="1" Grid.Row="3"/>
-                                        <Slider Grid.Row="0" Grid.Column="2" Maximum="255" Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                        <Slider Grid.Row="1" Grid.Column="2" Maximum="255" Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                        <Slider Grid.Row="2" Grid.Column="2" Maximum="255" Value="{Binding Brightness, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                        <Slider Grid.Row="3" Grid.Column="2" Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        <Slider Grid.Row="0" Grid.Column="2" Maximum="255" Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                Background="{StaticResource HueGradient}"/>
+                                        <Slider Grid.Row="1" Grid.Column="2" Maximum="255" Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Background="{Binding SaturationGradient, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <Slider Grid.Row="2" Grid.Column="2" Maximum="255" Value="{Binding Brightness, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Background="{Binding BrightnessGradient, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <Grid Grid.Row="3" Grid.Column="2" Margin="4">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid Background="{StaticResource SmallCheckerBoardBrush}">
+                                                <Slider Maximum="255" Margin="0"
+                                                Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Background="{Binding AlphaGradient, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            </Grid>
+                                        </Grid>
                                         <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                                         <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                                         <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Brightness, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>

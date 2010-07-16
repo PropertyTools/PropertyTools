@@ -126,7 +126,7 @@
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <Rectangle Width="16" Height="16" Stroke="Black" HorizontalAlignment="Center"
-                                                        Fill="{Binding Converter={local:ColorToBrushConverter}}" Margin="2"/>
+                                                        Fill="{Binding Converter={local:ColorToBrushConverter}}" Margin="0 2 2 2"/>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                             <ListBox.ItemsPanel>

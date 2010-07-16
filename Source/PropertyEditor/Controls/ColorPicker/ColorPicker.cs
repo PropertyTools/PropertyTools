@@ -5,9 +5,18 @@ using System.Windows.Media;
 using System.ComponentModel;
 using System;
 using System.Reflection;
+using System.Windows.Threading;
+using System.Windows.Input;
 
 namespace PropertyEditorLibrary
 {
+    /// <summary>
+    /// ColorPicker
+    /// todo: 
+    /// - should disable color picking from screen when popup is down...
+    /// - localize strings...
+    /// - more palettes
+    /// </summary>
     public class ColorPicker : Control, INotifyPropertyChanged
     {
         static ColorPicker()
@@ -15,10 +24,6 @@ namespace PropertyEditorLibrary
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorPicker), new FrameworkPropertyMetadata(typeof(ColorPicker)));
         }
 
-        /* public ColorPicker()
-         {
-                 AddDefaultPalette();
-         }*/
         public ObservableCollection<Color> Palette
         {
             get { return (ObservableCollection<Color>)GetValue(PaletteProperty); }
@@ -28,8 +33,6 @@ namespace PropertyEditorLibrary
         public static readonly DependencyProperty PaletteProperty =
             DependencyProperty.Register("Palette", typeof(ObservableCollection<Color>), typeof(ColorPicker), new UIPropertyMetadata(CreateDefaultPalette()));
 
-
-
         public bool IsDropDownOpen
         {
             get { return (bool)GetValue(IsDropDownOpenProperty); }
@@ -37,7 +40,76 @@ namespace PropertyEditorLibrary
         }
 
         public static readonly DependencyProperty IsDropDownOpenProperty =
-            DependencyProperty.Register("IsDropDownOpen", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false));
+            DependencyProperty.Register("IsDropDownOpen", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false, IsDropDownOpenChanged));
+
+        private static void IsDropDownOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((ColorPicker)d).IsDropDownOpenChanged();
+        }
+
+        private void IsDropDownOpenChanged()
+        {
+            // turn off picking when drop down is closed
+            if (!IsDropDownOpen && IsPicking)
+                IsPicking = false;
+        }
+
+        /// <summary>
+        /// Gets or sets if picking colors from the screen is active.
+        /// Use the 'SHIFT' button to select colors when this mode is active.
+        /// </summary>
+        public bool IsPicking
+        {
+            get { return (bool)GetValue(IsPickingProperty); }
+            set { SetValue(IsPickingProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsPickingProperty =
+            DependencyProperty.Register("IsPicking", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false, IsPickingChanged));
+
+        private static void IsPickingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((ColorPicker)d).IsPickingChanged();
+        }
+
+        private DispatcherTimer pickingTimer;
+        private void IsPickingChanged()
+        {
+            if (IsPicking && pickingTimer == null)
+            {
+                pickingTimer = new DispatcherTimer();
+                pickingTimer.Interval = TimeSpan.FromMilliseconds(100);
+                pickingTimer.Tick += Pick;
+                pickingTimer.Start();
+            }
+            if (!IsPicking && pickingTimer != null)
+            {
+                pickingTimer.Tick -= Pick;
+                pickingTimer.Stop();
+                pickingTimer = null;
+            }
+        }
+
+        private void Pick(object sender, EventArgs e)
+        {
+            bool isShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            if (!isShiftDown)
+                return;
+
+            try
+            {
+                var pt = CaptureScreenshot.GetMouseScreenPosition();
+                var bmp = CaptureScreenshot.Capture(new Rect(pt, new Size(1, 1)));
+                byte[] pixels = new byte[4];
+                bmp.CopyPixels(pixels, 4, 0);
+                SelectedColor = Color.FromArgb(0xFF, pixels[2], pixels[1], pixels[0]);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
 
 
         public Color SelectedColor
@@ -48,8 +120,8 @@ namespace PropertyEditorLibrary
 
         public static readonly DependencyProperty SelectedColorProperty =
             DependencyProperty.Register("SelectedColor", typeof(Color), typeof(ColorPicker),
-            new FrameworkPropertyMetadata(Color.FromArgb(80, 255, 255, 0), 
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
+            new FrameworkPropertyMetadata(Color.FromArgb(80, 255, 255, 0),
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 SelectedColorChanged));
 
         private static void SelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

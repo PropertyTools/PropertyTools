@@ -52,20 +52,20 @@
     <SolidColorBrush x:Key="ColorPickerBorderBrush" Color="#FF7F9DB9" />
 
     <LinearGradientBrush x:Key="RedGradient">
-        <GradientStop Offset="0" Color="Black"/>
+        <GradientStop Offset="0" Color="Transparent"/>
         <GradientStop Offset="1" Color="Red"/>
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="GreenGradient">
-        <GradientStop Offset="0" Color="Black"/>
+        <GradientStop Offset="0" Color="Transparent"/>
         <GradientStop Offset="1" Color="Green"/>
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="BlueGradient">
-        <GradientStop Offset="0" Color="Black"/>
+        <GradientStop Offset="0" Color="Transparent"/>
         <GradientStop Offset="1" Color="Blue"/>
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="AlphaGradient">
-        <GradientStop Offset="0" Color="#00FFFFFF"/>
-        <GradientStop Offset="1" Color="#FFFFFFFF"/>
+        <GradientStop Offset="0" Color="Transparent"/>
+        <GradientStop Offset="1" Color="White"/>
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="HueGradient" StartPoint="0,0" EndPoint="1,0">
@@ -124,6 +124,7 @@
                             Name="Popup" 
                             Placement="Bottom" 
                             IsOpen="{TemplateBinding IsDropDownOpen}"
+                            StaysOpen="False"
                             AllowsTransparency="True" 
                             Focusable="False" 
                             PopupAnimation="Slide">
@@ -148,14 +149,14 @@
                                     </Style>
                                 </TabControl.Resources>
                                 <TabItem Header="Palette">
-                                    <Grid>
+                                    <Grid MinHeight="150">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
                                         <Grid Width="40" Height="40" Margin="6" VerticalAlignment="Top" Background="{StaticResource CheckerBoardBrush}">
@@ -203,14 +204,14 @@
 
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="RGBA">
-                                    <Grid>
+                                <TabItem Header="RGB">
+                                    <Grid MinHeight="150">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
@@ -245,12 +246,11 @@
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
-                                            <Grid Background="{StaticResource SmallCheckerBoardBrush}">
-                                                <Slider Maximum="255" Margin="0"
+                                            <Grid Background="{StaticResource SmallCheckerBoardBrush}"/>
+                                            <Slider Maximum="255" Margin="0"
                                                         Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                                         Background="{Binding AlphaGradient, RelativeSource={RelativeSource TemplatedParent}}" >
-                                                </Slider>
-                                            </Grid>
+                                            </Slider>
                                         </Grid>
                                         <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                                         <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
@@ -270,12 +270,12 @@
                                     </Grid>
                                 </TabItem>
                                 <TabItem Header="HSV">
-                                    <Grid>
+                                    <Grid MinHeight="150">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>

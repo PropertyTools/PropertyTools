@@ -16,6 +16,7 @@ namespace PropertyEditorLibrary
     /// - close popup when clicking outside...
     /// - localize strings...
     /// - more palettes
+    /// - persist palette
     /// </summary>
     public class ColorPicker : Control, INotifyPropertyChanged
     {
@@ -286,24 +287,36 @@ namespace PropertyEditorLibrary
         {
             var palette = new ObservableCollection<Color>();
 
-            // standard colors
+            // transparent colors
             palette.Add(Colors.Transparent);
+            palette.Add(Color.FromArgb(128, 0, 0, 0));
+            palette.Add(Color.FromArgb(128, 255, 255, 255));
+
+            // shades of gray
             palette.Add(Colors.White);
             palette.Add(Colors.Silver);
             palette.Add(Colors.Gray);
             palette.Add(Colors.DarkSlateGray);
             palette.Add(Colors.Black);
 
+            // standard colors
             palette.Add(Colors.Firebrick);
             palette.Add(Colors.Red);
+            palette.Add(Colors.Tomato);
+            palette.Add(Colors.OrangeRed);
+            palette.Add(Colors.Orange);
             palette.Add(Colors.Gold);
             palette.Add(Colors.Yellow);
             palette.Add(Colors.YellowGreen);
             palette.Add(Colors.SeaGreen);
             palette.Add(Colors.DeepSkyBlue);
+            palette.Add(Colors.CornflowerBlue);
+            palette.Add(Colors.LightBlue);
             palette.Add(Colors.DarkCyan);
             palette.Add(Colors.MidnightBlue);
             palette.Add(Colors.DarkOrchid);
+
+            // todo: add persisted custom colors
 
             // Add a rainbow of colors
             /*int N = 32 - 5;

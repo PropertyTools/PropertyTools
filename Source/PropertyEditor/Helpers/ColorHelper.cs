@@ -110,8 +110,10 @@ namespace PropertyEditorLibrary
         public static Color HexToColor(string value)
         {
             value = value.Trim('#');
-            if (value.Length != 8)
+            if (value.Length == 0)
                 return UndefinedColor;
+            if (value.Length <= 6)
+                value = "FF" + value.PadLeft(6,'0');
 
             uint u;
             if (uint.TryParse(value, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out u))

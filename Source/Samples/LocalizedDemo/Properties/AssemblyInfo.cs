@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("LocalizedDemo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Det Norske Veritas")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("LocalizedDemo")]
-[assembly: AssemblyCopyright("Copyright © Det Norske Veritas 2010")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

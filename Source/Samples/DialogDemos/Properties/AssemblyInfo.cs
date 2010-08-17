@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("DialogDemos")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("My Company")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DialogDemos")]
-[assembly: AssemblyCopyright("Copyright © OBJO 2009")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

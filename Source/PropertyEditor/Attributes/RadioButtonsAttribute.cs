@@ -9,7 +9,7 @@ namespace PropertyEditorLibrary
     [AttributeUsage(AttributeTargets.Property)]
     public class RadioButtonsAttribute : Attribute
     {
-        public static readonly RadioButtonsAttribute Default;
+       // public static readonly RadioButtonsAttribute Default;
 
         // todo
     }

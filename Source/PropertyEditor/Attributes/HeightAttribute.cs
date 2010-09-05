@@ -5,7 +5,8 @@ namespace PropertyEditorLibrary
 {
     /// <summary>
     /// The Height attribute is used to control the height of TextBoxes.
-    /// Example usage: [Height(100)] 
+    /// Example usage: 
+    ///   [Height(100)] 
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class HeightAttribute : Attribute

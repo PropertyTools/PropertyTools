@@ -6,6 +6,7 @@ using System.Windows.Data;
 namespace PropertyEditorLibrary
 {
     // http://bea.stollnitz.com/blog/?p=28
+    // http://code.msdn.microsoft.com/wpfradiobuttonlist
 
     public class RadioButtonList : Control
     {

@@ -10,11 +10,16 @@ namespace PropertyEditorLibrary
     public class CategoryTemplateSelector : DataTemplateSelector
     {
         public FrameworkElement TemplateOwner { get; set; }
-        public ShowCategoriesAs ShowAs { get; set; }
+        public PropertyEditor Owner { get; private set; }
+
+        public CategoryTemplateSelector(PropertyEditor owner)
+        {
+            Owner = owner;
+        }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var category = item as PropertyCategory;
+            var category = item as CategoryViewModel;
             if (category == null)
             {
                 throw new ArgumentException("item must be of type Property");
@@ -25,7 +30,10 @@ namespace PropertyEditorLibrary
             {
                 return base.SelectTemplate(category, container);
             }*/
-            var key = ShowAs == ShowCategoriesAs.GroupBox ? "CategoryGroupBoxTemplate" : "CategoryExpanderTemplate";
+            var key = "CategoryGroupBoxTemplate";
+            if (Owner.ShowCategoriesAs == ShowCategoriesAs.Expander) key = "CategoryExpanderTemplate";
+            if (Owner.ShowCategoriesAs == ShowCategoriesAs.Header) key = "CategoryHeaderTemplate";
+
             var template = TryToFindDataTemplate(TemplateOwner, key);
 
             return template;

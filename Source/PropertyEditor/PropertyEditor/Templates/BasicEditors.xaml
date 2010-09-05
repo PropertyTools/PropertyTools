@@ -7,21 +7,23 @@
     <!-- CLR & Custom Types Data Templates -->
 
     <DataTemplate x:Key="DefaultTemplate">
-        <local:TextBox2 
+        <local:TextBoxEx 
                  IsReadOnly="{Binding IsReadOnly}" 
                  IsEnabled="{Binding IsEnabled}" 
-                 Text="{Binding Value, ValidatesOnDataErrors=True}"
+                 Text="{Binding Value}"
                  AcceptsReturn="{Binding AcceptsReturn}"
+                 TextWrapping="{Binding TextWrapping}"
+                 VerticalScrollBarVisibility="Auto"
                  Height="{Binding Height}"
                  >
-            <!--<TextBox.Text>
-                <Binding Mode="TwoWay" Path="Value" ValidatesOnDataErrors="True">
+<!--            <local:TextBoxEx.Text>
+                <Binding Mode="TwoWay" Path="Value" ValidatesOnDataErrors="True" StringFormat="{Binding FormatString}">
                    <Binding.ValidationRules>
                         <ExceptionValidationRule />
                     </Binding.ValidationRules>
                 </Binding>
-            </TextBox.Text> -->
-        </local:TextBox2>
+            </local:TextBoxEx.Text>-->
+        </local:TextBoxEx>
     </DataTemplate>
 
     <DataTemplate x:Key="SliderBoxTemplate">
@@ -62,7 +64,7 @@
 
     <!-- enum -->
     <DataTemplate x:Key="ComboBoxEnumTemplate">
-        <ComboBox SelectedValue="{Binding Path=Value}" IsEnabled="{Binding IsWriteable}">
+        <ComboBox SelectedValue="{Binding Value}" IsEnabled="{Binding IsWriteable}">
             <ComboBox.ItemsSource>
                 <Binding Path="Value">
                     <Binding.Converter>
@@ -75,6 +77,14 @@
 
     <DataTemplate x:Key="RadioButtonsEnumTemplate">
         <local:RadioButtonList Value="{Binding Value}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FilePathTemplate">
+        <local:FilePicker FilePath="{Binding Value}" Filter="{Binding Filter}" DefaultExtension="{Binding DefaultExtension}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DirectoryPathTemplate">
+        <local:DirectoryPicker Directory="{Binding Value}"/>
     </DataTemplate>
 
 </ResourceDictionary>

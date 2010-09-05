@@ -3,20 +3,21 @@
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// Updates the property enabled/visible states
-    /// This update is done after every property change of the same instance
+    /// Implement this interface on your model class to be able to updates the 
+    /// property enabled/visible states of the properties. 
+    /// This update method is called after every property change of the same instance.
     /// </summary>
-    public interface IPropertyState
+    public interface IPropertyStateUpdater
     {
-        void UpdatePropertyStates(PropertyStates states);
+        void UpdatePropertyStates(PropertyStateBag stateBag);
     }
 
-    public class PropertyStates
+    public class PropertyStateBag
     {
-        public Dictionary<string, bool> EnabledProperties { get; private set; }
-        public Dictionary<string, bool> VisibleProperties { get; private set; }
+        internal Dictionary<string, bool> EnabledProperties { get; private set; }
+        internal Dictionary<string, bool> VisibleProperties { get; private set; }
 
-        public PropertyStates()
+        public PropertyStateBag()
         {
             EnabledProperties = new Dictionary<string, bool>();
             VisibleProperties = new Dictionary<string, bool>();

@@ -4,7 +4,8 @@ namespace PropertyEditorLibrary
 {
     /// <summary>
     /// The SortOrder attribute is used to sort the tabs, categories and properties.
-    /// Example usage: [SortOrder(100)]
+    /// Example usage: 
+    ///   [SortOrder(100)]
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class SortOrderAttribute : Attribute

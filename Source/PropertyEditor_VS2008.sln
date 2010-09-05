@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyEditor", "PropertyEditor\PropertyEditor_Net35.csproj", "{7168F82F-288A-42C4-9EB1-FBBE5112F211}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{B179EEDB-BEBB-417C-A870-782A4B66F522}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B179EEDB-BEBB-417C-A870-782A4B66F522}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo", "Samples\SimpleDemo\SimpleDemo_Net35.csproj", "{A5B4E9E1-EF77-485A-9446-0BFAC9CD502A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo", "Examples\SimpleDemo\SimpleDemo_Net35.csproj", "{A5B4E9E1-EF77-485A-9446-0BFAC9CD502A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogDemos", "Samples\DialogDemos\DialogDemos_Net35.csproj", "{CFB2DADD-2021-46D8-90C1-D30B8A6457DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogDemos", "Examples\DialogDemos\DialogDemos_Net35.csproj", "{CFB2DADD-2021-46D8-90C1-D30B8A6457DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyEditorTests", "PropertyEditorTests\PropertyEditorTests_Net35.csproj", "{470CC9A4-F4F4-429E-8F38-A2957F3EBE58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModelDemo", "Samples\ViewModelDemo\ViewModelDemo_Net35.csproj", "{522FA563-CA84-4C0D-86F5-1CFF4EDA7000}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModelDemo", "Examples\ViewModelDemo\ViewModelDemo_Net35.csproj", "{522FA563-CA84-4C0D-86F5-1CFF4EDA7000}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomEditorDemo", "Samples\CustomEditorDemo\CustomEditorDemo_Net35.csproj", "{15CB43E6-4DA9-43C8-840D-6F3865A7EB21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomEditorDemo", "Examples\CustomEditorDemo\CustomEditorDemo_Net35.csproj", "{15CB43E6-4DA9-43C8-840D-6F3865A7EB21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalizedDemo", "Samples\LocalizedDemo\LocalizedDemo_Net35.csproj", "{38E83E35-C659-466E-9C69-580C15C29C30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalizedDemo", "Examples\LocalizedDemo\LocalizedDemo_Net35.csproj", "{38E83E35-C659-466E-9C69-580C15C29C30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatagridDemo", "Samples\DatagridDemo\DatagridDemo_Net35.csproj", "{B1D1AB2F-8658-4C25-B105-D61F0C802CB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatagridDemo", "Examples\DatagridDemo\DatagridDemo_Net35.csproj", "{B1D1AB2F-8658-4C25-B105-D61F0C802CB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeaturesDemo", "Examples\FeaturesDemo\FeaturesDemo.csproj", "{16D9BA7B-25C1-461C-B8F3-BBC579A7F28D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

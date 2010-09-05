@@ -92,7 +92,6 @@ namespace PropertyEditorLibrary
         public static Color Complementary(Color c)
         {
             // http://en.wikipedia.org/wiki/Complementary_color
-            // todo...
             double[] hsv = ColorToHsv(c);
             double newHue = hsv[0] - 0.5;
 

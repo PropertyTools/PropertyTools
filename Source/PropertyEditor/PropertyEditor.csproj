@@ -55,9 +55,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationFramework.Luna">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Classic" />
+    <Reference Include="PresentationFramework.Luna" />
+    <Reference Include="PresentationFramework.Royale" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -96,6 +97,14 @@
     <Page Include="Controls\ColorPicker\Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DropDownBox\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FilePicker\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -155,6 +164,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\FilePathAttribute.cs" />
     <Compile Include="Attributes\HeightAttribute.cs" />
     <Compile Include="Attributes\SortOrderAttribute.cs" />
     <Compile Include="Attributes\WidePropertyAttribute.cs" />
@@ -163,7 +173,10 @@
     <Compile Include="Attributes\OptionalAttribute.cs" />
     <Compile Include="Attributes\RadioButtonsAttribute.cs" />
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
-    <Compile Include="Controls\TextBox2.cs" />
+    <Compile Include="Controls\DropDownBox\DropDownBox.cs" />
+    <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />
+    <Compile Include="Controls\FilePicker\FilePicker.cs" />
+    <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ToDoubleConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
@@ -181,12 +194,11 @@
     <Compile Include="Dialogs\WizardDialog.xaml.cs">
       <DependentUpon>WizardDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PropertyEditor\DefaultPropertyAttributeProvider.cs" />
+    <Compile Include="Helpers\TypeHelper.cs" />
     <Compile Include="Interfaces\IImageProvider.cs" />
-    <Compile Include="Interfaces\ILocalizer.cs" />
-    <Compile Include="Interfaces\IPropertyAttributeProvider.cs" />
-    <Compile Include="Interfaces\IPropertySetter.cs" />
-    <Compile Include="Interfaces\IPropertyState.cs" />
+    <Compile Include="Interfaces\ILocalizationService.cs" />
+    <Compile Include="Interfaces\IPropertyStateUpdater.cs" />
+    <Compile Include="MVVM\DelegateCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -205,16 +217,20 @@
     </Compile>
     <Compile Include="PropertyEditor\CategoryTemplateSelector.cs" />
     <Compile Include="PropertyEditor\PropertyEditor.cs" />
-    <Compile Include="Helpers\PropertyHelper.cs" />
-    <Compile Include="PropertyEditor\PropertyModel\OptionalProperty.cs" />
-    <Compile Include="PropertyEditor\PropertyModel\SlidableProperty.cs" />
-    <Compile Include="PropertyEditor\PropertyModel\WideProperty.cs" />
+    <Compile Include="Helpers\AttributeHelper.cs" />
+    <Compile Include="Interfaces\IPropertyViewModelFactory.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\FilePathViewModel.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\OptionalPropertyViewModel.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\DefaultPropertyViewModelFactory.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\SlidablePropertyViewModel.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\CheckBoxPropertyViewModel.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\WidePropertyViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyTemplateSelector.cs" />
     <Compile Include="PropertyEditor\TypeEditor.cs" />
-    <Compile Include="PropertyEditor\PropertyModel\PropertyBase.cs" />
-    <Compile Include="PropertyEditor\PropertyModel\Property.cs" />
-    <Compile Include="PropertyEditor\PropertyModel\PropertyCategory.cs" />
-    <Compile Include="PropertyEditor\PropertyModel\PropertyTab.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\ViewModelBase.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\PropertyViewModel.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\CategoryViewModel.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\TabViewModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -245,6 +261,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

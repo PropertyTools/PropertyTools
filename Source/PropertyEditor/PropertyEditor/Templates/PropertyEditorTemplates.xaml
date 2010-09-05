@@ -4,7 +4,7 @@
 
     <local:PropertyTemplateSelector x:Key="propertyTemplateSelector" />
 
-    <DataTemplate x:Key="TabHeaderTemplate" DataType="{x:Type local:PropertyTab}">
+    <DataTemplate x:Key="TabHeaderTemplate" DataType="{x:Type local:TabViewModel}">
         <StackPanel Orientation="Horizontal">
             <Image Source="{Binding Icon}" Visibility="{Binding IconVisibility}" 
                    Margin="0 0 4 0" Width="12" 
@@ -34,7 +34,7 @@
     </DataTemplate>
 
     <!-- GroupBox for the categories -->
-    <DataTemplate x:Key="CategoryGroupBoxTemplate" DataType="{x:Type local:PropertyCategory}">
+    <DataTemplate x:Key="CategoryGroupBoxTemplate" DataType="{x:Type local:CategoryViewModel}">
         <GroupBox Header="{Binding Header}" ToolTip="{Binding ToolTip, Mode=OneTime}" Focusable="False" Margin="2 2 2 8"
                   IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
             <ItemsControl ItemsSource="{Binding Properties}" Focusable="False">
@@ -48,7 +48,7 @@
     </DataTemplate>
 
     <!-- Expander for the categories -->
-    <DataTemplate x:Key="CategoryExpanderTemplate" DataType="{x:Type local:PropertyCategory}">
+    <DataTemplate x:Key="CategoryExpanderTemplate" DataType="{x:Type local:CategoryViewModel}">
         <Expander Header="{Binding Header}" ToolTip="{Binding ToolTip, Mode=OneTime}" Focusable="False" Margin="2 2 2 8"
                   IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
             <ItemsControl ItemsSource="{Binding Properties}" Focusable="False">
@@ -61,8 +61,38 @@
         </Expander>
     </DataTemplate>
 
+    <!-- Header only for the categories -->
+    <DataTemplate x:Key="CategoryHeaderTemplate" DataType="{x:Type local:CategoryViewModel}">
+        <StackPanel ToolTip="{Binding ToolTip, Mode=OneTime}" Focusable="False" Margin="2 2 2 8"
+                  IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
+            <Label Content="{Binding Header}" FontWeight="Bold"/>
+            <ItemsControl ItemsSource="{Binding Properties}" Focusable="False">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </StackPanel>
+    </DataTemplate>
+
     <!-- Template for each property -->
-    <DataTemplate DataType="{x:Type local:Property}">
+    <DataTemplate DataType="{x:Type local:PropertyViewModel}">
+        <!--<Grid Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding LabelWidth, Mode=TwoWay,RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label 
+                Content="{Binding Header, Mode=OneTime}" 
+                ToolTip="{Binding ToolTip, Mode=OneTime}"
+                HorizontalContentAlignment="{Binding LabelAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"/>
+            <ContentControl Grid.Column="1"
+                Content="{Binding}"
+                Focusable="False"
+                ContentTemplateSelector="{Binding PropertyTemplateSelector, Mode=OneTime}"/>
+            <GridSplitter VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="4"/>
+        </Grid>-->
         <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
             <Label 
                 Content="{Binding Header, Mode=OneTime}" 
@@ -71,12 +101,13 @@
                 HorizontalContentAlignment="{Binding LabelAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"/>
             <ContentControl 
                 Content="{Binding}"
+                ToolTip="{Binding ToolTip, Mode=OneTime}"
                 Focusable="False"
                 ContentTemplateSelector="{Binding PropertyTemplateSelector, Mode=OneTime}"/>
         </DockPanel>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type local:WideProperty}">
+    <DataTemplate DataType="{x:Type local:WidePropertyViewModel}">
         <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
             <Label
                 DockPanel.Dock="Top"
@@ -86,13 +117,27 @@
                 HorizontalAlignment="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}, Path=LabelAlignment}"/>
             <ContentControl 
                 Content="{Binding}"
+                ToolTip="{Binding ToolTip, Mode=OneTime}"
                 Focusable="False"
                 ContentTemplateSelector="{Binding PropertyTemplateSelector, Mode=OneTime}"/>
         </DockPanel>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type local:CheckBoxPropertyViewModel}">
+        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
+            <CheckBox 
+                Content="{Binding Header, Mode=OneTime}" 
+                ToolTip="{Binding ToolTip, Mode=OneTime}"
+                Margin="5 4 5 0"
+                IsChecked="{Binding Value}" 
+                IsEnabled="{Binding IsWriteable}" 
+                VerticalAlignment="Center"/>
+        </DockPanel>
+    </DataTemplate>
+
+
     <!-- Template for an optional property -->
-    <DataTemplate DataType="{x:Type local:OptionalProperty}">
+    <DataTemplate DataType="{x:Type local:OptionalPropertyViewModel}">
         <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
             <Grid
                 MinWidth="{Binding LabelWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}">
@@ -100,13 +145,14 @@
                 Content="{Binding Header, Mode=OneTime}" 
                 ToolTip="{Binding ToolTip, Mode=OneTime}"
                 Margin="5 0 5 0"
-                HorizontalAlignment="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}, Path=LabelAlignment}"
+                HorizontalAlignment="{Binding LabelAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"
                 IsChecked="{Binding IsOptionalChecked}" 
                 VerticalAlignment="Center"/>
             </Grid>
 
             <ContentControl 
                 Content="{Binding}"
+                ToolTip="{Binding ToolTip, Mode=OneTime}"
                 Focusable="False"
                 ContentTemplateSelector="{Binding PropertyTemplateSelector, Mode=OneTime}"
                 IsEnabled="{Binding IsOptionalChecked}"/>

@@ -3,8 +3,11 @@
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// The [Slidable] attribute is used for slidable properties.
+    /// The [Slidable] attribute is used for numeric properties.
     /// Properties marked with [Slidable] will have a slider next to its editor.
+    /// Example usage:
+    ///   [Slidable(0,100)]
+    ///   [Slidable(0,100,1,10)]
     /// </summary>
     [AttributeUsage(AttributeTargets.All)]
     public class SlidableAttribute : Attribute

@@ -3,10 +3,12 @@
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// The [Optional] attribute is used for optional properties.
+    /// The Optional attribute is used for optional properties.
     /// Properties marked with [Optional] will have a checkbox as the label.
     /// The checkbox will enable/disable the property value editor.
-    /// This could be moved into the core layer in multi-layer applications
+    /// Example usage:
+    ///   [Optional]                    // requires a nullable property type
+    ///   [Optional("HasSomething")]    // relates to other property HasSomething
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class OptionalAttribute : Attribute

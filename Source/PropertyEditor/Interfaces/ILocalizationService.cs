@@ -4,9 +4,9 @@ namespace PropertyEditorLibrary
 {
     /// <summary>
     /// Localize tab/category/property names and tooltips.
-    /// Used in PropertyEditor.Localizer
+    /// Used in PropertyEditor.LocalizationService
     /// </summary>
-    public interface ILocalizer
+    public interface ILocalizationService
     {
         string GetString(Type instanceType, string key);
         object GetTooltip(Type instanceType, string key);        

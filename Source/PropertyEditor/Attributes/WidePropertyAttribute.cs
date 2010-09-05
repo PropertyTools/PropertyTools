@@ -11,16 +11,16 @@ namespace PropertyEditorLibrary
     [AttributeUsage(AttributeTargets.Property)]
     public class WidePropertyAttribute : Attribute
     {
-        public bool NoHeader { get; set; }
+        public bool ShowHeader { get; set; }
 
         public WidePropertyAttribute()
         {
-            NoHeader = false;
+            ShowHeader = true;
         }
 
-        public WidePropertyAttribute(bool noHeader)
+        public WidePropertyAttribute(bool showHeader)
         {
-            NoHeader = noHeader;
+            ShowHeader = showHeader;
         }
     }
 }

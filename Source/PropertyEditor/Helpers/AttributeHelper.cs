@@ -1,9 +1,10 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace PropertyEditorLibrary
 {
-    public static class PropertyHelper
+    public static class AttributeHelper
     {
         /// <summary>
         /// Return the first attribute of a given type
@@ -13,18 +14,28 @@ namespace PropertyEditorLibrary
         /// <returns></returns>
         public static T GetAttribute<T>(PropertyDescriptor descriptor) where T : Attribute
         {
-            foreach (Attribute a in descriptor.Attributes)
-            {
-                var oa = a as T;
-                if (oa != null)
-                {
-                    return oa;
-                }
-            }
-            return null;
+            return descriptor.Attributes.OfType<T>().FirstOrDefault();
         }
 
-        #region Set/get of properties
+        /// <summary>
+        /// Check if an attribute collection contains an attribute of the given type
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <param name="attributeType"></param>
+        /// <returns></returns>
+        public static bool ContainsAttributeOfType(AttributeCollection attributes, Type attributeType)
+        {
+            // return attributes.Cast<object>().Any(a => attributeType.IsAssignableFrom(a.GetType()));))))
+            foreach (object a in attributes)
+                if (attributeType.IsAssignableFrom(a.GetType()))
+                    return true;
+            return false;
+        }
+
+    }
+
+    public class PropertyInfoHelper {
+
         public static void SetProperty(object instance, string propertyName, object value)
         {
             var pi = instance.GetType().GetProperty(propertyName);
@@ -36,7 +47,6 @@ namespace PropertyEditorLibrary
             var pi = instance.GetType().GetProperty(propertyName);
             return pi.GetValue(instance, null);
         }
-        #endregion
 
     }
 }

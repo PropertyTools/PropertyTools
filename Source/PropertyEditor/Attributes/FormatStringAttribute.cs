@@ -3,7 +3,9 @@
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// The [FormatString] attribute is used to provide a format string for numeric properties.
+    /// The FormatString attribute is used to provide a format string for numeric properties.
+    /// Example usage:
+    ///   [FormatString("0.00")]
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class FormatStringAttribute : Attribute

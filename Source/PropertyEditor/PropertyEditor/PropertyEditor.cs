@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Reflection;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.Generic;
 
 namespace PropertyEditorLibrary
 {
     public enum ShowCategoriesAs
     {
         GroupBox,
-        Expander
-    };
+        Expander,
+        Header
+    } ;
 
     /// <summary>
     /// PropertyEditor control.
@@ -23,312 +23,108 @@ namespace PropertyEditorLibrary
     /// </summary>
     public class PropertyEditor : Control
     {
-        #region Private fields
+        private const string CATEGORY_APPEARANCE = "Appearance";
+        private const string PART_GRID = "PART_Grid";
+        private const string PART_PAGE = "PART_Page";
+        private const string PART_TABS = "PART_Tabs";
+
+        public static readonly DependencyProperty PropertyTemplateSelectorProperty =
+            DependencyProperty.Register("PropertyTemplateSelector", typeof (PropertyTemplateSelector),
+                                        typeof (PropertyEditor), new UIPropertyMetadata(null));
+
+        public static readonly DependencyProperty CategoryTemplateSelectorProperty =
+            DependencyProperty.Register("CategoryTemplateSelector", typeof (CategoryTemplateSelector),
+                                        typeof (PropertyEditor), new UIPropertyMetadata(null));
+
+        public static readonly DependencyProperty LabelWidthProperty =
+            DependencyProperty.Register("LabelWidth", typeof (double), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(100.0));
+
+        public static readonly DependencyProperty ShowReadOnlyPropertiesProperty =
+            DependencyProperty.Register("ShowReadOnlyProperties", typeof (bool), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(true, AppearanceChanged));
+
+        public static readonly DependencyProperty ShowTabsProperty =
+            DependencyProperty.Register("ShowTabs", typeof (bool), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(true, AppearanceChanged));
+
+        public static readonly DependencyProperty DeclaredOnlyProperty =
+            DependencyProperty.Register("DeclaredOnly", typeof (bool), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(false, AppearanceChanged));
+
+        public static readonly DependencyProperty SelectedObjectProperty =
+            DependencyProperty.Register("SelectedObject", typeof (object), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(null, SelectedObjectChanged));
+
+        public static readonly DependencyProperty ShowBoolHeaderProperty =
+            DependencyProperty.Register("ShowBoolHeader", typeof (bool), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(true, AppearanceChanged));
+
+        public static readonly DependencyProperty ShowEnumAsComboBoxProperty =
+            DependencyProperty.Register("ShowEnumAsComboBox", typeof (bool), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(true, AppearanceChanged));
+
+        public static readonly DependencyProperty ShowCategoriesAsProperty =
+            DependencyProperty.Register("ShowCategoriesAs", typeof (ShowCategoriesAs), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(ShowCategoriesAs.GroupBox, AppearanceChanged));
+
+        public static readonly DependencyProperty DefaultCategoryNameProperty =
+            DependencyProperty.Register("DefaultCategoryName", typeof (string), typeof (PropertyEditor),
+                                        new UIPropertyMetadata("Properties", AppearanceChanged));
+
+        public static readonly DependencyProperty LabelAlignmentProperty =
+            DependencyProperty.Register("LabelAlignment", typeof (HorizontalAlignment), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(HorizontalAlignment.Left, AppearanceChanged));
+
+        public static readonly DependencyProperty LocalizationServiceProperty =
+            DependencyProperty.Register("LocalizationService", typeof (ILocalizationService), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(null));
+
+        public static readonly DependencyProperty ImageProviderProperty =
+            DependencyProperty.Register("ImageProvider", typeof (IImageProvider), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(null));
+
+        public static readonly DependencyProperty RequiredAttributeProperty =
+            DependencyProperty.Register("RequiredAttribute", typeof (Type), typeof (PropertyEditor),
+                                        new UIPropertyMetadata(null));
+
+        public static readonly RoutedEvent PropertyValueChangedEvent = EventManager.RegisterRoutedEvent(
+            "PropertyValueChanged",
+            RoutingStrategy.Bubble,
+            typeof (EventHandler<PropertyValueChangedEventArgs>),
+            typeof (PropertyEditor));
 
         /// <summary>
         /// The PropertyMap dictionary contains a map of all Properties of the current object being edited.
         /// </summary>
-        private readonly Dictionary<string, Property> propertyMap;
+        private readonly Dictionary<string, PropertyViewModel> propertyMap;
 
-        /// <summary>
-        /// The PropertyTemplateSelector is used to select the DataTemplate for each property
-        /// </summary>
-        internal PropertyTemplateSelector PropertyTemplateSelector { get; set; }
-
-        /// <summary>
-        /// The CategoryTemplateSelector is used to select the DataTemplate for the categories
-        /// </summary>
-        internal CategoryTemplateSelector CategoryTemplateSelector { get; set; }
-
-        private const string AppearanceCategory = "PropertyEditor Appearance";
-        #endregion
-
-        #region Custom control initialization
-
-        private const string PartGrid = "PART_Grid";
-        private const string PartPage = "PART_Page";
-        private const string PartTabs = "PART_Tabs";
-
-        private Grid grid;
         private ContentControl contentControl;
+        private Grid grid;
         private TabControl tabControl;
 
         static PropertyEditor()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(PropertyEditor),
-                                                     new FrameworkPropertyMetadata(typeof(PropertyEditor)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof (PropertyEditor),
+                                                     new FrameworkPropertyMetadata(typeof (PropertyEditor)));
         }
 
-        public override void OnApplyTemplate()
+        public PropertyEditor()
         {
-            if (tabControl == null)
-            {
-                tabControl = Template.FindName(PartTabs, this) as TabControl;
-            }
-            if (contentControl == null)
-            {
-                contentControl = Template.FindName(PartPage, this) as ContentControl;
-            }
-            if (grid == null)
-            {
-                grid = Template.FindName(PartGrid, this) as Grid;
-            }
+            propertyMap = new Dictionary<string, PropertyViewModel>();
 
-            PropertyTemplateSelector.TemplateOwner = grid;
-            CategoryTemplateSelector.TemplateOwner = grid;
-
-            // Update the content of the control
-            UpdateContent();
+            PropertyTemplateSelector = new PropertyTemplateSelector(this);
+            CategoryTemplateSelector = new CategoryTemplateSelector(this);
         }
-
-        #endregion
-
-        #region Properties
-
-        private static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((PropertyEditor)d).UpdateContent();
-        }
-
-        #region LabelWidth
-
-        public static readonly DependencyProperty LabelWidthProperty =
-            DependencyProperty.Register("LabelWidth", typeof(double), typeof(PropertyEditor),
-                                        new UIPropertyMetadata(100.0));
 
         /// <summary>
-        /// The width of the property labels
+        /// Gets or sets the property view model factory.
+        /// This factory is used to generate the view model based on the property descriptors.
+        /// You can override this factory to create the view model based on your own attributes.
         /// </summary>
-        [Category(AppearanceCategory)]
-        public double LabelWidth
-        {
-            get { return (double)GetValue(LabelWidthProperty); }
-            set { SetValue(LabelWidthProperty, value); }
-        }
-
-        #endregion
-
-        #region ShowReadOnlyProperties
-
-        public static readonly DependencyProperty ShowReadOnlyPropertiesProperty =
-            DependencyProperty.Register("ShowReadOnlyProperties", typeof(bool), typeof(PropertyEditor),
-                                        new UIPropertyMetadata(true, AppearanceChanged));
-
-        /// <summary>
-        /// Show read-only properties.
-        /// </summary>
-        [Category(AppearanceCategory)]
-        public bool ShowReadOnlyProperties
-        {
-            get { return (bool)GetValue(ShowReadOnlyPropertiesProperty); }
-            set { SetValue(ShowReadOnlyPropertiesProperty, value); }
-        }
-
-        #endregion
-
-        #region ShowTabs
-
-        public static readonly DependencyProperty ShowTabsProperty =
-            DependencyProperty.Register("ShowTabs", typeof(bool), typeof(PropertyEditor),
-                                        new UIPropertyMetadata(true, AppearanceChanged));
-
-        /// <summary>
-        /// Organize the properties in tabs.
-        /// You should use the [Category("Tabname|Groupname")] attribute to define the tabs.
-        /// </summary>
-        [Category(AppearanceCategory)]
-        public bool ShowTabs
-        {
-            get { return (bool)GetValue(ShowTabsProperty); }
-            set { SetValue(ShowTabsProperty, value); }
-        }
-
-        #endregion
-
-        #region DeclaredOnly
-
-        public static readonly DependencyProperty DeclaredOnlyProperty =
-            DependencyProperty.Register("DeclaredOnly", typeof(bool), typeof(PropertyEditor),
-                                        new UIPropertyMetadata(false, AppearanceChanged));
-
-        /// <summary>
-        /// Show only declared properties (not inherited properties).
-        /// </summary>
-        [Category(AppearanceCategory)]
-        public bool DeclaredOnly
-        {
-            get { return (bool)GetValue(DeclaredOnlyProperty); }
-            set { SetValue(DeclaredOnlyProperty, value); }
-        }
-
-        #endregion
-
-        #region SelectedObject
-
-        public static readonly DependencyProperty SelectedObjectProperty =
-            DependencyProperty.Register("SelectedObject", typeof(object), typeof(PropertyEditor),
-                                        new UIPropertyMetadata(null, SelectedObjectChanged));
-
+        /// <value>The property view model factory.</value>
         [Browsable(false)]
-        public object SelectedObject
-        {
-            get { return GetValue(SelectedObjectProperty); }
-            set { SetValue(SelectedObjectProperty, value); }
-        }
-
-        private static void SelectedObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var pe = (PropertyEditor)d;
-            pe.UpdateContent();
-        }
-
-        #endregion
-
-        #region ShowEnumAsComboBox
-        /// <summary>
-        /// Show enum properties as ComboBox or RadioButtonList.
-        /// </summary>
-        [Category(AppearanceCategory)]
-        public bool ShowEnumAsComboBox
-        {
-            get { return (bool)GetValue(ShowEnumAsComboBoxProperty); }
-            set { SetValue(ShowEnumAsComboBoxProperty, value); }
-        }
-
-        public static readonly DependencyProperty ShowEnumAsComboBoxProperty =
-            DependencyProperty.Register("ShowEnumAsComboBox", typeof(bool), typeof(PropertyEditor),
-            new UIPropertyMetadata(true, AppearanceChanged));
-
-        #endregion
-
-        #region ShowCategoriesAs
-        [Category(AppearanceCategory)]
-        public ShowCategoriesAs ShowCategoriesAs
-        {
-            get { return (ShowCategoriesAs)GetValue(ShowCategoriesAsProperty); }
-            set { SetValue(ShowCategoriesAsProperty, value); }
-        }
-
-        public static readonly DependencyProperty ShowCategoriesAsProperty =
-            DependencyProperty.Register("ShowCategoriesAs", typeof(ShowCategoriesAs), typeof(PropertyEditor),
-            new UIPropertyMetadata(ShowCategoriesAs.GroupBox, AppearanceChanged));
-
-        #endregion
-
-        #region DefaultCategoryName Dependency Property
-
-        public string DefaultCategoryName
-        {
-            get { return (string)GetValue(DefaultCategoryNameProperty); }
-            set { SetValue(DefaultCategoryNameProperty, value); }
-        }
-
-        public static readonly DependencyProperty DefaultCategoryNameProperty =
-            DependencyProperty.Register("DefaultCategoryName", typeof(string), typeof(PropertyEditor),
-            new UIPropertyMetadata("Properties", AppearanceChanged));
-
-        #endregion
-
-        #region LabelAlignment
-
-        public static readonly DependencyProperty LabelAlignmentProperty =
-            DependencyProperty.Register("LabelAlignment", typeof(HorizontalAlignment), typeof(PropertyEditor),
-                                        new UIPropertyMetadata(HorizontalAlignment.Left, AppearanceChanged));
-
-        /// <summary>
-        /// Gets or sets the alignment of property labels.
-        /// </summary>
-        public HorizontalAlignment LabelAlignment
-        {
-            get { return (HorizontalAlignment)GetValue(LabelAlignmentProperty); }
-            set { SetValue(LabelAlignmentProperty, value); }
-        }
-
-        #endregion
-
-        #region Localizer dependency property
-        /// <summary>
-        /// Implement the Localizer to translate the tab, category and property strings and tooltips
-        /// </summary>
-        [Browsable(false)]
-        public ILocalizer Localizer
-        {
-            get { return (ILocalizer)GetValue(LocalizerProperty); }
-            set { SetValue(LocalizerProperty, value); }
-        }
-
-        public static readonly DependencyProperty LocalizerProperty =
-            DependencyProperty.Register("Localizer", typeof(ILocalizer), typeof(PropertyEditor),
-            new UIPropertyMetadata(null));
-
-        #endregion
-
-        #region PropertySetter Dependency Property
-
-        [Browsable(false)]
-        public IPropertySetter PropertySetter
-        {
-            get { return (IPropertySetter)GetValue(PropertySetterProperty); }
-            set { SetValue(PropertySetterProperty, value); }
-        }
-
-        public static readonly DependencyProperty PropertySetterProperty =
-            DependencyProperty.Register("PropertySetter", typeof(IPropertySetter), typeof(PropertyEditor),
-            new UIPropertyMetadata(null));
-
-        #endregion
-
-        #region ImageProvider Dependency Property
-
-        /// <summary>
-        /// The ImageProvider can be used to provide images to the Tab icons.
-        /// </summary>
-        [Browsable(false)]
-        public IImageProvider ImageProvider
-        {
-            get { return (IImageProvider)GetValue(ImageProviderProperty); }
-            set { SetValue(ImageProviderProperty, value); }
-        }
-
-        public static readonly DependencyProperty ImageProviderProperty =
-            DependencyProperty.Register("ImageProvider", typeof(IImageProvider), typeof(PropertyEditor),
-            new UIPropertyMetadata(null));
-
-        #endregion
-
-        #region RequiredAttribute Dependency Property
-
-        /// <summary>
-        /// Gets or sets the required attribute type.
-        /// If the required attribute type is set, only properties where this attribute is set will be shown.
-        /// </summary>
-        public Type RequiredAttribute
-        {
-            get { return (Type)GetValue(RequiredAttributeProperty); }
-            set { SetValue(RequiredAttributeProperty, value); }
-        }
-
-        public static readonly DependencyProperty RequiredAttributeProperty =
-            DependencyProperty.Register("RequiredAttribute", typeof(Type), typeof(PropertyEditor),
-            new UIPropertyMetadata(null));
-
-        #endregion
-        
-        #region PropertyAttributeProvider Dependency Property
-
-        public IPropertyAttributeProvider PropertyAttributeProvider
-        {
-            get { return (IPropertyAttributeProvider)GetValue(PropertyAttributeProviderProperty); }
-            set { SetValue(PropertyAttributeProviderProperty, value); }
-        }
-
-        public static readonly DependencyProperty PropertyAttributeProviderProperty =
-            DependencyProperty.Register("PropertyAttributeProvider", typeof(IPropertyAttributeProvider), typeof(PropertyEditor),
-            new UIPropertyMetadata(null));
-
-        #endregion
-
-        #region Custom Editors
+        public IPropertyViewModelFactory PropertyViewModelFactory { get; set; }
 
         /// <summary>
         /// Collection of custom editors
@@ -340,17 +136,188 @@ namespace PropertyEditorLibrary
             get { return PropertyTemplateSelector.Editors; }
         }
 
-        #endregion
+        /// <summary>
+        /// The width of the property labels
+        /// </summary>
+        [Category(CATEGORY_APPEARANCE)]
+        public double LabelWidth
+        {
+            get { return (double) GetValue(LabelWidthProperty); }
+            set { SetValue(LabelWidthProperty, value); }
+        }
 
-        #endregion
+        /// <summary>
+        /// Show read-only properties.
+        /// </summary>
+        [Category(CATEGORY_APPEARANCE)]
+        public bool ShowReadOnlyProperties
+        {
+            get { return (bool) GetValue(ShowReadOnlyPropertiesProperty); }
+            set { SetValue(ShowReadOnlyPropertiesProperty, value); }
+        }
 
-        #region PropertyValueChanged event
+        /// <summary>
+        /// Organize the properties in tabs.
+        /// You should use the [Category("Tabname|Groupname")] attribute to define the tabs.
+        /// </summary>
+        [Category(CATEGORY_APPEARANCE)]
+        public bool ShowTabs
+        {
+            get { return (bool) GetValue(ShowTabsProperty); }
+            set { SetValue(ShowTabsProperty, value); }
+        }
 
-        public static readonly RoutedEvent PropertyValueChangedEvent = EventManager.RegisterRoutedEvent(
-            "PropertyValueChanged",
-            RoutingStrategy.Bubble,
-            typeof(EventHandler<PropertyValueChangedEventArgs>),
-            typeof(PropertyEditor));
+        /// <summary>
+        /// Show only declared properties (not inherited properties).
+        /// Specifies that only members declared at the level of the supplied type's hierarchy 
+        /// should be considered. Inherited members are not considered.
+        /// </summary>
+        [Category(CATEGORY_APPEARANCE)]
+        public bool DeclaredOnly
+        {
+            get { return (bool) GetValue(DeclaredOnlyProperty); }
+            set { SetValue(DeclaredOnlyProperty, value); }
+        }
+
+        [Browsable(false)]
+        public object SelectedObject
+        {
+            get { return GetValue(SelectedObjectProperty); }
+            set { SetValue(SelectedObjectProperty, value); }
+        }
+
+        /// <summary>
+        /// Show enum properties as ComboBox or RadioButtonList.
+        /// </summary>
+        [Category(CATEGORY_APPEARANCE)]
+        public bool ShowBoolHeader
+        {
+            get { return (bool) GetValue(ShowBoolHeaderProperty); }
+            set { SetValue(ShowBoolHeaderProperty, value); }
+        }
+
+        /// <summary>
+        /// Show enum properties as ComboBox or RadioButtonList.
+        /// </summary>
+        [Category(CATEGORY_APPEARANCE)]
+        public bool ShowEnumAsComboBox
+        {
+            get { return (bool) GetValue(ShowEnumAsComboBoxProperty); }
+            set { SetValue(ShowEnumAsComboBoxProperty, value); }
+        }
+
+        [Category(CATEGORY_APPEARANCE)]
+        public ShowCategoriesAs ShowCategoriesAs
+        {
+            get { return (ShowCategoriesAs) GetValue(ShowCategoriesAsProperty); }
+            set { SetValue(ShowCategoriesAsProperty, value); }
+        }
+
+        public string DefaultCategoryName
+        {
+            get { return (string) GetValue(DefaultCategoryNameProperty); }
+            set { SetValue(DefaultCategoryNameProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the alignment of property labels.
+        /// </summary>
+        public HorizontalAlignment LabelAlignment
+        {
+            get { return (HorizontalAlignment) GetValue(LabelAlignmentProperty); }
+            set { SetValue(LabelAlignmentProperty, value); }
+        }
+
+        /// <summary>
+        /// Implement the LocalizationService to translate the tab, category and property strings and tooltips
+        /// </summary>
+        [Browsable(false)]
+        public ILocalizationService LocalizationService
+        {
+            get { return (ILocalizationService) GetValue(LocalizationServiceProperty); }
+            set { SetValue(LocalizationServiceProperty, value); }
+        }
+
+        /// <summary>
+        /// The ImageProvider can be used to provide images to the Tab icons.
+        /// </summary>
+        [Browsable(false)]
+        public IImageProvider ImageProvider
+        {
+            get { return (IImageProvider) GetValue(ImageProviderProperty); }
+            set { SetValue(ImageProviderProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the required attribute type.
+        /// If the required attribute type is set, only properties where this attribute is set will be shown.
+        /// </summary>
+        [Browsable(false)]
+        public Type RequiredAttribute
+        {
+            get { return (Type) GetValue(RequiredAttributeProperty); }
+            set { SetValue(RequiredAttributeProperty, value); }
+        }
+
+        /// <summary>
+        /// The PropertyTemplateSelector is used to select the DataTemplate for each PropertyViewModel
+        /// </summary>
+        [Browsable(false)]
+        public PropertyTemplateSelector PropertyTemplateSelector
+        {
+            get { return (PropertyTemplateSelector) GetValue(PropertyTemplateSelectorProperty); }
+            set { SetValue(PropertyTemplateSelectorProperty, value); }
+        }
+
+        /// <summary>
+        /// The CategoryTemplateSelector is used to select the DataTemplate for the CategoryViewModels
+        /// </summary>
+        [Browsable(false)]
+        public CategoryTemplateSelector CategoryTemplateSelector
+        {
+            get { return (CategoryTemplateSelector) GetValue(CategoryTemplateSelectorProperty); }
+            set { SetValue(CategoryTemplateSelectorProperty, value); }
+        }
+
+        public override void OnApplyTemplate()
+        {
+            if (tabControl == null)
+            {
+                tabControl = Template.FindName(PART_TABS, this) as TabControl;
+            }
+            if (contentControl == null)
+            {
+                contentControl = Template.FindName(PART_PAGE, this) as ContentControl;
+            }
+            if (grid == null)
+            {
+                grid = Template.FindName(PART_GRID, this) as Grid;
+            }
+
+            PropertyTemplateSelector.TemplateOwner = grid;
+            CategoryTemplateSelector.TemplateOwner = grid;
+
+            Loaded += PropertyEditor_Loaded;
+            Unloaded += PropertyEditor_Unloaded;
+        }
+
+        void PropertyEditor_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Update the content of the control
+            UpdateContent();
+        }
+
+        void PropertyEditor_Unloaded(object sender, RoutedEventArgs e)
+        {
+            // Unsubscribe all property change event handlers
+            ClearModel();
+        }
+
+        private static void SelectedObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var pe = (PropertyEditor) d;
+            pe.UpdateContent();
+        }
 
         public event EventHandler<PropertyValueChangedEventArgs> PropertyChanged
         {
@@ -363,23 +330,22 @@ namespace PropertyEditorLibrary
         /// </summary>
         private void RaisePropertyChangedEvent(string propertyName, object oldValue, object newValue)
         {
-            var args = new PropertyValueChangedEventArgs();
-            args.PropertyName = propertyName;
-            args.OldValue = oldValue;
-            args.NewValue = newValue;
-            args.RoutedEvent = PropertyValueChangedEvent;
+            var args = new PropertyValueChangedEventArgs
+                           {
+                               PropertyName = propertyName,
+                               OldValue = oldValue,
+                               NewValue = newValue,
+                               RoutedEvent = PropertyValueChangedEvent
+                           };
             RaiseEvent(args);
         }
 
-        #endregion
-
-        public PropertyEditor()
+        private static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            propertyMap = new Dictionary<string, Property>();
-
-            PropertyTemplateSelector = new PropertyTemplateSelector();
-            CategoryTemplateSelector = new CategoryTemplateSelector();
+            ((PropertyEditor) d).UpdateContent();
         }
+
+        private IList<TabViewModel> model;
 
         /// <summary>
         /// Updates the content of the control
@@ -390,12 +356,18 @@ namespace PropertyEditorLibrary
             if (tabControl == null || contentControl == null)
                 return;
 
+            if (PropertyViewModelFactory == null)
+            {
+                PropertyViewModelFactory = new DefaultPropertyViewModelFactory(this);
+            }
+
+            ClearModel();
             // Get the property model (tabs, categories and properties)
-            var propertyTabs = GetPropertyModel(SelectedObject);
+            model = CreatePropertyModel(SelectedObject);
 
             if (ShowTabs)
             {
-                tabControl.ItemsSource = propertyTabs;
+                tabControl.ItemsSource = model;
                 if (tabControl.Items.Count > 0)
                     tabControl.SelectedIndex = 0;
                 tabControl.Visibility = Visibility.Visible;
@@ -403,7 +375,7 @@ namespace PropertyEditorLibrary
             }
             else
             {
-                var tab = propertyTabs.Count > 0 ? propertyTabs[0] : null;
+                TabViewModel tab = model.Count > 0 ? model[0] : null;
                 contentControl.Content = tab;
                 tabControl.Visibility = Visibility.Collapsed;
                 contentControl.Visibility = Visibility.Visible;
@@ -412,83 +384,80 @@ namespace PropertyEditorLibrary
             UpdatePropertyStates(SelectedObject);
         }
 
-        private Type FindBiggestCommonType(IEnumerable list)
+        private void ClearModel()
         {
-            Type type = null;
-            foreach (var item in list)
+            // Unsubscribe all property value changed events
+            if (model != null)
             {
-                var itemType = item.GetType();
-                if (type == null)
+                foreach (var tab in model)
                 {
-                    type = itemType;
-                    continue;
-                }
-                while (type.BaseType != null && !type.IsAssignableFrom(itemType))
-                {
-                    type = type.BaseType;
+                    foreach (var cat in tab.Categories)
+                    {
+                        foreach (var prop in cat.Properties)
+                        {
+                            prop.UnsubscribeValueChanged();
+                        }
+                    }
                 }
             }
-            return type;
+            model = null;
         }
+
 
         /// <summary>
         /// This method takes an object Instance and creates the property model.
         /// The properties are organized in a hierarchy
         /// PropertyTab
         ///   PropertyCategory
-        ///     Property|OptionalProperty|WideProperty
+        ///     Property|OptionalProperty|WideProperty|CheckBoxProperty
         /// </summary>
         /// <param name="instance"></param>
-        /// <returns>Collection of PropertyTabs</returns>
-        public virtual IList<PropertyTab> GetPropertyModel(object instance)
+        /// <returns>Collection of tab ViewModels</returns>
+        public virtual IList<TabViewModel> CreatePropertyModel(object instance)
         {
-            var result = new List<PropertyTab>();
+            var result = new List<TabViewModel>();
 
             if (instance == null)
                 return result;
 
-            Type instanceType = instance.GetType();
+            Type instanceType;
+            PropertyDescriptorCollection properties;
 
-            // todo: if changing a collection of objects
-            //if (instance is IEnumerable)
-            //{
-            //    instanceType = FindBiggestCommonType(instance as IEnumerable);  
-            //}
+            // Find the common type if changing a collection of objects
+            if (instance is IEnumerable)
+            {
+                instanceType = TypeHelper.FindBiggestCommonType(instance as IEnumerable);
+                properties=TypeDescriptor.GetProperties(instanceType);
+            }
+            else
+            {
+                instanceType = instance.GetType();
+                // find all properties of this Instance
+                properties = TypeDescriptor.GetProperties(instance, false);
+            }
 
             // The GetPropertyModel method does not return properties in a particular order, 
             // such as alphabetical or declaration order. Your code must not depend on the 
             // order in which properties are returned, because that order varies.
 
-            // find the DeclaredOnly properties
-            var declaredOnlyProperties =
-                instanceType.GetProperties(
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-
-            // find all properties of this Instance
-            var properties = TypeDescriptor.GetProperties(instance, true);
-
-            PropertyTab currentTab = null;
-            PropertyCategory currentCategory = null;
+            TabViewModel currentTabViewModel = null;
+            CategoryViewModel currentCategoryViewModel = null;
 
             string categoryName = DefaultCategoryName;
 
             // Use the type name of the Instance as the default tab name
             string tabName = instanceType.Name;
 
-            // Initialize the template selectors
-            PropertyTemplateSelector.ShowEnumAsComboBox = ShowEnumAsComboBox;
-            CategoryTemplateSelector.ShowAs = ShowCategoriesAs;
-
             propertyMap.Clear();
+            int sortOrder = 0;
 
             foreach (PropertyDescriptor descriptor in properties)
             {
-                if (descriptor==null)
+                if (descriptor == null)
                     continue;
-                PropertyDescriptor propertyDescriptor = descriptor;
 
-                // Declared properties
-                if (DeclaredOnly && declaredOnlyProperties.FirstOrDefault(p => p.Name == propertyDescriptor.Name) == null)
+                // TODO: this is not detecting DependencyProperties are defined in a base class
+                if (DeclaredOnly && descriptor.ComponentType != instanceType)
                     continue;
 
                 // Skip properties marked with [Browsable(false)]
@@ -499,28 +468,43 @@ namespace PropertyEditorLibrary
                 if (!ShowReadOnlyProperties && descriptor.IsReadOnly)
                     continue;
 
-                // If RequiredAttribute is set, check if the property has the given attribute
-                if (RequiredAttribute != null && !ContainsAttributeOfType(descriptor.Attributes,RequiredAttribute))
+                // If RequiredAttribute is set, skip properties that don't have the given attribute
+                if (RequiredAttribute != null &&
+                    !AttributeHelper.ContainsAttributeOfType(descriptor.Attributes, RequiredAttribute))
                     continue;
+
+                // Create Property ViewModel
+                var property = PropertyViewModelFactory.CreateViewModel(instance, descriptor);
+                LocalizePropertyHeader(instanceType, property);
+                propertyMap.Add(property.Name, property);
+                property.PropertyChanged += OnPropertyChanged;
+
+                if (property.SortOrder == int.MinValue)
+                    property.SortOrder = sortOrder;
+                sortOrder = property.SortOrder;
 
                 ParseTabAndCategory(descriptor, ref tabName, ref categoryName);
 
-                // Debug.WriteLine(String.Format("Adding property {0}.{1}.{2}", tabName, categoryName, descriptor.Name));
+                GetOrCreateTab(instanceType, result, tabName, sortOrder, ref currentTabViewModel,
+                               ref currentCategoryViewModel);
+                GetOrCreateCategory(instanceType, categoryName, sortOrder, currentTabViewModel,
+                                    ref currentCategoryViewModel);
 
-                GetOrCreateTab(instanceType, result, tabName, ref currentTab, ref currentCategory);
-                GetOrCreateCategory(instanceType, categoryName, currentTab, ref currentCategory);
-
-                var property = CreateProperty(descriptor, instance);
-                propertyMap.Add(descriptor.Name, property);
-
-                property.PropertyChanged += OnPropertyChanged;
-                UpdatePropertyHeader(instanceType,property);
-                currentCategory.Properties.Add(property);
+                currentCategoryViewModel.Properties.Add(property);
             }
 
-            foreach (Property prop in propertyMap.Values)
+            // Check that properties used as optional properties are not Browsable
+            CheckOptionalProperties();
+
+            // Sort the model using a stable sort algorithm 
+            return SortPropertyModel(result);
+        }
+
+        private void CheckOptionalProperties()
+        {
+            foreach (PropertyViewModel prop in propertyMap.Values)
             {
-                var oprop = prop as OptionalProperty;
+                var oprop = prop as OptionalPropertyViewModel;
                 if (oprop == null)
                     continue;
 
@@ -528,49 +512,28 @@ namespace PropertyEditorLibrary
                 {
                     if (propertyMap.ContainsKey(oprop.OptionalPropertyName))
                     {
-                        Debug.WriteLine(String.Format("Optional properties ({0}) should not be [Browsable].", oprop.OptionalPropertyName));
-                        // todo remove OptionalPropertyName from the property bag...
+                        Debug.WriteLine(String.Format("Optional properties ({0}) should not be [Browsable].",
+                                                      oprop.OptionalPropertyName));
+                        // remove OptionalPropertyName from the property bag...
                         // prop.IsOptional = false;
                     }
                 }
             }
-
-            // todo: use sort algorithm that does not change order when sort order keys are equal
-            SortPropertyModel(result);
-            return result;
         }
 
-        /// <summary>
-        /// Check if an attribute collection contains an attribute of the given type
-        /// </summary>
-        /// <param name="attributes"></param>
-        /// <param name="attributeType"></param>
-        /// <returns></returns>
-        private bool ContainsAttributeOfType(AttributeCollection attributes, Type attributeType)
+        private List<TabViewModel> SortPropertyModel(List<TabViewModel> result)
         {
-            foreach (var a in attributes)
-                if (attributeType.IsAssignableFrom(a.GetType()))
-                    return true;
-            return false;
-        }
-
-        void SortPropertyModel(List<PropertyTab> result)
-        {
-            // SortPropertyModel tabs
-            // result.Sort(); 
-            result.OrderBy(t => t.SortOrder);
-            foreach (var tab in result)
+            // Use LINQ to stable sort tabs, categories and properties.
+            List<TabViewModel> sortedResult = result.OrderBy(t => t.SortOrder).ToList();
+            foreach (TabViewModel tab in result)
             {
-                // SortPropertyModel category
-                // tab.Categories.Sort();
-                tab.Categories.OrderBy(c => c.SortOrder);
-                foreach (var cat in tab.Categories)
+                tab.Sort();
+                foreach (CategoryViewModel cat in tab.Categories)
                 {
-                    // SortPropertyModel properties
-                    // cat.Properties.Sort();
-                    cat.Properties.OrderBy(p => p.SortOrder);
+                    cat.Sort();
                 }
             }
+            return sortedResult;
         }
 
         /// <summary>
@@ -587,7 +550,7 @@ namespace PropertyEditorLibrary
         /// <param name="categoryName"></param>
         private void ParseTabAndCategory(PropertyDescriptor descriptor, ref string tabName, ref string categoryName)
         {
-            var ca = PropertyHelper.GetAttribute<CategoryAttribute>(descriptor);
+            var ca = AttributeHelper.GetAttribute<CategoryAttribute>(descriptor);
             if (ca == null || ca.Category == null || string.IsNullOrEmpty(ca.Category))
                 return;
 
@@ -603,87 +566,45 @@ namespace PropertyEditorLibrary
             }
         }
 
-        /// <summary>
-        /// Create a property
-        /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="descriptor"></param>
-        /// <returns></returns>
-        private Property CreateProperty(PropertyDescriptor descriptor, object instance)
+        private void GetOrCreateCategory(Type instanceType, string categoryName, int sortOrder,
+                                         TabViewModel currentTabViewModel,
+                                         ref CategoryViewModel currentCategoryViewModel)
         {
-            // If no provider is define, use the default provider
-            if (PropertyAttributeProvider == null)
-                PropertyAttributeProvider = new DefaultPropertyAttributeProvider();
-
-            // Get the attributes from the provider
-            var pa = PropertyAttributeProvider.GetAttributes(descriptor);
-
-            Property property = null;
-
-            // Optional
-            if (pa.OptionalProperty != null)
-                property = new OptionalProperty(instance, descriptor, pa.OptionalProperty, this);
-
-            // Wide
-            if (pa.IsWide)
-                property = new WideProperty(instance, descriptor, pa.NoHeader, this);
-
-            // Slidable
-            if (pa.IsSlidable)
-                property = new SlidableProperty(instance, descriptor, this)
-                           {
-                               SliderMinimum = pa.SliderMinimum,
-                               SliderMaximum = pa.SliderMaximum,
-                               SliderLargeChange = pa.SliderLargeChange,
-                               SliderSmallChange = pa.SliderSmallChange
-                           };
-
-            // Normal property
-            if (property == null)
-                property = new Property(instance, descriptor, this);
-
-            property.SortOrder = pa.SortOrder;
-            property.Height = pa.Height;
-            property.AcceptsReturn = property.Height > 0;
-            property.FormatString = pa.FormatString;
-
-            return property;
-        }
-
-        private void GetOrCreateCategory(Type instanceType, string categoryName, PropertyTab currentTab, ref PropertyCategory currentCategory)
-        {
-            if (currentCategory == null || currentCategory.Name != categoryName)
+            if (currentCategoryViewModel == null || currentCategoryViewModel.Name != categoryName)
             {
-                currentCategory = currentTab.Categories.FirstOrDefault(c => c.Name == categoryName);
-                if (currentCategory == null)
+                currentCategoryViewModel = currentTabViewModel.Categories.FirstOrDefault(c => c.Name == categoryName);
+                if (currentCategoryViewModel == null)
                 {
-                    currentCategory = new PropertyCategory(categoryName, this);
-                    currentTab.Categories.Add(currentCategory);
-                    UpdateCategoryHeader(instanceType, currentCategory);
+                    currentCategoryViewModel = new CategoryViewModel(categoryName, this);
+                    currentCategoryViewModel.SortOrder = sortOrder;
+                    currentTabViewModel.Categories.Add(currentCategoryViewModel);
+                    LocalizeCategoryHeader(instanceType, currentCategoryViewModel);
                 }
             }
         }
 
-        private void GetOrCreateTab(Type instanceType, ICollection<PropertyTab> tabs, string tabName, ref PropertyTab currentTab, ref PropertyCategory currentCategory)
+        private void GetOrCreateTab(Type instanceType, ICollection<TabViewModel> tabs, string tabName, int sortOrder,
+                                    ref TabViewModel currentTabViewModel, ref CategoryViewModel currentCategoryViewModel)
         {
-            if (currentTab == null || (currentTab.Name != tabName && ShowTabs))
+            if (currentTabViewModel == null || (currentTabViewModel.Name != tabName && ShowTabs))
             {
-                currentTab = tabs.FirstOrDefault(t => t.Name == tabName);
+                currentTabViewModel = tabs.FirstOrDefault(t => t.Name == tabName);
 
-                if (currentTab == null)
+                if (currentTabViewModel == null)
                 {
                     // force to find/create a new category as well
-                    currentCategory = null;
-                    currentTab = CreateTab(tabName);
-                    tabs.Add(currentTab);
-                    UpdateTabHeader(instanceType, currentTab);
+                    currentCategoryViewModel = null;
+                    currentTabViewModel = CreateTab(tabName);
+                    currentTabViewModel.SortOrder = sortOrder;
+                    tabs.Add(currentTabViewModel);
+                    LocalizeTabHeader(instanceType, currentTabViewModel);
                 }
             }
         }
 
-        PropertyTab CreateTab(string tabName)
+        private TabViewModel CreateTab(string tabName)
         {
-            var tab = new PropertyTab(tabName, this);
+            var tab = new TabViewModel(tabName, this);
             if (ImageProvider != null)
                 tab.Icon = ImageProvider.GetImage(SelectedObject.GetType(), Name);
             return tab;
@@ -692,49 +613,48 @@ namespace PropertyEditorLibrary
         /// <summary>
         /// Updates the property header and tooltip
         /// </summary>
-        /// <param name="property"></param>
-        private void UpdatePropertyHeader(Type instanceType, Property property)
+        /// <param name="instanceType">Type of the object being edited</param>
+        /// <param name="propertyViewModel">The property viewmodel</param>
+        private void LocalizePropertyHeader(Type instanceType, PropertyViewModel propertyViewModel)
         {
-            var key = property.Descriptor.Name;
-            property.Header = GetLocalizedString(instanceType, key);
-            property.ToolTip = GetLocalizedTooltip(instanceType, key);
+            propertyViewModel.Header = GetLocalizedString(instanceType, propertyViewModel.Name);
+            propertyViewModel.ToolTip = GetLocalizedTooltip(instanceType, propertyViewModel.Name);
 
             // [DisplayName(..)] and [Description(...)] attributes overrides the localized strings
-            var dna = PropertyHelper.GetAttribute<DisplayNameAttribute>(property.Descriptor);
+            var dna = AttributeHelper.GetAttribute<DisplayNameAttribute>(propertyViewModel.Descriptor);
+            var da = AttributeHelper.GetAttribute<DescriptionAttribute>(propertyViewModel.Descriptor);
+
             if (dna != null)
-                property.Header = dna.DisplayName;
-            var da = PropertyHelper.GetAttribute<DescriptionAttribute>(property.Descriptor);
+                propertyViewModel.Header = dna.DisplayName;
             if (da != null)
-                property.ToolTip = da.Description;
+                propertyViewModel.ToolTip = da.Description;
         }
 
         /// <summary>
         /// Updates the category (expander/groupbox) header and tooltip
         /// </summary>
         /// <param name="instanceType"></param>
-        /// <param name="category"></param>
-        private void UpdateCategoryHeader(Type instanceType, PropertyCategory category)
+        /// <param name="categoryViewModel"></param>
+        private void LocalizeCategoryHeader(Type instanceType, CategoryViewModel categoryViewModel)
         {
-            category.Header = GetLocalizedString(instanceType, category.Name);
-            category.ToolTip = GetLocalizedTooltip(instanceType, category.Name);
+            categoryViewModel.Header = GetLocalizedString(instanceType, categoryViewModel.Name);
+            categoryViewModel.ToolTip = GetLocalizedTooltip(instanceType, categoryViewModel.Name);
         }
 
         /// <summary>
         /// Updates the tab header and tooltip
         /// </summary>
         /// <param name="instanceType"></param>
-        /// <param name="tab"></param>
-        private void UpdateTabHeader(Type instanceType, PropertyTab tab)
+        /// <param name="tabViewModel"></param>
+        private void LocalizeTabHeader(Type instanceType, TabViewModel tabViewModel)
         {
-            tab.Header = GetLocalizedString(instanceType, tab.Name);
-            tab.ToolTip = GetLocalizedTooltip(instanceType, tab.Name);
+            tabViewModel.Header = GetLocalizedString(instanceType, tabViewModel.Name);
+            tabViewModel.ToolTip = GetLocalizedTooltip(instanceType, tabViewModel.Name);
         }
-
-        #region Property changes
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var property = sender as Property;
+            var property = sender as PropertyViewModel;
             if (property != null)
             {
                 RaisePropertyChangedEvent(property.PropertyName, null, property.Value);
@@ -747,14 +667,14 @@ namespace PropertyEditorLibrary
 
         private void UpdatePropertyStates(object instance)
         {
-            var psi = instance as IPropertyState;
+            var psi = instance as IPropertyStateUpdater;
             if (psi == null)
                 return;
-            var ps = new PropertyStates();
+            var ps = new PropertyStateBag();
             psi.UpdatePropertyStates(ps);
             foreach (var ep in ps.EnabledProperties)
             {
-                var p = propertyMap[ep.Key];
+                PropertyViewModel p = propertyMap[ep.Key];
                 if (p.IsEnabled != ep.Value)
                     p.IsEnabled = ep.Value;
             }
@@ -763,32 +683,29 @@ namespace PropertyEditorLibrary
         /// <summary>
         /// Update IsEnabled on properties marked [Optional(..)]
         /// </summary>
-        /// <param name="property"></param>
-        private void UpdateOptionalProperties(Property property)
+        /// <param name="propertyViewModel"></param>
+        private void UpdateOptionalProperties(PropertyViewModel propertyViewModel)
         {
-            foreach (Property prop in propertyMap.Values)
+            foreach (PropertyViewModel prop in propertyMap.Values)
             {
-                var oprop = prop as OptionalProperty;
+                var oprop = prop as OptionalPropertyViewModel;
                 if (oprop == null) continue;
-                if (oprop.OptionalPropertyName == property.PropertyName)
+                if (oprop.OptionalPropertyName == propertyViewModel.PropertyName)
                 {
-                    if (property.Value is bool)
+                    if (propertyViewModel.Value is bool)
                     {
-                        oprop.IsEnabled = (bool)property.Value;
+                        oprop.IsEnabled = (bool) propertyViewModel.Value;
                     }
                 }
             }
         }
-        #endregion
-
-        #region Localization
 
         private string GetLocalizedString(Type instanceType, string key)
         {
             string result = key;
-            if (Localizer != null)
+            if (LocalizationService != null)
             {
-                result = Localizer.GetString(instanceType, key);
+                result = LocalizationService.GetString(instanceType, key);
             }
             if (String.IsNullOrEmpty(result))
                 result = key;
@@ -798,22 +715,20 @@ namespace PropertyEditorLibrary
         private object GetLocalizedTooltip(Type instanceType, string key)
         {
             object tooltip = null;
-            if (Localizer != null)
+            if (LocalizationService != null)
             {
-                tooltip = Localizer.GetTooltip(instanceType, key);
+                tooltip = LocalizationService.GetTooltip(instanceType, key);
             }
 
             if (tooltip is string)
             {
-                var s = (string)tooltip;
+                var s = (string) tooltip;
                 s = s.Trim();
                 if (s.Length == 0)
                     tooltip = null;
             }
             return tooltip;
         }
-        #endregion
-
     }
 
     /// <summary>
@@ -825,5 +740,4 @@ namespace PropertyEditorLibrary
         public object OldValue { get; set; }
         public object NewValue { get; set; }
     }
-
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
@@ -6,30 +7,33 @@ using System.Collections.ObjectModel;
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// The PropertyTemplateSelector is used to select a DataTemplate based on a type
-    /// The DataTemplates must be defined in the BasicEditors.xaml/ExtendedEditors.xaml
+    /// The PropertyTemplateSelector is used to select a DataTemplate given an PropertyViewModel instance.
+    /// The DataTemplates should be defined in the BasicEditors.xaml/ExtendedEditors.xaml
     /// or in the Editors collection of the PropertyEditor.
+    /// This Selector can also be overriden if you want to provide custom selecting implementation.
     /// </summary>
     public class PropertyTemplateSelector : DataTemplateSelector
     {
         public Collection<TypeEditor> Editors { get; set; }
 
         public FrameworkElement TemplateOwner { get; set; }
-        public bool ShowEnumAsComboBox { get; set; }
 
-        public PropertyTemplateSelector()
+        public PropertyEditor Owner { get; private set; }
+
+        public PropertyTemplateSelector(PropertyEditor owner)
         {
             Editors = new Collection<TypeEditor>();
+            Owner = owner;
         }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var property = item as Property;
+            var property = item as PropertyViewModel;
             if (property == null)
             {
                 throw new ArgumentException("item must be of type Property");
             }
-            // Debug.WriteLine("Select template for " + property.PropertyName);
+            Debug.WriteLine("Select template for " + property.PropertyName);
 
             // Check if an editor is defined for the given type
             foreach (TypeEditor editor in Editors)
@@ -44,18 +48,14 @@ namespace PropertyEditorLibrary
                 return base.SelectTemplate(property.Value, container);
             }
 
-            // todo: this returns sometimes warnings like
-            // System.Windows.ResourceDictionary Warning: 9 : Resource not found; ResourceKey='TargetType=PropertyEditorLibrary.PropertyEditor ID=System.String'; ResourceKey.HashCode='2100452176'; ResourceKey.Type='System.Windows.ComponentResourceKey'
-            // System.Windows.ResourceDictionary Warning: 9 : Resource not found; ResourceKey='TargetType=PropertyEditorLibrary.PropertyEditor ID=System.Object'; ResourceKey.HashCode='2100451148'; ResourceKey.Type='System.Windows.ComponentResourceKey'
-
             var template = FindDataTemplate(property, TemplateOwner);
-            // Debug.WriteLine("  Returning " + template);
+            Debug.WriteLine("  Returning " + template);
             return template;
         }
 
-        private DataTemplate FindDataTemplate(Property property, FrameworkElement element)
+        private DataTemplate FindDataTemplate(PropertyViewModel propertyViewModel, FrameworkElement element)
         {
-            Type propertyType = property.PropertyType;
+            Type propertyType = propertyViewModel.PropertyType;
 
             // Try to find a template for the given type
             var template = TryToFindDataTemplate(element, propertyType);
@@ -65,7 +65,7 @@ namespace PropertyEditorLibrary
             // DataTemplates for enum types
             if (propertyType.BaseType == typeof(Enum))
             {
-                if (ShowEnumAsComboBox)
+                if (Owner.ShowEnumAsComboBox)
                     template = TryToFindDataTemplate(element, "ComboBoxEnumTemplate");
                 else
                     template = TryToFindDataTemplate(element, "RadioButtonsEnumTemplate");
@@ -83,9 +83,23 @@ namespace PropertyEditorLibrary
             }
 
             // If the Slidable attribute is set, use the 'sliderBox' template
-            if (property is SlidableProperty)
+            if (propertyViewModel is SlidablePropertyViewModel)
             {
                 template = TryToFindDataTemplate(element, "SliderBoxTemplate");
+                if (template != null)
+                    return template;
+            }
+
+            if (propertyViewModel is FilePathPropertyViewModel)
+            {
+                template = TryToFindDataTemplate(element, "FilePathTemplate");
+                if (template != null)
+                    return template;
+            }
+
+            if (propertyViewModel is DirectoryPathPropertyViewModel)
+            {
+                template = TryToFindDataTemplate(element, "DirectoryPathTemplate");
                 if (template != null)
                     return template;
             }

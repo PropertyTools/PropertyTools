@@ -1,0 +1,23 @@
+﻿<Window x:Class="MultiObjectEditingDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pe="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor" Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListBox Name="listbox1" ItemsSource="{Binding People}" SelectionMode="Extended" Margin="8">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding Name}"/>
+                        <TextBox Text="{Binding Age}"/>
+                        <CheckBox IsChecked="{Binding IsMarried}"/>
+                        <TextBlock Text="{Binding BirthDate}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <pe:PropertyEditor Grid.Column="1" SelectedObject="{Binding People}" Margin="8"/>
+    </Grid>
+</Window>

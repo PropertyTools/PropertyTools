@@ -1,0 +1,13 @@
+﻿<Window x:Class="LocalizedDemo.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:pe="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor"
+    Title="Localization demo" Height="200" Width="400">
+    <Grid Margin="8">
+        <pe:PropertyEditor 
+            x:Name="editor1" 
+            SelectedObject="{Binding CurrentPerson}" 
+            LocalizationService="{Binding MyLocalizationService}" 
+            LabelWidth="200"/>
+    </Grid>
+</Window>

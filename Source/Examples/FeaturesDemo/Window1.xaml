@@ -1,0 +1,64 @@
+﻿<Window x:Class="FeaturesDemo.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:pe="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor"
+    xmlns:local="clr-namespace:FeaturesDemo" xmlns:System="clr-namespace:System;assembly=mscorlib" Title="PropertyEditor" 
+    Width="800"
+    Height="720">
+    <Window.Resources>
+        <local:SuperExampleObject x:Key="Example1" />
+
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}"
+                        x:Key="AlignmentValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="HorizontalAlignment" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}"
+                        x:Key="Categories">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="pe:ShowCategoriesAs" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+
+    <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Property editor -->
+        <pe:PropertyEditor  Margin="8"  x:Name="editor1" 
+                            SelectedObject="{StaticResource Example1}"/>
+
+        <!-- Controlling the properties of the PropertyEditor -->
+        <StackPanel Grid.Column="1" Margin="8">
+            <GroupBox Header="PropertyEditor properties" Padding="8">
+                <UniformGrid Columns="2" >
+                    <Label Content="Label width"/>
+                    <Slider Minimum="10" Maximum="300" Value="{Binding LabelWidth, ElementName=editor1}"/>
+                    <Label Content="Show read-only"/>
+                    <CheckBox IsChecked="{Binding ShowReadOnlyProperties, ElementName=editor1}"/>
+                    <Label Content="Show tabs"/>
+                    <CheckBox IsChecked="{Binding ShowTabs, ElementName=editor1}"/>
+                    <Label Content="Declared only"/>
+                    <CheckBox IsChecked="{Binding DeclaredOnly, ElementName=editor1}"/>
+                    <Label Content="Show bool label"/>
+                    <CheckBox IsChecked="{Binding ShowBoolHeader, ElementName=editor1}"/>
+                    <Label Content="Show enum as combo"/>
+                    <CheckBox IsChecked="{Binding ShowEnumAsComboBox, ElementName=editor1}"/>
+                    <Label Content="Show categories as"/>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource Categories}}" SelectedItem="{Binding ShowCategoriesAs, ElementName=editor1}"/>
+                    <Label Content="Label alignment"/>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource AlignmentValues}}" SelectedItem="{Binding LabelAlignment, ElementName=editor1}"/>
+                </UniformGrid>
+            </GroupBox>
+        </StackPanel>
+        <!-- Settings for the first PropertyEditor, using a PropertyEditor here as well! -->
+        <!--            <pe:PropertyEditor Grid.Column="2"
+            Margin="8" LabelWidth="180"
+            SelectedObject="{Binding ElementName=editor1}"
+            DeclaredOnly="True" ShowTabs="True"/>-->
+    </Grid>
+</Window>

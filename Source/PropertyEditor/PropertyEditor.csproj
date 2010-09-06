@@ -100,10 +100,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\DropDownBox\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\FilePicker\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -173,7 +169,6 @@
     <Compile Include="Attributes\OptionalAttribute.cs" />
     <Compile Include="Attributes\RadioButtonsAttribute.cs" />
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
-    <Compile Include="Controls\DropDownBox\DropDownBox.cs" />
     <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />
     <Compile Include="Controls\FilePicker\FilePicker.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />

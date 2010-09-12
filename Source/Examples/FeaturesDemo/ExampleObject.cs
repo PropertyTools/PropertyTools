@@ -89,6 +89,10 @@ namespace FeaturesDemo
 
             ReadonlyString = "Ipsum lorem";
             ReadonlyInt = 123;
+
+            SliderDouble = 4.31;
+            SliderInt = 37;
+            FormattedDouble = Math.PI;
         }
         // When the [Category(...)] attribute is used with a "|", the
         // first part is the header of the tab and the second part is
@@ -99,13 +103,16 @@ namespace FeaturesDemo
         public string String { get; set; }
         public byte Byte { get; set; }
         public int Integer { get; set; }
-      //  [FormatString("0.000")]
         public double Double { get; set; }
         public bool Boolean { get; set; }
         public Genders Enum { get; set; }
        
         [Category("Type with ValueConverter")]
         public Mass Weight { get; set; }
+
+        [Category("FormatString")]
+        [FormatString("0.0000")]
+        public double FormattedDouble { get; set; }
 
         [Category("ReadOnly properties")]
         public string ReadonlyString { get; private set; }
@@ -127,6 +134,7 @@ namespace FeaturesDemo
 
         [Category("Slidable properties")]
         [Slidable(0,10,0.25,2.5)]
+        [FormatString("0.00")]
         public double SliderDouble { get; set; }
         [Slidable(0, 100, 1, 100)]
         public int SliderInt { get; set; }        

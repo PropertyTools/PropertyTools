@@ -107,9 +107,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PropertyEditor\PropertyEditor.csproj">
+    <ProjectReference Include="..\..\PropertyEditor\PropertyEditor_Net35.csproj">
       <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>
-      <Name>PropertyEditor</Name>
+      <Name>PropertyEditor_Net35</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -15,7 +15,8 @@ namespace MultiObjectEditingDemo
             People = new ObservableCollection<Person>
                          {
                              new Person {Name = "John", Age = 32},
-                             new Person {Name = "Mary", Age = 33}
+                             new Person {Name = "Mary", Age = 33},
+                             new Person {Name = "Roger", Age = 31},
                          };
             DataContext = this;
         }

@@ -19,7 +19,7 @@
             </StackPanel.LayoutTransform>
            <!-- <UniformGrid Columns="2" Height="140">-->
                 <Label Content="ColorPicker"/>
-                <p:ColorPicker SelectedColor="{Binding Color}"/>
+                <p:ColorPicker SelectedColor="{Binding Color}" ShowAsHex="True"/>
                 <Label Content="ColorPicker (brush)"/>
                 <p:ColorPicker SelectedColor="{Binding Brush}"/>
                 <Label Content="FilePicker"/>

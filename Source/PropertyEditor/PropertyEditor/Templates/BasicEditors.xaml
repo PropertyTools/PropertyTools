@@ -32,21 +32,21 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
+            <!-- todo: Slider Value binding doesn't work... Converter={local:ToDoubleConverter} -->
             <Slider 
                 Maximum="{Binding SliderMaximum}"
                 Minimum="{Binding SliderMinimum}"
                 SmallChange="{Binding SliderSmallChange}"
                 LargeChange="{Binding SliderLargeChange}"
-                IsEnabled="{Binding IsEnabled}" 
+                IsEnabled="{Binding IsEnabled}"
                 Focusable="True"
                 Margin="0 0 4 0"
-                Value="{Binding Value, Converter={local:ToDoubleConverter}}"
-                />
-            <!-- todo: FormatString not implemented -->
-            <TextBox IsReadOnly="{Binding IsReadOnly}" 
-                     IsEnabled="{Binding IsEnabled}" 
-                     Grid.Column="1"
-                     Text="{Binding Value, ValidatesOnDataErrors=True}"/>
+                Value="{Binding Value, Mode=TwoWay}"
+                /> 
+            <TextBox Grid.Column="1"
+                     IsReadOnly="{Binding IsReadOnly}" 
+                     IsEnabled="{Binding IsEnabled}"                      
+                     Text="{Binding Value}"/>
         </Grid>
     </DataTemplate>
 

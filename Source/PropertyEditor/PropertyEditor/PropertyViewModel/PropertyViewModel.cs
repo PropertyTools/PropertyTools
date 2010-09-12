@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Windows;
+using System.Globalization;
 
 namespace PropertyEditorLibrary
 {
@@ -154,8 +155,13 @@ namespace PropertyEditorLibrary
                 if (list != null)
                     return GetValueFromEnumerable(list);
                 var value = GetValue(Instance);
-                if (FormatString != null)
-                    return String.Format(FormatString, value);
+
+                if (!String.IsNullOrEmpty(FormatString))
+                {
+                    //    value = String.Format(CultureInfo.InvariantCulture, "{0:" + FormatString + "}", value);
+                    value = String.Format("{0:" + FormatString + "}", value);
+                }
+
                 return value;
             }
             set
@@ -230,6 +236,12 @@ namespace PropertyEditorLibrary
                     }
                     else
                     {
+                        if (propertyType == typeof(int) && value is double)
+                        {
+                            double d = (double)value;
+                            value = (int)d;
+                            return true;
+                        }
                         return false;
                     }
                 }

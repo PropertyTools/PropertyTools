@@ -25,6 +25,18 @@ namespace PropertyEditorLibrary
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorPicker), new FrameworkPropertyMetadata(typeof(ColorPicker)));
         }
 
+
+
+        public bool ShowAsHex
+        {
+            get { return (bool)GetValue(ShowAsHexProperty); }
+            set { SetValue(ShowAsHexProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowAsHexProperty =
+            DependencyProperty.Register("ShowAsHex", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false));
+
+
         public ObservableCollection<Color> Palette
         {
             get { return (ObservableCollection<Color>)GetValue(PaletteProperty); }
@@ -182,6 +194,8 @@ namespace PropertyEditorLibrary
         {
             get
             {
+                if (ShowAsHex)
+                    return ColorHelper.ColorToHex(SelectedColor);
                 // todo: localize...
                 if (SelectedColor.A == 0)
                     return "Transparent";

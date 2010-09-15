@@ -89,6 +89,7 @@ namespace FeaturesDemo
 
             ReadonlyString = "Ipsum lorem";
             ReadonlyInt = 123;
+            ReadonlyBool = true;
 
             SliderDouble = 4.31;
             SliderInt = 37;
@@ -117,6 +118,7 @@ namespace FeaturesDemo
         [Category("ReadOnly properties")]
         public string ReadonlyString { get; private set; }
         public int ReadonlyInt { get; private set; }
+        public bool ReadonlyBool { get; private set; }
 
         [Category("Advanced|Optional properties"),SortOrder(200)]
         public int? OptionalInteger { get; set; }

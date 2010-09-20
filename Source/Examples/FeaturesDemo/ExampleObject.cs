@@ -125,14 +125,19 @@ namespace FeaturesDemo
         public double? OptionalDouble { get; set; }
         [Optional]
         public string OptionalString { get; set; }
-
+        
         // This property is used to control the optional property
         // The property should be public, but not browsable
         [Browsable(false)]
         public bool HasValue { get; set; }
 
         [Optional("HasValue")]
-        public string Value { get; set; }
+        public int Value { get; set; }
+
+        [Category("Enabled/disabled properties")]
+        public string String3 { get; set; }
+        public bool IsString3Enabled { get; set; }
+        
 
         [Category("Slidable properties")]
         [Slidable(0,10,0.25,2.5)]

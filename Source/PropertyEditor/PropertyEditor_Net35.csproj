@@ -71,7 +71,8 @@
     <Page Include="Controls\ColorPicker\Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page> <Page Include="Controls\FilePicker\Generic.xaml">
+    </Page>
+    <Page Include="Controls\FilePicker\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -113,8 +114,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-  <Compile Include="Attributes\FilePathAttribute.cs" />
-  
+    <Compile Include="Attributes\FilePathAttribute.cs" />
     <Compile Include="Attributes\HeightAttribute.cs" />
     <Compile Include="Attributes\SortOrderAttribute.cs" />
     <Compile Include="Attributes\WidePropertyAttribute.cs" />
@@ -123,10 +123,9 @@
     <Compile Include="Attributes\OptionalAttribute.cs" />
     <Compile Include="Attributes\RadioButtonsAttribute.cs" />
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
-   <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />
+    <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />
     <Compile Include="Controls\FilePicker\FilePicker.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
-   
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ToDoubleConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
@@ -148,7 +147,8 @@
     <Compile Include="Interfaces\IImageProvider.cs" />
     <Compile Include="Interfaces\ILocalizationService.cs" />
     <Compile Include="Interfaces\IPropertyStateUpdater.cs" />
-    <Compile Include="MVVM\DelegateCommand.cs" /><Compile Include="Properties\AssemblyInfo.cs">
+    <Compile Include="MVVM\DelegateCommand.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -166,11 +166,11 @@
     </Compile>
     <Compile Include="PropertyEditor\CategoryTemplateSelector.cs" />
     <Compile Include="PropertyEditor\PropertyEditor.cs" />
-   <Compile Include="Helpers\AttributeHelper.cs" />
+    <Compile Include="Helpers\AttributeHelper.cs" />
     <Compile Include="Interfaces\IPropertyViewModelFactory.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\FilePathViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\OptionalPropertyViewModel.cs" />
-    <Compile Include="PropertyEditor\PropertyViewModel\DefaultPropertyViewModelFactory.cs" />
+    <Compile Include="PropertyEditor\DefaultPropertyViewModelFactory.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\SlidablePropertyViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\CheckBoxPropertyViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\WidePropertyViewModel.cs" />

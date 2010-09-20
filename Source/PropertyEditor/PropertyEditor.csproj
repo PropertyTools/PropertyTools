@@ -216,7 +216,7 @@
     <Compile Include="Interfaces\IPropertyViewModelFactory.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\FilePathViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\OptionalPropertyViewModel.cs" />
-    <Compile Include="PropertyEditor\PropertyViewModel\DefaultPropertyViewModelFactory.cs" />
+    <Compile Include="PropertyEditor\DefaultPropertyViewModelFactory.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\SlidablePropertyViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\CheckBoxPropertyViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\WidePropertyViewModel.cs" />

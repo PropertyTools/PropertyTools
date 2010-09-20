@@ -2,7 +2,6 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Windows;
-using System.Globalization;
 
 namespace PropertyEditorLibrary
 {
@@ -11,6 +10,26 @@ namespace PropertyEditorLibrary
     /// </summary>
     public class PropertyViewModel : ViewModelBase
     {
+        private bool isEnabled = true;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyViewModel"/> class.
+        /// </summary>
+        /// <param name="instance">The instance being edited</param>
+        /// <param name="descriptor">The property descriptor</param>
+        /// <param name="owner">The parent PropertyEditor</param>
+        public PropertyViewModel(object instance, PropertyDescriptor descriptor, PropertyEditor owner)
+            : base(owner)
+        {
+            Instance = instance;
+            Descriptor = descriptor;
+
+            Header = descriptor.DisplayName;
+            ToolTip = descriptor.Description;
+
+            Height = double.NaN;
+        }
+
         /// <summary>
         /// Gets or sets the format string.
         /// </summary>
@@ -35,66 +54,7 @@ namespace PropertyEditorLibrary
         /// <value>The text wrapping mode.</value>
         public TextWrapping TextWrapping { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyViewModel"/> class.
-        /// </summary>
-        /// <param name="instance">The instance being edited</param>
-        /// <param name="descriptor">The property descriptor</param>
-        /// <param name="owner">The parent PropertyEditor</param>
-        public PropertyViewModel(object instance, PropertyDescriptor descriptor, PropertyEditor owner)
-            : base(owner)
-        {
-            Instance = instance;
-            Descriptor = descriptor;
-
-            Header = descriptor.DisplayName;
-            ToolTip = descriptor.Description;
-
-            Height = double.NaN;
-
-            SubscribeValueChanged();
-        }
-
-        /// <summary>
-        /// Subscribes to the ValueChanged event.
-        /// </summary>
-        public void SubscribeValueChanged()
-        {
-            var list = Instance as IEnumerable;
-            if (list != null)
-            {
-                foreach (var item in list)
-                    Descriptor.AddValueChanged(item, InstancePropertyChanged);
-            }
-            else
-            {
-                Descriptor.AddValueChanged(Instance, InstancePropertyChanged);
-            }
-        }
-
-        /// <summary>
-        /// Unsubscribes the value changed event.
-        /// </summary>
-        public void UnsubscribeValueChanged()
-        {
-            var list = Instance as IEnumerable;
-            if (list != null)
-            {
-                foreach (var item in list)
-                    Descriptor.RemoveValueChanged(item, InstancePropertyChanged);
-            }
-            else
-            {
-                Descriptor.RemoveValueChanged(Instance, InstancePropertyChanged);
-            }
-        }
-
-        private void InstancePropertyChanged(object sender, EventArgs e)
-        {
-            // Sending notification when the instance has been changed
-            // If the instance is a list
-            NotifyPropertyChanged("Value");
-        }
+        public bool IsEnumerable { get; set; }
 
         public PropertyTemplateSelector PropertyTemplateSelector
         {
@@ -103,8 +63,8 @@ namespace PropertyEditorLibrary
 
         public object Instance { get; private set; }
         public PropertyDescriptor Descriptor { get; private set; }
+        public PropertyDescriptor IsEnabledDescriptor { get; set; }
 
-        private bool isEnabled = true;
         /// <summary>
         /// Gets or sets a value indicating whether this property is enabled.
         /// </summary>
@@ -115,33 +75,25 @@ namespace PropertyEditorLibrary
         {
             get
             {
+                if (IsEnabledDescriptor != null)
+                    return (bool)IsEnabledDescriptor.GetValue(Instance);
                 return isEnabled;
-                // return PropertyDescriptorAdapter.GetIsEnabled(Instance);
             }
             set
             {
+                if (IsEnabledDescriptor != null)
+                    IsEnabledDescriptor.SetValue(Instance, value);
+               
                 isEnabled = value;
-                //PropertyDescriptorAdapter.SetIsEnabled(Instance,value);
                 NotifyPropertyChanged("IsEnabled");
             }
         }
 
         /// <summary>
-        /// Gets or sets the IsVisible flag of the property.
+        /// Gets the visibility of the property.
         /// </summary>
-        /// <value>The visiblity flag.</value>
-        /* public Visibility IsVisible
-         {
-             get
-             {
-                 return PropertyDescriptorAdapter.GetIsVisible(Instance) ? Visibility.Visible : Visibility.Collapsed;
-             }
-             set
-             {
-                 PropertyDescriptorAdapter.SetIsVisible(Instance,value == Visibility.Visible);
-                 NotifyPropertyChanged("IsVisible");
-             }
-         }*/
+        /// <value>The visibility.</value>
+        public Visibility Visibility { get { return Visibility.Visible; } }
 
         /// <summary>
         /// Gets or sets the value of the property.
@@ -151,24 +103,38 @@ namespace PropertyEditorLibrary
         {
             get
             {
-                var list = Instance as IEnumerable;
-                if (list != null)
-                    return GetValueFromEnumerable(list);
-                var value = GetValue(Instance);
+                object value;
+                if (IsEnumerable)
+                {
+                    var list = Instance as IEnumerable;
+                    if (list == null)
+                    {
+                        throw new InvalidOperationException("Instance should be a list.");
+                    }
+                    value = GetValueFromEnumerable(list);
+                }
+                else
+                {
+                    value = GetValue(Instance);
+                }
 
                 if (!String.IsNullOrEmpty(FormatString))
                 {
-                    //    value = String.Format(CultureInfo.InvariantCulture, "{0:" + FormatString + "}", value);
-                    value = String.Format("{0:" + FormatString + "}", value);
+                    if (value != null)
+                        value = String.Format("{0:" + FormatString + "}", value);
                 }
 
                 return value;
             }
             set
             {
-                var list = Instance as IEnumerable;
-                if (list != null)
+                if (IsEnumerable)
                 {
+                    var list = Instance as IEnumerable;
+                    if (list == null)
+                    {
+                        throw new InvalidOperationException("Instance should be a list.");
+                    }
                     foreach (object item in list)
                     {
                         SetValue(item, value);
@@ -183,6 +149,79 @@ namespace PropertyEditorLibrary
         }
 
         /// <summary>
+        /// Subscribes to the ValueChanged event.
+        /// </summary>
+        public void SubscribeValueChanged()
+        {
+            SubscribeValueChanged(Descriptor, InstancePropertyChanged);
+            
+            if (IsEnabledDescriptor != null)
+            {
+                SubscribeValueChanged(IsEnabledDescriptor, IsEnabledChanged);
+            }
+        }
+
+        private void IsEnabledChanged(object sender, EventArgs e)
+        {
+            NotifyPropertyChanged("IsEnabled");
+        }
+        
+        /// <summary>
+        /// Unsubscribes the value changed event.
+        /// </summary>
+        public void UnsubscribeValueChanged()
+        {
+        }
+
+        /// <summary>
+        /// Subscribes to the ValueChanged event.
+        /// </summary>
+        public void SubscribeValueChanged(PropertyDescriptor descriptor, EventHandler handler)
+        {
+            if (IsEnumerable)
+            {
+                var list = Instance as IEnumerable;
+                if (list == null)
+                {
+                    throw new InvalidOperationException("Instance should be a list.");
+                }
+                foreach (var item in list)
+                    descriptor.AddValueChanged(item, handler);
+            }
+            else
+            {
+                descriptor.AddValueChanged(Instance, handler);
+            }
+        }
+        
+        /// <summary>
+        /// Unsubscribes the value changed event.
+        /// </summary>
+        public void UnsubscribeValueChanged(PropertyDescriptor descriptor, EventHandler handler)
+        {
+            if (IsEnumerable)
+            {
+                var list = Instance as IEnumerable;
+                if (list == null)
+                {
+                    throw new InvalidOperationException("Instance should be a list.");
+                }
+                foreach (var item in list)
+                    descriptor.RemoveValueChanged(item, handler);
+            }
+            else
+            {
+                descriptor.RemoveValueChanged(Instance, handler);
+            }
+        }
+        private void InstancePropertyChanged(object sender, EventArgs e)
+        {
+            // Sending notification when the instance has been changed
+            // If the instance is a list
+            NotifyPropertyChanged("Value");
+        }
+
+        /// <summary>
         /// The the current value from an IEnumerable instance
         /// </summary>
         /// <param name="componentList"></param>
@@ -194,11 +233,17 @@ namespace PropertyEditorLibrary
             {
                 object v = GetValue(component);
                 if (value == null)
+                {
                     value = v;
+                }
                 if (value != null && v == null)
+                {
                     return null;
+                }
                 if (v != null && !v.Equals(value))
+                {
                     return null;
+                }
             }
             return value;
         }
@@ -216,17 +261,21 @@ namespace PropertyEditorLibrary
             else
             {
                 // try to convert the value
-                var converter = Descriptor.Converter;
+                TypeConverter converter = Descriptor.Converter;
                 if (value != null)
                 {
                     if (converter.CanConvertFrom(value.GetType()))
                     {
                         try
                         {
-                            if (value is string)
-                                value = converter.ConvertFromInvariantString(value as string);
-                            else
+                            //if (value is string)
+                            //{
+                            //    value = converter.ConvertFromInvariantString(value as string);
+                            //}
+                            //else
+                            {
                                 value = converter.ConvertFrom(value);
+                            }
                         }
                         // Catch FormatExceptions
                         catch (Exception)
@@ -238,7 +287,7 @@ namespace PropertyEditorLibrary
                     {
                         if (propertyType == typeof(int) && value is double)
                         {
-                            double d = (double)value;
+                            var d = (double)value;
                             value = (int)d;
                             return true;
                         }
@@ -266,18 +315,18 @@ namespace PropertyEditorLibrary
 
         protected virtual void SetValue(object instance, object value)
         {
+            if (!Convert(ref value))
+                return;
+
             if (!IsModified(instance, value))
                 return;
 
-            if (Convert(ref value))
-                Descriptor.SetValue(instance, value);
-            // PropertyDescriptorAdapter.SetValue(instance, value);
+            Descriptor.SetValue(instance, value);
         }
 
         protected virtual object GetValue(object instance)
         {
             return Descriptor.GetValue(instance);
-            // return PropertyDescriptorAdapter.GetValue(instance);
         }
 
         #region Descriptor properties

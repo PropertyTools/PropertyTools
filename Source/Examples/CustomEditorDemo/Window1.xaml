@@ -5,7 +5,7 @@
     xmlns:toolkit="http://schemas.microsoft.com/wpf/2008/toolkit"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:clr2="clr-namespace:System.Collections;assembly=mscorlib"
-    Title="Custom editor" Height="400" Width="400">
+    Title="CustomEditorDemo" Height="400" Width="400">
     <Window.Resources>
         <!-- defining the custom editor here -->
         <DataTemplate x:Key="CustomDateTimeEditor">

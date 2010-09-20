@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using PropertyEditorLibrary;
 
 namespace MultiObjectEditingDemo
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : INotifyPropertyChanged
     {
         public MainWindow()
         {
@@ -18,10 +21,37 @@ namespace MultiObjectEditingDemo
                              new Person {Name = "Mary", Age = 33},
                              new Person {Name = "Roger", Age = 31},
                          };
+            foreach (var p in People)
+                p.PropertyChanged += Person_PropertyChanged;
             DataContext = this;
         }
 
+        private void Person_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "IsSelected")
+                RaisePropertyChanged("SelectedPeople");
+        }
+
         public ObservableCollection<Person> People { get; set; }
+
+        public IList<Person> SelectedPeople
+        {
+            get
+            {
+                return People.Where(p => p.IsSelected).ToList();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void RaisePropertyChanged(string property)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(property));
+            }
+        }
     }
 
     public class Person : INotifyPropertyChanged
@@ -36,8 +66,16 @@ namespace MultiObjectEditingDemo
         private int age;
         public int Age
         {
-            get { return age; }
-            set { age = value; RaisePropertyChanged("Age"); }
+            get
+            {
+                if (BirthDate.HasValue)
+                    return (int)((DateTime.Now - BirthDate.Value).TotalDays / 365.25);
+                return age;
+            }
+            set { 
+                if (!BirthDate.HasValue)
+                    age = value; 
+                RaisePropertyChanged("Age"); }
         }
 
         public override string ToString()
@@ -53,6 +91,7 @@ namespace MultiObjectEditingDemo
         }
 
         private bool isSelected;
+        [Browsable(false)]
         public bool IsSelected
         {
             get { return isSelected; }
@@ -60,10 +99,11 @@ namespace MultiObjectEditingDemo
         }
 
         private DateTime? birthDate;
+        [FormatString("dd.MM.yyyy")]
         public DateTime? BirthDate
         {
             get { return birthDate; }
-            set { birthDate = value; RaisePropertyChanged("BirthDate"); }
+            set { birthDate = value; RaisePropertyChanged("BirthDate"); RaisePropertyChanged("Age"); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

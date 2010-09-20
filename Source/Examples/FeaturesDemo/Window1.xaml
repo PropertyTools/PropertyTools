@@ -2,9 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:pe="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor"
-    xmlns:local="clr-namespace:FeaturesDemo" xmlns:System="clr-namespace:System;assembly=mscorlib" Title="PropertyEditor" 
-    Width="800"
-    Height="720">
+    xmlns:local="clr-namespace:FeaturesDemo" xmlns:System="clr-namespace:System;assembly=mscorlib" 
+    Title="FeaturesDemo" Width="800" Height="720">
     <Window.Resources>
         <local:SuperExampleObject x:Key="Example1" />
 
@@ -14,6 +13,7 @@
                 <x:Type TypeName="HorizontalAlignment" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}"
                         x:Key="Categories">
             <ObjectDataProvider.MethodParameters>

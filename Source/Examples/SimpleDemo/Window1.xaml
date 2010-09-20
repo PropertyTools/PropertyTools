@@ -3,9 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:pe="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor"
     xmlns:local="clr-namespace:FeaturesDemo" 
-    Title="PropertyEditor" 
-    Width="400"
-    Height="640">
+    Title="SimpleDemo" Width="400" Height="640">
     <Window.Resources>
         <local:Person x:Key="Person1" FirstName="Anders" 
                       LastName="Andersen" BirthDate="01.01.1974" 
@@ -21,10 +19,7 @@
         <Button DockPanel.Dock="Bottom" Content="Show values" Click="Show_Click" Width="80" HorizontalAlignment="Center" Margin="8"/>
 
         <!-- Property editor -->
-        <pe:PropertyEditor 
-                Margin="8" 
-                x:Name="editor1" 
-                SelectedObject="{StaticResource Person1}"/>
+        <pe:PropertyEditor Margin="8" x:Name="editor1" SelectedObject="{StaticResource Person1}"/>
     </DockPanel>
 
 </Window>

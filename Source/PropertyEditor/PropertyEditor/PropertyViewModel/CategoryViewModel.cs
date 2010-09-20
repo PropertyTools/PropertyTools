@@ -22,13 +22,7 @@ namespace PropertyEditorLibrary
             set { isEnabled = value; NotifyPropertyChanged("IsEnabled"); }
         }
 
-        private Visibility isVisible = Visibility.Visible;
-        public Visibility IsVisible
-        {
-            get { return isVisible; }
-            set { isVisible = value; NotifyPropertyChanged("IsVisible"); }
-        }
-
+        public Visibility Visibility { get { return Visibility.Visible; } }
         #endregion
 
         public CategoryViewModel(string categoryName, PropertyEditor owner)

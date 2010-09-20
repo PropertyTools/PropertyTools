@@ -36,7 +36,7 @@
     <!-- GroupBox for the categories -->
     <DataTemplate x:Key="CategoryGroupBoxTemplate" DataType="{x:Type local:CategoryViewModel}">
         <GroupBox Header="{Binding Header}" ToolTip="{Binding ToolTip, Mode=OneTime}" Focusable="False" Margin="2 2 2 8"
-                  IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
+                  IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
             <ItemsControl ItemsSource="{Binding Properties}" Focusable="False">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -50,7 +50,7 @@
     <!-- Expander for the categories -->
     <DataTemplate x:Key="CategoryExpanderTemplate" DataType="{x:Type local:CategoryViewModel}">
         <Expander Header="{Binding Header}" ToolTip="{Binding ToolTip, Mode=OneTime}" Focusable="False" Margin="2 2 2 8"
-                  IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
+                  IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
             <ItemsControl ItemsSource="{Binding Properties}" Focusable="False">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -64,7 +64,7 @@
     <!-- Header only for the categories -->
     <DataTemplate x:Key="CategoryHeaderTemplate" DataType="{x:Type local:CategoryViewModel}">
         <StackPanel ToolTip="{Binding ToolTip, Mode=OneTime}" Focusable="False" Margin="2 2 2 8"
-                  IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
+                  IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
             <Label Content="{Binding Header}" FontWeight="Bold"/>
             <ItemsControl ItemsSource="{Binding Properties}" Focusable="False">
                 <ItemsControl.ItemsPanel>
@@ -78,7 +78,7 @@
 
     <!-- Template for each property -->
     <DataTemplate DataType="{x:Type local:PropertyViewModel}">
-        <!--<Grid Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
+        <!--<Grid Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding LabelWidth, Mode=TwoWay,RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"/>
                 <ColumnDefinition/>
@@ -93,7 +93,7 @@
                 ContentTemplateSelector="{Binding PropertyTemplateSelector, Mode=OneTime}"/>
             <GridSplitter VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="4"/>
         </Grid>-->
-        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
+        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
             <Label 
                 Content="{Binding Header, Mode=OneTime}" 
                 ToolTip="{Binding ToolTip, Mode=OneTime}"
@@ -108,7 +108,7 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type local:WidePropertyViewModel}">
-        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
+        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
             <Label
                 DockPanel.Dock="Top"
                 Content="{Binding Header, Mode=OneTime}" 
@@ -124,7 +124,7 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type local:CheckBoxPropertyViewModel}">
-        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
+        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
             <CheckBox 
                 Content="{Binding Header, Mode=OneTime}" 
                 ToolTip="{Binding ToolTip, Mode=OneTime}"
@@ -138,7 +138,7 @@
 
     <!-- Template for an optional property -->
     <DataTemplate DataType="{x:Type local:OptionalPropertyViewModel}">
-        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding IsVisible}">
+        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
             <Grid
                 MinWidth="{Binding LabelWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}">
                 <CheckBox 

@@ -57,10 +57,33 @@ namespace PropertyEditorLibrary
             return false;
         }
 
-        public virtual bool IsSlidable(PropertyDescriptor descriptor, out double min)
+        public virtual bool IsSlidable(PropertyDescriptor descriptor, out double min, out double max, out double largeChange, out double smallChange)
         {
-            min = 0;
-            return false;
+            min = max = largeChange = smallChange = 0;
+            var sa = AttributeHelper.GetAttribute<SlidableAttribute>(descriptor);
+            if (sa == null)
+                return false;
+
+            min = sa.Minimum;
+            max = sa.Maximum;
+            largeChange = sa.LargeChange;
+            smallChange = sa.SmallChange;
+            return true;
+        }
+        public virtual string GetFormatString(PropertyDescriptor descriptor)
+        {
+            var fsa = AttributeHelper.GetAttribute<FormatStringAttribute>(descriptor);
+            if (fsa == null)
+                return null;
+            return fsa.FormatString;
+        }
+
+        public virtual double GetHeight(PropertyDescriptor descriptor)
+        {
+            var ha = AttributeHelper.GetAttribute<HeightAttribute>(descriptor);
+            if (ha == null)
+                return double.NaN;
+                return ha.Height;
         }
 
         public virtual PropertyViewModel CreateViewModel(object instance, PropertyDescriptor descriptor)
@@ -75,20 +98,18 @@ namespace PropertyEditorLibrary
             if (IsWide(descriptor, out showHeader))
                 propertyViewModel = new WidePropertyViewModel(instance, descriptor, showHeader, owner);
 
-            // If bool properties should be shown as checkbox only (no header label), we create 
-            // a CheckBoxPropertyViewModel
+            // If bool properties should be shown as checkbox only (no header label), we create a CheckBoxPropertyViewModel
             if (descriptor.PropertyType == typeof(bool) && owner != null && !owner.ShowBoolHeader)
                 propertyViewModel = new CheckBoxPropertyViewModel(instance, descriptor, owner);
 
-            // Properties with the Slidable attribute set
-            var sa = AttributeHelper.GetAttribute<SlidableAttribute>(descriptor);
-            if (sa != null)
+            double min, max, largeChange, smallChange;
+            if (IsSlidable(descriptor, out min, out max, out largeChange, out smallChange))
                 propertyViewModel = new SlidablePropertyViewModel(instance, descriptor, owner)
                                         {
-                                            SliderMinimum = sa.Minimum,
-                                            SliderMaximum = sa.Maximum,
-                                            SliderLargeChange = sa.LargeChange,
-                                            SliderSmallChange = sa.SmallChange
+                                            SliderMinimum = min,
+                                            SliderMaximum = max,
+                                            SliderLargeChange = largeChange,
+                                            SliderSmallChange = smallChange
                                         };
 
             // FilePath
@@ -101,21 +122,20 @@ namespace PropertyEditorLibrary
             if (dpa != null)
                 propertyViewModel = new DirectoryPathPropertyViewModel(instance, descriptor, owner);
 
-            // Default text property
+            // Default property (using textbox)
             if (propertyViewModel == null)
             {
                 var tp = new PropertyViewModel(instance, descriptor, owner);
-
                 propertyViewModel = tp;
             }
 
-            var fsa = AttributeHelper.GetAttribute<FormatStringAttribute>(descriptor);
-            if (fsa != null)
-                propertyViewModel.FormatString = fsa.FormatString;
+            propertyViewModel.FormatString = GetFormatString(descriptor);
 
-            var ha = AttributeHelper.GetAttribute<HeightAttribute>(descriptor);
-            if (ha != null)
-                propertyViewModel.Height = ha.Height;
+            //var ha = AttributeHelper.GetAttribute<HeightAttribute>(descriptor);
+            //if (ha != null)
+            //    propertyViewModel.Height = ha.Height;
+            propertyViewModel.Height = GetHeight(descriptor);
+
             if (propertyViewModel.Height > 0)
             {
                 propertyViewModel.AcceptsReturn = true;

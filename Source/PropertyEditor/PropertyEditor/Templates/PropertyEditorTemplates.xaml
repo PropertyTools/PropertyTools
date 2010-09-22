@@ -2,8 +2,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:PropertyEditorLibrary">
 
-    <local:PropertyTemplateSelector x:Key="propertyTemplateSelector" />
-
     <DataTemplate x:Key="TabHeaderTemplate" DataType="{x:Type local:TabViewModel}">
         <StackPanel Orientation="Horizontal">
             <Image Source="{Binding Icon}" Visibility="{Binding IconVisibility}" 
@@ -76,9 +74,56 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate x:Key="ErrorTemplate">
+        <Rectangle Width="12" Height="12" Fill="Red" VerticalAlignment="Center" Margin="4 0 4 0"/>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="">
+        
+    </DataTemplate>
+    
+    <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    
     <!-- Template for each property -->
     <DataTemplate DataType="{x:Type local:PropertyViewModel}">
-        <!--<Grid Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
+        <DataTemplate.Triggers>            
+        </DataTemplate.Triggers>
+        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
+            <Grid
+                MinWidth="{Binding LabelWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+            <Label 
+                Content="{Binding Header, Mode=OneTime}" 
+                ToolTip="{Binding ToolTip, Mode=OneTime}"                               
+                HorizontalContentAlignment="{Binding LabelAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"/>
+           
+            <ContentControl Grid.Column="1"
+                Content="{Binding PropertyWarning}" 
+                Margin="4 0 4 0" Focusable="False"
+                Visibility="{Binding PropertyWarning, Converter={StaticResource NullToVisibilityConverter}}"
+                ContentTemplate="{Binding WarningTemplate, Mode=OneTime, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"
+                />
+            <ContentControl Grid.Column="2"
+                Content="{Binding PropertyError}"              
+                Margin="4 0 4 0" Focusable="False"
+                Visibility="{Binding PropertyError, Converter={StaticResource NullToVisibilityConverter}}"
+                ContentTemplate="{Binding ErrorTemplate, Mode=OneTime, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"
+                />
+            </Grid>
+
+            <ContentControl 
+                Content="{Binding}"
+                ToolTip="{Binding ToolTip, Mode=OneTime}"
+                Focusable="False"
+                ContentTemplateSelector="{Binding PropertyTemplateSelector, Mode=OneTime}"/>
+        </DockPanel>
+    </DataTemplate>
+
+    <!--<Grid Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding LabelWidth, Mode=TwoWay,RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"/>
                 <ColumnDefinition/>
@@ -93,19 +138,6 @@
                 ContentTemplateSelector="{Binding PropertyTemplateSelector, Mode=OneTime}"/>
             <GridSplitter VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="4"/>
         </Grid>-->
-        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
-            <Label 
-                Content="{Binding Header, Mode=OneTime}" 
-                ToolTip="{Binding ToolTip, Mode=OneTime}"
-                MinWidth="{Binding LabelWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"
-                HorizontalContentAlignment="{Binding LabelAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"/>
-            <ContentControl 
-                Content="{Binding}"
-                ToolTip="{Binding ToolTip, Mode=OneTime}"
-                Focusable="False"
-                ContentTemplateSelector="{Binding PropertyTemplateSelector, Mode=OneTime}"/>
-        </DockPanel>
-    </DataTemplate>
 
     <DataTemplate DataType="{x:Type local:WidePropertyViewModel}">
         <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">

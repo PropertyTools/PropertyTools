@@ -32,5 +32,19 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="ErrorTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Rectangle Width="12" Height="12" RadiusX="2" RadiusY="2" Fill="Red" ToolTip="{Binding}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="WarningTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Rectangle Width="12" Height="12" RadiusX="2" RadiusY="2" Fill="Orange" ToolTip="{Binding}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

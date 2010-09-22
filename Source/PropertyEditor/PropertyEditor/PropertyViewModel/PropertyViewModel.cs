@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows;
@@ -76,17 +77,34 @@ namespace PropertyEditorLibrary
             get
             {
                 if (IsEnabledDescriptor != null)
-                    return (bool)IsEnabledDescriptor.GetValue(Instance);
+                    return (bool)IsEnabledDescriptor.GetValue(FirstInstance);
+
+                if (Owner.PropertyStateProvider != null)
+                    return isEnabled && Owner.PropertyStateProvider.IsEnabled(FirstInstance, Descriptor);
+                
                 return isEnabled;
             }
             set
             {
                 if (IsEnabledDescriptor != null)
-                    IsEnabledDescriptor.SetValue(Instance, value);
-               
+                    IsEnabledDescriptor.SetValue(FirstInstance, value);
+
                 isEnabled = value;
                 NotifyPropertyChanged("IsEnabled");
             }
+        }
+
+        public string PropertyError
+        {
+            get
+            {
+                return Owner.PropertyStateProvider != null ? Owner.PropertyStateProvider.GetError(FirstInstance, this.Descriptor) : null;
+            }
+        }
+
+        public string PropertyWarning
+        {
+            get { return Owner.PropertyStateProvider != null ? Owner.PropertyStateProvider.GetWarning(FirstInstance, this.Descriptor) : null; }
         }
 
         /// <summary>
@@ -95,6 +113,43 @@ namespace PropertyEditorLibrary
         /// <value>The visibility.</value>
         public Visibility Visibility { get { return Visibility.Visible; } }
 
+        public object FirstInstance
+        {
+            get
+            {
+                if (IsEnumerable)
+                {
+                    var list = Instance as IEnumerable;
+                    if (list == null)
+                    {
+                        throw new InvalidOperationException("Instance should be a list.");
+                    }
+                    return list.Cast<object>().FirstOrDefault();
+                }
+                return Instance;
+            }
+        }
+
+        public IEnumerable Instances
+        {
+            get
+            {
+                if (IsEnumerable)
+                {
+                    var list = Instance as IEnumerable;
+                    if (list == null)
+                    {
+                        throw new InvalidOperationException("Instance should be a list.");
+                    }
+                    foreach (var o in list)
+                        yield return o;
+                }
+                else
+                {
+                    yield return Instance;
+                }
+            }
+        }
         /// <summary>
         /// Gets or sets the value of the property.
         /// </summary>
@@ -154,7 +209,7 @@ namespace PropertyEditorLibrary
         public void SubscribeValueChanged()
         {
             SubscribeValueChanged(Descriptor, InstancePropertyChanged);
-            
+
             if (IsEnabledDescriptor != null)
             {
                 SubscribeValueChanged(IsEnabledDescriptor, IsEnabledChanged);
@@ -165,7 +220,7 @@ namespace PropertyEditorLibrary
         {
             NotifyPropertyChanged("IsEnabled");
         }
-        
+
         /// <summary>
         /// Unsubscribes the value changed event.
         /// </summary>
@@ -193,7 +248,7 @@ namespace PropertyEditorLibrary
                 descriptor.AddValueChanged(Instance, handler);
             }
         }
-        
+
         /// <summary>
         /// Unsubscribes the value changed event.
         /// </summary>
@@ -374,18 +429,18 @@ namespace PropertyEditorLibrary
 
         #endregion
 
-        public string this[string columnName]
+        string IDataErrorInfo.this[string columnName]
         {
             get
             {
-                var dei=Instance as IDataErrorInfo;
+                var dei = Instance as IDataErrorInfo;
                 if (dei != null)
                     return dei[Descriptor.Name];
                 return null;
             }
         }
 
-        public string Error
+        string IDataErrorInfo.Error
         {
             get
             {
@@ -394,6 +449,12 @@ namespace PropertyEditorLibrary
                     return dei.Error;
                 return null;
             }
+        }
+
+        public void UpdateErrorInfo()
+        {
+            NotifyPropertyChanged("PropertyError");
+            NotifyPropertyChanged("PropertyWarning");
         }
     }
 }

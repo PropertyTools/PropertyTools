@@ -29,79 +29,97 @@ namespace PropertyEditorLibrary
         private const string PART_TABS = "PART_Tabs";
 
         public static readonly DependencyProperty PropertyTemplateSelectorProperty =
-            DependencyProperty.Register("PropertyTemplateSelector", typeof (PropertyTemplateSelector),
-                                        typeof (PropertyEditor), new UIPropertyMetadata(null));
+            DependencyProperty.Register("PropertyTemplateSelector", typeof(PropertyTemplateSelector),
+                                        typeof(PropertyEditor), new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty CategoryTemplateSelectorProperty =
-            DependencyProperty.Register("CategoryTemplateSelector", typeof (CategoryTemplateSelector),
-                                        typeof (PropertyEditor), new UIPropertyMetadata(null));
+            DependencyProperty.Register("CategoryTemplateSelector", typeof(CategoryTemplateSelector),
+                                        typeof(PropertyEditor), new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty LabelWidthProperty =
-            DependencyProperty.Register("LabelWidth", typeof (double), typeof (PropertyEditor),
+            DependencyProperty.Register("LabelWidth", typeof(double), typeof(PropertyEditor),
                                         new UIPropertyMetadata(100.0));
 
         public static readonly DependencyProperty ShowReadOnlyPropertiesProperty =
-            DependencyProperty.Register("ShowReadOnlyProperties", typeof (bool), typeof (PropertyEditor),
+            DependencyProperty.Register("ShowReadOnlyProperties", typeof(bool), typeof(PropertyEditor),
                                         new UIPropertyMetadata(true, AppearanceChanged));
 
         public static readonly DependencyProperty ShowTabsProperty =
-            DependencyProperty.Register("ShowTabs", typeof (bool), typeof (PropertyEditor),
+            DependencyProperty.Register("ShowTabs", typeof(bool), typeof(PropertyEditor),
                                         new UIPropertyMetadata(true, AppearanceChanged));
 
         public static readonly DependencyProperty DeclaredOnlyProperty =
-            DependencyProperty.Register("DeclaredOnly", typeof (bool), typeof (PropertyEditor),
+            DependencyProperty.Register("DeclaredOnly", typeof(bool), typeof(PropertyEditor),
                                         new UIPropertyMetadata(false, AppearanceChanged));
 
         public static readonly DependencyProperty SelectedObjectProperty =
-            DependencyProperty.Register("SelectedObject", typeof (object), typeof (PropertyEditor),
+            DependencyProperty.Register("SelectedObject", typeof(object), typeof(PropertyEditor),
                                         new UIPropertyMetadata(null, SelectedObjectChanged));
 
         public static readonly DependencyProperty SelectedObjectsProperty =
-            DependencyProperty.Register("SelectedObjects", typeof (IEnumerable), typeof (PropertyEditor),
+            DependencyProperty.Register("SelectedObjects", typeof(IEnumerable), typeof(PropertyEditor),
                                         new UIPropertyMetadata(null, SelectedObjectsChanged));
 
 
         public static readonly DependencyProperty ShowBoolHeaderProperty =
-            DependencyProperty.Register("ShowBoolHeader", typeof (bool), typeof (PropertyEditor),
+            DependencyProperty.Register("ShowBoolHeader", typeof(bool), typeof(PropertyEditor),
                                         new UIPropertyMetadata(true, AppearanceChanged));
 
         public static readonly DependencyProperty ShowEnumAsComboBoxProperty =
-            DependencyProperty.Register("ShowEnumAsComboBox", typeof (bool), typeof (PropertyEditor),
+            DependencyProperty.Register("ShowEnumAsComboBox", typeof(bool), typeof(PropertyEditor),
                                         new UIPropertyMetadata(true, AppearanceChanged));
 
         public static readonly DependencyProperty ShowCategoriesAsProperty =
-            DependencyProperty.Register("ShowCategoriesAs", typeof (ShowCategoriesAs), typeof (PropertyEditor),
+            DependencyProperty.Register("ShowCategoriesAs", typeof(ShowCategoriesAs), typeof(PropertyEditor),
                                         new UIPropertyMetadata(ShowCategoriesAs.GroupBox, AppearanceChanged));
 
         public static readonly DependencyProperty DefaultCategoryNameProperty =
-            DependencyProperty.Register("DefaultCategoryName", typeof (string), typeof (PropertyEditor),
+            DependencyProperty.Register("DefaultCategoryName", typeof(string), typeof(PropertyEditor),
                                         new UIPropertyMetadata("Properties", AppearanceChanged));
 
         public static readonly DependencyProperty LabelAlignmentProperty =
-            DependencyProperty.Register("LabelAlignment", typeof (HorizontalAlignment), typeof (PropertyEditor),
+            DependencyProperty.Register("LabelAlignment", typeof(HorizontalAlignment), typeof(PropertyEditor),
                                         new UIPropertyMetadata(HorizontalAlignment.Left, AppearanceChanged));
 
         public static readonly DependencyProperty LocalizationServiceProperty =
-            DependencyProperty.Register("LocalizationService", typeof (ILocalizationService), typeof (PropertyEditor),
+            DependencyProperty.Register("LocalizationService", typeof(ILocalizationService), typeof(PropertyEditor),
                                         new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty ImageProviderProperty =
-            DependencyProperty.Register("ImageProvider", typeof (IImageProvider), typeof (PropertyEditor),
+            DependencyProperty.Register("ImageProvider", typeof(IImageProvider), typeof(PropertyEditor),
                                         new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty RequiredAttributeProperty =
-            DependencyProperty.Register("RequiredAttribute", typeof (Type), typeof (PropertyEditor),
+            DependencyProperty.Register("RequiredAttribute", typeof(Type), typeof(PropertyEditor),
                                         new UIPropertyMetadata(null));
 
-        public static readonly RoutedEvent PropertyValueChangedEvent = EventManager.RegisterRoutedEvent(
+        private static readonly RoutedEvent PropertyValueChangedEvent = EventManager.RegisterRoutedEvent(
             "PropertyValueChanged",
             RoutingStrategy.Bubble,
-            typeof (EventHandler<PropertyValueChangedEventArgs>),
-            typeof (PropertyEditor));
+            typeof(EventHandler<PropertyValueChangedEventArgs>),
+            typeof(PropertyEditor));
 
         public static readonly DependencyProperty DefaultTabNameProperty =
-            DependencyProperty.Register("DefaultTabName", typeof (string), typeof (PropertyEditor),
+            DependencyProperty.Register("DefaultTabName", typeof(string), typeof(PropertyEditor),
                                         new UIPropertyMetadata(null, AppearanceChanged));
+
+        public static readonly DependencyProperty ErrorTemplateProperty =
+            DependencyProperty.Register("ErrorTemplate", typeof(DataTemplate), typeof(PropertyEditor),
+                                        new UIPropertyMetadata(null));
+
+        public static readonly DependencyProperty WarningTemplateProperty =
+            DependencyProperty.Register("WarningTemplate", typeof(DataTemplate), typeof(PropertyEditor),
+                                        new UIPropertyMetadata(null));
+
+        public IPropertyStateProvider PropertyStateProvider
+        {
+            get { return (IPropertyStateProvider)GetValue(PropertyStateProviderProperty); }
+            set { SetValue(PropertyStateProviderProperty, value); }
+        }
+
+        public static readonly DependencyProperty PropertyStateProviderProperty =
+            DependencyProperty.Register("PropertyStateProvider", typeof(IPropertyStateProvider), typeof(PropertyEditor), new UIPropertyMetadata(null));
+
 
         /// <summary>
         /// The PropertyMap dictionary contains a map of all Properties of the current object being edited.
@@ -116,8 +134,8 @@ namespace PropertyEditorLibrary
 
         static PropertyEditor()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof (PropertyEditor),
-                                                     new FrameworkPropertyMetadata(typeof (PropertyEditor)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(PropertyEditor),
+                                                     new FrameworkPropertyMetadata(typeof(PropertyEditor)));
         }
 
         public PropertyEditor()
@@ -130,7 +148,7 @@ namespace PropertyEditorLibrary
 
         public IEnumerable SelectedObjects
         {
-            get { return (IEnumerable) GetValue(SelectedObjectsProperty); }
+            get { return (IEnumerable)GetValue(SelectedObjectsProperty); }
             set { SetValue(SelectedObjectsProperty, value); }
         }
 
@@ -170,7 +188,7 @@ namespace PropertyEditorLibrary
         [Category(CATEGORY_APPEARANCE)]
         public double LabelWidth
         {
-            get { return (double) GetValue(LabelWidthProperty); }
+            get { return (double)GetValue(LabelWidthProperty); }
             set { SetValue(LabelWidthProperty, value); }
         }
 
@@ -180,7 +198,7 @@ namespace PropertyEditorLibrary
         [Category(CATEGORY_APPEARANCE)]
         public bool ShowReadOnlyProperties
         {
-            get { return (bool) GetValue(ShowReadOnlyPropertiesProperty); }
+            get { return (bool)GetValue(ShowReadOnlyPropertiesProperty); }
             set { SetValue(ShowReadOnlyPropertiesProperty, value); }
         }
 
@@ -191,7 +209,7 @@ namespace PropertyEditorLibrary
         [Category(CATEGORY_APPEARANCE)]
         public bool ShowTabs
         {
-            get { return (bool) GetValue(ShowTabsProperty); }
+            get { return (bool)GetValue(ShowTabsProperty); }
             set { SetValue(ShowTabsProperty, value); }
         }
 
@@ -203,7 +221,7 @@ namespace PropertyEditorLibrary
         [Category(CATEGORY_APPEARANCE)]
         public bool DeclaredOnly
         {
-            get { return (bool) GetValue(DeclaredOnlyProperty); }
+            get { return (bool)GetValue(DeclaredOnlyProperty); }
             set { SetValue(DeclaredOnlyProperty, value); }
         }
 
@@ -220,7 +238,7 @@ namespace PropertyEditorLibrary
         [Category(CATEGORY_APPEARANCE)]
         public bool ShowBoolHeader
         {
-            get { return (bool) GetValue(ShowBoolHeaderProperty); }
+            get { return (bool)GetValue(ShowBoolHeaderProperty); }
             set { SetValue(ShowBoolHeaderProperty, value); }
         }
 
@@ -230,27 +248,27 @@ namespace PropertyEditorLibrary
         [Category(CATEGORY_APPEARANCE)]
         public bool ShowEnumAsComboBox
         {
-            get { return (bool) GetValue(ShowEnumAsComboBoxProperty); }
+            get { return (bool)GetValue(ShowEnumAsComboBoxProperty); }
             set { SetValue(ShowEnumAsComboBoxProperty, value); }
         }
 
         [Category(CATEGORY_APPEARANCE)]
         public ShowCategoriesAs ShowCategoriesAs
         {
-            get { return (ShowCategoriesAs) GetValue(ShowCategoriesAsProperty); }
+            get { return (ShowCategoriesAs)GetValue(ShowCategoriesAsProperty); }
             set { SetValue(ShowCategoriesAsProperty, value); }
         }
 
         public string DefaultTabName
         {
-            get { return (string) GetValue(DefaultTabNameProperty); }
+            get { return (string)GetValue(DefaultTabNameProperty); }
             set { SetValue(DefaultTabNameProperty, value); }
         }
 
 
         public string DefaultCategoryName
         {
-            get { return (string) GetValue(DefaultCategoryNameProperty); }
+            get { return (string)GetValue(DefaultCategoryNameProperty); }
             set { SetValue(DefaultCategoryNameProperty, value); }
         }
 
@@ -259,7 +277,7 @@ namespace PropertyEditorLibrary
         /// </summary>
         public HorizontalAlignment LabelAlignment
         {
-            get { return (HorizontalAlignment) GetValue(LabelAlignmentProperty); }
+            get { return (HorizontalAlignment)GetValue(LabelAlignmentProperty); }
             set { SetValue(LabelAlignmentProperty, value); }
         }
 
@@ -269,7 +287,7 @@ namespace PropertyEditorLibrary
         [Browsable(false)]
         public ILocalizationService LocalizationService
         {
-            get { return (ILocalizationService) GetValue(LocalizationServiceProperty); }
+            get { return (ILocalizationService)GetValue(LocalizationServiceProperty); }
             set { SetValue(LocalizationServiceProperty, value); }
         }
 
@@ -279,7 +297,7 @@ namespace PropertyEditorLibrary
         [Browsable(false)]
         public IImageProvider ImageProvider
         {
-            get { return (IImageProvider) GetValue(ImageProviderProperty); }
+            get { return (IImageProvider)GetValue(ImageProviderProperty); }
             set { SetValue(ImageProviderProperty, value); }
         }
 
@@ -290,7 +308,7 @@ namespace PropertyEditorLibrary
         [Browsable(false)]
         public Type RequiredAttribute
         {
-            get { return (Type) GetValue(RequiredAttributeProperty); }
+            get { return (Type)GetValue(RequiredAttributeProperty); }
             set { SetValue(RequiredAttributeProperty, value); }
         }
 
@@ -300,7 +318,7 @@ namespace PropertyEditorLibrary
         [Browsable(false)]
         public PropertyTemplateSelector PropertyTemplateSelector
         {
-            get { return (PropertyTemplateSelector) GetValue(PropertyTemplateSelectorProperty); }
+            get { return (PropertyTemplateSelector)GetValue(PropertyTemplateSelectorProperty); }
             set { SetValue(PropertyTemplateSelectorProperty, value); }
         }
 
@@ -310,8 +328,25 @@ namespace PropertyEditorLibrary
         [Browsable(false)]
         public CategoryTemplateSelector CategoryTemplateSelector
         {
-            get { return (CategoryTemplateSelector) GetValue(CategoryTemplateSelectorProperty); }
+            get { return (CategoryTemplateSelector)GetValue(CategoryTemplateSelectorProperty); }
             set { SetValue(CategoryTemplateSelectorProperty, value); }
+        }
+
+        public DataTemplate ErrorTemplate
+        {
+            get { return (DataTemplate)GetValue(ErrorTemplateProperty); }
+            set { SetValue(ErrorTemplateProperty, value); }
+        }
+
+        public DataTemplate WarningTemplate
+        {
+            get { return (DataTemplate)GetValue(WarningTemplateProperty); }
+            set { SetValue(WarningTemplateProperty, value); }
+        }
+
+        public static RoutedEvent rortemplate
+        {
+            get { return PropertyValueChangedEvent; }
         }
 
         public override void OnApplyTemplate()
@@ -350,13 +385,13 @@ namespace PropertyEditorLibrary
 
         private static void SelectedObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var pe = (PropertyEditor) d;
+            var pe = (PropertyEditor)d;
             pe.UpdateContent();
         }
 
         private static void SelectedObjectsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var pe = (PropertyEditor) d;
+            var pe = (PropertyEditor)d;
             pe.UpdateContent();
         }
 
@@ -383,7 +418,7 @@ namespace PropertyEditorLibrary
 
         private static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((PropertyEditor) d).UpdateContent();
+            ((PropertyEditor)d).UpdateContent();
         }
 
         /// <summary>
@@ -437,6 +472,7 @@ namespace PropertyEditorLibrary
             }
 
             UpdatePropertyStates(SelectedObject);
+            UpdateErrorInfo();
         }
 
         private void ClearModel()
@@ -663,7 +699,7 @@ namespace PropertyEditorLibrary
                 currentCategoryViewModel = currentTabViewModel.Categories.FirstOrDefault(c => c.Name == categoryName);
                 if (currentCategoryViewModel == null)
                 {
-                    currentCategoryViewModel = new CategoryViewModel(categoryName, this) {SortOrder = sortOrder};
+                    currentCategoryViewModel = new CategoryViewModel(categoryName, this) { SortOrder = sortOrder };
                     currentTabViewModel.Categories.Add(currentCategoryViewModel);
                     LocalizeCategoryHeader(instanceType, currentCategoryViewModel);
                 }
@@ -754,9 +790,10 @@ namespace PropertyEditorLibrary
                 UpdateOptionalProperties(property);
             }
 
-            if (e.PropertyName != "IsEnabled" && e.PropertyName != "IsVisible")
+            if (e.PropertyName != "IsEnabled" && e.PropertyName != "IsVisible" && e.PropertyName != "PropertyError" && e.PropertyName != "PropertyWarning")
             {
                 UpdatePropertyStates(SelectedObject);
+                UpdateErrorInfo();
             }
         }
 
@@ -779,6 +816,12 @@ namespace PropertyEditorLibrary
             }
         }
 
+        private void UpdateErrorInfo()
+        {
+            foreach (var p in propertyMap.Values)
+                p.UpdateErrorInfo();
+        }
+
         /// <summary>
         /// Update IsEnabled on properties marked [Optional(..)]
         /// </summary>
@@ -796,7 +839,7 @@ namespace PropertyEditorLibrary
                 {
                     if (propertyViewModel.Value is bool)
                     {
-                        oprop.IsEnabled = (bool) propertyViewModel.Value;
+                        oprop.IsEnabled = (bool)propertyViewModel.Value;
                     }
                 }
             }
@@ -826,7 +869,7 @@ namespace PropertyEditorLibrary
 
             if (tooltip is string)
             {
-                var s = (string) tooltip;
+                var s = (string)tooltip;
                 s = s.Trim();
                 if (s.Length == 0)
                 {

@@ -173,6 +173,7 @@
     <Compile Include="Controls\FilePicker\FilePicker.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\ToDoubleConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Controls\ColorPicker\ColorPicker.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Helpers\TypeHelper.cs" />
     <Compile Include="Interfaces\IImageProvider.cs" />
     <Compile Include="Interfaces\ILocalizationService.cs" />
+    <Compile Include="Interfaces\IPropertyStateProvider.cs" />
     <Compile Include="Interfaces\IPropertyStateUpdater.cs" />
     <Compile Include="MVVM\DelegateCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

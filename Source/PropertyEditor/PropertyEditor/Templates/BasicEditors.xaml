@@ -10,13 +10,13 @@
         <local:TextBoxEx 
                  IsReadOnly="{Binding IsReadOnly}" 
                  IsEnabled="{Binding IsEnabled}" 
-                 Text="{Binding Value}"
+                 Text="{Binding Value, ValidatesOnDataErrors=True}"
                  AcceptsReturn="{Binding AcceptsReturn}"
                  TextWrapping="{Binding TextWrapping}"
                  VerticalScrollBarVisibility="Auto"
                  Height="{Binding Height}"
                  >
-<!--            <local:TextBoxEx.Text>
+            <!--            <local:TextBoxEx.Text>
                 <Binding Mode="TwoWay" Path="Value" ValidatesOnDataErrors="True" StringFormat="{Binding FormatString}">
                    <Binding.ValidationRules>
                         <ExceptionValidationRule />
@@ -42,18 +42,19 @@
                 Focusable="True"
                 Margin="0 0 4 0"
                 Value="{Binding Value, Mode=TwoWay}"
-                /> 
+                VerticalAlignment="Center"
+                />
             <TextBox Grid.Column="1"
                      IsReadOnly="{Binding IsReadOnly}" 
                      IsEnabled="{Binding IsEnabled}"                      
-                     Text="{Binding Value}"/>
+                     Text="{Binding Value, ValidatesOnDataErrors=True}"/>
         </Grid>
     </DataTemplate>
 
     <!-- bool -->
     <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr:Boolean}}">
         <CheckBox 
-            IsEnabled="{Binding IsWriteable}" IsChecked="{Binding Value}" 
+            IsEnabled="{Binding IsWriteable}" IsChecked="{Binding Value, ValidatesOnDataErrors=True}" 
             HorizontalAlignment="Left" VerticalAlignment="Center"/>
     </DataTemplate>
 
@@ -80,11 +81,11 @@
     </DataTemplate>
 
     <DataTemplate x:Key="FilePathTemplate">
-        <local:FilePicker FilePath="{Binding Value}" Filter="{Binding Filter}" DefaultExtension="{Binding DefaultExtension}"/>
+        <local:FilePicker FilePath="{Binding Value, ValidatesOnDataErrors=True}" Filter="{Binding Filter}" DefaultExtension="{Binding DefaultExtension}"/>
     </DataTemplate>
 
     <DataTemplate x:Key="DirectoryPathTemplate">
-        <local:DirectoryPicker Directory="{Binding Value}"/>
+        <local:DirectoryPicker Directory="{Binding Value, ValidatesOnDataErrors=True}"/>
     </DataTemplate>
 
 </ResourceDictionary>

@@ -8,7 +8,7 @@ namespace PropertyEditorLibrary
     /// <summary>
     /// The Property ViewModel
     /// </summary>
-    public class PropertyViewModel : ViewModelBase
+    public class PropertyViewModel : ViewModelBase, IDataErrorInfo
     {
         private bool isEnabled = true;
 
@@ -373,5 +373,27 @@ namespace PropertyEditorLibrary
         }
 
         #endregion
+
+        public string this[string columnName]
+        {
+            get
+            {
+                var dei=Instance as IDataErrorInfo;
+                if (dei != null)
+                    return dei[Descriptor.Name];
+                return null;
+            }
+        }
+
+        public string Error
+        {
+            get
+            {
+                var dei = Instance as IDataErrorInfo;
+                if (dei != null)
+                    return dei.Error;
+                return null;
+            }
+        }
     }
 }

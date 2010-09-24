@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 
 namespace PropertyEditorLibrary
@@ -55,15 +55,39 @@ namespace PropertyEditorLibrary
         /// <value>The text wrapping mode.</value>
         public TextWrapping TextWrapping { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is enumerable.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is enumerable; otherwise, <c>false</c>.
+        /// </value>
         public bool IsEnumerable { get; set; }
 
+        /// <summary>
+        /// Gets the property template selector.
+        /// </summary>
+        /// <value>The property template selector.</value>
         public PropertyTemplateSelector PropertyTemplateSelector
         {
             get { return Owner.PropertyTemplateSelector; }
         }
 
+        /// <summary>
+        /// Gets or sets the instance.
+        /// </summary>
+        /// <value>The instance.</value>
         public object Instance { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the property descriptor.
+        /// </summary>
+        /// <value>The descriptor.</value>
         public PropertyDescriptor Descriptor { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the descriptor for the property's IsEnabled.
+        /// </summary>
+        /// <value>The is enabled descriptor.</value>
         public PropertyDescriptor IsEnabledDescriptor { get; set; }
 
         /// <summary>
@@ -77,11 +101,11 @@ namespace PropertyEditorLibrary
             get
             {
                 if (IsEnabledDescriptor != null)
-                    return (bool)IsEnabledDescriptor.GetValue(FirstInstance);
+                    return (bool) IsEnabledDescriptor.GetValue(FirstInstance);
 
                 if (Owner.PropertyStateProvider != null)
                     return isEnabled && Owner.PropertyStateProvider.IsEnabled(FirstInstance, Descriptor);
-                
+
                 return isEnabled;
             }
             set
@@ -94,25 +118,47 @@ namespace PropertyEditorLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the property error.
+        /// </summary>
+        /// <value>The property error.</value>
         public string PropertyError
         {
             get
             {
-                return Owner.PropertyStateProvider != null ? Owner.PropertyStateProvider.GetError(FirstInstance, this.Descriptor) : null;
+                return Owner.PropertyStateProvider != null
+                           ? Owner.PropertyStateProvider.GetError(FirstInstance, Descriptor)
+                           : null;
             }
         }
 
+        /// <summary>
+        /// Gets the property warning.
+        /// </summary>
+        /// <value>The property warning.</value>
         public string PropertyWarning
         {
-            get { return Owner.PropertyStateProvider != null ? Owner.PropertyStateProvider.GetWarning(FirstInstance, this.Descriptor) : null; }
+            get
+            {
+                return Owner.PropertyStateProvider != null
+                           ? Owner.PropertyStateProvider.GetWarning(FirstInstance, Descriptor)
+                           : null;
+            }
         }
 
         /// <summary>
         /// Gets the visibility of the property.
         /// </summary>
         /// <value>The visibility.</value>
-        public Visibility Visibility { get { return Visibility.Visible; } }
+        public Visibility Visibility
+        {
+            get { return Visibility.Visible; }
+        }
 
+        /// <summary>
+        /// Gets the first instance if the Instance is an Enumerable, otherwise return the Instance.
+        /// </summary>
+        /// <value>The first instance.</value>
         public object FirstInstance
         {
             get
@@ -130,6 +176,10 @@ namespace PropertyEditorLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the instances or a single Instance as an Enumerable.
+        /// </summary>
+        /// <value>The instances.</value>
         public IEnumerable Instances
         {
             get
@@ -141,7 +191,7 @@ namespace PropertyEditorLibrary
                     {
                         throw new InvalidOperationException("Instance should be a list.");
                     }
-                    foreach (var o in list)
+                    foreach (object o in list)
                         yield return o;
                 }
                 else
@@ -150,6 +200,7 @@ namespace PropertyEditorLibrary
                 }
             }
         }
+
         /// <summary>
         /// Gets or sets the value of the property.
         /// </summary>
@@ -203,6 +254,32 @@ namespace PropertyEditorLibrary
             }
         }
 
+        #region IDataErrorInfo Members
+
+        string IDataErrorInfo.this[string columnName]
+        {
+            get
+            {
+                var dei = Instance as IDataErrorInfo;
+                if (dei != null)
+                    return dei[Descriptor.Name];
+                return null;
+            }
+        }
+
+        string IDataErrorInfo.Error
+        {
+            get
+            {
+                var dei = Instance as IDataErrorInfo;
+                if (dei != null)
+                    return dei.Error;
+                return null;
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Subscribes to the ValueChanged event.
         /// </summary>
@@ -240,7 +317,7 @@ namespace PropertyEditorLibrary
                 {
                     throw new InvalidOperationException("Instance should be a list.");
                 }
-                foreach (var item in list)
+                foreach (object item in list)
                     descriptor.AddValueChanged(item, handler);
             }
             else
@@ -261,7 +338,7 @@ namespace PropertyEditorLibrary
                 {
                     throw new InvalidOperationException("Instance should be a list.");
                 }
-                foreach (var item in list)
+                foreach (object item in list)
                     descriptor.RemoveValueChanged(item, handler);
             }
             else
@@ -269,6 +346,7 @@ namespace PropertyEditorLibrary
                 descriptor.RemoveValueChanged(Instance, handler);
             }
         }
+
         private void InstancePropertyChanged(object sender, EventArgs e)
         {
             // Sending notification when the instance has been changed
@@ -307,7 +385,7 @@ namespace PropertyEditorLibrary
         {
             // Check if it neccessary to convert the value
             Type propertyType = Descriptor.PropertyType;
-            if (propertyType == typeof(object) ||
+            if (propertyType == typeof (object) ||
                 value == null && propertyType.IsClass ||
                 value != null && propertyType.IsAssignableFrom(value.GetType()))
             {
@@ -332,7 +410,7 @@ namespace PropertyEditorLibrary
                                 value = converter.ConvertFrom(value);
                             }
                         }
-                        // Catch FormatExceptions
+                            // Catch FormatExceptions
                         catch (Exception)
                         {
                             return false;
@@ -340,10 +418,10 @@ namespace PropertyEditorLibrary
                     }
                     else
                     {
-                        if (propertyType == typeof(int) && value is double)
+                        if (propertyType == typeof (int) && value is double)
                         {
-                            var d = (double)value;
-                            value = (int)d;
+                            var d = (double) value;
+                            value = (int) d;
                             return true;
                         }
                         return false;
@@ -384,77 +462,93 @@ namespace PropertyEditorLibrary
             return Descriptor.GetValue(instance);
         }
 
+        /// <summary>
+        /// Updates the error/warning properties.
+        /// </summary>
+        public void UpdateErrorInfo()
+        {
+            NotifyPropertyChanged("PropertyError");
+            NotifyPropertyChanged("PropertyWarning");
+        }
+
         #region Descriptor properties
 
+        /// <summary>
+        /// Gets the name of the property.
+        /// </summary>
+        /// <value>The name.</value>
         public string Name
         {
             get { return Descriptor.Name; }
         }
 
-
+        /// <summary>
+        /// Gets a value indicating whether this instance is writeable.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is writeable; otherwise, <c>false</c>.
+        /// </value>
         public bool IsWriteable
         {
             get { return !IsReadOnly; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is read only.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
+        /// </value>
         public bool IsReadOnly
         {
             get { return Descriptor.IsReadOnly; }
         }
 
+        /// <summary>
+        /// Gets the type of the property.
+        /// </summary>
+        /// <value>The type of the property.</value>
         public Type PropertyType
         {
             get { return Descriptor.PropertyType; }
         }
 
+        /// <summary>
+        /// Gets the name of the property.
+        /// </summary>
+        /// <value>The name of the property.</value>
         public string PropertyName
         {
             get { return Descriptor.Name; }
         }
 
+        /// <summary>
+        /// Gets the display name.
+        /// </summary>
+        /// <value>The display name.</value>
         public string DisplayName
         {
             get { return Descriptor.DisplayName; }
         }
 
+        /// <summary>
+        /// Gets the category.
+        /// </summary>
+        /// <value>The category.</value>
         public string Category
         {
             get { return Descriptor.Category; }
         }
 
+        /// <summary>
+        /// Gets the description.
+        /// </summary>
+        /// <value>The description.</value>
         public string Description
         {
             get { return Descriptor.Description; }
         }
 
         #endregion
-
-        string IDataErrorInfo.this[string columnName]
-        {
-            get
-            {
-                var dei = Instance as IDataErrorInfo;
-                if (dei != null)
-                    return dei[Descriptor.Name];
-                return null;
-            }
-        }
-
-        string IDataErrorInfo.Error
-        {
-            get
-            {
-                var dei = Instance as IDataErrorInfo;
-                if (dei != null)
-                    return dei.Error;
-                return null;
-            }
-        }
-
-        public void UpdateErrorInfo()
-        {
-            NotifyPropertyChanged("PropertyError");
-            NotifyPropertyChanged("PropertyWarning");
-        }
     }
 }

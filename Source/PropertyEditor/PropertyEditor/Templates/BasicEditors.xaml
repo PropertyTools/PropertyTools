@@ -1,91 +1,64 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:clr="clr-namespace:System;assembly=mscorlib"	
-    xmlns:local="clr-namespace:PropertyEditorLibrary"	
-    xmlns:Collections="clr-namespace:System.Collections;assembly=mscorlib">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:clr="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:PropertyEditorLibrary" xmlns:Collections="clr-namespace:System.Collections;assembly=mscorlib">
 
-    <!-- CLR & Custom Types Data Templates -->
+	<!-- CLR & Custom Types Data Templates -->
 
-    <DataTemplate x:Key="DefaultTemplate">
-        <local:TextBoxEx 
-                 IsReadOnly="{Binding IsReadOnly}" 
-                 IsEnabled="{Binding IsEnabled}" 
-                 Text="{Binding Value, ValidatesOnDataErrors=True}"
-                 AcceptsReturn="{Binding AcceptsReturn}"
-                 TextWrapping="{Binding TextWrapping}"
-                 VerticalScrollBarVisibility="Auto"
-                 Height="{Binding Height}"
-                 >
-            <!--            <local:TextBoxEx.Text>
+	<DataTemplate x:Key="DefaultTemplate">
+		<local:TextBoxEx IsReadOnly="{Binding IsReadOnly}" IsEnabled="{Binding IsEnabled}" Text="{Binding Value, ValidatesOnDataErrors=True}" AcceptsReturn="{Binding AcceptsReturn}" TextWrapping="{Binding TextWrapping}" VerticalScrollBarVisibility="Auto" Height="{Binding Height}">
+			<!--            <local:TextBoxEx.Text>
                 <Binding Mode="TwoWay" Path="Value" ValidatesOnDataErrors="True" StringFormat="{Binding FormatString}">
                    <Binding.ValidationRules>
                         <ExceptionValidationRule />
                     </Binding.ValidationRules>
                 </Binding>
             </local:TextBoxEx.Text>-->
-        </local:TextBoxEx>
-    </DataTemplate>
+		</local:TextBoxEx>
+	</DataTemplate>
 
-    <DataTemplate x:Key="SliderBoxTemplate">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            <!-- todo: Slider Value binding doesn't work... Converter={local:ToDoubleConverter} -->
-            <Slider 
-                Maximum="{Binding SliderMaximum}"
-                Minimum="{Binding SliderMinimum}"
-                SmallChange="{Binding SliderSmallChange}"
-                LargeChange="{Binding SliderLargeChange}"
-                IsEnabled="{Binding IsEnabled}"
-                Focusable="True"
-                Margin="0 0 4 0"
-                Value="{Binding Value, Mode=TwoWay}"
-                VerticalAlignment="Center"
-                />
-            <TextBox Grid.Column="1"
-                     IsReadOnly="{Binding IsReadOnly}" 
-                     IsEnabled="{Binding IsEnabled}"                      
-                     Text="{Binding Value, ValidatesOnDataErrors=True}"/>
-        </Grid>
-    </DataTemplate>
+	<DataTemplate x:Key="SliderBoxTemplate">
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="1*" />
+				<ColumnDefinition Width="1*" />
+			</Grid.ColumnDefinitions>
+			<!-- todo: Slider Value binding doesn't work... Converter={local:ToDoubleConverter} -->
+			<Slider Maximum="{Binding SliderMaximum}" Minimum="{Binding SliderMinimum}" SmallChange="{Binding SliderSmallChange}" LargeChange="{Binding SliderLargeChange}" IsEnabled="{Binding IsEnabled}" Focusable="True" Margin="0 0 4 0" Value="{Binding Value, Mode=TwoWay}" VerticalAlignment="Center" />
+			<TextBox Grid.Column="1" IsReadOnly="{Binding IsReadOnly}" IsEnabled="{Binding IsEnabled}" Text="{Binding Value, ValidatesOnDataErrors=True}" />
+		</Grid>
+	</DataTemplate>
 
-    <!-- bool -->
-    <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr:Boolean}}">
-        <CheckBox 
-            IsEnabled="{Binding IsWriteable}" IsChecked="{Binding Value, ValidatesOnDataErrors=True}" 
-            HorizontalAlignment="Left" VerticalAlignment="Center"/>
-    </DataTemplate>
+	<!-- bool -->
+	<DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type clr:Boolean}}">
+		<CheckBox IsEnabled="{Binding IsWriteable}" IsChecked="{Binding Value, ValidatesOnDataErrors=True}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+	</DataTemplate>
 
-    <!-- list -->
-    <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type Collections:IList}}">
-        <ListBox ItemsSource="{Binding Value}" />
-    </DataTemplate>
+	<!-- list -->
+	<DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type Collections:IList}}">
+		<ListBox ItemsSource="{Binding Value}" />
+	</DataTemplate>
 
-    <!-- enum -->
-    <DataTemplate x:Key="ComboBoxEnumTemplate">
-        <ComboBox SelectedValue="{Binding Value}" IsEnabled="{Binding IsWriteable}">
-            <ComboBox.ItemsSource>
-                <Binding Path="Value">
-                    <Binding.Converter>
-                        <local:EnumValuesConverter />
-                    </Binding.Converter>
-                </Binding>
-            </ComboBox.ItemsSource>
-        </ComboBox>
-    </DataTemplate>
+	<!-- enum -->
+	<DataTemplate x:Key="ComboBoxEnumTemplate">
+		<ComboBox SelectedValue="{Binding Value}" IsEnabled="{Binding IsWriteable}">
+			<ComboBox.ItemsSource>
+				<Binding Path="Value">
+					<Binding.Converter>
+						<local:EnumValuesConverter />
+					</Binding.Converter>
+				</Binding>
+			</ComboBox.ItemsSource>
+		</ComboBox>
+	</DataTemplate>
 
-    <DataTemplate x:Key="RadioButtonsEnumTemplate">
-        <local:RadioButtonList Value="{Binding Value}"/>
-    </DataTemplate>
+	<DataTemplate x:Key="RadioButtonsEnumTemplate">
+		<local:RadioButtonList Value="{Binding Value}" />
+	</DataTemplate>
 
-    <DataTemplate x:Key="FilePathTemplate">
-        <local:FilePicker FilePath="{Binding Value, ValidatesOnDataErrors=True}" Filter="{Binding Filter}" DefaultExtension="{Binding DefaultExtension}"/>
-    </DataTemplate>
+	<DataTemplate x:Key="FilePathTemplate">
+		<local:FilePicker FilePath="{Binding Value, ValidatesOnDataErrors=True}" Filter="{Binding Filter}" DefaultExtension="{Binding DefaultExtension}" />
+	</DataTemplate>
 
-    <DataTemplate x:Key="DirectoryPathTemplate">
-        <local:DirectoryPicker Directory="{Binding Value, ValidatesOnDataErrors=True}"/>
-    </DataTemplate>
+	<DataTemplate x:Key="DirectoryPathTemplate">
+		<local:DirectoryPicker Directory="{Binding Value, ValidatesOnDataErrors=True}" />
+	</DataTemplate>
 
 </ResourceDictionary>

@@ -173,6 +173,7 @@
     <Compile Include="Controls\FilePicker\FilePicker.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\ToDoubleConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />

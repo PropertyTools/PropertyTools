@@ -15,16 +15,22 @@ using System.Windows.Shapes;
 namespace ControlsDemo
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for RadioButtonListPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class RadioButtonListPage : Page
     {
-        public MainWindow()
+        public TestEnum TestEnum { get; set; }
+
+        public RadioButtonListPage()
         {
             InitializeComponent();
+            DataContext = this;
         }
-
     }
-
-  
+    public enum TestEnum
+    {
+        Apples,
+        Pears,
+        Oranges
+    } ;
 }

@@ -12,19 +12,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ControlsDemo
+namespace ControlsDemo.Pages
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for PopupBoxPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class PopupBoxPage : Page
     {
-        public MainWindow()
+        public PopupBoxPage()
         {
             InitializeComponent();
         }
-
     }
-
-  
 }

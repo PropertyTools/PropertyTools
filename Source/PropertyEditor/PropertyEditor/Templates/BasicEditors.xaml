@@ -13,15 +13,20 @@
             </local:TextBoxEx.Text>-->
 		</local:TextBoxEx>
 	</DataTemplate>
-
-	<DataTemplate x:Key="SliderBoxTemplate">
+    
+    <local:ToDoubleConverter x:Key="ToDoubleConverter"/>
+    
+    <DataTemplate x:Key="SliderBoxTemplate">
 		<Grid>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="1*" />
 				<ColumnDefinition Width="1*" />
 			</Grid.ColumnDefinitions>
 			<!-- todo: Slider Value binding doesn't work... Converter={local:ToDoubleConverter} -->
-			<Slider Maximum="{Binding SliderMaximum}" Minimum="{Binding SliderMinimum}" SmallChange="{Binding SliderSmallChange}" LargeChange="{Binding SliderLargeChange}" IsEnabled="{Binding IsEnabled}" Focusable="True" Margin="0 0 4 0" Value="{Binding Value, Mode=TwoWay}" VerticalAlignment="Center" />
+			<Slider Maximum="{Binding SliderMaximum}" Minimum="{Binding SliderMinimum}" 
+                    SmallChange="{Binding SliderSmallChange}" LargeChange="{Binding SliderLargeChange}" 
+                    IsEnabled="{Binding IsEnabled}" Focusable="True" Margin="0 0 4 0" 
+                    Value="{Binding Value, Mode=TwoWay, Converter={StaticResource ToDoubleConverter}}" VerticalAlignment="Center" />
 			<TextBox Grid.Column="1" IsReadOnly="{Binding IsReadOnly}" IsEnabled="{Binding IsEnabled}" Text="{Binding Value, ValidatesOnDataErrors=True}" />
 		</Grid>
 	</DataTemplate>

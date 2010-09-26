@@ -6,7 +6,7 @@ namespace PropertyEditorLibrary
     {
         /// <summary>
         /// Create a PropertyViewModel for the given property.
-        /// The ViewModel could be populated with data from attributes.
+        /// The ViewModel could be populated with data from local attributes.
         /// </summary>
         /// <param name="instance"></param>
         /// <param name="descriptor"></param>

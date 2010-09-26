@@ -5,7 +5,7 @@ namespace PropertyEditorLibrary
 {
     /// <summary>
     /// Wizard dialog
-    /// todo...
+    /// Todo: Win7 style
     /// </summary>
     public partial class WizardDialog : Window
     {

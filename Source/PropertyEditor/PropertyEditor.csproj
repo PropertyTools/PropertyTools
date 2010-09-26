@@ -104,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\PopupBox\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\RadioButtonList\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,8 +115,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\AboutDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -171,11 +173,15 @@
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
     <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />
     <Compile Include="Controls\FilePicker\FilePicker.cs" />
+    <Compile Include="Controls\PopupBox\PopupBox.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\ToDoubleConverter.cs" />
+    <Compile Include="Dialogs\AboutDialog.xaml.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Controls\ColorPicker\ColorPicker.cs" />
     <Compile Include="Controls\RadioButtonList\RadioButtonList.cs" />
@@ -185,9 +191,6 @@
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\EnumValuesConverter.cs" />
     <Compile Include="Converters\SelfProvider.cs" />
-    <Compile Include="Dialogs\AboutDialog.xaml.cs">
-      <DependentUpon>AboutDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\WizardDialog.xaml.cs">
       <DependentUpon>WizardDialog.xaml</DependentUpon>
     </Compile>

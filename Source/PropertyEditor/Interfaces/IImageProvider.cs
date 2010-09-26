@@ -13,7 +13,7 @@ namespace PropertyEditorLibrary
         /// Return the image 
         /// </summary>
         /// <param name="type">Type of the instance being edited</param>
-        /// <param name="key">Tab name</param>
+        /// <param name="key">Tab name/key</param>
         /// <returns></returns>
         ImageSource GetImage(Type type, string key);
     }

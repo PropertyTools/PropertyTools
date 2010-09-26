@@ -684,7 +684,7 @@ namespace PropertyEditorLibrary
         private static void ParseTabAndCategory(PropertyDescriptor descriptor, ref string tabName,
                                                 ref string categoryName)
         {
-            var ca = AttributeHelper.GetAttribute<CategoryAttribute>(descriptor);
+            var ca = AttributeHelper.GetFirstAttribute<CategoryAttribute>(descriptor);
             if (ca == null || ca.Category == null || string.IsNullOrEmpty(ca.Category))
             {
                 return;
@@ -758,8 +758,8 @@ namespace PropertyEditorLibrary
             propertyViewModel.ToolTip = GetLocalizedTooltip(instanceType, propertyViewModel.Name);
 
             // [DisplayName(..)] and [Description(...)] attributes overrides the localized strings
-            var dna = AttributeHelper.GetAttribute<DisplayNameAttribute>(propertyViewModel.Descriptor);
-            var da = AttributeHelper.GetAttribute<DescriptionAttribute>(propertyViewModel.Descriptor);
+            var dna = AttributeHelper.GetFirstAttribute<DisplayNameAttribute>(propertyViewModel.Descriptor);
+            var da = AttributeHelper.GetFirstAttribute<DescriptionAttribute>(propertyViewModel.Descriptor);
 
             if (dna != null)
             {
@@ -833,8 +833,9 @@ namespace PropertyEditorLibrary
         {
             foreach (PropertyViewModel p in propertyMap.Values)
                 p.UpdateErrorInfo();
-            foreach (TabViewModel tab in model)
-                tab.UpdateErrorInfo();
+            if (model!=null)
+                foreach (TabViewModel tab in model)
+                    tab.UpdateErrorInfo();
         }
 
         /// <summary>

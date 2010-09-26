@@ -68,6 +68,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OptionsViewModel.xaml.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

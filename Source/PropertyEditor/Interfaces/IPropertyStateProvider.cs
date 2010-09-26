@@ -2,6 +2,9 @@
 
 namespace PropertyEditorLibrary
 {
+    /// <summary>
+    /// Return Enabled, Visible, Error and Warning states for a given component and property.
+    /// </summary>
     public interface IPropertyStateProvider
     {
         bool IsEnabled(object component, PropertyDescriptor descriptor);

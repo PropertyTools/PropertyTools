@@ -5,6 +5,9 @@ using System.Windows.Media;
 
 namespace PropertyEditorLibrary
 {
+    /// <summary>
+    /// ViewModel for the tabs.
+    /// </summary>
     public class TabViewModel : ViewModelBase
     {
         public TabViewModel(string tabName, PropertyEditor owner)

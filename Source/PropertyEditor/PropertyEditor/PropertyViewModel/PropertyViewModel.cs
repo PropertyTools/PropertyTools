@@ -224,11 +224,11 @@ namespace PropertyEditorLibrary
                     value = GetValue(Instance);
                 }
 
-                if (!String.IsNullOrEmpty(FormatString))
-                {
-                    if (value != null)
-                        value = String.Format("{0:" + FormatString + "}", value);
-                }
+                //if (!String.IsNullOrEmpty(FormatString))
+                //{
+                //    if (value != null)
+                //        value = String.Format("{0:" + FormatString + "}", value);
+                //}
 
                 return value;
             }

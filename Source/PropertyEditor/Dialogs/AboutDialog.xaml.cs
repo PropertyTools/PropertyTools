@@ -4,126 +4,45 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// About Dialog
+    /// A basic About Dialog (inspired by Google)
     /// </summary>
     public partial class AboutDialog : Window
     {
-        private Assembly _assembly;
+        private readonly AboutViewModel vm;
 
-        public AboutDialog()
+        public AboutDialog(Window owner)
         {
+            this.Owner = owner;
+            this.Icon = owner.Icon;
+
             InitializeComponent();
-            Assembly = Assembly.GetCallingAssembly();
+            vm = new AboutViewModel(Assembly.GetCallingAssembly());
+            DataContext = vm;
         }
 
+        /// <summary>
+        /// Sets the image used in the about dialog.
+        /// Example:
+        ///  d.Image = new BitmapImage(new Uri(@"pack://application:,,,/AssemblyName;component/Images/about.png"));           
+        /// </summary>
+        /// <value>The image.</value>
         public ImageSource Image
         {
-            set { Image1.Source = value; }
+            set { vm.Image = value; }
         }
 
-        public Assembly Assembly
+        /// <summary>
+        /// Sets the update status.
+        /// </summary>
+        /// <value>The update status.</value>
+        public string UpdateStatus
         {
-            get { return _assembly; }
-            set
-            {
-                _assembly = value;
-                AssemblyChanged();
-            }
-        }
-
-        private void AssemblyChanged()
-        {
-            UpdateContent(Assembly);
-        }
-
-        private int _row;
-
-        private void UpdateContent(Assembly a)
-        {
-            if (a == null) return;
-            if (a.Location==null) return;
-
-            var fvi = FileVersionInfo.GetVersionInfo(a.Location);
-            var fi = new FileInfo(fvi.FileName);
-
-            Title = String.Format("{0} {1}.{2}", fvi.ProductName, fvi.ProductMajorPart, fvi.ProductMinorPart);
-            Add("Product", fvi.ProductName);
-            Add("Description", fvi.Comments);
-            Add("Copyright", fvi.LegalCopyright);
-            Add("Trademarks", fvi.LegalTrademarks);
-            Add("Company", fvi.CompanyName);
-            AddSeparator();
-
-            // Assembly version
-            var va = (AssemblyVersionAttribute[])a.GetCustomAttributes(typeof(AssemblyVersionAttribute), false);
-            if (va != null && va.Length > 0)
-            {
-                Add("Assembly version", va[0].Version);
-            }
-
-            // Add("Product version", fvi.ProductVersion);
-            Add("Product version", String.Format("{0}.{1}, build {2}", fvi.ProductMajorPart, fvi.ProductMinorPart, fvi.ProductBuildPart));
-            //Add("Build", fvi.ProductBuildPart);
-            //Add("Revision", fvi.ProductPrivatePart);
-
-            // Add("Debug version", fvi.IsDebug);            
-            // Add("File version", fvi.FileVersion);
-            // Add("Build", fvi.FileBuildPart);
-            Add("Build time", fi.LastWriteTime);
-            // Add("Last access", fi.LastAccessTime);
-            // Add("Created", fi.CreationTime);
-            // Add("Filename", System.IO.Path.GetFileName(fvi.FileName));
-
-            AddSeparator();
-            Add("Platform", Environment.OSVersion.Platform);
-            Add("OS version", Environment.OSVersion.Version);
-            Add("", Environment.OSVersion.ServicePack);
-            Add("CLR version", Environment.Version);
-            AddSeparator();
-            Add("Machine name", Environment.MachineName);
-            Add("Processors", Environment.ProcessorCount);
-            Add("User", Environment.UserName);
-            Add("Domain", Environment.UserDomainName);
-            // CPU speed
-            // Available memory
-            // Available disk space
-            // Hyperlinks
-        }
-
-        private readonly StringBuilder _content = new StringBuilder();
-
-        public void Add(string label, object value)
-        {
-            if (value == null) return;
-            string valueString = value.ToString().Trim();
-            if (valueString.Length == 0) return;
-
-            var tb = new TextBlock { Text = label, FontWeight = FontWeights.Bold, Margin = new Thickness(0, 0, 8, 0) };
-            var tv = new TextBlock { Text = valueString };
-
-            Grid.SetRow(tb, _row);
-            Grid.SetRow(tv, _row);
-            Grid.SetColumn(tv, 1);
-            _row++;
-            var rd = new RowDefinition { Height = GridLength.Auto };
-            Grid1.RowDefinitions.Add(rd);
-
-            Grid1.Children.Add(tb);
-            Grid1.Children.Add(tv);
-            _content.Append(label + ":\t" + valueString + "\r\n");
-        }
-
-        private void AddSeparator()
-        {
-            _row++;
-            var rd = new RowDefinition { Height = new GridLength(8) };
-            Grid1.RowDefinitions.Add(rd);
+            set { vm.UpdateStatus = value; }
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)
@@ -138,7 +57,94 @@ namespace PropertyEditorLibrary
 
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(_content.ToString());
+            Clipboard.SetText(vm.GetReport());
         }
+    }
+
+    public class AboutViewModel
+    {
+        public Assembly Assembly { get; set; }
+        public FileVersionInfo FileVersionInfo { get; set; }
+        public FileInfo FileInfo { get; set; }
+
+        public AboutViewModel(Assembly a)
+        {
+            if (a == null)
+                throw new InvalidOperationException();
+            if (a.Location == null)
+                throw new InvalidOperationException();
+
+            FileVersionInfo = FileVersionInfo.GetVersionInfo(a.Location);
+            FileInfo = new FileInfo(FileVersionInfo.FileName);
+
+            var va = (AssemblyVersionAttribute[])a.GetCustomAttributes(typeof(AssemblyVersionAttribute),true);
+            if (va != null && va.Length > 0)
+            {
+                AssemblyVersion = va[0].Version;
+            }
+
+        }
+
+        public ImageSource Image { get; set; }
+        public string AssemblyVersion { get; private set; }
+        public string ProductName { get { return FileVersionInfo.ProductName; } }
+        public string Version { get { return FileVersionInfo.ProductVersion; } }
+        public string Copyright { get { return FileVersionInfo.LegalCopyright; } }
+        public string Comments { get { return FileVersionInfo.Comments; } }
+        public string Company { get { return FileVersionInfo.CompanyName; } }
+
+        public string FileVersion { get { return FileVersionInfo.FileVersion; } }
+        public string BuildTime { get { return FileInfo.LastWriteTime.ToString(); } }
+        public string FileName { get { return Path.GetFullPath(FileVersionInfo.FileName); } }
+
+        public string Platform { get { return Environment.OSVersion.Platform.ToString(); } }
+        public string OSVersion { get { return Environment.OSVersion.Version.ToString(); } }
+        public string ServicePack { get { return Environment.OSVersion.ServicePack; } }
+        public string CLRversion { get { return Environment.Version.ToString(); } }
+        public string MachineName { get { return Environment.MachineName; } }
+        public int Processors { get { return Environment.ProcessorCount; } }
+        public string User { get { return Environment.UserName; } }
+        public string Domain { get { return Environment.UserDomainName; } }
+
+        public string UpdateStatus { get; set; }
+
+        public string GetReport()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("Product: {0}", ProductName);
+            sb.AppendLine();
+            sb.AppendFormat("Product Version: {0}", Version);
+            sb.AppendLine();
+            sb.AppendFormat("Copyright: {0}", Copyright);
+            sb.AppendLine();
+            sb.AppendFormat("Company: {0}", Company);
+            sb.AppendLine();
+
+            sb.AppendFormat("Assembly version: {0}", AssemblyVersion);
+            sb.AppendLine();
+            sb.AppendFormat("File version: {0}", FileVersion);
+            sb.AppendLine();
+            sb.AppendFormat("Build time: {0}", BuildTime);
+            sb.AppendLine();
+            sb.AppendFormat("FileName: {0}", FileName);
+            sb.AppendLine();
+            sb.AppendFormat("Platform: {0}", Platform);
+            sb.AppendLine();
+            sb.AppendFormat("OS version: {0}", OSVersion);
+            sb.AppendLine();
+            sb.AppendFormat("Service Pack: {0}", ServicePack);
+            sb.AppendLine();
+            sb.AppendFormat("CLR version: {0}", CLRversion);
+            sb.AppendLine();
+            sb.AppendFormat("Machine name: {0}", MachineName);
+            sb.AppendLine();
+            sb.AppendFormat("Processors: {0}", Processors);
+            sb.AppendLine();
+            sb.AppendFormat("User: {0}", User);
+            sb.AppendLine();
+            sb.AppendFormat("Domain: {0}", Domain);
+            return sb.ToString();
+        }
+          
     }
 }

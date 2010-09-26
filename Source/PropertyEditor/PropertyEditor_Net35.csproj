@@ -33,9 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationFramework.Luna">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Classic" />
+    <Reference Include="PresentationFramework.Luna" />
+    <Reference Include="PresentationFramework.Royale" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -73,6 +74,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\FilePicker\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+ <Page Include="Controls\PopupBox\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -125,6 +130,7 @@
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
     <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />
     <Compile Include="Controls\FilePicker\FilePicker.cs" />
+  <Compile Include="Controls\PopupBox\PopupBox.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />

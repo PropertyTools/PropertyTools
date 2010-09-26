@@ -5,10 +5,10 @@ using System.Windows.Data;
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// Usage 'Converter={local:BoolToVisibilityConverter}'
+    /// Bool to Visibility value converter
     /// </summary>
     [ValueConversion(typeof(Visibility), typeof(bool))]
-    public class BoolToVisibilityConverter : SelfProvider, IValueConverter
+    public class BoolToVisibilityConverter :IValueConverter
     {
         public bool InvertVisibility
         { get; set; }

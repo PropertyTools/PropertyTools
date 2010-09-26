@@ -5,10 +5,10 @@ using System.Windows.Media;
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// Usage 'Converter={local:ColorToHexConverter}'
+    /// Color to Hex string value converter
     /// </summary>
     [ValueConversion(typeof(Color), typeof(string))]
-    public class ColorToHexConverter : SelfProvider, IValueConverter
+    public class ColorToHexConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

@@ -9,14 +9,11 @@ namespace PropertyEditorLibrary
 {
     /// <summary>
     /// Automatic Property Dialog
-    /// TODO...
+    /// Set the DataContext of the Dialog to the instance you want to edit.
+    /// TODO: cancel/commit values
     /// </summary>
     public partial class PropertyDialog : Window
     {
-        public static readonly DependencyProperty SelectedObjectProperty =
-            DependencyProperty.Register("SelectedObject", typeof (object), typeof (PropertyDialog),
-                                        new UIPropertyMetadata(null, SelectedObjectChanged));
-
         public PropertyDialog()
         {
             InitializeComponent();
@@ -76,12 +73,6 @@ namespace PropertyEditorLibrary
 
         #endregion
 
-        public object SelectedObject
-        {
-            get { return GetValue(SelectedObjectProperty); }
-            set { SetValue(SelectedObjectProperty, value); }
-        }
-
 
         public PropertyEditor PropertyControl
         {
@@ -93,12 +84,6 @@ namespace PropertyEditorLibrary
             get { return ApplyButton.Visibility == Visibility.Visible; }
             set { ApplyButton.Visibility = value ? Visibility.Visible : Visibility.Collapsed; }
         }
-
-        private static void SelectedObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-          //  throw new NotImplementedException();
-        }
-
 
         private void PropertyDialog_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {

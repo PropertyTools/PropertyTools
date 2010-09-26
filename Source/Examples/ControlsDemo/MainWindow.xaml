@@ -1,36 +1,14 @@
-﻿<Window x:Class="ControlsDemo.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        xmlns:p="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor" 
-        Title="ControlsDemo" Height="720" Width="720">
-    <ScrollViewer>
-        <StackPanel Margin="8">
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type Label}">
-                    <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="Margin" Value="-4 8 0 0"/>
-                </Style>
-            </StackPanel.Resources>
-            <!--<StackPanel.RenderTransform>
-                <ScaleTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}"/>
-                </StackPanel.RenderTransform>-->
-            <StackPanel.LayoutTransform>
-                <ScaleTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}"/>
-            </StackPanel.LayoutTransform>
-           <!-- <UniformGrid Columns="2" Height="140">-->
-                <Label Content="ColorPicker"/>
-                <p:ColorPicker SelectedColor="{Binding Color}" ShowAsHex="True"/>
-                <Label Content="ColorPicker (brush)"/>
-                <p:ColorPicker SelectedColor="{Binding Brush}"/>
-                <Label Content="FilePicker"/>
-                <p:FilePicker FilePath="{Binding FilePath}" Filter="Text files|*.txt" DefaultExtension=".txt"/>
-                <Label Content="RadioButtonList"/>
-                <p:RadioButtonList Value="{Binding TestEnum}"/>
-                <Label Content="TextBoxEx"/>
-                <p:TextBoxEx Text="{Binding Text}"/>
-           <!--     <Label Content="Validating textbox"/>
-                <TextBox Text="{Binding Number, ValidatesOnDataErrors=True}"/> -->
-              
-        </StackPanel>
-    </ScrollViewer>
+﻿<Window x:Class="ControlsDemo.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="ControlsDemo" Height="480" Width="640">
+    <Window.Resources>
+        <XmlDataProvider x:Key="samples" Source="Examples.xml" />
+    </Window.Resources>
+    <DockPanel DataContext="{Binding  Source={StaticResource samples}, XPath=Examples/Example}">
+        <ListBox Width="160" DockPanel.Dock="Left" ItemsSource="{Binding}" DisplayMemberPath="@Title" IsSynchronizedWithCurrentItem="True"/>
+        <Slider DockPanel.Dock="Bottom" x:Name="ScaleSlider" Value="1" Minimum="1" Maximum="3" Margin="8" Width="180" />
+        <Frame Source="{Binding XPath=@Page}" VerticalAlignment="Center" NavigationUIVisibility="Hidden" Focusable="false">
+            <Frame.LayoutTransform>
+                <ScaleTransform ScaleX="{Binding Value, ElementName=ScaleSlider}" ScaleY="{Binding Value, ElementName=ScaleSlider}" />
+            </Frame.LayoutTransform>
+        </Frame>
+    </DockPanel>
 </Window>

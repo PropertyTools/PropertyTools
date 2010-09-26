@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using PropertyEditorLibrary;
 
 namespace DialogDemos
@@ -23,6 +13,7 @@ namespace DialogDemos
         public Window1()
         {
             InitializeComponent();
+            DataContext = new Person { FirstName = "Henry", LastName = "Jimmix" };
         }
 
         private void FileExit_Click(object sender, RoutedEventArgs e)
@@ -32,14 +23,19 @@ namespace DialogDemos
 
         private void EditObject_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new PropertyDialog { DataContext = new Person() };
+            var dlg = new PropertyDialog { DataContext = DataContext };
             dlg.ShowDialog();
         }
 
         private void Options_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new PropertyDialog();
-            dlg.ShowDialog();
+            var dlg = new PropertyDialog() { Owner = this };
+            var options = new OptionsViewModel();
+
+            dlg.DataContext = options;
+            dlg.Title = "Options";
+            if (dlg.ShowDialog().Value)
+                options.Save();
         }
 
         private void Wizard_Click(object sender, RoutedEventArgs e)
@@ -50,11 +46,23 @@ namespace DialogDemos
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new AboutDialog();
-            var uri = "http://opensource.linux-mirror.org/trademarks/opensource/web/opensource-400x345.png";
-            // "http://opensource.org/files/OSI-logo-100x117.png"
-            dlg.Image = new BitmapImage(new Uri(uri, UriKind.Absolute));
+            var dlg = new AboutDialog(this);
+            dlg.Title = "About the application";
+            dlg.UpdateStatus = "The application is updated.";
+            dlg.Image = new BitmapImage(new Uri(@"pack://application:,,,/DialogDemos;component/3d.png"));
+
+            // var uri = "http://opensource.linux-mirror.org/trademarks/opensource/web/opensource-400x345.png";
+            // dlg.Image = new BitmapImage(new Uri(uri, UriKind.Absolute));
             dlg.ShowDialog();
         }
     }
+
+
+    public enum StartupAction
+    {
+        NewProject,
+        OpenProject,
+        OpenLates,
+        Nothing
+    } ;
 }

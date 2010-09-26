@@ -55,6 +55,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Pages\Person.cs" />
+    <Compile Include="Pages\PopupBoxPage.xaml.cs">
+      <DependentUpon>PopupBoxPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\RadioButtonListPage.xaml.cs">
+      <DependentUpon>RadioButtonListPage.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Pages\ColorPickerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FilePickerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -63,10 +78,24 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Pages\ColorPickerPage.xaml.cs">
+      <DependentUpon>ColorPickerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FilePickerPage.xaml.cs">
+      <DependentUpon>FilePickerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\PopupBoxPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\RadioButtonListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -97,6 +126,9 @@
       <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>
       <Name>PropertyEditor</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Examples.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,6 +10,7 @@ namespace PropertyEditorLibrary
 
         /// <summary>
         /// Gets or sets the IsEnabledPattern.
+        /// 
         /// Example using a "Is{0}Enabled" pattern:
         ///   string City { get; set; }
         ///   bool IsCityEnabled { get; set; }
@@ -36,7 +37,7 @@ namespace PropertyEditorLibrary
             // Optional by Nullable type
             if (descriptor.PropertyType.IsGenericType && descriptor.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return true;
-            var oa = AttributeHelper.GetAttribute<OptionalAttribute>(descriptor);
+            var oa = AttributeHelper.GetFirstAttribute<OptionalAttribute>(descriptor);
             if (oa != null)
             {
                 optionalPropertyName = oa.PropertyName;
@@ -48,7 +49,7 @@ namespace PropertyEditorLibrary
         public virtual bool IsWide(PropertyDescriptor descriptor, out bool showHeader)
         {
             showHeader = true;
-            var wa = AttributeHelper.GetAttribute<WidePropertyAttribute>(descriptor);
+            var wa = AttributeHelper.GetFirstAttribute<WidePropertyAttribute>(descriptor);
             if (wa != null)
             {
                 showHeader = wa.ShowHeader;
@@ -60,7 +61,7 @@ namespace PropertyEditorLibrary
         public virtual bool IsSlidable(PropertyDescriptor descriptor, out double min, out double max, out double largeChange, out double smallChange)
         {
             min = max = largeChange = smallChange = 0;
-            var sa = AttributeHelper.GetAttribute<SlidableAttribute>(descriptor);
+            var sa = AttributeHelper.GetFirstAttribute<SlidableAttribute>(descriptor);
             if (sa == null)
                 return false;
 
@@ -72,7 +73,7 @@ namespace PropertyEditorLibrary
         }
         public virtual string GetFormatString(PropertyDescriptor descriptor)
         {
-            var fsa = AttributeHelper.GetAttribute<FormatStringAttribute>(descriptor);
+            var fsa = AttributeHelper.GetFirstAttribute<FormatStringAttribute>(descriptor);
             if (fsa == null)
                 return null;
             return fsa.FormatString;
@@ -80,7 +81,7 @@ namespace PropertyEditorLibrary
 
         public virtual double GetHeight(PropertyDescriptor descriptor)
         {
-            var ha = AttributeHelper.GetAttribute<HeightAttribute>(descriptor);
+            var ha = AttributeHelper.GetFirstAttribute<HeightAttribute>(descriptor);
             if (ha == null)
                 return double.NaN;
                 return ha.Height;
@@ -113,12 +114,12 @@ namespace PropertyEditorLibrary
                                         };
 
             // FilePath
-            var fpa = AttributeHelper.GetAttribute<FilePathAttribute>(descriptor);
+            var fpa = AttributeHelper.GetFirstAttribute<FilePathAttribute>(descriptor);
             if (fpa != null)
                 propertyViewModel = new FilePathPropertyViewModel(instance, descriptor, owner) { Filter = fpa.Filter, DefaultExtension = fpa.DefaultExtension };
 
             // DirectoryPath
-            var dpa = AttributeHelper.GetAttribute<DirectoryPathAttribute>(descriptor);
+            var dpa = AttributeHelper.GetFirstAttribute<DirectoryPathAttribute>(descriptor);
             if (dpa != null)
                 propertyViewModel = new DirectoryPathPropertyViewModel(instance, descriptor, owner);
 
@@ -131,7 +132,7 @@ namespace PropertyEditorLibrary
 
             propertyViewModel.FormatString = GetFormatString(descriptor);
 
-            //var ha = AttributeHelper.GetAttribute<HeightAttribute>(descriptor);
+            //var ha = AttributeHelper.GetFirstAttribute<HeightAttribute>(descriptor);
             //if (ha != null)
             //    propertyViewModel.Height = ha.Height;
             propertyViewModel.Height = GetHeight(descriptor);
@@ -142,7 +143,7 @@ namespace PropertyEditorLibrary
                 propertyViewModel.TextWrapping = TextWrapping.Wrap;
             }
 
-            var soa = AttributeHelper.GetAttribute<SortOrderAttribute>(descriptor);
+            var soa = AttributeHelper.GetFirstAttribute<SortOrderAttribute>(descriptor);
             if (soa != null)
                 propertyViewModel.SortOrder = soa.SortOrder;
 

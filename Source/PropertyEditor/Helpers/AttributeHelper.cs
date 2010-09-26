@@ -12,7 +12,7 @@ namespace PropertyEditorLibrary
         /// <typeparam name="T"></typeparam>
         /// <param name="descriptor"></param>
         /// <returns></returns>
-        public static T GetAttribute<T>(PropertyDescriptor descriptor) where T : Attribute
+        public static T GetFirstAttribute<T>(PropertyDescriptor descriptor) where T : Attribute
         {
             return descriptor.Attributes.OfType<T>().FirstOrDefault();
         }

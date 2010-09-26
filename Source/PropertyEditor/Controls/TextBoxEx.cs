@@ -6,7 +6,7 @@ namespace PropertyEditorLibrary
 {
     /// <summary>
     /// TextBox that updates the binding when Enter is pressed. Also moves focus to the next control.
-    /// Todo: replace by behaviour? or attached dependency property?
+    /// Todo: replace by behaviour or attached dependency property?
     /// </summary>
     public class TextBoxEx : TextBox
     {

@@ -5,13 +5,12 @@ using System.Windows.Data;
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// Usage 'Converter={local:EnumToBooleanConverter}'
+    /// Enum to Boolean converter
+    /// Usage 'Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static value...}'
     /// </summary>
     [ValueConversion(typeof(Enum), typeof(bool))]
-    public class EnumToBooleanConverter : SelfProvider, IValueConverter
+    public class EnumToBooleanConverter : IValueConverter
     {
-        #region IValueConverter Members
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || parameter == null)
@@ -39,7 +38,5 @@ namespace PropertyEditorLibrary
             } // Ignore, just return DoNothing.
             return Binding.DoNothing;
         }
-
-        #endregion
     }
 }

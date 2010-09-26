@@ -27,6 +27,6 @@
             <Button Name="CloseButton" Click="CloseButton_Click" Content="Close"/>
             <Button Name="HelpButton" Click="HelpButton_Click" Content="Help"/>
         </StackPanel>
-        <o:PropertyEditor x:Name="propertyControl1" Margin="8"/>
+        <o:PropertyEditor x:Name="propertyControl1" SelectedObject="{Binding}" Margin="8"/>
     </DockPanel>
 </Window>

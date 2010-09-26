@@ -17,30 +17,23 @@
       <Method Name="PropertyDialog" Hidden="true" />
       <Method Name="PropertyDialog_DataContextChanged" Hidden="true" />
       <Method Name="RestoreFieldValues" Hidden="true" />
-      <Method Name="SelectedObjectChanged" Hidden="true" />
-      <Field Name="SelectedObjectProperty" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>ABAAAFQAiAAAIAAAIAAQAAEAEAAQgAIAAAAAQgAgAAA=</HashCode>
+      <HashCode>ABAAAFQACAAAAAAAIAAQAAEAAAAQgAIAAAAAQgAgAAA=</HashCode>
       <FileName>Dialogs\PropertyDialog.xaml.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PropertyEditorLibrary.AboutDialog">
     <Position X="3.25" Y="0.5" Width="2.5" />
     <Members>
-      <Field Name="_assembly" Hidden="true" />
-      <Field Name="_content" Hidden="true" />
-      <Field Name="_row" Hidden="true" />
       <Method Name="AboutDialog" Hidden="true" />
-      <Method Name="AddSeparator" Hidden="true" />
-      <Method Name="AssemblyChanged" Hidden="true" />
       <Method Name="Copy_Click" Hidden="true" />
       <Method Name="Ok_Click" Hidden="true" />
       <Method Name="SystemInfo_Click" Hidden="true" />
-      <Method Name="UpdateContent" Hidden="true" />
+      <Field Name="vm" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAIAAAEAEAAAA4ABAAAAAAAAAAADAJAAAAAAABAAAAA=</HashCode>
+      <HashCode>AAAAAAAEAAAgAwAAAAAAAAAAAAAAABAAAAAAABAAAAA=</HashCode>
       <FileName>Dialogs\AboutDialog.xaml.cs</FileName>
     </TypeIdentifier>
   </Class>

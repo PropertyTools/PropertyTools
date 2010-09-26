@@ -15,16 +15,19 @@ using System.Windows.Shapes;
 namespace ControlsDemo
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for FilePickerPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class FilePickerPage : Page
     {
-        public MainWindow()
+        public FilePickerPage()
         {
             InitializeComponent();
+            DataContext = this;
+            FilePath = @"C:\autoexec.bat";
+            Directory = @"C:\Windows";
         }
 
+        public string FilePath { get; set; }
+        public string Directory { get; set; }
     }
-
-  
 }

@@ -5,10 +5,10 @@ using System.Windows.Media;
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// Usage 'Converter={local:BrushToColorConverter}'
+    /// Brush to Color value converter
     /// </summary>
     [ValueConversion(typeof(Brush), typeof(Color))]
-    public class BrushToColorConverter : SelfProvider, IValueConverter
+    public class BrushToColorConverter : IValueConverter
     {
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

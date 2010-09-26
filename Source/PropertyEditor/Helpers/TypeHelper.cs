@@ -5,6 +5,11 @@ namespace PropertyEditorLibrary
 {
     public static class TypeHelper
     {
+        /// <summary>
+        /// Finds the biggest common type of items in the list.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <returns></returns>
         public static Type FindBiggestCommonType(IEnumerable list)
         {
             Type type = null;

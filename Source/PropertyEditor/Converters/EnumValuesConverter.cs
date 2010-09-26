@@ -10,7 +10,7 @@ namespace PropertyEditorLibrary
     /// Usage 'Converter={local:EnumValuesConverter}'
     /// </summary>
     [ValueConversion(typeof(Enum), typeof(string[]))]
-    public class EnumValuesConverter : SelfProvider, IValueConverter
+    public class EnumValuesConverter : IValueConverter
     {
         #region IValueConverter Members
 

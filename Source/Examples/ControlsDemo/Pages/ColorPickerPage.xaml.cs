@@ -15,16 +15,16 @@ using System.Windows.Shapes;
 namespace ControlsDemo
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ColorPickerPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ColorPickerPage : Page
     {
-        public MainWindow()
+        public Color Color { get; set; }
+        public SolidColorBrush Brush { get; set; }
+        public ColorPickerPage()
         {
             InitializeComponent();
+            DataContext = this;
         }
-
     }
-
-  
 }

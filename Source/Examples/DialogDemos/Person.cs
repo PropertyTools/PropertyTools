@@ -7,11 +7,27 @@ using PropertyEditorLibrary;
 
 namespace DialogDemos
 {
-   
+
     public class Person : Observable
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        private string _firstName;
+        public string FirstName
+        {
+            get { return _firstName; }
+            set { _firstName = value; OnPropertyChanged("FirstName"); }
+        }
+
+        private string _lastName;
+        public string LastName
+        {
+            get { return _lastName; }
+            set { _lastName = value; OnPropertyChanged("LastName"); }
+        }
+
+        public override string ToString()
+        {
+            return FirstName + " " + LastName;
+        }
     }
 
     public class Observable : INotifyPropertyChanged

@@ -9,10 +9,12 @@
     <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type media:Color}}">
         <local:ColorPicker SelectedColor="{Binding Value}"/>
     </DataTemplate>
-
+    
+    <local:BrushToColorConverter x:Key="BrushToColorConverter"/>
+    
     <!-- System.Windows.Media.Brush -->
     <DataTemplate x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:PropertyEditor}, ResourceId={x:Type media:Brush}}">
-        <local:ColorPicker SelectedColor="{Binding Value, Converter={local:BrushToColorConverter}}"/>
+        <local:ColorPicker SelectedColor="{Binding Value, Converter={StaticResource BrushToColorConverter}}"/>
     </DataTemplate>
 
     <!-- System.Windows.Media.FontFamily -->

@@ -1,0 +1,56 @@
+﻿<Page x:Class="ControlsDemo.Pages.PopupBoxPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:pel="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor" xmlns:local="clr-namespace:ControlsDemo" mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+	Title="PopupBoxPage">
+    <Page.Resources>
+        <x:Array x:Key="people" Type="{x:Type local:Person}">
+            <local:Person Name="John" Address="Oslo"/>
+            <local:Person Name="Tom" Address="Paris"/>
+            <local:Person Name="Ken" Address="Nairobi"/>
+        </x:Array>
+        <DataTemplate x:Key="PersonTemplate" DataType="{x:Type local:Person}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontWeight="Bold" Padding="0 0 8 0"/>
+                <TextBlock Text="{Binding Address}" VerticalAlignment="Center" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <StackPanel DataContext="{StaticResource people}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <GroupBox Padding="8" VerticalAlignment="Top" Header="PopupBox">
+                    <pel:PopupBox 
+                        Margin="4" 
+                        SelectedValue="{Binding Mode=OneWay}" 
+                        ItemTemplate="{StaticResource PersonTemplate}">
+                        <pel:PopupBox.PopupTemplate>
+                            <DataTemplate DataType="{x:Type local:Person}">
+                                <StackPanel Orientation="Vertical" DataContext="{Binding SelectedValue}">
+                                    <TextBox Text="{Binding Name}" Margin="2"/>
+                                    <TextBox Text="{Binding Address}" Margin="2"/>
+                                    <ListBox Margin="4" ItemsSource="{Binding}" ItemTemplate="{StaticResource PersonTemplate}" IsSynchronizedWithCurrentItem="True"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </pel:PopupBox.PopupTemplate>
+                    </pel:PopupBox>
+                </GroupBox>
+                <GroupBox Margin="8 0 0 0" Grid.Column="1" Padding="8" Header="Standard controls">
+                    <StackPanel>
+                        <ComboBox Margin="4" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" ItemTemplate="{StaticResource PersonTemplate}"/>
+                        <ListBox Margin="4" ItemsSource="{Binding}" ItemTemplate="{StaticResource PersonTemplate}" IsSynchronizedWithCurrentItem="True"/>
+                        <TextBox Text="{Binding Name}" Margin="4"/>
+                        <TextBox Text="{Binding Address}" Margin="4"/>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Page>

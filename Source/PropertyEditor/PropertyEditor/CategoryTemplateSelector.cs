@@ -22,14 +22,9 @@ namespace PropertyEditorLibrary
             var category = item as CategoryViewModel;
             if (category == null)
             {
-                throw new ArgumentException("item must be of type Property");
+                throw new ArgumentException("item must be of type CategoryViewModel");
             }
-
-            /*var element = container as FrameworkElement;
-            if (element == null)
-            {
-                return base.SelectTemplate(category, container);
-            }*/
+          
             var key = "CategoryGroupBoxTemplate";
             if (Owner.ShowCategoriesAs == ShowCategoriesAs.Expander) key = "CategoryExpanderTemplate";
             if (Owner.ShowCategoriesAs == ShowCategoriesAs.Header) key = "CategoryHeaderTemplate";

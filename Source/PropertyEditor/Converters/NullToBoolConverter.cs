@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Data;
 
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// null to bool valueconverter
+    /// Null to bool value converter
     /// </summary>
     [ValueConversion(typeof(bool), typeof(object))]
-    public class NullToBoolConverter : SelfProvider, IValueConverter
+    public class NullToBoolConverter : IValueConverter
     {
+        /// <summary>
+        /// Gets or sets the value returned when the source value is null.
+        /// </summary>
         public bool NullValue { get; set; }
 
         public NullToBoolConverter()

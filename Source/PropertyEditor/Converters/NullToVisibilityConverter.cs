@@ -5,10 +5,10 @@ using System.Windows.Data;
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// Usage 'Converter={local:NullToVisibilityConverter}'
+    /// Null to Visibility converter
     /// </summary>
     [ValueConversion(typeof(Visibility), typeof(object))]
-    public class NullToVisibilityConverter : SelfProvider, IValueConverter
+    public class NullToVisibilityConverter : IValueConverter
     {
         public Visibility NullVisibility { get; set; }
         public Visibility NotNullVisibility { get; set; }

@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PropertyEditorLibrary
 {
+    // todo: consider to solve this in other ways...
+
     /// <summary>
     /// Implement this interface on your model class to be able to updates the 
     /// property enabled/visible states of the properties. 
     /// This update method is called after every property change of the same instance.
     /// </summary>
+    [Obsolete]
     public interface IPropertyStateUpdater
     {
         void UpdatePropertyStates(PropertyStateBag stateBag);

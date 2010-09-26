@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Examples>
+  <Example Page="Pages\ColorPickerPage.xaml" Title="ColorPicker" Description=""/>
+  <Example Page="Pages\PopupBoxPage.xaml" Title="PopupBox" Description=""/>
+  <Example Page="Pages\FilePickerPage.xaml" Title="FilePicker" Description=""/>
+  <Example Page="Pages\RadioButtonListPage.xaml" Title="RadioButtonList" Description=""/>
+</Examples>

@@ -4,4 +4,5 @@
   <Example Page="Pages\PopupBoxPage.xaml" Title="PopupBox" Description=""/>
   <Example Page="Pages\FilePickerPage.xaml" Title="FilePicker" Description=""/>
   <Example Page="Pages\RadioButtonListPage.xaml" Title="RadioButtonList" Description=""/>
+  <Example Page="Pages\FormattingTextBoxPage.xaml" Title="FormattingTextBox" Description=""/>
 </Examples>

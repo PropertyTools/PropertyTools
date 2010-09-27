@@ -54,6 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Pages\FormattingTextBoxPage.xaml.cs">
+      <DependentUpon>FormattingTextBoxPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Person.cs" />
     <Compile Include="Pages\PopupBoxPage.xaml.cs">
       <DependentUpon>PopupBoxPage.xaml</DependentUpon>
@@ -87,6 +90,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\FormattingTextBoxPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\PopupBoxPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

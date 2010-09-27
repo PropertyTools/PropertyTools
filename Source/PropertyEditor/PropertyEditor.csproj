@@ -173,6 +173,7 @@
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
     <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />
     <Compile Include="Controls\FilePicker\FilePicker.cs" />
+    <Compile Include="Controls\FormattingTextBox.cs" />
     <Compile Include="Controls\PopupBox\PopupBox.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />

@@ -113,6 +113,9 @@ namespace FeaturesDemo
         [Category(catVehicles), Optional("HasCar"), SortOrder(402)]
         public string Car { get; set; }
 
+        [Category(catVehicles), Optional("HasCar"), SortOrder(403)]
+        public Color CarColor { get; set; }
+
         // Use [WideProperty] to use the full width of the control
         // Use [Height(...)] to set the height of a multiline text control
         [Category(catDetails), WideProperty, Height(100), SortOrder(500)]

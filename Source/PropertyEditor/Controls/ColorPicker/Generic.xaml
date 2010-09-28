@@ -138,7 +138,7 @@
 							</StackPanel>
 						</Grid>
 						<Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" StaysOpen="False" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
-							<TabControl Margin="6" Width="{TemplateBinding ActualWidth}" MaxWidth="300" MinHeight="140" TabStripPlacement="Bottom" SnapsToDevicePixels="True" KeyboardNavigation.DirectionalNavigation="Contained">
+							<TabControl Margin="6" Width="{TemplateBinding ActualWidth}" MinWidth="240" MaxWidth="300" MinHeight="140" TabStripPlacement="Bottom" SnapsToDevicePixels="True" KeyboardNavigation.DirectionalNavigation="Contained">
 								<TabControl.Resources>
 									<Style TargetType="{x:Type TextBlock}">
 										<Setter Property="Margin" Value="4" />

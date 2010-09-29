@@ -477,7 +477,7 @@ namespace PropertyEditorLibrary
             }
             else
             {
-                TabViewModel tab = model.Count > 0 ? model[0] : null;
+                var tab = model.Count > 0 ? model[0] : null;
                 contentControl.Content = tab;
                 tabControl.Visibility = Visibility.Collapsed;
                 contentControl.Visibility = Visibility.Visible;
@@ -524,17 +524,7 @@ namespace PropertyEditorLibrary
                 return null;
             }
 
-            Type instanceType;
-
-            if (isEnumerable)
-            {
-                // Find the biggest common type if changing a collection of objects
-                instanceType = TypeHelper.FindBiggestCommonType(instance as IEnumerable);
-            }
-            else
-            {
-                instanceType = instance.GetType();
-            }
+            var instanceType = isEnumerable ? TypeHelper.FindBiggestCommonType(instance as IEnumerable) : instance.GetType();
 
             if (instanceType == null)
             {
@@ -553,11 +543,7 @@ namespace PropertyEditorLibrary
 
             // Setting the default tab name
             // Use the type name of the Instance as the default tab name
-            string tabName = DefaultTabName;
-            if (tabName == null)
-            {
-                tabName = instanceType.Name;
-            }
+            string tabName = DefaultTabName ?? instanceType.Name;
 
             // Setting the default category name
             string categoryName = DefaultCategoryName;
@@ -657,11 +643,12 @@ namespace PropertyEditorLibrary
         private List<TabViewModel> SortPropertyModel(List<TabViewModel> result)
         {
             // Use LINQ to stable sort tabs, categories and properties.
-            List<TabViewModel> sortedResult = result.OrderBy(t => t.SortOrder).ToList();
-            foreach (TabViewModel tab in result)
+            // (important that it is a stable sort algorithm!)
+            var sortedResult = result.OrderBy(t => t.SortOrder).ToList();
+            foreach (var tab in result)
             {
                 tab.Sort();
-                foreach (CategoryViewModel cat in tab.Categories)
+                foreach (var cat in tab.Categories)
                 {
                     cat.Sort();
                 }
@@ -831,10 +818,10 @@ namespace PropertyEditorLibrary
 
         private void UpdateErrorInfo()
         {
-            foreach (PropertyViewModel p in propertyMap.Values)
+            foreach (var p in propertyMap.Values)
                 p.UpdateErrorInfo();
             if (model!=null)
-                foreach (TabViewModel tab in model)
+                foreach (var tab in model)
                     tab.UpdateErrorInfo();
         }
 
@@ -844,7 +831,7 @@ namespace PropertyEditorLibrary
         /// <param name="propertyViewModel"></param>
         private void UpdateOptionalProperties(PropertyViewModel propertyViewModel)
         {
-            foreach (PropertyViewModel prop in propertyMap.Values)
+            foreach (var prop in propertyMap.Values)
             {
                 var oprop = prop as OptionalPropertyViewModel;
                 if (oprop == null)

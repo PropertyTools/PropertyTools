@@ -5,8 +5,12 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:p="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor" mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
 	Title="ColorPickerPage">
+    <Page.Resources>
+        <p:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+    </Page.Resources>
     <StackPanel Width="200">
-        <p:ColorPicker SelectedColor="{Binding Color}" ShowAsHex="True" Margin="4"/>
-        <p:ColorPicker SelectedColor="{Binding Brush}" Margin="4"/>
+        <p:ColorPicker SelectedColor="{Binding Color}" ShowAsHex="True" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
+        <p:ColorPicker SelectedColor="{Binding Brush, Converter={StaticResource ColorToBrushConverter}}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
+        <CheckBox x:Name="Enabled" Content="IsEnabled" IsChecked="True" Margin="10"/>
     </StackPanel>
 </Page>

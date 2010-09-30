@@ -3,7 +3,6 @@
 		<ResourceDictionary Source="/PropertyEditor;component/Controls/ColorPicker/Resources.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
-
 	<DrawingBrush x:Key="CheckerBoardBrush" Viewport="0,0,14,14" ViewportUnits="Absolute" TileMode="Tile">
 		<DrawingBrush.Drawing>
 			<DrawingGroup>
@@ -76,6 +75,7 @@
 		<GradientStop Offset="0.84" Color="#FF00FF" />
 		<GradientStop Offset="1.00" Color="#FF0000" />
 	</LinearGradientBrush>
+
 	<Style x:Key="ComboBoxReadonlyToggleButton" TargetType="{x:Type ToggleButton}">
 		<Setter Property="OverridesDefaultStyle" Value="true" />
 		<Setter Property="IsTabStop" Value="false" />
@@ -103,9 +103,9 @@
 	</Style>
 
 	<local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
-    <local:ColorToHexConverter x:Key="ColorToHexConverter"/>
-    
-    <Style TargetType="{x:Type local:ColorPicker}">
+	<local:ColorToHexConverter x:Key="ColorToHexConverter" />
+
+	<Style TargetType="{x:Type local:ColorPicker}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource ComboBoxFocusVisual}" />
 		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
 		<Setter Property="Background" Value="{StaticResource ButtonNormalBackground}" />
@@ -126,19 +126,18 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:ColorPicker}">
-					<Grid SnapsToDevicePixels="true">						
+					<Grid SnapsToDevicePixels="true">
 						<Grid>
-							<ToggleButton Name="ToggleButton" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Style="{StaticResource ComboBoxReadonlyToggleButton}" Focusable="false" ClickMode="Press" IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}">
-							</ToggleButton>
+							<ToggleButton Name="ToggleButton" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Style="{StaticResource ComboBoxReadonlyToggleButton}" Focusable="false" ClickMode="Press" IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"></ToggleButton>
 							<StackPanel Margin="4 4 20 4" Orientation="Horizontal" IsHitTestVisible="false">
-								<Grid Width="14" Height="14" VerticalAlignment="Center" Background="{StaticResource SmallCheckerBoardBrush}">
+								<Grid x:Name="PART_ColorBox" Width="14" Height="14" VerticalAlignment="Center" Background="{StaticResource SmallCheckerBoardBrush}">
 									<Rectangle x:Name="PART_Rectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding SelectedColor, Converter={StaticResource ColorToBrushConverter}}" Stroke="Black" SnapsToDevicePixels="True" />
 								</Grid>
 								<TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{Binding ColorName,RelativeSource={RelativeSource TemplatedParent}}" />
 							</StackPanel>
 						</Grid>
-						<Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" StaysOpen="False" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
-							<TabControl Margin="6" Width="{TemplateBinding ActualWidth}" MinWidth="240" MaxWidth="300" MinHeight="140" TabStripPlacement="Bottom" SnapsToDevicePixels="True" KeyboardNavigation.DirectionalNavigation="Contained">
+						<Popup Name="Popup" Placement="Bottom" MinWidth="240" MaxWidth="300" MinHeight="140" IsOpen="{TemplateBinding IsDropDownOpen}" StaysOpen="False" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+							<TabControl Margin="6" Width="{TemplateBinding ActualWidth}" TabStripPlacement="Bottom" SnapsToDevicePixels="True" KeyboardNavigation.DirectionalNavigation="Contained">
 								<TabControl.Resources>
 									<Style TargetType="{x:Type TextBlock}">
 										<Setter Property="Margin" Value="4" />
@@ -231,8 +230,7 @@
 												<RowDefinition Height="Auto" />
 											</Grid.RowDefinitions>
 											<Grid Background="{StaticResource SmallCheckerBoardBrush}" />
-											<Slider Maximum="255" Margin="0" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Background="{Binding AlphaGradient, RelativeSource={RelativeSource TemplatedParent}}">
-											</Slider>
+											<Slider Maximum="255" Margin="0" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Background="{Binding AlphaGradient, RelativeSource={RelativeSource TemplatedParent}}"></Slider>
 										</Grid>
 										<TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
 										<TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -293,6 +291,7 @@
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsEnabled" Value="false">
 							<Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
+							<Setter Property="Opacity" TargetName="PART_ColorBox" Value="0.3" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>

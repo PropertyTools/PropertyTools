@@ -1,63 +1,235 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.ComponentModel;
-using System;
-using System.Reflection;
-using System.Windows.Threading;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace PropertyEditorLibrary
 {
     /// <summary>
-    /// ColorPicker
-    /// todo: 
-    /// - close popup when clicking outside...
-    /// - localize strings...
-    /// - more palettes
-    /// - persist palette
+    /// ColorPicker control
     /// </summary>
     public class ColorPicker : Control, INotifyPropertyChanged
     {
+        // todo: 
+        // - localize strings...
+        // - more palettes
+        // - persist palette - in static list, and static load/save methods?
+        //   - the user can also bind the Palette and do the persisting 
+        // - 'automatic' color? 'IncludeAutoColor' dependency property?
+
+        public static readonly DependencyProperty ShowAsHexProperty =
+            DependencyProperty.Register("ShowAsHex", typeof (bool), typeof (ColorPicker), new UIPropertyMetadata(false));
+
+        public static readonly DependencyProperty PaletteProperty =
+            DependencyProperty.Register("Palette", typeof (ObservableCollection<Color>), typeof (ColorPicker),
+                                        new UIPropertyMetadata(CreateDefaultPalette()));
+
+        public static readonly DependencyProperty IsDropDownOpenProperty =
+            DependencyProperty.Register("IsDropDownOpen", typeof (bool), typeof (ColorPicker),
+                                        new UIPropertyMetadata(false, IsDropDownOpenChanged));
+
+        public static readonly DependencyProperty IsPickingProperty =
+            DependencyProperty.Register("IsPicking", typeof (bool), typeof (ColorPicker),
+                                        new UIPropertyMetadata(false, IsPickingChanged));
+
+        public static readonly DependencyProperty SelectedColorProperty =
+            DependencyProperty.Register("SelectedColor", typeof (Color), typeof (ColorPicker),
+                                        new FrameworkPropertyMetadata(Color.FromArgb(80, 255, 255, 0),
+                                                                      FrameworkPropertyMetadataOptions.
+                                                                          BindsTwoWayByDefault,
+                                                                      SelectedColorChanged));
+
+        private byte brightness;
+        private byte hue;
+        private byte saturation;
+        private bool updateHSV = true;
+        private DispatcherTimer pickingTimer;
+
         static ColorPicker()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorPicker), new FrameworkPropertyMetadata(typeof(ColorPicker)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof (ColorPicker),
+                                                     new FrameworkPropertyMetadata(typeof (ColorPicker)));
         }
 
-
-
+        /// <summary>
+        /// Gets or sets a value indicating whether show as color names as hex strings.
+        /// </summary>
+        /// <value><c>true</c> if show as hex; otherwise, <c>false</c>.</value>
         public bool ShowAsHex
         {
-            get { return (bool)GetValue(ShowAsHexProperty); }
+            get { return (bool) GetValue(ShowAsHexProperty); }
             set { SetValue(ShowAsHexProperty, value); }
         }
 
-        public static readonly DependencyProperty ShowAsHexProperty =
-            DependencyProperty.Register("ShowAsHex", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false));
-
-
         public ObservableCollection<Color> Palette
         {
-            get { return (ObservableCollection<Color>)GetValue(PaletteProperty); }
+            get { return (ObservableCollection<Color>) GetValue(PaletteProperty); }
             set { SetValue(PaletteProperty, value); }
         }
 
-        public static readonly DependencyProperty PaletteProperty =
-            DependencyProperty.Register("Palette", typeof(ObservableCollection<Color>), typeof(ColorPicker), new UIPropertyMetadata(CreateDefaultPalette()));
-
+        /// <summary>
+        /// Gets or sets a value indicating whether the color picker popup is open.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this popup is open; otherwise, <c>false</c>.
+        /// </value>
         public bool IsDropDownOpen
         {
-            get { return (bool)GetValue(IsDropDownOpenProperty); }
+            get { return (bool) GetValue(IsDropDownOpenProperty); }
             set { SetValue(IsDropDownOpenProperty, value); }
         }
 
-        public static readonly DependencyProperty IsDropDownOpenProperty =
-            DependencyProperty.Register("IsDropDownOpen", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false, IsDropDownOpenChanged));
+        /// <summary>
+        /// Gets or sets if picking colors from the screen is active.
+        /// Use the 'SHIFT' button to select colors when this mode is active.
+        /// </summary>
+        public bool IsPicking
+        {
+            get { return (bool) GetValue(IsPickingProperty); }
+            set { SetValue(IsPickingProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the selected color.
+        /// </summary>
+        /// <value>The color of the selected.</value>
+        public Color SelectedColor
+        {
+            get { return (Color) GetValue(SelectedColorProperty); }
+            set { SetValue(SelectedColorProperty, value); }
+        }
+
+        public Brush AlphaGradient
+        {
+            get { return new LinearGradientBrush(Colors.Transparent, Color.FromRgb(Red, Green, Blue), 0); }
+        }
+
+        public Brush SaturationGradient
+        {
+            get
+            {
+                return new LinearGradientBrush(ColorHelper.HsvToColor(Hue, 0, Brightness),
+                                               ColorHelper.HsvToColor(Hue, 255, Brightness), 0);
+            }
+        }
+
+        public Brush BrightnessGradient
+        {
+            get
+            {
+                return new LinearGradientBrush(ColorHelper.HsvToColor(Hue, Saturation, 0),
+                                               ColorHelper.HsvToColor(Hue, Saturation, 255), 0);
+            }
+        }
+
+        public string ColorName
+        {
+            get
+            {
+                if (ShowAsHex)
+                    return ColorHelper.ColorToHex(SelectedColor);
+                var t = typeof (Colors);
+                var fields = t.GetProperties(BindingFlags.Public | BindingFlags.Static);
+                string nearestColor = "Custom";
+                double nearestDist = 30;
+                // find the color that is closest
+                foreach (var fi in fields)
+                {
+                    var c = (Color) fi.GetValue(null, null);
+                    if (SelectedColor == c)
+                        return fi.Name;
+                    double d = ColorHelper.ColorDifference(SelectedColor, c);
+                    if (d < nearestDist)
+                    {
+                        nearestColor = "~ " + fi.Name; // 'kind of'
+                        nearestDist = d;
+                    }
+                }
+                if (SelectedColor.A < 255)
+                {
+                    return String.Format("{0}, {1:0} %", nearestColor, SelectedColor.A/2.55);
+                }
+                return nearestColor;
+            }
+        }
+
+        public byte Red
+        {
+            get { return SelectedColor.R; }
+            set { SelectedColor = Color.FromArgb(Alpha, value, Green, Blue); }
+        }
+
+        public byte Green
+        {
+            get { return SelectedColor.G; }
+            set { SelectedColor = Color.FromArgb(Alpha, Red, value, Blue); }
+        }
+
+        public byte Blue
+        {
+            get { return SelectedColor.B; }
+            set { SelectedColor = Color.FromArgb(Alpha, Red, Green, value); }
+        }
+
+        public byte Alpha
+        {
+            get { return SelectedColor.A; }
+            set { SelectedColor = Color.FromArgb(value, Red, Green, Blue); }
+        }
+
+        public byte Hue
+        {
+            get { return hue; }
+            set
+            {
+                updateHSV = false;
+                SelectedColor = ColorHelper.HsvToColor(value, Saturation, Brightness);
+                hue = value;
+                OnPropertyChanged("Hue");
+            }
+        }
+
+        public byte Saturation
+        {
+            get { return saturation; }
+            set
+            {
+                updateHSV = false;
+                SelectedColor = ColorHelper.HsvToColor(Hue, value, Brightness);
+                updateHSV = true;
+                saturation = value;
+                OnPropertyChanged("Saturation");
+            }
+        }
+
+        public byte Brightness
+        {
+            get { return brightness; }
+            set
+            {
+                updateHSV = false;
+                SelectedColor = ColorHelper.HsvToColor(Hue, Saturation, value);
+                updateHSV = true;
+                brightness = value;
+                OnPropertyChanged("Brightness");
+            }
+        }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
 
         private static void IsDropDownOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((ColorPicker)d).IsDropDownOpenChanged();
+            ((ColorPicker) d).IsDropDownOpenChanged();
         }
 
         private void IsDropDownOpenChanged()
@@ -67,25 +239,11 @@ namespace PropertyEditorLibrary
                 IsPicking = false;
         }
 
-        /// <summary>
-        /// Gets or sets if picking colors from the screen is active.
-        /// Use the 'SHIFT' button to select colors when this mode is active.
-        /// </summary>
-        public bool IsPicking
-        {
-            get { return (bool)GetValue(IsPickingProperty); }
-            set { SetValue(IsPickingProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsPickingProperty =
-            DependencyProperty.Register("IsPicking", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false, IsPickingChanged));
-
         private static void IsPickingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((ColorPicker)d).IsPickingChanged();
+            ((ColorPicker) d).IsPickingChanged();
         }
 
-        private DispatcherTimer pickingTimer;
         private void IsPickingChanged()
         {
             if (IsPicking && pickingTimer == null)
@@ -111,44 +269,28 @@ namespace PropertyEditorLibrary
 
             try
             {
-                var pt = CaptureScreenshot.GetMouseScreenPosition();
-                var bmp = CaptureScreenshot.Capture(new Rect(pt, new Size(1, 1)));
-                byte[] pixels = new byte[4];
+                Point pt = CaptureScreenshot.GetMouseScreenPosition();
+                BitmapSource bmp = CaptureScreenshot.Capture(new Rect(pt, new Size(1, 1)));
+                var pixels = new byte[4];
                 bmp.CopyPixels(pixels, 4, 0);
                 SelectedColor = Color.FromArgb(0xFF, pixels[2], pixels[1], pixels[0]);
             }
             catch (Exception)
             {
-
             }
         }
 
-
-
-        public Color SelectedColor
-        {
-            get { return (Color)GetValue(SelectedColorProperty); }
-            set { SetValue(SelectedColorProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedColorProperty =
-            DependencyProperty.Register("SelectedColor", typeof(Color), typeof(ColorPicker),
-            new FrameworkPropertyMetadata(Color.FromArgb(80, 255, 255, 0),
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                SelectedColorChanged));
-
         private static void SelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((ColorPicker)d).OnSelectedValueChanged();
+            ((ColorPicker) d).OnSelectedValueChanged();
         }
-
-        private bool updateHSV = true;
 
         private void OnSelectedValueChanged()
         {
+            // don't update the HSV controls if the original change was H, S or V.
             if (updateHSV)
             {
-                var hsv = ColorHelper.ColorToHsvBytes(SelectedColor);
+                byte[] hsv = ColorHelper.ColorToHsvBytes(SelectedColor);
                 hue = hsv[0];
                 saturation = hsv[1];
                 brightness = hsv[2];
@@ -166,127 +308,6 @@ namespace PropertyEditorLibrary
             OnPropertyChanged("BrightnessGradient");
         }
 
-        public Brush AlphaGradient
-        {
-            get
-            {
-                return new LinearGradientBrush(Colors.Transparent, Color.FromRgb(Red, Green, Blue), 0);
-            }
-        }
-
-        public Brush SaturationGradient
-        {
-            get
-            {
-                return new LinearGradientBrush(ColorHelper.HsvToColor(Hue, 0, Brightness), ColorHelper.HsvToColor(Hue, 255, Brightness), 0);
-            }
-        }
-
-        public Brush BrightnessGradient
-        {
-            get
-            {
-                return new LinearGradientBrush(ColorHelper.HsvToColor(Hue, Saturation, 0), ColorHelper.HsvToColor(Hue, Saturation, 255), 0);
-            }
-        }
-
-        public string ColorName
-        {
-            get
-            {
-                if (ShowAsHex)
-                    return ColorHelper.ColorToHex(SelectedColor);
-                // todo: localize...
-                if (SelectedColor.A == 0)
-                    return "Transparent";
-                var t = typeof(Colors);
-                var fields = t.GetProperties(BindingFlags.Public | BindingFlags.Static);
-                string best = "Custom";
-                double bestDist = 30;
-                // find the color that is closest
-                foreach (var fi in fields)
-                {
-                    var c = (Color)fi.GetValue(null, null);
-                    if (SelectedColor == c)
-                        return fi.Name;
-                    double d = ColorHelper.ColorDifference(SelectedColor, c);
-                    if (d < bestDist)
-                    {
-                        best = "~ " + fi.Name; // 'kind of'
-                        bestDist = d;
-                    }
-                }
-                if (SelectedColor.A < 255)
-                {
-                    return String.Format("{0}, {1:0} %", best, SelectedColor.A / 2.55);
-                }
-                return best;
-            }
-        }
-        public byte Red
-        {
-            get { return SelectedColor.R; }
-            set { SelectedColor = Color.FromArgb(Alpha, value, Green, Blue); }
-        }
-        public byte Green
-        {
-            get { return SelectedColor.G; }
-            set { SelectedColor = Color.FromArgb(Alpha, Red, value, Blue); }
-        }
-        public byte Blue
-        {
-            get { return SelectedColor.B; }
-            set { SelectedColor = Color.FromArgb(Alpha, Red, Green, value); }
-        }
-        public byte Alpha
-        {
-            get { return SelectedColor.A; }
-            set { SelectedColor = Color.FromArgb(value, Red, Green, Blue); }
-        }
-
-        private byte hue;
-        private byte saturation;
-        private byte brightness;
-
-        public byte Hue
-        {
-            get { return hue; }
-            set
-            {
-                updateHSV = false;
-                SelectedColor = ColorHelper.HsvToColor(value, Saturation, Brightness);
-                hue = value;
-                OnPropertyChanged("Hue");
-            }
-        }
-        public byte Saturation
-        {
-            get { return saturation; }
-            set
-            {
-                updateHSV = false;
-                SelectedColor = ColorHelper.HsvToColor(Hue, value, Brightness);
-                updateHSV = true;
-                saturation = value;
-                OnPropertyChanged("Saturation");
-            }
-        }
-        public byte Brightness
-        {
-            get { return brightness; }
-            set
-            {
-                updateHSV = false;
-                SelectedColor = ColorHelper.HsvToColor(Hue, Saturation, value);
-                updateHSV = true;
-                brightness = value;
-                OnPropertyChanged("Brightness");
-            }
-        }
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
@@ -295,7 +316,6 @@ namespace PropertyEditorLibrary
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-        #endregion
 
         public static ObservableCollection<Color> CreateDefaultPalette()
         {
@@ -332,7 +352,7 @@ namespace PropertyEditorLibrary
 
             // todo: add persisted custom colors
 
-            // Add a rainbow of colors
+            // Add a colors by hue
             /*int N = 32 - 5;
             for (int i = 0; i < N; i++)
             {

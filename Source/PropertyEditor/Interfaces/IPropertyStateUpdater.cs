@@ -10,7 +10,6 @@ namespace PropertyEditorLibrary
     /// property enabled/visible states of the properties. 
     /// This update method is called after every property change of the same instance.
     /// </summary>
-    [Obsolete]
     public interface IPropertyStateUpdater
     {
         void UpdatePropertyStates(PropertyStateBag stateBag);

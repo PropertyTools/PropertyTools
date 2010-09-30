@@ -13,13 +13,23 @@ namespace PropertyEditorLibrary
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value == null)
-                return Brushes.Red;
-            var color = (Color)value;
-            return new SolidColorBrush(color);
+                return Binding.DoNothing;
+
+            if (typeof(Brush).IsAssignableFrom(targetType))
+            {
+                if (value is Color)
+                    return new SolidColorBrush((Color)value);
+            }
+            if (targetType == typeof(Color))
+            {
+                if (value is SolidColorBrush)
+                    return ((SolidColorBrush)value).Color;
+            }
+            return Binding.DoNothing;
         }
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ((SolidColorBrush)value).Color;
+            return Convert(value, targetType, parameter, culture);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace PropertyEditorLibrary
 {
     public class DefaultPropertyViewModelFactory : IPropertyViewModelFactory
     {
-        private readonly PropertyEditor owner;
+        protected readonly PropertyEditor owner;
 
         /// <summary>
         /// Gets or sets the IsEnabledPattern.

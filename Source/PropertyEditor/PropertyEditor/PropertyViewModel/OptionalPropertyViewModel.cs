@@ -9,31 +9,42 @@ namespace PropertyEditorLibrary
     public class OptionalPropertyViewModel : PropertyViewModel
     {
         private bool enabledButHasNoValue;
-        private string optionalPropertyName;
         private object previousValue;
+        private PropertyDescriptor optionalDescriptor;
 
         public OptionalPropertyViewModel(object instance, PropertyDescriptor descriptor, string optionalPropertyName,
                                          PropertyEditor owner)
-            : base(instance, descriptor, owner)
+            : this(instance,descriptor, GetDescriptor(instance,optionalPropertyName),owner)
         {
-            OptionalPropertyName = optionalPropertyName;
-
-            // http://msdn.microsoft.com/en-us/library/ms366789.aspx
-            IsPropertyNullable = descriptor.PropertyType.IsGenericType &&
-                                 descriptor.PropertyType.GetGenericTypeDefinition() == typeof (Nullable<>);
         }
 
         public string OptionalPropertyName
         {
-            get { return optionalPropertyName; }
-            set
+            get
             {
-                if (optionalPropertyName != value)
-                {
-                    optionalPropertyName = value;
-                    NotifyPropertyChanged("OptionalPropertyName");
-                }
+                if (optionalDescriptor != null)
+                    return optionalDescriptor.Name;
+                return null;
             }
+        }
+
+        private static PropertyDescriptor GetDescriptor(object instance, string propertyName)
+        {
+            if (instance == null || propertyName == null)
+                return null;
+            return TypeDescriptor.GetProperties(instance).Find(propertyName, false);
+        }
+
+        public OptionalPropertyViewModel(object instance, PropertyDescriptor descriptor, PropertyDescriptor optionalDescriptor,
+                                         PropertyEditor owner)
+            : base(instance, descriptor, owner)
+        {
+            this.optionalDescriptor = optionalDescriptor;
+
+            // http://msdn.microsoft.com/en-us/library/ms366789.aspx
+            IsPropertyNullable = descriptor.PropertyType.IsGenericType &&
+                                 descriptor.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>);
+            IsPropertyNullable = true;
         }
 
         public bool IsPropertyNullable { get; private set; }
@@ -42,21 +53,26 @@ namespace PropertyEditorLibrary
         {
             get
             {
-                if (IsPropertyNullable || OptionalPropertyName == null)
+                if (optionalDescriptor != null)
+                    return (bool)optionalDescriptor.GetValue(FirstInstance);
+
+                if (IsPropertyNullable)
                 {
                     return enabledButHasNoValue || Value != null;
                 }
 
-                if (!string.IsNullOrEmpty(OptionalPropertyName))
-                {
-                    PropertyDescriptor desc = TypeDescriptor.GetProperties(Instance).Find(OptionalPropertyName, false);
-                    return (bool) desc.GetValue(Instance);
-                }
-                return true; // default must be true (enable editor)
+                return true; // default value is true (enable editor)
             }
             set
             {
-                if (IsPropertyNullable || OptionalPropertyName == null)
+                if (optionalDescriptor != null)
+                {
+                    optionalDescriptor.SetValue(FirstInstance, value);
+                    NotifyPropertyChanged("IsOptionalChecked");
+                    return;
+                }
+
+                if (IsPropertyNullable)
                 {
                     if (value)
                     {
@@ -72,13 +88,29 @@ namespace PropertyEditorLibrary
                     NotifyPropertyChanged("IsOptionalChecked");
                     return;
                 }
+            }
+        }
 
-                if (!string.IsNullOrEmpty(OptionalPropertyName))
-                {
-                    PropertyDescriptor desc = TypeDescriptor.GetProperties(Instance).Find(OptionalPropertyName, false);
-                    desc.SetValue(Instance, value);
-                    NotifyPropertyChanged("IsOptionalChecked");
-                }
+        public override void SubscribeValueChanged()
+        {
+            base.SubscribeValueChanged();
+            if (optionalDescriptor != null)
+            {
+                SubscribeValueChanged(optionalDescriptor, IsOptionalChanged);
+            }
+        }
+
+        private void IsOptionalChanged(object sender, EventArgs e)
+        {
+            NotifyPropertyChanged("IsOptionalChecked");
+        }
+
+        public override void UnsubscribeValueChanged()
+        {
+            base.UnsubscribeValueChanged();
+            if (optionalDescriptor != null)
+            {
+                UnsubscribeValueChanged(optionalDescriptor, IsOptionalChanged);
             }
         }
     }

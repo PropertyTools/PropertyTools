@@ -33,7 +33,7 @@ namespace PropertyEditorLibrary
             {
                 throw new ArgumentException("item must be of type Property");
             }
-   //         Debug.WriteLine("Select template for " + property.PropertyName);
+            //         Debug.WriteLine("Select template for " + property.PropertyName);
 
             // Check if an editor is defined for the given type
             foreach (TypeEditor editor in Editors)
@@ -49,7 +49,7 @@ namespace PropertyEditorLibrary
             }
 
             var template = FindDataTemplate(property, TemplateOwner);
-     //       Debug.WriteLine("  Returning " + template);
+            //       Debug.WriteLine("  Returning " + template);
             return template;
         }
 
@@ -65,7 +65,8 @@ namespace PropertyEditorLibrary
             // DataTemplates for enum types
             if (propertyType.BaseType == typeof(Enum))
             {
-                if (Owner.ShowEnumAsComboBox)
+                var rba = propertyViewModel.Descriptor.Attributes[typeof(RadioButtonsAttribute)];
+                if (Owner.ShowEnumAsComboBox && rba == null)
                     template = TryToFindDataTemplate(element, "ComboBoxEnumTemplate");
                 else
                     template = TryToFindDataTemplate(element, "RadioButtonsEnumTemplate");

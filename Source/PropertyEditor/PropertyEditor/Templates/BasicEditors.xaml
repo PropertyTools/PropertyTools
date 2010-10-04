@@ -3,16 +3,25 @@
 	<!-- CLR & Custom Types Data Templates -->
 
 	<DataTemplate x:Key="DefaultTemplate">
-		<local:TextBoxEx IsReadOnly="{Binding IsReadOnly}" IsEnabled="{Binding IsEnabled}" Text="{Binding Value, ValidatesOnDataErrors=True}" AcceptsReturn="{Binding AcceptsReturn}" TextWrapping="{Binding TextWrapping}" VerticalScrollBarVisibility="Auto" Height="{Binding Height}">
-			<!--            <local:TextBoxEx.Text>
-                <Binding Mode="TwoWay" Path="Value" ValidatesOnDataErrors="True" StringFormat="{Binding FormatString}">
-                   <Binding.ValidationRules>
-                        <ExceptionValidationRule />
-                    </Binding.ValidationRules>
-                </Binding>
-            </local:TextBoxEx.Text>-->
+		<local:TextBoxEx 
+            IsReadOnly="{Binding IsReadOnly}" 
+            IsEnabled="{Binding IsEnabled}" 
+            Text="{Binding Value, ValidatesOnDataErrors=True}" 
+            AcceptsReturn="{Binding AcceptsReturn}" 
+            TextWrapping="{Binding TextWrapping}" 
+            VerticalScrollBarVisibility="Auto" 
+            Height="{Binding Height}">
 		</local:TextBoxEx>
-	</DataTemplate>
+        <!--<local:FormattingTextBox 
+            IsReadOnly="{Binding IsReadOnly}" 
+            IsEnabled="{Binding IsEnabled}" 
+            Value="{Binding Value, ValidatesOnDataErrors=True}" 
+            AcceptsReturn="{Binding AcceptsReturn}" 
+            Height="{Binding Height}"
+            TextWrapping="{Binding TextWrapping}" 
+            VerticalScrollBarVisibility="Auto" 
+            StringFormat="{Binding FormatString}"/>-->    
+    </DataTemplate>
     
     <local:ToDoubleConverter x:Key="ToDoubleConverter"/>
     

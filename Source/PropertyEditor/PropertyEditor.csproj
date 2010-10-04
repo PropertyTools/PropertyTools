@@ -162,6 +162,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\EnumDisplayNameAttribute.cs" />
     <Compile Include="Attributes\FilePathAttribute.cs" />
     <Compile Include="Attributes\HeightAttribute.cs" />
     <Compile Include="Attributes\SortOrderAttribute.cs" />

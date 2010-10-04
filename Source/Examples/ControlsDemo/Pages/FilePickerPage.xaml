@@ -9,6 +9,8 @@
     <StackPanel Width="200">
         <p:FilePicker FilePath="{Binding FilePath}" Filter="Text files|*.txt" DefaultExtension=".txt" Margin="4"/>
         <p:DirectoryPicker Directory="{Binding Directory}" Margin="4"/>
+        <Label Content="{Binding FilePath}"/>
+        <Label Content="{Binding Directory}"/>
     </StackPanel>
 
 </Page>

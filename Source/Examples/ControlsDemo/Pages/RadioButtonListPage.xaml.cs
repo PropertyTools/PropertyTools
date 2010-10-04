@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ControlsDemo
 {
@@ -19,18 +9,55 @@ namespace ControlsDemo
     /// </summary>
     public partial class RadioButtonListPage : Page
     {
-        public TestEnum TestEnum { get; set; }
+        private readonly RadioButtonListViewModel vm = new RadioButtonListViewModel();
 
         public RadioButtonListPage()
         {
             InitializeComponent();
-            DataContext = this;
+            vm.SelectedFruit = Fruits.Orange;
+            DataContext = vm;
+        }
+
+        private void Change_Click(object sender, RoutedEventArgs e)
+        {
+            vm.SelectedFruit = Fruits.Pear;
         }
     }
-    public enum TestEnum
+
+    public class RadioButtonListViewModel : INotifyPropertyChanged
     {
-        Apples,
-        Pears,
-        Oranges
+        private Fruits selectedFruit;
+
+        public Fruits SelectedFruit
+        {
+            get { return selectedFruit; }
+            set
+            {
+                selectedFruit = value;
+                RaisePropertyChanged("SelectedFruit");
+            }
+        }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        protected void RaisePropertyChanged(string property)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(property));
+            }
+        }
+    }
+
+    public enum Fruits
+    {
+        Apple,
+        Pear,
+        Orange
     } ;
 }

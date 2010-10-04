@@ -11,6 +11,8 @@ namespace PropertyEditorLibrary
     [ValueConversion(typeof(Enum), typeof(bool))]
     public class EnumToBooleanConverter : IValueConverter
     {
+        public Type EnumType { get; set; }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || parameter == null)
@@ -28,7 +30,7 @@ namespace PropertyEditorLibrary
             {
                 bool boolValue = System.Convert.ToBoolean(value, culture);
                 if (boolValue)
-                    return Enum.Parse(targetType, parameter.ToString());
+                    return Enum.Parse(EnumType, parameter.ToString());
             }
             catch (ArgumentException)
             {

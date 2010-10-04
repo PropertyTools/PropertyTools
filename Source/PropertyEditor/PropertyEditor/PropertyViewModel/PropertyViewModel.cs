@@ -12,6 +12,7 @@ namespace PropertyEditorLibrary
     public class PropertyViewModel : ViewModelBase, IDataErrorInfo
     {
         private bool isEnabled = true;
+        private bool isVisible = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyViewModel"/> class.
@@ -119,6 +120,41 @@ namespace PropertyEditorLibrary
         }
 
         /// <summary>
+        /// Gets or sets the descriptor for the property's IsVisible.
+        /// </summary>
+        /// <value>The is Visible descriptor.</value>
+        public PropertyDescriptor IsVisibleDescriptor { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this property is Visible.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is Visible; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsVisible
+        {
+            get
+            {
+                if (IsVisibleDescriptor != null)
+                    return (bool)IsVisibleDescriptor.GetValue(FirstInstance);
+
+                if (Owner.PropertyStateProvider != null)
+                    return isVisible && Owner.PropertyStateProvider.IsVisible(FirstInstance, Descriptor);
+
+                return isVisible;
+            }
+            set
+            {
+                if (IsVisibleDescriptor != null)
+                    IsVisibleDescriptor.SetValue(FirstInstance, value);
+
+                isVisible = value;
+                NotifyPropertyChanged("IsVisible");
+                NotifyPropertyChanged("Visibility");
+            }
+        }
+
+        /// <summary>
         /// Gets the property error.
         /// </summary>
         /// <value>The property error.</value>
@@ -152,7 +188,7 @@ namespace PropertyEditorLibrary
         /// <value>The visibility.</value>
         public Visibility Visibility
         {
-            get { return Visibility.Visible; }
+            get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; }
         }
 
         /// <summary>
@@ -224,12 +260,6 @@ namespace PropertyEditorLibrary
                     value = GetValue(Instance);
                 }
 
-                //if (!String.IsNullOrEmpty(FormatString))
-                //{
-                //    if (value != null)
-                //        value = String.Format("{0:" + FormatString + "}", value);
-                //}
-
                 return value;
             }
             set
@@ -283,13 +313,17 @@ namespace PropertyEditorLibrary
         /// <summary>
         /// Subscribes to the ValueChanged event.
         /// </summary>
-        public void SubscribeValueChanged()
+        public virtual void SubscribeValueChanged()
         {
             SubscribeValueChanged(Descriptor, InstancePropertyChanged);
 
             if (IsEnabledDescriptor != null)
             {
                 SubscribeValueChanged(IsEnabledDescriptor, IsEnabledChanged);
+            }
+            if (IsVisibleDescriptor != null)
+            {
+                SubscribeValueChanged(IsVisibleDescriptor, IsVisibleChanged);
             }
         }
 
@@ -298,17 +332,33 @@ namespace PropertyEditorLibrary
             NotifyPropertyChanged("IsEnabled");
         }
 
+        private void IsVisibleChanged(object sender, EventArgs e)
+        {
+            NotifyPropertyChanged("IsVisible");
+            NotifyPropertyChanged("Visibility");
+        }
+
         /// <summary>
         /// Unsubscribes the value changed event.
         /// </summary>
-        public void UnsubscribeValueChanged()
+        public virtual void UnsubscribeValueChanged()
         {
+            UnsubscribeValueChanged(Descriptor, InstancePropertyChanged);
+
+            if (IsEnabledDescriptor != null)
+            {
+                UnsubscribeValueChanged(IsEnabledDescriptor, IsEnabledChanged);
+            }
+            if (IsVisibleDescriptor != null)
+            {
+                UnsubscribeValueChanged(IsVisibleDescriptor, IsVisibleChanged);
+            }
         }
 
         /// <summary>
         /// Subscribes to the ValueChanged event.
         /// </summary>
-        public void SubscribeValueChanged(PropertyDescriptor descriptor, EventHandler handler)
+        protected void SubscribeValueChanged(PropertyDescriptor descriptor, EventHandler handler)
         {
             if (IsEnumerable)
             {
@@ -329,7 +379,7 @@ namespace PropertyEditorLibrary
         /// <summary>
         /// Unsubscribes the value changed event.
         /// </summary>
-        public void UnsubscribeValueChanged(PropertyDescriptor descriptor, EventHandler handler)
+        protected void UnsubscribeValueChanged(PropertyDescriptor descriptor, EventHandler handler)
         {
             if (IsEnumerable)
             {
@@ -350,7 +400,6 @@ namespace PropertyEditorLibrary
         private void InstancePropertyChanged(object sender, EventArgs e)
         {
             // Sending notification when the instance has been changed
-            // If the instance is a list
             NotifyPropertyChanged("Value");
         }
 
@@ -358,7 +407,8 @@ namespace PropertyEditorLibrary
         /// The the current value from an IEnumerable instance
         /// </summary>
         /// <param name="componentList"></param>
-        /// <returns></returns>
+        /// <returns>If all components in the enumerable are equal, it returns the value.
+        /// If values are different, it returns null.</returns>
         protected object GetValueFromEnumerable(IEnumerable componentList)
         {
             object value = null;
@@ -384,7 +434,7 @@ namespace PropertyEditorLibrary
         private bool Convert(ref object value)
         {
             // Check if it neccessary to convert the value
-            Type propertyType = Descriptor.PropertyType;
+            var propertyType = Descriptor.PropertyType;
             if (propertyType == typeof (object) ||
                 value == null && propertyType.IsClass ||
                 value != null && propertyType.IsAssignableFrom(value.GetType()))
@@ -394,23 +444,16 @@ namespace PropertyEditorLibrary
             else
             {
                 // try to convert the value
-                TypeConverter converter = Descriptor.Converter;
+                var converter = Descriptor.Converter;
                 if (value != null)
                 {
                     if (converter.CanConvertFrom(value.GetType()))
                     {
                         try
                         {
-                            //if (value is string)
-                            //{
-                            //    value = converter.ConvertFromInvariantString(value as string);
-                            //}
-                            //else
-                            {
                                 value = converter.ConvertFrom(value);
-                            }
                         }
-                            // Catch FormatExceptions
+                        // Catch FormatExceptions
                         catch (Exception)
                         {
                             return false;
@@ -434,7 +477,7 @@ namespace PropertyEditorLibrary
         private bool IsModified(object component, object value)
         {
             // Return if the value has not been modified
-            object currentValue = Descriptor.GetValue(component);
+            var currentValue = Descriptor.GetValue(component);
             if (currentValue == null && value == null)
             {
                 return false;

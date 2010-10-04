@@ -20,6 +20,28 @@ namespace PropertyEditorLibrary
         public string IsEnabledPattern { get; set; }
 
         /// <summary>
+        /// Gets or sets the IsVisiblePattern.
+        /// 
+        /// Example using a "Is{0}Visible" pattern:
+        ///   string City { get; set; }
+        ///   bool IsCityVisible { get; set; }
+        /// The visibility state of the City property will be controlled by the IsCityVisible property
+        /// </summary>
+        /// <value>The IsVisiblePattern.</value>
+        public string IsVisiblePattern { get; set; }
+
+        /// <summary>
+        /// Gets or sets the UsePattern. This is used to create an "Optional" property.
+        /// 
+        /// Example using a "Use{0}" pattern:
+        ///   string City { get; set; }
+        ///   bool UseCity { get; set; }
+        /// The optional state of the City property will be controlled by the UseCity property
+        /// </summary>
+        /// <value>The IsEnabledPattern.</value>
+        public string UsePropertyPattern { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DefaultPropertyViewModelFactory"/> class.
         /// </summary>
         /// <param name="owner">The owner PropertyEditor of the factory. 
@@ -28,6 +50,8 @@ namespace PropertyEditorLibrary
         {
             this.owner = owner;
             IsEnabledPattern = "Is{0}Enabled";
+            IsVisiblePattern = "Is{0}Visible";
+            UsePropertyPattern = "Use{0}";
         }
 
         public virtual bool IsOptional(PropertyDescriptor descriptor, out string optionalPropertyName)
@@ -89,11 +113,21 @@ namespace PropertyEditorLibrary
 
         public virtual PropertyViewModel CreateViewModel(object instance, PropertyDescriptor descriptor)
         {
+            var pdc = TypeDescriptor.GetProperties(instance);
+
             PropertyViewModel propertyViewModel = null;
 
             string optionalPropertyName;
             if (IsOptional(descriptor, out optionalPropertyName))
                 propertyViewModel = new OptionalPropertyViewModel(instance, descriptor, optionalPropertyName, owner);
+
+            if (UsePropertyPattern != null)
+            {
+                var usePropertyName = String.Format(UsePropertyPattern, descriptor.Name);
+                var useDescriptor = pdc.Find(usePropertyName, false);
+                if (useDescriptor != null)
+                    propertyViewModel = new OptionalPropertyViewModel(instance, descriptor, useDescriptor, owner);
+            }
 
             bool showHeader;
             if (IsWide(descriptor, out showHeader))
@@ -147,9 +181,17 @@ namespace PropertyEditorLibrary
             if (soa != null)
                 propertyViewModel.SortOrder = soa.SortOrder;
 
-            var pdc = TypeDescriptor.GetProperties(instance);
-            var isEnabledName = String.Format(IsEnabledPattern, descriptor.Name);
-            propertyViewModel.IsEnabledDescriptor = pdc.Find(isEnabledName, false);
+            if (IsEnabledPattern != null)
+            {
+                var isEnabledName = String.Format(IsEnabledPattern, descriptor.Name);
+                propertyViewModel.IsEnabledDescriptor = pdc.Find(isEnabledName, false);
+            }
+            
+            if (IsVisiblePattern != null)
+            {
+                var isVisibleName = String.Format(IsVisiblePattern, descriptor.Name);
+                propertyViewModel.IsVisibleDescriptor = pdc.Find(isVisibleName, false);
+            }
 
             return propertyViewModel;
         }

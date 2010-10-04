@@ -789,8 +789,8 @@ namespace PropertyEditorLibrary
                 UpdateOptionalProperties(property);
             }
 
-            if (e.PropertyName != "IsEnabled" && e.PropertyName != "IsVisible" && e.PropertyName != "PropertyError" &&
-                e.PropertyName != "PropertyWarning")
+            if (e.PropertyName != "IsEnabled" && e.PropertyName != "IsVisible" 
+                && e.PropertyName != "PropertyError" && e.PropertyName != "PropertyWarning")
             {
                 UpdatePropertyStates(SelectedObject);
                 UpdateErrorInfo();
@@ -808,7 +808,7 @@ namespace PropertyEditorLibrary
             psi.UpdatePropertyStates(ps);
             foreach (var ep in ps.EnabledProperties)
             {
-                PropertyViewModel p = propertyMap[ep.Key];
+                var p = propertyMap[ep.Key];
                 if (p != null && p.IsEnabled != ep.Value)
                 {
                     p.IsEnabled = ep.Value;

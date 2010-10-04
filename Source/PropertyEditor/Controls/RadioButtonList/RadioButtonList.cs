@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 
 namespace PropertyEditorLibrary
@@ -13,6 +14,16 @@ namespace PropertyEditorLibrary
         private const string PartPanel = "PART_Panel";
 
         private StackPanel panel;
+
+        public RadioButtonList()
+        {
+            DataContextChanged += RadioButtonList_DataContextChanged;
+        }
+
+        void RadioButtonList_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            UpdateContent();
+        }
 
         public override void OnApplyTemplate()
         {
@@ -30,23 +41,46 @@ namespace PropertyEditorLibrary
             panel.Children.Clear();
             if (Value == null)
                 return;
-            var values = Enum.GetValues(Value.GetType());
-            foreach (var value in values)
+            var enumValues = Enum.GetValues(Value.GetType());
+            var converter = new EnumToBooleanConverter { EnumType = Value.GetType() };
+            var relativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof (RadioButtonList), 1);
+            
+            foreach (var itemValue in enumValues)
             {
-                var rb = new RadioButton { Content = value, IsChecked = value == Value, Margin = new Thickness(0, 4, 0, 4) };
-                var b = new Binding("Value") { Converter = new EnumToBooleanConverter(), ConverterParameter = value };
+                var rb = new RadioButton { Content = itemValue };
+                // rb.IsChecked = Value.Equals(itemValue);
+
+                var isCheckedBinding = new Binding("Value")
+                                           {
+                                               Converter = converter,
+                                               ConverterParameter = itemValue,
+                                               Mode = BindingMode.TwoWay,
+                                               RelativeSource = relativeSource
+                                           };
+                rb.SetBinding(ToggleButton.IsCheckedProperty, isCheckedBinding);
+
+                var itemMarginBinding = new Binding("ItemMargin") {RelativeSource = relativeSource};
+                rb.SetBinding(MarginProperty, itemMarginBinding);
                 
-                // todo: binding doesn't work?
-                rb.SetBinding(RadioButton.IsCheckedProperty, b);
                 panel.Children.Add(rb);
             }
         }
 
         static RadioButtonList()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(RadioButtonList), new FrameworkPropertyMetadata(typeof(RadioButtonList)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(RadioButtonList),
+                new FrameworkPropertyMetadata(typeof(RadioButtonList)));
         }
 
+        public Thickness ItemMargin
+        {
+            get { return (Thickness)GetValue(ItemMarginProperty); }
+            set { SetValue(ItemMarginProperty, value); }
+        }
+
+        public static readonly DependencyProperty ItemMarginProperty =
+            DependencyProperty.Register("ItemMargin", typeof(Thickness), typeof(RadioButtonList), new UIPropertyMetadata(new Thickness(0,4,0,4)));
+        
         public Enum Value
         {
             get { return (Enum)GetValue(ValueProperty); }
@@ -54,7 +88,8 @@ namespace PropertyEditorLibrary
         }
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(Enum), typeof(RadioButtonList), new UIPropertyMetadata(null, ValueChanged));
+            DependencyProperty.Register("Value", typeof(Enum), typeof(RadioButtonList),
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChanged));
 
         private static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -62,37 +97,37 @@ namespace PropertyEditorLibrary
         }
     }
 
-    public class EnumRadioButton : RadioButton
-    {
+    //public class EnumRadioButton : RadioButton
+    //{
 
 
-        public Enum EnumValue
-        {
-            get { return (Enum)GetValue(EnumValueProperty); }
-            set { SetValue(EnumValueProperty, value); }
-        }
+    //    public Enum EnumValue
+    //    {
+    //        get { return (Enum)GetValue(EnumValueProperty); }
+    //        set { SetValue(EnumValueProperty, value); }
+    //    }
 
-        public static readonly DependencyProperty EnumValueProperty =
-            DependencyProperty.Register("EnumValue", typeof(object), typeof(EnumRadioButton), new UIPropertyMetadata(null, EnumChanged));
+    //    public static readonly DependencyProperty EnumValueProperty =
+    //        DependencyProperty.Register("EnumValue", typeof(object), typeof(EnumRadioButton), new UIPropertyMetadata(null, EnumChanged));
 
-        private static void EnumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((EnumRadioButton)d).OnEnumChanged();
-        }
+    //    private static void EnumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    //    {
+    //        ((EnumRadioButton)d).OnEnumChanged();
+    //    }
 
-        private void OnEnumChanged()
-        {
-            IsChecked = EnumValue == Value;
-        }
+    //    private void OnEnumChanged()
+    //    {
+    //        IsChecked = EnumValue == Value;
+    //    }
 
-        public Enum Value
-        {
-            get { return (Enum)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
-        }
+    //    public Enum Value
+    //    {
+    //        get { return (Enum)GetValue(ValueProperty); }
+    //        set { SetValue(ValueProperty, value); }
+    //    }
 
-        public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(Enum), typeof(EnumRadioButton), new UIPropertyMetadata(null, EnumChanged));
+    //    public static readonly DependencyProperty ValueProperty =
+    //        DependencyProperty.Register("Value", typeof(Enum), typeof(EnumRadioButton), new UIPropertyMetadata(null, EnumChanged));
 
-    }
+    //}
 }

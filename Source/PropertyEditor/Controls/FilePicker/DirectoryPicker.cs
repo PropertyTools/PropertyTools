@@ -9,27 +9,31 @@ namespace PropertyEditorLibrary
     /// </summary>
     public class DirectoryPicker : Control
     {
+        public static readonly DependencyProperty DirectoryProperty =
+            DependencyProperty.Register("Directory", typeof (string), typeof (DirectoryPicker),
+                                        new FrameworkPropertyMetadata(null,
+                                                                      FrameworkPropertyMetadataOptions.
+                                                                          BindsTwoWayByDefault));
+
         static DirectoryPicker()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DirectoryPicker), new FrameworkPropertyMetadata(typeof(DirectoryPicker)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof (DirectoryPicker),
+                                                     new FrameworkPropertyMetadata(typeof (DirectoryPicker)));
         }
-
-        public string Directory
-        {
-            get { return (string)GetValue(DirectoryProperty); }
-            set { SetValue(DirectoryProperty, value); }
-        }
-
-        public static readonly DependencyProperty DirectoryProperty =
-            DependencyProperty.Register("Directory", typeof(string), typeof(DirectoryPicker), new UIPropertyMetadata(null));
-
-        public ICommand BrowseCommand { get; set; }
-        public IDirectoryDialog DirectoryDialog { get; set; }
 
         public DirectoryPicker()
         {
             BrowseCommand = new DelegateCommand(Browse);
         }
+
+        public string Directory
+        {
+            get { return (string) GetValue(DirectoryProperty); }
+            set { SetValue(DirectoryProperty, value); }
+        }
+
+        public ICommand BrowseCommand { get; set; }
+        public IDirectoryDialog DirectoryDialog { get; set; }
 
         private void Browse()
         {
@@ -41,14 +45,14 @@ namespace PropertyEditorLibrary
             }
             else
             {
-                MessageBox.Show("Select directory dialog not implemented");                
+                MessageBox.Show("Select directory dialog not implemented");
             }
         }
     }
+
     public interface IDirectoryDialog
     {
         string Directory { get; set; }
         bool Show();
     }
-
 }

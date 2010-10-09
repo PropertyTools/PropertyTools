@@ -8,5 +8,5 @@ Project page:  http://propertyeditor.codeplex.com
 SVN:           https://propertyeditor.svn.codeplex.com/svn
 
 Build requirements
-- Microsoft .NET 4.0 Client Profile
-- Visual Studio 2010
+- Microsoft .NET 3.5 or 4.0 Client Profile
+- Visual Studio 2008 or 2010

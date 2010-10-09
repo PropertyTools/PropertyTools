@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Windows;
+using System.ComponentModel;
 using System.Windows.Controls;
 
 namespace ControlsDemo.Pages
@@ -9,39 +9,69 @@ namespace ControlsDemo.Pages
     /// </summary>
     public partial class FormattingTextBoxPage : Page
     {
-        public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof (double), typeof (MainWindow), new UIPropertyMetadata(Math.PI));
-
-        public static readonly DependencyProperty TimeProperty =
-            DependencyProperty.Register("Time", typeof (DateTime), typeof (MainWindow),
-                                        new UIPropertyMetadata(DateTime.Now));
-
-        public static readonly DependencyProperty StringProperty =
-            DependencyProperty.Register("String", typeof (string), typeof (MainWindow), new UIPropertyMetadata("John"));
-
         public FormattingTextBoxPage()
         {
             InitializeComponent();
-            DataContext = this;
+            DataContext = new TestObject();
         }
+    }
 
+    public class TestObject : INotifyPropertyChanged
+    {
+        private string _s;
+        private DateTime _time;
+        private double _value;
+
+        public TestObject()
+        {
+            Value = Math.PI;
+            Time = DateTime.Now;
+            String = "John";
+        }
 
         public double Value
         {
-            get { return (double) GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get { return _value; }
+            set
+            {
+                _value = value;
+                RaisePropertyChanged("Value");
+            }
         }
 
         public DateTime Time
         {
-            get { return (DateTime) GetValue(TimeProperty); }
-            set { SetValue(TimeProperty, value); }
+            get { return _time; }
+            set
+            {
+                _time = value;
+                RaisePropertyChanged("Time");
+            }
         }
 
         public string String
         {
-            get { return (string) GetValue(StringProperty); }
-            set { SetValue(StringProperty, value); }
+            get { return _s; }
+            set
+            {
+                _s = value;
+                RaisePropertyChanged("String");
+            }
         }
+
+        #region PropertyChanged Block
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void RaisePropertyChanged(string property)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(property));
+            }
+        }
+
+        #endregion
     }
 }

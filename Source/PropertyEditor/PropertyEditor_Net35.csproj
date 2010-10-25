@@ -78,7 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
- <Page Include="Controls\PopupBox\Generic.xaml">
+    <Page Include="Controls\PopupBox\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -142,6 +142,7 @@
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\Shell32\BrowseForFolderDialog.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Controls\ColorPicker\ColorPicker.cs" />
     <Compile Include="Controls\RadioButtonList\RadioButtonList.cs" />

@@ -136,8 +136,8 @@
 								<TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{Binding ColorName,RelativeSource={RelativeSource TemplatedParent}}" />
 							</StackPanel>
 						</Grid>
-						<Popup Name="Popup" Placement="Bottom" MinWidth="240" MaxWidth="300" MinHeight="140" IsOpen="{TemplateBinding IsDropDownOpen}" StaysOpen="False" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
-							<TabControl Margin="6" Width="{TemplateBinding ActualWidth}" TabStripPlacement="Bottom" SnapsToDevicePixels="True" KeyboardNavigation.DirectionalNavigation="Contained">
+						<Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" StaysOpen="False" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                            <TabControl Margin="6" MinWidth="240" MaxWidth="300" MinHeight="140" Width="{TemplateBinding ActualWidth}" TabStripPlacement="Bottom" SnapsToDevicePixels="True" KeyboardNavigation.DirectionalNavigation="Contained">
 								<TabControl.Resources>
 									<Style TargetType="{x:Type TextBlock}">
 										<Setter Property="Margin" Value="4" />

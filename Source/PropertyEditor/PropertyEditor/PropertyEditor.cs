@@ -524,15 +524,25 @@ namespace PropertyEditorLibrary
                 return null;
             }
 
-            var instanceType = isEnumerable ? TypeHelper.FindBiggestCommonType(instance as IEnumerable) : instance.GetType();
+            Type instanceType;
+
+            // find all properties of the instance type
+            PropertyDescriptorCollection properties;
+            if (isEnumerable)
+            {
+                instanceType = TypeHelper.FindBiggestCommonType(instance as IEnumerable);
+                properties = TypeDescriptor.GetProperties(instanceType);
+            }
+            else
+            {
+                instanceType = instance.GetType();
+                properties = TypeDescriptor.GetProperties(instance);
+            }
 
             if (instanceType == null)
             {
                 return null;
             }
-
-            // find all properties of the instance type
-            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(instanceType);
 
             // The GetPropertyModel method does not return properties in a particular order, 
             // such as alphabetical or declaration order. Your code must not depend on the 

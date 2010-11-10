@@ -114,6 +114,7 @@ namespace FeaturesDemo
         public byte Byte { get; set; }
         public int Integer { get; set; }
         public double Double { get; set; }
+        public float Float { get; set; }
         public bool Boolean { get; set; }
         public Genders Enum { get; set; }
         [RadioButtons]
@@ -185,7 +186,10 @@ namespace FeaturesDemo
         [FormatString("0.00")]
         public double SliderDouble { get; set; }
 
-        [Slidable(0, 100, 1, 100)]
+        [Slidable(0.1, 99.9, 0.1, 0.5)]
+        public float SliderFloat { get; set; }
+
+        [Slidable(0, 100, 1, 10)]
         public int SliderInt { get; set; }
 
         [Category("Special editors")]

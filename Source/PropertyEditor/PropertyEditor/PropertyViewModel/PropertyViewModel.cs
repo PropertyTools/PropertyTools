@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 
@@ -451,7 +452,14 @@ namespace PropertyEditorLibrary
                     {
                         try
                         {
-                                value = converter.ConvertFrom(value);
+                            // Change to '.' decimal separator, and use InvariantCulture when converting
+                            if (propertyType==typeof(float) || propertyType==typeof(double))
+                            {
+                                if (value is string)
+                                    value = ((string) value).Replace(',', '.');
+                            }
+
+                            value = converter.ConvertFrom(null, CultureInfo.InvariantCulture,value);
                         }
                         // Catch FormatExceptions
                         catch (Exception)
@@ -461,7 +469,13 @@ namespace PropertyEditorLibrary
                     }
                     else
                     {
-                        if (propertyType == typeof (int) && value is double)
+                        if (propertyType == typeof(float) && value is double)
+                        {
+                            var d = (double)value;
+                            value = (float)d;
+                            return true;
+                        }
+                        if (propertyType == typeof(int) && value is double)
                         {
                             var d = (double) value;
                             value = (int) d;

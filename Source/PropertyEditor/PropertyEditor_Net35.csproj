@@ -136,6 +136,7 @@
     <Compile Include="Controls\PopupBox\PopupBox.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\DoubleToGridLengthConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\ToDoubleConverter.cs" />

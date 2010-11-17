@@ -62,7 +62,7 @@ namespace DialogDemos
     {
         NewProject,
         OpenProject,
-        OpenLates,
+        OpenLatest,
         Nothing
     } ;
 }

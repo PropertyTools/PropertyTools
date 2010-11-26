@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FeaturesDemo.Properties {
+namespace SimpleDemo.Properties {
     using System;
     
     

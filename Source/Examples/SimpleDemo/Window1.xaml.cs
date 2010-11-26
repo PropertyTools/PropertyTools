@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace FeaturesDemo
+namespace SimpleDemo
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
@@ -10,11 +10,6 @@ namespace FeaturesDemo
         public Window1()
         {
             InitializeComponent();
-        }
-
-        private void Show_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show(editor1.SelectedObject.ToString());
         }
     }
 }

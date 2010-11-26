@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace FeaturesDemo
+namespace SimpleDemo
 {
     /// <summary>
     /// Interaction logic for App.xaml

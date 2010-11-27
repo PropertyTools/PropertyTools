@@ -1,0 +1,8 @@
+﻿<Window x:Class="DynamicDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pe="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor" 
+        Title="DynamicDemo - testing (does not work)" Height="350" Width="525">
+    <Grid>
+        <pe:PropertyEditor Margin="8" x:Name="editor1"/>
+    </Grid>
+</Window>

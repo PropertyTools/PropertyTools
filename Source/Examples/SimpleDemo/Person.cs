@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Text;
 using System.Windows.Media;
 using PropertyEditorLibrary;
 
@@ -10,14 +9,16 @@ namespace SimpleDemo
     {
         Male,
         Female
-    };
+    }
 
     public class Person
     {
         // When the [Category(...)] attribute is used with a "|", the
         // first part is the header of the tab and the second part is
         // the header of the category
-        // The order of the properties are not guaranteed to be fixed
+        // The order of the properties are not guaranteed to be the same 
+        // as in the code, but so far I have not seen any difference...
+
         private const string catPersonal = "General|Personal";
         private const string catFavourites = "General|Favourites";
         private const string catHabits = "General|Habits";
@@ -33,11 +34,18 @@ namespace SimpleDemo
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
         public int Age { get; set; }
+        
         public double Height { get; set; }
+        
         public Mass Weight { get; set; }
+        
         public Genders Gender { get; set; }
+        
+        // DateTime is showing a TextBox - see the CustomEditorDemo for usage with the Date picker from WPF toolkit.
         public DateTime BirthDate { get; set; }
+        
         public Color HairColor { get; set; }
 
         [FilePath("Image files (*.jpg)|*.jpg|All files (*.*)|*.*", ".jpg")]
@@ -73,7 +81,7 @@ namespace SimpleDemo
         [Category(catVehicles), Optional, SortOrder(403)]
         public string Scooter { get; set; }
 
-        // Nullable types can be optional
+        // Nullable types can be optional, the property is disabled when the value is null
         [Category(catVehicles), Optional, SortOrder(404)]
         public int? Year { get; set; }
 

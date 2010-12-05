@@ -3,9 +3,11 @@
         <XmlDataProvider x:Key="samples" Source="Examples.xml" />
     </Window.Resources>
     <DockPanel DataContext="{Binding  Source={StaticResource samples}, XPath=Examples/Example}">
-        <ListBox Width="160" DockPanel.Dock="Left" ItemsSource="{Binding}" DisplayMemberPath="@Title" IsSynchronizedWithCurrentItem="True"/>
-        <Slider DockPanel.Dock="Bottom" x:Name="ScaleSlider" Value="1" Minimum="1" Maximum="3" Margin="8" Width="180" />
-        <Frame Source="{Binding XPath=@Page}" VerticalAlignment="Center" NavigationUIVisibility="Hidden" Focusable="false">
+        <DockPanel Width="160" DockPanel.Dock="Left">
+            <Slider DockPanel.Dock="Bottom" x:Name="ScaleSlider" ToolTip="LayoutTransform scale" Value="1" Minimum="1" Maximum="3" Margin="8"/>
+            <ListBox ItemsSource="{Binding}" DisplayMemberPath="@Title" IsSynchronizedWithCurrentItem="True" Margin="4"/>
+        </DockPanel>
+        <Frame Source="{Binding XPath=@Page}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Focusable="false">
             <Frame.LayoutTransform>
                 <ScaleTransform ScaleX="{Binding Value, ElementName=ScaleSlider}" ScaleY="{Binding Value, ElementName=ScaleSlider}" />
             </Frame.LayoutTransform>

@@ -53,6 +53,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Release\PropertyEditor.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework.Aero" />
@@ -97,6 +98,10 @@
     <Page Include="Controls\ColorPicker\Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DockPanelSplitter\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -172,6 +177,8 @@
     <Compile Include="Attributes\OptionalAttribute.cs" />
     <Compile Include="Attributes\RadioButtonsAttribute.cs" />
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
+    <Compile Include="Controls\DockPanelSplitter\DockPanelSplitter.cs" />
+    <Compile Include="Controls\EnumMenuItem.cs" />
     <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />
     <Compile Include="Controls\FilePicker\FilePicker.cs" />
     <Compile Include="Controls\FormattingTextBox.cs" />

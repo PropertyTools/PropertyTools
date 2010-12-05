@@ -6,6 +6,7 @@
         <ResourceDictionary Source="/PropertyEditor;component/Controls/ColorPicker/Generic.xaml"/>
         <ResourceDictionary Source="/PropertyEditor;component/Controls/FilePicker/Generic.xaml"/>
         <ResourceDictionary Source="/PropertyEditor;component/Controls/RadioButtonList/Generic.xaml"/>
+        <ResourceDictionary Source="/PropertyEditor;component/Controls/DockPanelSplitter/Generic.xaml"/>
         <ResourceDictionary Source="/PropertyEditor;component/PropertyEditor/Generic.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

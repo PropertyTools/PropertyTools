@@ -6,7 +6,7 @@
       d:DesignHeight="300" d:DesignWidth="300"
 	Title="FilePickerPage">
 
-    <StackPanel Width="200">
+    <StackPanel Width="200" VerticalAlignment="Center">
         <p:FilePicker FilePath="{Binding FilePath}" Filter="Text files|*.txt" DefaultExtension=".txt" Margin="4"/>
         <p:DirectoryPicker Directory="{Binding Directory}" Margin="4"/>
         <Label Content="{Binding FilePath}"/>

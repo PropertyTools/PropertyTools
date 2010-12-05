@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:p="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor" mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
 	Title="RadioButtonListPage">
-    <StackPanel Width="200">
+    <StackPanel Width="200" VerticalAlignment="Center">
         <p:RadioButtonList Value="{Binding SelectedFruit}" Margin="10"/>
         <TextBox Text="{Binding SelectedFruit}" Margin="10"/>
         <Button Content="Change" Width="80" Click="Change_Click"/>

@@ -55,6 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Pages\DockPanelSplitterPage.xaml.cs">
+      <DependentUpon>DockPanelSplitterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EnumMenuItemPage.xaml.cs">
+      <DependentUpon>EnumMenuItemPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FormattingTextBoxPage.xaml.cs">
       <DependentUpon>FormattingTextBoxPage.xaml</DependentUpon>
     </Compile>
@@ -68,6 +74,14 @@
     <Page Include="Pages\ColorPickerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DockPanelSplitterPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\EnumMenuItemPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\FilePickerPage.xaml">
       <SubType>Designer</SubType>

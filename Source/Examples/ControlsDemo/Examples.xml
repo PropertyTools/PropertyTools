@@ -5,4 +5,6 @@
   <Example Page="Pages\FilePickerPage.xaml" Title="FilePicker" Description=""/>
   <Example Page="Pages\RadioButtonListPage.xaml" Title="RadioButtonList" Description=""/>
   <Example Page="Pages\FormattingTextBoxPage.xaml" Title="FormattingTextBox" Description=""/>
+  <Example Page="Pages\DockPanelSplitterPage.xaml" Title="DockPanelSplitter" Description=""/>
+  <Example Page="Pages\EnumMenuItemPage.xaml" Title="EnumMenuItem" Description=""/>
 </Examples>

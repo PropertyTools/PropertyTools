@@ -8,7 +8,7 @@
     <Page.Resources>
         <p:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
     </Page.Resources>
-    <StackPanel Width="200">
+    <StackPanel Width="200" VerticalAlignment="Center">
         <p:ColorPicker SelectedColor="{Binding Color}" ShowAsHex="True" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
         <p:ColorPicker SelectedColor="{Binding Brush, Converter={StaticResource ColorToBrushConverter}}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
         <CheckBox x:Name="Enabled" Content="IsEnabled" IsChecked="True" Margin="10"/>

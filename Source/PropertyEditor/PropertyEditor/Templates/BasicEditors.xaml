@@ -24,6 +24,8 @@
     </DataTemplate>
     
     <local:ToDoubleConverter x:Key="ToDoubleConverter"/>
+    <local:EnumValuesConverter x:Key="EnumValuesConverter"/>
+    <local:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
     
     <DataTemplate x:Key="SliderBoxTemplate">
 		<Grid>
@@ -53,14 +55,12 @@
 
 	<!-- enum -->
 	<DataTemplate x:Key="ComboBoxEnumTemplate">
-		<ComboBox SelectedValue="{Binding Value}" IsEnabled="{Binding IsWriteable}">
-			<ComboBox.ItemsSource>
-				<Binding Path="Value">
-					<Binding.Converter>
-						<local:EnumValuesConverter />
-					</Binding.Converter>
-				</Binding>
-			</ComboBox.ItemsSource>
+		<ComboBox SelectedValue="{Binding Value}" IsEnabled="{Binding IsWriteable}" ItemsSource="{Binding Value, Converter={StaticResource EnumValuesConverter}}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
 		</ComboBox>
 	</DataTemplate>
 

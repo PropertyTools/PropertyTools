@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -43,11 +44,12 @@ namespace PropertyEditorLibrary
                 return;
             var enumValues = Enum.GetValues(Value.GetType());
             var converter = new EnumToBooleanConverter { EnumType = Value.GetType() };
-            var relativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof (RadioButtonList), 1);
-            
+            var relativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(RadioButtonList), 1);
+            var descriptionConverter = new EnumDescriptionConverter();
+
             foreach (var itemValue in enumValues)
             {
-                var rb = new RadioButton { Content = itemValue };
+                var rb = new RadioButton { Content = descriptionConverter.Convert(itemValue, typeof(string), null, CultureInfo.CurrentCulture) };
                 // rb.IsChecked = Value.Equals(itemValue);
 
                 var isCheckedBinding = new Binding("Value")
@@ -59,9 +61,9 @@ namespace PropertyEditorLibrary
                                            };
                 rb.SetBinding(ToggleButton.IsCheckedProperty, isCheckedBinding);
 
-                var itemMarginBinding = new Binding("ItemMargin") {RelativeSource = relativeSource};
+                var itemMarginBinding = new Binding("ItemMargin") { RelativeSource = relativeSource };
                 rb.SetBinding(MarginProperty, itemMarginBinding);
-                
+
                 panel.Children.Add(rb);
             }
         }
@@ -79,8 +81,8 @@ namespace PropertyEditorLibrary
         }
 
         public static readonly DependencyProperty ItemMarginProperty =
-            DependencyProperty.Register("ItemMargin", typeof(Thickness), typeof(RadioButtonList), new UIPropertyMetadata(new Thickness(0,4,0,4)));
-        
+            DependencyProperty.Register("ItemMargin", typeof(Thickness), typeof(RadioButtonList), new UIPropertyMetadata(new Thickness(0, 4, 0, 4)));
+
         public Enum Value
         {
             get { return (Enum)GetValue(ValueProperty); }

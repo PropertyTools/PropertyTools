@@ -14,7 +14,22 @@ namespace FeaturesDemo
     {
         Male,
         Female
-    } ;
+    }
+
+    // Example Enum with description attributes
+    public enum House
+    {
+        [Description("Small house")]
+        SmallHouse,
+        [Description("Big house")]
+        BigHouse,
+        [Description("Apartment")]
+        Apartment,
+        [Description("Yurt")]
+        Yurt,
+        [Description("Straw hut")]
+        StrawHut
+    }
 
     public enum YesOrNo
     {
@@ -119,6 +134,9 @@ namespace FeaturesDemo
         public Genders Enum { get; set; }
         [RadioButtons]
         public YesOrNo Vote { get; set; }
+
+        [Category("Enum with Description attributes")]
+        public House House { get; set; }
 
         [Category("Type with ValueConverter")]
         public Mass Weight { get; set; }

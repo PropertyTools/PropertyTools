@@ -17,10 +17,22 @@ namespace PropertyEditorLibrary
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            var enumType = value.GetType();
-            var field = enumType.GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public).First(f => f.GetValue(null).Equals(value));
-            var descriptionAttribute = field.GetCustomAttributes<DescriptionAttribute>(true).FirstOrDefault();
-            return descriptionAttribute != null ? descriptionAttribute.Description : value;
+            // Default, non-converted result.
+            string result = value.ToString();
+
+            var field = value.GetType().GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public).FirstOrDefault(f => f.GetValue(null).Equals(value));
+
+            if (field != null)
+            {
+                var descriptionAttribute = field.GetCustomAttributes<DescriptionAttribute>(true).FirstOrDefault();
+                if (descriptionAttribute != null)
+                {
+                    // Found the attribute, assign description
+                    result = descriptionAttribute.Description;
+                }
+            }
+
+            return result;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

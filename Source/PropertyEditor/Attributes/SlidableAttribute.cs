@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Controls.Primitives;
 
 namespace PropertyEditorLibrary
 {
@@ -20,14 +21,15 @@ namespace PropertyEditorLibrary
             Maximum = 100;
             SmallChange = 1;
             LargeChange = 10;
+            SnapToTicks = false;
+            TickFrequency = 1;
+            TickPlacement = TickPlacement.None;
         }
 
         public SlidableAttribute(double minimum, double maximum)
+            : this(minimum, maximum, 1, 10)
         {
-            Minimum = minimum;
-            Maximum = maximum;
-            SmallChange = 1;
-            LargeChange = 10;
+
         }
         public SlidableAttribute(double minimum, double maximum, double smallChange, double largeChange)
         {
@@ -37,15 +39,34 @@ namespace PropertyEditorLibrary
             LargeChange = largeChange;
         }
 
+        public SlidableAttribute(double minimum, double maximum, double smallChange, double largeChange, bool snapToTicks, double tickFrequency)
+            : this(minimum, maximum, smallChange, largeChange)
+        {
+            SnapToTicks = snapToTicks;
+            TickFrequency = tickFrequency;
+        }
+
+        public SlidableAttribute(double minimum, double maximum, double smallChange, double largeChange, bool snapToTicks, double tickFrequency, TickPlacement tickPlacement)
+            : this(minimum, maximum, smallChange, largeChange, snapToTicks, tickFrequency)
+        {
+            TickPlacement = tickPlacement;
+        }
+
+
+
         public double Minimum { get; set; }
         public double Maximum { get; set; }
         public double LargeChange { get; set; }
         public double SmallChange { get; set; }
+        public bool SnapToTicks { get; set; }
+        public double TickFrequency { get; set; }
+        public TickPlacement TickPlacement { get; set; }
 
         public override bool Equals(object obj)
         {
             var o = obj as SlidableAttribute;
-            return Minimum.Equals(o.Minimum) && Maximum.Equals(o.Maximum);
+
+            return o == null ? false : Minimum.Equals(o.Minimum) && Maximum.Equals(o.Maximum);
         }
 
         public override int GetHashCode()
@@ -57,5 +78,6 @@ namespace PropertyEditorLibrary
         {
             return Equals(Default);
         }
+
     }
 }

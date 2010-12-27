@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace PropertyEditorLibrary
 {
@@ -82,18 +83,28 @@ namespace PropertyEditorLibrary
             return false;
         }
 
-        public virtual bool IsSlidable(PropertyDescriptor descriptor, out double min, out double max, out double largeChange, out double smallChange)
+        public virtual bool IsSlidable(PropertyDescriptor descriptor, out double min, out double max, out double largeChange, out double smallChange, out double tickFrequency, out bool snapToTicks, out TickPlacement tickPlacement)
         {
             min = max = largeChange = smallChange = 0;
-            var sa = AttributeHelper.GetFirstAttribute<SlidableAttribute>(descriptor);
-            if (sa == null)
-                return false;
+            tickFrequency = 1;
+            snapToTicks = false;
+            tickPlacement = TickPlacement.None;
 
-            min = sa.Minimum;
-            max = sa.Maximum;
-            largeChange = sa.LargeChange;
-            smallChange = sa.SmallChange;
-            return true;
+            bool result = false;
+
+            var sa = AttributeHelper.GetFirstAttribute<SlidableAttribute>(descriptor);
+            if (sa != null)
+            {
+                min = sa.Minimum;
+                max = sa.Maximum;
+                largeChange = sa.LargeChange;
+                smallChange = sa.SmallChange;
+                snapToTicks = sa.SnapToTicks;
+                tickFrequency = sa.TickFrequency;
+                tickPlacement = sa.TickPlacement;
+                result = true;
+            }
+            return result;
         }
         public virtual string GetFormatString(PropertyDescriptor descriptor)
         {
@@ -108,7 +119,7 @@ namespace PropertyEditorLibrary
             var ha = AttributeHelper.GetFirstAttribute<HeightAttribute>(descriptor);
             if (ha == null)
                 return double.NaN;
-                return ha.Height;
+            return ha.Height;
         }
 
         public virtual PropertyViewModel CreateViewModel(object instance, PropertyDescriptor descriptor)
@@ -138,14 +149,20 @@ namespace PropertyEditorLibrary
                 propertyViewModel = new CheckBoxPropertyViewModel(instance, descriptor, owner);
 
             double min, max, largeChange, smallChange;
-            if (IsSlidable(descriptor, out min, out max, out largeChange, out smallChange))
+            double tickFrequency;
+            bool snapToTicks;
+            TickPlacement tickPlacement;
+            if (IsSlidable(descriptor, out min, out max, out largeChange, out smallChange, out tickFrequency, out snapToTicks, out tickPlacement))
                 propertyViewModel = new SlidablePropertyViewModel(instance, descriptor, owner)
-                                        {
-                                            SliderMinimum = min,
-                                            SliderMaximum = max,
-                                            SliderLargeChange = largeChange,
-                                            SliderSmallChange = smallChange
-                                        };
+                {
+                    SliderMinimum = min,
+                    SliderMaximum = max,
+                    SliderLargeChange = largeChange,
+                    SliderSmallChange = smallChange,
+                    SliderSnapToTicks = snapToTicks,
+                    SliderTickFrequency = tickFrequency,
+                    SliderTickPlacement = tickPlacement
+                };
 
             // FilePath
             var fpa = AttributeHelper.GetFirstAttribute<FilePathAttribute>(descriptor);
@@ -186,7 +203,7 @@ namespace PropertyEditorLibrary
                 var isEnabledName = String.Format(IsEnabledPattern, descriptor.Name);
                 propertyViewModel.IsEnabledDescriptor = pdc.Find(isEnabledName, false);
             }
-            
+
             if (IsVisiblePattern != null)
             {
                 var isVisibleName = String.Format(IsVisiblePattern, descriptor.Name);

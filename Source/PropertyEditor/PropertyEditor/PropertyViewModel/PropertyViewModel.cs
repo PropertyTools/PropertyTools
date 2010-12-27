@@ -103,7 +103,7 @@ namespace PropertyEditorLibrary
             get
             {
                 if (IsEnabledDescriptor != null)
-                    return (bool) IsEnabledDescriptor.GetValue(FirstInstance);
+                    return (bool)IsEnabledDescriptor.GetValue(FirstInstance);
 
                 if (Owner.PropertyStateProvider != null)
                     return isEnabled && Owner.PropertyStateProvider.IsEnabled(FirstInstance, Descriptor);
@@ -436,7 +436,7 @@ namespace PropertyEditorLibrary
         {
             // Check if it neccessary to convert the value
             var propertyType = Descriptor.PropertyType;
-            if (propertyType == typeof (object) ||
+            if (propertyType == typeof(object) ||
                 value == null && propertyType.IsClass ||
                 value != null && propertyType.IsAssignableFrom(value.GetType()))
             {
@@ -453,13 +453,13 @@ namespace PropertyEditorLibrary
                         try
                         {
                             // Change to '.' decimal separator, and use InvariantCulture when converting
-                            if (propertyType==typeof(float) || propertyType==typeof(double))
+                            if (propertyType == typeof(float) || propertyType == typeof(double))
                             {
                                 if (value is string)
-                                    value = ((string) value).Replace(',', '.');
+                                    value = ((string)value).Replace(',', '.');
                             }
 
-                            value = converter.ConvertFrom(null, CultureInfo.InvariantCulture,value);
+                            value = converter.ConvertFrom(null, CultureInfo.InvariantCulture, value);
                         }
                         // Catch FormatExceptions
                         catch (Exception)
@@ -477,8 +477,8 @@ namespace PropertyEditorLibrary
                         }
                         if (propertyType == typeof(int) && value is double)
                         {
-                            var d = (double) value;
-                            value = (int) d;
+                            var d = (double)value;
+                            value = (int)d;
                             return true;
                         }
                         return false;

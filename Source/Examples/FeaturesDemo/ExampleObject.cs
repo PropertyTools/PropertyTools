@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 using PropertyEditorLibrary;
+using System.Windows.Controls.Primitives;
 
 namespace FeaturesDemo
 {
@@ -41,7 +42,7 @@ namespace FeaturesDemo
 
     #region Mass
 
-    [TypeConverter(typeof (MassConverter))]
+    [TypeConverter(typeof(MassConverter))]
     public class Mass
     {
         public double Value { get; set; }
@@ -51,10 +52,11 @@ namespace FeaturesDemo
             s = s.Replace(',', '.').Trim();
             var r = new Regex(@"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?");
             Match m = r.Match(s);
-            if (!m.Success) return null;
+            if (!m.Success)
+                return null;
             double value = double.Parse(m.Groups[0].Value, CultureInfo.InvariantCulture);
             // string unit = m.Groups[1].Value;
-            return new Mass {Value = value};
+            return new Mass { Value = value };
         }
 
         public override string ToString()
@@ -67,7 +69,7 @@ namespace FeaturesDemo
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            if (sourceType == typeof (string))
+            if (sourceType == typeof(string))
             {
                 return true;
             }
@@ -78,7 +80,7 @@ namespace FeaturesDemo
         {
             if (value is string)
             {
-                return Mass.Parse((string) value);
+                return Mass.Parse((string)value);
             }
             return base.ConvertFrom(context, culture, value);
         }
@@ -152,7 +154,7 @@ namespace FeaturesDemo
         public bool ReadonlyBool { get; private set; }
 
         [Category("Advanced|Optional properties"), SortOrder(200)]
-        
+
         // Optional properties have a checkbox instead of a label
         // The checkbox controls the enabled/disabled state of the property
         // The following properties are disabled when the value is null
@@ -182,7 +184,7 @@ namespace FeaturesDemo
 
         [Optional("HasValue")]
         public int Value { get; set; }
-        
+
         [Optional("HasValue")]
         public int Value2 { get; set; }
 
@@ -200,7 +202,7 @@ namespace FeaturesDemo
 
 
         [Category("Slidable properties")]
-        [Slidable(0, 10, 0.25, 2.5)]
+        [Slidable(0, 10, 0.5, 2.5)]
         [FormatString("0.00")]
         public double SliderDouble { get; set; }
 
@@ -209,6 +211,9 @@ namespace FeaturesDemo
 
         [Slidable(0, 100, 1, 10)]
         public int SliderInt { get; set; }
+
+        [Slidable(0, 10, 1, 5, true, 1.5, TickPlacement.BottomRight)]
+        public double TickSlider { get; set; }
 
         [Category("Special editors")]
         public Color Color { get; set; }

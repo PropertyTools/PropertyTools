@@ -69,7 +69,7 @@ namespace PropertyEditorLibrary
             }
             else
             {
-                Text = Value != null ? Value.ToString() : null;
+                Text = Value != null ? String.Format(FormatProvider, "{0}", Value) : null;
             }
             userIsChanging = true;
         }
@@ -105,7 +105,7 @@ namespace PropertyEditorLibrary
         private static void TextChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ftb = (FormattingTextBox)d;
-           // if (ftb.userIsChanging)
+            // if (ftb.userIsChanging)
             ftb.UpdateValue();
         }
     }

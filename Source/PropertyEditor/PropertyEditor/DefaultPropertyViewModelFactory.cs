@@ -59,9 +59,11 @@ namespace PropertyEditorLibrary
         {
             optionalPropertyName = null;
 
-            // Optional by Nullable type
-            if (descriptor.PropertyType.IsGenericType && descriptor.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return true;
+            // The following code is disabled (will make all Nullable types optional)
+            //  if (descriptor.PropertyType.IsGenericType && descriptor.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            //      return true;
+          
+			// Return true only if the [Optional] attribute is set.
             var oa = AttributeHelper.GetFirstAttribute<OptionalAttribute>(descriptor);
             if (oa != null)
             {

@@ -57,6 +57,11 @@ namespace PropertyEditorLibrary
         {
             Type propertyType = propertyViewModel.PropertyType;
 
+            if (Nullable.GetUnderlyingType(propertyType) != null)
+            {
+                propertyType = Nullable.GetUnderlyingType(propertyType);
+            }
+
             // Try to find a template for the given type
             var template = TryToFindDataTemplate(element, propertyType);
             if (template != null)

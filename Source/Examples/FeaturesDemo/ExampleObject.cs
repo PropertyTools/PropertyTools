@@ -166,6 +166,9 @@ namespace FeaturesDemo
         public double? OptionalDouble { get; set; }
 
         [Optional]
+        public Color? OptionalColor { get; set; }
+
+        [Optional]
         public string OptionalString { get; set; }
 
         // Properties matching the "Use{0}" search pattern will be optional
@@ -217,6 +220,7 @@ namespace FeaturesDemo
 
         [Category("Special editors")]
         public Color Color { get; set; }
+        public Color? NullableColor { get; set; }
 
         public Brush SolidBrush { get; set; }
         public FontFamily Font { get; set; }

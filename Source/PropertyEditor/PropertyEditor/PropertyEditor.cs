@@ -692,7 +692,7 @@ namespace PropertyEditorLibrary
             }
             else
             {
-                var tab = model.Count > 0 ? model[0] : null;
+                var tab = model != null && model.Count > 0 ? model[0] : null;
                 contentControl.Content = tab;
                 tabControl.Visibility = Visibility.Collapsed;
                 contentControl.Visibility = Visibility.Visible;

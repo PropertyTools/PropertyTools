@@ -3,7 +3,7 @@
     <!-- CLR & Custom Types Data Templates -->
 
     <DataTemplate x:Key="DefaultTemplate">
-        <local:TextBoxEx 
+        <TextBox 
 			IsReadOnly="{Binding IsReadOnly}" 
 			IsEnabled="{Binding IsEnabled}" 
 			Text="{Binding Value, ValidatesOnDataErrors=True}" 
@@ -11,7 +11,16 @@
 			TextWrapping="{Binding TextWrapping}" 
 			VerticalScrollBarVisibility="Auto" 
 			Height="{Binding Height}">
-        </local:TextBoxEx>
+        </TextBox>
+        <!--<local:TextBoxEx 
+			IsReadOnly="{Binding IsReadOnly}" 
+			IsEnabled="{Binding IsEnabled}" 
+			Text="{Binding Value, ValidatesOnDataErrors=True}" 
+			AcceptsReturn="{Binding AcceptsReturn}" 
+			TextWrapping="{Binding TextWrapping}" 
+			VerticalScrollBarVisibility="Auto" 
+			Height="{Binding Height}">
+        </local:TextBoxEx>-->
         <!--<local:FormattingTextBox 
 			IsReadOnly="{Binding IsReadOnly}" 
 			IsEnabled="{Binding IsEnabled}" 

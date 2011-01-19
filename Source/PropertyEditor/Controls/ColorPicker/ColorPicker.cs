@@ -14,7 +14,7 @@ namespace PropertyEditorLibrary
     /// <summary>
     /// ColorPicker control
     /// </summary>
-    public class ColorPicker : Control, INotifyPropertyChanged
+    public partial class ColorPicker : Control, INotifyPropertyChanged
     {
         // todo: 
         // - localize strings...
@@ -24,37 +24,55 @@ namespace PropertyEditorLibrary
         // - 'automatic' color? 'IncludeAutoColor' dependency property?
 
         public static readonly DependencyProperty ShowAsHexProperty =
-            DependencyProperty.Register("ShowAsHex", typeof (bool), typeof (ColorPicker), new UIPropertyMetadata(false));
+            DependencyProperty.Register("ShowAsHex", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false));
 
         public static readonly DependencyProperty PaletteProperty =
-            DependencyProperty.Register("Palette", typeof (ObservableCollection<Color>), typeof (ColorPicker),
+            DependencyProperty.Register("Palette", typeof(ObservableCollection<Color>), typeof(ColorPicker),
                                         new UIPropertyMetadata(CreateDefaultPalette()));
 
         public static readonly DependencyProperty IsDropDownOpenProperty =
-            DependencyProperty.Register("IsDropDownOpen", typeof (bool), typeof (ColorPicker),
+            DependencyProperty.Register("IsDropDownOpen", typeof(bool), typeof(ColorPicker),
                                         new UIPropertyMetadata(false, IsDropDownOpenChanged));
 
         public static readonly DependencyProperty IsPickingProperty =
-            DependencyProperty.Register("IsPicking", typeof (bool), typeof (ColorPicker),
+            DependencyProperty.Register("IsPicking", typeof(bool), typeof(ColorPicker),
                                         new UIPropertyMetadata(false, IsPickingChanged));
 
         public static readonly DependencyProperty SelectedColorProperty =
-            DependencyProperty.Register("SelectedColor", typeof (Color), typeof (ColorPicker),
+            DependencyProperty.Register("SelectedColor", typeof(Color), typeof(ColorPicker),
                                         new FrameworkPropertyMetadata(Color.FromArgb(80, 255, 255, 0),
                                                                       FrameworkPropertyMetadataOptions.
                                                                           BindsTwoWayByDefault,
                                                                       SelectedColorChanged));
 
+        public static readonly DependencyProperty TabStripPlacementProperty =
+            DependencyProperty.Register("TabStripPlacement", typeof(Dock), typeof(ColorPicker),
+                                        new UIPropertyMetadata(Dock.Bottom));
+
+
         private byte brightness;
         private byte hue;
+        private DispatcherTimer pickingTimer;
         private byte saturation;
         private bool updateHSV = true;
-        private DispatcherTimer pickingTimer;
+        private bool updateHexValue = true;
 
         static ColorPicker()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof (ColorPicker),
-                                                     new FrameworkPropertyMetadata(typeof (ColorPicker)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorPicker),
+                                                     new FrameworkPropertyMetadata(typeof(ColorPicker)));
+        }
+
+        public ColorPicker()
+        {
+            Loaded += ColorPicker_Loaded;
+            mouseEvent = new MouseButtonEventHandler(PersistentList_MouseUp);
+        }
+
+        public Dock TabStripPlacement
+        {
+            get { return (Dock)GetValue(TabStripPlacementProperty); }
+            set { SetValue(TabStripPlacementProperty, value); }
         }
 
         /// <summary>
@@ -63,13 +81,13 @@ namespace PropertyEditorLibrary
         /// <value><c>true</c> if show as hex; otherwise, <c>false</c>.</value>
         public bool ShowAsHex
         {
-            get { return (bool) GetValue(ShowAsHexProperty); }
+            get { return (bool)GetValue(ShowAsHexProperty); }
             set { SetValue(ShowAsHexProperty, value); }
         }
 
         public ObservableCollection<Color> Palette
         {
-            get { return (ObservableCollection<Color>) GetValue(PaletteProperty); }
+            get { return (ObservableCollection<Color>)GetValue(PaletteProperty); }
             set { SetValue(PaletteProperty, value); }
         }
 
@@ -81,7 +99,7 @@ namespace PropertyEditorLibrary
         /// </value>
         public bool IsDropDownOpen
         {
-            get { return (bool) GetValue(IsDropDownOpenProperty); }
+            get { return (bool)GetValue(IsDropDownOpenProperty); }
             set { SetValue(IsDropDownOpenProperty, value); }
         }
 
@@ -91,7 +109,7 @@ namespace PropertyEditorLibrary
         /// </summary>
         public bool IsPicking
         {
-            get { return (bool) GetValue(IsPickingProperty); }
+            get { return (bool)GetValue(IsPickingProperty); }
             set { SetValue(IsPickingProperty, value); }
         }
 
@@ -101,7 +119,7 @@ namespace PropertyEditorLibrary
         /// <value>The color of the selected.</value>
         public Color SelectedColor
         {
-            get { return (Color) GetValue(SelectedColorProperty); }
+            get { return (Color)GetValue(SelectedColorProperty); }
             set { SetValue(SelectedColorProperty, value); }
         }
 
@@ -134,14 +152,14 @@ namespace PropertyEditorLibrary
             {
                 if (ShowAsHex)
                     return ColorHelper.ColorToHex(SelectedColor);
-                var t = typeof (Colors);
-                var fields = t.GetProperties(BindingFlags.Public | BindingFlags.Static);
+                Type t = typeof(Colors);
+                PropertyInfo[] fields = t.GetProperties(BindingFlags.Public | BindingFlags.Static);
                 string nearestColor = "Custom";
                 double nearestDist = 30;
                 // find the color that is closest
-                foreach (var fi in fields)
+                foreach (PropertyInfo fi in fields)
                 {
-                    var c = (Color) fi.GetValue(null, null);
+                    var c = (Color)fi.GetValue(null, null);
                     if (SelectedColor == c)
                         return fi.Name;
                     double d = ColorHelper.ColorDifference(SelectedColor, c);
@@ -153,7 +171,7 @@ namespace PropertyEditorLibrary
                 }
                 if (SelectedColor.A < 255)
                 {
-                    return String.Format("{0}, {1:0} %", nearestColor, SelectedColor.A/2.55);
+                    return String.Format("{0}, {1:0} %", nearestColor, SelectedColor.A / 2.55);
                 }
                 return nearestColor;
             }
@@ -221,19 +239,53 @@ namespace PropertyEditorLibrary
             }
         }
 
+        public string HexValue
+        {
+            get
+            {
+                return ColorHelper.ColorToHex(SelectedColor);
+            }
+            set
+            {
+                updateHexValue = false;
+                SelectedColor = ColorHelper.HexToColor(value);
+                updateHexValue = true;
+            }
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
+        private void ColorPicker_Loaded(object sender, RoutedEventArgs e)
+        {
+            InitializePaletteSettings();
+            LoadLastPalette();
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
         private static void IsDropDownOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((ColorPicker) d).IsDropDownOpenChanged();
+            ((ColorPicker)d).IsDropDownOpenChanged();
         }
 
         private void IsDropDownOpenChanged()
         {
+            // Reload last used palette each time the dropdown is opened.
+            if (IsDropDownOpen)
+            {
+                LoadLastPalette();
+            }
+
             // turn off picking when drop down is closed
             if (!IsDropDownOpen && IsPicking)
                 IsPicking = false;
@@ -241,7 +293,7 @@ namespace PropertyEditorLibrary
 
         private static void IsPickingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((ColorPicker) d).IsPickingChanged();
+            ((ColorPicker)d).IsPickingChanged();
         }
 
         private void IsPickingChanged()
@@ -263,26 +315,30 @@ namespace PropertyEditorLibrary
 
         private void Pick(object sender, EventArgs e)
         {
-            bool isShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-            if (!isShiftDown)
-                return;
-
-            try
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
             {
-                Point pt = CaptureScreenshot.GetMouseScreenPosition();
-                BitmapSource bmp = CaptureScreenshot.Capture(new Rect(pt, new Size(1, 1)));
-                var pixels = new byte[4];
-                bmp.CopyPixels(pixels, 4, 0);
-                SelectedColor = Color.FromArgb(0xFF, pixels[2], pixels[1], pixels[0]);
-            }
-            catch (Exception)
-            {
+                try
+                {
+                    Point pt = CaptureScreenshot.GetMouseScreenPosition();
+                    BitmapSource bmp = CaptureScreenshot.Capture(new Rect(pt, new Size(1, 1)));
+                    var pixels = new byte[4];
+                    bmp.CopyPixels(pixels, 4, 0);
+                    SelectedColor = Color.FromArgb(0xFF, pixels[2], pixels[1], pixels[0]);
+                }
+                catch (Exception)
+                {
+                }
             }
         }
 
         private static void SelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((ColorPicker) d).OnSelectedValueChanged();
+            ((ColorPicker)d).OnSelectedValueChanged();
+        }
+
+        private static void SelectedPersistentColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            // No action here
         }
 
         private void OnSelectedValueChanged()
@@ -298,6 +354,10 @@ namespace PropertyEditorLibrary
                 OnPropertyChanged("Saturation");
                 OnPropertyChanged("Brightness");
             }
+            if (updateHexValue)
+            {
+                OnPropertyChanged("HexValue");
+            }
             OnPropertyChanged("Red");
             OnPropertyChanged("Green");
             OnPropertyChanged("Blue");
@@ -306,15 +366,6 @@ namespace PropertyEditorLibrary
             OnPropertyChanged("AlphaGradient");
             OnPropertyChanged("SaturationGradient");
             OnPropertyChanged("BrightnessGradient");
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         public static ObservableCollection<Color> CreateDefaultPalette()
@@ -350,9 +401,7 @@ namespace PropertyEditorLibrary
             palette.Add(Colors.MidnightBlue);
             palette.Add(Colors.DarkOrchid);
 
-            // todo: add persisted custom colors
-
-            // Add a colors by hue
+            // Add colors by hue
             /*int N = 32 - 5;
             for (int i = 0; i < N; i++)
             {

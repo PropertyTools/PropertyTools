@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -10,7 +11,6 @@ namespace PropertyEditorLibrary
     /// <summary>
     /// Automatic Property Dialog
     /// Set the DataContext of the Dialog to the instance you want to edit.
-    /// TODO: cancel/commit values
     /// </summary>
     public partial class PropertyDialog : Window
     {
@@ -92,51 +92,46 @@ namespace PropertyEditorLibrary
 
         private void BeginEdit()
         {
-            object clone = MemberwiseClone(DataContext);
-            PropertyControl.DataContext = clone;
+            var editableDataContext = DataContext as IEditableObject;
 
-/*            _savedState = GetFieldValues(DataContext);
-            // todo check for IEditableObject?
-            var editableObject = DataContext as IEditableObject;
-            editableObject.BeginEdit();
-
-            var cloneable = DataContext as ICloneable;
-            if (cloneable != null)
+            if (editableDataContext != null)
             {
-                var clone = cloneable.Clone();
-                PropertyControl.DataContext = clone;
-            }
-            
-            // todo create a memberwise clone (not a deep clone)
-            /*
-            originalObject = DataContext;
-
-            var cloneable = DataContext as ICloneable;
-            if (cloneable != null)
-            {
-                var clone = cloneable.Clone();
-                PropertyControl.DataContext = clone;
+                editableDataContext.BeginEdit();
             }
             else
             {
-                var clone = MemberwiseClone(originalObject);
-                PropertyControl.DataContext = clone;
-            }*/
+                PropertyControl.DataContext = MemberwiseClone(DataContext);
+            }
         }
 
         private void EndEdit()
         {
-            CommitChanges();
+            var editableDataContext = DataContext as IEditableObject;
+
+            if (editableDataContext != null)
+            {
+                editableDataContext.EndEdit();
+            }
+            else
+            {
+                CommitChanges();
+            }
         }
 
         private void CancelEdit()
         {
+            var editableDataContext = DataContext as IEditableObject;
+
+            if (editableDataContext != null)
+            {
+                editableDataContext.CancelEdit();
+            }
         }
 
-        private object MemberwiseClone(object src)
+        private static object MemberwiseClone(object src)
         {
-            Type t = src.GetType();
-            object clone = Activator.CreateInstance(t);
+            var t = src.GetType();
+            var clone = Activator.CreateInstance(t);
             foreach (
                 PropertyInfo pi in t.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                     .Where(pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
@@ -150,17 +145,17 @@ namespace PropertyEditorLibrary
         {
             // copy changes from cloned object (stored in PropertyEditor.DataContext) 
             // to the original object (stored in DataContext)
-            object clone = PropertyControl.DataContext;
+            var clone = PropertyControl.DataContext;
             if (clone==null)
                 return;
 
             foreach (
-                PropertyInfo pi in
+                var pi in
                     clone.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                         .Where(pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
             {
-                object newValue = pi.GetValue(clone, null);
-                object oldValue = pi.GetValue(DataContext, null);
+                var newValue = pi.GetValue(clone, null);
+                var oldValue = pi.GetValue(DataContext, null);
                 
                 if (oldValue==null && newValue==null)
                     continue;

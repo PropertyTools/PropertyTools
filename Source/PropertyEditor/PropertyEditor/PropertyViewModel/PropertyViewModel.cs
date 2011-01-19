@@ -66,6 +66,11 @@ namespace PropertyEditorLibrary
         public bool IsEnumerable { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this text property should use PropertyChanged as UpdateTrigger.
+        /// </summary>
+        public bool AutoUpdateText { get; set; }
+
+        /// <summary>
         /// Gets the property template selector.
         /// </summary>
         /// <value>The property template selector.</value>

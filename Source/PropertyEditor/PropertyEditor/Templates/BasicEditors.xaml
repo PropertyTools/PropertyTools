@@ -4,34 +4,46 @@
 
     <DataTemplate x:Key="DefaultTemplate">
         <TextBox 
-			IsReadOnly="{Binding IsReadOnly}" 
-			IsEnabled="{Binding IsEnabled}" 
-			Text="{Binding Value, ValidatesOnDataErrors=True}" 
-			AcceptsReturn="{Binding AcceptsReturn}" 
-			TextWrapping="{Binding TextWrapping}" 
-			VerticalScrollBarVisibility="Auto" 
-			Height="{Binding Height}">
+            IsReadOnly="{Binding IsReadOnly}" 
+            IsEnabled="{Binding IsEnabled}" 
+            Text="{Binding Value, ValidatesOnDataErrors=True}" 
+            AcceptsReturn="{Binding AcceptsReturn}" 
+            TextWrapping="{Binding TextWrapping}" 
+            VerticalScrollBarVisibility="Auto" 
+            Height="{Binding Height}">
         </TextBox>
         <!--<local:TextBoxEx 
-			IsReadOnly="{Binding IsReadOnly}" 
-			IsEnabled="{Binding IsEnabled}" 
-			Text="{Binding Value, ValidatesOnDataErrors=True}" 
-			AcceptsReturn="{Binding AcceptsReturn}" 
-			TextWrapping="{Binding TextWrapping}" 
-			VerticalScrollBarVisibility="Auto" 
-			Height="{Binding Height}">
+            IsReadOnly="{Binding IsReadOnly}" 
+            IsEnabled="{Binding IsEnabled}" 
+            Text="{Binding Value, ValidatesOnDataErrors=True}" 
+            AcceptsReturn="{Binding AcceptsReturn}" 
+            TextWrapping="{Binding TextWrapping}" 
+            VerticalScrollBarVisibility="Auto" 
+            Height="{Binding Height}">
         </local:TextBoxEx>-->
         <!--<local:FormattingTextBox 
-			IsReadOnly="{Binding IsReadOnly}" 
-			IsEnabled="{Binding IsEnabled}" 
-			Value="{Binding Value, ValidatesOnDataErrors=True}" 
-			AcceptsReturn="{Binding AcceptsReturn}" 
-			Height="{Binding Height}"
-			TextWrapping="{Binding TextWrapping}" 
-			VerticalScrollBarVisibility="Auto" 
-			StringFormat="{Binding FormatString}"/>-->
+            IsReadOnly="{Binding IsReadOnly}" 
+            IsEnabled="{Binding IsEnabled}" 
+            Value="{Binding Value, ValidatesOnDataErrors=True}" 
+            AcceptsReturn="{Binding AcceptsReturn}" 
+            Height="{Binding Height}"
+            TextWrapping="{Binding TextWrapping}" 
+            VerticalScrollBarVisibility="Auto" 
+            StringFormat="{Binding FormatString}"/>-->
     </DataTemplate>
-
+    
+    <DataTemplate x:Key="DefaultTemplateAutoUpdate">
+        <TextBox 
+            IsReadOnly="{Binding IsReadOnly}" 
+            IsEnabled="{Binding IsEnabled}" 
+            Text="{Binding Value, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
+            AcceptsReturn="{Binding AcceptsReturn}" 
+            TextWrapping="{Binding TextWrapping}" 
+            VerticalScrollBarVisibility="Auto" 
+            Height="{Binding Height}">
+        </TextBox>
+    </DataTemplate>
+    
     <local:ToDoubleConverter x:Key="ToDoubleConverter"/>
     <local:EnumValuesConverter x:Key="EnumValuesConverter"/>
     <local:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
@@ -42,14 +54,23 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Slider Maximum="{Binding SliderMaximum}" Minimum="{Binding SliderMinimum}" 
-					SmallChange="{Binding SliderSmallChange}" LargeChange="{Binding SliderLargeChange}" 
-					IsSnapToTickEnabled="{Binding SliderSnapToTicks}" TickFrequency="{Binding SliderTickFrequency}"
-					TickPlacement="{Binding SliderTickPlacement}"
-					IsEnabled="{Binding IsEnabled}" Focusable="True" Margin="0 0 4 0"
-					Value="{Binding Value, Mode=TwoWay, Converter={StaticResource ToDoubleConverter}}" VerticalAlignment="Center" />
-            <local:FormattingTextBox Grid.Column="1" IsReadOnly="{Binding IsReadOnly}" IsEnabled="{Binding IsEnabled}" Value="{Binding Value, ValidatesOnDataErrors=True}" 
-									 StringFormat="{Binding FormatString}"/>
+            <Slider 
+                Maximum="{Binding SliderMaximum}" 
+                Minimum="{Binding SliderMinimum}" 
+                SmallChange="{Binding SliderSmallChange}" 
+                LargeChange="{Binding SliderLargeChange}" 
+                IsSnapToTickEnabled="{Binding SliderSnapToTicks}" 
+                TickFrequency="{Binding SliderTickFrequency}"
+                TickPlacement="{Binding SliderTickPlacement}"
+                IsEnabled="{Binding IsEnabled}" Focusable="True" Margin="0 0 4 0"
+                Value="{Binding Value, Mode=TwoWay, Converter={StaticResource ToDoubleConverter}}" 
+                VerticalAlignment="Center" />
+            <local:FormattingTextBox 
+                Grid.Column="1" 
+                IsReadOnly="{Binding IsReadOnly}" 
+                IsEnabled="{Binding IsEnabled}" 
+                Value="{Binding Value, ValidatesOnDataErrors=True}" 
+                StringFormat="{Binding FormatString}"/>
         </Grid>
     </DataTemplate>
 

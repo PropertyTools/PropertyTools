@@ -111,7 +111,10 @@ namespace PropertyEditorLibrary
             }
 
             // Use the default template (TextBox)
-            template = TryToFindDataTemplate(element, "DefaultTemplate");
+            if (propertyViewModel.AutoUpdateText)
+                template = TryToFindDataTemplate(element, "DefaultTemplateAutoUpdate");
+            else
+                template = TryToFindDataTemplate(element, "DefaultTemplate");
 
             return template;
         }

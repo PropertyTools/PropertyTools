@@ -173,6 +173,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AutoUpdateTextAttribute.cs" />
     <Compile Include="Attributes\EnumDisplayNameAttribute.cs" />
     <Compile Include="Attributes\FilePathAttribute.cs" />
     <Compile Include="Attributes\HeightAttribute.cs" />
@@ -183,6 +184,8 @@
     <Compile Include="Attributes\OptionalAttribute.cs" />
     <Compile Include="Attributes\RadioButtonsAttribute.cs" />
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
+    <Compile Include="Controls\ColorPicker\ColorPickerPalette.cs" />
+    <Compile Include="Controls\ColorPicker\ColorWrapper.cs" />
     <Compile Include="Controls\DockPanelSplitter\DockPanelSplitter.cs" />
     <Compile Include="Controls\EnumMenuItem.cs" />
     <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />
@@ -191,6 +194,7 @@
     <Compile Include="Controls\PopupBox\PopupBox.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\ColorWrapperToBrushConverter.cs" />
     <Compile Include="Converters\DoubleToGridLengthConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />

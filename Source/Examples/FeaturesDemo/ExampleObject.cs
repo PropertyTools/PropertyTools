@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
@@ -203,6 +204,23 @@ namespace FeaturesDemo
         // this property controls the state of String4
         public string String4 { get; set; }
 
+        private string autoUpdatingText;
+
+        [Category("Auto updating (trig on PropertyChange)")]
+        [AutoUpdateText] // this will trig an update on PropertyChange
+        public string AutoUpdatingText
+        {
+            get { return autoUpdatingText; }
+            set { autoUpdatingText = value; Trace.WriteLine(string.Format("AutoUpdatingText='{0}'", value)); }
+        }
+
+        // The default behaviour is to update on LostFocus
+        private string notAutoUpdatingText;
+        public string NotAutoUpdatingText
+        {
+            get { return notAutoUpdatingText; }
+            set { notAutoUpdatingText = value; Trace.WriteLine(string.Format("NotAutoUpdatingText='{0}'", value)); }
+        }
 
         [Category("Slidable properties")]
         [Slidable(0, 10, 0.5, 2.5)]

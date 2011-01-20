@@ -66,7 +66,7 @@ namespace PropertyEditorLibrary
         public ColorPicker()
         {
             Loaded += ColorPicker_Loaded;
-            mouseEvent = new MouseButtonEventHandler(PersistentList_MouseUp);
+            mouseEvent = new MouseButtonEventHandler(PaletteList_MouseUp);
         }
 
         public Dock TabStripPlacement

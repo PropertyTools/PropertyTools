@@ -20,11 +20,13 @@ namespace PropertyEditorLibrary
 	/// </summary>
 	public partial class ColorPicker
 	{
+		private enum Mode { None, Add, Remove, Update };
+
 		/// <summary>
 		/// Gets or sets the settings file where the ColorPicker will store user settings.
 		/// </summary>
 		/// <value>The settings file.</value>
-		public static string SettingsFile {	get; set; }
+		public static string SettingsFile { get; set; }
 
 		public static string DefaultPalettePath { get; set; }
 
@@ -38,6 +40,11 @@ namespace PropertyEditorLibrary
 		public static readonly DependencyProperty PersistentPaletteProperty =
 			DependencyProperty.Register( "PersistentPalette", typeof( ObservableCollection<ColorWrapper> ), typeof( ColorPicker ),
 								new UIPropertyMetadata( CreateEmptyPalette() ) );
+
+		public static readonly DependencyProperty CurrentStoreProperty =
+			DependencyProperty.Register( "CurrentStore", typeof( string ), typeof( ColorPicker ),
+												new FrameworkPropertyMetadata( "",
+																			FrameworkPropertyMetadataOptions.BindsTwoWayByDefault ) );
 
 		/// <summary>
 		/// Reference to the listbox that holds the static palette
@@ -64,6 +71,12 @@ namespace PropertyEditorLibrary
 		{
 			get { return (ColorWrapper)GetValue( SelectedPersistentColorProperty ); }
 			set { SetValue( SelectedPersistentColorProperty, value ); }
+		}
+
+		public string CurrentStore
+		{
+			get { return (string)GetValue( CurrentStoreProperty ); }
+			set { SetValue( CurrentStoreProperty, value ); }
 		}
 
 		/// <summary>
@@ -163,46 +176,73 @@ namespace PropertyEditorLibrary
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.</param>
-		void PersistentList_MouseUp( object sender, MouseButtonEventArgs e )
+		void PaletteList_MouseUp( object sender, MouseButtonEventArgs e )
 		{
 			ColorWrapper cw = persistentList.SelectedItem as ColorWrapper;
 			ObservableCollection<ColorWrapper> items = persistentList.ItemsSource as ObservableCollection<ColorWrapper>;
 
-			// Control is the key to unlock modification actions
-			if( Keyboard.IsKeyDown( Key.LeftCtrl ) || Keyboard.IsKeyDown( Key.RightCtrl ) ) {
-				// Alt-key is the add-key (checked first so that if the user presses Alt+Shift, nothing is lost, only added)
-				if( Keyboard.IsKeyDown( Key.LeftAlt ) || Keyboard.IsKeyDown( Key.RightAlt ) ) {
+			if( items != null ) {
+				// Get the operation mode based on either keys or mouse click-position
+				Mode m = GetMode( sender, e );
+
+				if( m == Mode.Add ) {
 					// Add another color item
-					if( items != null ) {
-						items.Insert( 0, new ColorWrapper( SelectedColor ) );
-						UpdateCurrentPaletteStore();
-					}
+					items.Insert( 0, new ColorWrapper( SelectedColor ) );
+					UpdateCurrentPaletteStore();
 				}
-				// Shift key is the remove-key
-				else if( Keyboard.IsKeyDown( Key.LeftShift ) || Keyboard.IsKeyDown( Key.RightShift ) ) {
+				else if( m == Mode.Remove ) {
 					// Remove current color, but only if there are two or more items left and there is a selected item
 					// and the user clicked the persistent list
-					if( sender == persistentList && items != null && items.Count > 1 && cw != null ) {
+					if( cw != null && items.Count > 1 ) {
 						items.Remove( cw );
 						UpdateCurrentPaletteStore();
 					}
 				}
-				// No key pressed, just update the current item if one is selected
 				else if( cw != null ) {
-					// Update the persistent palette with the current color	
-					cw.Color = SelectedColor;
-					UpdateCurrentPaletteStore();
+					if( m == Mode.Update ) {
+						// Update the persistent palette with the current color	
+						cw.Color = SelectedColor;
+						UpdateCurrentPaletteStore();
+					}
+					else if( sender == persistentList ) {
+						// No key pressed, just update the current color
+						SelectedColor = cw.Color;
+					}
 				}
 
-				e.Handled = true;
-
+				// Event handled if mode was anything other than None
+				e.Handled = m != Mode.None;
 			}
-			else if( cw != null && sender == persistentList ) {
-				// Update the current color with the color in the persistent palette
-				SelectedColor = cw.Color;
+		}
 
-				e.Handled = true;
+		/// <summary>
+		/// Gets the mode of operation
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.</param>
+		/// <returns>The mode of operation for the click event</returns>
+		private Mode GetMode( object sender, MouseButtonEventArgs e )
+		{
+			Mode result = Mode.None;
+
+			if( e.ChangedButton == MouseButton.Right ) {
+				// User used the right button to click, get mode based on where he/she clicked.
+				if( sender == persistentList ) {
+					// Only update or remove modes possible when clicking the persistent list
+					if( Keyboard.IsKeyDown( Key.LeftShift ) || Keyboard.IsKeyDown( Key.RightShift ) ) {
+						result = Mode.Remove;
+					}
+					else if( Keyboard.IsKeyDown( Key.LeftCtrl ) || Keyboard.IsKeyDown( Key.RightCtrl ) ) {
+						result = Mode.Update;
+					}
+				}
+				else {
+					// All other clicks results in an added color.
+					result = Mode.Add;
+				}
 			}
+
+			return result;
 		}
 
 		/// <summary>
@@ -240,7 +280,7 @@ namespace PropertyEditorLibrary
 		/// </summary>
 		/// <param name="picker">The picker.</param>
 		/// <param name="path">The path.</param>
-		public static void StorePalette( ColorPicker picker, string path )
+		public void StorePalette( ColorPicker picker, string path )
 		{
 			// Write the colors as text
 			StringBuilder sb = new StringBuilder();
@@ -257,10 +297,13 @@ namespace PropertyEditorLibrary
 		/// Stores the last used palette.
 		/// </summary>
 		/// <param name="path">The path.</param>
-		private static void StoreLastUsedPalette( string path )
+		private void StoreLastUsedPalette( string path )
 		{
 			// Store last used palette
-			try { File.WriteAllText( SettingsFile, path, Encoding.UTF8 ); }
+			try { 
+				File.WriteAllText( SettingsFile, path, Encoding.UTF8 );
+				CurrentStore = System.IO.Path.GetFileNameWithoutExtension( path );
+			}
 			catch( Exception ) { }
 		}
 
@@ -269,11 +312,11 @@ namespace PropertyEditorLibrary
 		/// </summary>
 		/// <param name="picker">The picker.</param>
 		/// <param name="path">The path.</param>
-		public static void LoadPalette( ColorPicker picker, string path )
+		public void LoadPalette( ColorPicker picker, string path )
 		{
 			string s = File.ReadAllText( path, Encoding.UTF8 );
 			string[] colors = s.Split( new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries );
-			
+
 			StoreLastUsedPalette( path );
 
 			ObservableCollection<ColorWrapper> palette = new ObservableCollection<ColorWrapper>();
@@ -298,8 +341,8 @@ namespace PropertyEditorLibrary
 					// Use default palette
 					StorePalette( this, DefaultPalettePath );
 				}
-				
-				LoadPalette( this, File.ReadAllText( SettingsFile, Encoding.UTF8 ) );				
+
+				LoadPalette( this, File.ReadAllText( SettingsFile, Encoding.UTF8 ) );
 			}
 			catch( Exception ) { }
 		}

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="Arrows.svg">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <inkscape:perspective
+       id="perspective2824"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2867"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4096164"
+     inkscape:cx="390.73791"
+     inkscape:cy="1039.5574"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:snap-nodes="false"
+     inkscape:snap-to-guides="true"
+     inkscape:window-width="1680"
+     inkscape:window-height="998"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#73d216;fill-opacity:1;stroke:#73d216;stroke-width:0.68051064;stroke-opacity:1"
+       id="rect2834"
+       width="19.381453"
+       height="46.608524"
+       x="126.25117"
+       y="151.2738"
+       inkscape:export-filename="D:\Source-svn\BeyondMeasure\External\PropertyEditor\trunk\Source\PropertyEditor\Controls\ColorPicker\GreenUp.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;color:#000000;fill:#73d216;fill-opacity:1;stroke:#73d216;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       d="m 135.40625,101.40949 -0.40625,0.75 -27.09375,49.15625 -0.40625,0.75 0.84375,0 57.1875,0 0.90625,0 -0.46875,-0.78125 -30.09375,-49.15625 -0.46875,-0.71875 z m 0.0312,2 29.21875,47.65625 -55.46875,0 26.25,-47.65625 z"
+       id="path2845"
+       inkscape:export-filename="D:\Source-svn\BeyondMeasure\External\PropertyEditor\trunk\Source\PropertyEditor\Controls\ColorPicker\GreenUp.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#73d216;fill-opacity:1;stroke:#73d216;stroke-width:0.17735322;stroke-opacity:1"
+       d="m 134.90478,104.12769 c -1.62694,2.37294 -2.83404,5.04418 -4.29764,7.53207 -7.0783,12.78578 -14.09254,25.60908 -21.17472,38.39133 -0.46391,1.16413 0.97284,1.49025 1.82896,1.30243 17.39321,-0.0362 34.80344,0.0897 52.18618,-0.11638 1.07728,-0.0942 0.95848,-1.44873 0.33649,-2.0315 -9.02779,-14.89995 -18.16361,-29.7358 -27.42479,-44.49461 -0.25804,-0.55721 -0.86794,-0.89476 -1.45448,-0.58334 z"
+       id="path2857"
+       inkscape:export-filename="D:\Source-svn\BeyondMeasure\External\PropertyEditor\trunk\Source\PropertyEditor\Controls\ColorPicker\GreenUp.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#3465a4;fill-opacity:1;stroke:#3465a4;stroke-width:0.68051064000000006;stroke-opacity:1"
+       id="rect2834-1"
+       width="19.381453"
+       height="46.608524"
+       x="-240.56735"
+       y="-145.44362"
+       transform="scale(-1,-1)"
+       inkscape:export-filename="D:\Source-svn\BeyondMeasure\External\PropertyEditor\trunk\Source\PropertyEditor\Controls\ColorPicker\BlueDown.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;color:#000000;fill:#3465a4;fill-opacity:1;stroke:#3465a4;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+       d="m 231.41227,195.30793 0.40625,-0.75 27.09375,-49.15625 0.40625,-0.75 -0.84375,0 -57.1875,0 -0.90625,0 0.46875,0.78125 30.09375,49.15625 0.46875,0.71875 z m -0.0312,-2 -29.21875,-47.65625 55.46875,0 -26.25,47.65625 z"
+       id="path2845-7"
+       inkscape:export-filename="D:\Source-svn\BeyondMeasure\External\PropertyEditor\trunk\Source\PropertyEditor\Controls\ColorPicker\BlueDown.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#3465a4;fill-opacity:1;stroke:#3465a4;stroke-width:0.17735322000000001;stroke-opacity:1"
+       d="m 231.91374,192.58973 c 1.62694,-2.37294 2.83404,-5.04418 4.29764,-7.53207 7.0783,-12.78578 14.09254,-25.60908 21.17472,-38.39133 0.46391,-1.16413 -0.97284,-1.49025 -1.82896,-1.30243 -17.39321,0.0362 -34.80344,-0.0897 -52.18618,0.11638 -1.07728,0.0942 -0.95848,1.44873 -0.33649,2.0315 9.02779,14.89995 18.16361,29.7358 27.42479,44.49461 0.25804,0.55721 0.86794,0.89476 1.45448,0.58334 z"
+       id="path2857-4"
+       inkscape:export-filename="D:\Source-svn\BeyondMeasure\External\PropertyEditor\trunk\Source\PropertyEditor\Controls\ColorPicker\BlueDown.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>

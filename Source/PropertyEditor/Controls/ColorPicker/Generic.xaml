@@ -153,11 +153,10 @@
 								<TabItem Header="Palette">
 									<TabItem.ToolTip>
 										<!-- Display the current palette in the tab's tooltip -->
-										<TextBlock>
-											<Run>Current palette: </Run>
-											<!-- todo: binding is not working
-                                            <Run Text="{TemplateBinding CurrentStore}"/>-->
-										</TextBlock> 
+										<StackPanel Orientation="Horizontal">
+											<Label>Current palette:</Label>
+											<Label Content="{TemplateBinding CurrentStore}"/>
+										</StackPanel>
 									</TabItem.ToolTip>
 									<Grid MinHeight="150">
 										<Grid.ColumnDefinitions>

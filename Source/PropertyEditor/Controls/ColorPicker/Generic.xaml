@@ -155,7 +155,8 @@
 										<!-- Display the current palette in the tab's tooltip -->
 										<TextBlock>
 											<Run>Current palette: </Run>
-											<Run Text="{TemplateBinding CurrentStore}"/>
+											<!-- todo: binding is not working
+                                            <Run Text="{TemplateBinding CurrentStore}"/>-->
 										</TextBlock> 
 									</TabItem.ToolTip>
 									<Grid MinHeight="150">

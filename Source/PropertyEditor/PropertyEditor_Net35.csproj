@@ -74,6 +74,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\DockPanelSplitter\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\FilePicker\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -120,6 +124,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AutoUpdateTextAttribute.cs" />
     <Compile Include="Attributes\EnumDisplayNameAttribute.cs" />
     <Compile Include="Attributes\FilePathAttribute.cs" />
     <Compile Include="Attributes\HeightAttribute.cs" />
@@ -130,6 +135,8 @@
     <Compile Include="Attributes\OptionalAttribute.cs" />
     <Compile Include="Attributes\RadioButtonsAttribute.cs" />
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
+    <Compile Include="Controls\ColorPicker\ColorPickerPalette.cs" />
+    <Compile Include="Controls\ColorPicker\ColorWrapper.cs" />
     <Compile Include="Controls\DockPanelSplitter\DockPanelSplitter.cs" />
     <Compile Include="Controls\EnumMenuItem.cs" />
     <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />
@@ -210,7 +217,10 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Resource Include="Controls\ColorPicker\BlueDown.png" />
+    <Resource Include="Controls\ColorPicker\GreenUp.png" />
+  </ItemGroup>  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

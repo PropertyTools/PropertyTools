@@ -13,7 +13,12 @@ namespace PropertyEditorLibrary
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return Enum.GetValues(value.GetType());
+            if (value != null)
+                return Enum.GetValues(value.GetType());
+            else if (targetType == typeof(Enum))
+                return Enum.GetValues(targetType);
+            else
+                return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

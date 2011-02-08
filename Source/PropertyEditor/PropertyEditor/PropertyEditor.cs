@@ -609,7 +609,8 @@ namespace PropertyEditorLibrary
         }
 
         /// <summary>
-        /// Invoke this method to raise a PropertyChanged event
+        /// Invoke this method to raise a PropertyChanged event.
+        /// This event only makes sense when editing single objects (not IEnumerables).
         /// </summary>
         /// <param name="propertyName">
         /// The property Name.
@@ -1084,20 +1085,20 @@ namespace PropertyEditorLibrary
         }
 
         /// <summary>
-        /// The on property changed.
+        /// The OnPropertyChanged handler.
         /// </summary>
         /// <param name="sender">
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
-        /// </param>
+        /// The event arguments.
+        /// </param>        
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var property = sender as PropertyViewModel;
-            if (property != null)
+            if (property != null && e.PropertyName == "Value")
             {
-                RaisePropertyChangedEvent(property.PropertyName, null, property.Value);
+                RaisePropertyChangedEvent(property.PropertyName, property.OldValue, property.Value);
                 UpdateOptionalProperties(property);
             }
 
@@ -1110,7 +1111,7 @@ namespace PropertyEditorLibrary
         }
 
         /// <summary>
-        /// The update property states.
+        /// The UpdatePropertyStates method updates the properties IsEnabled when the instance being edited implements IPropertyStateUpdater.
         /// </summary>
         /// <param name="instance">
         /// The instance.

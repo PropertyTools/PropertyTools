@@ -246,7 +246,7 @@ namespace PropertyEditorLibrary
         /// <summary>
         /// Gets or sets the value of the property.
         /// </summary>
-        /// <value>The value.</value>
+        /// <value>The value.</value>       
         public object Value
         {
             get
@@ -257,7 +257,7 @@ namespace PropertyEditorLibrary
                     var list = Instance as IEnumerable;
                     if (list == null)
                     {
-                        throw new InvalidOperationException("Instance should be a list.");
+                        throw new InvalidOperationException("Instance should be an enumerable.");
                     }
                     value = GetValueFromEnumerable(list);
                 }
@@ -275,8 +275,10 @@ namespace PropertyEditorLibrary
                     var list = Instance as IEnumerable;
                     if (list == null)
                     {
-                        throw new InvalidOperationException("Instance should be a list.");
+                        throw new InvalidOperationException("Instance should be an enumerable.");
                     }
+
+                    OldValue = null;
                     foreach (object item in list)
                     {
                         SetValue(item, value);
@@ -284,11 +286,13 @@ namespace PropertyEditorLibrary
                 }
                 else
                 {
+                    OldValue = Value;
                     SetValue(Instance, value);
                 }
-                //  NotifyPropertyChanged("Value");
             }
         }
+
+        public object OldValue { get; set; }
 
         #region IDataErrorInfo Members
 

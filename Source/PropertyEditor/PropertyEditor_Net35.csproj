@@ -128,6 +128,7 @@
     <Compile Include="Attributes\EnumDisplayNameAttribute.cs" />
     <Compile Include="Attributes\FilePathAttribute.cs" />
     <Compile Include="Attributes\HeightAttribute.cs" />
+    <Compile Include="Attributes\ResettableAttribute.cs" />
     <Compile Include="Attributes\SortOrderAttribute.cs" />
     <Compile Include="Attributes\WidePropertyAttribute.cs" />
     <Compile Include="Attributes\FormatStringAttribute.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Interfaces\IPropertyStateProvider.cs" />
     <Compile Include="Interfaces\IPropertyStateUpdater.cs" />
     <Compile Include="MVVM\DelegateCommand.cs" />
+    <Compile Include="Interfaces\IResettableProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -196,6 +198,7 @@
     <Compile Include="PropertyEditor\PropertyViewModel\OptionalPropertyViewModel.cs" />
     <Compile Include="PropertyEditor\DefaultPropertyViewModelFactory.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\SlidablePropertyViewModel.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\ResettablePropertyViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\CheckBoxPropertyViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\WidePropertyViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyTemplateSelector.cs" />

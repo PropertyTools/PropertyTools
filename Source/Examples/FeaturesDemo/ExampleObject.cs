@@ -146,6 +146,7 @@ namespace FeaturesDemo
 
         [Category("FormatString")]
         [FormatString("0.0000")]
+        // todo: not working
         public double FormattedDouble { get; set; }
 
         [Category("ReadOnly properties")]
@@ -176,8 +177,9 @@ namespace FeaturesDemo
         // todo: this does not work - EnumValuesConverter does not get the enum type?
         public Genders? OptionalEnum { get; set; }
 
-        // Properties matching the "Use{0}" search pattern will be optional
-        // The pattern can be changed by creating a PropertyViewModelFactory
+        // Properties matching the "Use{0}" search pattern will contain the bool if the corresponding property is checked.
+        // The pattern can be changed by creating a PropertyViewModelFactory, or setting the UsePropertyPattern attribute
+        // in the DefaultPropertyViewModelFactory
         [Browsable(false)]
         public bool UseWindowsVersion { get; set; }
 
@@ -240,11 +242,12 @@ namespace FeaturesDemo
         [Slidable(0, 10, 1, 5, true, 1.5, TickPlacement.BottomRight)]
         public double TickSlider { get; set; }
 
-        [Category("Special|Special editors")]
+        [Category("Special|Colors and brushes")]
         public Color Color { get; set; }
         public Color? NullableColor { get; set; }
-
         public Brush SolidBrush { get; set; }
+
+        [Category("Fonts")]
         public FontFamily Font { get; set; }
 
         [FilePath("Image files (*.jpg)|*.jpg|All files (*.*)|*.*", ".jpg")]
@@ -259,14 +262,15 @@ namespace FeaturesDemo
         [WideProperty, Height(100)]
         public string WideMultilineString { get; set; }
 
-        [Category("Custom editors")]
-        public DateTime DateTime { get; set; }
+        // [Category("Custom editors")]
+        // todo: not included DateTimePicker
+        // public DateTime DateTime { get; set; }
 
         [Category("Described property"),
          DisplayName("Property display name"),
          Description("This is the description."),
          SortOrder(401)]
-        public bool Descripted { get; set; }
+        public bool DescribedProperty { get; set; }
 
         [Category("Reset|Resettable")]
         [Resettable]

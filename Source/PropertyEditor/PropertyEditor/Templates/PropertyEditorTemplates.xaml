@@ -205,4 +205,45 @@
         </DataTemplate.Triggers>
     </DataTemplate>
 
+    <!-- Template for the resettable property -->
+    <DataTemplate DataType="{x:Type local:ResettablePropertyViewModel}">
+        <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
+            <Label 
+                DockPanel.Dock="Left"
+                MinWidth="{Binding LabelWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}" 
+                Content="{Binding Header, Mode=OneTime}" 
+                ToolTip="{Binding ToolTip, Mode=OneTime}" 
+                HorizontalContentAlignment="{Binding LabelAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}" />
+            <Button 
+                Name="ResetButton"
+                DockPanel.Dock="Right"
+                Padding="4 0 4 0"
+                Content="{Binding Label, Mode=OneTime}" 
+                Command="{Binding ResetCommand, Mode=OneTime}" 
+                ToolTip="{Binding ToolTip, Mode=OneTime}" 
+                VerticalAlignment="Center" />
+
+            <Border 
+                x:Name="border1" 
+                BorderThickness="{Binding ErrorBorderThickness, Mode=OneTime, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}">
+                <ContentControl 
+                    x:Name="content1" 
+                    Content="{Binding}" 
+                    ToolTip="{Binding ToolTip, Mode=OneTime}" 
+                    Focusable="False" 
+                    ContentTemplateSelector="{Binding PropertyTemplateSelector, Mode=OneTime}" />
+            </Border>
+        </DockPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding PropertyWarning, Converter={StaticResource NullToBoolConverter}}" Value="False">
+                <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource WarningBrush}" />
+                <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyWarning}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding PropertyError, Converter={StaticResource NullToBoolConverter}}" Value="False">
+                <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource ErrorBrush}" />
+                <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyError}" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
 </ResourceDictionary>

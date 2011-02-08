@@ -67,6 +67,9 @@ namespace PropertyEditorLibrary
             if (IsOptional(descriptor, out optionalPropertyName))
                 propertyViewModel = new OptionalPropertyViewModel(instance, descriptor, optionalPropertyName, owner);
 
+            if (IsResettable(descriptor))
+                propertyViewModel = new ResettablePropertyViewModel(instance, descriptor, owner);
+
             if (UsePropertyPattern != null)
             {
                 string usePropertyName = String.Format(UsePropertyPattern, descriptor.Name);
@@ -183,6 +186,13 @@ namespace PropertyEditorLibrary
                 optionalPropertyName = oa.PropertyName;
                 return true;
             }
+            return false;
+        }
+
+        public virtual bool IsResettable(PropertyDescriptor descriptor) {
+            var oa = AttributeHelper.GetFirstAttribute<ResettableAttribute>(descriptor);
+            if (oa != null)
+                return true;
             return false;
         }
 

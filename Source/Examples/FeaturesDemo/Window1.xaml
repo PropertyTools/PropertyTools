@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:pe="clr-namespace:PropertyEditorLibrary;assembly=PropertyEditor"
     xmlns:local="clr-namespace:FeaturesDemo" xmlns:System="clr-namespace:System;assembly=mscorlib" 
-    Title="FeaturesDemo" Width="800" Height="720">
+    Title="FeaturesDemo" Width="1080" Height="720">
     <Window.Resources>
         <local:SuperExampleObject x:Key="Example1" />
 

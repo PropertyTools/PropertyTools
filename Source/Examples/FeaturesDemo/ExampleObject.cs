@@ -97,7 +97,7 @@ namespace FeaturesDemo
         public float Float2 { get; set; }
     }
 
-    public class ExampleObject : Observable
+    public class ExampleObject : Observable, IResettableProperties
     {
         public ExampleObject()
         {
@@ -154,7 +154,7 @@ namespace FeaturesDemo
         public int ReadonlyInt { get; private set; }
         public bool ReadonlyBool { get; private set; }
 
-        [Category("Advanced|Optional properties"), SortOrder(200)]
+        [Category("Optional|Optional properties"), SortOrder(200)]
 
         // Optional properties have a checkbox instead of a label
         // The checkbox controls the enabled/disabled state of the property
@@ -171,6 +171,10 @@ namespace FeaturesDemo
 
         [Optional]
         public string OptionalString { get; set; }
+
+        [Optional]
+        // todo: this does not work - EnumValuesConverter does not get the enum type?
+        public Genders? OptionalEnum { get; set; }
 
         // Properties matching the "Use{0}" search pattern will be optional
         // The pattern can be changed by creating a PropertyViewModelFactory
@@ -222,7 +226,7 @@ namespace FeaturesDemo
             set { notAutoUpdatingText = value; Trace.WriteLine(string.Format("NotAutoUpdatingText='{0}'", value)); }
         }
 
-        [Category("Slidable properties")]
+        [Category("Slidable|Slidable properties")]
         [Slidable(0, 10, 0.5, 2.5)]
         [FormatString("0.00")]
         public double SliderDouble { get; set; }
@@ -236,7 +240,7 @@ namespace FeaturesDemo
         [Slidable(0, 10, 1, 5, true, 1.5, TickPlacement.BottomRight)]
         public double TickSlider { get; set; }
 
-        [Category("Special editors")]
+        [Category("Special|Special editors")]
         public Color Color { get; set; }
         public Color? NullableColor { get; set; }
 
@@ -249,7 +253,7 @@ namespace FeaturesDemo
         [DirectoryPath]
         public string DirectoryPath { get; set; }
 
-        [Category("Wide properties")]
+        [Category("Wide|Wide properties")]
         // Use [WideProperty] to use the full width of the control
         // Use [Height(...)] to set the height of a multiline text control
         [WideProperty, Height(100)]
@@ -263,6 +267,30 @@ namespace FeaturesDemo
          Description("This is the description."),
          SortOrder(401)]
         public bool Descripted { get; set; }
+
+        [Category("Reset|Resettable")]
+        [Resettable]
+        public string ResettableString { get; set; }
+        [Resettable("0")]
+        public double ResettableDouble { get; set; }
+        [Resettable("Default")]
+        public Color ResettableColor { get; set; }
+
+        public object GetResetValue(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case "ResettableString":
+                    return "default";
+                    break;
+                case "ResettableDouble":
+                    return 0.0;
+                case "ResettableColor":
+                    return Colors.White;
+                default:
+                    return null;
+            }
+        }
     }
 
     public class Observable : INotifyPropertyChanged

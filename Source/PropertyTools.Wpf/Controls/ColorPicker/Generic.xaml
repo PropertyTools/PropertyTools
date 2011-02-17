@@ -1,0 +1,370 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:PropertyTools.Wpf" xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+	<ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/ColorPicker/Resources.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+
+	<DrawingBrush x:Key="CheckerBoardBrush" Viewport="0,0,14,14" ViewportUnits="Absolute" TileMode="Tile">
+		<DrawingBrush.Drawing>
+			<DrawingGroup>
+				<GeometryDrawing Brush="White">
+					<GeometryDrawing.Geometry>
+						<RectangleGeometry Rect="0,0,1,1" />
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+
+				<GeometryDrawing Brush="Black">
+					<GeometryDrawing.Geometry>
+						<GeometryGroup>
+							<RectangleGeometry Rect="0,0,0.50,0.50" />
+							<RectangleGeometry Rect="0.50,0.50,0.50,0.50" />
+						</GeometryGroup>
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+			</DrawingGroup>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
+
+	<DrawingBrush x:Key="SmallCheckerBoardBrush" Viewport="0,0,7,7" ViewportUnits="Absolute" TileMode="Tile">
+		<DrawingBrush.Drawing>
+			<DrawingGroup>
+				<GeometryDrawing Brush="White">
+					<GeometryDrawing.Geometry>
+						<RectangleGeometry Rect="0,0,1,1" />
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+
+				<GeometryDrawing Brush="Black">
+					<GeometryDrawing.Geometry>
+						<GeometryGroup>
+							<RectangleGeometry Rect="0,0,0.50,0.50" />
+							<RectangleGeometry Rect="0.50,0.50,0.50,0.50" />
+						</GeometryGroup>
+					</GeometryDrawing.Geometry>
+				</GeometryDrawing>
+			</DrawingGroup>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
+
+	<!-- todo: reuse some system brush? -->
+	<SolidColorBrush x:Key="ColorPickerBackgroundBrush" Color="White" />
+	<SolidColorBrush x:Key="ColorPickerBorderBrush" Color="#FF7F9DB9" />
+
+	<LinearGradientBrush x:Key="RedGradient">
+		<GradientStop Offset="0" Color="Transparent" />
+		<GradientStop Offset="1" Color="Red" />
+	</LinearGradientBrush>
+	<LinearGradientBrush x:Key="GreenGradient">
+		<GradientStop Offset="0" Color="Transparent" />
+		<GradientStop Offset="1" Color="Green" />
+	</LinearGradientBrush>
+	<LinearGradientBrush x:Key="BlueGradient">
+		<GradientStop Offset="0" Color="Transparent" />
+		<GradientStop Offset="1" Color="Blue" />
+	</LinearGradientBrush>
+	<LinearGradientBrush x:Key="AlphaGradient">
+		<GradientStop Offset="0" Color="Transparent" />
+		<GradientStop Offset="1" Color="White" />
+	</LinearGradientBrush>
+
+	<LinearGradientBrush x:Key="HueGradient" StartPoint="0,0" EndPoint="1,0">
+		<GradientStop Offset="0.00" Color="#FF0000" />
+		<GradientStop Offset="0.17" Color="#FFFF00" />
+		<GradientStop Offset="0.33" Color="#00FF00" />
+		<GradientStop Offset="0.50" Color="#00FFFF" />
+		<GradientStop Offset="0.67" Color="#0000FF" />
+		<GradientStop Offset="0.84" Color="#FF00FF" />
+		<GradientStop Offset="1.00" Color="#FF0000" />
+	</LinearGradientBrush>
+
+	<Style x:Key="ComboBoxReadonlyToggleButton" TargetType="{x:Type ToggleButton}">
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="IsTabStop" Value="false" />
+		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
+		<Setter Property="ClickMode" Value="Press" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ToggleButton}">
+					<theme:ButtonChrome Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" SnapsToDevicePixels="true">
+						<Grid Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" HorizontalAlignment="Right">
+							<Path Name="Arrow" Margin="3,1,0,0" Fill="Black" Data="{StaticResource DownArrowGeometry}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+						</Grid>
+					</theme:ButtonChrome>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsChecked" Value="true">
+							<Setter TargetName="Chrome" Property="RenderPressed" Value="true" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter TargetName="Arrow" Property="Fill" Value="#AFAFAF" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+    <Style x:Key="SliderStyle" TargetType="{x:Type local:SliderEx}">
+        <Setter Property="SmallChange" Value="1" />
+        <Setter Property="LargeChange" Value="10" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    </Style>
+    
+    <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+	<local:ColorToHexConverter x:Key="ColorToHexConverter" />
+
+	<Style TargetType="{x:Type local:ColorPicker}">
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ComboBoxFocusVisual}" />
+		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+		<Setter Property="Background" Value="{StaticResource ButtonNormalBackground}" />
+		<Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+		<Setter Property="Padding" Value="4,3" />
+		<!--<Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+		<Setter Property="ScrollViewer.PanningMode" Value="Both" />-->
+		<Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+
+		<Setter Property="SnapsToDevicePixels" Value="true" />
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+		<Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+		<Setter Property="MinWidth" Value="30" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:ColorPicker}">
+					<Grid SnapsToDevicePixels="true">
+						<Grid>
+							<ToggleButton Name="ToggleButton" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Style="{StaticResource ComboBoxReadonlyToggleButton}" FocusVisualStyle="{x:Null}" ClickMode="Press" IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"/>
+							<StackPanel Margin="4 4 20 4" Orientation="Horizontal" IsHitTestVisible="false">
+								<Grid x:Name="PART_ColorBox" Width="14" Height="14" VerticalAlignment="Center" Background="{StaticResource SmallCheckerBoardBrush}">
+									<Rectangle x:Name="PART_Rectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding SelectedColor, Converter={StaticResource ColorToBrushConverter}}" Stroke="Black" SnapsToDevicePixels="True" />
+								</Grid>
+								<TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="{Binding ColorName,RelativeSource={RelativeSource TemplatedParent}}" />
+							</StackPanel>
+						</Grid>
+                        <Popup Name="PART_Popup" Placement="Bottom" IsOpen="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" StaysOpen="False" AllowsTransparency="True" FocusVisualStyle="{x:Null}" PopupAnimation="Slide">
+							<TabControl Margin="6" MinWidth="240" MaxWidth="300" Height="190" Width="{TemplateBinding ActualWidth}" TabStripPlacement="{TemplateBinding TabStripPlacement}" SnapsToDevicePixels="True" KeyboardNavigation.DirectionalNavigation="Contained">
+								<TabControl.Resources>
+									<Style TargetType="{x:Type TextBlock}">
+										<Setter Property="Margin" Value="4" />
+									</Style>
+									<Style TargetType="{x:Type TextBox}">
+										<Setter Property="Margin" Value="4" />
+										<Setter Property="HorizontalContentAlignment" Value="Center" />
+									</Style>
+                                    <Style TargetType="{x:Type local:SliderEx}">
+										<Setter Property="Margin" Value="4" />
+									</Style>
+								</TabControl.Resources>
+								<TabItem Header="Palette">
+									<Grid MinHeight="150">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto" />
+											<ColumnDefinition Width="*" />
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+										</Grid.RowDefinitions>
+
+										<Grid Grid.Column="0" Grid.Row="0" Width="40" Height="40" Margin="6" VerticalAlignment="Top" Background="{StaticResource CheckerBoardBrush}">
+											<Rectangle x:Name="PART_CurrentColorBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding SelectedColor, Converter={StaticResource ColorToBrushConverter}}" Stroke="Black" SnapsToDevicePixels="True" />
+										</Grid>
+
+										<ListBox Grid.Column="1" Grid.Row="0" x:Name="PART_StaticColorList" FocusVisualStyle="{x:Null}" ItemsSource="{TemplateBinding Palette}" SelectedValue="{Binding SelectedColor, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="True" BorderThickness="0" Margin="1" Background="Transparent">
+											<ListBox.ItemTemplate>
+												<DataTemplate>
+													<Grid Background="{StaticResource SmallCheckerBoardBrush}" Margin="0 2 2 2" Width="16" Height="16" HorizontalAlignment="Center">
+														<Rectangle Stroke="Black" Fill="{Binding Converter={StaticResource ColorToBrushConverter}, UpdateSourceTrigger=PropertyChanged}" SnapsToDevicePixels="True" />
+													</Grid>
+												</DataTemplate>
+											</ListBox.ItemTemplate>
+											<ListBox.ItemsPanel>
+												<ItemsPanelTemplate>
+													<WrapPanel Width="{TemplateBinding ActualWidth}" Margin="0 2 0 2" />
+												</ItemsPanelTemplate>
+											</ListBox.ItemsPanel>
+										</ListBox>
+
+										<ListBox Grid.Column="1" Grid.Row="1" x:Name="PART_PersistentColorList" 
+												 MaxHeight="50" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+												 FocusVisualStyle="{x:Null}" ItemsSource="{TemplateBinding PersistentPalette}" SelectedValue="{Binding SelectedPersistentColor, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="True" BorderThickness="0" Margin="1" Background="Transparent">
+											<!-- todo: should scroll when it gets too big
+											PM: What is there to do, it does scroll as-is?.
+											-->
+											<ListBox.ItemTemplate>
+												<DataTemplate>
+													<Grid Background="{StaticResource SmallCheckerBoardBrush}" Margin="0 2 2 2" Width="16" Height="16" HorizontalAlignment="Center">
+														<Rectangle Stroke="Black" Fill="{Binding Path=Color, Converter={StaticResource ColorToBrushConverter}}" SnapsToDevicePixels="True" />
+													</Grid>
+												</DataTemplate>
+											</ListBox.ItemTemplate>
+											<ListBox.ItemsPanel>
+												<ItemsPanelTemplate>
+													<WrapPanel Width="{TemplateBinding ActualWidth}" Margin="0 2 0 2"/>
+												</ItemsPanelTemplate>
+											</ListBox.ItemsPanel>
+											<!-- <ListBox.ContextMenu>
+												<ContextMenu> -->
+													<!-- todo: bind commands. context menu doesn't work? localize? -->
+													<!-- <MenuItem Header="Load palette..."/>
+													<MenuItem Header="Save palette as..."/>
+												</ContextMenu>
+											</ListBox.ContextMenu> -->
+											<ListBox.ToolTip>
+												<TextBlock TextWrapping="Wrap">
+														<Run FontWeight="Bold">User defined color palette</Run>
+														<LineBreak/>
+														<Run>Right-click color box or upper palette to add color</Run>
+														<LineBreak/>
+														<Run>Control+Right-click a color in the lower palette to update it from color box</Run>
+														<LineBreak/>
+														<Run>Shift+Right-click a color in lower palette to remove it</Run>
+												</TextBlock>
+											</ListBox.ToolTip>
+										</ListBox>
+
+										<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">
+											<Button Name="PART_LoadPalette" Margin="0,0,4,0" ToolTip="Load palette from file" Width="16" Height="16">
+												<Image Source="GreenUp.png" Stretch="Fill"/>
+											</Button>
+											<Button Name="PART_SavePalette" ToolTip="Save palette to file" Width="16" Height="16">
+												<Image Source="BlueDown.png" Stretch="Fill"/>
+											</Button>
+										</StackPanel>
+										<!-- Alpha slider with background... -->
+										<!--  <Grid Grid.Row="1" Grid.Column="1" Margin="4">
+											<Grid.RowDefinitions>
+												<RowDefinition Height="Auto"/>
+											</Grid.RowDefinitions>
+											<Grid Background="{StaticResource CheckerBoardBrush}">
+												<Slider Maximum="255" Margin="0"
+												Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+												Background="{Binding AlphaGradient, RelativeSource={RelativeSource TemplatedParent}}" />
+											</Grid>
+										</Grid>-->
+
+										<!-- Slider without background -->
+                                        <local:SliderEx Style="{StaticResource SliderStyle}" Grid.Column="1" Grid.Row="2" Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />																				
+									</Grid>
+								</TabItem>
+								<TabItem Header="RGB">
+									<Grid MinHeight="150">
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+										</Grid.RowDefinitions>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto" />
+											<ColumnDefinition Width="20" />
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="Auto" MinWidth="40" />
+										</Grid.ColumnDefinitions>
+
+										<Grid Width="40" Height="40" Margin="6" Grid.RowSpan="4" VerticalAlignment="Top" Background="{StaticResource CheckerBoardBrush}">
+											<Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding SelectedColor, Converter={StaticResource ColorToBrushConverter}}" Stroke="Black" SnapsToDevicePixels="True" />
+										</Grid>
+
+										<TextBlock Text="R" Grid.Column="1" Grid.Row="0" />
+										<TextBlock Text="G" Grid.Column="1" Grid.Row="1" />
+										<TextBlock Text="B" Grid.Column="1" Grid.Row="2" />
+										<TextBlock Text="A" Grid.Column="1" Grid.Row="3" />
+                                        <local:SliderEx Style="{StaticResource SliderStyle}" Grid.Row="0" Grid.Column="2" Maximum="255" Value="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Background="{StaticResource RedGradient}" />
+                                        <local:SliderEx Style="{StaticResource SliderStyle}" Grid.Row="1" Grid.Column="2" Maximum="255" Value="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Background="{StaticResource GreenGradient}" />
+                                        <local:SliderEx Style="{StaticResource SliderStyle}" Grid.Row="2" Grid.Column="2" Maximum="255" Value="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Background="{StaticResource BlueGradient}" />
+
+										<Grid Grid.Row="3" Grid.Column="2" Margin="4">
+											<Grid.RowDefinitions>
+												<RowDefinition Height="Auto" />
+											</Grid.RowDefinitions>
+											<Grid Background="{StaticResource SmallCheckerBoardBrush}" />
+                                            <local:SliderEx Style="{StaticResource SliderStyle}" Maximum="255" Margin="0" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Background="{Binding AlphaGradient, RelativeSource={RelativeSource TemplatedParent}}"/>
+										</Grid>
+										<TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Red, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+										<TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Green, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+										<TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Blue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+										<TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+
+										<TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding HexValue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" 
+														 Width="70" HorizontalAlignment="Right"/>
+                                        <CheckBox Content="Screen picking" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Margin="6 0 0 0" FocusVisualStyle="{x:Null}" VerticalAlignment="Center" IsChecked="{Binding IsPicking, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Check the box and use 'SHIFT' to pick colors from the screen."/>
+
+										<!--<StackPanel Orientation="Vertical" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Right">
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition/>
+													<ColumnDefinition/>
+												</Grid.ColumnDefinitions>
+											</Grid>
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition/>
+													<ColumnDefinition/>
+												</Grid.ColumnDefinitions>
+												<Label Grid.Column="0">Screen picking</Label>
+												<CheckBox Grid.Column="1" FocusVisualStyle="{x:Null}" VerticalAlignment="Center" IsChecked="{Binding IsPicking, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Check the box and use 'SHIFT' to pick colors from the screen."/>
+											</Grid>
+										</StackPanel>-->
+									</Grid>
+								</TabItem>
+								<TabItem Header="HSV">
+									<Grid MinHeight="150">
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="Auto" />
+										</Grid.RowDefinitions>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto" />
+											<ColumnDefinition Width="20" />
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="40" />
+										</Grid.ColumnDefinitions>
+
+										<Grid Width="40" Height="40" Margin="6" Grid.RowSpan="4" VerticalAlignment="Top" Background="{StaticResource CheckerBoardBrush}">
+											<Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding SelectedColor, Converter={StaticResource ColorToBrushConverter}}" Stroke="Black" SnapsToDevicePixels="True" />
+										</Grid>
+
+										<TextBlock Text="H" Grid.Column="1" Grid.Row="0" />
+										<TextBlock Text="S" Grid.Column="1" Grid.Row="1" />
+										<TextBlock Text="V" Grid.Column="1" Grid.Row="2" />
+										<TextBlock Text="A" Grid.Column="1" Grid.Row="3" />
+                                        <local:SliderEx Style="{StaticResource SliderStyle}" Grid.Row="0" Grid.Column="2" Maximum="255" Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Background="{StaticResource HueGradient}" />
+                                        <local:SliderEx Style="{StaticResource SliderStyle}" Grid.Row="1" Grid.Column="2" Maximum="255" Value="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Background="{Binding SaturationGradient, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <local:SliderEx Style="{StaticResource SliderStyle}" Grid.Row="2" Grid.Column="2" Maximum="255" Value="{Binding Brightness, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Background="{Binding BrightnessGradient, RelativeSource={RelativeSource TemplatedParent}}" />
+										<Grid Grid.Row="3" Grid.Column="2" Margin="4">
+											<Grid.RowDefinitions>
+												<RowDefinition Height="Auto" />
+											</Grid.RowDefinitions>
+											<Grid Background="{StaticResource SmallCheckerBoardBrush}">
+                                                <local:SliderEx Style="{StaticResource SliderStyle}" Maximum="255" Margin="0" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Background="{Binding AlphaGradient, RelativeSource={RelativeSource TemplatedParent}}" />
+											</Grid>
+										</Grid>
+										<TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+										<TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Saturation, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+										<TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Brightness, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+										<TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+									</Grid>
+								</TabItem>
+							</TabControl>
+							<!--  </Grid> -->
+						</Popup>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
+							<Setter Property="Opacity" TargetName="PART_ColorBox" Value="0.3" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers></Style.Triggers>
+	</Style>
+
+</ResourceDictionary>

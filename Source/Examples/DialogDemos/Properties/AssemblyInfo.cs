@@ -8,11 +8,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("DialogDemos")]
-[assembly: AssemblyDescription("This application is open source.")]
+[assembly: AssemblyDescription("The assembly description.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("objo.net")]
 [assembly: AssemblyProduct("DialogDemos")]
-[assembly: AssemblyCopyright("Copyright © 2000-2010 objo.net. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2000-2011 objo.net. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

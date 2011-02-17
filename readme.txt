@@ -1,12 +1,13 @@
-Property editor for WPF
+PropertyTools for WPF
 ========================================================================
-Property Editor control for WPF. Uses reflection on CLR objects. 
-Uses WPF binding and supports templates.
+Library of property/reflection based custom controls for WPF. The 
+controls includes a PropertyGrid, DataGrid, ColorPicker and many 
+other reusable controls. 
 
 License:       Ms-PL
-Project page:  http://propertyeditor.codeplex.com
-SVN:           https://propertyeditor.svn.codeplex.com/svn
+Project page:  http://propertytools.codeplex.com
+SVN:           https://propertytools.svn.codeplex.com/svn
 
 Build requirements
-- Microsoft .NET 3.5 or 4.0 Client Profile
-- Visual Studio 2008 or 2010
+- Microsoft 4.0 Client Profile
+- Visual Studio 2010

@@ -74,12 +74,12 @@ namespace DialogDemos.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("6")]
-        public int MRUItems {
+        public int MostRecentlyUsedItems {
             get {
-                return ((int)(this["MRUItems"]));
+                return ((int)(this["MostRecentlyUsedItems"]));
             }
             set {
-                this["MRUItems"] = value;
+                this["MostRecentlyUsedItems"] = value;
             }
         }
         

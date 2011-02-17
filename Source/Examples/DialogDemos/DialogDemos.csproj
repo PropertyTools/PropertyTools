@@ -89,7 +89,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OptionsViewModel.xaml.cs" />
+    <Compile Include="OptionsViewModel.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
@@ -124,9 +124,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PropertyEditor\PropertyEditor.csproj">
+    <ProjectReference Include="..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj">
       <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>
-      <Name>PropertyEditor</Name>
+      <Name>PropertyTools.Wpf</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +148,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="3d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pt.png" />
+    <Resource Include="pt32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

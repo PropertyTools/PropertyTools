@@ -114,6 +114,9 @@
 
                 </StackPanel>
             </TabItem>
+            <TabItem Header="Empty">
+                <pt:SimpleGrid Content="{x:Null}"/>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>

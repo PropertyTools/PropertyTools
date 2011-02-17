@@ -946,6 +946,9 @@ namespace PropertyTools.Wpf
                 }
             }
 
+            // Hide the row/column headers if the content is empty
+            rowScroller.Visibility = columnScroller.Visibility = sheetScroller.Visibility = topleft.Visibility = cells != null ? Visibility.Visible : Visibility.Hidden;
+
             if (cells == null)
             {
                 return;
@@ -963,6 +966,7 @@ namespace PropertyTools.Wpf
             UpdateColumnWidths();
 
             SubscribeNotifications();
+
         }
 
         private void SubscribeNotifications()
@@ -1069,7 +1073,7 @@ namespace PropertyTools.Wpf
                                      BorderThickness = new Thickness(0, 1, 0, 0)
                                  };
 
-                if (i<rows && AlternatingRowsBackground != null && i % 2 == 1)
+                if (i < rows && AlternatingRowsBackground != null && i % 2 == 1)
                 {
                     border.Background = AlternatingRowsBackground;
                 }
@@ -1454,16 +1458,16 @@ namespace PropertyTools.Wpf
                 Grid.SetRow(border, i);
                 rowGrid.Children.Add(border);
 
-                    var cell = new TextBlock
-                    {
-                        Text = text,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center
-                    };
+                var cell = new TextBlock
+                {
+                    Text = text,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
 
-                    cell.Padding = new Thickness(4, 2, 4, 2);
-                    Grid.SetRow(cell, i);
-                    rowGrid.Children.Add(cell);
+                cell.Padding = new Thickness(4, 2, 4, 2);
+                Grid.SetRow(cell, i);
+                rowGrid.Children.Add(cell);
             }
 
             // Add "Insert" row header
@@ -1494,6 +1498,11 @@ namespace PropertyTools.Wpf
                 Grid.SetRow(cell, rows);
                 rowGrid.Children.Add(cell);
                 rowGrid.Children.Add(border);
+            }
+            else
+            {
+                sheetGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                rowGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             }
 
             // to cover a posisble scrollbar
@@ -1623,7 +1632,7 @@ namespace PropertyTools.Wpf
                 var c = GetCellElement(new CellRef(i, column)) as FrameworkElement;
                 if (c != null)
                 {
-                    maxwidth = Math.Max(maxwidth, c.ActualWidth+c.Margin.Left+c.Margin.Right);
+                    maxwidth = Math.Max(maxwidth, c.ActualWidth + c.Margin.Left + c.Margin.Right);
                 }
             }
 

@@ -1,0 +1,63 @@
+﻿<Window x:Class="DatagridDemo.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Collections="clr-namespace:System.Collections;assembly=mscorlib"
+    Title="DataGridDemo" Height="600" Width="1200">
+    <Window.Resources>
+        <!-- defining the custom editor here -->
+        <DataTemplate x:Key="DatagridEditor">
+            <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding Value}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="SimpleGridEditor">
+            <pt:SimpleGrid Content="{Binding Value}" BorderBrush="LightGray" BorderThickness="1"/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="WPF 4.0 DataGrid" FontWeight="Bold" Margin="20 8 0 0"/>
+        <TextBlock Grid.Column="1" Text="PropertyTools SimpleGrid" FontWeight="Bold" Margin="20 8 0 0"/>
+        <TextBlock Grid.Column="2" Text="ListBox" FontWeight="Bold" Margin="20 8 0 0"/>
+        <pt:PropertyEditor Grid.Row="1" SelectedObject="{Binding MyCollection}" Margin="8" ShowTabs="False">
+            <!-- custom editors -->
+            <pt:PropertyEditor.Editors>
+                <pt:TypeEditor EditedType="{x:Type Collections:IList}" EditorTemplate="{StaticResource DatagridEditor}"/>
+            </pt:PropertyEditor.Editors>
+        </pt:PropertyEditor>
+        <pt:PropertyEditor Grid.Row="1" SelectedObject="{Binding MyCollection}" Margin="8" ShowTabs="False" Grid.Column="1">
+            <!-- custom editors -->
+            <pt:PropertyEditor.Editors>
+                <pt:TypeEditor EditedType="{x:Type Collections:IList}" EditorTemplate="{StaticResource SimpleGridEditor}"/>
+            </pt:PropertyEditor.Editors>
+        </pt:PropertyEditor>
+
+        <ListBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding MyCollection.Cars}" Margin="8">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Expander>
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsAvailable}"/>
+                                <TextBlock Text="{Binding Make}" FontWeight="Bold" Margin="4 0 0 0"/>
+                                <TextBlock Text="{Binding Model}" Margin="4 0 0 0"/>
+                                <TextBlock Text="{Binding Fuel}" Margin="4 0 0 0"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <Grid HorizontalAlignment="Center">
+                            <Image Source="{Binding Image}" Height="80" Margin="40 0 0 0" />
+                            <TextBlock Text="{Binding Price}" FontSize="32" Foreground="#80FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Expander>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>

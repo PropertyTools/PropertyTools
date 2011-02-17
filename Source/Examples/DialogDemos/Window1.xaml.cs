@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using PropertyEditorLibrary;
+using PropertyTools.Wpf;
 
 namespace DialogDemos
 {
@@ -13,7 +13,7 @@ namespace DialogDemos
         public Window1()
         {
             InitializeComponent();
-            DataContext = new Person { FirstName = "Henry", LastName = "Jimmix" };
+            DataContext = new Person { FirstName = "Johnny", LastName = "Cash" };
         }
 
         private void FileExit_Click(object sender, RoutedEventArgs e)
@@ -49,7 +49,7 @@ namespace DialogDemos
             var dlg = new AboutDialog(this);
             dlg.Title = "About the application";
             dlg.UpdateStatus = "The application is updated.";
-            dlg.Image = new BitmapImage(new Uri(@"pack://application:,,,/DialogDemos;component/3d.png"));
+            dlg.Image = new BitmapImage(new Uri(@"pack://application:,,,/DialogDemos;component/pt.png"));
 
             // var uri = "http://opensource.linux-mirror.org/trademarks/opensource/web/opensource-400x345.png";
             // dlg.Image = new BitmapImage(new Uri(uri, UriKind.Absolute));
@@ -64,5 +64,5 @@ namespace DialogDemos
         OpenProject,
         OpenLatest,
         Nothing
-    } ;
+    }
 }

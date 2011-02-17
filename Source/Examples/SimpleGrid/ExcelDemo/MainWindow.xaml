@@ -1,0 +1,41 @@
+﻿<Window x:Class="ExcelDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" Title="ExcelDemo" Height="480" Width="640">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File"/>
+            <MenuItem Header="Edit"/>
+            <MenuItem Header="View"/>
+            <MenuItem Header="Insert"/>
+            <MenuItem Header="Format"/>
+            <MenuItem Header="Tools"/>
+            <MenuItem Header="Data"/>
+            <MenuItem Header="Window"/>
+            <MenuItem Header="Help"/>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock Text="Ready."/>
+        </StatusBar>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" MinWidth="60"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="20"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Background="LightGray" Grid.ColumnSpan="3"/>
+            <TextBox Text="{Binding CurrentCell, Mode=OneWay}" TextAlignment="Center" Height="20" VerticalAlignment="Top"/>
+            <TextBox Text="{Binding CurrentValue}" Grid.Column="2"/>
+            <TabControl Grid.Row="1"  Grid.ColumnSpan="3" TabStripPlacement="Bottom" Margin="-1 -1 -1 2">
+                <TabItem Header="Sheet1">
+                    <pt:SimpleGrid x:Name="sheet1" Content="{Binding Data}" CurrentCell="{Binding CurrentCell}"/>
+                </TabItem>
+            </TabControl>
+            <GridSplitter Height="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.ColumnSpan="3" Background="Transparent"/>
+            <GridSplitter Width="4" HorizontalAlignment="Right" VerticalAlignment="Stretch" Background="Transparent"/>
+        </Grid>
+    </DockPanel>
+</Window>

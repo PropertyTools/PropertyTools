@@ -1,5 +1,5 @@
-/// Persistent color palette support courtesy of Per Malmberg <per.malmberg@gmail.com>
-/// 
+// Persistent color palette support courtesy of Per Malmberg <per.malmberg@gmail.com>
+// 
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

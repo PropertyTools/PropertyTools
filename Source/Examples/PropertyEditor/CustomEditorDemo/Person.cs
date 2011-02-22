@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows.Media;
 
 namespace CustomEditorDemo
 {
@@ -40,10 +41,18 @@ namespace CustomEditorDemo
         }
         #endregion
 
+        private Color hairColor;
+        public Color HairColor
+        {
+            get { return hairColor; }
+            set { hairColor = value; OnPropertyChanged("HairColor"); }
+        }
+
         public Person()
         {
             Name = "Joe";
             BirthDate = DateTime.Today.AddYears(-25);
+            HairColor = Colors.Crimson;
         }
 
     }

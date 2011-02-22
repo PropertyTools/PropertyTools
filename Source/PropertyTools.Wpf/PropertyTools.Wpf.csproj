@@ -179,9 +179,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\AutoUpdateTextAttribute.cs" />
+    <Compile Include="Attributes\DirectoryPathAttribute.cs" />
     <Compile Include="Attributes\EnumDisplayNameAttribute.cs" />
     <Compile Include="Attributes\FilePathAttribute.cs" />
     <Compile Include="Attributes\HeightAttribute.cs" />
+    <Compile Include="Attributes\PasswordAttribute.cs" />
     <Compile Include="Attributes\ResettableAttribute.cs" />
     <Compile Include="Attributes\SortOrderAttribute.cs" />
     <Compile Include="Attributes\WidePropertyAttribute.cs" />
@@ -189,6 +191,7 @@
     <Compile Include="Attributes\SlidableAttribute.cs" />
     <Compile Include="Attributes\OptionalAttribute.cs" />
     <Compile Include="Attributes\RadioButtonsAttribute.cs" />
+    <Compile Include="Controls\Bitmap.cs" />
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
     <Compile Include="Controls\ColorPicker\ColorPickerPalette.cs" />
     <Compile Include="Controls\ColorPicker\ColorWrapper.cs" />
@@ -222,6 +225,7 @@
     <Compile Include="Dialogs\WizardDialog.xaml.cs">
       <DependentUpon>WizardDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />
     <Compile Include="Interfaces\IImageProvider.cs" />
     <Compile Include="Interfaces\ILocalizationService.cs" />
@@ -276,7 +280,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="Dialogs.cd" />
+    <None Include="ClassDiagrams\PropertyEditor.cd" />
+    <None Include="ClassDiagrams\Dialogs.cd" />
     <None Include="PropertyEditor\PropertyEditor.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

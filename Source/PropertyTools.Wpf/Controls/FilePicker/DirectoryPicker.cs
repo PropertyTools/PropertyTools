@@ -58,22 +58,26 @@ namespace PropertyTools.Wpf
         /// </summary>
         public ICommand BrowseCommand { get; set; }
 
-        /// <summary>
-        /// Gets or sets DirectoryDialog.
-        /// </summary>
-        public IDirectoryDialog DirectoryDialog { get; set; }
+        public IFolderBrowserDialogService FolderBrowserDialogService
+        {
+            get { return (IFolderBrowserDialogService)GetValue(FolderBrowserDialogServiceProperty); }
+            set { SetValue(FolderBrowserDialogServiceProperty, value); }
+        }
+
+        public static readonly DependencyProperty FolderBrowserDialogServiceProperty =
+            DependencyProperty.Register("FolderBrowserDialogService", typeof(IFolderBrowserDialogService), typeof(DirectoryPicker), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The browse.
         /// </summary>
         private void Browse()
         {
-            if (DirectoryDialog != null)
+            if (FolderBrowserDialogService != null)
             {
-                DirectoryDialog.Directory = Directory;
-                if (DirectoryDialog.Show())
+                var directory = Directory;
+                if (FolderBrowserDialogService.ShowFolderBrowserDialog(ref directory))
                 {
-                    Directory = DirectoryDialog.Directory;
+                    Directory = directory;
                 }
             }
             else
@@ -92,19 +96,8 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// The i directory dialog.
     /// </summary>
-    public interface IDirectoryDialog
+    public interface IFolderBrowserDialogService
     {
-        /// <summary>
-        /// Gets or sets Directory.
-        /// </summary>
-        string Directory { get; set; }
-
-        /// <summary>
-        /// The show.
-        /// </summary>
-        /// <returns>
-        /// The show.
-        /// </returns>
-        bool Show();
+        bool ShowFolderBrowserDialog(ref string directory, bool showNewFolderButton = true, string description = null, bool useDescriptionForTitle = true);
     }
 }

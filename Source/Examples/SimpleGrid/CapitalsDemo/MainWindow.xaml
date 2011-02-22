@@ -2,6 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" Title="CapitalsDemo" Height="480" Width="800">
     <Grid>
-        <pt:SimpleGrid Content="{Binding Capitals}" DefaultColumnWidth="Auto" ColumnWidths="70,*,*,100,40" CanInsert="False"/>
+        <pt:SimpleGrid Content="{Binding Capitals}" DefaultColumnWidth="Auto" ColumnWidths="70,*,*,100,40" CanInsert="False" FocusVisualStyle="{x:Null}"/>
     </Grid>
 </Window>

@@ -13,103 +13,111 @@ namespace PropertyTools.Wpf
     public partial class SimpleGrid
     {
         public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof (object), typeof (SimpleGrid), 
+            DependencyProperty.Register("Content", typeof(object), typeof(SimpleGrid),
                                         new UIPropertyMetadata(null, ContentChanged));
 
         public static readonly DependencyProperty CurrentCellProperty =
-            DependencyProperty.Register("CurrentCell", typeof (CellRef), typeof (SimpleGrid), 
-                                        new FrameworkPropertyMetadata(new CellRef(0, 0), 
+            DependencyProperty.Register("CurrentCell", typeof(CellRef), typeof(SimpleGrid),
+                                        new FrameworkPropertyMetadata(new CellRef(0, 0),
                                                                       FrameworkPropertyMetadataOptions.
-                                                                          BindsTwoWayByDefault, SelectedCellsChanged, 
+                                                                          BindsTwoWayByDefault, CurrentCellChanged,
                                                                       CoerceCurrentCell));
 
         public static readonly DependencyProperty SelectionCellProperty =
-            DependencyProperty.Register("SelectionCell", typeof (CellRef), typeof (SimpleGrid), 
-                                        new UIPropertyMetadata(new CellRef(0, 0), SelectedCellsChanged, 
+            DependencyProperty.Register("SelectionCell", typeof(CellRef), typeof(SimpleGrid),
+                                        new UIPropertyMetadata(new CellRef(0, 0), SelectionCellChanged,
                                                                CoerceSelectionCell));
 
         public static readonly DependencyProperty CurrentItemProperty =
-            DependencyProperty.Register("CurrentItem", typeof (object), typeof (SimpleGrid), 
-                                        new FrameworkPropertyMetadata(null, 
+            DependencyProperty.Register("CurrentItem", typeof(object), typeof(SimpleGrid),
+                                        new FrameworkPropertyMetadata(null,
                                                                       FrameworkPropertyMetadataOptions.
                                                                           BindsTwoWayByDefault, CurrentItemChanged));
 
         public static readonly DependencyProperty SelectedItemsProperty =
-            DependencyProperty.Register("SelectedItems", typeof (IEnumerable), typeof (SimpleGrid), 
+            DependencyProperty.Register("SelectedItems", typeof(IEnumerable), typeof(SimpleGrid),
                                         new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty AllowExpandProperty =
-            DependencyProperty.Register("AllowExpand", typeof (bool), typeof (SimpleGrid), new UIPropertyMetadata(true));
-
+            DependencyProperty.Register("AllowExpand", typeof(bool), typeof(SimpleGrid), new UIPropertyMetadata(true));
 
         public static readonly DependencyProperty ColumnHeadersProperty =
-            DependencyProperty.Register("ColumnHeaders", typeof (StringCollection), typeof (SimpleGrid), 
+            DependencyProperty.Register("ColumnHeaders", typeof(StringCollection), typeof(SimpleGrid),
                                         new UIPropertyMetadata(null, ContentChanged));
 
         public static readonly DependencyProperty FormatStringsProperty =
-            DependencyProperty.Register("FormatStrings", typeof (StringCollection), typeof (SimpleGrid), 
+            DependencyProperty.Register("FormatStrings", typeof(StringCollection), typeof(SimpleGrid),
                                         new UIPropertyMetadata(null, ContentChanged));
 
         public static readonly DependencyProperty RowHeadersProperty =
-            DependencyProperty.Register("RowHeaders", typeof (StringCollection), typeof (SimpleGrid), 
+            DependencyProperty.Register("RowHeaders", typeof(StringCollection), typeof(SimpleGrid),
                                         new UIPropertyMetadata(null, ContentChanged));
 
         public static readonly DependencyProperty DataFieldsProperty =
-            DependencyProperty.Register("DataFields", typeof (StringCollection), typeof (SimpleGrid), 
+            DependencyProperty.Register("DataFields", typeof(StringCollection), typeof(SimpleGrid),
                                         new UIPropertyMetadata(null, ContentChanged));
 
         public static readonly DependencyProperty ItemsInRowsProperty =
-            DependencyProperty.Register("ItemsInRows", typeof (bool), typeof (SimpleGrid), 
+            DependencyProperty.Register("ItemsInRows", typeof(bool), typeof(SimpleGrid),
                                         new UIPropertyMetadata(true, ContentChanged));
 
         public static readonly DependencyProperty RowHeaderWidthProperty =
-            DependencyProperty.Register("RowHeaderWidth", typeof (GridLength), typeof (SimpleGrid), 
+            DependencyProperty.Register("RowHeaderWidth", typeof(GridLength), typeof(SimpleGrid),
                                         new UIPropertyMetadata(new GridLength(40)));
 
         public static readonly DependencyProperty HeaderBorderBrushProperty =
-            DependencyProperty.Register("HeaderBorderBrush", typeof (Brush), typeof (SimpleGrid), 
+            DependencyProperty.Register("HeaderBorderBrush", typeof(Brush), typeof(SimpleGrid),
                                         new UIPropertyMetadata(new SolidColorBrush(Color.FromRgb(177, 181, 186))));
 
         public static readonly DependencyProperty GridLineBrushProperty =
-            DependencyProperty.Register("GridLineBrush", typeof (Brush), typeof (SimpleGrid), 
+            DependencyProperty.Register("GridLineBrush", typeof(Brush), typeof(SimpleGrid),
                                         new UIPropertyMetadata(new SolidColorBrush(Color.FromRgb(218, 220, 221))));
 
         public static readonly DependencyProperty ColumnAlignmentsProperty =
-            DependencyProperty.Register("ColumnAlignments", typeof (Collection<HorizontalAlignment>), 
-                                        typeof (SimpleGrid), new UIPropertyMetadata(null, ContentChanged));
+            DependencyProperty.Register("ColumnAlignments", typeof(Collection<HorizontalAlignment>),
+                                        typeof(SimpleGrid), new UIPropertyMetadata(null, ContentChanged));
 
         public static readonly DependencyProperty ColumnWidthsProperty =
-            DependencyProperty.Register("ColumnWidths", typeof (Collection<GridLength>), typeof (SimpleGrid), 
+            DependencyProperty.Register("ColumnWidths", typeof(Collection<GridLength>), typeof(SimpleGrid),
                                         new UIPropertyMetadata(null, ContentChanged));
 
         public static readonly DependencyProperty AutoSizeColumnsProperty =
-            DependencyProperty.Register("AutoSizeColumns", typeof (bool), typeof (SimpleGrid), 
+            DependencyProperty.Register("AutoSizeColumns", typeof(bool), typeof(SimpleGrid),
                                         new UIPropertyMetadata(false));
 
         public static readonly DependencyProperty CanInsertProperty =
-            DependencyProperty.Register("CanInsert", typeof (bool), typeof (SimpleGrid), new UIPropertyMetadata(true));
+            DependencyProperty.Register("CanInsert", typeof(bool), typeof(SimpleGrid), new UIPropertyMetadata(true));
 
         public static readonly DependencyProperty CanDeleteProperty =
-            DependencyProperty.Register("CanDelete", typeof (bool), typeof (SimpleGrid), new UIPropertyMetadata(true));
+            DependencyProperty.Register("CanDelete", typeof(bool), typeof(SimpleGrid), new UIPropertyMetadata(true));
 
         public static readonly DependencyProperty AlternatingRowsBackgroundProperty =
-            DependencyProperty.Register("AlternatingRowsBackground", typeof (Brush), typeof (SimpleGrid), 
+            DependencyProperty.Register("AlternatingRowsBackground", typeof(Brush), typeof(SimpleGrid),
                                         new UIPropertyMetadata(null));
 
         public static readonly DependencyProperty DefaultColumnWidthProperty =
-            DependencyProperty.Register("DefaultColumnWidth", typeof (GridLength), typeof (SimpleGrid), 
+            DependencyProperty.Register("DefaultColumnWidth", typeof(GridLength), typeof(SimpleGrid),
                                         new UIPropertyMetadata(new GridLength(100)));
 
+        public HorizontalAlignment DefaultHorizontalAlignment
+        {
+            get { return (HorizontalAlignment)GetValue(DefaultHorizontalAlignmentProperty); }
+            set { SetValue(DefaultHorizontalAlignmentProperty, value); }
+        }
+
+        public static readonly DependencyProperty DefaultHorizontalAlignmentProperty =
+            DependencyProperty.Register("DefaultHorizontalAlignment", typeof(HorizontalAlignment), typeof(SimpleGrid), new UIPropertyMetadata(System.Windows.HorizontalAlignment.Center));
+
         public static readonly DependencyProperty DefaultRowHeightProperty =
-            DependencyProperty.Register("DefaultRowHeight", typeof (GridLength), typeof (SimpleGrid), 
+            DependencyProperty.Register("DefaultRowHeight", typeof(GridLength), typeof(SimpleGrid),
                                         new UIPropertyMetadata(new GridLength(20)));
 
         public static readonly DependencyProperty CanResizeColumnsProperty =
-            DependencyProperty.Register("CanResizeColumns", typeof (bool), typeof (SimpleGrid), 
+            DependencyProperty.Register("CanResizeColumns", typeof(bool), typeof(SimpleGrid),
                                         new UIPropertyMetadata(true));
 
         public static readonly DependencyProperty AddItemHeaderProperty =
-            DependencyProperty.Register("AddItemHeader", typeof (string), typeof (SimpleGrid), 
+            DependencyProperty.Register("AddItemHeader", typeof(string), typeof(SimpleGrid),
                                         new UIPropertyMetadata("*"));
 
         public object CurrentItem
@@ -120,51 +128,51 @@ namespace PropertyTools.Wpf
 
         public IEnumerable SelectedItems
         {
-            get { return (IEnumerable) GetValue(SelectedItemsProperty); }
+            get { return (IEnumerable)GetValue(SelectedItemsProperty); }
             set { SetValue(SelectedItemsProperty, value); }
         }
 
         public bool AllowExpand
         {
-            get { return (bool) GetValue(AllowExpandProperty); }
+            get { return (bool)GetValue(AllowExpandProperty); }
             set { SetValue(AllowExpandProperty, value); }
         }
 
         public Brush HeaderBorderBrush
         {
-            get { return (Brush) GetValue(HeaderBorderBrushProperty); }
+            get { return (Brush)GetValue(HeaderBorderBrushProperty); }
             set { SetValue(HeaderBorderBrushProperty, value); }
         }
 
         public Brush GridLineBrush
         {
-            get { return (Brush) GetValue(GridLineBrushProperty); }
+            get { return (Brush)GetValue(GridLineBrushProperty); }
             set { SetValue(GridLineBrushProperty, value); }
         }
 
 
-        [TypeConverter(typeof (HorizontalAlignmentCollectionConverter))]
+        [TypeConverter(typeof(HorizontalAlignmentCollectionConverter))]
         public Collection<HorizontalAlignment> ColumnAlignments
         {
-            get { return (Collection<HorizontalAlignment>) GetValue(ColumnAlignmentsProperty); }
+            get { return (Collection<HorizontalAlignment>)GetValue(ColumnAlignmentsProperty); }
             set { SetValue(ColumnAlignmentsProperty, value); }
         }
 
         public GridLength RowHeaderWidth
         {
-            get { return (GridLength) GetValue(RowHeaderWidthProperty); }
+            get { return (GridLength)GetValue(RowHeaderWidthProperty); }
             set { SetValue(RowHeaderWidthProperty, value); }
         }
 
         public GridLength DefaultColumnWidth
         {
-            get { return (GridLength) GetValue(DefaultColumnWidthProperty); }
+            get { return (GridLength)GetValue(DefaultColumnWidthProperty); }
             set { SetValue(DefaultColumnWidthProperty, value); }
         }
 
         public Brush AlternatingRowsBackground
         {
-            get { return (Brush) GetValue(AlternatingRowsBackgroundProperty); }
+            get { return (Brush)GetValue(AlternatingRowsBackgroundProperty); }
             set { SetValue(AlternatingRowsBackgroundProperty, value); }
         }
 
@@ -173,42 +181,52 @@ namespace PropertyTools.Wpf
             get { return autoFillCell; }
             set
             {
-                autoFillCell = (CellRef) CoerceSelectionCell(this, value);
+                autoFillCell = (CellRef)CoerceSelectionCell(this, value);
                 OnSelectedCellsChanged();
             }
         }
 
-        [TypeConverter(typeof (GridLengthCollectionConverter))]
+        [TypeConverter(typeof(HorizontalAlignmentCollectionConverter))]
+        public Collection<HorizontalAlignment> HorizontalAlignments
+        {
+            get { return (Collection<HorizontalAlignment>)GetValue(HorizontalAlignmentsProperty); }
+            set { SetValue(HorizontalAlignmentsProperty, value); }
+        }
+
+        public static readonly DependencyProperty HorizontalAlignmentsProperty =
+            DependencyProperty.Register("HorizontalAlignments", typeof(Collection<HorizontalAlignment>), typeof(SimpleGrid), new UIPropertyMetadata(null));
+       
+        [TypeConverter(typeof(GridLengthCollectionConverter))]
         public Collection<GridLength> ColumnWidths
         {
-            get { return (Collection<GridLength>) GetValue(ColumnWidthsProperty); }
+            get { return (Collection<GridLength>)GetValue(ColumnWidthsProperty); }
             set { SetValue(ColumnWidthsProperty, value); }
         }
 
-        [TypeConverter(typeof (StringCollectionConverter))]
+        [TypeConverter(typeof(StringCollectionConverter))]
         public StringCollection ColumnHeaders
         {
-            get { return (StringCollection) GetValue(ColumnHeadersProperty); }
+            get { return (StringCollection)GetValue(ColumnHeadersProperty); }
             set { SetValue(ColumnHeadersProperty, value); }
         }
 
-        [TypeConverter(typeof (StringCollectionConverter))]
+        [TypeConverter(typeof(StringCollectionConverter))]
         public StringCollection FormatStrings
         {
-            get { return (StringCollection) GetValue(FormatStringsProperty); }
+            get { return (StringCollection)GetValue(FormatStringsProperty); }
             set { SetValue(FormatStringsProperty, value); }
         }
 
-        [TypeConverter(typeof (StringCollectionConverter))]
+        [TypeConverter(typeof(StringCollectionConverter))]
         public StringCollection RowHeaders
         {
-            get { return (StringCollection) GetValue(RowHeadersProperty); }
+            get { return (StringCollection)GetValue(RowHeadersProperty); }
             set { SetValue(RowHeadersProperty, value); }
         }
 
         public bool ItemsInRows
         {
-            get { return (bool) GetValue(ItemsInRowsProperty); }
+            get { return (bool)GetValue(ItemsInRowsProperty); }
             set { SetValue(ItemsInRowsProperty, value); }
         }
 
@@ -226,7 +244,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         public CellRef CurrentCell
         {
-            get { return (CellRef) GetValue(CurrentCellProperty); }
+            get { return (CellRef)GetValue(CurrentCellProperty); }
             set { SetValue(CurrentCellProperty, value); }
         }
 
@@ -236,7 +254,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         public CellRef SelectionCell
         {
-            get { return (CellRef) GetValue(SelectionCellProperty); }
+            get { return (CellRef)GetValue(SelectionCellProperty); }
             set { SetValue(SelectionCellProperty, value); }
         }
 
@@ -252,10 +270,10 @@ namespace PropertyTools.Wpf
         /// <value>The columns.</value>
         public int Columns { get; set; }
 
-        [TypeConverter(typeof (StringCollectionConverter))]
+        [TypeConverter(typeof(StringCollectionConverter))]
         public StringCollection DataFields
         {
-            get { return (StringCollection) GetValue(DataFieldsProperty); }
+            get { return (StringCollection)GetValue(DataFieldsProperty); }
             set { SetValue(DataFieldsProperty, value); }
         }
 
@@ -280,19 +298,19 @@ namespace PropertyTools.Wpf
 
         public bool AutoSizeColumns
         {
-            get { return (bool) GetValue(AutoSizeColumnsProperty); }
+            get { return (bool)GetValue(AutoSizeColumnsProperty); }
             set { SetValue(AutoSizeColumnsProperty, value); }
         }
 
         public bool CanInsert
         {
-            get { return (bool) GetValue(CanInsertProperty); }
+            get { return (bool)GetValue(CanInsertProperty); }
             set { SetValue(CanInsertProperty, value); }
         }
 
         public bool CanDelete
         {
-            get { return (bool) GetValue(CanDeleteProperty); }
+            get { return (bool)GetValue(CanDeleteProperty); }
             set { SetValue(CanDeleteProperty, value); }
         }
 
@@ -318,7 +336,7 @@ namespace PropertyTools.Wpf
 
         public GridLength DefaultRowHeight
         {
-            get { return (GridLength) GetValue(DefaultRowHeightProperty); }
+            get { return (GridLength)GetValue(DefaultRowHeightProperty); }
             set { SetValue(DefaultRowHeightProperty, value); }
         }
 
@@ -327,19 +345,32 @@ namespace PropertyTools.Wpf
 
         public bool CanResizeColumns
         {
-            get { return (bool) GetValue(CanResizeColumnsProperty); }
+            get { return (bool)GetValue(CanResizeColumnsProperty); }
             set { SetValue(CanResizeColumnsProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the header used for the add item row/column. Default is "*".
+        /// </summary>
+        /// <value>The add item header.</value>
         public string AddItemHeader
         {
-            get { return (string) GetValue(AddItemHeaderProperty); }
+            get { return (string)GetValue(AddItemHeaderProperty); }
             set { SetValue(AddItemHeaderProperty, value); }
         }
 
+        [Browsable(false)]
+        public Collection<TypeTemplates> CustomTemplates
+        {
+            get { return customTemplates; }
+        }
+
+        private readonly Collection<TypeTemplates> customTemplates = new Collection<TypeTemplates>();
+
+
         private static void CurrentItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((SimpleGrid) d).OnCurrentItemChanged(e);
+            ((SimpleGrid)d).OnCurrentItemChanged(e);
         }
 
         protected virtual void OnCurrentItemChanged(
@@ -369,10 +400,10 @@ namespace PropertyTools.Wpf
 
         private static object CoerceCurrentCell(DependencyObject d, object basevalue)
         {
-            var cr = (CellRef) basevalue;
+            var cr = (CellRef)basevalue;
             int row = cr.Row;
             int column = cr.Column;
-            var sg = (SimpleGrid) d;
+            var sg = (SimpleGrid)d;
             row = Clamp(row, 0, sg.Rows - 1);
             column = Clamp(column, 0, sg.Columns - 1);
 
@@ -383,10 +414,10 @@ namespace PropertyTools.Wpf
 
         private static object CoerceSelectionCell(DependencyObject d, object basevalue)
         {
-            var cr = (CellRef) basevalue;
+            var cr = (CellRef)basevalue;
             int row = cr.Row;
             int column = cr.Column;
-            var sg = (SimpleGrid) d;
+            var sg = (SimpleGrid)d;
             row = Clamp(row, 0, sg.Rows - 1);
             column = Clamp(column, 0, sg.Columns - 1);
             return new CellRef(row, column);
@@ -395,7 +426,7 @@ namespace PropertyTools.Wpf
 
         private static void ContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((SimpleGrid) d).OnCellsChanged();
+            ((SimpleGrid)d).OnCellsChanged();
         }
 
         private void OnCellsChanged()
@@ -403,9 +434,36 @@ namespace PropertyTools.Wpf
             UpdateGridContent();
         }
 
+        private static void CurrentCellChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((SimpleGrid)d).OnCurrentCellChanged();
+        }
+
+        private static void SelectionCellChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((SimpleGrid)d).OnSelectionCellChanged();
+        }
+
         private static void SelectedCellsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((SimpleGrid) d).OnSelectedCellsChanged();
+            ((SimpleGrid)d).OnSelectedCellsChanged();
+        }
+
+        private void OnCurrentCellChanged()
+        {
+            OnSelectedCellsChanged();
+            CurrentItem = GetItem(CurrentCell);
+
+            this.ScrollIntoView(CurrentCell);
+
+            // if (CurrentCell.Row >= Rows || CurrentCell.Column >= Columns)
+            // InsertItem(-1);
+        }
+
+        private void OnSelectionCellChanged()
+        {
+            OnSelectedCellsChanged();
+            this.ScrollIntoView(SelectionCell);
         }
 
         private void OnSelectedCellsChanged()
@@ -456,16 +514,88 @@ namespace PropertyTools.Wpf
                 Grid.SetRowSpan(autoFillSelection, rowspan);
             }
 
-            CurrentItem = GetItem(CurrentCell);
             SelectedItems = GetItems(CurrentCell, SelectionCell);
 
-            if (!BeginComboEdit())
+            if (!ShowEditor())
             {
-                HideComboEdit();
+                HideEditor();
             }
 
-            // if (CurrentCell.Row >= Rows || CurrentCell.Column >= Columns)
-            // InsertItem(-1);
+        }
+
+        private Collection<ColumnDefinition> columnDefinitions = new Collection<ColumnDefinition>();
+
+        public Collection<ColumnDefinition> ColumnDefinitions
+        {
+            get { return columnDefinitions; }
+        }
+    }
+
+    public class ColumnDefinition
+    {
+        /// <summary>
+        /// Gets or sets the data field.
+        /// Note: This is not used if DisplayTemplate/EditTemplate is set.
+        /// </summary>
+        /// <value>The data field.</value>
+        public string DataField { get; set; }
+
+        /// <summary>
+        /// Gets or sets the string format.
+        /// </summary>
+        /// <value>The string format.</value>
+        public string StringFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets the header.
+        /// </summary>
+        /// <value>The header.</value>
+        public object Header { get; set; }
+
+        /// <summary>
+        /// Gets or sets the width.
+        /// </summary>
+        /// <value>The width.</value>
+        public GridLength Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the display template.
+        /// </summary>
+        /// <value>The display template.</value>
+        public DataTemplate DisplayTemplate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the edit template.
+        /// </summary>
+        /// <value>The edit template.</value>
+        public DataTemplate EditTemplate { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance can delete.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance can delete; otherwise, <c>false</c>.
+        /// </value>
+        public bool CanDelete { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance can resize.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance can resize; otherwise, <c>false</c>.
+        /// </value>
+        public bool CanResize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the horizontal alignment.
+        /// </summary>
+        /// <value>The horizontal alignment.</value>
+        public HorizontalAlignment HorizontalAlignment{ get; set; }
+
+        public ColumnDefinition()
+        {
+            HorizontalAlignment = HorizontalAlignment.Center;
+            Width = new GridLength(-1);
         }
     }
 }

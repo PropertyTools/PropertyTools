@@ -12,24 +12,44 @@ namespace ExcelDemo
         public MainWindow()
         {
             InitializeComponent();
-            Data = new string[20, 20];
-            // for (int i = 0; i < 20; i++) for (int j = 0; j < 20; j++) Data[i, j] = "";
+            int rows = 40;
+            int columns = 40;
+            Strings = new string[rows, columns];
 
-            CurrentCell = new CellRef();
+            // todo: the templates for editing cells are not finished
+            Cells = new Cell[rows, columns];
+            for (int i = 0; i < rows; i++) for (int j = 0; j < columns; j++) Cells[i, j] = new Cell { Alignment = HorizontalAlignment.Center, Value = "ABC", IsBold = true, IsItalic = true };
+
+            CurrentCellRef = new CellRef();
             DataContext = this;
         }
 
-        public string[,] Data { get; set; }
-        private CellRef currentCell;
+        public Cell[,] Cells { get; set; }
+        public string[,] Strings { get; set; }
+        private CellRef currentCellRef;
 
-        public CellRef CurrentCell
+        public CellRef CurrentCellRef
         {
-            get { return currentCell; }
+            get { return currentCellRef; }
             set
             {
-                currentCell = value;
+                currentCellRef = value;
+                SelectionCellRef = value;
+                RaisePropertyChanged("CurrentCellRef");
                 RaisePropertyChanged("CurrentCell");
                 RaisePropertyChanged("CurrentValue");
+            }
+        }
+
+        private CellRef selectionCellRef;
+
+        public CellRef SelectionCellRef
+        {
+            get { return selectionCellRef; }
+            set
+            {
+                selectionCellRef = value;
+                RaisePropertyChanged("SelectionCellRef");
             }
         }
 
@@ -37,11 +57,74 @@ namespace ExcelDemo
         {
             get
             {
-                if (CurrentCell.Row < Data.GetUpperBound(0) && CurrentCell.Column < Data.GetUpperBound(1)) return Data[CurrentCell.Row, CurrentCell.Column];
+                if (CurrentCellRef.Row < Strings.GetUpperBound(0) && CurrentCellRef.Column < Strings.GetUpperBound(1)) return Strings[CurrentCellRef.Row, CurrentCellRef.Column];
                 return null;
             }
-            set { Data[CurrentCell.Row, CurrentCell.Column] = value; }
+            set { Strings[CurrentCellRef.Row, CurrentCellRef.Column] = value; }
         }
+
+        public Cell CurrentCell
+        {
+            get
+            {
+                if (CurrentCellRef.Row < Cells.GetUpperBound(0) && CurrentCellRef.Column < Cells.GetUpperBound(1)) return Cells[CurrentCellRef.Row, CurrentCellRef.Column];
+                return null;
+            }
+        }
+
+        #region PropertyChanged Block
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void RaisePropertyChanged(string property)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(property));
+            }
+        }
+
+        #endregion
+    }
+
+    public class Cell : INotifyPropertyChanged
+    {
+        public override string ToString()
+        {
+            return Value;
+        }
+
+        private string value;
+        public string Value
+        {
+            get { return value; }
+            set { this.value = value; RaisePropertyChanged("Value"); }
+        }
+
+        private HorizontalAlignment alignment;
+        public HorizontalAlignment Alignment
+        {
+            get { return alignment; }
+            set { alignment = value; RaisePropertyChanged("Alignment"); }
+        }
+
+        private bool isBold;
+        public bool IsBold
+        {
+            get { return isBold; }
+            set { isBold = value; RaisePropertyChanged("IsBold"); RaisePropertyChanged("FontWeight"); }
+        }
+
+        private bool isItalic;
+        public bool IsItalic
+        {
+            get { return isItalic; }
+            set { isItalic = value; RaisePropertyChanged("IsItalic"); RaisePropertyChanged("FontStyle"); }
+        }
+
+        public FontWeight FontWeight { get { return IsBold ? FontWeights.Bold : FontWeights.Normal; } }
+        public FontStyle FontStyle { get { return IsItalic ? FontStyles.Italic : FontStyles.Normal; } }
 
         #region PropertyChanged Block
 

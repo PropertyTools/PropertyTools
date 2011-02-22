@@ -134,6 +134,13 @@ namespace PropertyTools.Wpf
                     return template;
             }
 
+            if (propertyViewModel is PasswordPropertyViewModel)
+            {
+                template = TryToFindDataTemplate(element, "PasswordTemplate");
+                if (template != null)
+                    return template;
+            }
+
             // Use the default template (TextBox)
             if (propertyViewModel.AutoUpdateText)
                 template = TryToFindDataTemplate(element, "DefaultTemplateAutoUpdate");

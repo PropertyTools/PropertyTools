@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -20,8 +21,9 @@ namespace PropertyTools.Wpf
 {
     ///<summary>
     ///  The SimpleGrid is a 'DataGrid' control with a 'spreadsheet style'.
-    ///  Note: it is not doing virtualization, so the performance on large collection is not good.
-    ///  Note: there are still some bugs in this control 
+    ///  Note: This control is not doing virtualization, so the performance on large collection is not good.
+    ///  Note: I expect there are still quite a few bugs in this control...
+    /// 
     ///  Supported data sources (set in the Content property)
     ///  - arrays (rank 1 or 2)
     ///  - enumerables
@@ -31,9 +33,13 @@ namespace PropertyTools.Wpf
     ///  - bool
     ///  - enums
     ///  - strings
-    ///
+    /// 
+    /// Custom display/edit templates can be defined in
+    ///  - ColumnDefinitions (these are only used in the defined column)
+    ///  - CustomTemplates (these are used in any cell)
+    /// 
     ///  Features
-    ///  - fit to width
+    ///  - fit to width and proportional column widths (using Gridlengths)
     ///  - autofill
     ///  - copy/paste
     ///  - zoom
@@ -43,7 +49,6 @@ namespace PropertyTools.Wpf
     ///  todo:
     ///  - add item issues
     ///  - only update modified cells on INPC and INCC
-    ///  - use binding instead of subscribing to events
     ///  - update Content
     ///  - custom edit/display Templates
     ///</summary>
@@ -94,6 +99,7 @@ namespace PropertyTools.Wpf
         private Border currentBackground;
         private IEnumerable<CellRef> editingCells;
         private ComboBox enumEditor;
+        private ContentControl contentEditor;
         private bool isCapturing;
         private bool isSelectingColumns;
         private bool isSelectingRows;
@@ -107,6 +113,7 @@ namespace PropertyTools.Wpf
         private object subcribedContent;
         private TextBox textEditor;
         private Border topleft;
+        private bool endPressed;
 
         static SimpleGrid()
         {
@@ -131,17 +138,19 @@ namespace PropertyTools.Wpf
             autoFillSelection = Template.FindName(PART_AutoFillSelection, this) as Border;
             autoFillBox = Template.FindName(PART_AutoFillBox, this) as Border;
             topleft = Template.FindName(PART_TopLeft, this) as Border;
+
             textEditor = Template.FindName(PART_TextEditor, this) as TextBox;
             enumEditor = Template.FindName(PART_EnumEditor, this) as ComboBox;
+            contentEditor = new ContentControl();
 
             enumEditor.SelectionChanged += EnumEditorSelectionChanged;
             textEditor.PreviewKeyDown += TextEditorPreviewKeyDown;
             textEditor.LostFocus += TextEditorLostFocus;
+
             sheetScroller.ScrollChanged += ScrollViewerScrollChanged;
             rowScroller.ScrollChanged += RowScrollerChanged;
             columnScroller.ScrollChanged += ColumnScrollerChanged;
 
-            // todo: should also subscribe the column/row scrollers change events...
             topleft.MouseLeftButtonDown += TopleftMouseLeftButtonDown;
 
             autoFillBox.MouseLeftButtonDown += AutoFillBoxMouseLeftButtonDown;
@@ -157,9 +166,7 @@ namespace PropertyTools.Wpf
 
             autoFiller = new AutoFiller(GetCellValue, TrySetCellValue);
 
-            autoFillToolTip = new ToolTip();
-            autoFillToolTip.Placement = PlacementMode.Bottom;
-            autoFillToolTip.PlacementTarget = autoFillSelection;
+            autoFillToolTip = new ToolTip { Placement = PlacementMode.Bottom, PlacementTarget = autoFillSelection };
 
             UpdateGridContent();
             OnSelectedCellsChanged();
@@ -256,15 +263,14 @@ namespace PropertyTools.Wpf
             }
 
             var list = Content as IList;
-            if (list == null)
+            if (list != null)
             {
-                return null;
-            }
 
-            int index = ItemsInRows ? cell.Row : cell.Column;
-            if (index >= 0 && index < list.Count)
-            {
-                return list[index];
+                int index = GetItemIndex(cell);
+                if (index >= 0 && index < list.Count)
+                {
+                    return list[index];
+                }
             }
 
             var items = Content as IEnumerable;
@@ -298,64 +304,123 @@ namespace PropertyTools.Wpf
             Grid.SetColumn(textEditor, CurrentCell.Column);
             Grid.SetRow(textEditor, CurrentCell.Row);
 
-            var el = GetCellElement(CurrentCell) as TextBlock;
-            if (el != null)
-            {
-                textEditor.Text = el.Text;
-            }
-
+            textEditor.Text = GetCellString(CurrentCell);
             textEditor.Visibility = Visibility.Visible;
             textEditor.Focus();
             textEditor.CaretIndex = textEditor.Text.Length;
             textEditor.SelectAll();
         }
 
-        public bool BeginComboEdit()
+        /// <summary>
+        /// Gets the alternative values for the cell.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        protected virtual IEnumerable GetCellAlternatives(CellRef cell, object value)
         {
-            var value = GetCellValue(CurrentCell) as Enum;
             if (value == null)
+                value = GetCellValue(cell);
+            var enumValue = value as Enum;
+            if (enumValue != null)
+            {
+                return Enum.GetValues(enumValue.GetType());
+            }
+            return null;
+        }
+
+        public bool ShowEditor()
+        {
+            var value = GetCellValue(CurrentCell);
+            if (value is Enum)
+                return ShowComboBox();
+            if (value != null)
+            {
+                var type = value.GetType();
+                DataTemplate template = null;
+
+                var cd = GetColumnDefinition(CurrentCell);
+                if (cd != null && cd.EditTemplate != null)
+                {
+                    template = cd.EditTemplate;
+                    contentEditor.Content = GetItem(CurrentCell);
+                }
+                if (template == null)
+                {
+                    template = GetEditTemplate(CurrentCell, type);
+                    contentEditor.Content = GetCellValue(CurrentCell);
+                }
+
+                if (template != null)
+                {
+                    contentEditor.ContentTemplate = template;
+                    SetElementPosition(contentEditor, CurrentCell);
+                    contentEditor.Visibility = Visibility.Visible;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void HideEditor()
+        {
+            contentEditor.Visibility = Visibility.Hidden;
+            enumEditor.Visibility = Visibility.Hidden;
+        }
+
+        public bool ShowComboBox()
+        {
+            var value = GetCellValue(CurrentCell);
+            var alternatives = GetCellAlternatives(CurrentCell, value);
+            if (alternatives == null)
             {
                 return false;
             }
 
-            Grid.SetColumn(enumEditor, CurrentCell.Column);
-            Grid.SetRow(enumEditor, CurrentCell.Row);
+            SetElementPosition(enumEditor, CurrentCell);
 
-            // nullify editingCells to avoid setting values when enumEditor.SelectedValue is set below
+            // set editingCells to null to avoid setting values when enumEditor.SelectedValue is set below
             editingCells = null;
 
-            var values = Enum.GetValues(value.GetType());
-            enumEditor.ItemsSource = values;
+            enumEditor.ItemsSource = alternatives;
             enumEditor.SelectedValue = value;
+            enumEditor.Visibility = Visibility.Visible;
 
             editingCells = SelectedCells.ToList();
 
-            enumEditor.Visibility = Visibility.Visible;
-
-
-            // enumEditor.Focus();
             return true;
         }
 
-        public void HideComboEdit()
+        private void EnumEditorSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            enumEditor.Visibility = Visibility.Hidden;
+            if (editingCells == null)
+            {
+                return;
+            }
+
+            foreach (var cell in editingCells)
+            {
+                TrySetCellValue(cell, enumEditor.SelectedValue);
+                // UpdateCellContent(cell);
+            }
         }
 
-        private bool ToggleCheck()
+
+
+        private bool ToggleCheckInSelectedCells()
         {
-            bool result = false;
+            bool modified = false;
             foreach (var cell in SelectedCells)
             {
-                var chk = GetCellElement(cell) as CheckBox;
-                if (chk != null)
+                var value = GetCellValue(cell);
+                if (value is bool)
                 {
-                    chk.IsChecked = !chk.IsChecked;
-                    result = true;
+                    if (TrySetCellValue(cell, !((bool)value)))
+                        modified = true;
                 }
             }
 
-            return result;
+            return modified;
         }
 
         public void EndTextEdit()
@@ -368,7 +433,6 @@ namespace PropertyTools.Wpf
             foreach (var cell in editingCells)
             {
                 TrySetCellValue(cell, textEditor.Text);
-                // UpdateCellContent(cell);
             }
 
             textEditor.Visibility = Visibility.Hidden;
@@ -462,32 +526,44 @@ namespace PropertyTools.Wpf
 
         public void Copy(string separator)
         {
-            int rowMin = Math.Min(CurrentCell.Row, SelectionCell.Row);
-            int columnMin = Math.Min(CurrentCell.Column, SelectionCell.Column);
-            int rowMax = Math.Max(CurrentCell.Row, SelectionCell.Row);
-            int columnMax = Math.Max(CurrentCell.Column, SelectionCell.Column);
+            var text = SelectionToString(separator);
+            Clipboard.SetText(text);
+        }
+
+        public string ToCsv(string separator = ";")
+        {
+            var sb = new StringBuilder();
+            for (int j = 0; j < Columns; j++)
+            {
+                var h = GetColumnHeader(j).ToString();
+                h = CsvEncodeString(h);
+                if (sb.Length > 0) sb.Append(separator);
+                sb.Append(h);
+            }
+            sb.AppendLine();
+            sb.Append(SheetToString(";", true));
+            return sb.ToString();
+        }
+
+        private string SelectionToString(string separator, bool encode = false)
+        {
+            return ToString(CurrentCell, SelectionCell, separator, encode);
+        }
+
+        private string SheetToString(string separator, bool encode = false)
+        {
+            return ToString(new CellRef(0, 0), new CellRef(Rows - 1, Columns - 1), separator, encode);
+        }
+
+        private string ToString(CellRef cell1, CellRef cell2, string separator, bool encode = false)
+        {
+
+            int rowMin = Math.Min(cell1.Row, cell2.Row);
+            int columnMin = Math.Min(cell1.Column, cell2.Column);
+            int rowMax = Math.Max(cell1.Row, cell2.Row);
+            int columnMax = Math.Max(cell1.Column, cell2.Column);
 
             var sb = new StringBuilder();
-
-            // include column headers if full columns are selected?
-            //if (rowMin == 0 && rowMax == Rows - 1)
-            //{
-            //    for (int j = columnMin; j <= columnMax; j++)
-            //    {
-            //        string cell = GetColumnHeader(j);
-            //        if (j > columnMin)
-            //        {
-            //            sb.Append(separator);
-            //        }
-
-            //        if (cell != null)
-            //        {
-            //            sb.Append(cell);
-            //        }
-            //    }
-
-            //    sb.AppendLine();
-            //}
 
             for (int i = rowMin; i <= rowMax; i++)
             {
@@ -498,7 +574,9 @@ namespace PropertyTools.Wpf
 
                 for (int j = columnMin; j <= columnMax; j++)
                 {
-                    string cell = GetText(new CellRef(i, j));
+                    string cell = GetCellString(new CellRef(i, j));
+                    if (encode)
+                        cell = CsvEncodeString(cell);
                     if (j > columnMin)
                     {
                         sb.Append(separator);
@@ -510,9 +588,17 @@ namespace PropertyTools.Wpf
                     }
                 }
             }
-
-            Clipboard.SetText(sb.ToString());
+            return sb.ToString();
         }
+
+        private string CsvEncodeString(string cell)
+        {
+            cell = cell.Replace("\"", "\"\"");
+            if (cell.Contains(";") || cell.Contains("\""))
+                cell = "\"" + cell + "\"";
+            return cell;
+        }
+
 
         private void Delete()
         {
@@ -557,20 +643,6 @@ namespace PropertyTools.Wpf
             }
         }
 
-        private void EnumEditorSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (editingCells == null)
-            {
-                return;
-            }
-
-            foreach (var cell in editingCells)
-            {
-                TrySetCellValue(cell, enumEditor.SelectedValue);
-                UpdateCellContent(cell);
-            }
-        }
-
         private void ColumnGridSizeChanged(object sender, SizeChangedEventArgs e)
         {
             UpdateColumnWidths();
@@ -597,6 +669,22 @@ namespace PropertyTools.Wpf
             bool shift = Keyboard.IsKeyDown(Key.LeftShift);
             switch (e.Key)
             {
+                case Key.Left:
+                    if (textEditor.CaretIndex == 0)
+                    {
+                        EndTextEdit();
+                        OnKeyDown(e);
+                        e.Handled = true;
+                    }
+                    break;
+                case Key.Right:
+                    if (textEditor.CaretIndex == textEditor.Text.Length)
+                    {
+                        EndTextEdit();
+                        OnKeyDown(e);
+                        e.Handled = true;
+                    }
+                    break;
                 case Key.Down:
                 case Key.Up:
                     EndTextEdit();
@@ -769,8 +857,10 @@ namespace PropertyTools.Wpf
 
         private Binding CreateBinding(CellRef cellRef)
         {
-            int index = cellRef.Column;
-            return new Binding(ActualDataFields[index]) { StringFormat = GetFormatString(cellRef) };
+            var dataField = GetDataField(cellRef);
+            if (dataField != null)
+                return new Binding(dataField) { StringFormat = GetFormatString(cellRef) };
+            return null;
         }
 
         public void UpdateCellContent(CellRef cellRef)
@@ -786,12 +876,6 @@ namespace PropertyTools.Wpf
             InsertCellElement(cellRef, value, true);
         }
 
-        private string GetFormatString(CellRef cellRef)
-        {
-            return FormatStrings != null && cellRef.Column < FormatStrings.Count
-                       ? FormatStrings[cellRef.Column]
-                       : null;
-        }
 
         Dictionary<int, UIElement> cellMap = new Dictionary<int, UIElement>();
 
@@ -802,10 +886,10 @@ namespace PropertyTools.Wpf
 
         private void InsertCellElement(CellRef cellRef, object value, bool insert)
         {
-            if (value == null)
-                return;
+            //if (value == null)
+            //    return;
 
-            var e = CreateElement(value, GetFormatString(cellRef), GetAlignment(cellRef));
+            var e = CreateElement(cellRef, null);
             SetElementPosition(e, cellRef);
             if (insert)
             {
@@ -843,26 +927,73 @@ namespace PropertyTools.Wpf
             //return null;
         }
 
-        private string GetColumnHeader(int j)
+        private object GetColumnHeader(int j)
         {
+
             var text = CellRef.ToColumnName(j);
-            if (ActualColumnHeaders != null && j < ActualColumnHeaders.Count)
+
+            if (ItemsInRows)
             {
-                text = ActualColumnHeaders[j];
+                if (j < ColumnDefinitions.Count)
+                    return ColumnDefinitions[j].Header;
+
+                if (ActualColumnHeaders != null && j < ActualColumnHeaders.Count)
+                {
+                    text = ActualColumnHeaders[j];
+                }
             }
 
             return text;
         }
 
-        private string GetText(CellRef cellRef)
+        private object GetRowHeader(int j)
         {
-            var c = GetCellElement(cellRef) as TextBlock;
-            if (c != null)
+
+            var text = CellRef.ToRowName(j);
+
+            if (!ItemsInRows)
             {
-                return c.Text;
+                if (j < ColumnDefinitions.Count)
+                    return ColumnDefinitions[j].Header;
+
+                if (ActualColumnHeaders != null && j < ActualColumnHeaders.Count)
+                {
+                    text = ActualColumnHeaders[j];
+                }
             }
 
+            return text;
+        }
+        private int GetItemIndex(CellRef cell)
+        {
+            return ItemsInRows ? cell.Row : cell.Column;
+        }
+
+        private int GetFieldIndex(CellRef cell)
+        {
+            return ItemsInRows ? cell.Column : cell.Row;
+        }
+
+        private string GetDataField(CellRef cell)
+        {
+            int fieldIndex = GetFieldIndex(cell);
+
+            if (fieldIndex < ColumnDefinitions.Count)
+                return ColumnDefinitions[fieldIndex].DataField;
+
+            if (ActualDataFields != null && fieldIndex < ActualDataFields.Count)
+                return ActualDataFields[fieldIndex];
+
             return null;
+        }
+
+        public string GetCellString(CellRef cell)
+        {
+            var value = GetCellValue(cell);
+            if (value == null)
+                return null;
+            var formatString = GetFormatString(cell);
+            return FormatValue(value, formatString);
         }
 
         /// <summary>
@@ -885,35 +1016,22 @@ namespace PropertyTools.Wpf
                 return value;
             }
 
-            var items = Content as IEnumerable;
-            if (items != null)
+            var item = GetItem(cell);
+            if (item != null)
             {
-                int itemIndex = ItemsInRows ? cell.Row : cell.Column;
-                int fieldIndex = ItemsInRows ? cell.Column : cell.Row;
-                int i = 0;
-                foreach (var item in items)
+                var type = item.GetType();
+                var dataField = GetDataField(cell);
+                if (dataField != null)
                 {
-                    if (i == itemIndex)
+                    var pi = type.GetProperty(dataField);
+                    if (pi == null)
                     {
-                        var type = item.GetType();
-                        if (ActualDataFields != null && fieldIndex < ActualDataFields.Count)
-                        {
-                            var pi = type.GetProperty(ActualDataFields[fieldIndex]);
-                            if (pi == null)
-                            {
-                                return item;
-                            }
-
-                            return pi.GetValue(item, null);
-                        }
-
                         return item;
                     }
 
-                    i++;
+                    return pi.GetValue(item, null);
                 }
             }
-
             return null;
         }
 
@@ -931,10 +1049,16 @@ namespace PropertyTools.Wpf
             }
 
             Array cells = null;
+            int rows = -1;
+            int columns = -1;
 
+            // Array
             if (Content != null && Content.GetType().IsArray)
             {
                 cells = (Array)Content;
+                int rank = cells.Rank;
+                rows = cells.GetUpperBound(0) + 1;
+                columns = rank > 1 ? cells.GetUpperBound(1) + 1 : 1;
             }
 
             if (cells == null)
@@ -942,31 +1066,59 @@ namespace PropertyTools.Wpf
                 var items = Content as IEnumerable;
                 if (items != null)
                 {
-                    cells = ConvertItemsSourceToArray(items);
+                    int n = items.Cast<object>().Count();
+                    int m = 0;
+                    if (UseColumnDefinitions)
+                    {
+                        m = ColumnDefinitions.Count;
+                    }
+                    else
+                    {
+                        var actualDataFields = DataFields;
+                        var actualColumnHeaders = ColumnHeaders;
+                        if (actualDataFields == null)
+                        {
+                            AutoGenerateColumns(items, out actualDataFields, out actualColumnHeaders);
+                        }
+                        ActualDataFields = actualDataFields;
+                        ActualColumnHeaders = actualColumnHeaders;
+
+                        m = ActualDataFields.Count;
+                    }
+
+                    rows = ItemsInRows ? n : m;
+                    columns = ItemsInRows ? m : n;
+
+                    // cells = ConvertItemsSourceToArray(items);
                 }
             }
 
             // Hide the row/column headers if the content is empty
-            rowScroller.Visibility = columnScroller.Visibility = sheetScroller.Visibility = topleft.Visibility = cells != null ? Visibility.Visible : Visibility.Hidden;
+            rowScroller.Visibility = columnScroller.Visibility = sheetScroller.Visibility = topleft.Visibility = rows >= 0 ? Visibility.Visible : Visibility.Hidden;
 
-            if (cells == null)
+            if (rows < 0)
             {
                 return;
             }
 
 
-            int rank = cells.Rank;
-            int rows = cells.GetUpperBound(0) + 1;
-            int columns = rank > 1 ? cells.GetUpperBound(1) + 1 : 1;
+            //int rank = cells.Rank;
+            //int rows = cells.GetUpperBound(0) + 1;
+            //int columns = rank > 1 ? cells.GetUpperBound(1) + 1 : 1;
 
             UpdateRows(rows);
             UpdateColumns(columns);
-            UpdateSheet(cells);
+            UpdateSheet(rows, columns);
 
             UpdateColumnWidths();
 
             SubscribeNotifications();
 
+        }
+
+        protected bool UseColumnDefinitions
+        {
+            get { return ColumnDefinitions.Count > 0; }
         }
 
         private void SubscribeNotifications()
@@ -1019,8 +1171,36 @@ namespace PropertyTools.Wpf
 
         private void OnContentItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // todo: find cell and update
-            UpdateGridContent();
+            foreach (var cell in FindCells(sender, e.PropertyName))
+            {
+                UpdateCellContent(cell);
+            }
+            // todo: find cell and update           
+            //            UpdateGridContent();
+        }
+
+        private IEnumerable<CellRef> FindCells(object item, string propertyName)
+        {
+            if (ActualDataFields == null)
+                yield break;
+
+            if (Content is IEnumerable)
+            {
+                int i = 0;
+                foreach (var it in Content as IEnumerable)
+                {
+                    if (it == item)
+                    {
+                        for (int j = 0; j < ActualDataFields.Count; j++)
+                            if (ActualDataFields[j] == propertyName)
+                            {
+                                var cell = ItemsInRows ? new CellRef(i, j) : new CellRef(j, i);
+                                yield return cell;
+                            }
+                    }
+                    i++;
+                }
+            }
         }
 
         private void OnContentCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -1042,10 +1222,13 @@ namespace PropertyTools.Wpf
         {
             sheetGrid.UpdateLayout();
 
-            if (AutoSizeColumns)
+            for (int i = 0; i < Columns; i++)
             {
-                AutoSizeAllColumns();
+                if (GetColumnWidth(i) == GridLength.Auto || AutoSizeColumns)
+                    AutoSizeColumn(i);
             }
+
+            sheetGrid.UpdateLayout();
 
             for (int j = 0; j < sheetGrid.ColumnDefinitions.Count; j++)
             {
@@ -1053,11 +1236,11 @@ namespace PropertyTools.Wpf
             }
         }
 
-        private void UpdateSheet(Array cells)
+        private void UpdateSheet(int rows, int columns)
         {
-            int rank = cells.Rank;
-            int rows = cells.GetUpperBound(0) + 1;
-            int columns = rank > 1 ? cells.GetUpperBound(1) + 1 : 1;
+            //int rank = cells.Rank;
+            //int rows = cells.GetUpperBound(0) + 1;
+            //int columns = rank > 1 ? cells.GetUpperBound(1) + 1 : 1;
 
             sheetGrid.Children.Clear();
             sheetGrid.Children.Add(selectionBackground);
@@ -1112,79 +1295,301 @@ namespace PropertyTools.Wpf
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    var value = rank > 1 ? cells.GetValue(i, j) : cells.GetValue(i);
-                    AddCellElement(new CellRef(i, j), value);
+                    var cell = new CellRef(i, j);
+                    var value = GetCellValue(cell);
+                    AddCellElement(cell, value);
                 }
             }
 
             sheetGrid.Children.Add(textEditor);
-            sheetGrid.Children.Add(enumEditor);
             sheetGrid.Children.Add(selection);
             sheetGrid.Children.Add(autoFillBox);
             sheetGrid.Children.Add(autoFillSelection);
+            sheetGrid.Children.Add(contentEditor);
+            sheetGrid.Children.Add(enumEditor);
         }
 
-        private HorizontalAlignment GetAlignment(CellRef cellref)
+        private void UpdateRows(int rows)
         {
-            if (ColumnAlignments != null && cellref.Column < ColumnAlignments.Count)
+            rowGrid.RowDefinitions.Clear();
+            sheetGrid.RowDefinitions.Clear();
+            rowGrid.Children.Clear();
+            rowGrid.Children.Add(rowSelectionBackground);
+
+            Rows = rows;
+
+            for (int i = 0; i < rows; i++)
             {
-                return ColumnAlignments[cellref.Column];
+                sheetGrid.RowDefinitions.Add(new RowDefinition { Height = DefaultRowHeight });
+                rowGrid.RowDefinitions.Add(new RowDefinition { Height = DefaultRowHeight });
             }
 
-            return HorizontalAlignment.Center;
+            for (int i = 0; i < rows; i++)
+            {
+                object header = GetRowHeader(i);
+
+                var border = new Border
+                {
+                    BorderBrush = HeaderBorderBrush,
+                    BorderThickness = new Thickness(1, 0, 1, 1),
+                    Margin = new Thickness(0, 0, 0, -1)
+                };
+
+                Grid.SetRow(border, i);
+                rowGrid.Children.Add(border);
+
+                var cell = header as FrameworkElement;
+                if (cell == null)
+                {
+                    cell = new TextBlock
+                               {
+                                   Text = header != null ? header.ToString() : "-",
+                                   VerticalAlignment = VerticalAlignment.Center,
+                                   HorizontalAlignment = HorizontalAlignment.Center,
+                                   Padding = new Thickness(4, 2, 4, 2)
+                               };
+                }
+                Grid.SetRow(cell, i);
+                rowGrid.Children.Add(cell);
+            }
+
+            // Add "Insert" row header
+            if (CanInsertRows && AddItemHeader != null)
+            {
+                sheetGrid.RowDefinitions.Add(new RowDefinition { Height = DefaultRowHeight });
+                rowGrid.RowDefinitions.Add(new RowDefinition { Height = DefaultRowHeight });
+
+                var cell = new TextBlock
+                {
+                    Text = AddItemHeader,
+                    ToolTip = "Add row",
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
+                var border = new Border
+                {
+                    Background = Brushes.Transparent,
+                    BorderBrush = HeaderBorderBrush,
+                    BorderThickness = new Thickness(1, 0, 1, 1),
+                    Margin = new Thickness(0, 0, 0, 0)
+                };
+
+                border.MouseLeftButtonDown += addItemCell_MouseLeftButtonDown;
+                Grid.SetRow(border, rows);
+
+                cell.Padding = new Thickness(4, 2, 4, 2);
+                Grid.SetRow(cell, rows);
+                rowGrid.Children.Add(cell);
+                rowGrid.Children.Add(border);
+            }
+            else
+            {
+                sheetGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                rowGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            }
+
+            // to cover a posisble scrollbar
+            rowGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20) });
         }
 
-        protected virtual UIElement CreateElement(object value, string formatString, HorizontalAlignment alignment)
+        private void UpdateColumns(int columns)
+        {
+            Columns = columns;
+            rowGrid.ColumnDefinitions.Clear();
+            sheetGrid.ColumnDefinitions.Clear();
+            for (int i = 0; i < columns; i++)
+            {
+                var w = GetColumnWidth(i);
+                sheetGrid.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition { Width = w });
+
+                // the width of the header column will be updated later
+                columnGrid.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
+            }
+
+            // Add one empty column covering the vertical scrollbar
+            columnGrid.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition { Width = new GridLength(40) });
+
+
+            columnGrid.Children.Clear();
+            columnGrid.Children.Add(columnSelectionBackground);
+            for (int j = 0; j < columns; j++)
+            {
+                object header = GetColumnHeader(j);
+
+                var border = new Border
+                {
+                    BorderBrush = HeaderBorderBrush,
+                    BorderThickness = new Thickness(0, 1, 1, 1),
+                    Margin = new Thickness(0, 0, j < columns - 1 ? -1 : 0, 0)
+                };
+                Grid.SetColumn(border, j);
+                columnGrid.Children.Add(border);
+
+                var cell = header as FrameworkElement;
+                if (cell == null)
+                {
+                    cell = new TextBlock
+                    {
+                        Text = header != null ? header.ToString() : "-",
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = GetHorizontalAlignment(new CellRef(ItemsInRows ? -1 : j, ItemsInRows ? j : -1)),
+                        Padding = new Thickness(4, 2, 4, 2)
+                    };
+                }
+                Grid.SetColumn(cell, j);
+                columnGrid.Children.Add(cell);
+
+                if (CanResizeColumns)
+                {
+                    var splitter = new GridSplitter
+                    {
+                        ResizeDirection = GridResizeDirection.Columns,
+                        Background = Brushes.Transparent,
+                        Width = 4,
+                        Focusable = false,
+                        VerticalAlignment = VerticalAlignment.Stretch,
+                        HorizontalAlignment = HorizontalAlignment.Right
+                    };
+                    splitter.MouseDoubleClick += ColumnSplitterDoubleClick;
+                    splitter.DragStarted += ColumnSplitterChangeStarted;
+                    splitter.DragDelta += ColumnSplitterChangeDelta;
+                    splitter.DragCompleted += ColumnSplitterChangeCompleted;
+                    Grid.SetColumn(splitter, j);
+                    columnGrid.Children.Add(splitter);
+                }
+            }
+        }
+
+        protected virtual UIElement CreateElement(CellRef cell, object item = null)
         {
             FrameworkElement element = null;
-            var type = value.GetType();
 
-            if (type == typeof(bool))
-            {
-                var chkbox = new CheckBox
-                                 {
-                                     IsChecked = (bool)value,
-                                     Cursor = Cursors.Arrow,
-                                     VerticalAlignment = VerticalAlignment.Center,
-                                     HorizontalAlignment = alignment
-                                 };
-                chkbox.Checked += CellChecked;
-                element = chkbox;
-            }
+            if (item == null)
+                item = GetItem(cell);
 
-            if (typeof(BitmapSource).IsAssignableFrom(type))
+            var cd = GetColumnDefinition(cell);
+            if (cd != null && cd.DisplayTemplate != null)
             {
-                var chkbox = new Image
-                                 {
-                                     Source = (BitmapSource)value,
-                                     Stretch = Stretch.None,
-                                     VerticalAlignment = VerticalAlignment.Center,
-                                     HorizontalAlignment = alignment
-                                 };
-                element = chkbox;
+                element = new ContentControl { ContentTemplate = cd.DisplayTemplate, Content = item };
+
+                // note: vertical/horziontal alignment must be set in the DataTemplate
             }
 
             if (element == null)
             {
-                element = new TextBlock
-                              {
-                                  Text = FormatValue(value, formatString),
-                                  Margin = new Thickness(4, 0, 4, 0),
-                                  Foreground = Foreground,
-                                  VerticalAlignment = VerticalAlignment.Center,
-                                  HorizontalAlignment = alignment
-                              };
+                var value = GetCellValue(cell);
+                var type = value != null ? value.GetType() : null;
+
+                var template = GetDisplayTemplate(cell, type);
+                if (template != null)
+                {
+                    element = new ContentControl { ContentTemplate = template, Content = value };
+                }
+
+                var binding = CreateBinding(cell);
+
+                if (element == null && type == typeof(bool))
+                {
+
+                    var chkbox = new CheckBox { Cursor = Cursors.Arrow };
+                    if (binding != null)
+                    {
+                        chkbox.SetBinding(ToggleButton.IsCheckedProperty, binding);
+                    }
+                    else
+                    {
+                        chkbox.IsChecked = (bool)value;
+                        chkbox.Checked += CellChecked;
+                    }
+                    element = chkbox;
+                }
+
+                if (element == null && typeof(BitmapSource).IsAssignableFrom(type))
+                {
+                    var chkbox = new Image
+                                     {
+                                         Source = (BitmapSource)value,
+                                         Stretch = Stretch.None
+                                     };
+                    element = chkbox;
+                }
+
+                //if (element == null && typeof(Uri).IsAssignableFrom(type))
+                //{
+                //    element = new TextBlock(new Hyperlink(new Run(value != null ? value.ToString() : null)) { NavigateUri = (Uri)value });
+                //}
+
+                if (element == null)
+                {
+                    var textBlock = new TextBlock
+                                        {
+                                            Margin = new Thickness(4, 0, 4, 0),
+                                            Foreground = this.Foreground
+                                        };
+                    if (binding != null)
+                    {
+                        textBlock.SetBinding(TextBlock.TextProperty, binding);
+                    }
+                    else
+                    {
+                        var formatString = GetFormatString(cell);
+                        var text = FormatValue(value, formatString);
+                        textBlock.Text = text;
+                    }
+                    element = textBlock;
+                }
+                element.Tag = type;
+
+                if (binding != null)
+                    element.DataContext = item;
+
+                element.VerticalAlignment = VerticalAlignment.Center;
+                element.HorizontalAlignment = GetHorizontalAlignment(cell);
             }
 
-            element.Tag = type;
             return element;
+        }
+
+
+        private ColumnDefinition GetColumnDefinition(CellRef cell)
+        {
+            int fieldIndex = GetFieldIndex(cell);
+            if (fieldIndex < ColumnDefinitions.Count)
+                return ColumnDefinitions[fieldIndex];
+            return null;
+        }
+
+        private DataTemplate GetDisplayTemplate(CellRef cell, Type type)
+        {
+            foreach (var e in CustomTemplates)
+            {
+                var et = e.Type;
+                if (et.IsAssignableFrom(type))
+                {
+                    return e.DisplayTemplate;
+                }
+            }
+            return null;
+        }
+
+        private DataTemplate GetEditTemplate(CellRef cell, Type type)
+        {
+            foreach (var e in CustomTemplates)
+            {
+                var et = e.Type;
+                if (et.IsAssignableFrom(type))
+                {
+                    return e.EditTemplate;
+                }
+            }
+            return null;
         }
 
         private static string FormatValue(object value, string formatString)
         {
             if (String.IsNullOrEmpty(formatString))
             {
-                return value.ToString();
+                return value != null ? value.ToString() : null;
             }
             else
             {
@@ -1217,66 +1622,39 @@ namespace PropertyTools.Wpf
             }
         }
 
-        private void UpdateColumns(int columns)
+
+        private HorizontalAlignment GetHorizontalAlignment(CellRef cell)
         {
-            Columns = columns;
-            rowGrid.ColumnDefinitions.Clear();
-            sheetGrid.ColumnDefinitions.Clear();
-            for (int i = 0; i < columns; i++)
+            int i = GetFieldIndex(cell);
+            if (i < ColumnDefinitions.Count)
+                return ColumnDefinitions[i].HorizontalAlignment;
+
+            if (HorizontalAlignments != null && cell.Column < HorizontalAlignments.Count)
+                return HorizontalAlignments[cell.Column];
+            return DefaultHorizontalAlignment;
+        }
+
+        private string GetFormatString(CellRef cell)
+        {
+            int i = GetFieldIndex(cell);
+            if (i < ColumnDefinitions.Count)
+                return ColumnDefinitions[i].StringFormat;
+            if (FormatStrings != null && cell.Column < FormatStrings.Count)
+                return FormatStrings[cell.Column];
+            return null;
+        }
+
+        private GridLength GetColumnWidth(int i)
+        {
+            if (i < ColumnDefinitions.Count)
             {
-                var w = ColumnWidths != null && i < ColumnWidths.Count ? ColumnWidths[i] : DefaultColumnWidth;
-                sheetGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = w });
-                columnGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                if (ColumnDefinitions[i].Width.Value < 0)
+                    return DefaultColumnWidth;
+                return ColumnDefinitions[i].Width;
             }
-
-            // Add one empty column covering the vertical scrollbar
-            columnGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
-
-
-            columnGrid.Children.Clear();
-            columnGrid.Children.Add(columnSelectionBackground);
-            for (int j = 0; j < columns; j++)
-            {
-                string text = GetColumnHeader(j);
-
-                var border = new Border
-                                 {
-                                     BorderBrush = HeaderBorderBrush,
-                                     BorderThickness = new Thickness(0, 1, 1, 1),
-                                     Margin = new Thickness(0, 0, j < columns - 1 ? -1 : 0, 0)
-                                 };
-                Grid.SetColumn(border, j);
-                columnGrid.Children.Add(border);
-
-                var cell = new TextBlock
-                               {
-                                   Text = text,
-                                   VerticalAlignment = VerticalAlignment.Center,
-                                   HorizontalAlignment = GetAlignment(new CellRef(-1, j)),
-                                   Padding = new Thickness(4, 2, 4, 2)
-                               };
-                Grid.SetColumn(cell, j);
-                columnGrid.Children.Add(cell);
-
-                if (CanResizeColumns)
-                {
-                    var splitter = new GridSplitter
-                                       {
-                                           ResizeDirection = GridResizeDirection.Columns,
-                                           Background = Brushes.Transparent,
-                                           Width = 4,
-                                           Focusable = false,
-                                           VerticalAlignment = VerticalAlignment.Stretch,
-                                           HorizontalAlignment = HorizontalAlignment.Right
-                                       };
-                    splitter.MouseDoubleClick += ColumnSplitterDoubleClick;
-                    splitter.DragStarted += ColumnSplitterChangeStarted;
-                    splitter.DragDelta += ColumnSplitterChangeDelta;
-                    splitter.DragCompleted += ColumnSplitterChangeCompleted;
-                    Grid.SetColumn(splitter, j);
-                    columnGrid.Children.Add(splitter);
-                }
-            }
+            if (ColumnWidths != null && i < ColumnWidths.Count)
+                return ColumnWidths[i];
+            return DefaultColumnWidth;
         }
 
         private void ColumnSplitterChangeDelta(object sender, DragDeltaEventArgs e)
@@ -1424,91 +1802,6 @@ namespace PropertyTools.Wpf
             return newItem;
         }
 
-        private void UpdateRows(int rows)
-        {
-            rowGrid.RowDefinitions.Clear();
-            sheetGrid.RowDefinitions.Clear();
-            rowGrid.Children.Clear();
-            rowGrid.Children.Add(rowSelectionBackground);
-
-            Rows = rows;
-
-            for (int i = 0; i < rows; i++)
-            {
-                sheetGrid.RowDefinitions.Add(new RowDefinition { Height = DefaultRowHeight });
-                rowGrid.RowDefinitions.Add(new RowDefinition { Height = DefaultRowHeight });
-            }
-
-            for (int i = 0; i < rows; i++)
-            {
-                string text = (i + 1).ToString();
-                if (RowHeaders != null && i < RowHeaders.Count)
-                {
-                    text = RowHeaders[i];
-                }
-
-
-                var border = new Border
-                                 {
-                                     BorderBrush = HeaderBorderBrush,
-                                     BorderThickness = new Thickness(1, 0, 1, 1),
-                                     Margin = new Thickness(0, 0, 0, -1)
-                                 };
-
-                Grid.SetRow(border, i);
-                rowGrid.Children.Add(border);
-
-                var cell = new TextBlock
-                {
-                    Text = text,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center
-                };
-
-                cell.Padding = new Thickness(4, 2, 4, 2);
-                Grid.SetRow(cell, i);
-                rowGrid.Children.Add(cell);
-            }
-
-            // Add "Insert" row header
-            if (CanInsertRows && AddItemHeader != null)
-            {
-                sheetGrid.RowDefinitions.Add(new RowDefinition { Height = DefaultRowHeight });
-                rowGrid.RowDefinitions.Add(new RowDefinition { Height = DefaultRowHeight });
-
-                var cell = new TextBlock
-                               {
-                                   Text = AddItemHeader,
-                                   ToolTip = "Add row",
-                                   VerticalAlignment = VerticalAlignment.Center,
-                                   HorizontalAlignment = HorizontalAlignment.Center
-                               };
-                var border = new Border
-                                 {
-                                     Background = Brushes.Transparent,
-                                     BorderBrush = HeaderBorderBrush,
-                                     BorderThickness = new Thickness(1, 0, 1, 1),
-                                     Margin = new Thickness(0, 0, 0, 0)
-                                 };
-
-                border.MouseLeftButtonDown += addItemCell_MouseLeftButtonDown;
-                Grid.SetRow(border, rows);
-
-                cell.Padding = new Thickness(4, 2, 4, 2);
-                Grid.SetRow(cell, rows);
-                rowGrid.Children.Add(cell);
-                rowGrid.Children.Add(border);
-            }
-            else
-            {
-                sheetGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                rowGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            }
-
-            // to cover a posisble scrollbar
-            rowGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20) });
-        }
-
         private void addItemCell_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             InsertItem(-1);
@@ -1645,7 +1938,6 @@ namespace PropertyTools.Wpf
             return columnGrid.Children[1 + 3 * column + 1] as FrameworkElement;
         }
 
-
         private void ScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             columnScroller.ScrollToHorizontalOffset(sheetScroller.HorizontalOffset);
@@ -1744,6 +2036,7 @@ namespace PropertyTools.Wpf
 
             bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
             bool shift = Keyboard.IsKeyDown(Key.LeftShift);
+            bool alt = Keyboard.IsKeyDown(Key.LeftAlt);
 
             int row = shift ? SelectionCell.Row : CurrentCell.Row;
             int column = shift ? SelectionCell.Column : CurrentCell.Column;
@@ -1756,6 +2049,11 @@ namespace PropertyTools.Wpf
                         row--;
                     }
 
+                    if (endPressed)
+                    {
+                        FindNext(ref row, ref column, -1, 0);
+                    }
+
                     if (control)
                     {
                         row = 0;
@@ -1766,6 +2064,11 @@ namespace PropertyTools.Wpf
                     if (row < Rows - 1 || CanInsertRows)
                     {
                         row++;
+                    }
+
+                    if (endPressed)
+                    {
+                        FindNext(ref row, ref column, 1, 0);
                     }
 
                     if (control)
@@ -1784,6 +2087,11 @@ namespace PropertyTools.Wpf
                         column--;
                     }
 
+                    if (endPressed)
+                    {
+                        FindNext(ref row, ref column, 0, -1);
+                    }
+
                     if (control)
                     {
                         column = 0;
@@ -1796,11 +2104,18 @@ namespace PropertyTools.Wpf
                         column++;
                     }
 
+                    if (endPressed)
+                    {
+                        FindNext(ref row, ref column, 0, 1);
+                    }
                     if (control)
                     {
                         column = Columns - 1;
                     }
 
+                    break;
+                case Key.End:
+                    endPressed = true;
                     break;
                 case Key.Home:
                     column = 0;
@@ -1813,7 +2128,7 @@ namespace PropertyTools.Wpf
                     BeginTextEdit();
                     break;
                 case Key.Space:
-                    if (ToggleCheck())
+                    if (ToggleCheckInSelectedCells())
                     {
                         e.Handled = true;
                     }
@@ -1832,9 +2147,19 @@ namespace PropertyTools.Wpf
                     }
 
                     return;
+                case Key.C:
+                    if (control && alt)
+                    {
+                        Clipboard.SetText(ToCsv());
+                        e.Handled = true;
+                    }
+                    return;
                 default:
                     return;
             }
+            
+            if (e.Key != Key.End)
+                endPressed = false;
 
             if (shift)
             {
@@ -1849,6 +2174,18 @@ namespace PropertyTools.Wpf
             ScrollIntoView(new CellRef(row, column));
 
             e.Handled = true;
+        }
+
+        private void FindNext(ref int row, ref int column, int deltaRow, int deltaColumn)
+        {
+            while (row >= 0 && row<Rows && column>=0 && column<Columns-1)
+            {
+                var v = GetCellValue(new CellRef(row, column));
+                if (v == null || String.IsNullOrEmpty(v.ToString()))
+                    break;
+                row+=deltaRow;
+                column += deltaColumn;
+            }
         }
 
         private bool OpenCombo()
@@ -2081,18 +2418,25 @@ namespace PropertyTools.Wpf
                 var current = GetItem(cell);
 
                 int fieldIndex = ItemsInRows ? cell.Column : cell.Row;
-                if (current != null && ActualDataFields != null && fieldIndex < ActualDataFields.Count)
+                if (current != null)
                 {
-                    var field = ActualDataFields[fieldIndex];
+
+                    var field = GetDataField(cell);
                     var pi = current.GetType().GetProperty(field);
                     if (pi == null)
                     {
+                        //var list = Content as IList;
+                        //int itemIndex=GetItemIndex(cell);
+                        //object convertedValue;
+                        //if (TryConvert(value, pi.PropertyType, out convertedValue))
+                        //{
+                        //    list[itemIndex]=
                         // todo: set the actual item to the value
                         return false;
                     }
 
                     object convertedValue;
-                    if (TryConvert(value, pi.PropertyType, out convertedValue))
+                    if (TryConvert(value, pi.PropertyType, out convertedValue) && pi.CanWrite)
                     {
                         pi.SetValue(current, convertedValue, null);
                         if (!(current is INotifyPropertyChanged))

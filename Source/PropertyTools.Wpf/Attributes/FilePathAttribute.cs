@@ -7,18 +7,15 @@ namespace PropertyTools.Wpf
     [AttributeUsage(AttributeTargets.Property)]
     public class FilePathAttribute : Attribute
     {
-        public FilePathAttribute(string filter, string defaultExt)
+        public FilePathAttribute(string filter, string defaultExt, bool useOpenDialog = true)
         {
             Filter = filter;
             DefaultExtension = defaultExt;
+            UseOpenDialog = useOpenDialog;
         }
 
+        public bool UseOpenDialog { get; set; }
         public string Filter { get; set; }
         public string DefaultExtension { get; set; }
-    }
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public class DirectoryPathAttribute : Attribute
-    {
     }
 }

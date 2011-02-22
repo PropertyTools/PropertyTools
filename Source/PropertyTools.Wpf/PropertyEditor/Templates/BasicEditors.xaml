@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:clr="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:PropertyTools.Wpf" xmlns:Collections="clr-namespace:System.Collections;assembly=mscorlib">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:clr="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:PropertyTools.Wpf" xmlns:Collections="clr-namespace:System.Collections;assembly=mscorlib" xmlns:h="clr-namespace:PropertyTools.Wpf.Helpers">
 
     <!-- CLR & Custom Types Data Templates -->
 
@@ -6,6 +6,7 @@
         <TextBox 
             IsReadOnly="{Binding IsReadOnly}" 
             IsEnabled="{Binding IsEnabled}" 
+            
             Text="{Binding Value, ValidatesOnDataErrors=True}" 
             AcceptsReturn="{Binding AcceptsReturn}" 
             TextWrapping="{Binding TextWrapping}" 
@@ -31,7 +32,7 @@
             VerticalScrollBarVisibility="Auto" 
             StringFormat="{Binding FormatString}"/>-->
     </DataTemplate>
-    
+
     <DataTemplate x:Key="DefaultTemplateAutoUpdate">
         <TextBox 
             IsReadOnly="{Binding IsReadOnly}" 
@@ -43,7 +44,7 @@
             Height="{Binding Height}">
         </TextBox>
     </DataTemplate>
-    
+
     <local:ToDoubleConverter x:Key="ToDoubleConverter"/>
     <local:EnumValuesConverter x:Key="EnumValuesConverter"/>
     <local:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
@@ -100,11 +101,18 @@
     </DataTemplate>
 
     <DataTemplate x:Key="FilePathTemplate">
-        <local:FilePicker FilePath="{Binding Value, ValidatesOnDataErrors=True}" Filter="{Binding Filter}" DefaultExtension="{Binding DefaultExtension}" />
+        <local:FilePicker FilePath="{Binding Value, ValidatesOnDataErrors=True}" Filter="{Binding Filter}" DefaultExtension="{Binding DefaultExtension}"
+                          FileDialogService="{Binding FileDialogService}"/>
     </DataTemplate>
 
     <DataTemplate x:Key="DirectoryPathTemplate">
-        <local:DirectoryPicker Directory="{Binding Value, ValidatesOnDataErrors=True}" />
+        <local:DirectoryPicker Directory="{Binding Value, ValidatesOnDataErrors=True}" FolderBrowserDialogService="{Binding FolderBrowserDialogService}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PasswordTemplate">
+        <PasswordBox IsEnabled="{Binding IsEnabled}" PasswordChar="{Binding PasswordChar}"
+                     h:PasswordHelper.Attach="True" h:PasswordHelper.Password="{Binding Value, Mode=TwoWay}">
+        </PasswordBox>
     </DataTemplate>
 
 </ResourceDictionary>

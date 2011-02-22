@@ -4,13 +4,12 @@ using System.Windows;
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// Define a datatemplate for a given type
+    /// Define display/edit data templates for a given type
     /// </summary>
-    public class TypeTemplate
+    public class TypeTemplates
     {
-        public Type EditedType { get; set; }
+        public Type Type { get; set; }
         public DataTemplate DisplayTemplate { get; set; }
-        public DataTemplate EditorTemplate { get; set; }
-        public bool AllowExpand { get; set; }
+        public DataTemplate EditTemplate { get; set; }
     }
 }

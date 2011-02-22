@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace SimpleGridDemo
@@ -47,9 +43,8 @@ namespace SimpleGridDemo
             MassItems = new Collection<Mass>();
 
             ExampleItems = new Collection<ExampleObject>();
-            ExampleItems.Add(new ExampleObject() { DateTime = DateTime.Now, String = "Now" });
-            for (int n=0;n<10;n++)
-                ExampleItems.Add(new ExampleObject() { DateTime = DateTime.UtcNow, String = "UtcNow" });
+            for (int n = 0; n < 10; n++)
+                ExampleItems.Add(new ExampleObject { DateTime = DateTime.Now.AddHours(n), Uri=new Uri("http://www.google.com") });
 
             var rot = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 45);
             var rt = new RotateTransform3D(rot);
@@ -63,17 +58,16 @@ namespace SimpleGridDemo
             Matrix = a;
 
             Vector = new[] { "Apples", "Pears", "Bananas" };
-            EmptyCollection = new Collection<ExampleObject>();
         }
 
         public string[,] Data { get; set; }
-        public ObservableCollection<City> Items { get; set; }
-        public Collection<ExampleObject> ExampleItems { get; set; }
-        public Collection<ExampleObject> EmptyCollection { get; set; }
-        public Collection<string> StringItems { get; set; }
-        public Collection<Mass> MassItems { get; set; }
         public double[,] Matrix { get; set; }
         public string[] Vector { get; set; }
+
+        public ObservableCollection<City> Items { get; set; }
+        public Collection<ExampleObject> ExampleItems { get; set; }
+        public Collection<string> StringItems { get; set; }
+        public Collection<Mass> MassItems { get; set; }
 
         private void CloseExecute(object sender, ExecutedRoutedEventArgs e)
         {
@@ -81,7 +75,7 @@ namespace SimpleGridDemo
         }
     }
 
-    public class City : INotifyPropertyChanged
+    public class City : Observable
     {
         private string name;
         public string Name
@@ -110,78 +104,7 @@ namespace SimpleGridDemo
             get { return isCapital; }
             set { isCapital = value; RaisePropertyChanged("IsCapital"); }
         }
-
-        #region PropertyChanged Block
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string property)
-        {
-            Debug.WriteLine(property + " was changed.");
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(property));
-            }
-        }
-        #endregion
-
-
     }
 
-    public class ExampleObject
-    {
-        public bool Boolean { get; set; }
-        public Island Enum { get; set; }
-        public double Double { get; set; }
-        public int Integer { get; set; }
-        public DateTime DateTime { get; set; }
-        public string String { get; set; }
-        public Color Color { get; set; }
-    }
-
-    [TypeConverter(typeof(MassConverter))]
-    public class Mass
-    {
-        public double Value { get; set; }
-
-        public static Mass Parse(string s)
-        {
-            s = s.Replace(',', '.').Trim();
-            var r = new Regex(@"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?");
-            Match m = r.Match(s);
-            if (!m.Success)
-                return null;
-            double value = double.Parse(m.Groups[0].Value, CultureInfo.InvariantCulture);
-            // string unit = m.Groups[1].Value;
-            return new Mass { Value = value };
-        }
-
-        public override string ToString()
-        {
-            return String.Format("{0:N0} kg", Value, CultureInfo.InvariantCulture);
-        }
-    }
-
-    public class MassConverter : TypeConverter
-    {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            if (sourceType == typeof(string))
-            {
-                return true;
-            }
-            return base.CanConvertFrom(context, sourceType);
-        }
-
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value is string)
-            {
-                return Mass.Parse((string)value);
-            }
-            return base.ConvertFrom(context, culture, value);
-        }
-    }
-
-    public enum Island { Iceland, Java, Sumatra, Taiwan, Madagascar, Borneo, Cuba, Hainan, PuertoRico, Mauritius, Sardinia,Tasmania, Trinidad, Madeira, Hawaii, Oahu, Kauai, Maui, Tahiti, Fiji, BoraBora, Maldives, Reunion, Seychelles }
+    public enum Fruit { Apple, Pear, Banana, Orange }
 }

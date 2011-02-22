@@ -117,6 +117,8 @@ namespace FeaturesDemo
             SliderDouble = 4.31;
             SliderInt = 37;
             FormattedDouble = Math.PI;
+
+            Password = "OpenSesame!";
         }
 
         // When the [Category(...)] attribute is used with a "|", the
@@ -144,10 +146,13 @@ namespace FeaturesDemo
         [Category("Type with ValueConverter")]
         public Mass Weight { get; set; }
 
+        // todo: FormatString is not working
         [Category("FormatString")]
         [FormatString("0.0000")]
-        // todo: not working
         public double FormattedDouble { get; set; }
+
+        [FormatString("X")]
+        public int HexNumber { get; set; }
 
         [Category("ReadOnly properties")]
         public string ReadonlyString { get; private set; }
@@ -255,6 +260,10 @@ namespace FeaturesDemo
 
         [DirectoryPath]
         public string DirectoryPath { get; set; }
+        
+        [Category("Password")]
+        [Password]
+        public string Password { get; set; }
 
         [Category("Wide|Wide properties")]
         // Use [WideProperty] to use the full width of the control

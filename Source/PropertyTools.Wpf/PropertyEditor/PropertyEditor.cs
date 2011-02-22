@@ -514,6 +514,10 @@ namespace PropertyTools.Wpf
             get { return PropertyValueChangedEvent; }
         }
 
+        public IFileDialogService FileDialogService { get; set; }
+
+        public IFolderBrowserDialogService FolderBrowserDialogService { get; set; }
+
         /// <summary>
         ///   The on apply template.
         /// </summary>

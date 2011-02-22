@@ -1,7 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace PropertyTools.Wpf
 {
+    [TypeConverter(typeof(CellRefConverter))]
     public struct CellRef
     {
         private int column;
@@ -32,13 +36,16 @@ namespace PropertyTools.Wpf
 
         public override int GetHashCode()
         {
-            int hash = 17;
-            hash = hash * 37 + base.GetHashCode();
-            hash = hash * 37 + column.GetHashCode();
-            hash = hash * 37 + row.GetHashCode();
-            return hash;
+            long hash = column;
+            hash = (hash << 16)+row;
+            return (int)hash;
         }
-        
+
+        public static string ToRowName(int row)
+        {
+            return (row + 1).ToString();
+        }
+
         public static string ToColumnName(int column)
         {
             string result = string.Empty;
@@ -53,4 +60,38 @@ namespace PropertyTools.Wpf
             return result;
         }
     }
+
+    [ValueConversion(typeof(string), typeof(CellRef))]
+    public class CellRefConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (targetType == typeof(string) && value != null)
+                return value.ToString();
+            if (targetType != typeof(CellRef))
+                return Binding.DoNothing;
+            if (value == null)
+                return new CellRef(0, 0);
+
+            var s = value.ToString().ToUpperInvariant();
+            string sRow = "";
+            string sColumn = "";
+            foreach (var c in s)
+                if (Char.IsDigit(c))
+                    sRow += c;
+                else
+                    sColumn += c;
+            int row = int.Parse(sRow) - 1;
+            int column = 0;
+            for (int i = sColumn.Length - 1; i >= 0; i--)
+                column += column * 26 + (int)sColumn[i] - (int)'A';
+            return new CellRef(row, column);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Convert(value, targetType, parameter, culture);
+        }
+    }
+
 }

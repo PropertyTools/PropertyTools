@@ -67,6 +67,10 @@ namespace PropertyTools.Wpf
             if (IsOptional(descriptor, out optionalPropertyName))
                 propertyViewModel = new OptionalPropertyViewModel(instance, descriptor, optionalPropertyName, owner);
 
+            char passwordChar;
+            if (IsPassword(descriptor, out passwordChar))
+                propertyViewModel = new PasswordPropertyViewModel(instance, descriptor, owner) { PasswordChar = passwordChar };
+
             if (IsResettable(descriptor))
                 propertyViewModel = new ResettablePropertyViewModel(instance, descriptor, owner);
 
@@ -105,8 +109,9 @@ namespace PropertyTools.Wpf
 
             // FilePath
             string filter, defaultExtension;
-            if (IsFilePath(descriptor, out filter, out defaultExtension))
-                propertyViewModel = new FilePathPropertyViewModel(instance, descriptor, owner) { Filter = filter, DefaultExtension = defaultExtension };
+            bool useOpenDialog;
+            if (IsFilePath(descriptor, out filter, out defaultExtension, out useOpenDialog))
+                propertyViewModel = new FilePathPropertyViewModel(instance, descriptor, owner) { Filter = filter, DefaultExtension = defaultExtension, UseOpenDialog = useOpenDialog };
 
             // DirectoryPath
             if (IsDirectoryPath(descriptor))
@@ -163,11 +168,12 @@ namespace PropertyTools.Wpf
             return dpa != null;
         }
 
-        protected virtual bool IsFilePath(PropertyDescriptor descriptor, out string filter, out string defaultExtension)
+        protected virtual bool IsFilePath(PropertyDescriptor descriptor, out string filter, out string defaultExtension, out bool useOpenDialog)
         {
             var fpa = AttributeHelper.GetFirstAttribute<FilePathAttribute>(descriptor);
             filter = fpa != null ? fpa.Filter : null;
             defaultExtension = fpa != null ? fpa.DefaultExtension : null;
+            useOpenDialog = fpa != null ? fpa.UseOpenDialog : true;
             return fpa != null;
         }
 
@@ -189,7 +195,15 @@ namespace PropertyTools.Wpf
             return false;
         }
 
-        public virtual bool IsResettable(PropertyDescriptor descriptor) {
+        protected virtual bool IsPassword(PropertyDescriptor descriptor, out char passwordChar)
+        {
+            var pa = AttributeHelper.GetFirstAttribute<PasswordAttribute>(descriptor);
+            passwordChar = pa != null ? pa.PasswordChar : '*';
+            return pa != null;
+        }
+
+        public virtual bool IsResettable(PropertyDescriptor descriptor)
+        {
             var oa = AttributeHelper.GetFirstAttribute<ResettableAttribute>(descriptor);
             if (oa != null)
                 return true;

@@ -36,7 +36,7 @@
                                     <Border x:Name="PART_AutoFillSelection" BorderBrush="Gray" BorderThickness="3" Margin="-1,-1,-2,-2" Visibility="Hidden"/>
                                     <Border x:Name="PART_AutoFillBox" Width="7" Height="7" SnapsToDevicePixels="True" Cursor="/PropertyTools.Wpf;component/SimpleGrid/Cursors/AutoFill.cur" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Black" BorderBrush="White" BorderThickness="1" Margin="0, 0, -4, -4" />
                                     <TextBox x:Name="PART_TextEditor" Margin="1" Background="White" BorderThickness="0" Visibility="Hidden" />
-                                    <ComboBox x:Name="PART_EnumEditor" Margin="0" Background="White" BorderThickness="0" Visibility="Hidden" />
+                                    <ComboBox x:Name="PART_EnumEditor" Margin="0 0 -1 -1" Background="White" BorderThickness="0" Visibility="Hidden" />
                                 </Grid>
                             </ScrollViewer>
                             <!-- Column headers -->

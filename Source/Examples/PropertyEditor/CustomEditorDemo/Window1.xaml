@@ -3,12 +3,25 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
-    xmlns:clr2="clr-namespace:System.Collections;assembly=mscorlib"
-    Title="CustomEditorDemo" Height="400" Width="400">
+    xmlns:clr2="clr-namespace:System.Collections;assembly=mscorlib" xmlns:local="clr-namespace:CustomEditorDemo" Title="CustomEditorDemo" Height="600" Width="400">
     <Window.Resources>
+    	<pt:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+    	<local:ColorList x:Key="Colors"/>
         <!-- We are defining the custom editor here -->
         <DataTemplate x:Key="CustomDateTimeEditor">
             <DatePicker SelectedDate="{Binding Value, Mode=TwoWay}" SnapsToDevicePixels="True"/>
+        </DataTemplate>
+        <DataTemplate x:Key="SimpleColorPicker">
+            <ComboBox ItemsSource="{StaticResource Colors}" SelectedValue="{Binding Value, Mode=TwoWay}" SelectedValuePath="Item2">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="12" Height="12" Stroke="Black" StrokeThickness="1" Fill="{Binding Item2, Converter={StaticResource ColorToBrushConverter}}" SnapsToDevicePixels="True" Margin="4 0 4 0"/>
+                            <TextBlock Text="{Binding Item1}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </DataTemplate>
         <DataTemplate x:Key="YesNoEditor">
             <ComboBox 
@@ -37,6 +50,7 @@
             <pt:PropertyEditor.Editors>
                 <pt:TypeEditor EditedType="{x:Type System:DateTime}" EditorTemplate="{StaticResource CustomDateTimeEditor}"/>
                 <pt:TypeEditor EditedType="{x:Type System:Boolean}" EditorTemplate="{StaticResource YesNoEditor}"/>
+                <pt:TypeEditor EditedType="{x:Type Color}" EditorTemplate="{StaticResource SimpleColorPicker}"/>
             </pt:PropertyEditor.Editors>
         </pt:PropertyEditor>
 
@@ -48,6 +62,8 @@
                 <TextBox Text="{Binding BirthDate}"/>
                 <Label Content="CanSwim"/>
                 <TextBox Text="{Binding CanSwim}"/>
+                <Label Content="HairColor"/>
+                <TextBox Text="{Binding HairColor}"/>
             </StackPanel>
         </GroupBox>
     </Grid>

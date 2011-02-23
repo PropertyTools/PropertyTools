@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
@@ -68,6 +70,22 @@ namespace SimpleGridDemo
         public Collection<ExampleObject> ExampleItems { get; set; }
         public Collection<string> StringItems { get; set; }
         public Collection<Mass> MassItems { get; set; }
+        public IEnumerable IEnumerable { get { return GetValues(); } }
+        public IEnumerable<ExampleObject> IEnumerable2 { get { return GetValues2(); } }
+
+        private IEnumerable<ExampleObject> GetValues2()
+        {
+            for (int i = 0; i < 100; i++)
+                yield return new ExampleObject() { Integer = i };
+        }
+
+        private IEnumerable GetValues()
+        {
+            for (int i = 0; i < 100; i++)
+                yield return new ExampleObject() {Integer = i};
+        }
+
+        public IEnumerable<string> IEnumerableString { get; set; }
 
         private void CloseExecute(object sender, ExecutedRoutedEventArgs e)
         {

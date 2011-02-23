@@ -73,7 +73,15 @@
 					<TabItem Header="ItemsInRows=false">
 						<pt:SimpleGrid Content="{Binding Items}" RowHeaderWidth="80" ItemsInRows="false" />
 					</TabItem>
-				</TabControl>
+                
+                    <TabItem Header="IEnumerable">
+                        <pt:SimpleGrid Content="{Binding IEnumerable}"/>
+                    </TabItem>
+                    
+                    <TabItem Header="IEnumerable&lt;&gt;">
+                        <pt:SimpleGrid Content="{Binding IEnumerable2}"/>
+                    </TabItem>
+                </TabControl>
 			</TabItem>
 			<TabItem Header="Custom templates">
 				<TabControl>

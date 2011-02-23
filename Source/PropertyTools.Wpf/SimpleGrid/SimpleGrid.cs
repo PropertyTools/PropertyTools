@@ -1262,7 +1262,8 @@ namespace PropertyTools.Wpf
                 }
 
                 Grid.SetColumn(border, 0);
-                Grid.SetColumnSpan(border, columns);
+                if (columns>0)
+                    Grid.SetColumnSpan(border, columns);
                 Grid.SetRow(border, i);
                 sheetGrid.Children.Add(border);
             }
@@ -1702,6 +1703,18 @@ namespace PropertyTools.Wpf
             }
         }
 
+        private static Type GetListItemType(IEnumerable list)
+        {
+            if (list == null)
+                return null;
+            foreach (var item in list)
+            {
+                if (item != null)
+                    return item.GetType();
+            }
+            return null;
+        }
+
         private static Type GetListItemType(Type listType)
         {
             // http://stackoverflow.com/questions/1043755/c-generic-list-t-how-to-get-the-type-of-t
@@ -1890,6 +1903,10 @@ namespace PropertyTools.Wpf
                                          out StringCollection columnHeaders)
         {
             var itemType = GetListItemType(items.GetType());
+            // todo: how to find the right type?
+            if (itemType==null)
+                itemType = GetListItemType(items);
+
             dataFields = new StringCollection();
             columnHeaders = new StringCollection();
             foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(itemType))

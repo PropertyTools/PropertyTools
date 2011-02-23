@@ -378,12 +378,20 @@ namespace PropertyTools.Wpf
                     throw new InvalidOperationException("Instance should be a list.");
                 }
                 foreach (object item in list)
-                    descriptor.AddValueChanged(item, handler);
+                    descriptor.AddValueChanged(GetPropertyOwner(descriptor, item), handler);
             }
             else
             {
-                descriptor.AddValueChanged(Instance, handler);
+                descriptor.AddValueChanged(GetPropertyOwner(descriptor, Instance), handler);
             }
+        }
+
+        private object GetPropertyOwner(PropertyDescriptor descriptor, object instance)
+        {
+            var tdp = TypeDescriptor.GetProvider(instance);
+            var td = tdp.GetTypeDescriptor(instance);
+            var c = td.GetPropertyOwner(descriptor);
+            return c;
         }
 
         /// <summary>
@@ -399,11 +407,11 @@ namespace PropertyTools.Wpf
                     throw new InvalidOperationException("Instance should be a list.");
                 }
                 foreach (object item in list)
-                    descriptor.RemoveValueChanged(item, handler);
+                    descriptor.RemoveValueChanged(GetPropertyOwner(descriptor, item), handler);
             }
             else
             {
-                descriptor.RemoveValueChanged(Instance, handler);
+                descriptor.RemoveValueChanged(GetPropertyOwner(descriptor, Instance), handler);
             }
         }
 

@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapitalsDemo", "Examples\Si
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelDemo", "Examples\SimpleGrid\ExcelDemo\ExcelDemo.csproj", "{46948B74-9C95-47A1-9176-8EF372DD1637}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomTypeDescriptorDemo", "Examples\CustomTypeDescriptorDemo\CustomTypeDescriptorDemo.csproj", "{2769E7BC-061A-43F1-94B9-7372335BC287}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomTypeDescriptorDemo", "Examples\PropertyEditor\CustomTypeDescriptorDemo\CustomTypeDescriptorDemo.csproj", "{2769E7BC-061A-43F1-94B9-7372335BC287}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

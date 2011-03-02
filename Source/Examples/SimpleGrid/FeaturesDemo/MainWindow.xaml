@@ -70,8 +70,8 @@
 						<pt:SimpleGrid Content="{Binding MassItems}" ColumnHeaders="Mass" DataFields="" />
 					</TabItem>
 
-					<TabItem Header="ItemsInRows=false">
-						<pt:SimpleGrid Content="{Binding Items}" RowHeaderWidth="80" ItemsInRows="false" />
+					<TabItem Header="ItemsInColumns=true">
+						<pt:SimpleGrid Content="{Binding Items}" RowHeaderWidth="80" ItemsInColumns="true" />
 					</TabItem>
                 
                     <TabItem Header="IEnumerable">
@@ -94,16 +94,16 @@
 							<pt:ColorToBrushConverter x:Key="ColorToBrushConverter" />
 						</TabItem.Resources>
 						<pt:SimpleGrid Content="{Binding ExampleItems}" DataFields="Boolean,Enum,Double,Integer,DateTime,String,Color" ColumnHeaders="Boolean,Enum,Double,Integer,Date,String,Color" FormatStrings=",,,,yyyy-MM-dd,," ColumnWidths="*,*,*,*,*,3*,140">
-							<pt:SimpleGrid.CustomTemplates>
-								<pt:TypeTemplates Type="{x:Type Color}">
-									<pt:TypeTemplates.DisplayTemplate>
+							<pt:SimpleGrid.TypeDefinitions>
+								<pt:TypeDefinition Type="{x:Type Color}">
+									<pt:TypeDefinition.DisplayTemplate>
 										<DataTemplate>
 											<StackPanel Orientation="Horizontal">
 												<Rectangle Width="12" Height="12" Margin="4 0 4 0" Stroke="Black" StrokeThickness="1" Fill="{Binding Converter={StaticResource ColorToBrushConverter}}" />
 												<TextBlock Text="{Binding}" />
 											</StackPanel>
 										</DataTemplate>
-									</pt:TypeTemplates.DisplayTemplate>
+									</pt:TypeDefinition.DisplayTemplate>
 
                                     <!-- todo: cannot get two-way mode on this binding -->
 									<!--<pt:TypeTemplates.EditTemplate>
@@ -111,9 +111,9 @@
 											<pt:ColorPicker SelectedColor="{Binding}" />
 										</DataTemplate>
 									</pt:TypeTemplates.EditTemplate>-->
-								</pt:TypeTemplates>
-								<pt:TypeTemplates Type="{x:Type System:Int32}">
-									<pt:TypeTemplates.DisplayTemplate>
+								</pt:TypeDefinition>
+								<pt:TypeDefinition Type="{x:Type System:Int32}">
+									<pt:TypeDefinition.DisplayTemplate>
 										<DataTemplate>
 											<Grid>
 												<Grid.ColumnDefinitions>
@@ -124,13 +124,23 @@
 												<ProgressBar Minimum="0" Maximum="100" Value="{Binding Mode=OneWay}" Margin="4" Grid.Column="1" />
 											</Grid>
 										</DataTemplate>
-									</pt:TypeTemplates.DisplayTemplate>
-								</pt:TypeTemplates>
-							</pt:SimpleGrid.CustomTemplates>
+									</pt:TypeDefinition.DisplayTemplate>
+								</pt:TypeDefinition>
+							</pt:SimpleGrid.TypeDefinitions>
 						</pt:SimpleGrid>
 					</TabItem>
+
+                    <TabItem Header="CustomTemplates2">
+                        <pt:SimpleGrid Content="{Binding ExampleItems}" DataFields="Boolean,Enum,Double,Integer,DateTime,String,Color" ColumnHeaders="Boolean,Enum,Double,Integer,Date,String,Color">
+                            <pt:SimpleGrid.TypeDefinitions>
+                                <pt:TypeDefinition Type="{x:Type System:Double}" StringFormat="0.00" HorizontalAlignment="Right"/>
+                                <pt:TypeDefinition Type="{x:Type System:Int32}" StringFormat="0000" HorizontalAlignment="Left"/>
+                                <pt:TypeDefinition Type="{x:Type System:DateTime}" StringFormat="yyyy MMM dd" HorizontalAlignment="Center"/>
+                            </pt:SimpleGrid.TypeDefinitions>
+                        </pt:SimpleGrid>
+                    </TabItem>
                     
-					<TabItem Header="ColumnDefinitions">
+                    <TabItem Header="ColumnDefinitions">
 						<TabItem.Resources>
 							<pt:ColorToBrushConverter x:Key="ColorToBrushConverter" />
 						</TabItem.Resources>
@@ -148,7 +158,7 @@
 								<pt:ColumnDefinition DataField="Integer" Header="Slider" Width="200">
 									<pt:ColumnDefinition.DisplayTemplate>
 										<DataTemplate>
-											<Slider Minimum="0" Maximum="100" Margin="4 0 4 0" Value="{Binding Integer}" VerticalAlignment="Center" IsEnabled="{Binding Boolean}"/>
+											<Slider Cursor="Arrow" Minimum="0" Maximum="100" Margin="4 0 4 0" Value="{Binding Integer}" VerticalAlignment="Center" IsEnabled="{Binding Boolean}"/>
 										</DataTemplate>
 									</pt:ColumnDefinition.DisplayTemplate>
 								</pt:ColumnDefinition>

@@ -68,20 +68,20 @@
                 <TabItem Header="Sheet1">
                     <pt:SimpleGrid x:Name="sheet1" Content="{Binding Strings}" CurrentCell="{Binding CurrentCellRef}" SelectionCell="{Binding SelectionCellRef}" FocusVisualStyle="{x:Null}">
                         <!-- todo: templates for cell editing -->
-                        <pt:SimpleGrid.CustomTemplates>
-                            <pt:TypeTemplates Type="{x:Type ExcelDemo:Cell}">
-                                <pt:TypeTemplates.DisplayTemplate>
+                        <pt:SimpleGrid.TypeDefinitions>
+                            <pt:TypeDefinition Type="{x:Type ExcelDemo:Cell}">
+                                <pt:TypeDefinition.DisplayTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="{Binding Alignment}" Text="{Binding Value}" FontWeight="{Binding FontWeight}" FontStyle="{Binding FontStyle}"/>
                                     </DataTemplate>
-                                </pt:TypeTemplates.DisplayTemplate>
-                                <pt:TypeTemplates.EditTemplate>
+                                </pt:TypeDefinition.DisplayTemplate>
+                                <pt:TypeDefinition.EditTemplate>
                                     <DataTemplate>
                                         <TextBox Background="Yellow" HorizontalAlignment="{Binding Alignment}" Text="{Binding Value}" FontWeight="{Binding FontWeight}" FontStyle="{Binding FontStyle}"/>
                                     </DataTemplate>
-                                </pt:TypeTemplates.EditTemplate>
-                            </pt:TypeTemplates>
-                        </pt:SimpleGrid.CustomTemplates>
+                                </pt:TypeDefinition.EditTemplate>
+                            </pt:TypeDefinition>
+                        </pt:SimpleGrid.TypeDefinitions>
                     </pt:SimpleGrid>
                 </TabItem>
             </TabControl>

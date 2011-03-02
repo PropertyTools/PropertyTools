@@ -11,7 +11,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -21,8 +20,6 @@ namespace PropertyTools.Wpf
 {
     ///<summary>
     ///  The SimpleGrid is a 'DataGrid' control with a 'spreadsheet style'.
-    ///  Note: This control is not doing virtualization, so the performance on large collection is not good.
-    ///  Note: I expect there are still quite a few bugs in this control...
     /// 
     ///  Supported data sources (set in the Content property)
     ///  - arrays (rank 1 or 2)
@@ -36,7 +33,7 @@ namespace PropertyTools.Wpf
     /// 
     /// Custom display/edit templates can be defined in
     ///  - ColumnDefinitions (these are only used in the defined column)
-    ///  - CustomTemplates (these are used in any cell)
+    ///  - TypeDefinitions (these are used in any cell)
     /// 
     ///  Features
     ///  - fit to width and proportional column widths (using Gridlengths)
@@ -124,6 +121,7 @@ namespace PropertyTools.Wpf
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+
             sheetScroller = Template.FindName(PART_SheetScroller, this) as ScrollViewer;
             sheetGrid = Template.FindName(PART_SheetGrid, this) as Grid;
             columnScroller = Template.FindName(PART_ColumnScroller, this) as ScrollViewer;
@@ -150,6 +148,7 @@ namespace PropertyTools.Wpf
             sheetScroller.ScrollChanged += ScrollViewerScrollChanged;
             rowScroller.ScrollChanged += RowScrollerChanged;
             columnScroller.ScrollChanged += ColumnScrollerChanged;
+            sheetScroller.SizeChanged += ScrollViewerSizeChanged;
 
             topleft.MouseLeftButtonDown += TopleftMouseLeftButtonDown;
 
@@ -170,7 +169,6 @@ namespace PropertyTools.Wpf
 
             UpdateGridContent();
             OnSelectedCellsChanged();
-
             BuildContextMenus();
 
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, CopyExecute));
@@ -179,6 +177,12 @@ namespace PropertyTools.Wpf
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, DeleteExecute));
         }
 
+
+        /// <summary>
+        /// Gets the index of the specified item in the Content enumerable.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
         protected int GetIndexOfItem(object item)
         {
             var list = Content as IEnumerable;
@@ -199,23 +203,23 @@ namespace PropertyTools.Wpf
             return -1;
         }
 
-        protected int GetIndexOfProperty(string propertyName)
-        {
-            if (DataFields == null)
-            {
-                return -1;
-            }
+        //protected int GetIndexOfProperty(string propertyName)
+        //{
+        //    if (DataFields == null)
+        //    {
+        //        return -1;
+        //    }
 
-            for (int i = 0; i < DataFields.Count; i++)
-            {
-                if (DataFields[i] == propertyName)
-                {
-                    return i;
-                }
-            }
+        //    for (int i = 0; i < DataFields.Count; i++)
+        //    {
+        //        if (DataFields[i] == propertyName)
+        //        {
+        //            return i;
+        //        }
+        //    }
 
-            return -1;
-        }
+        //    return -1;
+        //}
 
         private static int Clamp(int value, int min, int max)
         {
@@ -233,15 +237,19 @@ namespace PropertyTools.Wpf
             return result;
         }
 
-        private IEnumerable GetItems(CellRef currentCell, CellRef selectionCell)
+        /// <summary>
+        /// Enumerate the items in the specified cell range.
+        /// This is used to updated the SelectedItems property.
+        /// </summary>
+        private IEnumerable EnumerateItems(CellRef cell0, CellRef cell1)
         {
             if (!(Content is Array))
             {
                 var list = Content as IList;
                 if (list != null)
                 {
-                    int index0 = ItemsInRows ? currentCell.Row : currentCell.Column;
-                    int index1 = ItemsInRows ? selectionCell.Row : selectionCell.Column;
+                    int index0 = !ItemsInColumns ? cell0.Row : cell0.Column;
+                    int index1 = !ItemsInColumns ? cell1.Row : cell1.Column;
                     int min = Math.Min(index0, index1);
                     int max = Math.Max(index0, index1);
                     for (int index = min; index <= max; index++)
@@ -279,7 +287,7 @@ namespace PropertyTools.Wpf
                 int i = 0;
                 foreach (var item in items)
                 {
-                    if ((ItemsInRows && i == cell.Row) || (!ItemsInRows && i == cell.Column))
+                    if ((!ItemsInColumns && i == cell.Row) || (!!ItemsInColumns && i == cell.Column))
                     {
                         return item;
                     }
@@ -295,20 +303,6 @@ namespace PropertyTools.Wpf
         {
             Grid.SetColumn(element, cell.Column);
             Grid.SetRow(element, cell.Row);
-        }
-
-        public void BeginTextEdit()
-        {
-            editingCells = SelectedCells.ToList();
-
-            Grid.SetColumn(textEditor, CurrentCell.Column);
-            Grid.SetRow(textEditor, CurrentCell.Row);
-
-            textEditor.Text = GetCellString(CurrentCell);
-            textEditor.Visibility = Visibility.Visible;
-            textEditor.Focus();
-            textEditor.CaretIndex = textEditor.Text.Length;
-            textEditor.SelectAll();
         }
 
         /// <summary>
@@ -333,7 +327,7 @@ namespace PropertyTools.Wpf
         {
             var value = GetCellValue(CurrentCell);
             if (value is Enum)
-                return ShowComboBox();
+                return ShowComboBoxEditor();
             if (value != null)
             {
                 var type = value.GetType();
@@ -347,7 +341,7 @@ namespace PropertyTools.Wpf
                 }
                 if (template == null)
                 {
-                    template = GetEditTemplate(CurrentCell, type);
+                    template = GetEditTemplate(type);
                     contentEditor.Content = GetCellValue(CurrentCell);
                 }
 
@@ -368,7 +362,41 @@ namespace PropertyTools.Wpf
             enumEditor.Visibility = Visibility.Hidden;
         }
 
-        public bool ShowComboBox()
+        public void ShowTextBoxEditor()
+        {
+            editingCells = SelectedCells.ToList();
+
+            Grid.SetColumn(textEditor, CurrentCell.Column);
+            Grid.SetRow(textEditor, CurrentCell.Row);
+
+            textEditor.Text = GetCellString(CurrentCell);
+            textEditor.TextAlignment = ToTextAlignment(GetHorizontalAlignment(CurrentCell));
+
+            textEditor.Visibility = Visibility.Visible;
+            textEditor.Focus();
+            textEditor.CaretIndex = textEditor.Text.Length;
+            textEditor.SelectAll();
+        }
+
+        /// <summary>
+        /// Convert a HorizontalAlignment to a TextAlignment.
+        /// </summary>
+        private static TextAlignment ToTextAlignment(HorizontalAlignment a)
+        {
+            switch (a)
+            {
+                case HorizontalAlignment.Left:
+                    return TextAlignment.Left;
+                case HorizontalAlignment.Center:
+                    return TextAlignment.Center;
+                case HorizontalAlignment.Right:
+                    return TextAlignment.Right;
+                default:
+                    return TextAlignment.Left;
+            }
+        }
+
+        public bool ShowComboBoxEditor()
         {
             var value = GetCellValue(CurrentCell);
             var alternatives = GetCellAlternatives(CurrentCell, value);
@@ -401,21 +429,36 @@ namespace PropertyTools.Wpf
             foreach (var cell in editingCells)
             {
                 TrySetCellValue(cell, enumEditor.SelectedValue);
-                // UpdateCellContent(cell);
             }
         }
 
 
+
+        private bool SetCheckInSelectedCells(bool value)
+        {
+            bool modified = false;
+            foreach (var cell in SelectedCells)
+            {
+                var currentValue = GetCellValue(cell);
+                if (currentValue is bool)
+                {
+                    if (TrySetCellValue(cell, value))
+                        modified = true;
+                }
+            }
+
+            return modified;
+        }
 
         private bool ToggleCheckInSelectedCells()
         {
             bool modified = false;
             foreach (var cell in SelectedCells)
             {
-                var value = GetCellValue(cell);
-                if (value is bool)
+                var currentValue = GetCellValue(cell);
+                if (currentValue is bool)
                 {
-                    if (TrySetCellValue(cell, !((bool)value)))
+                    if (TrySetCellValue(cell, !((bool)currentValue)))
                         modified = true;
                 }
             }
@@ -591,7 +634,7 @@ namespace PropertyTools.Wpf
             return sb.ToString();
         }
 
-        private string CsvEncodeString(string cell)
+        private static string CsvEncodeString(string cell)
         {
             cell = cell.Replace("\"", "\"\"");
             if (cell.Contains(";") || cell.Contains("\""))
@@ -855,15 +898,86 @@ namespace PropertyTools.Wpf
             return result;
         }
 
-        private Binding CreateBinding(CellRef cellRef)
+        private Binding CreateBinding(CellRef cellRef, object value)
         {
             var dataField = GetDataField(cellRef);
             if (dataField != null)
-                return new Binding(dataField) { StringFormat = GetFormatString(cellRef) };
+                return new Binding(dataField) { StringFormat = GetFormatString(cellRef, value) };
             return null;
         }
 
-        public void UpdateCellContent(CellRef cellRef)
+        protected bool IsCellVisible(CellRef cell)
+        {
+            if (IsVirtualizing)
+            {
+                // todo: should store topleft and bottomright visible cells
+                // and check against these
+            }
+
+            return true;
+        }
+
+        protected void UpdateAllCells()
+        {
+            foreach (var element in cellMap.Values)
+            {
+                var cell = GetCellRefFromUIElement(element);
+                UpdateCellContent(cell);
+            }
+
+        }
+
+        private CellRef GetCellRefFromUIElement(UIElement element)
+        {
+            int row = Grid.GetRow(element);
+            int column = Grid.GetColumn(element);
+            return new CellRef(row, column);
+        }
+
+        /// <summary>
+        /// Virtualizes the UIElements for the visible cells.
+        /// Adds elements for the visible cells not currently in the logical tree.
+        /// Removes elements for the nonvisible cells.
+        /// </summary>
+        protected void VirtualizeCells()
+        {
+            CellRef cell1, cell2;
+            GetVisibleCells(out cell1, out cell2);
+            if (cell1.Column < 0)
+                return;
+
+            var delete = cellMap.Keys.ToList();
+
+            for (int i = cell1.Row; i <= cell2.Row; i++)
+            {
+                for (int j = cell1.Column; j <= cell2.Column; j++)
+                {
+                    var cellRef = new CellRef(i, j);
+                    var c = GetCellElement(cellRef);
+                    if (c == null)
+                    {
+                        // The cell is not currently in the collection - add it
+                        UpdateCellContent(cellRef);
+                    }
+                    else
+                    {
+                        // the cell is currently in the collection - keep it (remove it from the delete keys)
+                        delete.Remove(cellRef.GetHashCode());
+                    }
+                }
+            }
+
+            foreach (var hash in delete)
+            {
+                var cell = cellMap[hash];
+                sheetGrid.Children.Remove(cell);
+                cellInsertionIndex--;
+                cellMap.Remove(hash);
+            }
+
+        }
+
+        protected void UpdateCellContent(CellRef cellRef)
         {
             var c = GetCellElement(cellRef);
             var value = GetCellValue(cellRef);
@@ -871,13 +985,16 @@ namespace PropertyTools.Wpf
             if (c != null)
             {
                 sheetGrid.Children.Remove(c);
+                cellInsertionIndex--;
                 cellMap.Remove(cellRef.GetHashCode());
             }
             InsertCellElement(cellRef, value, true);
         }
 
 
-        Dictionary<int, UIElement> cellMap = new Dictionary<int, UIElement>();
+        readonly Dictionary<int, UIElement> cellMap = new Dictionary<int, UIElement>();
+
+        private int cellInsertionIndex;
 
         private void AddCellElement(CellRef cellRef, object value)
         {
@@ -893,8 +1010,8 @@ namespace PropertyTools.Wpf
             SetElementPosition(e, cellRef);
             if (insert)
             {
-                int index = sheetGrid.Children.IndexOf(textEditor);
-                sheetGrid.Children.Insert(index, e);
+                sheetGrid.Children.Insert(cellInsertionIndex, e);
+                cellInsertionIndex++;
             }
             else
             {
@@ -908,31 +1025,13 @@ namespace PropertyTools.Wpf
         {
             UIElement e;
             return cellMap.TryGetValue(cellRef.GetHashCode(), out e) ? e : null;
-
-            //foreach (UIElement c in sheetGrid.Children)
-            //{
-            //    if (c is Border)
-            //    {
-            //        continue;
-            //    }
-
-            //    if (Grid.GetColumn(c) == cellRef.Column && Grid.GetRow(c) == cellRef.Row)
-            //    {
-            //        return c;
-            //    }
-            //}
-
-
-            //// todo: create cell if not found?
-            //return null;
         }
 
         private object GetColumnHeader(int j)
         {
-
             var text = CellRef.ToColumnName(j);
 
-            if (ItemsInRows)
+            if (!ItemsInColumns)
             {
                 if (j < ColumnDefinitions.Count)
                     return ColumnDefinitions[j].Header;
@@ -951,7 +1050,7 @@ namespace PropertyTools.Wpf
 
             var text = CellRef.ToRowName(j);
 
-            if (!ItemsInRows)
+            if (ItemsInColumns)
             {
                 if (j < ColumnDefinitions.Count)
                     return ColumnDefinitions[j].Header;
@@ -964,14 +1063,15 @@ namespace PropertyTools.Wpf
 
             return text;
         }
+
         private int GetItemIndex(CellRef cell)
         {
-            return ItemsInRows ? cell.Row : cell.Column;
+            return !ItemsInColumns ? cell.Row : cell.Column;
         }
 
         private int GetFieldIndex(CellRef cell)
         {
-            return ItemsInRows ? cell.Column : cell.Row;
+            return !ItemsInColumns ? cell.Column : cell.Row;
         }
 
         private string GetDataField(CellRef cell)
@@ -992,7 +1092,7 @@ namespace PropertyTools.Wpf
             var value = GetCellValue(cell);
             if (value == null)
                 return null;
-            var formatString = GetFormatString(cell);
+            var formatString = GetFormatString(cell, value);
             return FormatValue(value, formatString);
         }
 
@@ -1086,10 +1186,9 @@ namespace PropertyTools.Wpf
                         m = ActualDataFields.Count;
                     }
 
-                    rows = ItemsInRows ? n : m;
-                    columns = ItemsInRows ? m : n;
+                    rows = !ItemsInColumns ? n : m;
+                    columns = !ItemsInColumns ? m : n;
 
-                    // cells = ConvertItemsSourceToArray(items);
                 }
             }
 
@@ -1169,17 +1268,19 @@ namespace PropertyTools.Wpf
             subcribedContent = null;
         }
 
+        /// <summary>
+        /// Called when any item in the Content is changed.
+        /// </summary>
         private void OnContentItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            foreach (var cell in FindCells(sender, e.PropertyName))
+            foreach (var cell in EnumerateCells(sender, e.PropertyName))
             {
-                UpdateCellContent(cell);
+                if (IsCellVisible(cell))
+                    UpdateCellContent(cell);
             }
-            // todo: find cell and update           
-            //            UpdateGridContent();
         }
 
-        private IEnumerable<CellRef> FindCells(object item, string propertyName)
+        private IEnumerable<CellRef> EnumerateCells(object item, string propertyName)
         {
             if (ActualDataFields == null)
                 yield break;
@@ -1194,7 +1295,7 @@ namespace PropertyTools.Wpf
                         for (int j = 0; j < ActualDataFields.Count; j++)
                             if (ActualDataFields[j] == propertyName)
                             {
-                                var cell = ItemsInRows ? new CellRef(i, j) : new CellRef(j, i);
+                                var cell = !ItemsInColumns ? new CellRef(i, j) : new CellRef(j, i);
                                 yield return cell;
                             }
                     }
@@ -1209,7 +1310,7 @@ namespace PropertyTools.Wpf
             UpdateGridContent();
         }
 
-        private void AutoSizeAllColumns()
+        public void AutoSizeAllColumns()
         {
             sheetGrid.UpdateLayout();
             for (int i = 0; i < Columns; i++)
@@ -1247,6 +1348,8 @@ namespace PropertyTools.Wpf
             sheetGrid.Children.Add(currentBackground);
             cellMap.Clear();
 
+            // todo: UI virtualize grid lines (both rows and columns)
+
             // Add row lines to the sheet
             for (int i = 1; i <= rows; i++)
             {
@@ -1262,7 +1365,7 @@ namespace PropertyTools.Wpf
                 }
 
                 Grid.SetColumn(border, 0);
-                if (columns>0)
+                if (columns > 0)
                     Grid.SetColumnSpan(border, columns);
                 Grid.SetRow(border, i);
                 sheetGrid.Children.Add(border);
@@ -1291,14 +1394,23 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            // Add content elements to the sheet
-            for (int i = 0; i < rows; i++)
+            cellInsertionIndex = sheetGrid.Children.Count;
+
+            if (IsVirtualizing)
             {
-                for (int j = 0; j < columns; j++)
+                VirtualizeCells();
+            }
+            else
+            {
+                // Add all cells to the sheet
+                for (int i = 0; i < rows; i++)
                 {
-                    var cell = new CellRef(i, j);
-                    var value = GetCellValue(cell);
-                    AddCellElement(cell, value);
+                    for (int j = 0; j < columns; j++)
+                    {
+                        var cell = new CellRef(i, j);
+                        var value = GetCellValue(cell);
+                        AddCellElement(cell, value);
+                    }
                 }
             }
 
@@ -1363,7 +1475,7 @@ namespace PropertyTools.Wpf
                 var cell = new TextBlock
                 {
                     Text = AddItemHeader,
-                    ToolTip = "Add row",
+                    //                    ToolTip = "Add row",
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center
                 };
@@ -1433,7 +1545,7 @@ namespace PropertyTools.Wpf
                     {
                         Text = header != null ? header.ToString() : "-",
                         VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = GetHorizontalAlignment(new CellRef(ItemsInRows ? -1 : j, ItemsInRows ? j : -1)),
+                        HorizontalAlignment = GetHorizontalAlignment(new CellRef(!ItemsInColumns ? -1 : j, !ItemsInColumns ? j : -1)),
                         Padding = new Thickness(4, 2, 4, 2)
                     };
                 }
@@ -1481,13 +1593,13 @@ namespace PropertyTools.Wpf
                 var value = GetCellValue(cell);
                 var type = value != null ? value.GetType() : null;
 
-                var template = GetDisplayTemplate(cell, type);
+                var template = GetDisplayTemplate(type);
                 if (template != null)
                 {
                     element = new ContentControl { ContentTemplate = template, Content = value };
                 }
 
-                var binding = CreateBinding(cell);
+                var binding = CreateBinding(cell, value);
 
                 if (element == null && type == typeof(bool))
                 {
@@ -1533,7 +1645,7 @@ namespace PropertyTools.Wpf
                     }
                     else
                     {
-                        var formatString = GetFormatString(cell);
+                        var formatString = GetFormatString(cell, value);
                         var text = FormatValue(value, formatString);
                         textBlock.Text = text;
                     }
@@ -1560,30 +1672,29 @@ namespace PropertyTools.Wpf
             return null;
         }
 
-        private DataTemplate GetDisplayTemplate(CellRef cell, Type type)
+        private TypeDefinition GetCustomTemplate(Type type)
         {
-            foreach (var e in CustomTemplates)
+            foreach (var e in TypeDefinitions)
             {
                 var et = e.Type;
                 if (et.IsAssignableFrom(type))
                 {
-                    return e.DisplayTemplate;
+                    return e;
                 }
             }
             return null;
         }
 
-        private DataTemplate GetEditTemplate(CellRef cell, Type type)
+        private DataTemplate GetDisplayTemplate(Type type)
         {
-            foreach (var e in CustomTemplates)
-            {
-                var et = e.Type;
-                if (et.IsAssignableFrom(type))
-                {
-                    return e.EditTemplate;
-                }
-            }
-            return null;
+            var e = GetCustomTemplate(type);
+            return e != null ? e.DisplayTemplate : null;
+        }
+
+        private DataTemplate GetEditTemplate(Type type)
+        {
+            var e = GetCustomTemplate(type);
+            return e != null ? e.EditTemplate : null;
         }
 
         private static string FormatValue(object value, string formatString)
@@ -1635,8 +1746,15 @@ namespace PropertyTools.Wpf
             return DefaultHorizontalAlignment;
         }
 
-        private string GetFormatString(CellRef cell)
+        private string GetFormatString(CellRef cell, object value)
         {
+            if (value != null)
+            {
+                var ct = GetCustomTemplate(value.GetType());
+                if (ct != null && ct.StringFormat != null)
+                    return ct.StringFormat;
+            }
+
             int i = GetFieldIndex(cell);
             if (i < ColumnDefinitions.Count)
                 return ColumnDefinitions[i].StringFormat;
@@ -1834,77 +1952,78 @@ namespace PropertyTools.Wpf
             CurrentCell = new CellRef(row, column);
             SelectionCell = new CellRef(row, column);
 
+            // Binding was not used here, so update the value of the cell
             TrySetCellValue(CurrentCell, chkbox.IsChecked);
             UpdateCellContent(CurrentCell);
         }
 
-        private object[,] ConvertItemsSourceToArray(IEnumerable items)
-        {
-            int nItems = items.Cast<object>().Count();
+        //private object[,] ConvertItemsSourceToArray(IEnumerable items)
+        //{
+        //    int nItems = items.Cast<object>().Count();
 
-            var actualDataFields = DataFields;
-            var actualColumnHeaders = ColumnHeaders;
-            if (actualDataFields == null)
-            {
-                AutoGenerateColumns(items, out actualDataFields, out actualColumnHeaders);
-            }
+        //    var actualDataFields = DataFields;
+        //    var actualColumnHeaders = ColumnHeaders;
+        //    if (actualDataFields == null)
+        //    {
+        //        AutoGenerateColumns(items, out actualDataFields, out actualColumnHeaders);
+        //    }
 
-            ActualDataFields = actualDataFields;
-            ActualColumnHeaders = actualColumnHeaders;
+        //    ActualDataFields = actualDataFields;
+        //    ActualColumnHeaders = actualColumnHeaders;
 
-            int nFields = actualDataFields != null ? actualDataFields.Count : 1;
-            var pi = new PropertyInfo[nFields];
-            var cells = ItemsInRows ? new object[nItems, nFields] : new object[nFields, nItems];
-            int i = 0;
-            foreach (var item in items)
-            {
-                var type = item.GetType();
-                for (int j = 0; j < nFields; j++)
-                {
-                    object value = null;
-                    if (actualDataFields == null)
-                    {
-                        value = item;
-                    }
-                    else
-                    {
-                        if (pi[j] == null || pi[j].DeclaringType != type)
-                        {
-                            pi[j] = type.GetProperty(actualDataFields[j]);
-                        }
+        //    int nFields = actualDataFields != null ? actualDataFields.Count : 1;
+        //    var pi = new PropertyInfo[nFields];
+        //    var cells = !ItemsInColumns ? new object[nItems, nFields] : new object[nFields, nItems];
+        //    int i = 0;
+        //    foreach (var item in items)
+        //    {
+        //        var type = item.GetType();
+        //        for (int j = 0; j < nFields; j++)
+        //        {
+        //            object value = null;
+        //            if (actualDataFields == null)
+        //            {
+        //                value = item;
+        //            }
+        //            else
+        //            {
+        //                if (pi[j] == null || pi[j].DeclaringType != type)
+        //                {
+        //                    pi[j] = type.GetProperty(actualDataFields[j]);
+        //                }
 
-                        if (pi[j] != null)
-                        {
-                            value = pi[j].GetValue(item, null);
-                        }
-                        else
-                        {
-                            value = item;
-                        }
-                    }
+        //                if (pi[j] != null)
+        //                {
+        //                    value = pi[j].GetValue(item, null);
+        //                }
+        //                else
+        //                {
+        //                    value = item;
+        //                }
+        //            }
 
-                    if (ItemsInRows)
-                    {
-                        cells[i, j] = value;
-                    }
-                    else
-                    {
-                        cells[j, i] = value;
-                    }
-                }
+        //            if (!ItemsInColumns)
+        //            {
+        //                cells[i, j] = value;
+        //            }
+        //            else
+        //            {
+        //                cells[j, i] = value;
+        //            }
+        //        }
 
-                i++;
-            }
+        //        i++;
+        //    }
 
-            return cells;
-        }
+        //    return cells;
+        //}
 
-        private void AutoGenerateColumns(IEnumerable items, out StringCollection dataFields,
+        protected virtual void AutoGenerateColumns(IEnumerable items, out StringCollection dataFields,
                                          out StringCollection columnHeaders)
         {
             var itemType = GetListItemType(items.GetType());
             // todo: how to find the right type?
-            if (itemType==null)
+            if (itemType == null)
                 itemType = GetListItemType(items);
 
             dataFields = new StringCollection();
@@ -1959,6 +2078,15 @@ namespace PropertyTools.Wpf
         {
             columnScroller.ScrollToHorizontalOffset(sheetScroller.HorizontalOffset);
             rowScroller.ScrollToVerticalOffset(sheetScroller.VerticalOffset);
+
+            if (IsVirtualizing)
+                VirtualizeCells();
+        }
+
+        private void ScrollViewerSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (IsVirtualizing)
+                VirtualizeCells();
         }
 
         private void RowScrollerChanged(object sender, ScrollChangedEventArgs e)
@@ -1969,6 +2097,17 @@ namespace PropertyTools.Wpf
         private void ColumnScrollerChanged(object sender, ScrollChangedEventArgs e)
         {
             sheetScroller.ScrollToHorizontalOffset(e.HorizontalOffset);
+        }
+
+        public void GetVisibleCells(out CellRef topLeft, out CellRef bottomRight)
+        {
+            double left = sheetScroller.HorizontalOffset;
+            double right = left + sheetScroller.ActualWidth;
+            double top = sheetScroller.VerticalOffset;
+            double bottom = top + sheetScroller.ActualHeight;
+
+            topLeft = GetCell(new Point(left, top));
+            bottomRight = GetCell(new Point(right, bottom));
         }
 
         public void ScrollIntoView(CellRef cellRef)
@@ -2008,7 +2147,7 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            BeginTextEdit();
+            ShowTextBoxEditor();
 
             textEditor.Text = e.Text;
             textEditor.CaretIndex = textEditor.Text.Length;
@@ -2142,10 +2281,20 @@ namespace PropertyTools.Wpf
                     Delete();
                     break;
                 case Key.F2:
-                    BeginTextEdit();
+                    ShowTextBoxEditor();
                     break;
                 case Key.Space:
-                    if (ToggleCheckInSelectedCells())
+
+                    bool value = true;
+                    var cvalue = GetCellValue(CurrentCell);
+                    if (cvalue is bool)
+                    {
+                        value = (bool)cvalue;
+                        value = !value;
+                    }
+
+
+                    if (SetCheckInSelectedCells(value))
                     {
                         e.Handled = true;
                     }
@@ -2174,7 +2323,7 @@ namespace PropertyTools.Wpf
                 default:
                     return;
             }
-            
+
             if (e.Key != Key.End)
                 endPressed = false;
 
@@ -2195,12 +2344,12 @@ namespace PropertyTools.Wpf
 
         private void FindNext(ref int row, ref int column, int deltaRow, int deltaColumn)
         {
-            while (row >= 0 && row<Rows && column>=0 && column<Columns-1)
+            while (row >= 0 && row < Rows && column >= 0 && column < Columns - 1)
             {
                 var v = GetCellValue(new CellRef(row, column));
                 if (v == null || String.IsNullOrEmpty(v.ToString()))
                     break;
-                row+=deltaRow;
+                row += deltaRow;
                 column += deltaColumn;
             }
         }
@@ -2304,7 +2453,7 @@ namespace PropertyTools.Wpf
                 object result;
                 if (autoFiller.TryExtrapolate(cellRef, CurrentCell, SelectionCell, AutoFillCell, out result))
                 {
-                    var fmt = GetFormatString(cellRef);
+                    var fmt = GetFormatString(cellRef, result);
                     autoFillToolTip.Content = FormatValue(result, fmt);
                 }
 
@@ -2371,6 +2520,8 @@ namespace PropertyTools.Wpf
 
                 w += aw;
             }
+            if (w > 0 && column == -1)
+                column = sheetGrid.ColumnDefinitions.Count - 1;
 
             double h = 0;
             for (int i = 0; i < sheetGrid.RowDefinitions.Count; i++)
@@ -2384,6 +2535,9 @@ namespace PropertyTools.Wpf
 
                 h += ah;
             }
+
+            if (h > 0 && row == -1)
+                row = sheetGrid.RowDefinitions.Count - 1;
 
             if (column == -1 || row == -1)
             {
@@ -2434,7 +2588,7 @@ namespace PropertyTools.Wpf
             {
                 var current = GetItem(cell);
 
-                int fieldIndex = ItemsInRows ? cell.Column : cell.Row;
+                int fieldIndex = !ItemsInColumns ? cell.Column : cell.Row;
                 if (current != null)
                 {
 

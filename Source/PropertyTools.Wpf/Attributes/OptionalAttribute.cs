@@ -3,7 +3,7 @@
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// The Optional attribute is used for optional properties.
+    /// The OptionalAttribute is used for optional properties.
     /// Properties marked with [Optional] will have a checkbox as the label.
     /// The checkbox will enable/disable the property value editor.
     /// Example usage:

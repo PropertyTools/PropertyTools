@@ -3,7 +3,7 @@
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// The [WideProperty] attribute is used for wide properties.
+    /// The WidePropertyAttribute is used for wide properties.
     /// Properties marked with [WideProperty] will have the label above the editor.
     /// Properties marked with [WideProperty(false)] will have no label.
     /// The editor will use the full width of the available area.

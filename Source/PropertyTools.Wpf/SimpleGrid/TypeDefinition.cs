@@ -4,12 +4,18 @@ using System.Windows;
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// Define display/edit data templates for a given type
+    /// Define formatting and templates for a given type
     /// </summary>
-    public class TypeTemplates
+    public class TypeDefinition
     {
         public Type Type { get; set; }
+        
+        public string StringFormat { get; set; }
+        
+        public HorizontalAlignment HorizontalAlignment { get; set; }
+
         public DataTemplate DisplayTemplate { get; set; }
+        
         public DataTemplate EditTemplate { get; set; }
     }
 }

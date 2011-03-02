@@ -3,7 +3,7 @@
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// The FormatString attribute is used to provide a format string for numeric properties.
+    /// The FormatStringAttribute is used to provide a format string for numeric properties.
     /// Example usage:
     ///   [FormatString("0.00")]
     /// </summary>

@@ -12,8 +12,8 @@ namespace ExcelDemo
         public MainWindow()
         {
             InitializeComponent();
-            int rows = 40;
-            int columns = 40;
+            int rows = 256;
+            int columns = 256;
             Strings = new string[rows, columns];
 
             // todo: the templates for editing cells are not finished

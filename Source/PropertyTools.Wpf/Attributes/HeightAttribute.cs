@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Windows.Media;
 
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// The Height attribute is used to control the height of TextBoxes.
+    /// The HeightAttribute is used to control the height of TextBoxes.
     /// Example usage: 
     ///   [Height(100)] 
     /// </summary>

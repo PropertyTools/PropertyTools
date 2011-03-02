@@ -3,7 +3,7 @@ using System;
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    ///   The Resettable attribute is used for resettable properties.
+    ///   The ResettableAttribute is used for resettable properties.
     ///   Properties marked with [Resettable] will have a reset button.
     ///   The button will reset the property to the configured reset value.
     ///   Example usage:

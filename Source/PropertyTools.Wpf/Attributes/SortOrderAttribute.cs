@@ -3,7 +3,7 @@ using System;
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// The SortOrder attribute is used to sort the tabs, categories and properties.
+    /// The SortOrderAttribute is used to sort the tabs, categories and properties.
     /// Example usage: 
     ///   [SortOrder(100)]
     /// </summary>

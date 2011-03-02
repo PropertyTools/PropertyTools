@@ -19,8 +19,8 @@ namespace SimpleGridDemo
             InitializeComponent();
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, CloseExecute));
 
-            int rows = 32;
-            int columns = 16;
+            int rows = 256;
+            int columns = 256;
 
             Data = new string[rows, columns];
             for (int i = 0; i < rows; i++)

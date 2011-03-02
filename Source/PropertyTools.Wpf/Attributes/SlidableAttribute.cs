@@ -4,7 +4,7 @@ using System.Windows.Controls.Primitives;
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// The [Slidable] attribute is used for numeric properties.
+    /// The SlidableAttribute is used for numeric properties.
     /// Properties marked with [Slidable] will have a slider next to its editor.
     /// Example usage:
     ///   [Slidable(0,100)]

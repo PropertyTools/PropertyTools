@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -57,9 +58,9 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register("DataFields", typeof(StringCollection), typeof(SimpleGrid),
                                         new UIPropertyMetadata(null, ContentChanged));
 
-        public static readonly DependencyProperty ItemsInRowsProperty =
-            DependencyProperty.Register("ItemsInRows", typeof(bool), typeof(SimpleGrid),
-                                        new UIPropertyMetadata(true, ContentChanged));
+        public static readonly DependencyProperty ItemsInColumnsProperty =
+            DependencyProperty.Register("ItemsInColumns", typeof(bool), typeof(SimpleGrid),
+                                        new UIPropertyMetadata(false, ContentChanged));
 
         public static readonly DependencyProperty RowHeaderWidthProperty =
             DependencyProperty.Register("RowHeaderWidth", typeof(GridLength), typeof(SimpleGrid),
@@ -224,10 +225,10 @@ namespace PropertyTools.Wpf
             set { SetValue(RowHeadersProperty, value); }
         }
 
-        public bool ItemsInRows
+        public bool ItemsInColumns
         {
-            get { return (bool)GetValue(ItemsInRowsProperty); }
-            set { SetValue(ItemsInRowsProperty, value); }
+            get { return (bool)GetValue(ItemsInColumnsProperty); }
+            set { SetValue(ItemsInColumnsProperty, value); }
         }
 
         /// <summary>
@@ -316,22 +317,22 @@ namespace PropertyTools.Wpf
 
         protected virtual bool CanInsertRows
         {
-            get { return ItemsInRows && CanInsert && Content is IList && !(Content is Array); }
+            get { return ItemsInColumns && CanInsert && Content is IList && !(Content is Array); }
         }
 
         protected virtual bool CanDeleteRows
         {
-            get { return CanDelete && ItemsInRows && Content is IList && !(Content is Array); }
+            get { return CanDelete && ItemsInColumns && Content is IList && !(Content is Array); }
         }
 
         protected virtual bool CanInsertColumns
         {
-            get { return !ItemsInRows && CanInsert && Content is IList && !(Content is Array); }
+            get { return !ItemsInColumns && CanInsert && Content is IList && !(Content is Array); }
         }
 
         protected virtual bool CanDeleteColumns
         {
-            get { return CanDelete && !ItemsInRows && Content is IList && !(Content is Array); }
+            get { return CanDelete && !ItemsInColumns && Content is IList && !(Content is Array); }
         }
 
         public GridLength DefaultRowHeight
@@ -360,12 +361,12 @@ namespace PropertyTools.Wpf
         }
 
         [Browsable(false)]
-        public Collection<TypeTemplates> CustomTemplates
+        public Collection<TypeDefinition> TypeDefinitions
         {
-            get { return customTemplates; }
+            get { return typeDefinitions; }
         }
 
-        private readonly Collection<TypeTemplates> customTemplates = new Collection<TypeTemplates>();
+        private readonly Collection<TypeDefinition> typeDefinitions = new Collection<TypeDefinition>();
 
 
         private static void CurrentItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -373,8 +374,7 @@ namespace PropertyTools.Wpf
             ((SimpleGrid)d).OnCurrentItemChanged(e);
         }
 
-        protected virtual void OnCurrentItemChanged(
-            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        protected virtual void OnCurrentItemChanged(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             int index = GetIndexOfItem(CurrentItem);
             if (index < 0)
@@ -382,7 +382,7 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            if (ItemsInRows)
+            if (ItemsInColumns)
             {
                 if (index < Rows)
                 {
@@ -442,11 +442,6 @@ namespace PropertyTools.Wpf
         private static void SelectionCellChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((SimpleGrid)d).OnSelectionCellChanged();
-        }
-
-        private static void SelectedCellsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((SimpleGrid)d).OnSelectedCellsChanged();
         }
 
         private void OnCurrentCellChanged()
@@ -513,8 +508,10 @@ namespace PropertyTools.Wpf
                 Grid.SetColumnSpan(autoFillSelection, columnspan);
                 Grid.SetRowSpan(autoFillSelection, rowspan);
             }
+            
+            // Debug.WriteLine("OnSelectedCellsChanged\n"+Environment.StackTrace+"\n");
 
-            SelectedItems = GetItems(CurrentCell, SelectionCell);
+            SelectedItems = EnumerateItems(CurrentCell, SelectionCell);
 
             if (!ShowEditor())
             {
@@ -522,80 +519,25 @@ namespace PropertyTools.Wpf
             }
 
         }
-
+        
         private Collection<ColumnDefinition> columnDefinitions = new Collection<ColumnDefinition>();
 
         public Collection<ColumnDefinition> ColumnDefinitions
         {
             get { return columnDefinitions; }
         }
-    }
-
-    public class ColumnDefinition
-    {
-        /// <summary>
-        /// Gets or sets the data field.
-        /// Note: This is not used if DisplayTemplate/EditTemplate is set.
-        /// </summary>
-        /// <value>The data field.</value>
-        public string DataField { get; set; }
 
         /// <summary>
-        /// Gets or sets the string format.
+        /// Gets or sets a value indicating whether this control is using UI virtualizing.
+        /// When true, only the UIElements of the visible cells will be created.
         /// </summary>
-        /// <value>The string format.</value>
-        public string StringFormat { get; set; }
-
-        /// <summary>
-        /// Gets or sets the header.
-        /// </summary>
-        /// <value>The header.</value>
-        public object Header { get; set; }
-
-        /// <summary>
-        /// Gets or sets the width.
-        /// </summary>
-        /// <value>The width.</value>
-        public GridLength Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets the display template.
-        /// </summary>
-        /// <value>The display template.</value>
-        public DataTemplate DisplayTemplate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the edit template.
-        /// </summary>
-        /// <value>The edit template.</value>
-        public DataTemplate EditTemplate { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance can delete.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance can delete; otherwise, <c>false</c>.
-        /// </value>
-        public bool CanDelete { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance can resize.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance can resize; otherwise, <c>false</c>.
-        /// </value>
-        public bool CanResize { get; set; }
-
-        /// <summary>
-        /// Gets or sets the horizontal alignment.
-        /// </summary>
-        /// <value>The horizontal alignment.</value>
-        public HorizontalAlignment HorizontalAlignment{ get; set; }
-
-        public ColumnDefinition()
+        public bool IsVirtualizing
         {
-            HorizontalAlignment = HorizontalAlignment.Center;
-            Width = new GridLength(-1);
+            get { return (bool)GetValue(IsVirtualizingProperty); }
+            set { SetValue(IsVirtualizingProperty, value); }
         }
+
+        public static readonly DependencyProperty IsVirtualizingProperty =
+            DependencyProperty.Register("IsVirtualizing", typeof(bool), typeof(SimpleGrid), new UIPropertyMetadata(true));
     }
 }

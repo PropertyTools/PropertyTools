@@ -268,13 +268,14 @@
     <Compile Include="PropertyEditor\PropertyViewModel\TabViewModel.cs" />
     <Compile Include="SimpleGrid\AutoFiller.cs" />
     <Compile Include="SimpleGrid\CellRef.cs" />
+    <Compile Include="SimpleGrid\ColumnDefinition.cs" />
     <Compile Include="SimpleGrid\SimpleGrid.Properties.cs" />
     <Compile Include="SimpleGrid\GridLengthCollectionConverter.cs" />
     <Compile Include="SimpleGrid\HorizontalAlignmentCollectionConverter.cs" />
     <Compile Include="SimpleGrid\ReflectionMath.cs" />
     <Compile Include="SimpleGrid\SimpleGrid.cs" />
     <Compile Include="SimpleGrid\StringCollectionConverter.cs" />
-    <Compile Include="SimpleGrid\TypeEditor.cs" />
+    <Compile Include="SimpleGrid\TypeDefinition.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

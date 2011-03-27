@@ -102,7 +102,7 @@
 
     <DataTemplate x:Key="FilePathTemplate">
         <local:FilePicker FilePath="{Binding Value, ValidatesOnDataErrors=True}" Filter="{Binding Filter}" DefaultExtension="{Binding DefaultExtension}"
-                          FileDialogService="{Binding FileDialogService}"/>
+                          FileDialogService="{Binding FileDialogService}" UseOpenDialog="{Binding UseOpenDialog}"/>
     </DataTemplate>
 
     <DataTemplate x:Key="DirectoryPathTemplate">

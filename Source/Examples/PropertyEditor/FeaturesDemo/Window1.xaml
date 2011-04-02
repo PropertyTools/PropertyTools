@@ -5,8 +5,6 @@
     xmlns:local="clr-namespace:FeaturesDemo" xmlns:System="clr-namespace:System;assembly=mscorlib" 
     Title="FeaturesDemo" Width="1080" Height="720">
     <Window.Resources>
-        <local:SuperExampleObject x:Key="Example1" />
-
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type System:Enum}"
                         x:Key="AlignmentValues">
             <ObjectDataProvider.MethodParameters>
@@ -24,20 +22,33 @@
 
     <Grid Margin="8">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
+        <StackPanel Margin="8">
+        <GroupBox Header="SelectedObject" Padding="8">
+            <ListBox x:Name="ObjectBrowser" ItemsSource="{Binding Objects}" SelectedIndex="0"/>
+        </GroupBox>
+        </StackPanel>
         <!-- Property editor -->
-        <pt:PropertyEditor  Margin="8"  x:Name="editor1" 
-                            SelectedObject="{StaticResource Example1}"/>
+        <pt:PropertyEditor Grid.Column="1" Margin="8"  x:Name="editor1" 
+                            SelectedObject="{Binding SelectedItem.Value, ElementName=ObjectBrowser}"/>
 
         <!-- Controlling the properties of the PropertyEditor -->
-        <StackPanel Grid.Column="1" Margin="8">
+        <StackPanel Grid.Column="2" Margin="8">
             <GroupBox Header="PropertyEditor properties" Padding="8">
                 <UniformGrid Columns="2" >
                     <Label Content="Label width"/>
-                    <Slider Minimum="10" Maximum="300" Value="{Binding LabelWidth, ElementName=editor1}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Slider Minimum="10" Maximum="300" Value="{Binding LabelWidth, ElementName=editor1}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding LabelWidth, StringFormat={}{0:0}, ElementName=editor1}"/>
+                    </Grid>
                     <Label Content="Show read-only"/>
                     <CheckBox IsChecked="{Binding ShowReadOnlyProperties, ElementName=editor1}"/>
                     <Label Content="Show tabs"/>
@@ -47,7 +58,14 @@
                     <Label Content="Show bool label"/>
                     <CheckBox IsChecked="{Binding ShowBoolHeader, ElementName=editor1}"/>
                     <Label Content="EnumAsRadioButtonsLimit"/>
-                    <Slider Minimum="0" Maximum="16" Value="{Binding EnumAsRadioButtonsLimit, ElementName=editor1}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Slider Minimum="0" Maximum="16" Value="{Binding EnumAsRadioButtonsLimit, ElementName=editor1}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding EnumAsRadioButtonsLimit, ElementName=editor1}"/>
+                    </Grid>
                     <Label Content="Show categories as"/>
                     <ComboBox ItemsSource="{Binding Source={StaticResource Categories}}" SelectedItem="{Binding ShowCategoriesAs, ElementName=editor1}"/>
                     <Label Content="Label alignment"/>

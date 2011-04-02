@@ -40,7 +40,7 @@
 					</TabItem>
                     
 					<TabItem Header="DataFields">
-						<pt:SimpleGrid Content="{Binding Items}" DataFields="Country,Name,Population,IsCapital" ColumnHeaders="$Country,$Name,$Population,$Capital" HorizontalAlignments="Left,Left,Right,Center" />
+						<pt:SimpleGrid Content="{Binding Items}" DataFields="Country,Name,Population,IsCapital" ColumnHeaders="$Country,$Name,$Population,$Capital" ColumnAlignments="Left,Left,Right,Center" />
 					</TabItem>
                     
                     <TabItem Header="ColumnWidths">

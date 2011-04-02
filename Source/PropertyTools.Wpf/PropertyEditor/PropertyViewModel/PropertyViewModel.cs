@@ -46,6 +46,11 @@ namespace PropertyTools.Wpf
         public double Height { get; set; }
 
         /// <summary>
+        /// Gets or sets the max length of text.
+        /// </summary>
+        public int MaxLength { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the property should be edited as multiline.
         /// </summary>
         /// <value><c>true</c> if multiline; otherwise, <c>false</c>.</value>

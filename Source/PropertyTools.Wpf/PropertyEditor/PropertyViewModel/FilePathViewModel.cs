@@ -29,7 +29,7 @@ namespace PropertyTools.Wpf
 
     public class PasswordPropertyViewModel : PropertyViewModel
     {
-        public char PasswordChar { get; set; }
+        // public char PasswordChar { get; set; }
 
         public PasswordPropertyViewModel(object instance, PropertyDescriptor descriptor, PropertyEditor owner)
             :base(instance,descriptor,owner)

@@ -6,7 +6,7 @@
         <TextBox 
             IsReadOnly="{Binding IsReadOnly}" 
             IsEnabled="{Binding IsEnabled}" 
-            
+            MaxLength="{Binding MaxLength}"
             Text="{Binding Value, ValidatesOnDataErrors=True}" 
             AcceptsReturn="{Binding AcceptsReturn}" 
             TextWrapping="{Binding TextWrapping}" 
@@ -110,7 +110,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="PasswordTemplate">
-        <PasswordBox IsEnabled="{Binding IsEnabled}" PasswordChar="{Binding PasswordChar}"
+        <PasswordBox IsEnabled="{Binding IsEnabled}"
                      h:PasswordHelper.Attach="True" h:PasswordHelper.Password="{Binding Value, Mode=TwoWay}">
         </PasswordBox>
     </DataTemplate>

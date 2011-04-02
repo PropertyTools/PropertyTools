@@ -68,6 +68,7 @@
     <Reference Include="PresentationFramework.Luna" />
     <Reference Include="PresentationFramework.Royale" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -183,7 +184,6 @@
     <Compile Include="Attributes\EnumDisplayNameAttribute.cs" />
     <Compile Include="Attributes\FilePathAttribute.cs" />
     <Compile Include="Attributes\HeightAttribute.cs" />
-    <Compile Include="Attributes\PasswordAttribute.cs" />
     <Compile Include="Attributes\ResettableAttribute.cs" />
     <Compile Include="Attributes\SortOrderAttribute.cs" />
     <Compile Include="Attributes\WidePropertyAttribute.cs" />
@@ -271,7 +271,7 @@
     <Compile Include="SimpleGrid\ColumnDefinition.cs" />
     <Compile Include="SimpleGrid\SimpleGrid.Properties.cs" />
     <Compile Include="SimpleGrid\GridLengthCollectionConverter.cs" />
-    <Compile Include="SimpleGrid\HorizontalAlignmentCollectionConverter.cs" />
+    <Compile Include="SimpleGrid\ColumnAlignmentCollectionConverter.cs" />
     <Compile Include="SimpleGrid\ReflectionMath.cs" />
     <Compile Include="SimpleGrid\SimpleGrid.cs" />
     <Compile Include="SimpleGrid\StringCollectionConverter.cs" />

@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace PropertyTools.Wpf
 {
-    public class HorizontalAlignmentCollectionConverter : TypeConverter
+    public class ColumnAlignmentCollectionConverter : TypeConverter
     {
         private static readonly char[] SplitterChars = ",;".ToCharArray();
 

@@ -1741,8 +1741,8 @@ namespace PropertyTools.Wpf
             if (i < ColumnDefinitions.Count)
                 return ColumnDefinitions[i].HorizontalAlignment;
 
-            if (HorizontalAlignments != null && cell.Column < HorizontalAlignments.Count)
-                return HorizontalAlignments[cell.Column];
+            if (ColumnAlignments != null && cell.Column < ColumnAlignments.Count)
+                return ColumnAlignments[cell.Column];
             return DefaultHorizontalAlignment;
         }
 
@@ -1840,7 +1840,9 @@ namespace PropertyTools.Wpf
             {
                 if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IList<>))
                 {
-                    return listType.GetGenericArguments()[0];
+                    var args = interfaceType.GetGenericArguments();
+                    if (args.Length>0)
+                        return args[0];
                 }
             }
 

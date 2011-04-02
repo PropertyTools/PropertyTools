@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 
@@ -67,9 +68,8 @@ namespace PropertyTools.Wpf
             if (IsOptional(descriptor, out optionalPropertyName))
                 propertyViewModel = new OptionalPropertyViewModel(instance, descriptor, optionalPropertyName, owner);
 
-            char passwordChar;
-            if (IsPassword(descriptor, out passwordChar))
-                propertyViewModel = new PasswordPropertyViewModel(instance, descriptor, owner) { PasswordChar = passwordChar };
+            if (IsPassword(descriptor))
+                propertyViewModel = new PasswordPropertyViewModel(instance, descriptor, owner);
 
             if (IsResettable(descriptor))
                 propertyViewModel = new ResettablePropertyViewModel(instance, descriptor, owner);
@@ -134,8 +134,9 @@ namespace PropertyTools.Wpf
             //if (ha != null)
             //    propertyViewModel.Height = ha.Height;
             propertyViewModel.Height = GetHeight(descriptor);
+            propertyViewModel.MaxLength = GetMaxLength(descriptor);
 
-            if (propertyViewModel.Height > 0)
+            if (propertyViewModel.Height > 0 || IsMultilineText(descriptor))
             {
                 propertyViewModel.AcceptsReturn = true;
                 propertyViewModel.TextWrapping = TextWrapping.Wrap;
@@ -158,6 +159,12 @@ namespace PropertyTools.Wpf
             }
 
             return propertyViewModel;
+        }
+
+        protected virtual bool IsMultilineText(PropertyDescriptor descriptor)
+        {
+            var dta = AttributeHelper.GetFirstAttribute<DataTypeAttribute>(descriptor);
+            return dta != null && dta.DataType==DataType.MultilineText;
         }
 
         #endregion
@@ -195,11 +202,10 @@ namespace PropertyTools.Wpf
             return false;
         }
 
-        protected virtual bool IsPassword(PropertyDescriptor descriptor, out char passwordChar)
+        protected virtual bool IsPassword(PropertyDescriptor descriptor)
         {
-            var pa = AttributeHelper.GetFirstAttribute<PasswordAttribute>(descriptor);
-            passwordChar = pa != null ? pa.PasswordChar : '*';
-            return pa != null;
+            var pa = AttributeHelper.GetFirstAttribute<DataTypeAttribute>(descriptor);
+            return (pa != null && pa.DataType == DataType.Password);
         }
 
         public virtual bool IsResettable(PropertyDescriptor descriptor)
@@ -262,6 +268,14 @@ namespace PropertyTools.Wpf
             if (ha == null)
                 return double.NaN;
             return ha.Height;
+        }
+
+        protected virtual int GetMaxLength(PropertyDescriptor descriptor)
+        {
+            var ha = AttributeHelper.GetFirstAttribute<StringLengthAttribute>(descriptor);
+            if (ha == null)
+                return int.MaxValue;
+            return ha.MaximumLength;
         }
 
         protected virtual bool IsAutoUpdatingText(PropertyDescriptor descriptor)

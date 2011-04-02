@@ -152,7 +152,7 @@ namespace PropertyTools.Wpf
         }
 
 
-        [TypeConverter(typeof(HorizontalAlignmentCollectionConverter))]
+        [TypeConverter(typeof(ColumnAlignmentCollectionConverter))]
         public Collection<HorizontalAlignment> ColumnAlignments
         {
             get { return (Collection<HorizontalAlignment>)GetValue(ColumnAlignmentsProperty); }
@@ -186,16 +186,6 @@ namespace PropertyTools.Wpf
                 OnSelectedCellsChanged();
             }
         }
-
-        [TypeConverter(typeof(HorizontalAlignmentCollectionConverter))]
-        public Collection<HorizontalAlignment> HorizontalAlignments
-        {
-            get { return (Collection<HorizontalAlignment>)GetValue(HorizontalAlignmentsProperty); }
-            set { SetValue(HorizontalAlignmentsProperty, value); }
-        }
-
-        public static readonly DependencyProperty HorizontalAlignmentsProperty =
-            DependencyProperty.Register("HorizontalAlignments", typeof(Collection<HorizontalAlignment>), typeof(SimpleGrid), new UIPropertyMetadata(null));
        
         [TypeConverter(typeof(GridLengthCollectionConverter))]
         public Collection<GridLength> ColumnWidths
@@ -317,22 +307,22 @@ namespace PropertyTools.Wpf
 
         protected virtual bool CanInsertRows
         {
-            get { return ItemsInColumns && CanInsert && Content is IList && !(Content is Array); }
+            get { return !ItemsInColumns && CanInsert && Content is IList && !(Content is Array); }
         }
 
         protected virtual bool CanDeleteRows
         {
-            get { return CanDelete && ItemsInColumns && Content is IList && !(Content is Array); }
+            get { return CanDelete && !ItemsInColumns && Content is IList && !(Content is Array); }
         }
 
         protected virtual bool CanInsertColumns
         {
-            get { return !ItemsInColumns && CanInsert && Content is IList && !(Content is Array); }
+            get { return ItemsInColumns && CanInsert && Content is IList && !(Content is Array); }
         }
 
         protected virtual bool CanDeleteColumns
         {
-            get { return CanDelete && !ItemsInColumns && Content is IList && !(Content is Array); }
+            get { return CanDelete && ItemsInColumns && Content is IList && !(Content is Array); }
         }
 
         public GridLength DefaultRowHeight

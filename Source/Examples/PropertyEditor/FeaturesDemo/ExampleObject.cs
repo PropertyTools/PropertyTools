@@ -1,16 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Windows.Media;
 using PropertyTools.Wpf;
 using System.Windows.Controls.Primitives;
 
 namespace FeaturesDemo
 {
-
-    #region Enums
 
     public enum Genders
     {
@@ -37,64 +34,6 @@ namespace FeaturesDemo
     {
         No,
         Yes
-    }
-
-    #endregion
-
-    #region Mass
-
-    [TypeConverter(typeof(MassConverter))]
-    public class Mass
-    {
-        public double Value { get; set; }
-
-        public static Mass Parse(string s)
-        {
-            s = s.Replace(',', '.').Trim();
-            var r = new Regex(@"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?");
-            Match m = r.Match(s);
-            if (!m.Success)
-                return null;
-            double value = double.Parse(m.Groups[0].Value, CultureInfo.InvariantCulture);
-            // string unit = m.Groups[1].Value;
-            return new Mass { Value = value };
-        }
-
-        public override string ToString()
-        {
-            return String.Format("{0:N0} kg", Value, CultureInfo.InvariantCulture);
-        }
-    }
-
-    public class MassConverter : TypeConverter
-    {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            if (sourceType == typeof(string))
-            {
-                return true;
-            }
-            return base.CanConvertFrom(context, sourceType);
-        }
-
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value is string)
-            {
-                return Mass.Parse((string)value);
-            }
-            return base.ConvertFrom(context, culture, value);
-        }
-    }
-
-    #endregion
-
-    public class SuperExampleObject : ExampleObject
-    {
-        [Category("Subclass|Subclass properties"), SortOrder(999)]
-        public string String2 { get; set; }
-
-        public float Float2 { get; set; }
     }
 
     public class ExampleObject : Observable, IResettableProperties, IEditableObject
@@ -262,7 +201,7 @@ namespace FeaturesDemo
         public string DirectoryPath { get; set; }
         
         [Category("Password")]
-        [Password]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Category("Wide|Wide properties")]
@@ -317,23 +256,6 @@ namespace FeaturesDemo
         public void CancelEdit()
         {
             Debug.WriteLine("CancelEdit");
-        }
-    }
-
-    public class Observable : INotifyPropertyChanged
-    {
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        internal virtual void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
     }
 }

@@ -45,12 +45,12 @@ namespace PropertyTools.Wpf
             if (Value == null)
                 return;
             
-            var enumValues = Enum.GetValues(Value.GetType());
+            var enumValues = Enum.GetValues(Value.GetType()).FilterOnBrowsableAttribute();
             var converter = new EnumToBooleanConverter { EnumType = Value.GetType() };
             var relativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(RadioButtonList), 1);
             var descriptionConverter = new EnumDescriptionConverter();
 
-            foreach (var itemValue in enumValues)
+            foreach (var itemValue in enumValues )
             {
                 var rb = new RadioButton { Content = descriptionConverter.Convert(itemValue, typeof(string), null, CultureInfo.CurrentCulture) };
                 // rb.IsChecked = Value.Equals(itemValue);

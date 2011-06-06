@@ -87,7 +87,7 @@ namespace PropertyTools.Wpf
             if (propertyType.BaseType == typeof(Enum))
             {
                 var rba = propertyViewModel.Descriptor.Attributes[typeof(RadioButtonsAttribute)] as RadioButtonsAttribute;
-                int nValues = Enum.GetValues(propertyType).Length;
+				int nValues = Enum.GetValues( propertyType ).FilterOnBrowsableAttribute().Count;
                 if (rba != null)
                 {
                     if (rba.UseRadioButtons)

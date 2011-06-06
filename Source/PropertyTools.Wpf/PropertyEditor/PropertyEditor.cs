@@ -827,6 +827,19 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
+				// The default value for an Enum-property is the first enum in the enumeration.
+				// If the first value happens to be filtered due to the attribute [Browsable(false)],
+				// the WPF-binding system ends up in an infinite loop when updating the bound value
+				// due to a PropertyChanged-call. We must therefore make sure that the initially selected
+				// value is one of the allowed values from the filtered enumeration.
+				if( descriptor.PropertyType.BaseType == typeof( Enum ) ) {
+					List<object> validEnumValues = Enum.GetValues( descriptor.PropertyType ).FilterOnBrowsableAttribute();
+					// Check if the enumeration that has all values hidden before accessing the first item.
+					if( validEnumValues.Count > 0 && !validEnumValues.Contains( descriptor.GetValue( instance ) ) ) {
+						descriptor.SetValue( instance, validEnumValues[0] );
+					}
+				}
+
                 // Create Property ViewModel
                 var propertyViewModel = PropertyViewModelFactory.CreateViewModel(instance, descriptor);
                 propertyViewModel.IsEnumerable = isEnumerable;

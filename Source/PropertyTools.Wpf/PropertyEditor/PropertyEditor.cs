@@ -114,7 +114,6 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register("SelectedObjects", typeof(IEnumerable), typeof(PropertyEditor),
                                         new UIPropertyMetadata(null, SelectedObjectsChanged));
 
-
         /// <summary>
         ///   The show bool header property.
         /// </summary>
@@ -126,7 +125,22 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register("EnumAsRadioButtonsLimit", typeof(int), typeof(PropertyEditor),
                                         new UIPropertyMetadata(4, AppearanceChanged));
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to use the default category for uncategorized properties.
+        /// When this flag is false, the last defined category will be used.
+        /// The default value is false.
+        /// </summary>
+        public bool UseDefaultCategoryNameForUncategorizedProperties
+        {
+            get { return (bool)GetValue(UseDefaultCategoryNameForUncategorizedPropertiesProperty); }
+            set { SetValue(UseDefaultCategoryNameForUncategorizedPropertiesProperty, value); }
+        }
 
+        public static readonly DependencyProperty UseDefaultCategoryNameForUncategorizedPropertiesProperty =
+            DependencyProperty.Register("UseDefaultCategoryNameForUncategorizedProperties", typeof(bool), typeof(PropertyEditor), new UIPropertyMetadata(false));
+
+
+        
         /// <summary>
         ///   The show categories as property.
         /// </summary>
@@ -856,7 +870,13 @@ namespace PropertyTools.Wpf
 
                 sortOrder = propertyViewModel.SortOrder;
 
-                ParseTabAndCategory(descriptor, ref tabName, ref categoryName);
+                bool categoryFound = ParseTabAndCategory(descriptor, ref tabName, ref categoryName);
+
+                if (!categoryFound && UseDefaultCategoryNameForUncategorizedProperties)
+                {
+                    categoryName = DefaultCategoryName;
+                    tabName = DefaultTabName ?? descriptor.ComponentType.Name;
+                }
 
                 GetOrCreateTab(instanceType, result, tabName, sortOrder, ref currentTabViewModel,
                                ref currentCategoryViewModel);
@@ -927,27 +947,25 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   If a CategoryAttributes is given as
-        ///   [Category("TabA|GroupB")]
-        ///   this will be parsed into tabName="TabA" and categoryName="GroupB"
-        /// 
-        ///   If the CategoryAttribute is
-        ///   [Category("GroupC")]
-        ///   the method will not change tabName, but set categoryName="GroupC"
+        /// If a CategoryAttributes is given as
+        /// [Category("TabA|GroupB")]
+        /// this will be parsed into tabName="TabA" and categoryName="GroupB"
+        /// If the CategoryAttribute is
+        /// [Category("GroupC")]
+        /// the method will not change tabName, but set categoryName="GroupC"
         /// </summary>
-        /// <param name = "descriptor">
-        /// </param>
-        /// <param name = "tabName">
-        /// </param>
-        /// <param name = "categoryName">
-        /// </param>
-        private static void ParseTabAndCategory(PropertyDescriptor descriptor, ref string tabName,
+        /// <param name="descriptor">The descriptor.</param>
+        /// <param name="tabName">Name of the tab.</param>
+        /// <param name="categoryName">Name of the category.</param>
+        /// <returns>true if the descriptor contained a CategoryAttribute</returns>
+        private static bool ParseTabAndCategory(PropertyDescriptor descriptor, ref string tabName,
                                                 ref string categoryName)
         {
             var ca = AttributeHelper.GetFirstAttribute<CategoryAttribute>(descriptor);
+
             if (ca == null || ca.Category == null || string.IsNullOrEmpty(ca.Category))
             {
-                return;
+                return false;
             }
 
             var items = ca.Category.Split('|');
@@ -961,6 +979,7 @@ namespace PropertyTools.Wpf
             {
                 categoryName = items[0];
             }
+            return true;
         }
 
         /// <summary>

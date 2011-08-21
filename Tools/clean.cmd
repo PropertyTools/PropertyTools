@@ -1,0 +1,2 @@
+"C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" ..\Source\PropertyTools_VS2010.sln /Clean Debug
+"C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" ..\Source\PropertyTools_VS2010.sln /Clean Release

@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\AutoUpdateTextAttribute.cs" />
+    <Compile Include="Attributes\DirectoryPathAttribute.cs" />
     <Compile Include="Attributes\EnumDisplayNameAttribute.cs" />
     <Compile Include="Attributes\FilePathAttribute.cs" />
     <Compile Include="Attributes\HeightAttribute.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Attributes\SlidableAttribute.cs" />
     <Compile Include="Attributes\OptionalAttribute.cs" />
     <Compile Include="Attributes\RadioButtonsAttribute.cs" />
+    <Compile Include="Controls\Bitmap.cs" />
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
     <Compile Include="Controls\ColorPicker\ColorPickerPalette.cs" />
     <Compile Include="Controls\ColorPicker\ColorWrapper.cs" />
@@ -171,6 +173,7 @@
     <Compile Include="Controls\SliderEx.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\DrawingColorToMediaColorConverter.cs" />
     <Compile Include="Converters\DoubleToGridLengthConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />
@@ -192,6 +195,7 @@
     <Compile Include="Dialogs\WizardDialog.xaml.cs">
       <DependentUpon>WizardDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />
     <Compile Include="Interfaces\IImageProvider.cs" />
     <Compile Include="Interfaces\ILocalizationService.cs" />
@@ -234,19 +238,21 @@
     <Compile Include="PropertyEditor\PropertyViewModel\TabViewModel.cs" />
     <Compile Include="SimpleGrid\AutoFiller.cs" />
     <Compile Include="SimpleGrid\CellRef.cs" />
+    <Compile Include="SimpleGrid\ColumnDefinition.cs" />
     <Compile Include="SimpleGrid\SimpleGrid.Properties.cs" />
     <Compile Include="SimpleGrid\GridLengthCollectionConverter.cs" />
-    <Compile Include="SimpleGrid\HorizontalAlignmentCollectionConverter.cs" />
+    <Compile Include="SimpleGrid\ColumnAlignmentCollectionConverter.cs" />
     <Compile Include="SimpleGrid\ReflectionMath.cs" />
     <Compile Include="SimpleGrid\SimpleGrid.cs" />
     <Compile Include="SimpleGrid\StringCollectionConverter.cs" />
-    <Compile Include="SimpleGrid\TypeEditor.cs" />
+    <Compile Include="SimpleGrid\TypeDefinition.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="Dialogs.cd" />
+    <None Include="ClassDiagrams\PropertyEditor.cd" />
+    <None Include="ClassDiagrams\Dialogs.cd" />
     <None Include="PropertyEditor\PropertyEditor.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -259,13 +265,13 @@
     <Resource Include="Controls\ColorPicker\GreenUp.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="SimpleGrid\Templates\" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="SimpleGrid\Cursors\AutoFill.cur" />
     <Resource Include="SimpleGrid\Cursors\Cross.cur" />
     <Resource Include="SimpleGrid\Cursors\DownArrow.cur" />
     <Resource Include="SimpleGrid\Cursors\RightArrow.cur" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SimpleGrid\Templates\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

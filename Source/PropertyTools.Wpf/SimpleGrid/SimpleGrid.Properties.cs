@@ -29,11 +29,11 @@ namespace PropertyTools.Wpf
                                         new UIPropertyMetadata(new CellRef(0, 0), SelectionCellChanged,
                                                                CoerceSelectionCell));
 
-        public static readonly DependencyProperty CurrentItemProperty =
-            DependencyProperty.Register("CurrentItem", typeof(object), typeof(SimpleGrid),
-                                        new FrameworkPropertyMetadata(null,
-                                                                      FrameworkPropertyMetadataOptions.
-                                                                          BindsTwoWayByDefault, CurrentItemChanged));
+        //public static readonly DependencyProperty CurrentItemProperty =
+        //    DependencyProperty.Register("CurrentItem", typeof(object), typeof(SimpleGrid),
+        //                                new FrameworkPropertyMetadata(null,
+        //                                                              FrameworkPropertyMetadataOptions.
+        //                                                                  BindsTwoWayByDefault, CurrentItemChanged));
 
         public static readonly DependencyProperty SelectedItemsProperty =
             DependencyProperty.Register("SelectedItems", typeof(IEnumerable), typeof(SimpleGrid),
@@ -121,11 +121,11 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register("AddItemHeader", typeof(string), typeof(SimpleGrid),
                                         new UIPropertyMetadata("*"));
 
-        public object CurrentItem
-        {
-            get { return GetValue(CurrentItemProperty); }
-            set { SetValue(CurrentItemProperty, value); }
-        }
+        //public object CurrentItem
+        //{
+        //    get { return GetValue(CurrentItemProperty); }
+        //    set { SetValue(CurrentItemProperty, value); }
+        //}
 
         public IEnumerable SelectedItems
         {
@@ -359,34 +359,34 @@ namespace PropertyTools.Wpf
         private readonly Collection<TypeDefinition> typeDefinitions = new Collection<TypeDefinition>();
 
 
-        private static void CurrentItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((SimpleGrid)d).OnCurrentItemChanged(e);
-        }
+        //private static void CurrentItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    ((SimpleGrid)d).OnCurrentItemChanged(e);
+        //}
 
-        protected virtual void OnCurrentItemChanged(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            int index = GetIndexOfItem(CurrentItem);
-            if (index < 0)
-            {
-                return;
-            }
+        //protected virtual void OnCurrentItemChanged(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        //{
+        //    int index = GetIndexOfItem(CurrentItem);
+        //    if (index < 0)
+        //    {
+        //        return;
+        //    }
 
-            if (ItemsInColumns)
-            {
-                if (index < Rows)
-                {
-                    CurrentCell = new CellRef(index, CurrentCell.Column);
-                }
-            }
-            else
-            {
-                if (index < Columns)
-                {
-                    CurrentCell = new CellRef(CurrentCell.Row, index);
-                }
-            }
-        }
+        //    if (ItemsInColumns)
+        //    {
+        //        if (index < Rows)
+        //        {
+        //            CurrentCell = new CellRef(index, CurrentCell.Column);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (index < Columns)
+        //        {
+        //            CurrentCell = new CellRef(CurrentCell.Row, index);
+        //        }
+        //    }
+        //}
 
         private static object CoerceCurrentCell(DependencyObject d, object basevalue)
         {
@@ -437,7 +437,7 @@ namespace PropertyTools.Wpf
         private void OnCurrentCellChanged()
         {
             OnSelectedCellsChanged();
-            CurrentItem = GetItem(CurrentCell);
+           // CurrentItem = GetItem(CurrentCell);
 
             this.ScrollIntoView(CurrentCell);
 
@@ -528,6 +528,6 @@ namespace PropertyTools.Wpf
         }
 
         public static readonly DependencyProperty IsVirtualizingProperty =
-            DependencyProperty.Register("IsVirtualizing", typeof(bool), typeof(SimpleGrid), new UIPropertyMetadata(true));
+            DependencyProperty.Register("IsVirtualizing", typeof(bool), typeof(SimpleGrid), new UIPropertyMetadata(false));
     }
 }

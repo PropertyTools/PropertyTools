@@ -657,7 +657,7 @@ namespace PropertyTools.Wpf
             int to = Math.Max(CurrentCell.Row, SelectionCell.Row);
             for (int i = 0; i < to - from + 1; i++)
             {
-                InsertItem(from);
+                InsertItem(from, false);
             }
 
             UpdateGridContent();
@@ -669,7 +669,7 @@ namespace PropertyTools.Wpf
             int to = Math.Max(CurrentCell.Row, SelectionCell.Row);
             for (int i = to; i >= from; i--)
             {
-                DeleteItem(i);
+                DeleteItem(i, false);
             }
 
             UpdateGridContent();
@@ -1841,7 +1841,7 @@ namespace PropertyTools.Wpf
                 if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IList<>))
                 {
                     var args = interfaceType.GetGenericArguments();
-                    if (args.Length>0)
+                    if (args.Length > 0)
                         return args[0];
                 }
             }
@@ -1849,7 +1849,7 @@ namespace PropertyTools.Wpf
             return null;
         }
 
-        public bool DeleteItem(int index)
+        public bool DeleteItem(int index, bool updateGrid)
         {
             if (Content is Array)
             {
@@ -1868,10 +1868,16 @@ namespace PropertyTools.Wpf
             }
 
             list.RemoveAt(index);
+
+            if (updateGrid)
+            {
+                this.UpdateGridContent();
+            }
+
             return true;
         }
 
-        public bool InsertItem(int index)
+        public bool InsertItem(int index, bool updateGrid = true)
         {
             if (Content is Array)
             {
@@ -1924,7 +1930,10 @@ namespace PropertyTools.Wpf
                 list.Insert(index, newItem);
             }
 
-            UpdateGridContent();
+            if (updateGrid)
+            {
+                UpdateGridContent();
+            }
             return true;
         }
 

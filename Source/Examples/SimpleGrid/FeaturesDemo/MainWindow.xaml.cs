@@ -20,7 +20,7 @@ namespace SimpleGridDemo
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, CloseExecute));
 
             int rows = 256;
-            int columns = 256;
+            int columns = 32;
 
             Data = new string[rows, columns];
             for (int i = 0; i < rows; i++)

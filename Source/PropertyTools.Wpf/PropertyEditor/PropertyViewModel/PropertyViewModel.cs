@@ -271,6 +271,8 @@ namespace PropertyTools.Wpf
                     value = GetValue(Instance);
                 }
 
+                if (!String.IsNullOrEmpty(FormatString))
+                    return FormatValue(value);
                 return value;
             }
             set
@@ -295,6 +297,17 @@ namespace PropertyTools.Wpf
                     SetValue(Instance, value);
                 }
             }
+        }
+
+        private static TimeSpanFormatter timeSpanFormatter = new TimeSpanFormatter();
+
+        private string FormatValue(object value)
+        {
+            var f = FormatString;
+            if (!f.Contains("{0"))
+                f = string.Format("{{0:{0}}}", f);
+            if (value is TimeSpan) return string.Format(timeSpanFormatter, f, value);
+            return string.Format(f, value);
         }
 
         public object OldValue { get; set; }
@@ -470,6 +483,12 @@ namespace PropertyTools.Wpf
                 var converter = Descriptor.Converter;
                 if (value != null)
                 {
+                    if (propertyType == typeof(TimeSpan) && value is string)
+                    {
+                        value = TimeSpanParser.Parse(value as string, FormatString);
+                        return true;
+                    }
+
                     if (converter.CanConvertFrom(value.GetType()))
                     {
                         try
@@ -480,7 +499,11 @@ namespace PropertyTools.Wpf
                                 if (value is string)
                                     value = ((string)value).Replace(',', '.');
                             }
-
+                            if (IsHexFormatString(FormatString))
+                            {
+                                var hex = Int32.Parse(value as string, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+                                value = hex.ToString(CultureInfo.InvariantCulture);
+                            }
                             value = converter.ConvertFrom(null, CultureInfo.InvariantCulture, value);
                         }
                         // Catch FormatExceptions
@@ -508,6 +531,15 @@ namespace PropertyTools.Wpf
                 }
             }
             return true;
+        }
+
+        private bool IsHexFormatString(string formatString)
+        {
+            if (formatString.StartsWith("X"))
+                return true;
+            if (formatString.Contains("{0:X"))
+                return true;
+            return false;
         }
 
         private bool IsModified(object component, object value)

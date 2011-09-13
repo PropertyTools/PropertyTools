@@ -25,6 +25,7 @@
         <!--<local:FormattingTextBox 
             IsReadOnly="{Binding IsReadOnly}" 
             IsEnabled="{Binding IsEnabled}" 
+            MaxLength="{Binding MaxLength}"
             Value="{Binding Value, ValidatesOnDataErrors=True}" 
             AcceptsReturn="{Binding AcceptsReturn}" 
             Height="{Binding Height}"

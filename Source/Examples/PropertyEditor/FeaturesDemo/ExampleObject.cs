@@ -45,6 +45,10 @@ namespace FeaturesDemo
             Integer = -1;
             Double = 12.3;
             Boolean = true;
+
+            DateTime1 = DateTime2 = DateTime.Now;
+            TimeSpan1 = TimeSpan2 = TimeSpan.FromHours(39.5);
+
             Font = new FontFamily("Arial");
             Color = Colors.Blue;
             SolidBrush = Brushes.Gold;
@@ -56,6 +60,7 @@ namespace FeaturesDemo
             SliderDouble = 4.31;
             SliderInt = 37;
             FormattedDouble = Math.PI;
+            FormattedDouble2 = Math.E;
 
             Password = "OpenSesame!";
         }
@@ -85,10 +90,22 @@ namespace FeaturesDemo
         [Category("Type with ValueConverter")]
         public Mass Weight { get; set; }
 
-        // todo: FormatString is not working
+        [Category("DateTime")]
+        public DateTime DateTime1 { get; set; }
+        [FormatString("yyyy-MM-dd")]       
+        public DateTime DateTime2 { get; set; }
+
+        [Category("TimeSpan")]
+        public TimeSpan TimeSpan1 { get; set; }
+        [FormatString("HH:mm")] // remember to escape ":" and "." characters!
+        public TimeSpan TimeSpan2 { get; set; }
+
         [Category("FormatString")]
         [FormatString("0.0000")]
         public double FormattedDouble { get; set; }
+
+        [FormatString("x = {0:0.00}")]
+        public double FormattedDouble2 { get; set; }
 
         [FormatString("X")]
         public int HexNumber { get; set; }

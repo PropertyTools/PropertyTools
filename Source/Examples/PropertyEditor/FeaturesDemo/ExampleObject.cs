@@ -110,6 +110,9 @@ namespace FeaturesDemo
         [FormatString("X")]
         public int HexNumber { get; set; }
 
+		[Category( "No FormatString" )]
+		public double NonFormattedDouble { get; set; }
+
         [Category("ReadOnly properties")]
         public string ReadonlyString { get; private set; }
 

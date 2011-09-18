@@ -535,11 +535,13 @@ namespace PropertyTools.Wpf
 
         private bool IsHexFormatString(string formatString)
         {
-            if (formatString.StartsWith("X"))
-                return true;
-            if (formatString.Contains("{0:X"))
-                return true;
-            return false;
+			bool result = false;
+
+			if( !string.IsNullOrEmpty( formatString ) ) {
+				result = formatString.StartsWith("X") || formatString.Contains("{0:X" );
+			}
+
+			return result;
         }
 
         private bool IsModified(object component, object value)

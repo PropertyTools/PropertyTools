@@ -255,6 +255,7 @@
     <Compile Include="PropertyEditor\PropertyEditor.cs" />
     <Compile Include="Helpers\AttributeHelper.cs" />
     <Compile Include="Interfaces\IPropertyViewModelFactory.cs" />
+    <Compile Include="PropertyEditor\PropertyViewModel\EnumPropertyViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\FilePathViewModel.cs" />
     <Compile Include="PropertyEditor\PropertyViewModel\OptionalPropertyViewModel.cs" />
     <Compile Include="PropertyEditor\DefaultPropertyViewModelFactory.cs" />

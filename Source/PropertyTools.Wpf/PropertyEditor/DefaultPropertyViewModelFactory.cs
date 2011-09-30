@@ -117,6 +117,9 @@ namespace PropertyTools.Wpf
             if (IsDirectoryPath(descriptor))
                 propertyViewModel = new DirectoryPathPropertyViewModel(instance, descriptor, owner);
 
+            if (IsEnum(descriptor))
+                propertyViewModel = new EnumPropertyViewModel(instance, descriptor, owner);
+
             // Default property (using textbox)
             if (propertyViewModel == null)
             {
@@ -173,6 +176,11 @@ namespace PropertyTools.Wpf
         {
             var dpa = AttributeHelper.GetFirstAttribute<DirectoryPathAttribute>(descriptor);
             return dpa != null;
+        }
+
+        protected virtual bool IsEnum(PropertyDescriptor descriptor)
+        {
+            return descriptor.PropertyType.IsEnum;
         }
 
         protected virtual bool IsFilePath(PropertyDescriptor descriptor, out string filter, out string defaultExtension, out bool useOpenDialog)

@@ -255,6 +255,7 @@ namespace PropertyTools.Wpf
             }
         }
 
+        bool settingValues = false;
         /// <summary>
         /// Gets or sets the value of the property.
         /// </summary>
@@ -284,7 +285,7 @@ namespace PropertyTools.Wpf
             }
             set
             {
-                if (IsEnumerable)
+                if (IsEnumerable && !settingValues)
                 {
                     var list = Instance as IEnumerable;
                     if (list == null)
@@ -293,10 +294,12 @@ namespace PropertyTools.Wpf
                     }
 
                     OldValue = null;
+                    settingValues = true;
                     foreach (object item in list)
                     {
                         SetValue(item, value);
                     }
+                    settingValues = false;
                 }
                 else
                 {
@@ -309,7 +312,7 @@ namespace PropertyTools.Wpf
 
         private static TimeSpanFormatter timeSpanFormatter = new TimeSpanFormatter();
 
-        private string FormatValue(object value)
+        protected string FormatValue(object value)
         {
             var f = FormatString;
             if (!f.Contains("{0"))

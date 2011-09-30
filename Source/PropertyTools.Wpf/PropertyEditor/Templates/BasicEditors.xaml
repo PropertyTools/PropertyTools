@@ -88,7 +88,7 @@
 
     <!-- enum -->
     <DataTemplate x:Key="ComboBoxEnumTemplate">
-        <ComboBox SelectedValue="{Binding Value}" IsEnabled="{Binding IsWriteable}" ItemsSource="{Binding Value, Converter={StaticResource EnumValuesConverter}}">
+        <ComboBox SelectedValue="{Binding Value}" IsEnabled="{Binding IsWriteable}" ItemsSource="{Binding EnumValues, Converter={StaticResource EnumValuesConverter}}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>

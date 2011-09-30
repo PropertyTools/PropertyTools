@@ -1142,7 +1142,7 @@ namespace PropertyTools.Wpf
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var property = sender as PropertyViewModel;
-            if (property != null && e.PropertyName == "Value")
+            if (property != null && e.PropertyName == "Value" && property.SetByThis == true)
             {
                 RaisePropertyChangedEvent(property.PropertyName, property.OldValue, property.Value);
                 UpdateOptionalProperties(property);

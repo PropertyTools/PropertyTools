@@ -31,7 +31,14 @@ namespace PropertyTools.Wpf
             ToolTip = descriptor.Description;
 
             Height = double.NaN;
+            SetByThis = false;
         }
+
+        /// <summary>
+        /// Gets or sets whether Value was set by this ViewModel
+        /// </summary>
+        /// <value>True if this ViewModel set Value, false otherwise</value>
+        public bool SetByThis { get; set; }
 
         /// <summary>
         /// Gets or sets the format string.
@@ -293,6 +300,7 @@ namespace PropertyTools.Wpf
                 }
                 else
                 {
+                    SetByThis = true;
                     OldValue = Value;
                     SetValue(Instance, value);
                 }
@@ -437,6 +445,7 @@ namespace PropertyTools.Wpf
         {
             // Sending notification when the instance has been changed
             NotifyPropertyChanged("Value");
+            SetByThis = false;
         }
 
         /// <summary>

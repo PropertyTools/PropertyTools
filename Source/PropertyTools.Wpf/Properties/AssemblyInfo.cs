@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -8,9 +8,9 @@ using System.Windows;
 [assembly: AssemblyTitle("PropertyTools for WPF")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("PropertyTools")]
 [assembly: AssemblyProduct("PropertyTools for WPF")]
-[assembly: AssemblyCopyright("Copyright © OBJO 2011")]
+[assembly: AssemblyCopyright("PropertyTools")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -48,6 +48,6 @@ using System.Windows;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2011.3.*")]
-//[assembly: AssemblyFileVersion("2011.3")]
+// [assembly: AssemblyVersion("2011.10.1")]
+[assembly: AssemblyVersion("2011.10.1")]
+//[assembly: AssemblyFileVersion("2011.10.1")]

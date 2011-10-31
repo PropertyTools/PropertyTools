@@ -1,1 +1,1 @@
-devenv.exe ..\Source\PropertyTools_VS2010.sln /Rebuild Release 
+devenv.exe ..\Source\PropertyTools.sln /Rebuild Release 

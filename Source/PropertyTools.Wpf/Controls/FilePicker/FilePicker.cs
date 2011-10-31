@@ -116,6 +116,9 @@ namespace PropertyTools.Wpf
         }
     }
 
+    /// <summary>
+    /// The file dialog interface.
+    /// </summary>
     public interface IFileDialogService
     {
         bool ShowOpenFileDialog(ref string filename, string filter, string defaultExtension);

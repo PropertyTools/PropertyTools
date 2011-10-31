@@ -94,7 +94,7 @@ namespace PropertyTools.Wpf
     }
 
     /// <summary>
-    /// The i directory dialog.
+    /// The browser dialog interface.
     /// </summary>
     public interface IFolderBrowserDialogService
     {

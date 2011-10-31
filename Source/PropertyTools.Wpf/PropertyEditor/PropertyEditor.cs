@@ -36,25 +36,28 @@ namespace PropertyTools.Wpf
     ///   PropertyEditor control.
     ///   Set the SelectedObject to define the contents of the control.
     /// </summary>
+    [TemplatePart(Name="PART_Grid",Type=typeof(Grid))]
+    [TemplatePart(Name = "PART_Page", Type = typeof(ContentControl))]
+    [TemplatePart(Name = "PART_Tabs", Type = typeof(TabControl))]
     public class PropertyEditor : Control
     {
         /// <summary>
-        ///   The categor y_ appearance.
+        ///   The appearance category.
         /// </summary>
         private const string CATEGORY_APPEARANCE = "Appearance";
 
         /// <summary>
-        ///   The par t_ grid.
+        ///   The grid part name.
         /// </summary>
         private const string PART_GRID = "PART_Grid";
 
         /// <summary>
-        ///   The par t_ page.
+        ///   The page part name.
         /// </summary>
         private const string PART_PAGE = "PART_Page";
 
         /// <summary>
-        ///   The par t_ tabs.
+        ///   The tabs part name.
         /// </summary>
         private const string PART_TABS = "PART_Tabs";
 

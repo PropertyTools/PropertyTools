@@ -8,8 +8,8 @@
     <ProjectGuid>{9F672680-DF7E-4FC2-82F4-4975E0E312C0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimpleGridDemo</RootNamespace>
-    <AssemblyName>SimpleGridDemo</AssemblyName>
+    <RootNamespace>FeaturesDemo</RootNamespace>
+    <AssemblyName>FeaturesDemo</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -30,7 +30,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\Output\Examples\SimpleGrid\FeaturesDemo\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

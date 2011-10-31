@@ -1,12 +1,4 @@
-cd ..\Source\Examples
-mkdir ..\..\Output
-mkdir ..\..\Output\Examples
-del /S /Q ..\..\Output\Examples\*.*
-for /D %%G in (*) DO (
-mkdir ..\..\Output\Examples\%%G
-xcopy %%G\bin\Release\*.* ..\..\Output\Examples\%%G /S /Y
-)
-cd ..\..\Output\Examples
+cd ..\Output\Examples
 del /S *.pdb 
 del /S *.vshost.exe 
 del /S *.manifest 

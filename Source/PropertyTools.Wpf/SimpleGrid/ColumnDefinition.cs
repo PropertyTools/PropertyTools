@@ -46,8 +46,10 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         ///   Gets or sets the data field.
-        ///   Note: This is not used if DisplayTemplate/EditTemplate is set.
         /// </summary>
+        /// <remarks>
+        ///   Note: This is not used if DisplayTemplate/EditTemplate is set.
+        /// </remarks>
         /// <value>The data field.</value>
         public string DataField { get; set; }
 

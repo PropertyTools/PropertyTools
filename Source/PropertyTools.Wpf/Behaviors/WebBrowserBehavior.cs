@@ -77,7 +77,10 @@ namespace PropertyTools.Wpf
             var wb = d as WebBrowser;
             if (wb != null)
             {
-                wb.NavigateToString((string)e.NewValue);
+                if (e.NewValue != null)
+                {
+                    wb.NavigateToString((string)e.NewValue);
+                }
             }
         }
 

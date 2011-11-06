@@ -20,7 +20,7 @@ namespace ExampleBrowser
         }
     }
 
-    public enum SortOrder { Sorted, NotSorted };
+    public enum SortIndex { Sorted, NotSorted };
 
     public class Author
     {
@@ -42,7 +42,7 @@ namespace ExampleBrowser
         public AuthorList Authors { get; set; }
         public bool Group { get; set; }
         public bool Show { get; set; }
-        public SortOrder SortOrder { get; set; }
+        public SortIndex SortIndex { get; set; }
 
         public Book()
         {

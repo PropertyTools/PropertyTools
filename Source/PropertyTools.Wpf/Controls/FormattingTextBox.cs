@@ -1,112 +1,247 @@
-﻿using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Controls;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FormattingTextBox.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
+    using System;
+    using System.Globalization;
+    using System.Text.RegularExpressions;
+    using System.Windows;
+    using System.Windows.Controls;
+
     /// <summary>
-    /// A TextBox with a bindable StringFormat property.
+    /// Represents a TextBox with a bindable StringFormat property.
     /// </summary>
     public class FormattingTextBox : TextBox
     {
-        public static readonly DependencyProperty FormatProviderProperty =
-            DependencyProperty.Register("FormatProvider", typeof(IFormatProvider), typeof(FormattingTextBox),
-                                        new UIPropertyMetadata(CultureInfo.InvariantCulture));
+        #region Constants and Fields
 
-        public static readonly DependencyProperty StringFormatProperty =
-            DependencyProperty.Register("StringFormat", typeof(string), typeof(FormattingTextBox),
-                                        new UIPropertyMetadata(null, StringFormatChanged));
+        /// <summary>
+        /// The format provider property.
+        /// </summary>
+        public static readonly DependencyProperty FormatProviderProperty = DependencyProperty.Register(
+            "FormatProvider", 
+            typeof(IFormatProvider), 
+            typeof(FormattingTextBox), 
+            new UIPropertyMetadata(CultureInfo.InvariantCulture));
 
-        public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(object), typeof(FormattingTextBox),
-                                        new FrameworkPropertyMetadata(null,
-                                                                      FrameworkPropertyMetadataOptions.
-                                                                          BindsTwoWayByDefault, ValueChangedCallback));
+        /// <summary>
+        /// The string format property.
+        /// </summary>
+        public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register(
+            "StringFormat", typeof(string), typeof(FormattingTextBox), new UIPropertyMetadata(null, StringFormatChanged));
 
+        /// <summary>
+        /// The value property.
+        /// </summary>
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+            "Value", 
+            typeof(object), 
+            typeof(FormattingTextBox), 
+            new FrameworkPropertyMetadata(
+                null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChangedCallback));
+
+        /// <summary>
+        /// The user is changing.
+        /// </summary>
         private bool userIsChanging = true;
 
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes static members of the <see cref="FormattingTextBox"/> class. 
+        /// </summary>
         static FormattingTextBox()
         {
             // DefaultStyleKeyProperty.OverrideMetadata(typeof(FormattingTextBox), new FrameworkPropertyMetadata(typeof(FormattingTextBox)));
             TextProperty.OverrideMetadata(typeof(FormattingTextBox), new FrameworkPropertyMetadata(TextChangedCallback));
         }
 
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        ///   Gets or sets the format provider.
+        /// </summary>
+        /// <value>The format provider.</value>
         public IFormatProvider FormatProvider
         {
-            get { return (IFormatProvider)GetValue(FormatProviderProperty); }
-            set { SetValue(FormatProviderProperty, value); }
+            get
+            {
+                return (IFormatProvider)this.GetValue(FormatProviderProperty);
+            }
+
+            set
+            {
+                this.SetValue(FormatProviderProperty, value);
+            }
         }
 
+        /// <summary>
+        ///   Gets or sets the string format.
+        /// </summary>
+        /// <value>The string format.</value>
         public string StringFormat
         {
-            get { return (string)GetValue(StringFormatProperty); }
-            set { SetValue(StringFormatProperty, value); }
+            get
+            {
+                return (string)this.GetValue(StringFormatProperty);
+            }
+
+            set
+            {
+                this.SetValue(StringFormatProperty, value);
+            }
         }
 
+        /// <summary>
+        ///   Gets or sets the value.
+        /// </summary>
+        /// <value>The value.</value>
         public object Value
         {
-            get { return GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get
+            {
+                return this.GetValue(ValueProperty);
+            }
+
+            set
+            {
+                this.SetValue(ValueProperty, value);
+            }
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The string format changed.
+        /// </summary>
+        /// <param name="d">
+        /// The d.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private static void StringFormatChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((FormattingTextBox)d).UpdateText();
         }
 
-        private void UpdateText()
+        /// <summary>
+        /// The text changed callback.
+        /// </summary>
+        /// <param name="d">
+        /// The d.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private static void TextChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            userIsChanging = false;
+            var ftb = (FormattingTextBox)d;
 
-            string f = StringFormat;
-            if (f != null)
-            {
-                if (!f.Contains("{0"))
-                    f = string.Format("{{0:{0}}}", f);
-                Text = String.Format(FormatProvider, f, Value);
-            }
-            else
-            {
-                Text = Value != null ? String.Format(FormatProvider, "{0}", Value) : null;
-            }
-            userIsChanging = true;
+            // if (ftb.userIsChanging)
+            ftb.UpdateValue();
         }
 
-        private string UnFormat(string s)
-        {
-            if (StringFormat == null)
-                return s;
-            var r = new Regex(@"(.*)(\{0.*\})(.*)");
-            var match = r.Match(StringFormat);
-            if (!match.Success)
-                return s;
-            if (match.Groups.Count > 1 && !String.IsNullOrEmpty(match.Groups[1].Value))
-                s = s.Replace(match.Groups[1].Value, "");
-            if (match.Groups.Count > 3 && !String.IsNullOrEmpty(match.Groups[3].Value))
-                s = s.Replace(match.Groups[3].Value, "");
-            return s;
-        }
-
-        private void UpdateValue()
-        {
-            if (userIsChanging)
-                Value = UnFormat(Text);
-        }
-
+        /// <summary>
+        /// The value changed callback.
+        /// </summary>
+        /// <param name="d">
+        /// The d.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private static void ValueChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ftb = (FormattingTextBox)d;
             if (ftb.userIsChanging)
+            {
                 ftb.UpdateText();
+            }
         }
 
-        private static void TextChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        /// <summary>
+        /// Unformats the text.
+        /// </summary>
+        /// <param name="s">
+        /// The s.
+        /// </param>
+        /// <returns>
+        /// The un format.
+        /// </returns>
+        private string UnFormat(string s)
         {
-            var ftb = (FormattingTextBox)d;
-            // if (ftb.userIsChanging)
-            ftb.UpdateValue();
+            if (this.StringFormat == null)
+            {
+                return s;
+            }
+
+            var r = new Regex(@"(.*)(\{0.*\})(.*)");
+            var match = r.Match(this.StringFormat);
+            if (!match.Success)
+            {
+                return s;
+            }
+
+            if (match.Groups.Count > 1 && !string.IsNullOrEmpty(match.Groups[1].Value))
+            {
+                s = s.Replace(match.Groups[1].Value, string.Empty);
+            }
+
+            if (match.Groups.Count > 3 && !string.IsNullOrEmpty(match.Groups[3].Value))
+            {
+                s = s.Replace(match.Groups[3].Value, string.Empty);
+            }
+
+            return s;
         }
+
+        /// <summary>
+        /// Updates the text.
+        /// </summary>
+        private void UpdateText()
+        {
+            this.userIsChanging = false;
+
+            string f = this.StringFormat;
+            if (f != null)
+            {
+                if (!f.Contains("{0"))
+                {
+                    f = string.Format("{{0:{0}}}", f);
+                }
+
+                this.Text = string.Format(this.FormatProvider, f, this.Value);
+            }
+            else
+            {
+                this.Text = this.Value != null ? string.Format(this.FormatProvider, "{0}", this.Value) : null;
+            }
+
+            this.userIsChanging = true;
+        }
+
+        /// <summary>
+        /// Updates the value.
+        /// </summary>
+        private void UpdateValue()
+        {
+            if (this.userIsChanging)
+            {
+                this.Value = this.UnFormat(this.Text);
+            }
+        }
+
+        #endregion
     }
 }

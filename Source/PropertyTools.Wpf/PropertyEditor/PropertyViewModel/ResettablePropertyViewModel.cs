@@ -1,44 +1,71 @@
-using System.ComponentModel;
-using System.Windows.Input;
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ResettablePropertyViewModel.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
+    using System.ComponentModel;
+    using System.Windows.Input;
+
+    using PropertyTools.DataAnnotations;
+
     /// <summary>
-    ///   Properties that are marked [resettable(...)] have a reset button
+    /// Properties that are marked [resettable(...)] have a reset button
     /// </summary>
     public class ResettablePropertyViewModel : PropertyViewModel
     {
+        #region Constants and Fields
+
+        /// <summary>
+        /// The instance.
+        /// </summary>
         private readonly object instance;
+
+        /// <summary>
+        /// The resettable descriptor.
+        /// </summary>
         private readonly PropertyDescriptor resettableDescriptor;
 
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResettablePropertyViewModel"/> class.
+        /// </summary>
+        /// <param name="instance">
+        /// The instance.
+        /// </param>
+        /// <param name="descriptor">
+        /// The descriptor.
+        /// </param>
+        /// <param name="owner">
+        /// The owner.
+        /// </param>
         public ResettablePropertyViewModel(object instance, PropertyDescriptor descriptor, PropertyEditor owner)
             : base(instance, descriptor, owner)
         {
             this.instance = instance;
-            resettableDescriptor = descriptor;
-            ResetCommand = new DelegateCommand(ExecuteReset);
+            this.resettableDescriptor = descriptor;
+            this.ResetCommand = new DelegateCommand(this.ExecuteReset);
 
-            var resettableAttr = AttributeHelper.GetFirstAttribute<ResettableAttribute>(resettableDescriptor);
+            var resettableAttr = AttributeHelper.GetFirstAttribute<ResettableAttribute>(this.resettableDescriptor);
 
             if (resettableAttr != null)
             {
-                Label = (string) resettableAttr.ButtonLabel;
+                this.Label = (string)resettableAttr.ButtonLabel;
             }
         }
 
-        public string ResettablePropertyName
-        {
-            get
-            {
-                if (resettableDescriptor != null)
-                {
-                    return resettableDescriptor.Name;
-                }
+        #endregion
 
-                return null;
-            }
-        }
+        #region Public Properties
 
+        /// <summary>
+        /// Gets or sets Label.
+        /// </summary>
         public string Label { get; set; }
 
         /// <summary>
@@ -46,14 +73,39 @@ namespace PropertyTools.Wpf
         /// </summary>
         public ICommand ResetCommand { get; set; }
 
+        /// <summary>
+        /// Gets ResettablePropertyName.
+        /// </summary>
+        public string ResettablePropertyName
+        {
+            get
+            {
+                if (this.resettableDescriptor != null)
+                {
+                    return this.resettableDescriptor.Name;
+                }
+
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The execute reset.
+        /// </summary>
         public void ExecuteReset()
         {
-            var reset = instance as IResettableProperties;
+            var reset = this.instance as IResettableProperties;
 
             if (reset != null)
             {
-                Value = reset.GetResetValue(resettableDescriptor.Name);
+                this.Value = reset.GetResetValue(this.resettableDescriptor.Name);
             }
         }
+
+        #endregion
     }
 }

@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Windows.Media;
 using PropertyTools.Wpf;
-using System.Windows.Controls.Primitives;
 
 namespace FeaturesDemo
 {
+    using PropertyTools.DataAnnotations;
 
     public enum Genders
     {
@@ -69,10 +69,10 @@ namespace FeaturesDemo
         // first part is the header of the tab and the second part is
         // the header of the category
 
-        // The Category and SortOrder is shared for following properties
+        // The Category and SortIndex is shared for following properties
         // but the order of the properties is not guaranteed to be fixed...
 
-        [Category("Basic|Fundamental types"), SortOrder(100)]
+        [Category("Basic|Fundamental types"), SortIndex(100)]
         public string String { get; set; }
 
         public byte Byte { get; set; }
@@ -119,7 +119,7 @@ namespace FeaturesDemo
         public int ReadonlyInt { get; private set; }
         public bool ReadonlyBool { get; private set; }
 
-        [Category("Optional|Optional properties"), SortOrder(200)]
+        [Category("Optional|Optional properties"), SortIndex(200)]
 
         // Optional properties have a checkbox instead of a label
         // The checkbox controls the enabled/disabled state of the property
@@ -203,7 +203,7 @@ namespace FeaturesDemo
         [Slidable(0, 100, 1, 10)]
         public int SliderInt { get; set; }
 
-        [Slidable(0, 10, 1, 5, true, 1.5, TickPlacement.BottomRight)]
+        [Slidable(0, 10, 1, 5, true, 1.5)]
         public double TickSlider { get; set; }
 
         [Category("Special|Colors and brushes")]
@@ -237,7 +237,7 @@ namespace FeaturesDemo
         [Category("Described property"),
          DisplayName("Property display name"),
          Description("This is the description."),
-         SortOrder(401)]
+         SortIndex(401)]
         public bool DescribedProperty { get; set; }
 
         [Category("Reset|Resettable")]

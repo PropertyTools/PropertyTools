@@ -1,89 +1,198 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="WizardDialog.xaml.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
+    using System.Collections.Generic;
+    using System.Windows;
+
     /// <summary>
-    /// Wizard dialog
-    /// Todo: Win7 style
+    /// Represents a wizard dialog.
     /// </summary>
     public partial class WizardDialog : Window
     {
-        public static readonly DependencyProperty CurrentPageProperty =
-            DependencyProperty.Register("CurrentPage", typeof (int), typeof (WizardDialog),
-                                        new UIPropertyMetadata(-1, CurrentPage_Changed));
+        #region Constants and Fields
 
-        public static readonly DependencyProperty PagesProperty =
-            DependencyProperty.Register("Pages", typeof (List<object>), typeof (WizardDialog),
-                                        new UIPropertyMetadata(null));
+        /// <summary>
+        /// The current page property.
+        /// </summary>
+        public static readonly DependencyProperty CurrentPageProperty = DependencyProperty.Register(
+            "CurrentPage", typeof(int), typeof(WizardDialog), new UIPropertyMetadata(-1, CurrentPage_Changed));
 
+        /// <summary>
+        /// The pages property.
+        /// </summary>
+        public static readonly DependencyProperty PagesProperty = DependencyProperty.Register(
+            "Pages", typeof(List<object>), typeof(WizardDialog), new UIPropertyMetadata(null));
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WizardDialog"/> class.
+        /// </summary>
         public WizardDialog()
         {
-            InitializeComponent();
-            Pages = new List<object>();
+            this.InitializeComponent();
+            this.Pages = new List<object>();
 
-            Background = SystemColors.ControlBrush;
+            this.Background = SystemColors.ControlBrush;
 
-            NextButton.Click += NextButton_Click;
-            BackButton.Click += BackButton_Click;
-            FinishButton.Click += FinishButton_Click;
-            CancelButton.Click += CancelButton_Click;
-            Loaded += WizardDialog_Loaded;
+            this.NextButton.Click += this.NextButton_Click;
+            this.BackButton.Click += this.BackButton_Click;
+            this.FinishButton.Click += this.FinishButton_Click;
+            this.CancelButton.Click += this.CancelButton_Click;
+            this.Loaded += this.WizardDialog_Loaded;
         }
 
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets CurrentPage.
+        /// </summary>
         public int CurrentPage
         {
-            get { return (int) GetValue(CurrentPageProperty); }
-            set { SetValue(CurrentPageProperty, value); }
+            get
+            {
+                return (int)this.GetValue(CurrentPageProperty);
+            }
+
+            set
+            {
+                this.SetValue(CurrentPageProperty, value);
+            }
         }
 
+        /// <summary>
+        /// Gets or sets Pages.
+        /// </summary>
         public List<object> Pages
         {
-            get { return (List<object>) GetValue(PagesProperty); }
-            set { SetValue(PagesProperty, value); }
+            get
+            {
+                return (List<object>)this.GetValue(PagesProperty);
+            }
+
+            set
+            {
+                this.SetValue(PagesProperty, value);
+            }
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The current page_ changed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private static void CurrentPage_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             var d = sender as WizardDialog;
             d.BindPage();
         }
 
-        private void FinishButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-            Close();
-        }
-
-        private void NextButton_Click(object sender, RoutedEventArgs e)
-        {
-            CurrentPage++;
-        }
-
+        /// <summary>
+        /// The back button_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            CurrentPage--;
+            this.CurrentPage--;
         }
 
-        private void WizardDialog_Loaded(object sender, RoutedEventArgs e)
-        {
-            CurrentPage = 0;
-        }
-
+        /// <summary>
+        /// The bind page.
+        /// </summary>
         private void BindPage()
         {
-            if (CurrentPage < 0 || CurrentPage >= Pages.Count)
-                propertyControl1.DataContext = null;
+            if (this.CurrentPage < 0 || this.CurrentPage >= this.Pages.Count)
+            {
+                this.propertyControl1.DataContext = null;
+            }
             else
-                propertyControl1.DataContext = Pages[CurrentPage];
+            {
+                this.propertyControl1.DataContext = this.Pages[this.CurrentPage];
+            }
 
-            BackButton.IsEnabled = CurrentPage > 0;
-            NextButton.IsEnabled = CurrentPage + 1 < Pages.Count;
-            FinishButton.IsEnabled = CurrentPage == Pages.Count - 1;
+            this.BackButton.IsEnabled = this.CurrentPage > 0;
+            this.NextButton.IsEnabled = this.CurrentPage + 1 < this.Pages.Count;
+            this.FinishButton.IsEnabled = this.CurrentPage == this.Pages.Count - 1;
         }
 
+        /// <summary>
+        /// The cancel button_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
         }
+
+        /// <summary>
+        /// The finish button_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void FinishButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+            this.Close();
+        }
+
+        /// <summary>
+        /// The next button_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.CurrentPage++;
+        }
+
+        /// <summary>
+        /// The wizard dialog_ loaded.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void WizardDialog_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.CurrentPage = 0;
+        }
+
+        #endregion
     }
 }

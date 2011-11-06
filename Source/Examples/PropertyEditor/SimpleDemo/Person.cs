@@ -5,6 +5,9 @@ using PropertyTools.Wpf;
 
 namespace SimpleDemo
 {
+    using PropertyTools;
+    using PropertyTools.DataAnnotations;
+
     public enum Genders
     {
         Male,
@@ -29,7 +32,7 @@ namespace SimpleDemo
             Font = new FontFamily("Arial");
         }
 
-        [Category(Personal), SortOrder(100)]
+        [Category(Personal), SortIndex(100)]
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -46,7 +49,7 @@ namespace SimpleDemo
         [DirectoryPath]
         public string Folder { get; set; }
 
-        [Category(Favourites), SortOrder(200)]
+        [Category(Favourites), SortIndex(200)]
         public Brush FavouriteBrush { get; set; }
 
         [Category(Favourites)]
@@ -54,10 +57,10 @@ namespace SimpleDemo
 
         // The DisplayName attribute is shown in the property label
         // The Description attribute is shown in the tooltips
-        [Category(Habits), SortOrder(300), DisplayName(@"Is smoking"), Description("Check if the person is smoking.")]
+        [Category(Habits), SortIndex(300), DisplayName(@"Is smoking"), Description("Check if the person is smoking.")]
         public bool IsSmoking { get; set; }
 
-        [Category(Vehicles), DisplayName(@"Bicyle"), Description("Check if this person owns a bicycle."), SortOrder(401)]
+        [Category(Vehicles), DisplayName(@"Bicyle"), Description("Check if this person owns a bicycle."), SortIndex(401)]
         public bool OwnsBicycle { get; set; }
 
         // This property is used to control the optional Car property
@@ -66,20 +69,20 @@ namespace SimpleDemo
         public bool HasCar { get; set; }
 
         // Car is enabled when HasCar==true
-        [Category(Vehicles), Optional("HasCar"), SortOrder(402)]
+        [Category(Vehicles), Optional("HasCar"), SortIndex(402)]
         public string Car { get; set; }
 
         // Optional reference types are disabled when they are null
-        [Category(Vehicles), Optional, SortOrder(403)]
+        [Category(Vehicles), Optional, SortIndex(403)]
         public string Scooter { get; set; }
 
         // Nullable types can be optional
-        [Category(Vehicles), Optional, SortOrder(404)]
+        [Category(Vehicles), Optional, SortIndex(404)]
         public int? Year { get; set; }
 
         // Use [WideProperty] to use the full width of the control
         // Use [Height(...)] to set the height of a multiline text control
-        [Category(Details), WideProperty, Height(100), SortOrder(500)]
+        [Category(Details), WideProperty, Height(100), SortIndex(500)]
         public string History { get; set; }
     }
 

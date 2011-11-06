@@ -1,4 +1,10 @@
-﻿namespace PropertyTools.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TimeSpanFormatter.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace PropertyTools.Wpf
 {
     using System;
     using System.Text.RegularExpressions;
@@ -11,22 +17,70 @@
     /// </remarks>
     public class TimeSpanFormatter : IFormatProvider, ICustomFormatter
     {
-        private readonly Regex formatParser;
+        #region Constants and Fields
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimeSpanFormatter"/> class.
+        /// The format parser.
+        /// </summary>
+        private readonly Regex formatParser;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "TimeSpanFormatter" /> class.
         /// </summary>
         public TimeSpanFormatter()
         {
-            this.formatParser = new Regex("D{1,2}|H{1,2}|M{1,2}|S{1,2}|d{1,2}|h{1,2}|m{1,2}|s{1,2}|f{1,7}", RegexOptions.Compiled);
+            this.formatParser = new Regex(
+                "D{1,2}|H{1,2}|M{1,2}|S{1,2}|d{1,2}|h{1,2}|m{1,2}|s{1,2}|f{1,7}", RegexOptions.Compiled);
         }
 
-        #region IFormatProvider Members
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Converts the value of a specified timespan to an equivalent string representation using specified format and culture-specific formatting information.
+        /// </summary>
+        /// <param name="format">
+        /// A format string containing formatting specifications.
+        /// </param>
+        /// <param name="arg">
+        /// An object to format.
+        /// </param>
+        /// <param name="formatProvider">
+        /// An object that supplies format information about the current instance.
+        /// </param>
+        /// <returns>
+        /// The string representation of the value of <paramref name="arg"/>, formatted as specified by <paramref name="format"/> and <paramref name="formatProvider"/>.
+        /// </returns>
+        public string Format(string format, object arg, IFormatProvider formatProvider)
+        {
+            if (arg is TimeSpan)
+            {
+                var timeSpan = (TimeSpan)arg;
+                return this.formatParser.Replace(format, this.GetMatchEvaluator(timeSpan));
+            }
+            else
+            {
+                var formattable = arg as IFormattable;
+                if (formattable != null)
+                {
+                    return formattable.ToString(format, formatProvider);
+                }
+
+                return arg != null ? arg.ToString() : string.Empty;
+            }
+        }
 
         /// <summary>
         /// Returns an object that provides formatting services for the specified type.
         /// </summary>
-        /// <param name="formatType">An object that specifies the type of format object to return.</param>
+        /// <param name="formatType">
+        /// An object that specifies the type of format object to return.
+        /// </param>
         /// <returns>
         /// An instance of the object specified by <paramref name="formatType"/>, if the <see cref="T:System.IFormatProvider"/> implementation can supply that type of object; otherwise, null.
         /// </returns>
@@ -42,43 +96,20 @@
 
         #endregion
 
-        #region ICustomFormatter Members
+        #region Methods
 
         /// <summary>
-        /// Converts the value of a specified timespan to an equivalent string representation using specified format and culture-specific formatting information.
+        /// The evaluate match.
         /// </summary>
-        /// <param name="format">A format string containing formatting specifications.</param>
-        /// <param name="arg">An object to format.</param>
-        /// <param name="formatProvider">An object that supplies format information about the current instance.</param>
+        /// <param name="match">
+        /// The match.
+        /// </param>
+        /// <param name="timeSpan">
+        /// The time span.
+        /// </param>
         /// <returns>
-        /// The string representation of the value of <paramref name="arg"/>, formatted as specified by <paramref name="format"/> and <paramref name="formatProvider"/>.
+        /// The evaluate match.
         /// </returns>
-        public string Format(string format, object arg, IFormatProvider formatProvider)
-        {
-            if (arg is TimeSpan)
-            {
-                var timeSpan = (TimeSpan)arg;
-                return this.formatParser.Replace(format, GetMatchEvaluator(timeSpan));
-            }
-            else
-            {
-                var formattable = arg as IFormattable;
-                if (formattable != null)
-                {
-                    return formattable.ToString(format, formatProvider);
-                }
-
-                return arg != null ? arg.ToString() : string.Empty;
-            }
-        }
-
-        #endregion
-
-        private MatchEvaluator GetMatchEvaluator(TimeSpan timeSpan)
-        {
-            return m => EvaluateMatch(m, timeSpan);
-        }
-
         private string EvaluateMatch(Match match, TimeSpan timeSpan)
         {
             switch (match.Value)
@@ -124,7 +155,7 @@
                 case "ffff":
                     return (timeSpan.Milliseconds * 10).ToString("0000");
                 case "fff":
-                    return (timeSpan.Milliseconds).ToString("000");
+                    return timeSpan.Milliseconds.ToString("000");
                 case "ff":
                     return (timeSpan.Milliseconds / 10).ToString("00");
                 case "f":
@@ -133,5 +164,20 @@
                     return match.Value;
             }
         }
+
+        /// <summary>
+        /// The get match evaluator.
+        /// </summary>
+        /// <param name="timeSpan">
+        /// The time span.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        private MatchEvaluator GetMatchEvaluator(TimeSpan timeSpan)
+        {
+            return m => this.EvaluateMatch(m, timeSpan);
+        }
+
+        #endregion
     }
 }

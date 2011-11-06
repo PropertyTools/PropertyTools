@@ -1,158 +1,105 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DockPanelSplitter.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
-    /// <summary>
-    /// Code Project article
-    /// http://www.codeproject.com/KB/WPF/DockPanelSplitter.aspx
-    /// 
-    /// CodePlex project
-    /// http://wpfcontrols.codeplex.com
-    ///
-    /// DockPanelSplitter is a splitter control for DockPanels.
-    /// Add the DockPanelSplitter after the element you want to resize.
-    /// Set the DockPanel.Dock to define which edge the splitter should work on.
-    ///
-    /// Follow steps 1a or 1b and then 2 to use this custom control in a XAML file.
-    ///
-    /// Step 1a) Using this custom control in a XAML file that exists in the current project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
-    /// to be used:
-    ///
-    ///     xmlns:OsDps="clr-namespace:DockPanelSplitter"
-    ///
-    ///
-    /// Step 1b) Using this custom control in a XAML file that exists in a different project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
-    /// to be used:
-    ///
-    ///     xmlns:MyNamespace="clr-namespace:DockPanelSplitter;assembly=DockPanelSplitter"
-    ///
-    /// You will also need to add a project reference from the project where the XAML file lives
-    /// to this project and Rebuild to avoid compilation errors:
-    ///
-    ///     Right click on the target project in the Solution Explorer and
-    ///     "Add Reference"->"Projects"->[Select this project]
-    ///
-    ///
-    /// Step 2)
-    /// Go ahead and use your control in the XAML file.
-    ///
-    ///     <MyNamespace:DockPanelSplitter/>
-    ///
-    /// </summary>
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Media;
 
+    /// <summary>
+    /// Represents a control that lets the user change the size of elements in a <see cref="DockPanel"/>.
+    /// </summary>
     public class DockPanelSplitter : Control
     {
-        static DockPanelSplitter()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DockPanelSplitter), new FrameworkPropertyMetadata(typeof(DockPanelSplitter)));
-
-            // override the Background property
-            BackgroundProperty.OverrideMetadata(typeof(DockPanelSplitter), new FrameworkPropertyMetadata(Brushes.Transparent));
-
-            // override the Dock property to get notifications when Dock is changed
-            DockPanel.DockProperty.OverrideMetadata(typeof(DockPanelSplitter),
-                new FrameworkPropertyMetadata(Dock.Left, new PropertyChangedCallback(DockChanged)));
-        }
+        #region Constants and Fields
 
         /// <summary>
-        /// Resize the target element proportionally with the parent container
-        /// Set to false if you don't want the element to be resized when the parent is resized.
+        /// The proportional resize property.
         /// </summary>
-        public bool ProportionalResize
-        {
-            get { return (bool)GetValue(ProportionalResizeProperty); }
-            set { SetValue(ProportionalResizeProperty, value); }
-        }
-
         public static readonly DependencyProperty ProportionalResizeProperty =
-            DependencyProperty.Register("ProportionalResize", typeof(bool), typeof(DockPanelSplitter),
-            new UIPropertyMetadata(true));
+            DependencyProperty.Register(
+                "ProportionalResize", typeof(bool), typeof(DockPanelSplitter), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Height or width of splitter, depends of orientation of the splitter
+        /// The thickness property.
         /// </summary>
-        public double Thickness
-        {
-            get { return (double)GetValue(ThicknessProperty); }
-            set { SetValue(ThicknessProperty, value); }
-        }
+        public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
+            "Thickness", typeof(double), typeof(DockPanelSplitter), new UIPropertyMetadata(4.0, ThicknessChanged));
 
-        public static readonly DependencyProperty ThicknessProperty =
-            DependencyProperty.Register("Thickness", typeof(double), typeof(DockPanelSplitter),
-            new UIPropertyMetadata(4.0, ThicknessChanged));
+        /// <summary>
+        /// The start drag point.
+        /// </summary>
+        private Point StartDragPoint;
 
+        /// <summary>
+        /// The element.
+        /// </summary>
+        private FrameworkElement element; // element to resize (target element)
 
-        #region Private fields
-        private FrameworkElement element;     // element to resize (target element)
-        private double width;                 // current desired width of the element, can be less than minwidth
-        private double height;                // current desired height of the element, can be less than minheight
-        private double previousParentWidth;   // current width of parent element, used for proportional resize
-        private double previousParentHeight;  // current height of parent element, used for proportional resize
+        /// <summary>
+        /// The height.
+        /// </summary>
+        private double height; // current desired height of the element, can be less than minheight
+
+        /// <summary>
+        /// The previous parent height.
+        /// </summary>
+        private double previousParentHeight; // current height of parent element, used for proportional resize
+
+        /// <summary>
+        /// The previous parent width.
+        /// </summary>
+        private double previousParentWidth; // current width of parent element, used for proportional resize
+
+        /// <summary>
+        /// The width.
+        /// </summary>
+        private double width; // current desired width of the element, can be less than minwidth
+
         #endregion
 
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes static members of the <see cref="DockPanelSplitter"/> class. 
+        /// </summary>
+        static DockPanelSplitter()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(
+                typeof(DockPanelSplitter), new FrameworkPropertyMetadata(typeof(DockPanelSplitter)));
+
+            // override the Background property
+            BackgroundProperty.OverrideMetadata(
+                typeof(DockPanelSplitter), new FrameworkPropertyMetadata(Brushes.Transparent));
+
+            // override the Dock property to get notifications when Dock is changed
+            DockPanel.DockProperty.OverrideMetadata(
+                typeof(DockPanelSplitter), new FrameworkPropertyMetadata(Dock.Left, DockChanged));
+        }
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "DockPanelSplitter" /> class.
+        /// </summary>
         public DockPanelSplitter()
         {
-            Loaded += DockPanelSplitterLoaded;
-            Unloaded += DockPanelSplitterUnloaded;
+            this.Loaded += this.DockPanelSplitterLoaded;
+            this.Unloaded += this.DockPanelSplitterUnloaded;
 
-            UpdateHeightOrWidth();
+            this.UpdateHeightOrWidth();
         }
 
-        void DockPanelSplitterLoaded(object sender, RoutedEventArgs e)
-        {
-            Panel dp = Parent as Panel;
-            if (dp == null) return;
+        #endregion
 
-            // Subscribe to the parent's size changed event
-            dp.SizeChanged += ParentSizeChanged;
+        #region Public Properties
 
-            // Store the current size of the parent DockPanel
-            previousParentWidth = dp.ActualWidth;
-            previousParentHeight = dp.ActualHeight;
-
-            // Find the target element
-            UpdateTargetElement();
-
-        }
-
-        void DockPanelSplitterUnloaded(object sender, RoutedEventArgs e)
-        {
-            Panel dp = Parent as Panel;
-            if (dp == null) return;
-
-            // Unsubscribe
-            dp.SizeChanged -= ParentSizeChanged;
-        }
-        
-        private static void DockChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((DockPanelSplitter)d).UpdateHeightOrWidth();
-        }
-
-        private static void ThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((DockPanelSplitter)d).UpdateHeightOrWidth();
-        }
-
-        private void UpdateHeightOrWidth()
-        {
-            if (IsHorizontal)
-            {
-                Height = Thickness;
-                Width = double.NaN;
-            }
-            else
-            {
-                Width = Thickness;
-                Height = double.NaN;
-            }
-        }
-
+        /// <summary>
+        ///   Gets a value indicating whether this splitter is horizontal.
+        /// </summary>
         public bool IsHorizontal
         {
             get
@@ -163,12 +110,398 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Update the target element (the element the DockPanelSplitter works on)
+        ///   Gets or sets a value indicating whether to resize elements proportionally.
+        /// </summary>
+        /// <remarks>
+        ///   Set to false if you don't want the element to be resized when the parent is resized.
+        /// </remarks>
+        public bool ProportionalResize
+        {
+            get
+            {
+                return (bool)this.GetValue(ProportionalResizeProperty);
+            }
+
+            set
+            {
+                this.SetValue(ProportionalResizeProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the thickness (height or width, depending on orientation).
+        /// </summary>
+        /// <value>The thickness.</value>
+        public double Thickness
+        {
+            get
+            {
+                return (double)this.GetValue(ThicknessProperty);
+            }
+
+            set
+            {
+                this.SetValue(ThicknessProperty, value);
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.
+        /// </param>
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            if (!this.IsEnabled)
+            {
+                return;
+            }
+
+            if (!this.IsMouseCaptured)
+            {
+                this.StartDragPoint = e.GetPosition(this.Parent as IInputElement);
+                this.UpdateTargetElement();
+                if (this.element != null)
+                {
+                    this.width = this.element.ActualWidth;
+                    this.height = this.element.ActualHeight;
+                    this.CaptureMouse();
+                }
+            }
+
+            base.OnMouseDown(e);
+        }
+
+        /// <summary>
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseEnter"/> attached event is raised on this element. Implement this method to add class handling for this event.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.
+        /// </param>
+        protected override void OnMouseEnter(MouseEventArgs e)
+        {
+            base.OnMouseEnter(e);
+            if (!this.IsEnabled)
+            {
+                return;
+            }
+
+            this.Cursor = this.IsHorizontal ? Cursors.SizeNS : Cursors.SizeWE;
+        }
+
+        /// <summary>
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseMove"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.
+        /// </param>
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (this.IsMouseCaptured)
+            {
+                Point ptCurrent = e.GetPosition(this.Parent as IInputElement);
+                var delta = new Point(ptCurrent.X - this.StartDragPoint.X, ptCurrent.Y - this.StartDragPoint.Y);
+                Dock dock = DockPanel.GetDock(this);
+
+                if (this.IsHorizontal)
+                {
+                    delta.Y = this.AdjustHeight(delta.Y, dock);
+                }
+                else
+                {
+                    delta.X = this.AdjustWidth(delta.X, dock);
+                }
+
+                bool isBottomOrRight = dock == Dock.Right || dock == Dock.Bottom;
+
+                // When docked to the bottom or right, the position has changed after adjusting the size
+                if (isBottomOrRight)
+                {
+                    this.StartDragPoint = e.GetPosition(this.Parent as IInputElement);
+                }
+                else
+                {
+                    this.StartDragPoint = new Point(this.StartDragPoint.X + delta.X, this.StartDragPoint.Y + delta.Y);
+                }
+            }
+
+            base.OnMouseMove(e);
+        }
+
+        /// <summary>
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseUp"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// </summary>
+        /// <param name="e">
+        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the mouse button was released.
+        /// </param>
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            if (this.IsMouseCaptured)
+            {
+                this.ReleaseMouseCapture();
+            }
+
+            base.OnMouseUp(e);
+        }
+
+        /// <summary>
+        /// The dock changed.
+        /// </summary>
+        /// <param name="d">
+        /// The d.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private static void DockChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((DockPanelSplitter)d).UpdateHeightOrWidth();
+        }
+
+        /// <summary>
+        /// The thickness changed.
+        /// </summary>
+        /// <param name="d">
+        /// The d.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private static void ThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((DockPanelSplitter)d).UpdateHeightOrWidth();
+        }
+
+        /// <summary>
+        /// Adjusts the height.
+        /// </summary>
+        /// <param name="dy">
+        /// The dy.
+        /// </param>
+        /// <param name="dock">
+        /// The dock.
+        /// </param>
+        /// <returns>
+        /// The adjust height.
+        /// </returns>
+        private double AdjustHeight(double dy, Dock dock)
+        {
+            if (dock == Dock.Bottom)
+            {
+                dy = -dy;
+            }
+
+            this.height += dy;
+            this.SetTargetHeight(this.height);
+
+            return dy;
+        }
+
+        /// <summary>
+        /// Adjusts the width.
+        /// </summary>
+        /// <param name="dx">
+        /// The dx.
+        /// </param>
+        /// <param name="dock">
+        /// The dock.
+        /// </param>
+        /// <returns>
+        /// The adjust width.
+        /// </returns>
+        private double AdjustWidth(double dx, Dock dock)
+        {
+            if (dock == Dock.Right)
+            {
+                dx = -dx;
+            }
+
+            this.width += dx;
+            this.SetTargetWidth(this.width);
+
+            return dx;
+        }
+
+        /// <summary>
+        /// Called when the control is loaded.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
+        /// </param>
+        private void DockPanelSplitterLoaded(object sender, RoutedEventArgs e)
+        {
+            var dp = this.Parent as Panel;
+            if (dp == null)
+            {
+                return;
+            }
+
+            // Subscribe to the parent's size changed event
+            dp.SizeChanged += this.ParentSizeChanged;
+
+            // Store the current size of the parent DockPanel
+            this.previousParentWidth = dp.ActualWidth;
+            this.previousParentHeight = dp.ActualHeight;
+
+            // Find the target element
+            this.UpdateTargetElement();
+        }
+
+        /// <summary>
+        /// Called when the control is unloaded.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
+        /// </param>
+        private void DockPanelSplitterUnloaded(object sender, RoutedEventArgs e)
+        {
+            var dp = this.Parent as Panel;
+            if (dp == null)
+            {
+                return;
+            }
+
+            // Unsubscribe
+            dp.SizeChanged -= this.ParentSizeChanged;
+        }
+
+        /// <summary>
+        /// Called when the parent element size is changed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.Windows.SizeChangedEventArgs"/> instance containing the event data.
+        /// </param>
+        private void ParentSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (!this.ProportionalResize)
+            {
+                return;
+            }
+
+            var dp = this.Parent as DockPanel;
+            if (dp == null)
+            {
+                return;
+            }
+
+            double sx = dp.ActualWidth / this.previousParentWidth;
+            double sy = dp.ActualHeight / this.previousParentHeight;
+
+            if (!double.IsInfinity(sx))
+            {
+                this.SetTargetWidth(this.element.Width * sx);
+            }
+
+            if (!double.IsInfinity(sy))
+            {
+                this.SetTargetHeight(this.element.Height * sy);
+            }
+
+            this.previousParentWidth = dp.ActualWidth;
+            this.previousParentHeight = dp.ActualHeight;
+        }
+
+        /// <summary>
+        /// Sets the height of the target.
+        /// </summary>
+        /// <param name="newHeight">
+        /// The new height.
+        /// </param>
+        private void SetTargetHeight(double newHeight)
+        {
+            if (newHeight < this.element.MinHeight)
+            {
+                newHeight = this.element.MinHeight;
+            }
+
+            if (newHeight > this.element.MaxHeight)
+            {
+                newHeight = this.element.MaxHeight;
+            }
+
+            // todo - constrain the height of the element to the available client area
+            var dp = this.Parent as Panel;
+            Dock dock = DockPanel.GetDock(this);
+            var t = this.element.TransformToAncestor(dp) as MatrixTransform;
+            if (dock == Dock.Top && newHeight > dp.ActualHeight - t.Matrix.OffsetY - this.Thickness)
+            {
+                newHeight = dp.ActualHeight - t.Matrix.OffsetY - this.Thickness;
+            }
+
+            this.element.Height = newHeight;
+        }
+
+        /// <summary>
+        /// Sets the width of the target.
+        /// </summary>
+        /// <param name="newWidth">
+        /// The new width.
+        /// </param>
+        private void SetTargetWidth(double newWidth)
+        {
+            if (newWidth < this.element.MinWidth)
+            {
+                newWidth = this.element.MinWidth;
+            }
+
+            if (newWidth > this.element.MaxWidth)
+            {
+                newWidth = this.element.MaxWidth;
+            }
+
+            // todo - constrain the width of the element to the available client area
+            var dp = this.Parent as Panel;
+            Dock dock = DockPanel.GetDock(this);
+            var t = this.element.TransformToAncestor(dp) as MatrixTransform;
+            if (dock == Dock.Left && newWidth > dp.ActualWidth - t.Matrix.OffsetX - this.Thickness)
+            {
+                newWidth = dp.ActualWidth - t.Matrix.OffsetX - this.Thickness;
+            }
+
+            this.element.Width = newWidth;
+        }
+
+        /// <summary>
+        /// Updates the width or height .
+        /// </summary>
+        private void UpdateHeightOrWidth()
+        {
+            if (this.IsHorizontal)
+            {
+                this.Height = this.Thickness;
+                this.Width = double.NaN;
+            }
+            else
+            {
+                this.Width = this.Thickness;
+                this.Height = double.NaN;
+            }
+        }
+
+        /// <summary>
+        /// Updates the target element (the element the DockPanelSplitter works on).
         /// </summary>
         private void UpdateTargetElement()
         {
-            Panel dp = Parent as Panel;
-            if (dp == null) return;
+            var dp = this.Parent as Panel;
+            if (dp == null)
+            {
+                return;
+            }
 
             int i = dp.Children.IndexOf(this);
 
@@ -176,146 +509,10 @@ namespace PropertyTools.Wpf
             // The splitter works on the 'older' sibling 
             if (i > 0 && dp.Children.Count > 0)
             {
-                element = dp.Children[i - 1] as FrameworkElement;
+                this.element = dp.Children[i - 1] as FrameworkElement;
             }
         }
 
-        private void SetTargetWidth(double newWidth)
-        {
-            if (newWidth < element.MinWidth)
-                newWidth = element.MinWidth;
-            if (newWidth > element.MaxWidth)
-                newWidth = element.MaxWidth;
-
-            // todo - constrain the width of the element to the available client area
-            Panel dp = Parent as Panel;
-            Dock dock = DockPanel.GetDock(this);
-            MatrixTransform t = element.TransformToAncestor(dp) as MatrixTransform;
-            if (dock == Dock.Left && newWidth > dp.ActualWidth - t.Matrix.OffsetX - Thickness)
-                newWidth = dp.ActualWidth - t.Matrix.OffsetX - Thickness;
-            
-            element.Width = newWidth;
-        }
-
-        private void SetTargetHeight(double newHeight)
-        {
-            if (newHeight < element.MinHeight)
-                newHeight = element.MinHeight;
-            if (newHeight > element.MaxHeight)
-                newHeight = element.MaxHeight;
-
-            // todo - constrain the height of the element to the available client area
-            Panel dp = Parent as Panel;
-            Dock dock = DockPanel.GetDock(this);
-            MatrixTransform t = element.TransformToAncestor(dp) as MatrixTransform;
-            if (dock == Dock.Top && newHeight > dp.ActualHeight - t.Matrix.OffsetY - Thickness)
-                newHeight = dp.ActualHeight - t.Matrix.OffsetY - Thickness;
-
-            element.Height = newHeight;
-        }
-
-        private void ParentSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (!ProportionalResize) return;
-
-            DockPanel dp = Parent as DockPanel;
-            if (dp == null) return;
-
-            double sx = dp.ActualWidth / previousParentWidth;
-            double sy = dp.ActualHeight / previousParentHeight;
-
-            if (!double.IsInfinity(sx))
-                SetTargetWidth(element.Width * sx);
-            if (!double.IsInfinity(sy))
-                SetTargetHeight(element.Height * sy);
-
-            previousParentWidth = dp.ActualWidth;
-            previousParentHeight = dp.ActualHeight;
-
-        }
-
-        double AdjustWidth(double dx, Dock dock)
-        {
-            if (dock == Dock.Right)
-                dx = -dx;
-
-            width += dx;
-            SetTargetWidth(width);
-
-            return dx;
-        }
-
-        double AdjustHeight(double dy, Dock dock)
-        {
-            if (dock == Dock.Bottom)
-                dy = -dy;
-
-            height += dy;
-            SetTargetHeight(height);
-
-            return dy;
-        }
-
-        Point StartDragPoint;
-
-        protected override void OnMouseEnter(MouseEventArgs e)
-        {
-            base.OnMouseEnter(e);
-            if (!IsEnabled) return;
-            Cursor = IsHorizontal ? Cursors.SizeNS : Cursors.SizeWE;
-        }
-
-        protected override void OnMouseDown(MouseButtonEventArgs e)
-        {
-            if (!IsEnabled) return;
-
-            if (!IsMouseCaptured)
-            {
-                StartDragPoint = e.GetPosition(Parent as IInputElement);
-                UpdateTargetElement();
-                if (element != null)
-                {
-                    width = element.ActualWidth;
-                    height = element.ActualHeight;
-                    CaptureMouse();
-                }
-            }
-
-            base.OnMouseDown(e);
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            if (IsMouseCaptured)
-            {
-                Point ptCurrent = e.GetPosition(Parent as IInputElement);
-                Point delta = new Point(ptCurrent.X - StartDragPoint.X, ptCurrent.Y - StartDragPoint.Y);
-                Dock dock = DockPanel.GetDock(this);
-
-                if (IsHorizontal)
-                    delta.Y = AdjustHeight(delta.Y, dock);
-                else
-                    delta.X = AdjustWidth(delta.X, dock);
-
-                bool isBottomOrRight = (dock == Dock.Right || dock == Dock.Bottom);
-
-                // When docked to the bottom or right, the position has changed after adjusting the size
-                if (isBottomOrRight)
-                    StartDragPoint = e.GetPosition(Parent as IInputElement);
-                else
-                    StartDragPoint = new Point(StartDragPoint.X + delta.X, StartDragPoint.Y + delta.Y);
-            }
-            base.OnMouseMove(e);
-        }
-
-        protected override void OnMouseUp(MouseButtonEventArgs e)
-        {
-            if (IsMouseCaptured)
-            {
-                ReleaseMouseCapture();
-            }
-            base.OnMouseUp(e);
-        }
-
+        #endregion
     }
 }

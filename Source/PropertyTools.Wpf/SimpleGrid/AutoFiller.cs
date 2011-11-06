@@ -1,19 +1,110 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AutoFiller.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
+    using System;
+
+    /// <summary>
+    /// The auto filler.
+    /// </summary>
     public class AutoFiller
     {
-        private Func<CellRef, object> GetCellValue;
-        private Func<CellRef, object, bool> TrySetCellValue;
+        #region Constants and Fields
 
+        /// <summary>
+        /// The get cell value.
+        /// </summary>
+        private readonly Func<CellRef, object> GetCellValue;
+
+        /// <summary>
+        /// The try set cell value.
+        /// </summary>
+        private readonly Func<CellRef, object, bool> TrySetCellValue;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutoFiller"/> class.
+        /// </summary>
+        /// <param name="getCellValue">
+        /// The get cell value.
+        /// </param>
+        /// <param name="trySetCellValue">
+        /// The try set cell value.
+        /// </param>
         public AutoFiller(Func<CellRef, object> getCellValue, Func<CellRef, object, bool> trySetCellValue)
         {
-            GetCellValue = getCellValue;
-            TrySetCellValue = trySetCellValue;
+            this.GetCellValue = getCellValue;
+            this.TrySetCellValue = trySetCellValue;
         }
 
-        public bool TryExtrapolate(CellRef cell, CellRef currentCell, CellRef selectionCell, CellRef autoFillRef, out object result)
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// The auto fill.
+        /// </summary>
+        /// <param name="currentCell">
+        /// The current cell.
+        /// </param>
+        /// <param name="selectionCell">
+        /// The selection cell.
+        /// </param>
+        /// <param name="autoFillRef">
+        /// The auto fill ref.
+        /// </param>
+        public void AutoFill(CellRef currentCell, CellRef selectionCell, CellRef autoFillRef)
+        {
+            for (int i = Math.Min(currentCell.Row, autoFillRef.Row);
+                 i <= Math.Max(currentCell.Row, autoFillRef.Row);
+                 i++)
+            {
+                for (int j = Math.Min(currentCell.Column, autoFillRef.Column);
+                     j <= Math.Max(currentCell.Column, autoFillRef.Column);
+                     j++)
+                {
+                    object value;
+                    var cell = new CellRef(i, j);
+                    if (this.TryExtrapolate(cell, currentCell, selectionCell, autoFillRef, out value))
+                    {
+                        this.TrySetCellValue(cell, value);
+
+                        // UpdateCellContent(cell);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// The try extrapolate.
+        /// </summary>
+        /// <param name="cell">
+        /// The cell.
+        /// </param>
+        /// <param name="currentCell">
+        /// The current cell.
+        /// </param>
+        /// <param name="selectionCell">
+        /// The selection cell.
+        /// </param>
+        /// <param name="autoFillRef">
+        /// The auto fill ref.
+        /// </param>
+        /// <param name="result">
+        /// The result.
+        /// </param>
+        /// <returns>
+        /// The try extrapolate.
+        /// </returns>
+        public bool TryExtrapolate(
+            CellRef cell, CellRef currentCell, CellRef selectionCell, CellRef autoFillRef, out object result)
         {
             int selMinRow = Math.Min(currentCell.Row, selectionCell.Row);
             int selMaxRow = Math.Max(currentCell.Row, selectionCell.Row);
@@ -33,29 +124,28 @@ namespace PropertyTools.Wpf
             object value = null;
             if (i < selMinRow)
             {
-                TryExtrapolate(cell, new CellRef(selMinRow, j), new CellRef(selMaxRow, j), out value);
+                this.TryExtrapolate(cell, new CellRef(selMinRow, j), new CellRef(selMaxRow, j), out value);
             }
 
             if (i > selMaxRow)
             {
-                TryExtrapolate(cell, new CellRef(selMinRow, j), new CellRef(selMaxRow, j), out value);
+                this.TryExtrapolate(cell, new CellRef(selMinRow, j), new CellRef(selMaxRow, j), out value);
             }
 
             if (j < selMinCol)
             {
-                TryExtrapolate(cell, new CellRef(i, selMinCol), new CellRef(i, selMaxCol), out value);
+                this.TryExtrapolate(cell, new CellRef(i, selMinCol), new CellRef(i, selMaxCol), out value);
             }
 
             if (j > selMaxCol)
             {
-                TryExtrapolate(cell, new CellRef(i, selMinCol), new CellRef(i, selMaxCol), out value);
+                this.TryExtrapolate(cell, new CellRef(i, selMinCol), new CellRef(i, selMaxCol), out value);
             }
 
             if (value == null)
             {
-                var source = new CellRef(PeriodicClamp(i, selMinRow, selMaxRow),
-                                         PeriodicClamp(j, selMinCol, selMaxCol));
-                value = GetCellValue(source);
+                var source = new CellRef(PeriodicClamp(i, selMinRow, selMaxRow), PeriodicClamp(j, selMinCol, selMaxCol));
+                value = this.GetCellValue(source);
             }
 
             if (value != null)
@@ -68,35 +158,25 @@ namespace PropertyTools.Wpf
             return false;
         }
 
+        #endregion
 
-        public void AutoFill(CellRef currentCell, CellRef selectionCell, CellRef autoFillRef)
-        {
-            for (int i = Math.Min(currentCell.Row, autoFillRef.Row);
-                 i <= Math.Max(currentCell.Row, autoFillRef.Row);
-                 i++)
-            {
-                for (int j = Math.Min(currentCell.Column, autoFillRef.Column);
-                     j <= Math.Max(currentCell.Column, autoFillRef.Column);
-                     j++)
-                {
-                    object value;
-                    var cell = new CellRef(i, j);
-                    if (TryExtrapolate(cell, currentCell, selectionCell, autoFillRef, out value))
-                    {
-                        TrySetCellValue(cell, value);
-                        // UpdateCellContent(cell);
-                    }
-                }
-            }
-        }
+        #region Methods
 
         /// <summary>
-        ///   Clamps i between i0 and i1.
+        /// Clamps i between i0 and i1.
         /// </summary>
-        /// <param name = "i">The input.</param>
-        /// <param name = "i0">The minimum value.</param>
-        /// <param name = "i1">The maximum value.</param>
-        /// <returns></returns>
+        /// <param name="i">
+        /// The input.
+        /// </param>
+        /// <param name="i0">
+        /// The minimum value.
+        /// </param>
+        /// <param name="i1">
+        /// The maximum value.
+        /// </param>
+        /// <returns>
+        /// The periodic clamp.
+        /// </returns>
         private static int PeriodicClamp(int i, int i0, int i1)
         {
             if (i0 >= i1)
@@ -114,12 +194,30 @@ namespace PropertyTools.Wpf
             return i0 + i2;
         }
 
+        /// <summary>
+        /// The try extrapolate.
+        /// </summary>
+        /// <param name="cell">
+        /// The cell.
+        /// </param>
+        /// <param name="p1">
+        /// The p 1.
+        /// </param>
+        /// <param name="p2">
+        /// The p 2.
+        /// </param>
+        /// <param name="result">
+        /// The result.
+        /// </param>
+        /// <returns>
+        /// The try extrapolate.
+        /// </returns>
         private bool TryExtrapolate(CellRef cell, CellRef p1, CellRef p2, out object result)
         {
             try
             {
-                var v1 = GetCellValue(p1);
-                var v2 = GetCellValue(p2);
+                var v1 = this.GetCellValue(p1);
+                var v2 = this.GetCellValue(p2);
 
                 try
                 {
@@ -171,5 +269,6 @@ namespace PropertyTools.Wpf
             }
         }
 
+        #endregion
     }
 }

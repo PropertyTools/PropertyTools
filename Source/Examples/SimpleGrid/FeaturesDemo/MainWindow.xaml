@@ -25,7 +25,7 @@
 					</TabItem>
 					
                     <TabItem Header="string[]">
-						<pt:SimpleGrid Content="{Binding Vector}" />
+						<pt:SimpleGrid Content="{Binding Vector}" AutoGenerateColumns="False" />
 					</TabItem>
 				</TabControl>
 			</TabItem>
@@ -133,9 +133,9 @@
                     <TabItem Header="CustomTemplates2">
                         <pt:SimpleGrid Content="{Binding ExampleItems}" DataFields="Boolean,Enum,Double,Integer,DateTime,String,Color" ColumnHeaders="Boolean,Enum,Double,Integer,Date,String,Color">
                             <pt:SimpleGrid.TypeDefinitions>
-                                <pt:TypeDefinition Type="{x:Type System:Double}" StringFormat="0.00" HorizontalAlignment="Right"/>
-                                <pt:TypeDefinition Type="{x:Type System:Int32}" StringFormat="0000" HorizontalAlignment="Left"/>
-                                <pt:TypeDefinition Type="{x:Type System:DateTime}" StringFormat="yyyy MMM dd" HorizontalAlignment="Center"/>
+                                <pt:TypeDefinition Type="{x:Type System:Double}" FormatString="0.00" HorizontalAlignment="Right"/>
+                                <pt:TypeDefinition Type="{x:Type System:Int32}" FormatString="0000" HorizontalAlignment="Left"/>
+                                <pt:TypeDefinition Type="{x:Type System:DateTime}" FormatString="yyyy MMM dd" HorizontalAlignment="Center"/>
                             </pt:SimpleGrid.TypeDefinitions>
                         </pt:SimpleGrid>
                     </TabItem>

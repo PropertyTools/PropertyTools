@@ -8,6 +8,9 @@ using System.Windows.Data;
 
 namespace MultiObjectEditingDemo
 {
+    using PropertyTools;
+    using PropertyTools.DataAnnotations;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

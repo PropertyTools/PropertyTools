@@ -1,98 +1,176 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PropertyDialog.xaml.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Reflection;
+    using System.Windows;
+
     /// <summary>
-    /// Automatic Property Dialog
-    /// Set the DataContext of the Dialog to the instance you want to edit.
+    /// Represents a property editing dialog.
     /// </summary>
     public partial class PropertyDialog : Window
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "PropertyDialog" /> class.
+        /// </summary>
         public PropertyDialog()
         {
-            InitializeComponent();
-            MaxWidth = SystemParameters.PrimaryScreenWidth*0.9;
-            MaxHeight = SystemParameters.PrimaryScreenHeight*0.9;
-            ApplyButton.Visibility = Visibility.Collapsed;
-            CloseButton.Visibility = Visibility.Collapsed;
-            HelpButton.Visibility = Visibility.Collapsed;
-            DataContextChanged += PropertyDialog_DataContextChanged;
+            this.InitializeComponent();
+            this.MaxWidth = SystemParameters.PrimaryScreenWidth * 0.9;
+            this.MaxHeight = SystemParameters.PrimaryScreenHeight * 0.9;
+            this.ApplyButton.Visibility = Visibility.Collapsed;
+            this.CloseButton.Visibility = Visibility.Collapsed;
+            this.HelpButton.Visibility = Visibility.Collapsed;
+            this.DataContextChanged += this.PropertyDialogDataContextChanged;
         }
 
-        #region Cinch
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
-        /// This stores the current "copy" of the object. 
-        /// If it is non-null, then we are in the middle of an 
-        /// editable operation.
+        ///   Gets or sets a value indicating whether the apply button is visible.
         /// </summary>
-        //  private Dictionary<string, object> _savedState;       
-        /// <summary>
-        /// This is used to clone the object.  
-        /// Override the method to provide a more efficient clone.  
-        /// The default implementation simply reflects across 
-        /// the object copying every field.
-        /// </summary>
-        /// <returns>Clone of current object</returns>
-        protected virtual Dictionary<string, object> GetFieldValues(object obj)
+        /// <value><c>true</c> if this instance can apply; otherwise, <c>false</c>.</value>
+        public bool CanApply
         {
-            return obj.GetType().GetProperties(BindingFlags.Public |
-                                               BindingFlags.NonPublic | BindingFlags.Instance)
-                .Where(pi => pi.CanRead && pi.GetIndexParameters().Length == 0)
-                .Select(pi => new {Key = pi.Name, Value = pi.GetValue(obj, null)})
-                .ToDictionary(k => k.Key, k => k.Value);
-        }
-
-        /// <summary>
-        /// This restores the state of the current object from the passed clone object.
-        /// </summary>
-        /// <param name="fieldValues">Object to restore state from</param>
-        /// <param name="obj"></param>
-        protected virtual void RestoreFieldValues(Dictionary<string, object> fieldValues, object obj)
-        {
-            foreach (PropertyInfo pi in obj.GetType().GetProperties(
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                .Where(pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
+            get
             {
-                object value;
-                if (fieldValues.TryGetValue(pi.Name, out value))
-                    pi.SetValue(obj, value, null);
-                else
-                {
-                    Debug.WriteLine("Failed to restore property " +
-                                    pi.Name + " from cloned values, property not found in Dictionary.");
-                }
+                return this.ApplyButton.Visibility == Visibility.Visible;
+            }
+
+            set
+            {
+                this.ApplyButton.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        ///   Gets the property control.
+        /// </summary>
+        /// <value>The property control.</value>
+        public PropertyControl PropertyControl
+        {
+            get
+            {
+                return this.propertyControl1;
             }
         }
 
         #endregion
 
+        #region Methods
 
-        public PropertyEditor PropertyControl
+        /// <summary>
+        /// This stores the current "copy" of the object. 
+        ///   If it is non-null, then we are in the middle of an 
+        ///   editable operation.
+        /// </summary>
+        /// <param name="obj">
+        /// The obj.
+        /// </param>
+        /// <summary>
+        /// This is used to clone the object.  
+        ///   Override the method to provide a more efficient clone.  
+        ///   The default implementation simply reflects across 
+        ///   the object copying every field.
+        /// </summary>
+        /// <returns>
+        /// Clone of current object
+        /// </returns>
+        protected virtual Dictionary<string, object> GetFieldValues(object obj)
         {
-            get { return propertyControl1; }
+            return
+                obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(
+                    pi => pi.CanRead && pi.GetIndexParameters().Length == 0).Select(
+                        pi => new { Key = pi.Name, Value = pi.GetValue(obj, null) }).ToDictionary(
+                            k => k.Key, k => k.Value);
         }
 
-        public bool CanApply
+        /// <summary>
+        /// This restores the state of the current object from the passed clone object.
+        /// </summary>
+        /// <param name="fieldValues">
+        /// Object to restore state from
+        /// </param>
+        /// <param name="obj">
+        /// </param>
+        protected virtual void RestoreFieldValues(Dictionary<string, object> fieldValues, object obj)
         {
-            get { return ApplyButton.Visibility == Visibility.Visible; }
-            set { ApplyButton.Visibility = value ? Visibility.Visible : Visibility.Collapsed; }
+            foreach (
+                var pi in
+                    obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).
+                        Where(pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
+            {
+                object value;
+                if (fieldValues.TryGetValue(pi.Name, out value))
+                {
+                    pi.SetValue(obj, value, null);
+                }
+                else
+                {
+                    Debug.WriteLine(
+                        "Failed to restore property " + pi.Name
+                        + " from cloned values, property not found in Dictionary.");
+                }
+            }
         }
 
-        private void PropertyDialog_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        /// <summary>
+        /// Clones the object memberwise.
+        /// </summary>
+        /// <param name="src">
+        /// The SRC.
+        /// </param>
+        /// <returns>
+        /// The memberwise clone.
+        /// </returns>
+        private static object MemberwiseClone(object src)
         {
-            BeginEdit();
+            var t = src.GetType();
+            var clone = Activator.CreateInstance(t);
+            foreach (
+                var pi in
+                    t.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(
+                        pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
+            {
+                pi.SetValue(clone, pi.GetValue(src, null), null);
+            }
+
+            return clone;
         }
 
+        /// <summary>
+        /// The apply button click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void ApplyButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.CommitChanges();
+        }
+
+        /// <summary>
+        /// Begins the edit.
+        /// </summary>
         private void BeginEdit()
         {
-            var editableDataContext = DataContext as IEditableObject;
+            var editableDataContext = this.DataContext as IEditableObject;
 
             if (editableDataContext != null)
             {
@@ -100,27 +178,34 @@ namespace PropertyTools.Wpf
             }
             else
             {
-                PropertyControl.DataContext = MemberwiseClone(DataContext);
+                this.PropertyControl.DataContext = MemberwiseClone(this.DataContext);
             }
         }
 
-        private void EndEdit()
+        /// <summary>
+        /// The cancel button click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            var editableDataContext = DataContext as IEditableObject;
-
-            if (editableDataContext != null)
-            {
-                editableDataContext.EndEdit();
-            }
-            else
-            {
-                CommitChanges();
-            }
+            // RestoreFieldValues(_savedState, DataContext);
+            // todo: only if modal dialog
+            this.DialogResult = false;
+            this.CancelEdit();
+            this.Close();
         }
 
+        /// <summary>
+        /// Cancels the edit.
+        /// </summary>
         private void CancelEdit()
         {
-            var editableDataContext = DataContext as IEditableObject;
+            var editableDataContext = this.DataContext as IEditableObject;
 
             if (editableDataContext != null)
             {
@@ -128,73 +213,112 @@ namespace PropertyTools.Wpf
             }
         }
 
-        private static object MemberwiseClone(object src)
+        /// <summary>
+        /// The close button click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
-            var t = src.GetType();
-            var clone = Activator.CreateInstance(t);
-            foreach (
-                PropertyInfo pi in t.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                    .Where(pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
-            {
-                pi.SetValue(clone, pi.GetValue(src, null), null);
-            }
-            return clone;
+            this.Close();
         }
 
+        /// <summary>
+        /// Commits the changes.
+        /// </summary>
         private void CommitChanges()
         {
             // copy changes from cloned object (stored in PropertyEditor.DataContext) 
             // to the original object (stored in DataContext)
-            var clone = PropertyControl.DataContext;
-            if (clone==null)
+            var clone = this.PropertyControl.DataContext;
+            if (clone == null)
+            {
                 return;
+            }
 
-            foreach (
-                var pi in
-                    clone.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                        .Where(pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
+            foreach (var pi in
+                clone.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).
+                    Where(pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
             {
                 var newValue = pi.GetValue(clone, null);
-                var oldValue = pi.GetValue(DataContext, null);
-                
-                if (oldValue==null && newValue==null)
-                    continue;
+                var oldValue = pi.GetValue(this.DataContext, null);
 
-                if (oldValue!=null && !oldValue.Equals(newValue))
-                    pi.SetValue(DataContext, newValue, null);
+                if (oldValue == null && newValue == null)
+                {
+                    continue;
+                }
+
+                if (oldValue != null && !oldValue.Equals(newValue))
+                {
+                    pi.SetValue(this.DataContext, newValue, null);
+                }
             }
         }
 
-
-        private void OkButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Ends the edit.
+        /// </summary>
+        private void EndEdit()
         {
-            // todo: only if modal dialog
-            DialogResult = true;
-            EndEdit();
-            Close();
+            var editableDataContext = this.DataContext as IEditableObject;
+
+            if (editableDataContext != null)
+            {
+                editableDataContext.EndEdit();
+            }
+            else
+            {
+                this.CommitChanges();
+            }
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// The help button click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void HelpButtonClick(object sender, RoutedEventArgs e)
         {
-            // RestoreFieldValues(_savedState, DataContext);
-            // todo: only if modal dialog
-            DialogResult = false;
-            CancelEdit();
-            Close();
         }
 
-        private void ApplyButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// The ok button click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void OkButtonClick(object sender, RoutedEventArgs e)
         {
-            CommitChanges();
+            this.DialogResult = true;
+            this.EndEdit();
+            this.Close();
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// The property dialog data context changed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void PropertyDialogDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Close();
+            this.BeginEdit();
         }
 
-        private void HelpButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
+        #endregion
     }
 }

@@ -1,45 +1,94 @@
-using System.ComponentModel;
-using System.Windows.Media;
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ColorWrapper.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf.Controls.ColorPicker
 {
+    using System.ComponentModel;
+    using System.Windows.Media;
+
     /// <summary>
-    /// Wrapper class for colors - needed to get unique items in the persistent color list
-    /// since Color.XXX added in multiple positions results in multiple items being selected.
-    /// Also needed to implement the INotifyPropertyChanged for binding support.
+    /// Represents a color.
     /// </summary>
+    /// <remarks>
+    /// Wrapper class for colors - needed to get unique items in the persistent color list
+    ///   since Color.XXX added in multiple positions results in multiple items being selected.
+    ///   Also needed to implement the INotifyPropertyChanged for binding support.
+    /// </remarks>
     public class ColorWrapper : INotifyPropertyChanged
     {
+        #region Constants and Fields
+
+        /// <summary>
+        /// The color.
+        /// </summary>
         private Color color;
 
+        #endregion
 
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorWrapper"/> class.
+        /// </summary>
+        /// <param name="c">
+        /// The c.
+        /// </param>
         public ColorWrapper(Color c)
         {
-            Color = c;
+            this.Color = c;
         }
 
-        public Color Color
-        {
-            get { return color; }
-            set
-            {
-                color = value;
-                OnPropertyChanged("Color");
-            }
-        }
+        #endregion
 
-        #region INotifyPropertyChanged Members
+        #region Public Events
 
+        /// <summary>
+        /// The property changed.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets Color.
+        /// </summary>
+        public Color Color
         {
-            if (PropertyChanged != null)
+            get
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                return this.color;
+            }
+
+            set
+            {
+                this.color = value;
+                this.OnPropertyChanged("Color");
             }
         }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The on property changed.
+        /// </summary>
+        /// <param name="propertyName">
+        /// The property name.
+        /// </param>
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
     }
 }

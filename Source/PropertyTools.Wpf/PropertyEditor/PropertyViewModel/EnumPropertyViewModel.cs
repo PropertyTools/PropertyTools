@@ -1,38 +1,77 @@
-﻿using System.Collections;
-using System.ComponentModel;
-using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="EnumPropertyViewModel.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
-    class EnumPropertyViewModel : PropertyViewModel
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+
+    /// <summary>
+    /// The enum property view model.
+    /// </summary>
+    internal class EnumPropertyViewModel : PropertyViewModel
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnumPropertyViewModel"/> class.
+        /// </summary>
+        /// <param name="instance">
+        /// The instance.
+        /// </param>
+        /// <param name="descriptor">
+        /// The descriptor.
+        /// </param>
+        /// <param name="owner">
+        /// The owner.
+        /// </param>
         public EnumPropertyViewModel(object instance, PropertyDescriptor descriptor, PropertyEditor owner)
             : base(instance, descriptor, owner)
-        { }
+        {
+        }
 
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets EnumValues.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// </exception>
         public object EnumValues
         {
             get
             {
                 object value;
-                if (IsEnumerable)
+                if (this.IsEnumerable)
                 {
-                    var list = Instance as IEnumerable;
+                    var list = this.Instance as IEnumerable;
                     if (list == null)
                     {
                         throw new InvalidOperationException("Instance should be an enumerable.");
                     }
-                    return GetValue(FirstInstance);
+
+                    return this.GetValue(this.FirstInstance);
                 }
                 else
                 {
-                    value = GetValue(Instance);
+                    value = this.GetValue(this.Instance);
                 }
 
-                if (!String.IsNullOrEmpty(FormatString))
-                    return FormatValue(value);
+                if (!string.IsNullOrEmpty(this.FormatString))
+                {
+                    return this.FormatValue(value);
+                }
+
                 return value;
             }
         }
+
+        #endregion
     }
 }

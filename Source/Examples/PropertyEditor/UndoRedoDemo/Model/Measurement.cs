@@ -3,7 +3,7 @@
     using System;
     using System.Globalization;
 
-    using PropertyTools.Wpf;
+    using PropertyTools.DataAnnotations;
 
     public class Measurement : UndoableObject
     {

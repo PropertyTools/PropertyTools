@@ -1,18 +1,15 @@
-﻿<Window x:Class="PropertyTools.Wpf.WizardDialog"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PropertyTools.Wpf"
-    Title="Wizard" Height="400" Width="600">
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
-            <Button Name="BackButton" Content="&lt;&lt; Back" Margin="0 0 8 0" Width="72"/>
-            <Button Name="NextButton" Content="Next &gt;&gt;" Margin="0 0 8 0" Width="72" IsDefault="True"/>
-            <Button Name="FinishButton" Content="Finish" Margin="0 0 8 0" Width="72"/>
-            <Button Name="CancelButton" Content="Cancel" Width="72" IsCancel="True"/>
-        </StackPanel>
-        <Border DockPanel.Dock="Top" Background="White" BorderBrush="Black" BorderThickness="0 0 0 1" Height="80">
-        </Border>
-        <Border DockPanel.Dock="Left" Width="140"/>
-        <local:PropertyEditor x:Name="propertyControl1" Margin="16"/>
-    </DockPanel>
+﻿<Window x:Class="PropertyTools.Wpf.WizardDialog" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:PropertyTools.Wpf" Title="Wizard"
+        Height="400" Width="600">
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
+      <Button Name="BackButton" Content="&lt;&lt; Back" Margin="0 0 8 0" Width="72" />
+      <Button Name="NextButton" Content="Next &gt;&gt;" Margin="0 0 8 0" Width="72" IsDefault="True" />
+      <Button Name="FinishButton" Content="Finish" Margin="0 0 8 0" Width="72" />
+      <Button Name="CancelButton" Content="Cancel" Width="72" IsCancel="True" />
+    </StackPanel>
+    <Border DockPanel.Dock="Top" Background="White" BorderBrush="Black" BorderThickness="0 0 0 1" Height="80"></Border>
+    <Border DockPanel.Dock="Left" Width="140" />
+    <local:PropertyEditor x:Name="propertyControl1" Margin="16" />
+  </DockPanel>
 </Window>

@@ -1,96 +1,94 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
-using System.Reflection;
-using System.Windows.Data;
-using System.Collections;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="EnumDescriptionConverter.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
-	/// <summary>
-	/// The EnumDescriptionConverter gets the Description attribute for Enum values.
-	/// </summary>
-	[ValueConversion(typeof(object), typeof(string))]
-	public class EnumDescriptionConverter : IValueConverter
-	{
-		#region IValueConverter Members
+    using System;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+    using System.Windows.Data;
 
-		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-		{
+    /// <summary>
+    /// Converts <see cref="Enum"/> instances to description <see cref="string"/> instances.
+    /// </summary>
+    [ValueConversion(typeof(object), typeof(string))]
+    public class EnumDescriptionConverter : IValueConverter
+    {
+        #region Public Methods
+
+        /// <summary>
+        /// Converts a value.
+        /// </summary>
+        /// <param name="value">
+        /// The value produced by the binding source.
+        /// </param>
+        /// <param name="targetType">
+        /// The type of the binding target property.
+        /// </param>
+        /// <param name="parameter">
+        /// The converter parameter to use.
+        /// </param>
+        /// <param name="culture">
+        /// The culture to use in the converter.
+        /// </param>
+        /// <returns>
+        /// A converted value. If the method returns null, the valid null value is used.
+        /// </returns>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
             if (value == null)
+            {
                 return string.Empty;
+            }
 
-			// Default, non-converted result.
-			string result = value.ToString();
+            // Default, non-converted result.
+            string result = value.ToString();
 
-			var field = value.GetType().GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public).FirstOrDefault(f => f.GetValue(null).Equals(value));
+            var field =
+                value.GetType().GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public).
+                    FirstOrDefault(f => f.GetValue(null).Equals(value));
 
-			if (field != null)
-			{
-				var descriptionAttribute = field.GetCustomAttributes<DescriptionAttribute>(true).FirstOrDefault();
-				if (descriptionAttribute != null)
-				{
-					// Found the attribute, assign description
-					result = descriptionAttribute.Description;
-				}
-			}
+            if (field != null)
+            {
+                var descriptionAttribute = field.GetCustomAttributes<DescriptionAttribute>(true).FirstOrDefault();
+                if (descriptionAttribute != null)
+                {
+                    // Found the attribute, assign description
+                    result = descriptionAttribute.Description;
+                }
+            }
 
-			return result;
-		}
+            return result;
+        }
 
-		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-		{
-			throw new NotSupportedException();
-		}
+        /// <summary>
+        /// Converts a value.
+        /// </summary>
+        /// <param name="value">
+        /// The value that is produced by the binding target.
+        /// </param>
+        /// <param name="targetType">
+        /// The type to convert to.
+        /// </param>
+        /// <param name="parameter">
+        /// The converter parameter to use.
+        /// </param>
+        /// <param name="culture">
+        /// The culture to use in the converter.
+        /// </param>
+        /// <returns>
+        /// A converted value. If the method returns null, the valid null value is used.
+        /// </returns>
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
 
-		#endregion
-	}
-
-	public static class ReflectionExtensions
-	{
-		public static IEnumerable<T> GetCustomAttributes<T>(this FieldInfo fieldInfo, bool inherit)
-		{
-			return fieldInfo.GetCustomAttributes(typeof(T), inherit).Cast<T>();
-		}
-
-		/// <summary>
-		/// Filters on the browsable attribute.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="arr">The arr.</param>
-		/// <returns></returns>
-		public static List<object> FilterOnBrowsableAttribute<T>( this T arr ) where T : IEnumerable
-		{
-			// Default empty list
-			List<object> res = new List<object>();
-
-			// Loop each item in the enumerable
-			foreach( var o in arr ) {
-				// Get the field information for the current field
-				FieldInfo field = o.GetType().GetField( o.ToString(), BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public );
-				if( field != null ) {
-					// Get the Browsable attribute, if it is declared for this field
-					var browsable = field.GetCustomAttributes<BrowsableAttribute>( true ).FirstOrDefault();
-					if( browsable != null ) {
-						// It is declared, is it true or false?
-						if( browsable.Browsable ) {
-							// Is true - field is not hidden so add it to the result.
-							res.Add( o );
-						}
-					}
-					else {
-						// Not declared so add it to the result
-						res.Add( o );
-					}
-				}
-				else {
-					// Can't evaluate, include it.
-					res.Add( o );
-				}
-			}
-
-			return res;
-		}
-	}
+        #endregion
+    }
 }

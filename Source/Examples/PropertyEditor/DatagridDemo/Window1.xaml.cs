@@ -5,6 +5,9 @@ using PropertyTools.Wpf;
 
 namespace DatagridDemo
 {
+    using PropertyTools;
+    using PropertyTools.DataAnnotations;
+
     /// <summary>
     ///   Interaction logic for Window1.xaml
     /// </summary>

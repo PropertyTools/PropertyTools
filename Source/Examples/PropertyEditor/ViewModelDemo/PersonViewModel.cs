@@ -4,6 +4,9 @@ using PropertyTools.Wpf;
 
 namespace ViewModelDemo
 {
+    using PropertyTools;
+    using PropertyTools.DataAnnotations;
+
     public class PersonViewModel : INotifyPropertyChanged, IDataErrorInfo, IPropertyStateUpdater
     {
         private readonly Person model;

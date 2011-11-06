@@ -1,4 +1,10 @@
-﻿namespace PropertyTools.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TimeSpanParser.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace PropertyTools.Wpf
 {
     using System;
     using System.Globalization;
@@ -9,35 +15,55 @@
     /// </summary>
     public class TimeSpanParser
     {
-        private static readonly Regex parserExpression = new Regex(@"([0-9]*[,|.]?[0-9]*)\s*([d|h|m|s|'|""]?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        #region Constants and Fields
+
+        /// <summary>
+        /// The parser expression.
+        /// </summary>
+        private static readonly Regex parserExpression = new Regex(
+            @"([0-9]*[,|.]?[0-9]*)\s*([d|h|m|s|'|""]?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Parses the specified value.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="formatString">The format string.</param>
-        /// <returns>A TimeSpan.</returns>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="formatString">
+        /// The format string.
+        /// </param>
+        /// <returns>
+        /// A TimeSpan.
+        /// </returns>
         public static TimeSpan Parse(string value, string formatString = null)
         {
             // todo: parse the formatstring and evaluate the timespan
             // Examples
             // FormatString = MM:ss, value = "91:12" => 91 minutes 12seconds
             // FormatString = HH:mm, value = "91:12" => 91 hours 12minutes
-
             if (value.Contains(":"))
+            {
                 return TimeSpan.Parse(value, CultureInfo.InvariantCulture);
+            }
 
             // otherwise support values as:
             // "12d"
             // "12d 5h"
             // "5m 3s"
             // "12.5d"
-            TimeSpan total = new TimeSpan();
+            var total = new TimeSpan();
             foreach (Match m in parserExpression.Matches(value))
             {
                 string number = m.Groups[1].Value;
                 if (string.IsNullOrWhiteSpace(number))
+                {
                     continue;
+                }
+
                 double d = double.Parse(number.Replace(',', '.'), CultureInfo.InvariantCulture);
                 string unit = m.Groups[2].Value;
                 switch (unit.ToLower())
@@ -59,7 +85,10 @@
                         break;
                 }
             }
+
             return total;
         }
+
+        #endregion
     }
 }

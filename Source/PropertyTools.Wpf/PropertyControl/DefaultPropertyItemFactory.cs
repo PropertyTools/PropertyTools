@@ -168,13 +168,13 @@ namespace PropertyTools.Wpf
 
             var pi = new PropertyItem
                 {
-                    Descriptor = pd, 
-                    Properties = properties, 
-                    Instance = instance, 
-                    DisplayName = this.GetDisplayName(pd, instance), 
-                    ToolTip = this.GetToolTip(pd, instance), 
-                    Category = this.GetLocalizedString(categoryName, instance), 
-                    Tab = this.GetLocalizedString(tabName, instance), 
+                    Descriptor = pd,
+                    Properties = properties,
+                    Instance = instance,
+                    DisplayName = this.GetDisplayName(pd, instance),
+                    ToolTip = this.GetToolTip(pd, instance),
+                    Category = this.GetLocalizedString(categoryName, instance),
+                    Tab = this.GetLocalizedString(tabName, instance),
                 };
 
             // Find descriptors by convention
@@ -207,6 +207,15 @@ namespace PropertyTools.Wpf
             foreach (var da in pi.GetAttributes<DataTypeAttribute>())
             {
                 pi.DataTypes.Add(da.DataType);
+                switch (da.DataType)
+                {
+                    case DataType.MultilineText:
+                        pi.AcceptsReturn = true;
+                        break;
+                    case DataType.Password:
+                        pi.IsPassword = true;
+                        break;
+                }
             }
 
             foreach (var da in pi.GetAttributes<ColumnAttribute>())
@@ -288,12 +297,6 @@ namespace PropertyTools.Wpf
             if (hpa != null)
             {
                 pi.HeaderPlacement = hpa.HeaderPlacement;
-            }
-
-            var dta = pi.GetAttribute<DataTypeAttribute>();
-            if (dta != null)
-            {
-                pi.IsPassword = dta.DataType == DataType.Password;
             }
 
             var ha = pi.GetAttribute<HeightAttribute>();

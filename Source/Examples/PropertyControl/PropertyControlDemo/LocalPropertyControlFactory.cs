@@ -11,13 +11,13 @@ namespace PropertyControlDemo
     {
         public FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
         {
-            if (pi.Is(typeof(DateTime)))
-            {
-                var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-                dp.SetBinding(DatePicker.SelectedDateProperty,
-                    new Binding(pi.Descriptor.Name) { ValidatesOnDataErrors = true });
-                return dp;
-            }
+            //if (pi.Is(typeof(DateTime)))
+            //{
+            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
+            //    dp.SetBinding(DatePicker.SelectedDateProperty,
+            //        new Binding(pi.Descriptor.Name) { ValidatesOnDataErrors = true });
+            //    return dp;
+            //}
 
             return null;
         }

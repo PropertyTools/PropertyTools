@@ -196,8 +196,10 @@
     <Compile Include="Controls\LinkBlock.cs" />
     <Compile Include="Controls\PopupBox\PopupBox.cs" />
     <Compile Include="Controls\SliderEx.cs" />
+    <Compile Include="Controls\StackPanelEx.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\ZeroToVisibilityConverter.cs" />
     <Compile Include="Converters\DrawingColorToMediaColorConverter.cs" />
     <Compile Include="Converters\DoubleToGridLengthConverter.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />

@@ -8,6 +8,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
+    using System.Linq;
 
     /// <summary>
     /// The type helper.

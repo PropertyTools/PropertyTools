@@ -2,6 +2,9 @@
 // <copyright file="DefaultPropertyItemFactory.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Provides a default property item factory.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
@@ -11,6 +14,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Text;
+    using System.Windows.Data;
 
     using PropertyTools.DataAnnotations;
 
@@ -30,6 +34,7 @@ namespace PropertyTools.Wpf
             this.VisiblePattern = "Is{0}Visible";
             this.OptionalPattern = "Use{0}";
             this.NicifyDisplayNames = true;
+            this.InheritCategories = true;
         }
 
         #endregion
@@ -53,6 +58,11 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The enabled pattern.</value>
         public string EnabledPattern { get; set; }
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether each property should inherit the category attribute from the property declared before.
+        /// </summary>
+        public bool InheritCategories { get; set; }
 
         /// <summary>
         ///   Gets or sets a value indicating whether to 'nicify' display names.
@@ -84,6 +94,17 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The current category.</value>
         private string CurrentCategory { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the type of the current component.
+        /// </summary>
+        /// <remarks>
+        ///   This is used to avoid that Category attributes are inherited from superclass to subclass.
+        /// </remarks>
+        /// <value>
+        ///   The type of the current component.
+        /// </value>
+        private Type CurrentComponentType { get; set; }
 
         #endregion
 
@@ -146,6 +167,18 @@ namespace PropertyTools.Wpf
             var tabName = this.DefaultTabName ?? instance.GetType().Name;
             var categoryName = this.DefaultCategoryName ?? "Misc";
 
+            if (pd.ComponentType != this.CurrentComponentType)
+            {
+                this.CurrentCategory = null;
+            }
+
+            if (!this.InheritCategories)
+            {
+                this.CurrentCategory = null;
+            }
+
+            this.CurrentComponentType = pd.ComponentType;
+
             var ca = AttributeHelper.GetFirstAttribute<CategoryAttribute>(pd);
             if (ca != null)
             {
@@ -168,13 +201,13 @@ namespace PropertyTools.Wpf
 
             var pi = new PropertyItem
                 {
-                    Descriptor = pd,
-                    Properties = properties,
-                    Instance = instance,
-                    DisplayName = this.GetDisplayName(pd, instance),
-                    ToolTip = this.GetToolTip(pd, instance),
-                    Category = this.GetLocalizedString(categoryName, instance),
-                    Tab = this.GetLocalizedString(tabName, instance),
+                    Descriptor = pd, 
+                    Properties = properties, 
+                    Instance = instance, 
+                    DisplayName = this.GetDisplayName(pd, instance), 
+                    ToolTip = this.GetToolTip(pd, instance), 
+                    Category = this.GetLocalizedString(categoryName, instance), 
+                    Tab = this.GetLocalizedString(tabName, instance), 
                 };
 
             // Find descriptors by convention
@@ -267,12 +300,14 @@ namespace PropertyTools.Wpf
                 pi.HeaderPlacement = HeaderPlacement.Hidden;
             }
 
+            pi.IsEditable = pi.GetAttribute<IsEditableAttribute>() != null;
+
             pi.AutoUpdateText = pi.GetAttribute<AutoUpdateTextAttribute>() != null;
 
-            var vpa = pi.GetAttribute<ValuesPropertyAttribute>();
-            if (vpa != null)
+            var ispa = pi.GetAttribute<ItemsSourcePropertyAttribute>();
+            if (ispa != null)
             {
-                pi.ValuesDescriptor = properties.Find(vpa.PropertyName, false);
+                pi.ItemsSourceDescriptor = properties.Find(ispa.PropertyName, false);
             }
 
             var rpa = pi.GetAttribute<BasePathPropertyAttribute>();
@@ -285,6 +320,30 @@ namespace PropertyTools.Wpf
             if (fa != null)
             {
                 pi.FilterDescriptor = properties.Find(fa.PropertyName, false);
+            }
+
+            var fsa = pi.GetAttribute<FormatStringAttribute>();
+            if (fsa != null)
+            {
+                pi.FormatString = fsa.FormatString;
+            }
+
+            var coa = pi.GetAttribute<ConverterAttribute>();
+            if (coa != null)
+            {
+                pi.Converter = Activator.CreateInstance(coa.ConverterType) as IValueConverter;
+            }
+
+            var sa = pi.GetAttribute<SlidableAttribute>();
+            if (sa != null)
+            {
+                pi.IsSlidable = true;
+                pi.SliderMinimum = sa.Minimum;
+                pi.SliderMaximum = sa.Maximum;
+                pi.SliderSmallChange = sa.SmallChange;
+                pi.SliderLargeChange = sa.LargeChange;
+                pi.SliderSnapToTicks=sa.SnapToTicks;
+                pi.SliderTickFrequency=sa.TickFrequency;
             }
 
             var wpa = pi.GetAttribute<WidePropertyAttribute>();
@@ -379,6 +438,7 @@ namespace PropertyTools.Wpf
         public void Initialize()
         {
             this.CurrentCategory = null;
+            this.CurrentComponentType = null;
         }
 
         #endregion

@@ -95,13 +95,27 @@
             </Grid>
         </ControlTemplate>
 
+        <pt:ValidationErrorsToStringConverter x:Key="ValiationErrorsToStringConverter" />
 
+        <DataTemplate x:Key="ValidationErrorTemplate1">
+            <Grid Margin="0 4 0 4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Source="Images\error.png" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Height="24"/>
+                <TextBlock Grid.Column="1" Text="{Binding Converter={StaticResource ValiationErrorsToStringConverter}}" Margin="4 0 0 0" Foreground="Red" VerticalAlignment="Center"/>
+            </Grid>
+        </DataTemplate>
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="File"></MenuItem>
+            <MenuItem Header="File">
+                <MenuItem Header="Exit" Click="FileExitClick"/>
+            </MenuItem>
             <MenuItem Header="PropertyControl">
                 <MenuItem Header="Show checkbox headers" IsChecked="{Binding ShowCheckBoxHeaders, ElementName=pc}" IsCheckable="true"/>
+                <MenuItem Header="Show description icons" IsChecked="{Binding ShowDescriptionIcons, ElementName=pc}" IsCheckable="true"/>
                 <MenuItem Header="Show declared only" IsChecked="{Binding ShowDeclaredOnly, ElementName=pc}" IsCheckable="true"/>
                 <MenuItem Header="Show read-only properties" IsChecked="{Binding ShowReadOnlyProperties, ElementName=pc}" IsCheckable="true"/>
                 <MenuItem Header="Use tabs" IsChecked="{Binding UseTabs, ElementName=pc}" IsCheckable="true"/>
@@ -120,6 +134,7 @@
                      BorderThickness="0 0 1 0"/>
 
             <pt:PropertyControl Grid.Column="1" x:Name="pc" 
+                                ValidationErrorTemplate="{StaticResource ValidationErrorTemplate1}"
                 CategoryControlTemplate="{StaticResource CategoryControlTemplate1}"
                 CategoryHeaderTemplate="{StaticResource HeaderTemplate1}"
                 TabHeaderTemplate="{StaticResource HeaderTemplate2}"

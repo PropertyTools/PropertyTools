@@ -33,6 +33,9 @@ namespace TestLibrary
         public string String { get; set; }
 
         [Optional]
+        public double Double { get; set; }
+
+        [Optional]
         public Color? Color { get; set; }
 
         [Optional]

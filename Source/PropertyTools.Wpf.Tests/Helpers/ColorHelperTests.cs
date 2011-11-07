@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using PropertyTools.Wpf;
 using System.Windows.Media;
 
 namespace PropertyTools.Wpf.Tests

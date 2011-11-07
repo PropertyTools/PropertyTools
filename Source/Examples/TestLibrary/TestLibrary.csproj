@@ -47,9 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tests\TestAutoUpdateTextAttribute.cs" />
+    <Compile Include="Tests\TestConverterAttribute.cs" />
     <Compile Include="Tests\TestDataAnnotations.cs" />
     <Compile Include="Tests\TestDataTypes.cs" />
     <Compile Include="Tests\TestExceptions.cs" />
+    <Compile Include="Tests\TestFormatStringAttribute.cs" />
     <Compile Include="Tests\TestImageSource.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="Tests\TestCommentAttribute.cs" />
@@ -57,6 +59,7 @@
     <Compile Include="Tests\TestDictionary.cs" />
     <Compile Include="Tests\TestPassword.cs" />
     <Compile Include="Tests\TestPerformance.cs" />
+    <Compile Include="Tests\TestSlidableAttribute.cs" />
     <Compile Include="Tests\TestSubClass.cs" />
     <Compile Include="Tests\TestDirectoryPathAttribute.cs" />
     <Compile Include="Tests\TestAutomaticDisplayNames.cs" />
@@ -72,8 +75,9 @@
     <Compile Include="Tests\TestAdvancedTypes.cs" />
     <Compile Include="Tests\TestReadOnlyProperties.cs" />
     <Compile Include="Tests\TestSimpleTypes.cs" />
-    <Compile Include="Tests\TestValuesPropertyAttribute.cs" />
+    <Compile Include="Tests\TestItemsSourcePropertyAttribute.cs" />
     <Compile Include="Tests\TestHeaderPlacementAttribute.cs" />
+    <Compile Include="Tests\TestVisibleProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj">

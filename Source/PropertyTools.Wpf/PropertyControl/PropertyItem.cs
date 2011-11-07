@@ -10,6 +10,7 @@ namespace PropertyTools.Wpf
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
     using System.Windows;
     using System.Windows.Data;
     using System.Windows.Input;
@@ -76,6 +77,14 @@ namespace PropertyTools.Wpf
         /// <value>The converter.</value>
         public IValueConverter Converter { get; set; }
 
+        /// <summary>
+        /// Gets or sets the converter culture.
+        /// </summary>
+        /// <value>
+        /// The converter culture.
+        /// </value>
+        public CultureInfo ConverterCulture { get; set; }
+        
         /// <summary>
         ///   Gets the data types.
         /// </summary>
@@ -155,12 +164,17 @@ namespace PropertyTools.Wpf
         public object Instance { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is a comment.
+        ///   Gets or sets a value indicating whether the property is a comment.
         /// </summary>
         public bool IsComment { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is a directory path.
+        /// Gets or sets a value indicating whether the property is editable.
+        /// </summary>
+        public bool IsEditable { get; set; }
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether the property is a directory path.
         /// </summary>
         public bool IsDirectoryPath { get; set; }
 
@@ -171,12 +185,12 @@ namespace PropertyTools.Wpf
         public PropertyDescriptor IsEnabledDescriptor { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is a file open dialog.
+        ///   Gets or sets a value indicating whether the property is a file open dialog.
         /// </summary>
         public bool IsFileOpenDialog { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is a file path.
+        ///   Gets or sets a value indicating whether the property is a file path.
         /// </summary>
         public bool IsFilePath { get; set; }
 
@@ -186,7 +200,7 @@ namespace PropertyTools.Wpf
         public bool IsOptional { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is a password.
+        ///   Gets or sets a value indicating whether the property is a password.
         /// </summary>
         public bool IsPassword { get; set; }
 
@@ -297,7 +311,7 @@ namespace PropertyTools.Wpf
         public object ToolTip { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance should use radio buttons.
+        ///   Gets or sets a value indicating whether the property should use radio buttons.
         /// </summary>
         public bool UseRadioButtons { get; set; }
 
@@ -305,7 +319,42 @@ namespace PropertyTools.Wpf
         ///   Gets or sets the values descriptor.
         /// </summary>
         /// <value>The values descriptor.</value>
-        public PropertyDescriptor ValuesDescriptor { get; set; }
+        public PropertyDescriptor ItemsSourceDescriptor { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is slidable.
+        /// </summary>
+        public bool IsSlidable { get; set; }
+
+        /// <summary>
+        /// Gets or sets the slider minimum.
+        /// </summary>
+        public double SliderMinimum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the slider maximum.
+        /// </summary>
+        public double SliderMaximum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the slider small change.
+        /// </summary>
+        public double SliderSmallChange { get; set; }
+
+        /// <summary>
+        /// Gets or sets the slider large change.
+        /// </summary>
+        public double SliderLargeChange { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the slider snaps to the ticks.
+        /// </summary>
+        public bool SliderSnapToTicks { get; set; }
+
+        /// <summary>
+        /// Gets or sets the slider tick frequency.
+        /// </summary>
+        public double SliderTickFrequency { get; set; }
 
         #endregion
 
@@ -322,9 +371,10 @@ namespace PropertyTools.Wpf
         /// </returns>
         public T GetAttribute<T>() where T : Attribute
         {
+            var type = typeof(T);
             foreach (var a in this.Descriptor.Attributes)
             {
-                if (a.GetType() == typeof(T))
+                if (type.IsAssignableFrom(a.GetType()))
                 {
                     return a as T;
                 }
@@ -344,9 +394,10 @@ namespace PropertyTools.Wpf
         /// </returns>
         public IEnumerable<T> GetAttributes<T>() where T : Attribute
         {
+            var type = typeof(T);
             foreach (var a in this.Descriptor.Attributes)
             {
-                if (a.GetType() == typeof(T))
+                if (type.IsAssignableFrom(a.GetType()))
                 {
                     yield return a as T;
                 }

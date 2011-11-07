@@ -1,29 +1,35 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullToBoolConverter.cs" company="PropertyTools">
+// <copyright file="ZeroToVisibilityConverter.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Converts <see cref="int" /> instances to <see cref="Visibility" /> instances.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
 
     /// <summary>
-    /// Null to bool value converter
+    /// Converts <see cref="int"/> instances to <see cref="Visibility"/> instances.
     /// </summary>
-    [ValueConversion(typeof(bool), typeof(object))]
-    public class NullToBoolConverter : IValueConverter
+    [ValueConversion(typeof(int), typeof(Visibility))]
+    public class ZeroToVisibilityConverter : IValueConverter
     {
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "NullToBoolConverter" /> class.
+        /// Initializes a new instance of the <see cref="ZeroToVisibilityConverter"/> class. 
+        ///   Initializes a new instance of the <see cref="NullToVisibilityConverter"/> class.
         /// </summary>
-        public NullToBoolConverter()
+        public ZeroToVisibilityConverter()
         {
-            this.NullValue = true;
+            this.ZeroVisibility = Visibility.Collapsed;
+            this.NotZeroVisibility = Visibility.Visible;
         }
 
         #endregion
@@ -31,9 +37,16 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the value returned when the source value is null.
+        ///   Gets or sets the not null visibility.
         /// </summary>
-        public bool NullValue { get; set; }
+        /// <value>The not null visibility.</value>
+        public Visibility NotZeroVisibility { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the null visibility.
+        /// </summary>
+        /// <value>The null visibility.</value>
+        public Visibility ZeroVisibility { get; set; }
 
         #endregion
 
@@ -59,17 +72,16 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value is int)
             {
-                return this.NullValue;
+                var i = (int)value;
+                if (i == 0)
+                {
+                    return this.ZeroVisibility;
+                }
             }
 
-            if (value is double && double.IsNaN((double)value))
-            {
-                return this.NullValue;
-            }
-
-            return !this.NullValue;
+            return this.NotZeroVisibility;
         }
 
         /// <summary>
@@ -92,34 +104,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var b = (bool)value;
-            if (b != this.NullValue)
-            {
-                var ult = Nullable.GetUnderlyingType(targetType);
-                if (ult != null)
-                {
-                    if (ult == typeof(DateTime))
-                    {
-                        return DateTime.Now;
-                    }
-
-                    return Activator.CreateInstance(ult);
-                }
-
-                if (targetType == typeof(string))
-                {
-                    return string.Empty;
-                }
-                
-                return Activator.CreateInstance(targetType);
-            }
-
-            if (targetType == typeof(double))
-            {
-                return double.NaN;
-            }
-            
-            return null;
+            throw new NotImplementedException();
         }
 
         #endregion

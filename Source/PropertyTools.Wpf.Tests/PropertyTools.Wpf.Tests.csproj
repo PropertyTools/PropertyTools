@@ -81,6 +81,7 @@
     <Compile Include="Converters\ConverterTests.cs" />
     <Compile Include="Helpers\TimeSpanParserTests.cs" />
     <Compile Include="Helpers\TimeSpanFormatterTests.cs" />
+    <Compile Include="Helpers\TypeHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyEditor\EnumerationFiltering.cs" />
     <Compile Include="SimpleGrid\ReflectionMathTests.cs" />

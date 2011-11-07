@@ -4,9 +4,7 @@ namespace TestLibrary
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Reflection;
     using System.Text;
-    using System.Windows.Controls;
 
     using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
 
@@ -40,13 +38,6 @@ namespace TestLibrary
         [CustomValidation(typeof(AWValidation), "ValidateSalesPerson")]
         public string SalesPerson { get; set; }
 
-        [Category("DataType")]
-        [DataType(DataType.Html)]
-        public string DataTypeHtml { get; set; }
-
-        [DataType(DataType.EmailAddress)]
-        public string DataTypeEmailAddress { get; set; }
-
         public TestDataAnnotations()
         {
             AngleInDegrees = 360;
@@ -74,8 +65,15 @@ namespace TestLibrary
 
                 var context = new ValidationContext(this, null, null) { MemberName = columnName };
                 var validationResults = new List<ValidationResult>();
-                if (!Validator.TryValidateProperty(value, context, validationResults)) return validationResults.ToString();
-
+                if (!Validator.TryValidateProperty(value, context, validationResults))
+                {
+                    var sb = new StringBuilder();
+                    foreach (var vr in validationResults)
+                    {
+                        sb.AppendLine(vr.ErrorMessage);
+                    }
+                    return sb.ToString().Trim();
+                }
                 return null;
             }
         }

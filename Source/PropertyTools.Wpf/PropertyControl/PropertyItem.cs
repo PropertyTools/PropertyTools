@@ -16,7 +16,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Input;
     using System.Windows.Media;
 
-    using PropertyTools.DataAnnotations;
+    using DataAnnotations;
 
     /// <summary>
     /// Represents a property.
@@ -26,10 +26,16 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "PropertyItem" /> class.
+        /// Initializes a new instance of the <see cref="PropertyItem"/> class.
         /// </summary>
-        public PropertyItem()
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="instance">The instance.</param>
+        public PropertyItem(PropertyDescriptor propertyDescriptor, object instance)
         {
+            this.Descriptor = propertyDescriptor;
+            this.Properties = TypeDescriptor.GetProperties(instance);
+            this.Instance = instance;
+
             this.Height = double.NaN;
             this.MaximumHeight = double.PositiveInfinity;
             this.MaxLength = int.MaxValue;
@@ -37,6 +43,10 @@ namespace PropertyTools.Wpf
             this.HeaderPlacement = HeaderPlacement.Left;
             this.DataTypes = new List<DataType>();
             this.Columns = new List<ColumnAttribute>();
+
+            this.ListCanAdd = true;
+            this.ListCanRemove = true;
+            this.ListMaximumNumberOfItems = int.MaxValue;
         }
 
         #endregion
@@ -60,6 +70,12 @@ namespace PropertyTools.Wpf
         public string Category { get; set; }
 
         /// <summary>
+        ///   Gets or sets the category description.
+        /// </summary>
+        /// <value>The category.</value>
+        public string CategoryDescription { get; set; }
+
+        /// <summary>
         ///   Gets or sets the category icon.
         /// </summary>
         /// <value>The category icon.</value>
@@ -78,13 +94,21 @@ namespace PropertyTools.Wpf
         public IValueConverter Converter { get; set; }
 
         /// <summary>
+        /// Gets or sets the converter parameter.
+        /// </summary>
+        /// <value>
+        /// The converter parameter.
+        /// </value>
+        public object ConverterParameter { get; set; }
+
+        /// <summary>
         /// Gets or sets the converter culture.
         /// </summary>
         /// <value>
         /// The converter culture.
         /// </value>
         public CultureInfo ConverterCulture { get; set; }
-        
+
         /// <summary>
         ///   Gets the data types.
         /// </summary>
@@ -293,10 +317,34 @@ namespace PropertyTools.Wpf
         public string Tab { get; set; }
 
         /// <summary>
+        ///   Gets or sets the tab description.
+        /// </summary>
+        /// <value>The tab.</value>
+        public string TabDescription { get; set; }
+
+        /// <summary>
         ///   Gets or sets the tab icon.
         /// </summary>
         /// <value>The tab icon.</value>
         public ImageSource TabIcon { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether items can be added to the list.
+        /// </summary>
+        public bool ListCanAdd { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether items can be removed from the list.
+        /// </summary>
+        public bool ListCanRemove { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list maximum number of items.
+        /// </summary>
+        /// <value>
+        /// The list maximum number of items.
+        /// </value>
+        public int ListMaximumNumberOfItems { get; set; }
 
         /// <summary>
         ///   Gets or sets the text wrapping.
@@ -308,7 +356,7 @@ namespace PropertyTools.Wpf
         ///   Gets or sets the tool tip.
         /// </summary>
         /// <value>The tool tip.</value>
-        public object ToolTip { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         ///   Gets or sets a value indicating whether the property should use radio buttons.
@@ -355,6 +403,35 @@ namespace PropertyTools.Wpf
         /// Gets or sets the slider tick frequency.
         /// </summary>
         public double SliderTickFrequency { get; set; }
+
+        /// <summary>
+        /// Gets the actual type of the property.
+        /// </summary>
+        /// <remarks>
+        /// If a converter is defined, the target type will be set.
+        /// </remarks>
+        public Type ActualPropertyType
+        {
+            get
+            {
+                return GetConverterTargetType() ?? Descriptor.PropertyType;
+            }
+        }
+
+        /// <summary>
+        /// Gets the type of the converter target.
+        /// </summary>
+        /// <returns>The target type.</returns>
+        private Type GetConverterTargetType()
+        {
+            if (this.Converter == null) return null;
+            foreach (var a in TypeDescriptor.GetAttributes(this.Converter.GetType()))
+            {
+                var vca = a as ValueConversionAttribute;
+                if (vca != null) return vca.TargetType;
+            }
+            return null;
+        }
 
         #endregion
 
@@ -436,7 +513,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public bool Is(Type type)
         {
-            var propertyType = this.Descriptor.PropertyType;
+            var propertyType = this.ActualPropertyType;
             if (propertyType.IsGenericType && type == propertyType.GetGenericTypeDefinition())
             {
                 return true;
@@ -477,5 +554,36 @@ namespace PropertyTools.Wpf
         }
 
         #endregion
+
+        public Binding CreateOneWayBinding()
+        {
+            var b = this.CreateBinding();
+            b.Mode = BindingMode.OneWay;
+            return b;
+        }
+
+        public Binding CreateBinding(UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
+        {
+            var bindingMode = Descriptor.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
+            var formatString = this.FormatString;
+            if (formatString != null && !formatString.StartsWith("{"))
+            {
+                formatString = "{0:" + formatString + "}";
+            }
+
+            var binding = new Binding(Descriptor.Name)
+            {
+                Mode = bindingMode,
+                Converter = this.Converter,
+                ConverterParameter = this.ConverterParameter,
+                StringFormat = formatString,
+                UpdateSourceTrigger = trigger,
+                ValidatesOnDataErrors = true,
+                ValidatesOnExceptions = true
+            };
+            if (this.ConverterCulture != null)
+                binding.ConverterCulture = this.ConverterCulture;
+            return binding;
+        }
     }
 }

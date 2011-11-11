@@ -56,8 +56,7 @@ namespace PropertyTools.Wpf
             "SelectedColor", 
             typeof(Color), 
             typeof(ColorPicker), 
-            new FrameworkPropertyMetadata(
-                Color.FromArgb(0, 0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SelectedColorChanged));
+            new FrameworkPropertyMetadata(Color.FromArgb(0, 0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SelectedColorChanged));
 
         /// <summary>
         /// The show as hex property.
@@ -129,7 +128,7 @@ namespace PropertyTools.Wpf
         public ColorPicker()
         {
             this.Loaded += this.ColorPickerLoaded;
-            this.mouseEvent = this.PaletteList_MouseUp;
+       //     this.mouseEvent = this.PaletteList_MouseUp;
         }
 
         #endregion
@@ -750,8 +749,8 @@ namespace PropertyTools.Wpf
         /// </param>
         private void ColorPickerLoaded(object sender, RoutedEventArgs e)
         {
-            this.InitializePaletteSettings();
-            this.LoadLastPalette();
+            //this.InitializePaletteSettings();
+            //this.LoadLastPalette();
         }
 
         /// <summary>
@@ -780,7 +779,7 @@ namespace PropertyTools.Wpf
             // Reload last used palette each time the dropdown is opened.
             if (this.IsDropDownOpen)
             {
-                this.LoadLastPalette();
+                // this.LoadLastPalette();
             }
 
             // turn off picking when drop down is closed
@@ -838,6 +837,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void OnSelectedValueChanged()
         {
+            return;
             // don't update the HSV controls if the original change was H, S or V.
             if (this.updateHSV)
             {

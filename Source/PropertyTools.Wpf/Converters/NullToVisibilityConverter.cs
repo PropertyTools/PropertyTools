@@ -14,7 +14,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Converts <see cref="Visibility"/> instances to <see cref="object"/> instances.
     /// </summary>
-    [ValueConversion(typeof(Visibility), typeof(object))]
+    [ValueConversion(typeof(object), typeof(Visibility))]
     public class NullToVisibilityConverter : IValueConverter
     {
         #region Constructors and Destructors

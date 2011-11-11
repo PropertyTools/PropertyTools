@@ -1,12 +1,3 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultPropertyControlFactory.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
-// </copyright>
-// <summary>
-//   Provides a default property control factory.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -24,7 +15,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Provides a default property control factory.
+    ///   Provides a default property control factory.
     /// </summary>
     public class DefaultPropertyControlFactory : IPropertyControlFactory
     {
@@ -42,7 +33,30 @@ namespace PropertyTools.Wpf
 
         #endregion
 
+        #region Constructors and Destructors
+
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "DefaultPropertyControlFactory" /> class.
+        /// </summary>
+        public DefaultPropertyControlFactory()
+        {
+            this.Converters = new List<PropertyConverter>();
+            this.Editors = new List<TypeEditor>();
+        }
+
+        #endregion
+
         #region Public Properties
+
+        public List<PropertyConverter> Converters { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the list of type editors.
+        /// </summary>
+        /// <value>
+        ///   The editors.
+        /// </value>
+        public List<TypeEditor> Editors { get; set; }
 
         /// <summary>
         ///   Gets or sets the file dialog service.
@@ -66,255 +80,206 @@ namespace PropertyTools.Wpf
         #region Public Methods
 
         /// <summary>
-        /// Creates the control for a property.
+        /// Updates the converter from the Converters collection.
         /// </summary>
-        /// <param name="pi">
-        /// The property item.
+        /// <param name="property">The property.</param>
+        protected void UpdateConverter(PropertyItem property)
+        {
+            if (property.Converter == null)
+            {
+                foreach (var c in this.Converters)
+                {
+                    if (c.IsAssignable(property.Descriptor.PropertyType))
+                    {
+                        property.Converter = c.Converter;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        ///   Creates the control for a property.
+        /// </summary>
+        /// <param name = "property">
+        ///   The property item.
         /// </param>
-        /// <param name="options">
-        /// The options.
+        /// <param name = "options">
+        ///   The options.
         /// </param>
         /// <returns>
-        /// A element.
+        ///   A element.
         /// </returns>
-        public FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        public virtual FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options)
         {
-            var bindingMode = pi.Descriptor.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
+            UpdateConverter(property);
 
-            if (pi.Is(typeof(bool)))
+            foreach (var editor in this.Editors)
             {
-                var c = new CheckBox
-                    {
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Left
-                    };
-                c.SetBinding(
-                    ToggleButton.IsCheckedProperty,
-                    new Binding(pi.Descriptor.Name)
+                if (editor.IsAssignable(property.Descriptor.PropertyType))
+                {
+                    var c = new ContentControl
                         {
-                            Mode = bindingMode,
-                            ValidatesOnDataErrors = true,
-                            ValidatesOnExceptions = true
-                        });
+                            ContentTemplate = editor.EditorTemplate,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Left
+                        };
+                    c.SetBinding(FrameworkElement.DataContextProperty, property.CreateOneWayBinding());
+                    return c;
+                }
+            }
+
+            if (property.Is(typeof(bool)))
+            {
+                var c = new CheckBox { VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left };
+                c.SetBinding(ToggleButton.IsCheckedProperty, property.CreateBinding());
                 return c;
             }
 
-            if (pi.Is(typeof(Enum)))
+            if (property.Is(typeof(Enum)))
             {
                 var isRadioButton = true;
-                var enumType = TypeHelper.GetEnumType(pi.Descriptor.PropertyType);
+                var enumType = TypeHelper.GetEnumType(property.Descriptor.PropertyType);
                 var values = Enum.GetValues(enumType);
-                if (values.Length > options.EnumAsRadioButtonsLimit && !pi.UseRadioButtons)
+                if (values.Length > options.EnumAsRadioButtonsLimit && !property.UseRadioButtons)
                 {
                     isRadioButton = false;
                 }
 
                 if (isRadioButton)
                 {
-                    var c = new RadioButtonList { EnumType = pi.Descriptor.PropertyType };
-                    c.SetBinding(
-                        RadioButtonList.ValueProperty,
-                        new Binding(pi.Descriptor.Name)
-                            {
-                                Mode = bindingMode,
-                                ValidatesOnDataErrors = true,
-                                ValidatesOnExceptions = true
-                            });
+                    var c = new RadioButtonList { EnumType = property.Descriptor.PropertyType };
+                    c.SetBinding(RadioButtonList.ValueProperty, property.CreateBinding());
                     return c;
                 }
                 else
                 {
                     var c = new ComboBox { ItemsSource = Enum.GetValues(enumType) };
-                    c.SetBinding(
-                        Selector.SelectedValueProperty,
-                        new Binding(pi.Descriptor.Name)
-                            {
-                                Mode = bindingMode,
-                                ValidatesOnDataErrors = true,
-                                ValidatesOnExceptions = true
-                            });
+                    c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
                     return c;
                 }
             }
 
-            if (pi.Is(typeof(Color)))
+            if (property.Is(typeof(Color)))
             {
-                var c = new ColorPicker();
-                c.SetBinding(
-                    ColorPicker.SelectedColorProperty,
-                    new Binding(pi.Descriptor.Name)
-                        {
-                            Mode = bindingMode,
-                            ValidatesOnDataErrors = true,
-                            ValidatesOnExceptions = true
-                        });
+                var c = new ColorPicker2();
+                c.SetBinding(ColorPicker2.SelectedColorProperty, property.CreateBinding());
                 return c;
             }
 
-            if (pi.Is(typeof(Brush)))
+            if (property.Is(typeof(Brush)))
             {
                 var c = new ColorPicker();
-                c.SetBinding(
-                    ColorPicker.SelectedColorProperty,
-                    new Binding(pi.Descriptor.Name)
-                        {
-                            Mode = bindingMode,
-                            ValidatesOnDataErrors = true,
-                            ValidatesOnExceptions = true,
-                            Converter = BrushToColorConverter
-                        });
+                c.SetBinding(ColorPicker.SelectedColorProperty, property.CreateBinding());
                 return c;
             }
 
-            if (pi.Is(typeof(FontFamily)))
+            if (property.Is(typeof(FontFamily)))
             {
                 var c = new ComboBox { ItemsSource = GetFontFamilies() };
 
-                if (pi.PreviewFonts)
+                if (property.PreviewFonts)
                 {
                     var dt = new DataTemplate { DataType = typeof(ComboBox) };
                     var factory = new FrameworkElementFactory(typeof(TextBlock));
-                    factory.SetValue(TextBlock.FontSizeProperty, pi.FontSize);
-                    factory.SetValue(TextBlock.FontWeightProperty, FontWeight.FromOpenTypeWeight(pi.FontWeight));
+                    factory.SetValue(TextBlock.FontSizeProperty, property.FontSize);
+                    factory.SetValue(TextBlock.FontWeightProperty, FontWeight.FromOpenTypeWeight(property.FontWeight));
                     factory.SetBinding(TextBlock.TextProperty, new Binding());
                     factory.SetBinding(TextBlock.FontFamilyProperty, new Binding());
                     dt.VisualTree = factory;
                     c.ItemTemplate = dt;
                 }
 
-                c.SetBinding(
-                    Selector.SelectedValueProperty,
-                    new Binding(pi.Descriptor.Name)
-                        {
-                            Mode = bindingMode,
-                            ValidatesOnDataErrors = true,
-                            ValidatesOnExceptions = true
-                        });
+                c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
                 return c;
             }
 
-            if (pi.Is(typeof(ImageSource)) || pi.DataTypes.Contains(DataType.ImageUrl))
+            if (property.Is(typeof(ImageSource)) || property.DataTypes.Contains(DataType.ImageUrl))
             {
                 var c = new Image { Stretch = Stretch.Uniform, HorizontalAlignment = HorizontalAlignment.Left };
-                c.SetBinding(Image.SourceProperty, new Binding(pi.Descriptor.Name));
+                c.SetBinding(Image.SourceProperty, property.CreateOneWayBinding());
                 return c;
             }
 
-            if (pi.DataTypes.Contains(DataType.Html))
+            if (property.DataTypes.Contains(DataType.Html))
             {
                 var c = new WebBrowser();
-                c.SetBinding(WebBrowserBehavior.NavigateToStringProperty, new Binding(pi.Descriptor.Name));
+                c.SetBinding(WebBrowserBehavior.NavigateToStringProperty, property.CreateBinding());
                 return c;
             }
 
-            if (pi.Is(typeof(Uri)))
+            if (property.Is(typeof(Uri)))
             {
                 var c = new LinkBlock { VerticalAlignment = VerticalAlignment.Center };
-                c.SetBinding(TextBlock.TextProperty, new Binding(pi.Descriptor.Name));
-                c.SetBinding(LinkBlock.NavigateUriProperty, new Binding(pi.Descriptor.Name));
+                c.SetBinding(TextBlock.TextProperty, new Binding(property.Descriptor.Name));
+                c.SetBinding(LinkBlock.NavigateUriProperty, property.CreateBinding());
                 return c;
             }
 
-            if (pi.ItemsSourceDescriptor != null)
+            if (property.ItemsSourceDescriptor != null)
             {
-                var c = new ComboBox { IsEditable = pi.IsEditable };
-                c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(pi.ItemsSourceDescriptor.Name));
+                var c = new ComboBox { IsEditable = property.IsEditable };
+                c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
 
-                if (pi.IsEditable)
+                if (property.IsEditable)
                 {
-                    c.SetBinding(
-                        ComboBox.TextProperty,
-                        new Binding(pi.Descriptor.Name)
-                            {
-                                Mode = bindingMode,
-                                ValidatesOnDataErrors = true,
-                                ValidatesOnExceptions = true
-                            });
+                    c.SetBinding(ComboBox.TextProperty, property.CreateBinding());
                 }
                 else
                 {
-                    c.SetBinding(
-                        Selector.SelectedValueProperty,
-                        new Binding(pi.Descriptor.Name)
-                            {
-                                Mode = bindingMode,
-                                ValidatesOnDataErrors = true,
-                                ValidatesOnExceptions = true
-                            });
+                    c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
                 }
 
                 return c;
             }
 
-            if (pi.Is(typeof(SecureString)))
+            if (property.Is(typeof(SecureString)))
             {
                 // todoox
                 var c = new PasswordBox();
 
                 // PasswordHelper.SetAttach(b, true);
-                // b.SetBinding(PasswordHelper.PasswordProperty, new Binding(pi.Descriptor.Name) { Mode = bindingMode, ValidatesOnDataErrors = true });
+                // b.SetBinding(PasswordHelper.PasswordProperty, pi.CreateBinding());
                 return c;
             }
 
-            if (this.UseDatePicker && pi.Is(typeof(DateTime)))
+            if (this.UseDatePicker && property.Is(typeof(DateTime)))
             {
                 var c = new DatePicker();
-                c.SetBinding(
-                    DatePicker.SelectedDateProperty,
-                    new Binding(pi.Descriptor.Name)
-                        {
-                            Mode = bindingMode,
-                            ValidatesOnDataErrors = true,
-                            ValidatesOnExceptions = true
-                        });
+                c.SetBinding(DatePicker.SelectedDateProperty, property.CreateBinding());
                 return c;
             }
 
-            if (pi.IsFilePath)
+            if (property.IsFilePath)
             {
                 var c = new FilePicker
                     {
-                        Filter = pi.FilePathFilter,
-                        DefaultExtension = pi.FilePathDefaultExtension,
-                        UseOpenDialog = pi.IsFileOpenDialog,
+                        Filter = property.FilePathFilter,
+                        DefaultExtension = property.FilePathDefaultExtension,
+                        UseOpenDialog = property.IsFileOpenDialog,
                         FileDialogService = this.FileDialogService
                     };
-                if (pi.RelativePathDescriptor != null)
+                if (property.RelativePathDescriptor != null)
                 {
-                    c.SetBinding(FilePicker.BasePathProperty, new Binding(pi.RelativePathDescriptor.Name));
+                    c.SetBinding(FilePicker.BasePathProperty, new Binding(property.RelativePathDescriptor.Name));
                 }
 
-                if (pi.FilterDescriptor != null)
+                if (property.FilterDescriptor != null)
                 {
-                    c.SetBinding(FilePicker.FilterProperty, new Binding(pi.FilterDescriptor.Name));
+                    c.SetBinding(FilePicker.FilterProperty, new Binding(property.FilterDescriptor.Name));
                 }
 
-                c.SetBinding(
-                    FilePicker.FilePathProperty,
-                    new Binding(pi.Descriptor.Name)
-                        {
-                            Mode = bindingMode,
-                            ValidatesOnDataErrors = true,
-                            ValidatesOnExceptions = true
-                        });
+                c.SetBinding(FilePicker.FilePathProperty, property.CreateBinding());
                 return c;
             }
 
-            if (pi.IsDirectoryPath)
+            if (property.IsDirectoryPath)
             {
                 var c = new DirectoryPicker { FolderBrowserDialogService = this.FolderBrowserDialogService };
-                c.SetBinding(
-                    DirectoryPicker.DirectoryProperty,
-                    new Binding(pi.Descriptor.Name)
-                        {
-                            Mode = bindingMode,
-                            ValidatesOnDataErrors = true,
-                            ValidatesOnExceptions = true
-                        });
+                c.SetBinding(DirectoryPicker.DirectoryProperty, property.CreateBinding());
                 return c;
             }
 
-            if (pi.PreviewFonts)
+            if (property.PreviewFonts)
             {
                 var c = new TextBox
                     {
@@ -322,96 +287,64 @@ namespace PropertyTools.Wpf
                         BorderBrush = null,
                         AcceptsReturn = true,
                         TextWrapping = TextWrapping.Wrap,
-                        FontWeight = FontWeight.FromOpenTypeWeight(pi.FontWeight),
-                        FontSize = pi.FontSize
+                        FontWeight = FontWeight.FromOpenTypeWeight(property.FontWeight),
+                        FontSize = property.FontSize
                     };
                 TextOptions.SetTextFormattingMode(c, TextFormattingMode.Display);
                 TextOptions.SetTextRenderingMode(c, TextRenderingMode.ClearType);
-                c.SetBinding(TextBox.TextProperty, new Binding(pi.Descriptor.Name) { Mode = BindingMode.OneWay });
-                if (pi.FontFamilyPropertyDescriptor != null)
+                c.SetBinding(TextBox.TextProperty, new Binding(property.Descriptor.Name) { Mode = BindingMode.OneWay });
+                if (property.FontFamilyPropertyDescriptor != null)
                 {
-                    c.SetBinding(Control.FontFamilyProperty, new Binding(pi.FontFamilyPropertyDescriptor.Name));
+                    c.SetBinding(Control.FontFamilyProperty, new Binding(property.FontFamilyPropertyDescriptor.Name));
                 }
 
                 return c;
             }
 
-            if (pi.IsComment)
+            if (property.IsComment)
             {
-                var b = new ContentControl
-                    {
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Margin = new Thickness(4),
-                        Focusable = false
-                    };
-                b.SetBinding(
-                    ContentControl.ContentProperty,
-                    new Binding(pi.Descriptor.Name)
-                        {
-                            Mode = bindingMode,
-                            ValidatesOnDataErrors = true,
-                            ValidatesOnExceptions = true
-                        });
+                var b = new ContentControl { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(4), Focusable = false };
+                b.SetBinding(ContentControl.ContentProperty, property.CreateBinding());
                 return b;
             }
 
-            if (pi.IsPassword)
+            if (property.IsPassword)
             {
                 var c = new PasswordBox();
                 PasswordHelper.SetAttach(c, true);
-                c.SetBinding(
-                    PasswordHelper.PasswordProperty,
-                    new Binding(pi.Descriptor.Name)
-                        {
-                            Mode = bindingMode,
-                            ValidatesOnDataErrors = true,
-                            ValidatesOnExceptions = true
-                        });
+                c.SetBinding(PasswordHelper.PasswordProperty, property.CreateBinding());
                 return c;
             }
 
-            if (pi.IsSlidable)
+            if (property.IsSlidable)
             {
                 var g = new Grid();
-                g.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                g.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-                var s = new Slider()
+                g.ColumnDefinitions.Add(
+                    new System.Windows.Controls.ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                g.ColumnDefinitions.Add(
+                    new System.Windows.Controls.ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                var s = new Slider
                     {
-                        Minimum = pi.SliderMinimum,
-                        Maximum = pi.SliderMaximum,
-                        SmallChange = pi.SliderSmallChange,
-                        LargeChange = pi.SliderLargeChange,
-                        TickFrequency = pi.SliderTickFrequency,
-                        IsSnapToTickEnabled = pi.SliderSnapToTicks
+                        Minimum = property.SliderMinimum,
+                        Maximum = property.SliderMaximum,
+                        SmallChange = property.SliderSmallChange,
+                        LargeChange = property.SliderLargeChange,
+                        TickFrequency = property.SliderTickFrequency,
+                        IsSnapToTickEnabled = property.SliderSnapToTicks
                     };
-                s.SetBinding(Slider.ValueProperty, new Binding(pi.Descriptor.Name) { Mode = bindingMode });
-
+                s.SetBinding(RangeBase.ValueProperty, property.CreateBinding());
                 g.Children.Add(s);
 
-                var trigger = pi.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
-                var c = new TextBox
-                {
-                    IsReadOnly = pi.Descriptor.IsReadOnly
-                };
+                var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
+                var c = new TextBox { IsReadOnly = property.Descriptor.IsReadOnly };
 
-                var formatString = pi.FormatString;
+                var formatString = property.FormatString;
                 if (formatString != null && !formatString.StartsWith("{"))
                 {
                     formatString = "{0:" + formatString + "}";
                 }
 
-                c.SetBinding(
-                    TextBox.TextProperty,
-                    new Binding(pi.Descriptor.Name)
-                    {
-                        Mode = bindingMode,
-                        StringFormat = formatString,
-                        Converter = pi.Converter,
-                        ConverterCulture = pi.ConverterCulture,
-                        UpdateSourceTrigger = trigger,
-                        ValidatesOnDataErrors = true,
-                        ValidatesOnExceptions = true
-                    });
+                c.SetBinding(TextBox.TextProperty, property.CreateBinding());
 
                 Grid.SetColumn(c, 1);
                 g.Children.Add(c);
@@ -419,84 +352,58 @@ namespace PropertyTools.Wpf
                 return g;
             }
 
-            if (pi.Is(typeof(IList)))
+            if (property.Is(typeof(IList)))
             {
-                var c = new SimpleGrid();
+                var c = new SimpleGrid { CanDelete = property.ListCanRemove, CanInsert = property.ListCanAdd };
+
                 var glc = new GridLengthConverter();
-                foreach (var ca in pi.Columns.OrderBy(cd => cd.ColumnIndex))
+                foreach (var ca in property.Columns.OrderBy(cd => cd.ColumnIndex))
                 {
                     var cd = new ColumnDefinition();
                     cd.DataField = ca.PropertyName;
                     cd.Header = ca.Header;
                     cd.FormatString = ca.FormatString;
                     cd.Width = (GridLength)glc.ConvertFromInvariantString(ca.Width);
-                    switch (ca.Alignment)
+                    switch (ca.Alignment.ToString().ToUpper())
                     {
-                        case 'L':
+                        case "L":
                             cd.HorizontalAlignment = HorizontalAlignment.Left;
                             break;
-                        case 'R':
+                        case "R":
                             cd.HorizontalAlignment = HorizontalAlignment.Right;
                             break;
-                        case 'C':
+                        default:
                             cd.HorizontalAlignment = HorizontalAlignment.Center;
-                            break;
-                        case 'S':
-                            cd.HorizontalAlignment = HorizontalAlignment.Stretch;
                             break;
                     }
 
                     c.ColumnDefinitions.Add(cd);
                 }
 
-                c.SetBinding(
-                    SimpleGrid.ContentProperty,
-                    new Binding(pi.Descriptor.Name)
-                        {
-                            Mode = bindingMode,
-                            ValidatesOnDataErrors = true,
-                            ValidatesOnExceptions = true
-                        });
+                c.SetBinding(SimpleGrid.ContentProperty, property.CreateBinding());
                 return c;
             }
 
-            if (pi.Is(typeof(IDictionary)))
+            if (property.Is(typeof(IDictionary)))
             {
                 // todo
                 var c = new ComboBox();
-                c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(pi.Descriptor.Name));
+                c.SetBinding(ItemsControl.ItemsSourceProperty, property.CreateBinding());
                 return c;
             }
             {
                 // TextBox is the default control
-                var trigger = pi.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
+                var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
                 var c = new TextBox
                     {
-                        AcceptsReturn = pi.AcceptsReturn,
-                        MaxLength = pi.MaxLength,
-                        IsReadOnly = pi.Descriptor.IsReadOnly,
-                        TextWrapping = pi.TextWrapping,
+                        AcceptsReturn = property.AcceptsReturn,
+                        MaxLength = property.MaxLength,
+                        IsReadOnly = property.Descriptor.IsReadOnly,
+                        TextWrapping = property.TextWrapping,
                         VerticalScrollBarVisibility = ScrollBarVisibility.Auto
                     };
 
-                var formatString = pi.FormatString;
-                if (formatString != null && !formatString.StartsWith("{"))
-                {
-                    formatString = "{0:" + formatString + "}";
-                }
-
-                c.SetBinding(
-                    TextBox.TextProperty,
-                    new Binding(pi.Descriptor.Name)
-                        {
-                            Mode = bindingMode,
-                            StringFormat = formatString,
-                            Converter = pi.Converter,
-                            ConverterCulture = pi.ConverterCulture,
-                            UpdateSourceTrigger = trigger,
-                            ValidatesOnDataErrors = true,
-                            ValidatesOnExceptions = true
-                        });
+                c.SetBinding(TextBox.TextProperty, property.CreateBinding(trigger));
                 return c;
             }
         }
@@ -506,7 +413,7 @@ namespace PropertyTools.Wpf
         #region Methods
 
         /// <summary>
-        /// Gets the font families.
+        ///   Gets the font families.
         /// </summary>
         /// <returns>
         /// </returns>

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PropertyControlDemo"
         xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
-        Title="PropertyControlDemo" Height="720" Width="960">
+        xmlns:System="clr-namespace:System;assembly=mscorlib" Title="PropertyControlDemo" Height="720" Width="960">
     <Window.Resources>
         <DataTemplate x:Key="HeaderTemplate1">
             <StackPanel Orientation="Horizontal">
@@ -54,7 +54,7 @@
             </Grid>
         </DataTemplate>
 
-        <!-- Header above the properties -->
+        <!-- Header + separator above the properties -->
         <ControlTemplate x:Key="CategoryControlTemplate1"  TargetType="{x:Type HeaderedContentControl}">
             <Grid Margin="0 8 0 0">
                 <Grid.ColumnDefinitions>
@@ -66,7 +66,6 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                <!--<Rectangle Height="1" Grid.Column="1" Fill="#40000000" Margin="4 3 0 0"/>-->
                 <Separator Grid.Column="1" Margin="4 3 0 0"/>
                 <ContentPresenter Grid.Row="1" Grid.ColumnSpan="2"/>
             </Grid>
@@ -121,6 +120,7 @@
                 <MenuItem Header="Use tabs" IsChecked="{Binding UseTabs, ElementName=pc}" IsCheckable="true"/>
                 <pt:EnumMenuItem Header="CategoryControlType" SelectedValue="{Binding CategoryControlType, ElementName=pc}"/>
                 <pt:EnumMenuItem Header="TabStripPlacement" SelectedValue="{Binding TabStripPlacement, ElementName=pc}"/>
+                <pt:EnumMenuItem Header="DescriptionIconAlignment" SelectedValue="{Binding DescriptionIconAlignment, ElementName=pc}"/>
             </MenuItem>
         </Menu>
         <Grid>
@@ -142,11 +142,22 @@
                 SelectedObject="{Binding SelectedItem}" Margin="8" DescriptionIcon="Images\lightbulb.png">
                 <!--<Wpf1:PropertyControl.ValidationTemplate Value="{StaticResource ValidationTemplate1}"/>-->
                 <pt:PropertyControl.Factories>
-                    <local:LocalPropertyControlFactory/>
+                    <!--<pt:DefaultPropertyControlFactory>
+                        <pt:DefaultPropertyControlFactory.Editors>
+                            <pt:TypeEditor EditedType="System:Boolean">
+                                <pt:TypeEditor.EditorTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton IsChecked="{Binding Mode=TwoWay, RelativeSource={RelativeSource Self}}" Content="Bool"/>
+                                    </DataTemplate>
+                                </pt:TypeEditor.EditorTemplate>
+                            </pt:TypeEditor>
+                        </pt:DefaultPropertyControlFactory.Editors>
+                    </pt:DefaultPropertyControlFactory>-->
+                    <local:LocalPropertyControlFactory>
+                    </local:LocalPropertyControlFactory>
                 </pt:PropertyControl.Factories>
             </pt:PropertyControl>
-            <TextBox AcceptsReturn="True" IsReadOnly="True" Grid.Column="2" Padding="8" Text="{Binding Output, Mode=OneWay}"
-                     BorderThickness="1 0 0 0"/>
+            <TextBox AcceptsReturn="True" IsReadOnly="True" Grid.Column="2" Padding="8" Text="{Binding Output, Mode=OneWay}" BorderThickness="1 0 0 0"/>
             <GridSplitter ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="8" Margin="-4,0,0,0" Background="Transparent"/>
             <GridSplitter Grid.Column="2" ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="8" Margin="-4,0,0,0" Background="Transparent"/>
         </Grid>

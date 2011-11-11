@@ -801,7 +801,6 @@ namespace PropertyTools.Wpf
 
             this.UpdateGridContent();
             this.OnSelectedCellsChanged();
-            this.BuildContextMenus();
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.CopyExecute));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, this.CutExecute));
@@ -3613,6 +3612,7 @@ namespace PropertyTools.Wpf
             this.UpdateColumnWidths();
 
             this.SubscribeNotifications();
+            this.BuildContextMenus();
         }
 
         /// <summary>

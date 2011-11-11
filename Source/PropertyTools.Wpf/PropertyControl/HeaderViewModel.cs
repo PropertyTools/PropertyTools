@@ -27,6 +27,14 @@ namespace PropertyTools.Wpf
         /// <value>The icon.</value>
         public ImageSource Icon { get; set; }
 
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
+        public string Description { get; set; }
+
         #endregion
 
         #region Public Methods

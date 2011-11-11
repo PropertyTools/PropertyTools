@@ -116,7 +116,16 @@
   <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
   <local:ColorToHexConverter x:Key="ColorToHexConverter" />
 
-  <Style TargetType="{x:Type local:ColorPicker}">
+    <Style TargetType="{x:Type local:ColorPicker}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ColorPicker}">
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--<Style TargetType="{x:Type local:ColorPicker}">
     <Setter Property="FocusVisualStyle" Value="{StaticResource ComboBoxFocusVisual}" />
     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
     <Setter Property="Background" Value="{StaticResource ButtonNormalBackground}" />
@@ -125,8 +134,6 @@
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
     <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
     <Setter Property="Padding" Value="4,3" />
-    <!--<Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-		<Setter Property="ScrollViewer.PanningMode" Value="Both" />-->
     <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
 
     <Setter Property="SnapsToDevicePixels" Value="true" />
@@ -217,9 +224,6 @@
                              ItemsSource="{TemplateBinding PersistentPalette}"
                              SelectedValue="{Binding SelectedPersistentColor, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                              SnapsToDevicePixels="True" BorderThickness="0" Margin="1" Background="Transparent">
-                      <!-- todo: should scroll when it gets too big
-											PM: What is there to do, it does scroll as-is?.
-											-->
                       <ListBox.ItemTemplate>
                         <DataTemplate>
                           <Grid Background="{StaticResource SmallCheckerBoardBrush}" Margin="0 2 2 2" Width="16" Height="16"
@@ -234,13 +238,6 @@
                           <WrapPanel Width="{TemplateBinding ActualWidth}" Margin="0 2 0 2" />
                         </ItemsPanelTemplate>
                       </ListBox.ItemsPanel>
-                      <!-- <ListBox.ContextMenu>
-												<ContextMenu> -->
-                      <!-- todo: bind commands. context menu doesn't work? localize? -->
-                      <!-- <MenuItem Header="Load palette..."/>
-													<MenuItem Header="Save palette as..."/>
-												</ContextMenu>
-											</ListBox.ContextMenu> -->
                       <ListBox.ToolTip>
                         <TextBlock TextWrapping="Wrap">
                           <Run FontWeight="Bold">
@@ -270,19 +267,8 @@
                         <Image Source="BlueDown.png" Stretch="Fill" />
                       </Button>
                     </StackPanel>
-                    <!-- Alpha slider with background... -->
-                    <!--  <Grid Grid.Row="1" Grid.Column="1" Margin="4">
-											<Grid.RowDefinitions>
-												<RowDefinition Height="Auto"/>
-											</Grid.RowDefinitions>
-											<Grid Background="{StaticResource CheckerBoardBrush}">
-												<Slider Maximum="255" Margin="0"
-												Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-												Background="{Binding AlphaGradient, RelativeSource={RelativeSource TemplatedParent}}" />
-											</Grid>
-										</Grid>-->
 
-                    <!-- Slider without background -->
+
                     <local:SliderEx Style="{StaticResource SliderStyle}" Grid.Column="1"
                                     Grid.Row="2" Maximum="255" Value="{Binding Alpha, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
                   </Grid>
@@ -350,22 +336,6 @@
                               IsChecked="{Binding IsPicking, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                               ToolTip="Check the box and use 'SHIFT' to pick colors from the screen." />
 
-                    <!--<StackPanel Orientation="Vertical" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Right">
-											<Grid>
-												<Grid.ColumnDefinitions>
-													<ColumnDefinition/>
-													<ColumnDefinition/>
-												</Grid.ColumnDefinitions>
-											</Grid>
-											<Grid>
-												<Grid.ColumnDefinitions>
-													<ColumnDefinition/>
-													<ColumnDefinition/>
-												</Grid.ColumnDefinitions>
-												<Label Grid.Column="0">Screen picking</Label>
-												<CheckBox Grid.Column="1" FocusVisualStyle="{x:Null}" VerticalAlignment="Center" IsChecked="{Binding IsPicking, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Check the box and use 'SHIFT' to pick colors from the screen."/>
-											</Grid>
-										</StackPanel>-->
                   </Grid>
                 </TabItem>
                 <TabItem Header="HSV">
@@ -426,7 +396,6 @@
                   </Grid>
                 </TabItem>
               </TabControl>
-              <!--  </Grid> -->
             </Popup>
           </Grid>
           <ControlTemplate.Triggers>
@@ -439,6 +408,6 @@
       </Setter.Value>
     </Setter>
     <Style.Triggers></Style.Triggers>
-  </Style>
+  </Style>-->
 
 </ResourceDictionary>

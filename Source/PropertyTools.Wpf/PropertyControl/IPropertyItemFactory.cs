@@ -18,24 +18,21 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a property item.
         /// </summary>
-        /// <param name="pd">
-        /// The property descriptor.
-        /// </param>
-        /// <param name="properties">
-        /// The properties.
-        /// </param>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
+        /// <param name="pd">The property descriptor.</param>
+        /// <param name="instance">The instance.</param>
         /// <returns>
         /// A property item.
         /// </returns>
-        PropertyItem CreatePropertyItem(PropertyDescriptor pd, PropertyDescriptorCollection properties, object instance);
+        PropertyItem CreatePropertyItem(PropertyDescriptor pd, object instance);
 
         /// <summary>
-        /// Initializes this factory.
+        /// Resets this factory.
         /// </summary>
-        void Initialize();
+        /// <remarks>
+        /// The factory is reset before the CreatePropertyItem methods are called.
+        /// This makes it possible to reset default values.
+        /// </remarks>
+        void Reset();
 
         #endregion
     }

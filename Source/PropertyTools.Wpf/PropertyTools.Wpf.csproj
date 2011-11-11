@@ -96,6 +96,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\ColorPicker2\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\ColorPicker\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -182,9 +186,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ColorPicker2\ColorPicker2.cs" />
     <Compile Include="Controls\Bitmap.cs" />
     <Compile Include="Controls\ColorPicker\CaptureScreenshot.cs" />
-    <Compile Include="Controls\ColorPicker\ColorPickerPalette.cs" />
+    <None Include="Controls\ColorPicker\ColorPickerPalette.cs" />
     <Compile Include="Controls\ColorPicker\ColorWrapper.cs" />
     <Compile Include="Controls\DockPanelSplitter\DockPanelSplitter.cs" />
     <Compile Include="Controls\EnumMenuItem.cs" />
@@ -267,6 +272,7 @@
     <Compile Include="Converters\ValidationErrorsToStringConverter.cs" />
     <Compile Include="Behaviors\WebBrowserBehavior.cs" />
     <Compile Include="PropertyEditor\CategoryTemplateSelector.cs" />
+    <Compile Include="PropertyControl\PropertyConverter.cs" />
     <Compile Include="PropertyEditor\PropertyEditor.cs" />
     <Compile Include="Helpers\AttributeHelper.cs" />
     <Compile Include="Interfaces\IPropertyViewModelFactory.cs" />

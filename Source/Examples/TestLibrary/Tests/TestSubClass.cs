@@ -14,7 +14,7 @@ namespace TestLibrary
 
     public class SuperClass : TestBase
     {
-        [Description("Turn off 'Show declared only'.")]
+        [Description("Check 'Show declared only' on the 'PropertyControl' menu.")]
         [Category("SuperClass")]
         public string Name1 { get; set; }
     }

@@ -27,6 +27,26 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PART_SCROLLER, Type = typeof(ScrollViewer))]
     public class PropertyControl : Control
     {
+        public DataTemplate ToolTipTemplate
+        {
+            get { return (DataTemplate)GetValue(ToolTipTemplateProperty); }
+            set { SetValue(ToolTipTemplateProperty, value); }
+        }
+
+        public static readonly DependencyProperty ToolTipTemplateProperty =
+            DependencyProperty.Register("ToolTipTemplate", typeof(DataTemplate), typeof(PropertyControl), new UIPropertyMetadata(null));
+
+
+        public HorizontalAlignment DescriptionIconAlignment
+        {
+            get { return (HorizontalAlignment)GetValue(DescriptionIconAlignmentProperty); }
+            set { SetValue(DescriptionIconAlignmentProperty, value); }
+        }
+
+        public static readonly DependencyProperty DescriptionIconAlignmentProperty =
+            DependencyProperty.Register("DescriptionIconAlignment", typeof(HorizontalAlignment), typeof(PropertyControl), new UIPropertyMetadata(HorizontalAlignment.Right, AppearanceChanged));
+
+
         /// <summary>
         /// Gets or sets a value indicating whether to show description icons.
         /// </summary>
@@ -285,7 +305,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         public PropertyControl()
         {
-            this.DefaultFactory = new DefaultPropertyControlFactory();
+            this.PropertyControlFactory = new DefaultPropertyControlFactory();
             this.PropertyItemFactory = new DefaultPropertyItemFactory();
             this.Factories = new List<IPropertyControlFactory>();
         }
@@ -363,12 +383,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the default factory.
-        /// </summary>
-        /// <value>The default factory.</value>
-        public IPropertyControlFactory DefaultFactory { get; set; }
-
-        /// <summary>
         ///   Gets or sets the description icon.
         /// </summary>
         /// <value>The description icon.</value>
@@ -424,6 +438,16 @@ namespace PropertyTools.Wpf
                 this.SetValue(MinimumLabelWidthProperty, value);
             }
         }
+
+        public IPropertyControlFactory PropertyControlFactory
+        {
+            get { return (IPropertyControlFactory)GetValue(PropertyControlFactoryProperty); }
+            set { SetValue(PropertyControlFactoryProperty, value); }
+        }
+
+        public static readonly DependencyProperty PropertyControlFactoryProperty =
+            DependencyProperty.Register("PropertyControlFactory", typeof(IPropertyControlFactory), typeof(PropertyControl), new UIPropertyMetadata(null));
+
 
         /// <summary>
         ///   Gets or sets the property item factory.
@@ -648,6 +672,11 @@ namespace PropertyTools.Wpf
         /// </param>
         public virtual void CreateControls(object instance, IEnumerable<PropertyItem> items)
         {
+            if (tabControl == null)
+            {
+                return;
+            }
+
             this.tabControl.Items.Clear();
             this.panelControl.Children.Clear();
             if (this.UseTabs)
@@ -709,7 +738,7 @@ namespace PropertyTools.Wpf
                         var hc = new ContentControl
                             {
                                 ContentTemplate = this.TabPageHeaderTemplate,
-                                Content = new HeaderViewModel { Header = pi.Tab, Icon = pi.TabIcon }
+                                Content = new HeaderViewModel { Header = pi.Tab, Description = pi.TabDescription, Icon = pi.TabIcon }
                             };
                         tabItems.Children.Add(hc);
                     }
@@ -740,7 +769,7 @@ namespace PropertyTools.Wpf
                         if (this.CategoryHeaderTemplate != null)
                         {
                             group.HeaderTemplate = this.CategoryHeaderTemplate;
-                            group.Header = new HeaderViewModel { Header = pi.Category, Icon = pi.CategoryIcon };
+                            group.Header = new HeaderViewModel { Header = pi.Category, Description = pi.CategoryDescription, Icon = pi.CategoryIcon };
                         }
                         else
                         {
@@ -828,7 +857,7 @@ namespace PropertyTools.Wpf
             var instanceType = instance.GetType();
             var properties = TypeDescriptor.GetProperties(instance);
 
-            this.PropertyItemFactory.Initialize();
+            this.PropertyItemFactory.Reset();
 
             var items = new List<PropertyItem>();
 
@@ -858,7 +887,7 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                var pi = this.PropertyItemFactory.CreatePropertyItem(pd, properties, instance);
+                var pi = this.PropertyItemFactory.CreatePropertyItem(pd, instance);
                 items.Add(pi);
             }
 
@@ -874,6 +903,7 @@ namespace PropertyTools.Wpf
             this.tabControl = this.Template.FindName(PART_TABS, this) as TabControl;
             this.panelControl = this.Template.FindName(PART_PANEL, this) as StackPanel;
             this.scrollViewer = this.Template.FindName(PART_SCROLLER, this) as ScrollViewer;
+            this.UpdateControls();
         }
 
         #endregion
@@ -1000,7 +1030,7 @@ namespace PropertyTools.Wpf
                 propertyLabel = g;
             }
 
-            propertyLabel.Margin = new Thickness(0, 0, 8, 0);
+            propertyLabel.Margin = new Thickness(0, 0, 4, 0);
             return propertyLabel;
         }
 
@@ -1016,16 +1046,7 @@ namespace PropertyTools.Wpf
         private FrameworkElement CreatePropertyControl(PropertyItem pi)
         {
             var options = new PropertyControlFactoryOptions { EnumAsRadioButtonsLimit = this.EnumAsRadioButtonsLimit };
-            foreach (var factory in this.Factories)
-            {
-                var ctl = factory.CreateControl(pi, options);
-                if (ctl != null)
-                {
-                    return ctl;
-                }
-            }
-
-            return this.DefaultFactory.CreateControl(pi, options);
+            return this.PropertyControlFactory.CreateControl(pi, options);
         }
 
         /// <summary>
@@ -1096,6 +1117,7 @@ namespace PropertyTools.Wpf
 
                     // replace the property control by a stack panel containig the property control and the error control.
                     var sp = new StackPanel();
+                    sp.VerticalAlignment = VerticalAlignment.Center;
                     sp.Children.Add(propertyControl);
                     sp.Children.Add(errorControl);
                     propertyControl = sp;
@@ -1144,33 +1166,38 @@ namespace PropertyTools.Wpf
 
                         propertyPanel.Children.Add(labelPanel);
 
+                        if (propertyLabel != null)
+                        {
+                            DockPanel.SetDock(propertyLabel, Dock.Left);
+                            labelPanel.Children.Add(propertyLabel);
+                        }
+
                         if (this.ShowDescriptionIcons && this.DescriptionIcon != null)
                         {
-                            if (pi.ToolTip != null)
+                            if (!string.IsNullOrWhiteSpace(pi.Description))
                             {
                                 var descriptionIconImage = new Image
                                     {
                                         Source = this.DescriptionIcon,
                                         Stretch = Stretch.None,
-                                        Margin = new Thickness(4),
+                                        Margin = new Thickness(0, 4, 4, 4),
                                         VerticalAlignment = VerticalAlignment.Top
                                     };
 
                                 // RenderOptions.SetBitmapScalingMode(descriptionIconImage, BitmapScalingMode.NearestNeighbor);
-                                DockPanel.SetDock(descriptionIconImage, Dock.Right);
+                                descriptionIconImage.HorizontalAlignment = this.DescriptionIconAlignment;
                                 labelPanel.Children.Add(descriptionIconImage);
-                                descriptionIconImage.ToolTip = pi.ToolTip;
+                                if (!string.IsNullOrWhiteSpace(pi.Description))
+                                {
+                                    descriptionIconImage.ToolTip = this.CreateToolTip(pi.Description);
+                                }
                             }
                         }
                         else
                         {
-                            propertyPanel.ToolTip = pi.ToolTip;
+                            propertyPanel.ToolTip = this.CreateToolTip(pi.Description);
                         }
 
-                        if (propertyLabel != null)
-                        {
-                            labelPanel.Children.Add(propertyLabel);
-                        }
 
                         // measure the size of the label and tooltip icon
                         labelPanel.Measure(new Size(this.ActualWidth, this.ActualHeight));
@@ -1198,6 +1225,13 @@ namespace PropertyTools.Wpf
             }
 
             return propertyPanel;
+        }
+
+        protected virtual object CreateToolTip(string content)
+        {
+            if (ToolTipTemplate == null)
+                return content;
+            return new ContentControl { ContentTemplate = this.ToolTipTemplate, Content = content };
         }
 
         /// <summary>

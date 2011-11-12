@@ -1,8 +1,6 @@
-cd ..\Output\Examples
-del /S *.pdb 
-del /S *.vshost.exe 
-del /S *.manifest 
-del /S *.config
-"C:\Program Files\7-Zip\7z.exe" a -r ..\PropertyTools-Examples.zip *.*
-explorer ..
-cd ..\..\Tools
+set dir=..\Output\Examples
+del /S /Q %dir%\*.pdb 
+del /S /Q %dir%\*.vshost.exe 
+del /S /Q %dir%\*.manifest 
+del /S /Q %dir%\*.config
+"C:\Program Files\7-Zip\7z.exe" a -r ..\Output\PropertyTools-Examples-%1.zip %dir%\*.* > CopyAllExamples.log

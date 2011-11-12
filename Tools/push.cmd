@@ -1,1 +1,1 @@
-nuget.exe push -source http://packages.nuget.org/v1/ ..\Packages\PropertyTools.2011.11.2.nupkg %NUGET_ACCESS_KEY%
+for %%G in (..\Packages\*.nupkg) do nuget.exe push -source http://packages.nuget.org/v1/ %%G %NUGET_ACCESS_KEY% > push.log

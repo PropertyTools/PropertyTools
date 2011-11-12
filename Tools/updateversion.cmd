@@ -1,1 +1,1 @@
-versionUpdater.exe /Company="PropertyTools" /Copyright="PropertyTools" /Directory=.. /Version=yyyy.MM.1
+versionUpdater.exe /Company="PropertyTools" /Copyright="PropertyTools" /Directory=.. /Version=%1 > UpdateVersion.log 

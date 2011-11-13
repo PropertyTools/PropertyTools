@@ -51,6 +51,7 @@
     <Compile Include="Tests\TestConverterAttribute.cs" />
     <Compile Include="Tests\TestDataAnnotations.cs" />
     <Compile Include="Tests\TestDataTypes.cs" />
+    <Compile Include="Tests\TestEnums.cs" />
     <Compile Include="Tests\TestExceptions.cs" />
     <Compile Include="Tests\TestFormatStringAttribute.cs" />
     <Compile Include="Tests\TestImageSource.cs" />

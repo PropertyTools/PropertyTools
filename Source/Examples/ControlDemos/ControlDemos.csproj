@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Pages\ColorPicker2Page.xaml.cs">
+      <DependentUpon>ColorPicker2Page.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SimpleGridPage.xaml.cs">
       <DependentUpon>SimpleGridPage.xaml</DependentUpon>
     </Compile>
@@ -74,6 +77,10 @@
     <Compile Include="Pages\RadioButtonListPage.xaml.cs">
       <DependentUpon>RadioButtonListPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="Pages\ColorPicker2Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\ColorPickerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -22,6 +22,11 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static Color UndefinedColor = Color.FromArgb(0, 0, 0, 0);
 
+        /// <summary>
+        /// The automatic color.
+        /// </summary>
+        public static Color Automatic = Color.FromArgb(1, 0, 0, 0);
+
         #endregion
 
         #region Public Methods
@@ -236,7 +241,7 @@ namespace PropertyTools.Wpf
         /// </param>
         /// <returns>
         /// </returns>
-        public static Color HsvToColor(byte hue, byte saturation, byte value)
+        public static Color HsvToColor(byte hue, byte saturation, byte value, byte alpha = 255)
         {
             double r, g, b;
             double h = hue * 360.0 / 255;
@@ -310,7 +315,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            return Color.FromArgb(255, (byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
+            return Color.FromArgb(alpha, (byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
         }
 
         /// <summary>
@@ -328,7 +333,7 @@ namespace PropertyTools.Wpf
         /// </param>
         /// <returns>
         /// </returns>
-        public static Color HsvToColor(double hue, double sat, double val)
+        public static Color HsvToColor(double hue, double sat, double val, double alpha = 1.0)
         {
             int i;
             double aa, bb, cc, f;
@@ -388,7 +393,35 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            return Color.FromRgb((byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
+            return Color.FromArgb((byte)(alpha * 255), (byte)(r * 255), (byte)(g * 255), (byte)(b * 255));
+        }
+
+        public static double[] ColorToCmyk(byte r, byte g, byte b)
+        {
+            if (r == 0 && g == 0 && b == 0)
+            {
+                return new[] { 0, 0, 0, 1.0 };
+            }
+
+            double computedC = 1 - (r / 255.0);
+            double computedM = 1 - (g / 255.0);
+            double computedY = 1 - (b / 255.0);
+
+            var minCMY = Math.Min(computedC, Math.Min(computedM, computedY));
+            computedC = (computedC - minCMY) / (1 - minCMY);
+            computedM = (computedM - minCMY) / (1 - minCMY);
+            computedY = (computedY - minCMY) / (1 - minCMY);
+            double computedK = minCMY;
+
+            return new[] { computedC, computedM, computedY, computedK };
+        }
+
+        public static Color CmykToColor(double c, double m, double y, double k)
+        {
+            double r = 1 - (c / 100) * (1 - (k / 100)) - (k / 100);
+            double g = 1 - (m / 100) * (1 - (k / 100)) - (k / 100);
+            double b = 1 - (y / 100) * (1 - (k / 100)) - (k / 100);
+            return Color.FromRgb((byte)(255 * r), (byte)(255 * g), (byte)(255 * b));
         }
 
         /// <summary>
@@ -459,5 +492,17 @@ namespace PropertyTools.Wpf
         }
 
         #endregion
+
+        public static Color[] GetSpectrumColors(int colorCount)
+        {
+            Color[] spectrumColors = new Color[colorCount];
+            for (int i = 0; i < colorCount; ++i)
+            {
+                double hue = (i * 1.0) / (colorCount - 1);
+                spectrumColors[i] = HsvToColor(hue, 1.0, 1.0);
+            }
+
+            return spectrumColors;
+        }
     }
 }

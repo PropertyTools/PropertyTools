@@ -25,6 +25,7 @@ namespace TestLibrary
                     new TestAdvancedTypes(),
                     new TestDisplayName(),
                     new TestCategory(),
+                    new TestEnums(),
                     new TestSubClass(),
                     new TestReadOnlyProperties(),
                     new TestDataErrorInfo(),

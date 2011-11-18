@@ -17,9 +17,9 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The default type provider.
+        ///   The default type provider.
         /// </summary>
-        private static readonly TypeDescriptionProvider defaultTypeProvider =
+        private static readonly TypeDescriptionProvider DefaultTypeProvider =
             TypeDescriptor.GetProvider(typeof(ItemsBag));
 
         #endregion
@@ -30,7 +30,7 @@ namespace PropertyTools.Wpf
         ///   Initializes a new instance of the <see cref = "ItemsBagTypeDescriptionProvider" /> class.
         /// </summary>
         public ItemsBagTypeDescriptionProvider()
-            : base(defaultTypeProvider)
+            : base(DefaultTypeProvider)
         {
         }
 

@@ -10,17 +10,17 @@ namespace PropertyTools.Wpf
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// Formats the TimeSpan to a string
+    /// Formats the TimeSpan to a string.
     /// </summary>
     /// <remarks>
-    /// http://www.java2s.com/Open-Source/CSharp/Sound-Mp3/stamp/Microsoft/Office/PowerPoint/STAMP/Core/TimeSpanFormatter.cs.htm
+    /// See http://www.java2s.com/Open-Source/CSharp/Sound-Mp3/stamp/Microsoft/Office/PowerPoint/STAMP/Core/TimeSpanFormatter.cs.htm
     /// </remarks>
     public class TimeSpanFormatter : IFormatProvider, ICustomFormatter
     {
         #region Constants and Fields
 
         /// <summary>
-        /// The format parser.
+        ///   The format parser.
         /// </summary>
         private readonly Regex formatParser;
 
@@ -63,16 +63,14 @@ namespace PropertyTools.Wpf
                 var timeSpan = (TimeSpan)arg;
                 return this.formatParser.Replace(format, this.GetMatchEvaluator(timeSpan));
             }
-            else
-            {
-                var formattable = arg as IFormattable;
-                if (formattable != null)
-                {
-                    return formattable.ToString(format, formatProvider);
-                }
 
-                return arg != null ? arg.ToString() : string.Empty;
+            var formattable = arg as IFormattable;
+            if (formattable != null)
+            {
+                return formattable.ToString(format, formatProvider);
             }
+
+            return arg != null ? arg.ToString() : string.Empty;
         }
 
         /// <summary>
@@ -99,7 +97,7 @@ namespace PropertyTools.Wpf
         #region Methods
 
         /// <summary>
-        /// The evaluate match.
+        /// Evaluates a match.
         /// </summary>
         /// <param name="match">
         /// The match.
@@ -166,12 +164,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The get match evaluator.
+        /// Gets the match evaluator for the specified time span.
         /// </summary>
         /// <param name="timeSpan">
         /// The time span.
         /// </param>
         /// <returns>
+        /// The match evaluator.
         /// </returns>
         private MatchEvaluator GetMatchEvaluator(TimeSpan timeSpan)
         {

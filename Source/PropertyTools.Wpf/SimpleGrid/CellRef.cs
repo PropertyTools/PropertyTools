@@ -6,10 +6,7 @@
 
 namespace PropertyTools.Wpf
 {
-    using System;
     using System.ComponentModel;
-    using System.Globalization;
-    using System.Windows.Data;
 
     /// <summary>
     /// The cell ref.
@@ -20,12 +17,12 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The column.
+        ///   The column.
         /// </summary>
         private int column;
 
         /// <summary>
-        /// The row.
+        ///   The row.
         /// </summary>
         private int row;
 
@@ -53,7 +50,7 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Column.
+        ///   Gets or sets Column.
         /// </summary>
         public int Column
         {
@@ -69,7 +66,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Row.
+        ///   Gets or sets Row.
         /// </summary>
         public int Row
         {
@@ -89,7 +86,7 @@ namespace PropertyTools.Wpf
         #region Public Methods
 
         /// <summary>
-        /// The to column name.
+        /// Converts a column number to a column name.
         /// </summary>
         /// <param name="column">
         /// The column.
@@ -112,7 +109,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The to row name.
+        /// Converts a row number to a row name.
         /// </summary>
         /// <param name="row">
         /// The row.
@@ -126,10 +123,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The get hash code.
+        /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// The get hash code.
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
         public override int GetHashCode()
         {
@@ -139,108 +136,14 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The to string.
+        /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// The to string.
+        /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
             return string.Format("{0}{1}", ToColumnName(this.Column), this.Row + 1);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// The cell ref converter.
-    /// </summary>
-    [ValueConversion(typeof(string), typeof(CellRef))]
-    public class CellRefConverter : IValueConverter
-    {
-        #region Public Methods
-
-        /// <summary>
-        /// The convert.
-        /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="targetType">
-        /// The target type.
-        /// </param>
-        /// <param name="parameter">
-        /// The parameter.
-        /// </param>
-        /// <param name="culture">
-        /// The culture.
-        /// </param>
-        /// <returns>
-        /// The convert.
-        /// </returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (targetType == typeof(string) && value != null)
-            {
-                return value.ToString();
-            }
-
-            if (targetType != typeof(CellRef))
-            {
-                return Binding.DoNothing;
-            }
-
-            if (value == null)
-            {
-                return new CellRef(0, 0);
-            }
-
-            var s = value.ToString().ToUpperInvariant();
-            string sRow = string.Empty;
-            string sColumn = string.Empty;
-            foreach (var c in s)
-            {
-                if (char.IsDigit(c))
-                {
-                    sRow += c;
-                }
-                else
-                {
-                    sColumn += c;
-                }
-            }
-
-            int row = int.Parse(sRow) - 1;
-            int column = 0;
-            for (int i = sColumn.Length - 1; i >= 0; i--)
-            {
-                column += column * 26 + sColumn[i] - 'A';
-            }
-
-            return new CellRef(row, column);
-        }
-
-        /// <summary>
-        /// The convert back.
-        /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="targetType">
-        /// The target type.
-        /// </param>
-        /// <param name="parameter">
-        /// The parameter.
-        /// </param>
-        /// <param name="culture">
-        /// The culture.
-        /// </param>
-        /// <returns>
-        /// The convert back.
-        /// </returns>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return this.Convert(value, targetType, parameter, culture);
         }
 
         #endregion

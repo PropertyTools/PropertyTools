@@ -8,7 +8,6 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
-    using System.Linq;
 
     /// <summary>
     /// The type helper.
@@ -24,6 +23,7 @@ namespace PropertyTools.Wpf
         /// The list.
         /// </param>
         /// <returns>
+        /// The biggest common type.
         /// </returns>
         public static Type FindBiggestCommonType(IEnumerable list)
         {
@@ -37,7 +37,7 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                while (type.BaseType != null && !type.IsAssignableFrom(itemType))
+                while (type != null && type.BaseType != null && !type.IsAssignableFrom(itemType))
                 {
                     type = type.BaseType;
                 }
@@ -47,12 +47,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The get enum type.
+        /// Gets the underlying enum type of the specified type.
         /// </summary>
         /// <param name="propertyType">
-        /// The property type.
+        /// The type.
         /// </param>
         /// <returns>
+        /// The type of the underlying enum.
         /// </returns>
         public static Type GetEnumType(Type propertyType)
         {

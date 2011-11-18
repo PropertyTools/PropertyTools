@@ -10,8 +10,7 @@ namespace PropertyTools.Wpf
     using System.Linq;
 
     /// <summary>
-    /// Addtion, subctraction and multiplication for all kinds of objects.
-    ///   Uses reflection to invoke the operators.
+    /// Addtion, subctraction and multiplication for all kinds of objects (by reflection to invoke the operators).
     /// </summary>
     public static class ReflectionMath
     {

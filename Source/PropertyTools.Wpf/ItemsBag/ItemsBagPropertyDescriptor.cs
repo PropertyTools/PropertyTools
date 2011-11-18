@@ -17,7 +17,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The default descriptor.
+        ///   The default descriptor.
         /// </summary>
         private readonly PropertyDescriptor defaultDescriptor;
 

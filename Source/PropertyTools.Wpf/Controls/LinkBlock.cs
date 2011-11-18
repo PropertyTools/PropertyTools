@@ -20,7 +20,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The navigate uri property.
+        ///   The navigate uri property.
         /// </summary>
         public static readonly DependencyProperty NavigateUriProperty = DependencyProperty.Register(
             "NavigateUri", typeof(Uri), typeof(LinkBlock), new UIPropertyMetadata(null));
@@ -30,7 +30,7 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="LinkBlock"/> class. 
+        ///   Initializes static members of the <see cref = "LinkBlock" /> class.
         /// </summary>
         static LinkBlock()
         {

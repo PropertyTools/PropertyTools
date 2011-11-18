@@ -45,7 +45,7 @@ namespace PropertyTools.Wpf
             }
 
             var color = (Color)value;
-            return ColorHelper.ColorToHex(color);
+            return color.ColorToHex();
         }
 
         /// <summary>

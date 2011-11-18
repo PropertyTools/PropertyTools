@@ -29,7 +29,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// The folder browser dialog service property.
+        ///   The folder browser dialog service property.
         /// </summary>
         public static readonly DependencyProperty FolderBrowserDialogServiceProperty =
             DependencyProperty.Register(
@@ -86,7 +86,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets FolderBrowserDialogService.
+        ///   Gets or sets FolderBrowserDialogService.
         /// </summary>
         public IFolderBrowserDialogService FolderBrowserDialogService
         {
@@ -121,8 +121,7 @@ namespace PropertyTools.Wpf
             else
             {
                 // use default win32 dialog
-                var d = new BrowseForFolderDialog();
-                d.InitialFolder = this.Directory;
+                var d = new BrowseForFolderDialog { InitialFolder = this.Directory };
                 if (true == d.ShowDialog())
                 {
                     this.Directory = d.SelectedFolder;

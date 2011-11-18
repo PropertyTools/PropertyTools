@@ -31,7 +31,7 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the value returned when the source value is null.
+        ///   Gets or sets a value indicating whether the source value is null.
         /// </summary>
         public bool NullValue { get; set; }
 
@@ -110,7 +110,7 @@ namespace PropertyTools.Wpf
                 {
                     return string.Empty;
                 }
-                
+
                 return Activator.CreateInstance(targetType);
             }
 
@@ -118,7 +118,7 @@ namespace PropertyTools.Wpf
             {
                 return double.NaN;
             }
-            
+
             return null;
         }
 

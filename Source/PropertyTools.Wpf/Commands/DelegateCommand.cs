@@ -17,12 +17,12 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The can execute.
+        ///   The can execute.
         /// </summary>
         private readonly Func<bool> canExecute;
 
         /// <summary>
-        /// The execute.
+        ///   The execute.
         /// </summary>
         private readonly Action execute;
 

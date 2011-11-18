@@ -20,13 +20,13 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The attach property.
+        ///   The attach property.
         /// </summary>
         public static readonly DependencyProperty AttachProperty = DependencyProperty.RegisterAttached(
             "Attach", typeof(bool), typeof(PasswordHelper), new PropertyMetadata(false, Attach));
 
         /// <summary>
-        /// The password property.
+        ///   The password property.
         /// </summary>
         public static readonly DependencyProperty PasswordProperty = DependencyProperty.RegisterAttached(
             "Password", 
@@ -35,7 +35,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(string.Empty, OnPasswordPropertyChanged));
 
         /// <summary>
-        /// The is updating property.
+        ///   The is updating property.
         /// </summary>
         private static readonly DependencyProperty IsUpdatingProperty = DependencyProperty.RegisterAttached(
             "IsUpdating", typeof(bool), typeof(PasswordHelper));

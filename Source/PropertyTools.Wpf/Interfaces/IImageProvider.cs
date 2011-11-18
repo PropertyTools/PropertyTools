@@ -11,8 +11,10 @@ namespace PropertyTools.Wpf
 
     /// <summary>
     /// Provides images for PropertyEditor tab icons.
-    ///   Used in PropertyEditor.ImageProvider
     /// </summary>
+    /// <remarks>
+    /// Used in PropertyEditor.ImageProvider.
+    /// </remarks>
     public interface IImageProvider
     {
         #region Public Methods

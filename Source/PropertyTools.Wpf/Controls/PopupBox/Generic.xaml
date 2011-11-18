@@ -81,11 +81,11 @@
           <Grid Name="MainGrid" SnapsToDevicePixels="true">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
-              <ColumnDefinition
-MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0" />
+              <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"
+                                Width="0" />
             </Grid.ColumnDefinitions>
-            <Popup Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" Placement="Bottom"
-                   Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+            <Popup Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" Placement="Bottom" Margin="1"
+                   IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                    PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
               <theme:SystemDropShadowChrome Name="Shdw" Color="Transparent"
                                             MinWidth="{Binding ElementName=MainGrid,Path=ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
@@ -132,8 +132,7 @@ MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}
                                     Value="95"/>
                         </Trigger>-->
             <Trigger Property="IsEnabled" Value="false">
-              <Setter Property="Foreground"
-                      Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+              <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
               <Setter Property="Background" Value="#FFF4F4F4" />
             </Trigger>
             <!--<Trigger Property="IsGrouping"

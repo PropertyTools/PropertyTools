@@ -1,17 +1,15 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="ColorToStringConverter.cs" company="">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ColorToStringConverter.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
-// -----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Reflection;
-    using System.Text;
     using System.Windows.Data;
     using System.Windows.Media;
 
@@ -21,7 +19,21 @@ namespace PropertyTools.Wpf
     [ValueConversion(typeof(Color), typeof(string))]
     public class ColorToStringConverter : IValueConverter
     {
+        #region Constants and Fields
+
+        /// <summary>
+        ///   The string to color map.
+        /// </summary>
         private static Dictionary<string, Color> colors;
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        ///   Gets the string to color map.
+        /// </summary>
+        /// <value>The color map.</value>
         public static Dictionary<string, Color> ColorMap
         {
             get
@@ -36,22 +48,48 @@ namespace PropertyTools.Wpf
                         var c = (Color)fi.GetValue(null, null);
                         colors.Add(fi.Name, c);
                     }
+
                     colors.Add("Undefined", ColorHelper.UndefinedColor);
                     colors.Add("Automatic", ColorHelper.Automatic);
                 }
+
                 return colors;
             }
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Converts a value.
+        /// </summary>
+        /// <param name="value">
+        /// The value produced by the binding source.
+        /// </param>
+        /// <param name="targetType">
+        /// The type of the binding target property.
+        /// </param>
+        /// <param name="parameter">
+        /// The converter parameter to use.
+        /// </param>
+        /// <param name="culture">
+        /// The culture to use in the converter.
+        /// </param>
+        /// <returns>
+        /// A converted value. If the method returns null, the valid null value is used.
+        /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
+            {
                 return null;
+            }
+
             var color = (Color)value;
 
-            //if (ShowAsHex)
-            //                    return ColorHelper.ColorToHex(color);
-
+            // if (ShowAsHex)
+            // return ColorHelper.ColorToHex(color);
             string nearestColor = null;
             double nearestDist = 30;
 
@@ -73,21 +111,43 @@ namespace PropertyTools.Wpf
 
             if (nearestColor == null)
             {
-                return ColorHelper.ColorToHex(color);
+                return color.ColorToHex();
             }
 
             if (color.A < 255)
             {
-                return String.Format("{0}, {1:0} %", nearestColor, color.A / 2.55);
+                return string.Format("{0}, {1:0} %", nearestColor, color.A / 2.55);
             }
 
             return nearestColor;
         }
 
+        /// <summary>
+        /// Converts a value.
+        /// </summary>
+        /// <param name="value">
+        /// The value that is produced by the binding target.
+        /// </param>
+        /// <param name="targetType">
+        /// The type to convert to.
+        /// </param>
+        /// <param name="parameter">
+        /// The converter parameter to use.
+        /// </param>
+        /// <param name="culture">
+        /// The culture to use in the converter.
+        /// </param>
+        /// <returns>
+        /// A converted value. If the method returns null, the valid null value is used.
+        /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var s = value as string;
-            if (s == null) return Binding.DoNothing;
+            if (s == null)
+            {
+                return Binding.DoNothing;
+            }
+
             Color color;
 
             if (ColorMap.TryGetValue(s, out color))
@@ -97,9 +157,13 @@ namespace PropertyTools.Wpf
 
             var c = ColorHelper.HexToColor(s);
             if (c != ColorHelper.UndefinedColor)
+            {
                 return c;
+            }
 
             return Binding.DoNothing;
         }
+
+        #endregion
     }
 }

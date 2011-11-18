@@ -19,7 +19,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The is enabled.
+        ///   The is enabled.
         /// </summary>
         private bool isEnabled = true;
 
@@ -48,7 +48,7 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsEnabled.
+        ///   Gets or sets a value indicating whether IsEnabled.
         /// </summary>
         public bool IsEnabled
         {
@@ -65,17 +65,17 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Name.
+        ///   Gets or sets Name.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets Properties.
+        ///   Gets Properties.
         /// </summary>
         public List<PropertyViewModel> Properties { get; private set; }
 
         /// <summary>
-        /// Gets Visibility.
+        ///   Gets Visibility.
         /// </summary>
         public Visibility Visibility
         {

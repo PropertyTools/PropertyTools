@@ -33,7 +33,7 @@ namespace PropertyTools.Wpf
         #region Public Events
 
         /// <summary>
-        /// The property changed.
+        ///   The property changed.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -42,17 +42,17 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Header.
+        ///   Gets or sets Header.
         /// </summary>
         public string Header { get; set; }
 
         /// <summary>
-        /// Gets or sets SortIndex.
+        ///   Gets or sets SortIndex.
         /// </summary>
         public int SortIndex { get; set; }
 
         /// <summary>
-        /// Gets or sets ToolTip.
+        ///   Gets or sets ToolTip.
         /// </summary>
         public object ToolTip { get; set; }
 
@@ -61,7 +61,7 @@ namespace PropertyTools.Wpf
         #region Properties
 
         /// <summary>
-        /// Gets Owner.
+        ///   Gets Owner.
         /// </summary>
         protected PropertyEditor Owner { get; private set; }
 

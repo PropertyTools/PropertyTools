@@ -17,7 +17,7 @@ namespace PropertyTools.DataAnnotations
         #region Constants and Fields
 
         /// <summary>
-        /// The type id.
+        ///   The type id.
         /// </summary>
         private readonly object typeId;
 

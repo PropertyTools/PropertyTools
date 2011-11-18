@@ -95,11 +95,10 @@ namespace PropertyTools.Wpf
             catch (ArgumentException)
             {
             }
- // Ignore, just return DoNothing.
             catch (FormatException)
             {
             }
- // Ignore, just return DoNothing.
+
             return Binding.DoNothing;
         }
 

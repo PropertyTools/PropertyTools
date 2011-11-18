@@ -89,7 +89,8 @@
           <theme:ButtonChrome Name="Chrome" Background="{TemplateBinding Background}"
                               BorderBrush="{TemplateBinding BorderBrush}" RenderMouseOver="{TemplateBinding IsMouseOver}"
                               RenderPressed="{TemplateBinding IsPressed}" SnapsToDevicePixels="true">
-            <Grid Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" HorizontalAlignment="Right">
+            <Grid Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"
+                  HorizontalAlignment="Right">
               <Path Name="Arrow" Margin="3,1,0,0" Fill="Black" Data="{StaticResource DownArrowGeometry}"
                     HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Grid>
@@ -116,16 +117,15 @@
   <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
   <local:ColorToHexConverter x:Key="ColorToHexConverter" />
 
-    <Style TargetType="{x:Type local:ColorPicker}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:ColorPicker}">
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+  <Style TargetType="{x:Type local:ColorPicker}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type local:ColorPicker}"></ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
     
-    <!--<Style TargetType="{x:Type local:ColorPicker}">
+  <!--<Style TargetType="{x:Type local:ColorPicker}">
     <Setter Property="FocusVisualStyle" Value="{StaticResource ComboBoxFocusVisual}" />
     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
     <Setter Property="Background" Value="{StaticResource ButtonNormalBackground}" />

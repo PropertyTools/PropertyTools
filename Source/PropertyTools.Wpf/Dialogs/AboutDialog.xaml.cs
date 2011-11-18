@@ -19,7 +19,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The vm.
+        ///   The vm.
         /// </summary>
         private readonly AboutViewModel vm;
 

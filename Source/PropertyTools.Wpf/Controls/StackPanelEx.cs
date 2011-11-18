@@ -2,9 +2,6 @@
 // <copyright file="StackPanelEx.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Represents a stack panel that counts the number of visible children.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
@@ -20,7 +17,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The visible children count property.
+        ///   The visible children count property.
         /// </summary>
         public static readonly DependencyProperty VisibleChildrenCountProperty =
             DependencyProperty.Register(

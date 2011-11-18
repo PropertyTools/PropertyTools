@@ -21,22 +21,22 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The time span formatter.
+        ///   The time span formatter.
         /// </summary>
         private static readonly TimeSpanFormatter timeSpanFormatter = new TimeSpanFormatter();
 
         /// <summary>
-        /// The is enabled.
+        ///   The is enabled.
         /// </summary>
         private bool isEnabled = true;
 
         /// <summary>
-        /// The is visible.
+        ///   The is visible.
         /// </summary>
         private bool isVisible = true;
 
         /// <summary>
-        /// The setting values.
+        ///   The setting values.
         /// </summary>
         private bool settingValues;
 
@@ -334,7 +334,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets OldValue.
+        ///   Gets or sets OldValue.
         /// </summary>
         public object OldValue { get; set; }
 
@@ -491,7 +491,7 @@ namespace PropertyTools.Wpf
         #region Explicit Interface Properties
 
         /// <summary>
-        /// Gets Error.
+        ///   Gets Error.
         /// </summary>
         string IDataErrorInfo.Error
         {
@@ -512,10 +512,10 @@ namespace PropertyTools.Wpf
         #region Explicit Interface Indexers
 
         /// <summary>
-        /// The i data error info.this.
+        ///   The i data error info.this.
         /// </summary>
-        /// <param name="columnName">
-        /// The column name.
+        /// <param name = "columnName">
+        ///   The column name.
         /// </param>
         string IDataErrorInfo.this[string columnName]
         {
@@ -829,6 +829,7 @@ namespace PropertyTools.Wpf
 
                             value = converter.ConvertFrom(null, CultureInfo.InvariantCulture, value);
                         }
+                            
                             
                             // Catch FormatExceptions
                         catch (Exception)

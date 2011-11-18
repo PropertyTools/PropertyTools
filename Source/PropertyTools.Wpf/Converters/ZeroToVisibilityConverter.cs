@@ -2,9 +2,6 @@
 // <copyright file="ZeroToVisibilityConverter.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Converts <see cref="int" /> instances to <see cref="Visibility" /> instances.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
@@ -23,8 +20,8 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZeroToVisibilityConverter"/> class. 
-        ///   Initializes a new instance of the <see cref="NullToVisibilityConverter"/> class.
+        ///   Initializes a new instance of the <see cref = "ZeroToVisibilityConverter" /> class. 
+        ///   Initializes a new instance of the <see cref = "NullToVisibilityConverter" /> class.
         /// </summary>
         public ZeroToVisibilityConverter()
         {

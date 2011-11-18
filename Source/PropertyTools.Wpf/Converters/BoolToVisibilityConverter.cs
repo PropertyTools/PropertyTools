@@ -12,7 +12,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Data;
 
     /// <summary>
-    /// Converts <see cref="Bool"/> instances to <see cref="Visibility"/> instances.
+    /// Converts <see cref="bool"/> instances to <see cref="Visibility"/> instances.
     /// </summary>
     [ValueConversion(typeof(bool), typeof(Visibility))]
     public class BoolToVisibilityConverter : IValueConverter
@@ -76,11 +76,6 @@ namespace PropertyTools.Wpf
             if (value is bool)
             {
                 visible = (bool)value;
-            }
-            else if (value is bool?)
-            {
-                var nullable = (bool?)value;
-                visible = nullable.HasValue ? nullable.Value : false;
             }
 
             if (this.InvertVisibility)

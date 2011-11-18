@@ -22,27 +22,27 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The base path property.
+        ///   The base path property.
         /// </summary>
         public static readonly DependencyProperty BasePathProperty = DependencyProperty.Register(
             "BasePath", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The default extension property.
+        ///   The default extension property.
         /// </summary>
         public static readonly DependencyProperty DefaultExtensionProperty =
             DependencyProperty.Register(
                 "DefaultExtension", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The file dialog service property.
+        ///   The file dialog service property.
         /// </summary>
         public static readonly DependencyProperty FileDialogServiceProperty =
             DependencyProperty.Register(
                 "FileDialogService", typeof(IFileDialogService), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The file path property.
+        ///   The file path property.
         /// </summary>
         public static readonly DependencyProperty FilePathProperty = DependencyProperty.Register(
             "FilePath", 
@@ -51,13 +51,13 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// The filter property.
+        ///   The filter property.
         /// </summary>
         public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(
             "Filter", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The use open dialog property.
+        ///   The use open dialog property.
         /// </summary>
         public static readonly DependencyProperty UseOpenDialogProperty = DependencyProperty.Register(
             "UseOpenDialog", typeof(bool), typeof(FilePicker), new UIPropertyMetadata(true));
@@ -67,7 +67,7 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="FilePicker"/> class. 
+        ///   Initializes static members of the <see cref = "FilePicker" /> class.
         /// </summary>
         static FilePicker()
         {
@@ -228,10 +228,10 @@ namespace PropertyTools.Wpf
                 // use Microsoft.Win32 dialogs
                 if (this.UseOpenDialog)
                 {
-                    var d = new OpenFileDialog();
-                    d.FileName = this.FilePath;
-                    d.Filter = this.Filter;
-                    d.DefaultExt = this.DefaultExtension;
+                    var d = new OpenFileDialog
+                        {
+                           FileName = this.FilePath, Filter = this.Filter, DefaultExt = this.DefaultExtension 
+                        };
                     if (true == d.ShowDialog())
                     {
                         filename = d.FileName;
@@ -240,10 +240,10 @@ namespace PropertyTools.Wpf
                 }
                 else
                 {
-                    var d = new SaveFileDialog();
-                    d.FileName = this.FilePath;
-                    d.Filter = this.Filter;
-                    d.DefaultExt = this.DefaultExtension;
+                    var d = new SaveFileDialog
+                        {
+                           FileName = this.FilePath, Filter = this.Filter, DefaultExt = this.DefaultExtension 
+                        };
                     if (true == d.ShowDialog())
                     {
                         filename = d.FileName;

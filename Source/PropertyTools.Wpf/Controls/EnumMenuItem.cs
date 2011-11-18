@@ -18,7 +18,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The selected value property.
+        ///   The selected value property.
         /// </summary>
         public static readonly DependencyProperty SelectedValueProperty = DependencyProperty.Register(
             "SelectedValue", 

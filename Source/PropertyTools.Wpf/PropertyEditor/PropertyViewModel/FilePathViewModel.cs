@@ -38,17 +38,17 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets BrowseCommand.
+        ///   Gets or sets BrowseCommand.
         /// </summary>
         public ICommand BrowseCommand { get; set; }
 
         /// <summary>
-        /// Gets or sets DefaultExtension.
+        ///   Gets or sets DefaultExtension.
         /// </summary>
         public string DefaultExtension { get; set; }
 
         /// <summary>
-        /// Gets FileDialogService.
+        ///   Gets FileDialogService.
         /// </summary>
         public IFileDialogService FileDialogService
         {
@@ -59,12 +59,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Filter.
+        ///   Gets or sets Filter.
         /// </summary>
         public string Filter { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether UseOpenDialog.
+        ///   Gets or sets a value indicating whether UseOpenDialog.
         /// </summary>
         public bool UseOpenDialog { get; set; }
 
@@ -100,12 +100,12 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets BrowseCommand.
+        ///   Gets or sets BrowseCommand.
         /// </summary>
         public ICommand BrowseCommand { get; set; }
 
         /// <summary>
-        /// Gets FolderBrowserDialogService.
+        ///   Gets FolderBrowserDialogService.
         /// </summary>
         public IFolderBrowserDialogService FolderBrowserDialogService
         {

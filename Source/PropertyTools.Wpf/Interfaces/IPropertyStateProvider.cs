@@ -11,6 +11,9 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Return Enabled, Visible, Error and Warning states for a given component and property.
     /// </summary>
+    /// <remarks>
+    /// Used in PropertyEditor.
+    /// </remarks>
     public interface IPropertyStateProvider
     {
         #region Public Methods

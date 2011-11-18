@@ -9,70 +9,12 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using System.Windows.Threading;
-
-    /// <summary>
-    /// The color picker panel strings.
-    /// </summary>
-    public class ColorPickerPanelStrings
-    {
-        #region Constructors and Destructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColorPickerPanelStrings"/> class.
-        /// </summary>
-        public ColorPickerPanelStrings()
-        {
-            this.ThemeColors = "Theme colors";
-            this.StandardColors = "Standard colors";
-            this.RecentColors = "Recent colors";
-            this.Values = "Values";
-            this.HSV = "HSV";
-            this.ColorPickerToolTip = "Toggle this button and pick a color by pressing 'shift'.";
-        }
-
-        #endregion
-
-        #region Public Properties
-
-        /// <summary>
-        /// Gets or sets ColorPickerToolTip.
-        /// </summary>
-        public string ColorPickerToolTip { get; set; }
-
-        /// <summary>
-        /// Gets or sets HSV.
-        /// </summary>
-        public string HSV { get; set; }
-
-        /// <summary>
-        /// Gets or sets RecentColors.
-        /// </summary>
-        public string RecentColors { get; set; }
-
-        /// <summary>
-        /// Gets or sets StandardColors.
-        /// </summary>
-        public string StandardColors { get; set; }
-
-        /// <summary>
-        /// Gets or sets ThemeColors.
-        /// </summary>
-        public string ThemeColors { get; set; }
-
-        /// <summary>
-        /// Gets or sets Values.
-        /// </summary>
-        public string Values { get; set; }
-
-        #endregion
-    }
 
     /// <summary>
     /// Represents a control that lets the user pick a color.
@@ -85,45 +27,45 @@ namespace PropertyTools.Wpf
         ///   The alpha property.
         /// </summary>
         public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register(
-            "Alpha",
-            typeof(int),
-            typeof(ColorPickerPanel),
+            "Alpha", 
+            typeof(int), 
+            typeof(ColorPickerPanel), 
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The blue property.
         /// </summary>
         public static readonly DependencyProperty BlueProperty = DependencyProperty.Register(
-            "Blue",
-            typeof(int),
-            typeof(ColorPickerPanel),
+            "Blue", 
+            typeof(int), 
+            typeof(ColorPickerPanel), 
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The brightness property.
         /// </summary>
         public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register(
-            "Brightness",
-            typeof(int),
-            typeof(ColorPickerPanel),
+            "Brightness", 
+            typeof(int), 
+            typeof(ColorPickerPanel), 
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The green property.
         /// </summary>
         public static readonly DependencyProperty GreenProperty = DependencyProperty.Register(
-            "Green",
-            typeof(int),
-            typeof(ColorPickerPanel),
+            "Green", 
+            typeof(int), 
+            typeof(ColorPickerPanel), 
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The hue property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
-            "Hue",
-            typeof(int),
-            typeof(ColorPickerPanel),
+            "Hue", 
+            typeof(int), 
+            typeof(ColorPickerPanel), 
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
@@ -136,37 +78,37 @@ namespace PropertyTools.Wpf
         ///   The red property.
         /// </summary>
         public static readonly DependencyProperty RedProperty = DependencyProperty.Register(
-            "Red",
-            typeof(int),
-            typeof(ColorPickerPanel),
+            "Red", 
+            typeof(int), 
+            typeof(ColorPickerPanel), 
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The saturation property.
         /// </summary>
         public static readonly DependencyProperty SaturationProperty = DependencyProperty.Register(
-            "Saturation",
-            typeof(int),
-            typeof(ColorPickerPanel),
+            "Saturation", 
+            typeof(int), 
+            typeof(ColorPickerPanel), 
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The selected color property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
-            "SelectedColor",
-            typeof(Color?),
-            typeof(ColorPickerPanel),
+            "SelectedColor", 
+            typeof(Color?), 
+            typeof(ColorPickerPanel), 
             new FrameworkPropertyMetadata(
-                Color.FromArgb(0, 0, 0, 0),
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                SelectedColorChanged,
+                Color.FromArgb(0, 0, 0, 0), 
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
+                SelectedColorChanged, 
                 CoerceSelectedColorValue));
 
         /// <summary>
         ///   The max number of recent colors.
         /// </summary>
-        public static int maxNumberOfRecentColors = 20;
+        private static int maxNumberOfRecentColors = 20;
 
         /// <summary>
         ///   The show hsv panel.
@@ -237,7 +179,7 @@ namespace PropertyTools.Wpf
         public static ObservableCollection<Color> StandardColors { get; private set; }
 
         /// <summary>
-        /// Gets or sets Strings.
+        ///   Gets or sets Strings.
         /// </summary>
         public static ColorPickerPanelStrings Strings { get; set; }
 
@@ -420,7 +362,7 @@ namespace PropertyTools.Wpf
         ///   Gets or sets a value indicating whether to show the HSV panel.
         /// </summary>
         /// <remarks>
-        ///   Note that the backing field is static.
+        ///   The backing field is static.
         /// </remarks>
         public bool ShowHsvPanel
         {
@@ -453,7 +395,6 @@ namespace PropertyTools.Wpf
         {
             if (basevalue == null)
             {
-                Debug.WriteLine("ColorPickerPanel coerced value to" + this.SelectedColor);
                 return this.SelectedColor;
             }
 
@@ -506,7 +447,7 @@ namespace PropertyTools.Wpf
                 this.UpdateHSV(color);
             }
 
-            var hsv = ColorHelper.ColorToHsv(color);
+            var hsv = color.ColorToHsv();
             double y = Convert.ToDouble(e.NewValue);
             if (e.Property == HueProperty)
             {
@@ -537,8 +478,7 @@ namespace PropertyTools.Wpf
         {
             if (this.IsPicking && this.pickingTimer == null)
             {
-                this.pickingTimer = new DispatcherTimer();
-                this.pickingTimer.Interval = TimeSpan.FromMilliseconds(100);
+                this.pickingTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
                 this.pickingTimer.Tick += this.Pick;
                 this.pickingTimer.Start();
 
@@ -702,11 +642,11 @@ namespace PropertyTools.Wpf
                     Colors.LightBlue, 
                     Colors.DarkCyan, 
                     Colors.MidnightBlue, 
-                    Colors.DarkOrchid,
-                    Colors.Transparent,
-                    Color.FromArgb(128, 0, 0, 0),
-                    Color.FromArgb(128, 255, 255, 255),
-                    ColorHelper.UndefinedColor,
+                    Colors.DarkOrchid, 
+                    Colors.Transparent, 
+                    Color.FromArgb(128, 0, 0, 0), 
+                    Color.FromArgb(128, 255, 255, 255), 
+                    ColorHelper.UndefinedColor, 
                     ColorHelper.Automatic
                 };
 
@@ -748,7 +688,7 @@ namespace PropertyTools.Wpf
         /// The color.
         /// </param>
         /// <returns>
-        /// The add color to recent colors if missing.
+        /// True if the color was added.
         /// </returns>
         private bool AddColorToRecentColorsIfMissing(Color color)
         {
@@ -835,7 +775,7 @@ namespace PropertyTools.Wpf
         private void UpdateHSV(Color color)
         {
             this.withinColorChange = true;
-            var hsv = ColorHelper.ColorToHsv(color);
+            var hsv = color.ColorToHsv();
             this.Hue = (int)(hsv[0] * 360);
             this.Saturation = (int)(hsv[1] * 100);
             this.Brightness = (int)(hsv[2] * 100);

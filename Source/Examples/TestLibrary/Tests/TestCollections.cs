@@ -60,6 +60,8 @@ namespace TestLibrary
         public int Number { get; set; }
         public double Fraction { get; set; }
 
+#pragma warning disable 67
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore 67
     }
 }

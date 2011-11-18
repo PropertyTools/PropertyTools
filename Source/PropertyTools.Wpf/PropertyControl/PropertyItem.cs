@@ -16,7 +16,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Input;
     using System.Windows.Media;
 
-    using DataAnnotations;
+    using PropertyTools.DataAnnotations;
 
     /// <summary>
     /// Represents a property.
@@ -28,8 +28,12 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyItem"/> class.
         /// </summary>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="instance">The instance.</param>
+        /// <param name="propertyDescriptor">
+        /// The property descriptor.
+        /// </param>
+        /// <param name="instance">
+        /// The instance.
+        /// </param>
         public PropertyItem(PropertyDescriptor propertyDescriptor, object instance)
         {
             this.Descriptor = propertyDescriptor;
@@ -57,6 +61,20 @@ namespace PropertyTools.Wpf
         ///   Gets or sets a value indicating whether to accept return.
         /// </summary>
         public bool AcceptsReturn { get; set; }
+
+        /// <summary>
+        ///   Gets the actual type of the property.
+        /// </summary>
+        /// <remarks>
+        ///   If a converter is defined, the target type will be set.
+        /// </remarks>
+        public Type ActualPropertyType
+        {
+            get
+            {
+                return this.GetConverterTargetType() ?? this.Descriptor.PropertyType;
+            }
+        }
 
         /// <summary>
         ///   Gets or sets a value indicating whether to auto update text.
@@ -94,26 +112,32 @@ namespace PropertyTools.Wpf
         public IValueConverter Converter { get; set; }
 
         /// <summary>
-        /// Gets or sets the converter parameter.
+        ///   Gets or sets the converter culture.
         /// </summary>
         /// <value>
-        /// The converter parameter.
-        /// </value>
-        public object ConverterParameter { get; set; }
-
-        /// <summary>
-        /// Gets or sets the converter culture.
-        /// </summary>
-        /// <value>
-        /// The converter culture.
+        ///   The converter culture.
         /// </value>
         public CultureInfo ConverterCulture { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the converter parameter.
+        /// </summary>
+        /// <value>
+        ///   The converter parameter.
+        /// </value>
+        public object ConverterParameter { get; set; }
 
         /// <summary>
         ///   Gets the data types.
         /// </summary>
         /// <value>The data types.</value>
         public List<DataType> DataTypes { get; private set; }
+
+        /// <summary>
+        ///   Gets or sets the tool tip.
+        /// </summary>
+        /// <value>The tool tip.</value>
+        public string Description { get; set; }
 
         /// <summary>
         ///   Gets or sets the property descriptor.
@@ -193,14 +217,14 @@ namespace PropertyTools.Wpf
         public bool IsComment { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the property is editable.
-        /// </summary>
-        public bool IsEditable { get; set; }
-
-        /// <summary>
         ///   Gets or sets a value indicating whether the property is a directory path.
         /// </summary>
         public bool IsDirectoryPath { get; set; }
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether the property is editable.
+        /// </summary>
+        public bool IsEditable { get; set; }
 
         /// <summary>
         ///   Gets or sets the is enabled descriptor.
@@ -229,10 +253,39 @@ namespace PropertyTools.Wpf
         public bool IsPassword { get; set; }
 
         /// <summary>
+        ///   Gets or sets a value indicating whether this instance is slidable.
+        /// </summary>
+        public bool IsSlidable { get; set; }
+
+        /// <summary>
         ///   Gets or sets the is visible descriptor.
         /// </summary>
         /// <value>The is visible descriptor.</value>
         public PropertyDescriptor IsVisibleDescriptor { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the values descriptor.
+        /// </summary>
+        /// <value>The values descriptor.</value>
+        public PropertyDescriptor ItemsSourceDescriptor { get; set; }
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether items can be added to the list.
+        /// </summary>
+        public bool ListCanAdd { get; set; }
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether items can be removed from the list.
+        /// </summary>
+        public bool ListCanRemove { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the list maximum number of items.
+        /// </summary>
+        /// <value>
+        ///   The list maximum number of items.
+        /// </value>
+        public int ListMaximumNumberOfItems { get; set; }
 
         /// <summary>
         ///   Gets or sets the max length.
@@ -305,6 +358,36 @@ namespace PropertyTools.Wpf
         public string ResetHeader { get; set; }
 
         /// <summary>
+        ///   Gets or sets the slider large change.
+        /// </summary>
+        public double SliderLargeChange { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the slider maximum.
+        /// </summary>
+        public double SliderMaximum { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the slider minimum.
+        /// </summary>
+        public double SliderMinimum { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the slider small change.
+        /// </summary>
+        public double SliderSmallChange { get; set; }
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether the slider snaps to the ticks.
+        /// </summary>
+        public bool SliderSnapToTicks { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the slider tick frequency.
+        /// </summary>
+        public double SliderTickFrequency { get; set; }
+
+        /// <summary>
         ///   Gets or sets the index of the sort.
         /// </summary>
         /// <value>The index of the sort.</value>
@@ -329,113 +412,68 @@ namespace PropertyTools.Wpf
         public ImageSource TabIcon { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether items can be added to the list.
-        /// </summary>
-        public bool ListCanAdd { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether items can be removed from the list.
-        /// </summary>
-        public bool ListCanRemove { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list maximum number of items.
-        /// </summary>
-        /// <value>
-        /// The list maximum number of items.
-        /// </value>
-        public int ListMaximumNumberOfItems { get; set; }
-
-        /// <summary>
         ///   Gets or sets the text wrapping.
         /// </summary>
         /// <value>The text wrapping.</value>
         public TextWrapping TextWrapping { get; set; }
 
         /// <summary>
-        ///   Gets or sets the tool tip.
-        /// </summary>
-        /// <value>The tool tip.</value>
-        public string Description { get; set; }
-
-        /// <summary>
         ///   Gets or sets a value indicating whether the property should use radio buttons.
         /// </summary>
         public bool UseRadioButtons { get; set; }
 
-        /// <summary>
-        ///   Gets or sets the values descriptor.
-        /// </summary>
-        /// <value>The values descriptor.</value>
-        public PropertyDescriptor ItemsSourceDescriptor { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is slidable.
-        /// </summary>
-        public bool IsSlidable { get; set; }
-
-        /// <summary>
-        /// Gets or sets the slider minimum.
-        /// </summary>
-        public double SliderMinimum { get; set; }
-
-        /// <summary>
-        /// Gets or sets the slider maximum.
-        /// </summary>
-        public double SliderMaximum { get; set; }
-
-        /// <summary>
-        /// Gets or sets the slider small change.
-        /// </summary>
-        public double SliderSmallChange { get; set; }
-
-        /// <summary>
-        /// Gets or sets the slider large change.
-        /// </summary>
-        public double SliderLargeChange { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the slider snaps to the ticks.
-        /// </summary>
-        public bool SliderSnapToTicks { get; set; }
-
-        /// <summary>
-        /// Gets or sets the slider tick frequency.
-        /// </summary>
-        public double SliderTickFrequency { get; set; }
-
-        /// <summary>
-        /// Gets the actual type of the property.
-        /// </summary>
-        /// <remarks>
-        /// If a converter is defined, the target type will be set.
-        /// </remarks>
-        public Type ActualPropertyType
-        {
-            get
-            {
-                return GetConverterTargetType() ?? Descriptor.PropertyType;
-            }
-        }
-
-        /// <summary>
-        /// Gets the type of the converter target.
-        /// </summary>
-        /// <returns>The target type.</returns>
-        private Type GetConverterTargetType()
-        {
-            if (this.Converter == null) return null;
-            foreach (var a in TypeDescriptor.GetAttributes(this.Converter.GetType()))
-            {
-                var vca = a as ValueConversionAttribute;
-                if (vca != null) return vca.TargetType;
-            }
-            return null;
-        }
-
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Creates a binding.
+        /// </summary>
+        /// <param name="trigger">
+        /// The trigger.
+        /// </param>
+        /// <returns>
+        /// The binding.
+        /// </returns>
+        public Binding CreateBinding(UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
+        {
+            var bindingMode = this.Descriptor.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
+            var formatString = this.FormatString;
+            if (formatString != null && !formatString.StartsWith("{"))
+            {
+                formatString = "{0:" + formatString + "}";
+            }
+
+            var binding = new Binding(this.Descriptor.Name)
+                {
+                    Mode = bindingMode, 
+                    Converter = this.Converter, 
+                    ConverterParameter = this.ConverterParameter, 
+                    StringFormat = formatString, 
+                    UpdateSourceTrigger = trigger, 
+                    ValidatesOnDataErrors = true, 
+                    ValidatesOnExceptions = true
+                };
+            if (this.ConverterCulture != null)
+            {
+                binding.ConverterCulture = this.ConverterCulture;
+            }
+
+            return binding;
+        }
+
+        /// <summary>
+        /// Creates a one way binding.
+        /// </summary>
+        /// <returns>
+        /// The binding.
+        /// </returns>
+        public Binding CreateOneWayBinding()
+        {
+            var b = this.CreateBinding();
+            b.Mode = BindingMode.OneWay;
+            return b;
+        }
 
         /// <summary>
         /// Gets the first attribute of the specified type.
@@ -555,35 +593,33 @@ namespace PropertyTools.Wpf
 
         #endregion
 
-        public Binding CreateOneWayBinding()
-        {
-            var b = this.CreateBinding();
-            b.Mode = BindingMode.OneWay;
-            return b;
-        }
+        #region Methods
 
-        public Binding CreateBinding(UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
+        /// <summary>
+        /// Gets the type of the converter target.
+        /// </summary>
+        /// <returns>
+        /// The target type.
+        /// </returns>
+        private Type GetConverterTargetType()
         {
-            var bindingMode = Descriptor.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
-            var formatString = this.FormatString;
-            if (formatString != null && !formatString.StartsWith("{"))
+            if (this.Converter == null)
             {
-                formatString = "{0:" + formatString + "}";
+                return null;
             }
 
-            var binding = new Binding(Descriptor.Name)
+            foreach (var a in TypeDescriptor.GetAttributes(this.Converter.GetType()))
             {
-                Mode = bindingMode,
-                Converter = this.Converter,
-                ConverterParameter = this.ConverterParameter,
-                StringFormat = formatString,
-                UpdateSourceTrigger = trigger,
-                ValidatesOnDataErrors = true,
-                ValidatesOnExceptions = true
-            };
-            if (this.ConverterCulture != null)
-                binding.ConverterCulture = this.ConverterCulture;
-            return binding;
+                var vca = a as ValueConversionAttribute;
+                if (vca != null)
+                {
+                    return vca.TargetType;
+                }
+            }
+
+            return null;
         }
+
+        #endregion
     }
 }

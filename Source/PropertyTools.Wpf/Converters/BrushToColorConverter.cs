@@ -45,7 +45,6 @@ namespace PropertyTools.Wpf
                 return scb.Color;
             }
 
-            // todo: other brush types??
             return Color.FromArgb(0, 0, 0, 0);
         }
 

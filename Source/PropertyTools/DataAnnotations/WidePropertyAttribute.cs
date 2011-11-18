@@ -12,7 +12,6 @@ namespace PropertyTools.DataAnnotations
     /// Specifies that the property should be edited in wide mode.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    [Obsolete("Use HeaderPlacement.")]
     public class WidePropertyAttribute : Attribute
     {
         #region Constructors and Destructors

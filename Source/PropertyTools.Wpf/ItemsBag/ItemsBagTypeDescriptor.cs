@@ -17,7 +17,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The bag.
+        ///   The bag.
         /// </summary>
         private readonly ItemsBag bag;
 
@@ -45,9 +45,10 @@ namespace PropertyTools.Wpf
         #region Public Methods
 
         /// <summary>
-        /// The get properties.
+        /// Get the properties of the items bag.
         /// </summary>
         /// <returns>
+        /// The property descriptor collection.
         /// </returns>
         public override PropertyDescriptorCollection GetProperties()
         {

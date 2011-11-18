@@ -9,7 +9,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
 
     /// <summary>
-    /// The i property view model factory.
+    /// The property view model factory interface.
     /// </summary>
     public interface IPropertyViewModelFactory
     {

@@ -22,7 +22,7 @@ namespace PropertyTools.Wpf.Controls.ColorPicker
         #region Constants and Fields
 
         /// <summary>
-        /// The color.
+        ///   The color.
         /// </summary>
         private Color color;
 
@@ -46,7 +46,7 @@ namespace PropertyTools.Wpf.Controls.ColorPicker
         #region Public Events
 
         /// <summary>
-        /// The property changed.
+        ///   The property changed.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -55,7 +55,7 @@ namespace PropertyTools.Wpf.Controls.ColorPicker
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Color.
+        ///   Gets or sets Color.
         /// </summary>
         public Color Color
         {

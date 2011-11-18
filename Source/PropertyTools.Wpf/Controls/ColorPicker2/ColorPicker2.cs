@@ -6,7 +6,7 @@
 
 namespace PropertyTools.Wpf
 {
-    using System.Diagnostics;
+    using System;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -19,20 +19,26 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The selected color property.
+        ///   The selected color property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
-            "SelectedColor",
-            typeof(Color?),
-            typeof(ColorPicker2),
+            "SelectedColor", 
+            typeof(Color?), 
+            typeof(ColorPicker2), 
             new FrameworkPropertyMetadata(
-                Color.FromArgb(0, 0, 0, 0),
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                SelectedColorChanged,
+                Color.FromArgb(0, 0, 0, 0), 
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
+                SelectedColorChanged, 
                 CoerceSelectedColorValue));
 
-        private string PartColorPickerPanel = "PART_ColorPickerPanel";
+        /// <summary>
+        ///   The color picker panel part constant.
+        /// </summary>
+        private const string PartColorPickerPanel = "PART_ColorPickerPanel";
 
+        /// <summary>
+        ///   The color picker panel.
+        /// </summary>
         private ColorPickerPanel colorPickerPanel;
 
         #endregion
@@ -40,18 +46,18 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="ColorPicker2"/> class.
+        ///   Initializes static members of the <see cref = "ColorPicker2" /> class.
         /// </summary>
         static ColorPicker2()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(ColorPicker2), new FrameworkPropertyMetadata(typeof(ColorPicker2)));
             SelectedValueProperty.OverrideMetadata(
-                typeof(ColorPicker2),
+                typeof(ColorPicker2), 
                 new FrameworkPropertyMetadata(
-                    Color.FromArgb(0, 0, 0, 0),
-                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                    SelectedColorChanged,
+                    Color.FromArgb(0, 0, 0, 0), 
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
+                    SelectedColorChanged, 
                     CoerceSelectedColorValue));
         }
 
@@ -78,6 +84,19 @@ namespace PropertyTools.Wpf
 
         #endregion
 
+        #region Public Methods
+
+        /// <summary>
+        /// Called when <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> is called.
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            this.colorPickerPanel = this.GetTemplateChild(PartColorPickerPanel) as ColorPickerPanel;
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
@@ -98,6 +117,18 @@ namespace PropertyTools.Wpf
             }
 
             return basevalue;
+        }
+
+        /// <summary>
+        /// Reports when a combo box's popup opens.
+        /// </summary>
+        /// <param name="e">
+        /// The event data for the <see cref="E:System.Windows.Controls.ComboBox.DropDownOpened"/> event.
+        /// </param>
+        protected override void OnDropDownOpened(EventArgs e)
+        {
+            base.OnDropDownOpened(e);
+            this.colorPickerPanel.Focus();
         }
 
         /// <summary>
@@ -142,16 +173,5 @@ namespace PropertyTools.Wpf
         }
 
         #endregion
-
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            colorPickerPanel = this.GetTemplateChild(PartColorPickerPanel) as ColorPickerPanel;
-        }
-        protected override void OnDropDownOpened(System.EventArgs e)
-        {
-            base.OnDropDownOpened(e);
-            colorPickerPanel.Focus();
-        }
     }
 }

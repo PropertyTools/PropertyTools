@@ -24,7 +24,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The source property.
+        ///   The source property.
         /// </summary>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
             "Source", 
@@ -36,17 +36,17 @@ namespace PropertyTools.Wpf
                 OnSourceChanged));
 
         /// <summary>
-        /// The source downloaded.
+        ///   The source downloaded.
         /// </summary>
         private readonly EventHandler sourceDownloaded;
 
         /// <summary>
-        /// The source failed.
+        ///   The source failed.
         /// </summary>
         private readonly EventHandler<ExceptionEventArgs> sourceFailed;
 
         /// <summary>
-        /// The pixel offset.
+        ///   The pixel offset.
         /// </summary>
         private Point pixelOffset;
 
@@ -70,7 +70,7 @@ namespace PropertyTools.Wpf
         #region Public Events
 
         /// <summary>
-        /// The bitmap failed.
+        ///   The bitmap failed.
         /// </summary>
         public event EventHandler<ExceptionEventArgs> BitmapFailed;
 
@@ -116,7 +116,7 @@ namespace PropertyTools.Wpf
             if (bitmapSource != null)
             {
                 PresentationSource ps = PresentationSource.FromVisual(this);
-                if (ps != null)
+                if (ps != null && ps.CompositionTarget != null)
                 {
                     Matrix fromDevice = ps.CompositionTarget.TransformFromDevice;
 
@@ -198,7 +198,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private Point ApplyVisualTransform(Point point, Visual v, bool inverse)
         {
-            bool success = true;
+            bool success;
             return this.TryApplyVisualTransform(point, v, inverse, true, out success);
         }
 

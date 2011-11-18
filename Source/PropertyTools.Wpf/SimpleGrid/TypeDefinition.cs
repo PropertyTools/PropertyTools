@@ -17,27 +17,27 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets DisplayTemplate.
+        ///   Gets or sets DisplayTemplate.
         /// </summary>
         public DataTemplate DisplayTemplate { get; set; }
 
         /// <summary>
-        /// Gets or sets EditTemplate.
+        ///   Gets or sets EditTemplate.
         /// </summary>
         public DataTemplate EditTemplate { get; set; }
 
         /// <summary>
-        /// Gets or sets FormatString.
+        ///   Gets or sets FormatString.
         /// </summary>
         public string FormatString { get; set; }
 
         /// <summary>
-        /// Gets or sets HorizontalAlignment.
+        ///   Gets or sets HorizontalAlignment.
         /// </summary>
         public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
-        /// Gets or sets Type.
+        ///   Gets or sets Type.
         /// </summary>
         public Type Type { get; set; }
 

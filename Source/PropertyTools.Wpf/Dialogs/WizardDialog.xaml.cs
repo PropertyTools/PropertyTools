@@ -17,13 +17,13 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The current page property.
+        ///   The current page property.
         /// </summary>
         public static readonly DependencyProperty CurrentPageProperty = DependencyProperty.Register(
             "CurrentPage", typeof(int), typeof(WizardDialog), new UIPropertyMetadata(-1, CurrentPage_Changed));
 
         /// <summary>
-        /// The pages property.
+        ///   The pages property.
         /// </summary>
         public static readonly DependencyProperty PagesProperty = DependencyProperty.Register(
             "Pages", typeof(List<object>), typeof(WizardDialog), new UIPropertyMetadata(null));
@@ -33,7 +33,7 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WizardDialog"/> class.
+        ///   Initializes a new instance of the <see cref = "WizardDialog" /> class.
         /// </summary>
         public WizardDialog()
         {
@@ -54,7 +54,7 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets CurrentPage.
+        ///   Gets or sets CurrentPage.
         /// </summary>
         public int CurrentPage
         {
@@ -70,7 +70,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Pages.
+        ///   Gets or sets Pages.
         /// </summary>
         public List<object> Pages
         {

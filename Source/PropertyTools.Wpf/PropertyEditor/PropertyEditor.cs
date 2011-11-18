@@ -86,7 +86,7 @@ namespace PropertyTools.Wpf
             "DefaultTabName", typeof(string), typeof(PropertyEditor), new UIPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        /// The enum as radio buttons limit property.
+        ///   The enum as radio buttons limit property.
         /// </summary>
         public static readonly DependencyProperty EnumAsRadioButtonsLimitProperty =
             DependencyProperty.Register(
@@ -221,7 +221,7 @@ namespace PropertyTools.Wpf
             "ShowTabs", typeof(bool), typeof(PropertyEditor), new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
-        /// The use default category name for uncategorized properties property.
+        ///   The use default category name for uncategorized properties property.
         /// </summary>
         public static readonly DependencyProperty UseDefaultCategoryNameForUncategorizedPropertiesProperty =
             DependencyProperty.Register(
@@ -490,12 +490,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets FileDialogService.
+        ///   Gets or sets FileDialogService.
         /// </summary>
         public IFileDialogService FileDialogService { get; set; }
 
         /// <summary>
-        /// Gets or sets FolderBrowserDialogService.
+        ///   Gets or sets FolderBrowserDialogService.
         /// </summary>
         public IFolderBrowserDialogService FolderBrowserDialogService { get; set; }
 

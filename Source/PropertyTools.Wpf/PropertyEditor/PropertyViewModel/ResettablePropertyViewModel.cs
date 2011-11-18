@@ -19,12 +19,12 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The instance.
+        ///   The instance.
         /// </summary>
         private readonly object instance;
 
         /// <summary>
-        /// The resettable descriptor.
+        ///   The resettable descriptor.
         /// </summary>
         private readonly PropertyDescriptor resettableDescriptor;
 
@@ -64,7 +64,7 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Label.
+        ///   Gets or sets Label.
         /// </summary>
         public string Label { get; set; }
 
@@ -74,7 +74,7 @@ namespace PropertyTools.Wpf
         public ICommand ResetCommand { get; set; }
 
         /// <summary>
-        /// Gets ResettablePropertyName.
+        ///   Gets ResettablePropertyName.
         /// </summary>
         public string ResettablePropertyName
         {

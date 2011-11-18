@@ -112,7 +112,7 @@ namespace PropertyTools.Wpf
         /// Capture the screenshot.
         ///   <returns>
         /// Bitmap source that can be used e.g. as background.
-        /// </returns>
+        ///   </returns>
         /// </summary>
         /// <param name="area">
         /// Area of screenshot.
@@ -346,12 +346,12 @@ namespace PropertyTools.Wpf
         internal struct Win32Point
         {
             /// <summary>
-            /// The x.
+            ///   The x.
             /// </summary>
             public int X;
 
             /// <summary>
-            /// The y.
+            ///   The y.
             /// </summary>
             public int Y;
         };

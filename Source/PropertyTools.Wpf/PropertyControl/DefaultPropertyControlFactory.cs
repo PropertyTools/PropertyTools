@@ -1,3 +1,9 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DefaultPropertyControlFactory.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -15,16 +21,11 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    ///   Provides a default property control factory.
+    /// Provides a default property control factory.
     /// </summary>
     public class DefaultPropertyControlFactory : IPropertyControlFactory
     {
         #region Constants and Fields
-
-        /// <summary>
-        ///   Brush to color converter.
-        /// </summary>
-        private static readonly BrushToColorConverter BrushToColorConverter = new BrushToColorConverter();
 
         /// <summary>
         ///   The cached font families.
@@ -48,6 +49,10 @@ namespace PropertyTools.Wpf
 
         #region Public Properties
 
+        /// <summary>
+        ///   Gets or sets the list of converters.
+        /// </summary>
+        /// <value>The converters.</value>
         public List<PropertyConverter> Converters { get; set; }
 
         /// <summary>
@@ -80,38 +85,20 @@ namespace PropertyTools.Wpf
         #region Public Methods
 
         /// <summary>
-        /// Updates the converter from the Converters collection.
+        /// Creates the control for a property.
         /// </summary>
-        /// <param name="property">The property.</param>
-        protected void UpdateConverter(PropertyItem property)
-        {
-            if (property.Converter == null)
-            {
-                foreach (var c in this.Converters)
-                {
-                    if (c.IsAssignable(property.Descriptor.PropertyType))
-                    {
-                        property.Converter = c.Converter;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        ///   Creates the control for a property.
-        /// </summary>
-        /// <param name = "property">
-        ///   The property item.
+        /// <param name="property">
+        /// The property item.
         /// </param>
-        /// <param name = "options">
-        ///   The options.
+        /// <param name="options">
+        /// The options.
         /// </param>
         /// <returns>
-        ///   A element.
+        /// A element.
         /// </returns>
         public virtual FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options)
         {
-            UpdateConverter(property);
+            this.UpdateConverter(property);
 
             foreach (var editor in this.Editors)
             {
@@ -119,8 +106,8 @@ namespace PropertyTools.Wpf
                 {
                     var c = new ContentControl
                         {
-                            ContentTemplate = editor.EditorTemplate,
-                            VerticalAlignment = VerticalAlignment.Center,
+                            ContentTemplate = editor.EditorTemplate, 
+                            VerticalAlignment = VerticalAlignment.Center, 
                             HorizontalAlignment = HorizontalAlignment.Left
                         };
                     c.SetBinding(FrameworkElement.DataContextProperty, property.CreateOneWayBinding());
@@ -130,7 +117,10 @@ namespace PropertyTools.Wpf
 
             if (property.Is(typeof(bool)))
             {
-                var c = new CheckBox { VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left };
+                var c = new CheckBox
+                    {
+                       VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left 
+                    };
                 c.SetBinding(ToggleButton.IsCheckedProperty, property.CreateBinding());
                 return c;
             }
@@ -253,9 +243,9 @@ namespace PropertyTools.Wpf
             {
                 var c = new FilePicker
                     {
-                        Filter = property.FilePathFilter,
-                        DefaultExtension = property.FilePathDefaultExtension,
-                        UseOpenDialog = property.IsFileOpenDialog,
+                        Filter = property.FilePathFilter, 
+                        DefaultExtension = property.FilePathDefaultExtension, 
+                        UseOpenDialog = property.IsFileOpenDialog, 
                         FileDialogService = this.FileDialogService
                     };
                 if (property.RelativePathDescriptor != null)
@@ -283,11 +273,11 @@ namespace PropertyTools.Wpf
             {
                 var c = new TextBox
                     {
-                        Background = Brushes.Transparent,
-                        BorderBrush = null,
-                        AcceptsReturn = true,
-                        TextWrapping = TextWrapping.Wrap,
-                        FontWeight = FontWeight.FromOpenTypeWeight(property.FontWeight),
+                        Background = Brushes.Transparent, 
+                        BorderBrush = null, 
+                        AcceptsReturn = true, 
+                        TextWrapping = TextWrapping.Wrap, 
+                        FontWeight = FontWeight.FromOpenTypeWeight(property.FontWeight), 
                         FontSize = property.FontSize
                     };
                 TextOptions.SetTextFormattingMode(c, TextFormattingMode.Display);
@@ -303,7 +293,10 @@ namespace PropertyTools.Wpf
 
             if (property.IsComment)
             {
-                var b = new ContentControl { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(4), Focusable = false };
+                var b = new ContentControl
+                    {
+                       VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(4), Focusable = false 
+                    };
                 b.SetBinding(ContentControl.ContentProperty, property.CreateBinding());
                 return b;
             }
@@ -325,17 +318,19 @@ namespace PropertyTools.Wpf
                     new System.Windows.Controls.ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 var s = new Slider
                     {
-                        Minimum = property.SliderMinimum,
-                        Maximum = property.SliderMaximum,
-                        SmallChange = property.SliderSmallChange,
-                        LargeChange = property.SliderLargeChange,
-                        TickFrequency = property.SliderTickFrequency,
+                        Minimum = property.SliderMinimum, 
+                        Maximum = property.SliderMaximum, 
+                        SmallChange = property.SliderSmallChange, 
+                        LargeChange = property.SliderLargeChange, 
+                        TickFrequency = property.SliderTickFrequency, 
                         IsSnapToTickEnabled = property.SliderSnapToTicks
                     };
                 s.SetBinding(RangeBase.ValueProperty, property.CreateBinding());
                 g.Children.Add(s);
 
-                var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
+                var trigger = property.AutoUpdateText
+                                  ? UpdateSourceTrigger.PropertyChanged
+                                  : UpdateSourceTrigger.Default;
                 var c = new TextBox { IsReadOnly = property.Descriptor.IsReadOnly };
 
                 var formatString = property.FormatString;
@@ -344,7 +339,11 @@ namespace PropertyTools.Wpf
                     formatString = "{0:" + formatString + "}";
                 }
 
-                c.SetBinding(TextBox.TextProperty, property.CreateBinding());
+                var binding = property.CreateBinding();
+                binding.StringFormat = formatString;
+                binding.UpdateSourceTrigger = trigger;
+
+                c.SetBinding(TextBox.TextProperty, binding);
 
                 Grid.SetColumn(c, 1);
                 g.Children.Add(c);
@@ -393,13 +392,15 @@ namespace PropertyTools.Wpf
             }
             {
                 // TextBox is the default control
-                var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
+                var trigger = property.AutoUpdateText
+                                  ? UpdateSourceTrigger.PropertyChanged
+                                  : UpdateSourceTrigger.Default;
                 var c = new TextBox
                     {
-                        AcceptsReturn = property.AcceptsReturn,
-                        MaxLength = property.MaxLength,
-                        IsReadOnly = property.Descriptor.IsReadOnly,
-                        TextWrapping = property.TextWrapping,
+                        AcceptsReturn = property.AcceptsReturn, 
+                        MaxLength = property.MaxLength, 
+                        IsReadOnly = property.Descriptor.IsReadOnly, 
+                        TextWrapping = property.TextWrapping, 
                         VerticalScrollBarVisibility = ScrollBarVisibility.Auto
                     };
 
@@ -413,11 +414,32 @@ namespace PropertyTools.Wpf
         #region Methods
 
         /// <summary>
-        ///   Gets the font families.
+        /// Updates the converter from the Converters collection.
+        /// </summary>
+        /// <param name="property">
+        /// The property.
+        /// </param>
+        protected void UpdateConverter(PropertyItem property)
+        {
+            if (property.Converter == null)
+            {
+                foreach (var c in this.Converters)
+                {
+                    if (c.IsAssignable(property.Descriptor.PropertyType))
+                    {
+                        property.Converter = c.Converter;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the font families.
         /// </summary>
         /// <returns>
+        /// List of font families.
         /// </returns>
-        private static FontFamily[] GetFontFamilies()
+        private static IEnumerable<FontFamily> GetFontFamilies()
         {
             if (cachedFontFamilies == null)
             {

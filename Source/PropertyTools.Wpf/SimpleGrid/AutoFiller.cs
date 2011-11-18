@@ -16,12 +16,12 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The get cell value.
+        ///   The get cell value.
         /// </summary>
         private readonly Func<CellRef, object> GetCellValue;
 
         /// <summary>
-        /// The try set cell value.
+        ///   The try set cell value.
         /// </summary>
         private readonly Func<CellRef, object, bool> TrySetCellValue;
 

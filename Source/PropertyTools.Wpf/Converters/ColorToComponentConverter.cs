@@ -1,3 +1,9 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ColorToComponentConverter.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -34,12 +40,13 @@ namespace PropertyTools.Wpf
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var component = parameter as string;
-            if (value == null || component==null)
+            if (value == null || component == null)
             {
                 return Binding.DoNothing;
             }
+
             var c = (Color)value;
-            var hsv = ColorHelper.ColorToHsv(c);
+            var hsv = c.ColorToHsv();
             switch (component)
             {
                 case "R":

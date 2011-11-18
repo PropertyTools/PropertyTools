@@ -137,12 +137,12 @@ namespace PropertyTools.Wpf
                    StartPoint = new Point(0.5, 1), EndPoint = new Point(0.5, 0) 
                 };
 
-            const int spectrumColorCount = 30;
+            const int SpectrumColorCount = 30;
 
-            Color[] spectrumColors = ColorHelper.GetSpectrumColors(spectrumColorCount);
-            for (int i = 0; i < spectrumColorCount; ++i)
+            Color[] spectrumColors = ColorHelper.GetSpectrumColors(SpectrumColorCount);
+            for (int i = 0; i < SpectrumColorCount; ++i)
             {
-                double offset = i * 1.0 / spectrumColorCount;
+                double offset = i * 1.0 / SpectrumColorCount;
                 var gradientStop = new GradientStop(spectrumColors[i], offset);
                 backgroundBrush.GradientStops.Add(gradientStop);
             }

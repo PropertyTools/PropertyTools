@@ -1,7 +1,6 @@
 namespace TestLibrary
 {
     using PropertyTools.DataAnnotations;
-    using PropertyTools.DataAnnotations;
 
     public class TestDirectoryPathAttribute : TestBase
     {

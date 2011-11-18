@@ -56,12 +56,12 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets AssemblyVersion.
+        ///   Gets AssemblyVersion.
         /// </summary>
         public string AssemblyVersion { get; private set; }
 
         /// <summary>
-        /// Gets BuildTime.
+        ///   Gets BuildTime.
         /// </summary>
         public string BuildTime
         {
@@ -72,7 +72,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets CLRversion.
+        ///   Gets CLRversion.
         /// </summary>
         public string CLRversion
         {
@@ -83,7 +83,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets Comments.
+        ///   Gets Comments.
         /// </summary>
         public string Comments
         {
@@ -94,7 +94,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets Company.
+        ///   Gets Company.
         /// </summary>
         public string Company
         {
@@ -111,7 +111,7 @@ namespace PropertyTools.Wpf
         public string CopyReportText { get; set; }
 
         /// <summary>
-        /// Gets Copyright.
+        ///   Gets Copyright.
         /// </summary>
         public string Copyright
         {
@@ -122,7 +122,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets Domain.
+        ///   Gets Domain.
         /// </summary>
         public string Domain
         {
@@ -139,7 +139,7 @@ namespace PropertyTools.Wpf
         public FileInfo FileInfo { get; set; }
 
         /// <summary>
-        /// Gets FileName.
+        ///   Gets FileName.
         /// </summary>
         public string FileName
         {
@@ -150,7 +150,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets FileVersion.
+        ///   Gets FileVersion.
         /// </summary>
         public string FileVersion
         {
@@ -167,12 +167,12 @@ namespace PropertyTools.Wpf
         public FileVersionInfo FileVersionInfo { get; set; }
 
         /// <summary>
-        /// Gets or sets Image.
+        ///   Gets or sets Image.
         /// </summary>
         public ImageSource Image { get; set; }
 
         /// <summary>
-        /// Gets MachineName.
+        ///   Gets MachineName.
         /// </summary>
         public string MachineName
         {
@@ -183,7 +183,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets OSVersion.
+        ///   Gets OSVersion.
         /// </summary>
         public string OSVersion
         {
@@ -194,7 +194,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets Platform.
+        ///   Gets Platform.
         /// </summary>
         public string Platform
         {
@@ -205,7 +205,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets Processors.
+        ///   Gets Processors.
         /// </summary>
         public int Processors
         {
@@ -216,7 +216,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets ProductName.
+        ///   Gets ProductName.
         /// </summary>
         public string ProductName
         {
@@ -227,7 +227,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets ServicePack.
+        ///   Gets ServicePack.
         /// </summary>
         public string ServicePack
         {
@@ -244,12 +244,12 @@ namespace PropertyTools.Wpf
         public string SystemInfoText { get; set; }
 
         /// <summary>
-        /// Gets or sets UpdateStatus.
+        ///   Gets or sets UpdateStatus.
         /// </summary>
         public string UpdateStatus { get; set; }
 
         /// <summary>
-        /// Gets User.
+        ///   Gets User.
         /// </summary>
         public string User
         {
@@ -260,7 +260,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets Version.
+        ///   Gets Version.
         /// </summary>
         public string Version
         {

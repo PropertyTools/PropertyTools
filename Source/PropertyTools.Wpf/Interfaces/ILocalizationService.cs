@@ -10,8 +10,10 @@ namespace PropertyTools.Wpf
 
     /// <summary>
     /// Localize tab/category/property names and tooltips.
-    ///   Used in PropertyEditor.LocalizationService
     /// </summary>
+    /// <remarks>
+    /// Used in PropertyEditor.LocalizationService
+    /// </remarks>
     public interface ILocalizationService
     {
         #region Public Methods

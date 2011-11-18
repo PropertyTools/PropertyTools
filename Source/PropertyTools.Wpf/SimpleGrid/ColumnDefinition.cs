@@ -16,7 +16,7 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnDefinition"/> class.
+        ///   Initializes a new instance of the <see cref = "ColumnDefinition" /> class.
         /// </summary>
         public ColumnDefinition()
         {

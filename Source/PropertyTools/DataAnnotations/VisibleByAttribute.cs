@@ -18,7 +18,7 @@ namespace PropertyTools.DataAnnotations
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VisibleByAttribute"/> class. 
-        /// Initializes a new instance of the <see cref="EnableByAttribute"/> class.
+        ///   Initializes a new instance of the <see cref="EnableByAttribute"/> class.
         /// </summary>
         /// <param name="propertyName">
         /// Name of the property.

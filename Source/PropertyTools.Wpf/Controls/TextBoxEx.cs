@@ -20,14 +20,14 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The move focus on enter property.
+        ///   The move focus on enter property.
         /// </summary>
         public static readonly DependencyProperty MoveFocusOnEnterProperty =
             DependencyProperty.Register(
                 "MoveFocusOnEnter", typeof(bool), typeof(TextBoxEx), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// The update binding on enter property.
+        ///   The update binding on enter property.
         /// </summary>
         public static readonly DependencyProperty UpdateBindingOnEnterProperty =
             DependencyProperty.Register(
@@ -38,7 +38,7 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether MoveFocusOnEnter.
+        ///   Gets or sets a value indicating whether MoveFocusOnEnter.
         /// </summary>
         public bool MoveFocusOnEnter
         {
@@ -54,7 +54,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether UpdateBindingOnEnter.
+        ///   Gets or sets a value indicating whether UpdateBindingOnEnter.
         /// </summary>
         public bool UpdateBindingOnEnter
         {

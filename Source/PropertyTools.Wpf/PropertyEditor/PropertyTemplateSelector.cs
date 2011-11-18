@@ -40,17 +40,17 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets Editors.
+        ///   Gets or sets Editors.
         /// </summary>
         public Collection<TypeEditor> Editors { get; set; }
 
         /// <summary>
-        /// Gets Owner.
+        ///   Gets Owner.
         /// </summary>
         public PropertyEditor Owner { get; private set; }
 
         /// <summary>
-        /// Gets or sets TemplateOwner.
+        ///   Gets or sets TemplateOwner.
         /// </summary>
         public FrameworkElement TemplateOwner { get; set; }
 

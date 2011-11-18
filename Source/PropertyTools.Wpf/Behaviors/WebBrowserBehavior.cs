@@ -17,7 +17,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The navigate to string property.
+        ///   The navigate to string property.
         /// </summary>
         public static readonly DependencyProperty NavigateToStringProperty =
             DependencyProperty.RegisterAttached(

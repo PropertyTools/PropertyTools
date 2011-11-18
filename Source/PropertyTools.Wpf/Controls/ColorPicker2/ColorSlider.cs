@@ -23,13 +23,13 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The left color property.
+        ///   The left color property.
         /// </summary>
         public static readonly DependencyProperty LeftColorProperty = DependencyProperty.Register(
             "LeftColor", typeof(Color?), typeof(ColorSlider), new UIPropertyMetadata(Colors.Black));
 
         /// <summary>
-        /// The right color property.
+        ///   The right color property.
         /// </summary>
         public static readonly DependencyProperty RightColorProperty = DependencyProperty.Register(
             "RightColor", typeof(Color?), typeof(ColorSlider), new UIPropertyMetadata(Colors.White));
@@ -39,7 +39,7 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="ColorSlider"/> class. 
+        ///   Initializes static members of the <see cref = "ColorSlider" /> class.
         /// </summary>
         static ColorSlider()
         {

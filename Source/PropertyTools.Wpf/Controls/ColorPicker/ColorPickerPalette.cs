@@ -32,7 +32,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The current store property.
+        ///   The current store property.
         /// </summary>
         public static readonly DependencyProperty CurrentStoreProperty = DependencyProperty.Register(
             "CurrentStore", 
@@ -41,7 +41,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// The persistent palette property.
+        ///   The persistent palette property.
         /// </summary>
         public static readonly DependencyProperty PersistentPaletteProperty =
             DependencyProperty.Register(
@@ -51,7 +51,7 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(CreateEmptyPalette()));
 
         /// <summary>
-        /// The selected persistent color property.
+        ///   The selected persistent color property.
         /// </summary>
         private static readonly DependencyProperty SelectedPersistentColorProperty =
             DependencyProperty.Register(
@@ -63,10 +63,12 @@ namespace PropertyTools.Wpf
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
                     SelectedPersistentColorChanged));
 
+#pragma warning disable 649
         /// <summary>
         ///   Event handler for use by multiple controls
         /// </summary>
         private readonly MouseButtonEventHandler mouseEvent;
+#pragma warning restore 649
 
         /// <summary>
         ///   Reference to the listbox that holds the persistent palette
@@ -88,22 +90,22 @@ namespace PropertyTools.Wpf
         private enum Mode
         {
             /// <summary>
-            /// The none.
+            ///   The none.
             /// </summary>
             None, 
 
             /// <summary>
-            /// The add.
+            ///   The add.
             /// </summary>
             Add, 
 
             /// <summary>
-            /// The remove.
+            ///   The remove.
             /// </summary>
             Remove, 
 
             /// <summary>
-            /// The update.
+            ///   The update.
             /// </summary>
             Update
         };
@@ -113,7 +115,7 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets DefaultPalettePath.
+        ///   Gets or sets DefaultPalettePath.
         /// </summary>
         public static string DefaultPalettePath { get; set; }
 
@@ -124,7 +126,7 @@ namespace PropertyTools.Wpf
         public static string SettingsFile { get; set; }
 
         /// <summary>
-        /// Gets or sets CurrentStore.
+        ///   Gets or sets CurrentStore.
         /// </summary>
         public string CurrentStore
         {
@@ -140,7 +142,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets PersistentPalette.
+        ///   Gets or sets PersistentPalette.
         /// </summary>
         public ObservableCollection<ColorWrapper> PersistentPalette
         {
@@ -156,7 +158,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets SelectedPersistentColor.
+        ///   Gets or sets SelectedPersistentColor.
         /// </summary>
         public ColorWrapper SelectedPersistentColor
         {

@@ -39,9 +39,9 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets EnumValues.
+        ///   Gets EnumValues.
         /// </summary>
-        /// <exception cref="InvalidOperationException">
+        /// <exception cref = "InvalidOperationException">
         /// </exception>
         public object EnumValues
         {

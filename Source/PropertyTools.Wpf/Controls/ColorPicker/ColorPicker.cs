@@ -26,7 +26,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The is drop down open property.
+        ///   The is drop down open property.
         /// </summary>
         public static readonly DependencyProperty IsDropDownOpenProperty = DependencyProperty.Register(
             "IsDropDownOpen", 
@@ -35,13 +35,13 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(false, IsDropDownOpenChanged, CoerceIsDropDownOpen));
 
         /// <summary>
-        /// The is picking property.
+        ///   The is picking property.
         /// </summary>
         public static readonly DependencyProperty IsPickingProperty = DependencyProperty.Register(
             "IsPicking", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false, IsPickingChanged));
 
         /// <summary>
-        /// The palette property.
+        ///   The palette property.
         /// </summary>
         public static readonly DependencyProperty PaletteProperty = DependencyProperty.Register(
             "Palette", 
@@ -50,59 +50,60 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(CreateDefaultPalette()));
 
         /// <summary>
-        /// The selected color property.
+        ///   The selected color property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
             "SelectedColor", 
             typeof(Color), 
             typeof(ColorPicker), 
-            new FrameworkPropertyMetadata(Color.FromArgb(0, 0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SelectedColorChanged));
+            new FrameworkPropertyMetadata(
+                Color.FromArgb(0, 0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SelectedColorChanged));
 
         /// <summary>
-        /// The show as hex property.
+        ///   The show as hex property.
         /// </summary>
         public static readonly DependencyProperty ShowAsHexProperty = DependencyProperty.Register(
             "ShowAsHex", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// The tab strip placement property.
+        ///   The tab strip placement property.
         /// </summary>
         public static readonly DependencyProperty TabStripPlacementProperty =
             DependencyProperty.Register(
                 "TabStripPlacement", typeof(Dock), typeof(ColorPicker), new UIPropertyMetadata(Dock.Bottom));
 
         /// <summary>
-        /// The brightness.
+        ///   The brightness.
         /// </summary>
         private byte brightness;
 
         /// <summary>
-        /// The hue.
+        ///   The hue.
         /// </summary>
         private byte hue;
 
         /// <summary>
-        /// The picking timer.
+        ///   The picking timer.
         /// </summary>
         private DispatcherTimer pickingTimer;
 
         /// <summary>
-        /// The saturation.
+        ///   The saturation.
         /// </summary>
         private byte saturation;
 
         /// <summary>
-        /// The static color list.
+        ///   The static color list.
         /// </summary>
         private ListBox staticColorList;
 
         /// <summary>
-        /// The update hsv.
+        ///   The update hsv.
         /// </summary>
         private bool updateHSV = true;
 
         /// <summary>
-        /// The update hex value.
+        ///   The update hex value.
         /// </summary>
         private bool updateHexValue = true;
 
@@ -111,7 +112,7 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="ColorPicker"/> class. 
+        ///   Initializes static members of the <see cref = "ColorPicker" /> class.
         /// </summary>
         static ColorPicker()
         {
@@ -128,7 +129,8 @@ namespace PropertyTools.Wpf
         public ColorPicker()
         {
             this.Loaded += this.ColorPickerLoaded;
-       //     this.mouseEvent = this.PaletteList_MouseUp;
+
+            // this.mouseEvent = this.PaletteList_MouseUp;
         }
 
         #endregion
@@ -236,7 +238,7 @@ namespace PropertyTools.Wpf
             {
                 if (this.ShowAsHex)
                 {
-                    return ColorHelper.ColorToHex(this.SelectedColor);
+                    return this.SelectedColor.ColorToHex();
                 }
 
                 Type t = typeof(Colors);
@@ -295,7 +297,7 @@ namespace PropertyTools.Wpf
         {
             get
             {
-                return ColorHelper.ColorToHex(this.SelectedColor);
+                return this.SelectedColor.ColorToHex();
             }
 
             set
@@ -749,8 +751,8 @@ namespace PropertyTools.Wpf
         /// </param>
         private void ColorPickerLoaded(object sender, RoutedEventArgs e)
         {
-            //this.InitializePaletteSettings();
-            //this.LoadLastPalette();
+            // this.InitializePaletteSettings();
+            // this.LoadLastPalette();
         }
 
         /// <summary>
@@ -837,11 +839,10 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void OnSelectedValueChanged()
         {
-            return;
             // don't update the HSV controls if the original change was H, S or V.
             if (this.updateHSV)
             {
-                byte[] hsv = ColorHelper.ColorToHsvBytes(this.SelectedColor);
+                byte[] hsv = this.SelectedColor.ColorToHsvBytes();
                 this.hue = hsv[0];
                 this.saturation = hsv[1];
                 this.brightness = hsv[2];

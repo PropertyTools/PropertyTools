@@ -19,45 +19,45 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The proportional resize property.
+        ///   The proportional resize property.
         /// </summary>
         public static readonly DependencyProperty ProportionalResizeProperty =
             DependencyProperty.Register(
                 "ProportionalResize", typeof(bool), typeof(DockPanelSplitter), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// The thickness property.
+        ///   The thickness property.
         /// </summary>
         public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
             "Thickness", typeof(double), typeof(DockPanelSplitter), new UIPropertyMetadata(4.0, ThicknessChanged));
 
         /// <summary>
-        /// The start drag point.
-        /// </summary>
-        private Point StartDragPoint;
-
-        /// <summary>
-        /// The element.
+        ///   The element.
         /// </summary>
         private FrameworkElement element; // element to resize (target element)
 
         /// <summary>
-        /// The height.
+        ///   The height.
         /// </summary>
         private double height; // current desired height of the element, can be less than minheight
 
         /// <summary>
-        /// The previous parent height.
+        ///   The previous parent height.
         /// </summary>
         private double previousParentHeight; // current height of parent element, used for proportional resize
 
         /// <summary>
-        /// The previous parent width.
+        ///   The previous parent width.
         /// </summary>
         private double previousParentWidth; // current width of parent element, used for proportional resize
 
         /// <summary>
-        /// The width.
+        ///   The start drag point.
+        /// </summary>
+        private Point startDragPoint;
+
+        /// <summary>
+        ///   The width.
         /// </summary>
         private double width; // current desired width of the element, can be less than minwidth
 
@@ -66,7 +66,7 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="DockPanelSplitter"/> class. 
+        ///   Initializes static members of the <see cref = "DockPanelSplitter" /> class.
         /// </summary>
         static DockPanelSplitter()
         {
@@ -164,7 +164,7 @@ namespace PropertyTools.Wpf
 
             if (!this.IsMouseCaptured)
             {
-                this.StartDragPoint = e.GetPosition(this.Parent as IInputElement);
+                this.startDragPoint = e.GetPosition(this.Parent as IInputElement);
                 this.UpdateTargetElement();
                 if (this.element != null)
                 {
@@ -205,7 +205,7 @@ namespace PropertyTools.Wpf
             if (this.IsMouseCaptured)
             {
                 Point ptCurrent = e.GetPosition(this.Parent as IInputElement);
-                var delta = new Point(ptCurrent.X - this.StartDragPoint.X, ptCurrent.Y - this.StartDragPoint.Y);
+                var delta = new Point(ptCurrent.X - this.startDragPoint.X, ptCurrent.Y - this.startDragPoint.Y);
                 Dock dock = DockPanel.GetDock(this);
 
                 if (this.IsHorizontal)
@@ -222,11 +222,11 @@ namespace PropertyTools.Wpf
                 // When docked to the bottom or right, the position has changed after adjusting the size
                 if (isBottomOrRight)
                 {
-                    this.StartDragPoint = e.GetPosition(this.Parent as IInputElement);
+                    this.startDragPoint = e.GetPosition(this.Parent as IInputElement);
                 }
                 else
                 {
-                    this.StartDragPoint = new Point(this.StartDragPoint.X + delta.X, this.StartDragPoint.Y + delta.Y);
+                    this.startDragPoint = new Point(this.startDragPoint.X + delta.X, this.startDragPoint.Y + delta.Y);
                 }
             }
 

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValueToBooleanConverter.cs" company="PropertyTools">
+// <copyright file="ValueToVisibilityConverter.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -17,14 +17,34 @@ namespace PropertyTools.Wpf
     [ValueConversion(typeof(object), typeof(bool))]
     public class ValueToVisibilityConverter : IValueConverter
     {
-        public Visibility EqualsVisibility { get; set; }
-        public Visibility NotEqualsVisibility { get; set; }
+        #region Constructors and Destructors
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref = "ValueToVisibilityConverter" /> class.
+        /// </summary>
         public ValueToVisibilityConverter()
         {
-            EqualsVisibility = Visibility.Visible;
-            NotEqualsVisibility = Visibility.Collapsed;
+            this.EqualsVisibility = Visibility.Visible;
+            this.NotEqualsVisibility = Visibility.Collapsed;
         }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        ///   Gets or sets the visibility to return when the value to convert equals the converter parameter.
+        /// </summary>
+        /// <value>The equals visibility.</value>
+        public Visibility EqualsVisibility { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the visibility to return when the value to convert does not equal the converter parameter.
+        /// </summary>
+        /// <value>The not equals visibility.</value>
+        public Visibility NotEqualsVisibility { get; set; }
+
+        #endregion
 
         #region Public Methods
 
@@ -50,10 +70,10 @@ namespace PropertyTools.Wpf
         {
             if (value == null)
             {
-                return parameter == null ? EqualsVisibility : NotEqualsVisibility;
+                return parameter == null ? this.EqualsVisibility : this.NotEqualsVisibility;
             }
 
-            return value.Equals(parameter) ? EqualsVisibility : NotEqualsVisibility;
+            return value.Equals(parameter) ? this.EqualsVisibility : this.NotEqualsVisibility;
         }
 
         /// <summary>

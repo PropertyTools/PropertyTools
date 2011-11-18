@@ -17,17 +17,17 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The optional descriptor.
+        ///   The optional descriptor.
         /// </summary>
         private readonly PropertyDescriptor optionalDescriptor;
 
         /// <summary>
-        /// The enabled but has no value.
+        ///   The enabled but has no value.
         /// </summary>
         private bool enabledButHasNoValue;
 
         /// <summary>
-        /// The previous value.
+        ///   The previous value.
         /// </summary>
         private object previousValue;
 
@@ -88,7 +88,7 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether IsOptionalChecked.
+        ///   Gets or sets a value indicating whether IsOptionalChecked.
         /// </summary>
         public bool IsOptionalChecked
         {
@@ -137,12 +137,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets a value indicating whether IsPropertyNullable.
+        ///   Gets a value indicating whether IsPropertyNullable.
         /// </summary>
         public bool IsPropertyNullable { get; private set; }
 
         /// <summary>
-        /// Gets OptionalPropertyName.
+        ///   Gets OptionalPropertyName.
         /// </summary>
         public string OptionalPropertyName
         {

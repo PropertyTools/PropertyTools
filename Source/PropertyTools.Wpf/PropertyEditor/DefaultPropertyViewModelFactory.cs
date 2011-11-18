@@ -6,7 +6,6 @@
 
 namespace PropertyTools.Wpf
 {
-    using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Windows;
@@ -22,7 +21,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The owner.
+        ///   The owner.
         /// </summary>
         protected readonly PropertyEditor owner;
 

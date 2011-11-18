@@ -21,8 +21,10 @@ namespace PropertyTools.Wpf
         /// Check if an attribute collection contains an attribute of the given type
         /// </summary>
         /// <param name="attributes">
+        /// The attributes.
         /// </param>
         /// <param name="attributeType">
+        /// The type to check for.
         /// </param>
         /// <returns>
         /// The contains attribute of type.
@@ -42,63 +44,20 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Return the first attribute of a given type
+        /// Return the first attribute of a given type for the specified property descriptor.
         /// </summary>
         /// <typeparam name="T">
+        /// An attribute type.
         /// </typeparam>
         /// <param name="descriptor">
+        /// The property descriptor.
         /// </param>
         /// <returns>
+        /// The first attribute of the specified type.
         /// </returns>
         public static T GetFirstAttribute<T>(PropertyDescriptor descriptor) where T : Attribute
         {
             return descriptor.Attributes.OfType<T>().FirstOrDefault();
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// The property info helper.
-    /// </summary>
-    public class PropertyInfoHelper
-    {
-        #region Public Methods
-
-        /// <summary>
-        /// The get property.
-        /// </summary>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
-        /// <param name="propertyName">
-        /// The property name.
-        /// </param>
-        /// <returns>
-        /// The get property.
-        /// </returns>
-        public static object GetProperty(object instance, string propertyName)
-        {
-            var pi = instance.GetType().GetProperty(propertyName);
-            return pi.GetValue(instance, null);
-        }
-
-        /// <summary>
-        /// The set property.
-        /// </summary>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
-        /// <param name="propertyName">
-        /// The property name.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        public static void SetProperty(object instance, string propertyName, object value)
-        {
-            var pi = instance.GetType().GetProperty(propertyName);
-            pi.SetValue(instance, value, null);
         }
 
         #endregion

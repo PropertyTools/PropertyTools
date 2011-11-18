@@ -39,12 +39,12 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets Categories.
+        ///   Gets Categories.
         /// </summary>
         public List<CategoryViewModel> Categories { get; private set; }
 
         /// <summary>
-        /// Gets CategoryTemplateSelector.
+        ///   Gets CategoryTemplateSelector.
         /// </summary>
         public CategoryTemplateSelector CategoryTemplateSelector
         {
@@ -55,7 +55,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets a value indicating whether HasErrors.
+        ///   Gets a value indicating whether HasErrors.
         /// </summary>
         public bool HasErrors
         {
@@ -77,7 +77,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets a value indicating whether HasWarnings.
+        ///   Gets a value indicating whether HasWarnings.
         /// </summary>
         public bool HasWarnings
         {
@@ -99,12 +99,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Icon.
+        ///   Gets or sets Icon.
         /// </summary>
         public ImageSource Icon { get; set; }
 
         /// <summary>
-        /// Gets IconVisibility.
+        ///   Gets IconVisibility.
         /// </summary>
         public Visibility IconVisibility
         {
@@ -115,7 +115,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Name.
+        ///   Gets or sets Name.
         /// </summary>
         public string Name { get; set; }
 

@@ -10,8 +10,8 @@
 
   <DataTemplate x:Key="TabHeaderTemplate" DataType="{x:Type local:TabViewModel}">
     <StackPanel Orientation="Horizontal">
-      <Image Source="{Binding Icon}" Visibility="{Binding IconVisibility}" Margin="0 0 4 0" Width="12"
-             Height="12" VerticalAlignment="Center" />
+      <Image Source="{Binding Icon}" Visibility="{Binding IconVisibility}" Margin="0 0 4 0" Width="12" Height="12"
+             VerticalAlignment="Center" />
       <TextBlock x:Name="header1" Text="{Binding Header}" />
     </StackPanel>
     <DataTemplate.Triggers>
@@ -43,8 +43,8 @@
 Width="{Binding LabelWidth, Converter={StaticResource DoubleToGridLengthConverter}, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}" />
             <ColumnDefinition />
           </Grid.ColumnDefinitions>
-          <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="8" Background="Transparent"
-                        Focusable="False" ResizeDirection="Columns" />
+          <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="8" Background="Transparent" Focusable="False"
+                        ResizeDirection="Columns" />
         </Grid>
       </Grid>
     </ScrollViewer>
@@ -52,8 +52,8 @@ Width="{Binding LabelWidth, Converter={StaticResource DoubleToGridLengthConverte
 
   <!-- GroupBox for the categories -->
   <DataTemplate x:Key="CategoryGroupBoxTemplate" DataType="{x:Type local:CategoryViewModel}">
-    <GroupBox Header="{Binding Header}" ToolTip="{Binding ToolTip, Mode=OneTime}" Focusable="False"
-              Margin="2 2 2 8" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
+    <GroupBox Header="{Binding Header}" ToolTip="{Binding ToolTip, Mode=OneTime}" Focusable="False" Margin="2 2 2 8"
+              IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
       <ItemsControl ItemsSource="{Binding Properties}" Focusable="False">
         <ItemsControl.ItemsPanel>
           <ItemsPanelTemplate>
@@ -66,8 +66,8 @@ Width="{Binding LabelWidth, Converter={StaticResource DoubleToGridLengthConverte
 
   <!-- Expander for the categories -->
   <DataTemplate x:Key="CategoryExpanderTemplate" DataType="{x:Type local:CategoryViewModel}">
-    <Expander Header="{Binding Header}" ToolTip="{Binding ToolTip, Mode=OneTime}" Focusable="False"
-              Margin="2 2 2 8" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
+    <Expander Header="{Binding Header}" ToolTip="{Binding ToolTip, Mode=OneTime}" Focusable="False" Margin="2 2 2 8"
+              IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
       <ItemsControl ItemsSource="{Binding Properties}" Focusable="False">
         <ItemsControl.ItemsPanel>
           <ItemsPanelTemplate>
@@ -94,8 +94,7 @@ Width="{Binding LabelWidth, Converter={StaticResource DoubleToGridLengthConverte
   </DataTemplate>
 
   <DataTemplate x:Key="ErrorTemplate">
-    <Rectangle Width="12" Height="12" Fill="{StaticResource ErrorBrush}" VerticalAlignment="Center"
-               Margin="4 0 4 0" />
+    <Rectangle Width="12" Height="12" Fill="{StaticResource ErrorBrush}" VerticalAlignment="Center" Margin="4 0 4 0" />
   </DataTemplate>
 
 
@@ -128,13 +127,11 @@ HorizontalContentAlignment="{Binding LabelAlignment, RelativeSource={RelativeSou
       </Border>
     </DockPanel>
     <DataTemplate.Triggers>
-      <DataTrigger Binding="{Binding PropertyWarning, Converter={StaticResource NullToBoolConverter}}"
-                   Value="False">
+      <DataTrigger Binding="{Binding PropertyWarning, Converter={StaticResource NullToBoolConverter}}" Value="False">
         <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource WarningBrush}" />
         <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyWarning}" />
       </DataTrigger>
-      <DataTrigger Binding="{Binding PropertyError, Converter={StaticResource NullToBoolConverter}}"
-                   Value="False">
+      <DataTrigger Binding="{Binding PropertyError, Converter={StaticResource NullToBoolConverter}}" Value="False">
         <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource ErrorBrush}" />
         <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyError}" />
       </DataTrigger>
@@ -160,8 +157,8 @@ HorizontalContentAlignment="{Binding LabelAlignment, RelativeSource={RelativeSou
   <!-- Template for a wide property -->
   <DataTemplate DataType="{x:Type local:WidePropertyViewModel}">
     <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
-      <Label DockPanel.Dock="Top" Content="{Binding Header, Mode=OneTime}"
-             ToolTip="{Binding ToolTip, Mode=OneTime}" Visibility="{Binding HeaderVisibility, Mode=OneTime}"
+      <Label DockPanel.Dock="Top" Content="{Binding Header, Mode=OneTime}" ToolTip="{Binding ToolTip, Mode=OneTime}"
+             Visibility="{Binding HeaderVisibility, Mode=OneTime}"
              HorizontalAlignment="{Binding RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}, Path=LabelAlignment}" />
       <Border x:Name="border1"
               BorderThickness="{Binding ErrorBorderThickness, Mode=OneTime, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}">
@@ -170,13 +167,11 @@ HorizontalContentAlignment="{Binding LabelAlignment, RelativeSource={RelativeSou
       </Border>
     </DockPanel>
     <DataTemplate.Triggers>
-      <DataTrigger Binding="{Binding PropertyWarning, Converter={StaticResource NullToBoolConverter}}"
-                   Value="False">
+      <DataTrigger Binding="{Binding PropertyWarning, Converter={StaticResource NullToBoolConverter}}" Value="False">
         <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource WarningBrush}" />
         <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyWarning}" />
       </DataTrigger>
-      <DataTrigger Binding="{Binding PropertyError, Converter={StaticResource NullToBoolConverter}}"
-                   Value="False">
+      <DataTrigger Binding="{Binding PropertyError, Converter={StaticResource NullToBoolConverter}}" Value="False">
         <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource ErrorBrush}" />
         <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyError}" />
       </DataTrigger>
@@ -187,19 +182,16 @@ HorizontalContentAlignment="{Binding LabelAlignment, RelativeSource={RelativeSou
     <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
       <Border x:Name="border1"
               BorderThickness="{Binding ErrorBorderThickness, Mode=OneTime, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}">
-        <CheckBox x:Name="content1" Content="{Binding Header, Mode=OneTime}"
-                  ToolTip="{Binding ToolTip, Mode=OneTime}" Margin="5 4 5 0" IsChecked="{Binding Value}"
-                  IsEnabled="{Binding IsWriteable}" VerticalAlignment="Center" />
+        <CheckBox x:Name="content1" Content="{Binding Header, Mode=OneTime}" ToolTip="{Binding ToolTip, Mode=OneTime}"
+                  Margin="5 4 5 0" IsChecked="{Binding Value}" IsEnabled="{Binding IsWriteable}" VerticalAlignment="Center" />
       </Border>
     </DockPanel>
     <DataTemplate.Triggers>
-      <DataTrigger Binding="{Binding PropertyWarning, Converter={StaticResource NullToBoolConverter}}"
-                   Value="False">
+      <DataTrigger Binding="{Binding PropertyWarning, Converter={StaticResource NullToBoolConverter}}" Value="False">
         <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource WarningBrush}" />
         <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyWarning}" />
       </DataTrigger>
-      <DataTrigger Binding="{Binding PropertyError, Converter={StaticResource NullToBoolConverter}}"
-                   Value="False">
+      <DataTrigger Binding="{Binding PropertyError, Converter={StaticResource NullToBoolConverter}}" Value="False">
         <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource ErrorBrush}" />
         <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyError}" />
       </DataTrigger>
@@ -212,8 +204,7 @@ HorizontalContentAlignment="{Binding LabelAlignment, RelativeSource={RelativeSou
     <DockPanel Margin="0 2 0 2" IsEnabled="{Binding IsEnabled}" Visibility="{Binding Visibility}">
       <Grid
 MinWidth="{Binding LabelWidth,RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}">
-        <CheckBox Content="{Binding Header, Mode=OneTime}" ToolTip="{Binding ToolTip, Mode=OneTime}"
-                  Margin="5 0 5 0"
+        <CheckBox Content="{Binding Header, Mode=OneTime}" ToolTip="{Binding ToolTip, Mode=OneTime}" Margin="5 0 5 0"
                   HorizontalAlignment="{Binding LabelAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type local:PropertyEditor}}}"
                   IsChecked="{Binding IsOptionalChecked}" VerticalAlignment="Center" />
       </Grid>
@@ -226,13 +217,11 @@ MinWidth="{Binding LabelWidth,RelativeSource={RelativeSource FindAncestor, Ances
       </Border>
     </DockPanel>
     <DataTemplate.Triggers>
-      <DataTrigger Binding="{Binding PropertyWarning, Converter={StaticResource NullToBoolConverter}}"
-                   Value="False">
+      <DataTrigger Binding="{Binding PropertyWarning, Converter={StaticResource NullToBoolConverter}}" Value="False">
         <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource WarningBrush}" />
         <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyWarning}" />
       </DataTrigger>
-      <DataTrigger Binding="{Binding PropertyError, Converter={StaticResource NullToBoolConverter}}"
-                   Value="False">
+      <DataTrigger Binding="{Binding PropertyError, Converter={StaticResource NullToBoolConverter}}" Value="False">
         <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource ErrorBrush}" />
         <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyError}" />
       </DataTrigger>
@@ -256,13 +245,11 @@ MinWidth="{Binding LabelWidth,RelativeSource={RelativeSource FindAncestor, Ances
       </Border>
     </DockPanel>
     <DataTemplate.Triggers>
-      <DataTrigger Binding="{Binding PropertyWarning, Converter={StaticResource NullToBoolConverter}}"
-                   Value="False">
+      <DataTrigger Binding="{Binding PropertyWarning, Converter={StaticResource NullToBoolConverter}}" Value="False">
         <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource WarningBrush}" />
         <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyWarning}" />
       </DataTrigger>
-      <DataTrigger Binding="{Binding PropertyError, Converter={StaticResource NullToBoolConverter}}"
-                   Value="False">
+      <DataTrigger Binding="{Binding PropertyError, Converter={StaticResource NullToBoolConverter}}" Value="False">
         <Setter TargetName="border1" Property="BorderBrush" Value="{StaticResource ErrorBrush}" />
         <Setter TargetName="content1" Property="ToolTip" Value="{Binding PropertyError}" />
       </DataTrigger>

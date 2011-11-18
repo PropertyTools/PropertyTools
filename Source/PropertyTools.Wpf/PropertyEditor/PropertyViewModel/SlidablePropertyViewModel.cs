@@ -38,7 +38,7 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets DoubleValue.
+        ///   Gets or sets DoubleValue.
         /// </summary>
         public double DoubleValue
         {
@@ -76,37 +76,37 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets SliderLargeChange.
+        ///   Gets or sets SliderLargeChange.
         /// </summary>
         public double SliderLargeChange { get; set; }
 
         /// <summary>
-        /// Gets or sets SliderMaximum.
+        ///   Gets or sets SliderMaximum.
         /// </summary>
         public double SliderMaximum { get; set; }
 
         /// <summary>
-        /// Gets or sets SliderMinimum.
+        ///   Gets or sets SliderMinimum.
         /// </summary>
         public double SliderMinimum { get; set; }
 
         /// <summary>
-        /// Gets or sets SliderSmallChange.
+        ///   Gets or sets SliderSmallChange.
         /// </summary>
         public double SliderSmallChange { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether SliderSnapToTicks.
+        ///   Gets or sets a value indicating whether SliderSnapToTicks.
         /// </summary>
         public bool SliderSnapToTicks { get; set; }
 
         /// <summary>
-        /// Gets or sets SliderTickFrequency.
+        ///   Gets or sets SliderTickFrequency.
         /// </summary>
         public double SliderTickFrequency { get; set; }
 
         /// <summary>
-        /// Gets or sets SliderTickPlacement.
+        ///   Gets or sets SliderTickPlacement.
         /// </summary>
         public TickPlacement SliderTickPlacement { get; set; }
 

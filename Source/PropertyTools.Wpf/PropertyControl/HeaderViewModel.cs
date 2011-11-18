@@ -16,6 +16,14 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
+        ///   Gets or sets the description.
+        /// </summary>
+        /// <value>
+        ///   The description.
+        /// </value>
+        public string Description { get; set; }
+
+        /// <summary>
         ///   Gets or sets the header.
         /// </summary>
         /// <value>The header.</value>
@@ -26,14 +34,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The icon.</value>
         public ImageSource Icon { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        public string Description { get; set; }
 
         #endregion
 

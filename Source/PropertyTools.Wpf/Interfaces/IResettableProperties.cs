@@ -7,7 +7,7 @@
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// The i resettable properties.
+    /// The resettable properties interface.
     /// </summary>
     public interface IResettableProperties
     {

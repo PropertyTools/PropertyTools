@@ -189,6 +189,7 @@
     <Compile Include="Controls\ColorPicker2\ColorPicker2.cs" />
     <Compile Include="Controls\Bitmap.cs" />
     <Compile Include="Controls\ColorPicker2\ColorPickerPanel.cs" />
+    <Compile Include="Controls\ColorPicker2\ColorPickerPanelStrings.cs" />
     <Compile Include="Controls\ColorPicker2\ColorSlider.cs" />
     <Compile Include="Controls\ColorPicker2\HsvControl.cs" />
     <Compile Include="Controls\ColorPicker2\SpectrumSlider.cs" />
@@ -239,6 +240,7 @@
       <DependentUpon>WizardDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\PasswordHelper.cs" />
+    <Compile Include="Helpers\PropertyInfoHelper.cs" />
     <Compile Include="Helpers\TimeSpanFormatter.cs" />
     <Compile Include="Helpers\TimeSpanParser.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />
@@ -248,6 +250,7 @@
     <Compile Include="Interfaces\IPropertyStateUpdater.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Interfaces\IResettableProperties.cs" />
+    <Compile Include="Interfaces\PropertyStateBag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -300,6 +303,7 @@
     <Compile Include="PropertyEditor\PropertyViewModel\TabViewModel.cs" />
     <Compile Include="SimpleGrid\AutoFiller.cs" />
     <Compile Include="SimpleGrid\CellRef.cs" />
+    <Compile Include="SimpleGrid\CellRefConverter.cs" />
     <Compile Include="SimpleGrid\ColumnDefinition.cs" />
     <Compile Include="SimpleGrid\SimpleGrid.Properties.cs" />
     <Compile Include="SimpleGrid\GridLengthCollectionConverter.cs" />

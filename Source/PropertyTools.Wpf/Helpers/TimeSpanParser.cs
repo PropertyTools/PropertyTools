@@ -18,9 +18,9 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The parser expression.
+        ///   The parser expression.
         /// </summary>
-        private static readonly Regex parserExpression = new Regex(
+        private static readonly Regex ParserExpression = new Regex(
             @"([0-9]*[,|.]?[0-9]*)\s*([d|h|m|s|'|""]?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         #endregion
@@ -56,7 +56,7 @@ namespace PropertyTools.Wpf
             // "5m 3s"
             // "12.5d"
             var total = new TimeSpan();
-            foreach (Match m in parserExpression.Matches(value))
+            foreach (Match m in ParserExpression.Matches(value))
             {
                 string number = m.Groups[1].Value;
                 if (string.IsNullOrWhiteSpace(number))

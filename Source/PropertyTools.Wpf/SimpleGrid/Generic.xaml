@@ -38,44 +38,38 @@
                       Cursor="/PropertyTools.Wpf;component/SimpleGrid/Cursors/Cross.cur">
                   <Border x:Name="PART_SelectionBackground" Background="#b7dbff" />
                   <Border x:Name="PART_CurrentBackground" Background="White" />
-                  <Border x:Name="PART_Selection" BorderBrush="Black" BorderThickness="3"
-                          Margin="-1,-1,-2,-2" />
-                  <Border x:Name="PART_AutoFillSelection" BorderBrush="Gray" BorderThickness="3"
-                          Margin="-1,-1,-2,-2" Visibility="Hidden" />
+                  <Border x:Name="PART_Selection" BorderBrush="Black" BorderThickness="3" Margin="-1,-1,-2,-2" />
+                  <Border x:Name="PART_AutoFillSelection" BorderBrush="Gray" BorderThickness="3" Margin="-1,-1,-2,-2"
+                          Visibility="Hidden" />
                   <Border x:Name="PART_AutoFillBox" Width="7" Height="7" SnapsToDevicePixels="True"
                           Cursor="/PropertyTools.Wpf;component/SimpleGrid/Cursors/AutoFill.cur" HorizontalAlignment="Right"
                           VerticalAlignment="Bottom" Background="Black" BorderBrush="White" BorderThickness="1" Margin="0, 0, -4, -4" />
                   <TextBox x:Name="PART_TextEditor" Margin="1" Background="White" BorderThickness="0"
                            Visibility="Hidden" />
-                  <ComboBox x:Name="PART_EnumEditor" Margin="0 0 -1 -1" Background="White"
-                            BorderThickness="0" Visibility="Hidden" />
+                  <ComboBox x:Name="PART_EnumEditor" Margin="0 0 -1 -1" Background="White" BorderThickness="0"
+                            Visibility="Hidden" />
                 </Grid>
               </ScrollViewer>
               <!-- Column headers -->
-              <ScrollViewer Name="PART_ColumnScroller" Grid.Column="1"
-                            VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
-                <Grid x:Name="PART_ColumnGrid"
-                      Cursor="/PropertyTools.Wpf;component/SimpleGrid/Cursors/DownArrow.cur"
+              <ScrollViewer Name="PART_ColumnScroller" Grid.Column="1" VerticalScrollBarVisibility="Hidden"
+                            HorizontalScrollBarVisibility="Hidden">
+                <Grid x:Name="PART_ColumnGrid" Cursor="/PropertyTools.Wpf;component/SimpleGrid/Cursors/DownArrow.cur"
                       Background="{StaticResource HeaderBackgroundBrush}">
-                  <Border x:Name="PART_ColumnSelectionBackground"
-                          Background="{StaticResource SelectionBrush}" />
+                  <Border x:Name="PART_ColumnSelectionBackground" Background="{StaticResource SelectionBrush}" />
                 </Grid>
               </ScrollViewer>
               <!-- Row headers -->
               <ScrollViewer Name="PART_RowScroller" Grid.Row="1" VerticalScrollBarVisibility="Hidden"
                             HorizontalScrollBarVisibility="Hidden">
-                <Grid x:Name="PART_RowGrid"
-                      Cursor="/PropertyTools.Wpf;component/SimpleGrid/Cursors/RightArrow.cur"
+                <Grid x:Name="PART_RowGrid" Cursor="/PropertyTools.Wpf;component/SimpleGrid/Cursors/RightArrow.cur"
                       Background="{StaticResource HeaderBackgroundBrush}">
-                  <Border x:Name="PART_RowSelectionBackground"
-                          Background="{StaticResource SelectionBrush2}" />
+                  <Border x:Name="PART_RowSelectionBackground" Background="{StaticResource SelectionBrush2}" />
                 </Grid>
               </ScrollViewer>
               <!-- The top-left cell -->
               <Grid>
-                <Border x:Name="PART_TopLeft"
-                        Cursor="/PropertyTools.Wpf;component/SimpleGrid/Cursors/Cross.cur" Background="{StaticResource HeaderBackgroundBrush}"
-                        BorderBrush="#b1b5ba" BorderThickness="1,1,1,1" Margin="0,0,0,0">
+                <Border x:Name="PART_TopLeft" Cursor="/PropertyTools.Wpf;component/SimpleGrid/Cursors/Cross.cur"
+                        Background="{StaticResource HeaderBackgroundBrush}" BorderBrush="#b1b5ba" BorderThickness="1,1,1,1" Margin="0,0,0,0">
                   <Path Data="F1 M0,11 L11,11 L11,0 z" Fill="#30000000" HorizontalAlignment="Right"
                         VerticalAlignment="Bottom" Margin="3" />
                 </Border>

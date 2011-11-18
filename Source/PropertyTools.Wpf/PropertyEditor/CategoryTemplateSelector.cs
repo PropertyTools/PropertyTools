@@ -33,12 +33,12 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets Owner.
+        ///   Gets Owner.
         /// </summary>
         public PropertyEditor Owner { get; private set; }
 
         /// <summary>
-        /// Gets or sets TemplateOwner.
+        ///   Gets or sets TemplateOwner.
         /// </summary>
         public FrameworkElement TemplateOwner { get; set; }
 

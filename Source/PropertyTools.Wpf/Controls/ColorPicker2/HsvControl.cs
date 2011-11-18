@@ -71,19 +71,21 @@ namespace PropertyTools.Wpf
         private const string PartThumb = "PART_Thumb";
 
         /// <summary>
-        ///   The m_thumb transform.
+        ///   The thumb transform.
         /// </summary>
         private readonly TranslateTransform thumbTransform = new TranslateTransform();
 
         /// <summary>
-        ///   The m_thumb.
+        ///   The thumb.
         /// </summary>
         private Thumb thumb;
 
+#pragma warning disable 649
         /// <summary>
         ///   The within update flag.
         /// </summary>
         private bool withinUpdate;
+#pragma warning restore 649
 
         #endregion
 
@@ -275,7 +277,10 @@ namespace PropertyTools.Wpf
         private static void OnThumbDragDelta(object sender, DragDeltaEventArgs e)
         {
             var hsvControl = sender as HsvControl;
-            hsvControl.OnThumbDragDelta(e);
+            if (hsvControl != null)
+            {
+                hsvControl.OnThumbDragDelta(e);
+            }
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The popup template property.
+        ///   The popup template property.
         /// </summary>
         public static readonly DependencyProperty PopupTemplateProperty = DependencyProperty.Register(
             "PopupTemplate", typeof(DataTemplate), typeof(PopupBox), new UIPropertyMetadata(null));
@@ -27,7 +27,7 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="PopupBox"/> class. 
+        ///   Initializes static members of the <see cref = "PopupBox" /> class.
         /// </summary>
         static PopupBox()
         {

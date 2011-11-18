@@ -108,10 +108,9 @@ namespace PropertyTools.Wpf
         /// </param>
         protected virtual void RestoreFieldValues(Dictionary<string, object> fieldValues, object obj)
         {
-            foreach (
-                var pi in
-                    obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).
-                        Where(pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
+            foreach (var pi in
+                obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(
+                    pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
             {
                 object value;
                 if (fieldValues.TryGetValue(pi.Name, out value))
@@ -140,10 +139,9 @@ namespace PropertyTools.Wpf
         {
             var t = src.GetType();
             var clone = Activator.CreateInstance(t);
-            foreach (
-                var pi in
-                    t.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(
-                        pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
+            foreach (var pi in
+                t.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(
+                    pi => pi.CanWrite && pi.GetIndexParameters().Length == 0))
             {
                 pi.SetValue(clone, pi.GetValue(src, null), null);
             }

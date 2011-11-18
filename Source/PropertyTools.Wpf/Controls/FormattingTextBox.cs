@@ -20,7 +20,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The format provider property.
+        ///   The format provider property.
         /// </summary>
         public static readonly DependencyProperty FormatProviderProperty = DependencyProperty.Register(
             "FormatProvider", 
@@ -29,13 +29,13 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(CultureInfo.InvariantCulture));
 
         /// <summary>
-        /// The string format property.
+        ///   The string format property.
         /// </summary>
         public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register(
             "StringFormat", typeof(string), typeof(FormattingTextBox), new UIPropertyMetadata(null, StringFormatChanged));
 
         /// <summary>
-        /// The value property.
+        ///   The value property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", 
@@ -45,7 +45,7 @@ namespace PropertyTools.Wpf
                 null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChangedCallback));
 
         /// <summary>
-        /// The user is changing.
+        ///   The user is changing.
         /// </summary>
         private bool userIsChanging = true;
 
@@ -54,7 +54,7 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="FormattingTextBox"/> class. 
+        ///   Initializes static members of the <see cref = "FormattingTextBox" /> class.
         /// </summary>
         static FormattingTextBox()
         {

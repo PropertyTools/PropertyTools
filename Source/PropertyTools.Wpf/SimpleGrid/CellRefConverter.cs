@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HueToColorConverter.cs" company="PropertyTools">
+// <copyright file="CellRefConverter.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -9,13 +9,12 @@ namespace PropertyTools.Wpf
     using System;
     using System.Globalization;
     using System.Windows.Data;
-    using System.Windows.Media;
 
     /// <summary>
-    /// Converts a hue values to <see cref="Color"/> instances.
+    /// The cell ref converter.
     /// </summary>
-    [ValueConversion(typeof(double), typeof(Color))]
-    public class HueToColorConverter : IValueConverter
+    [ValueConversion(typeof(string), typeof(CellRef))]
+    public class CellRefConverter : IValueConverter
     {
         #region Public Methods
 
@@ -39,9 +38,44 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var doubleValue = (double)value;
+            if (targetType == typeof(string) && value != null)
+            {
+                return value.ToString();
+            }
 
-            return ColorHelper.HsvToColor(doubleValue / 360, 1, 1);
+            if (targetType != typeof(CellRef))
+            {
+                return Binding.DoNothing;
+            }
+
+            if (value == null)
+            {
+                return new CellRef(0, 0);
+            }
+
+            var s = value.ToString().ToUpperInvariant();
+            string rowString = string.Empty;
+            string columnString = string.Empty;
+            foreach (var c in s)
+            {
+                if (char.IsDigit(c))
+                {
+                    rowString += c;
+                }
+                else
+                {
+                    columnString += c;
+                }
+            }
+
+            int row = int.Parse(rowString) - 1;
+            int column = 0;
+            for (int i = columnString.Length - 1; i >= 0; i--)
+            {
+                column += column * 26 + columnString[i] - 'A';
+            }
+
+            return new CellRef(row, column);
         }
 
         /// <summary>
@@ -64,7 +98,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return this.Convert(value, targetType, parameter, culture);
         }
 
         #endregion

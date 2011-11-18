@@ -43,7 +43,7 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        /// Gets HeaderVisibility.
+        ///   Gets HeaderVisibility.
         /// </summary>
         public Visibility HeaderVisibility { get; private set; }
 

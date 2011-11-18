@@ -2,9 +2,6 @@
 // <copyright file="DefaultPropertyItemFactory.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
-// <summary>
-//   Provides a default property item factory.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
@@ -16,7 +13,7 @@ namespace PropertyTools.Wpf
     using System.Text;
     using System.Windows.Data;
 
-    using DataAnnotations;
+    using PropertyTools.DataAnnotations;
 
     /// <summary>
     /// Provides a default property item factory.
@@ -96,10 +93,10 @@ namespace PropertyTools.Wpf
         protected string CurrentCategory { get; set; }
 
         /// <summary>
-        /// Gets or sets the declaring type of the current category.
+        ///   Gets or sets the declaring type of the current category.
         /// </summary>
         /// <value>
-        /// The type of the current category.
+        ///   The type of the current category.
         /// </value>
         protected Type CurrentCategoryDeclaringType { get; set; }
 
@@ -119,6 +116,39 @@ namespace PropertyTools.Wpf
         #region Public Methods
 
         /// <summary>
+        /// Creates a property item.
+        /// </summary>
+        /// <param name="pd">
+        /// The property descriptor.
+        /// </param>
+        /// <param name="instance">
+        /// The instance.
+        /// </param>
+        /// <returns>
+        /// A property item.
+        /// </returns>
+        public virtual PropertyItem CreatePropertyItem(PropertyDescriptor pd, object instance)
+        {
+            var pi = this.CreateCore(pd, instance);
+            this.SetProperties(pi);
+            return pi;
+        }
+
+        /// <summary>
+        /// Resets this factory.
+        /// </summary>
+        public void Reset()
+        {
+            this.CurrentCategory = null;
+            this.CurrentDeclaringType = null;
+            this.CurrentCategoryDeclaringType = null;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
         /// Variables the display name of the name to.
         /// </summary>
         /// <param name="variableName">
@@ -130,13 +160,13 @@ namespace PropertyTools.Wpf
         protected static string NicifyString(string variableName)
         {
             var sb = new StringBuilder();
-            Func<char, bool> IsUpper = ch => ch.ToString() == ch.ToString().ToUpper();
+            Func<char, bool> isUpper = ch => ch.ToString() == ch.ToString().ToUpper();
             for (int i = 0; i < variableName.Length; i++)
             {
-                if (i > 0 && IsUpper(variableName[i]) && !IsUpper(variableName[i - 1]))
+                if (i > 0 && isUpper(variableName[i]) && !isUpper(variableName[i - 1]))
                 {
                     sb.Append(" ");
-                    if (i == variableName.Length - 1 || IsUpper(variableName[i + 1]))
+                    if (i == variableName.Length - 1 || isUpper(variableName[i + 1]))
                     {
                         sb.Append(variableName[i]);
                     }
@@ -155,25 +185,14 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates a property item.
-        /// </summary>
-        /// <param name="pd">The property descriptor.</param>
-        /// <param name="instance">The instance.</param>
-        /// <returns>
-        /// A property item.
-        /// </returns>
-        public virtual PropertyItem CreatePropertyItem(PropertyDescriptor pd, object instance)
-        {
-            var pi = this.CreateCore(pd, instance);
-            this.SetProperties(pi);
-            return pi;
-        }
-
-        /// <summary>
         /// Creates the property item instance.
         /// </summary>
-        /// <param name="pd">The pd.</param>
-        /// <param name="instance">The instance.</param>
+        /// <param name="pd">
+        /// The pd.
+        /// </param>
+        /// <param name="instance">
+        /// The instance.
+        /// </param>
         /// <returns>
         /// The core.
         /// </returns>
@@ -183,9 +202,85 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the tool tip for the specified property.
+        /// </summary>
+        /// <param name="pd">
+        /// The property descriptor.
+        /// </param>
+        /// <param name="declaringType">
+        /// The declaring type.
+        /// </param>
+        /// <returns>
+        /// A tool tip.
+        /// </returns>
+        protected virtual string GetDescription(PropertyDescriptor pd, Type declaringType)
+        {
+            return pd.Description;
+        }
+
+        /// <summary>
+        /// Gets the display name for the specified property.
+        /// </summary>
+        /// <param name="pd">
+        /// The property descriptor.
+        /// </param>
+        /// <param name="declaringType">
+        /// The declaring type.
+        /// </param>
+        /// <returns>
+        /// A display name string.
+        /// </returns>
+        protected virtual string GetDisplayName(PropertyDescriptor pd, Type declaringType)
+        {
+            var displayName = pd.DisplayName;
+            if (this.NicifyDisplayNames && pd.DisplayName == pd.Name)
+            {
+                displayName = NicifyString(displayName);
+            }
+
+            return displayName;
+        }
+
+        /// <summary>
+        /// Gets the localized description.
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="declaringType">
+        /// Type of the declaring.
+        /// </param>
+        /// <returns>
+        /// The localized description.
+        /// </returns>
+        protected virtual string GetLocalizedDescription(string key, Type declaringType)
+        {
+            return key;
+        }
+
+        /// <summary>
+        /// Gets the localized string.
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <param name="declaringType">
+        /// The declaring type.
+        /// </param>
+        /// <returns>
+        /// The localized string.
+        /// </returns>
+        protected virtual string GetLocalizedString(string key, Type declaringType)
+        {
+            return key;
+        }
+
+        /// <summary>
         /// Sets the properties.
         /// </summary>
-        /// <param name="pi">The property item.</param>
+        /// <param name="pi">
+        /// The property item.
+        /// </param>
         protected virtual void SetProperties(PropertyItem pi)
         {
             var pd = pi.Descriptor;
@@ -206,7 +301,7 @@ namespace PropertyTools.Wpf
             {
                 this.CurrentCategory = null;
             }
-            
+
             this.CurrentDeclaringType = declaringType;
 
             if (!this.InheritCategories)
@@ -223,16 +318,19 @@ namespace PropertyTools.Wpf
 
             var category = this.CurrentCategory ?? (this.DefaultCategoryName ?? pd.Category);
 
-            var items = category.Split('|');
-            if (items.Length == 2)
+            if (category != null)
             {
-                tabName = items[0];
-                categoryName = items[1];
-            }
+                var items = category.Split('|');
+                if (items.Length == 2)
+                {
+                    tabName = items[0];
+                    categoryName = items[1];
+                }
 
-            if (items.Length == 1)
-            {
-                categoryName = items[0];
+                if (items.Length == 1)
+                {
+                    categoryName = items[0];
+                }
             }
 
             var displayName = this.GetDisplayName(pd, declaringType);
@@ -241,10 +339,10 @@ namespace PropertyTools.Wpf
             pi.DisplayName = this.GetLocalizedString(displayName, declaringType);
             pi.Description = this.GetLocalizedDescription(description, declaringType);
 
-            pi.Category = this.GetLocalizedString(categoryName, CurrentCategoryDeclaringType);
-            pi.CategoryDescription = this.GetLocalizedDescription(categoryName, CurrentCategoryDeclaringType);
-            pi.Tab = this.GetLocalizedString(tabName, CurrentCategoryDeclaringType);
-            pi.TabDescription = this.GetLocalizedDescription(tabName, CurrentCategoryDeclaringType);
+            pi.Category = this.GetLocalizedString(categoryName, this.CurrentCategoryDeclaringType);
+            pi.CategoryDescription = this.GetLocalizedDescription(categoryName, this.CurrentCategoryDeclaringType);
+            pi.Tab = this.GetLocalizedString(tabName, this.CurrentCategoryDeclaringType);
+            pi.TabDescription = this.GetLocalizedDescription(tabName, this.CurrentCategoryDeclaringType);
 
             // Find descriptors by convention
             pi.IsEnabledDescriptor = pi.GetDescriptor(string.Format(this.EnabledPattern, pd.Name));
@@ -410,77 +508,6 @@ namespace PropertyTools.Wpf
                 pi.MaximumHeight = ha.MaximumHeight;
                 pi.AcceptsReturn = true;
             }
-        }
-
-        /// <summary>
-        /// Gets the display name for the specified property.
-        /// </summary>
-        /// <param name="pd">The property descriptor.</param>
-        /// <param name="declaringType">The declaring type.</param>
-        /// <returns>
-        /// A display name string.
-        /// </returns>
-        protected virtual string GetDisplayName(PropertyDescriptor pd, Type declaringType)
-        {
-            var displayName = pd.DisplayName;
-            if (this.NicifyDisplayNames && pd.DisplayName == pd.Name)
-            {
-                displayName = NicifyString(displayName);
-            }
-            return displayName;
-        }
-
-        /// <summary>
-        /// Gets the localized string.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="declaringType">The declaring type.</param>
-        /// <returns>
-        /// The localized string.
-        /// </returns>
-        protected virtual string GetLocalizedString(string key, Type declaringType)
-        {
-            return key;
-        }
-
-        /// <summary>
-        /// Gets the localized description.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="declaringType">Type of the declaring.</param>
-        /// <returns>
-        /// The localized description.
-        /// </returns>
-        protected virtual string GetLocalizedDescription(string key, Type declaringType)
-        {
-            return key;
-        }
-
-        /// <summary>
-        /// Gets the tool tip for the specified property.
-        /// </summary>
-        /// <param name="pd">
-        /// The property descriptor.
-        /// </param>
-        /// <param name="declaringType">
-        /// The declaring type.
-        /// </param>
-        /// <returns>
-        /// A tool tip.
-        /// </returns>
-        protected virtual string GetDescription(PropertyDescriptor pd, Type declaringType)
-        {
-            return pd.Description;
-        }
-
-        /// <summary>
-        /// Resets this factory.
-        /// </summary>
-        public void Reset()
-        {
-            this.CurrentCategory = null;
-            this.CurrentDeclaringType = null;
-            this.CurrentCategoryDeclaringType = null;
         }
 
         #endregion

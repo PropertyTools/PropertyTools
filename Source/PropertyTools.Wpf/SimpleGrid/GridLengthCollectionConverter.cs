@@ -20,7 +20,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The splitter chars.
+        ///   The splitter chars.
         /// </summary>
         private static readonly char[] SplitterChars = ",;".ToCharArray();
 
@@ -29,16 +29,16 @@ namespace PropertyTools.Wpf
         #region Public Methods
 
         /// <summary>
-        /// The can convert from.
+        /// Returns whether this converter can convert an object of the given type to the type of this converter, using the specified context.
         /// </summary>
         /// <param name="context">
-        /// The context.
+        /// An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.
         /// </param>
         /// <param name="sourceType">
-        /// The source type.
+        /// A <see cref="T:System.Type"/> that represents the type you want to convert from.
         /// </param>
         /// <returns>
-        /// The can convert from.
+        /// true if this converter can perform the conversion; otherwise, false.
         /// </returns>
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
@@ -51,20 +51,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The convert from.
+        /// Converts the given object to the type of this converter, using the specified context and culture information.
         /// </summary>
         /// <param name="context">
-        /// The context.
+        /// An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.
         /// </param>
         /// <param name="culture">
-        /// The culture.
+        /// The <see cref="T:System.Globalization.CultureInfo"/> to use as the current culture.
         /// </param>
         /// <param name="value">
-        /// The value.
+        /// The <see cref="T:System.Object"/> to convert.
         /// </param>
         /// <returns>
-        /// The convert from.
+        /// An <see cref="T:System.Object"/> that represents the converted value.
         /// </returns>
+        /// <exception cref="T:System.NotSupportedException">
+        /// The conversion cannot be performed. 
+        /// </exception>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             var s = value as string;

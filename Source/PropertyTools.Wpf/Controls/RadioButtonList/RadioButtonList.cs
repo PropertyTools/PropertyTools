@@ -25,31 +25,31 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The enum type property.
+        ///   The enum type property.
         /// </summary>
         public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(
             "EnumType", typeof(Type), typeof(RadioButtonList), new UIPropertyMetadata(null, ValueChanged));
 
         /// <summary>
-        /// The item margin property.
+        ///   The item margin property.
         /// </summary>
         public static readonly DependencyProperty ItemMarginProperty = DependencyProperty.Register(
             "ItemMargin", typeof(Thickness), typeof(RadioButtonList), new UIPropertyMetadata(new Thickness(0, 4, 0, 4)));
 
         /// <summary>
-        /// The item padding property.
+        ///   The item padding property.
         /// </summary>
         public static readonly DependencyProperty ItemPaddingProperty = DependencyProperty.Register(
             "ItemPadding", typeof(Thickness), typeof(RadioButtonList), new UIPropertyMetadata(new Thickness(4, 0, 0, 0)));
 
         /// <summary>
-        /// The orientation property.
+        ///   The orientation property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
             "Orientation", typeof(Orientation), typeof(RadioButtonList), new UIPropertyMetadata(Orientation.Vertical));
 
         /// <summary>
-        /// The value property.
+        ///   The value property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value", 
@@ -58,12 +58,12 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChanged));
 
         /// <summary>
-        /// The part panel.
+        ///   The part panel.
         /// </summary>
         private const string PartPanel = "PART_Panel";
 
         /// <summary>
-        /// The panel.
+        ///   The panel.
         /// </summary>
         private StackPanel panel;
 
@@ -72,7 +72,7 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="RadioButtonList"/> class. 
+        ///   Initializes static members of the <see cref = "RadioButtonList" /> class.
         /// </summary>
         static RadioButtonList()
         {

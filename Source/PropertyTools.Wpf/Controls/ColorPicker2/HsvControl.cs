@@ -6,6 +6,7 @@
 
 namespace PropertyTools.Wpf
 {
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
@@ -30,9 +31,9 @@ namespace PropertyTools.Wpf
         ///   The hue property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
-            "Hue", 
-            typeof(double), 
-            typeof(HsvControl), 
+            "Hue",
+            typeof(double),
+            typeof(HsvControl),
             new FrameworkPropertyMetadata(
                 (double)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnHueChanged));
 
@@ -40,9 +41,9 @@ namespace PropertyTools.Wpf
         ///   The saturation property.
         /// </summary>
         public static readonly DependencyProperty SaturationProperty = DependencyProperty.Register(
-            "Saturation", 
-            typeof(double), 
-            typeof(HsvControl), 
+            "Saturation",
+            typeof(double),
+            typeof(HsvControl),
             new FrameworkPropertyMetadata(
                 (double)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSaturationChanged));
 
@@ -50,18 +51,18 @@ namespace PropertyTools.Wpf
         ///   The selected color property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
-            "SelectedColor", 
-            typeof(Color?), 
-            typeof(HsvControl), 
+            "SelectedColor",
+            typeof(Color?),
+            typeof(HsvControl),
             new FrameworkPropertyMetadata(Colors.Transparent, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
         ///   The value property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", 
-            typeof(double), 
-            typeof(HsvControl), 
+            "Value",
+            typeof(double),
+            typeof(HsvControl),
             new FrameworkPropertyMetadata(
                 (double)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
@@ -102,6 +103,22 @@ namespace PropertyTools.Wpf
             // Register Event Handler for the Thumb 
             EventManager.RegisterClassHandler(
                 typeof(HsvControl), Thumb.DragDeltaEvent, new DragDeltaEventHandler(OnThumbDragDelta));
+            EventManager.RegisterClassHandler(
+                typeof(HsvControl), Thumb.DragCompletedEvent, new DragCompletedEventHandler(OnThumbDragCompleted));
+        }
+
+        private static void OnThumbDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            ((HsvControl)sender).OnThumbDragCompleted(e);
+        }
+
+        private void OnThumbDragCompleted(DragCompletedEventArgs sender)
+        {
+            var editableObject = this.DataContext as IEditableObject;
+            if (editableObject != null)
+            {
+                editableObject.EndEdit();
+            }
         }
 
         #endregion
@@ -196,13 +213,17 @@ namespace PropertyTools.Wpf
         #region Methods
 
         /// <summary>
-        /// The on mouse left button down.
+        /// Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/> routed event is raised on this element. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.</param>
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
+            var editableObject = this.DataContext as IEditableObject;
+            if (editableObject != null)
+            {
+                editableObject.BeginEdit();
+            }
+
             if (this.thumb != null)
             {
                 Point position = e.GetPosition(this);

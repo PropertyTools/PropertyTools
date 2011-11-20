@@ -130,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\SpinControl\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\AboutDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -206,11 +210,13 @@
     <Compile Include="Controls\LinkBlock.cs" />
     <Compile Include="Controls\PopupBox\PopupBox.cs" />
     <Compile Include="Controls\SliderEx.cs" />
+    <Compile Include="Controls\SpinControl\SpinControl.cs" />
     <Compile Include="Controls\StackPanelEx.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToComponentConverter.cs" />
     <Compile Include="Converters\ColorToStringConverter.cs" />
+    <Compile Include="Converters\DefinedColorToVisibilityConverter.cs" />
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />
     <Compile Include="Converters\HueToColorConverter.cs" />
     <Compile Include="Converters\ZeroToVisibilityConverter.cs" />

@@ -40,6 +40,7 @@ namespace PropertyTools.Wpf
             this.Properties = TypeDescriptor.GetProperties(instance);
             this.Instance = instance;
 
+            this.Width = double.NaN;
             this.Height = double.NaN;
             this.MaximumHeight = double.PositiveInfinity;
             this.MaxLength = int.MaxValue;
@@ -200,6 +201,12 @@ namespace PropertyTools.Wpf
         public HeaderPlacement HeaderPlacement { get; set; }
 
         /// <summary>
+        /// Gets or sets the width.
+        /// </summary>
+        /// <value>The width.</value>
+        public double Width { get; set; }
+
+        /// <summary>
         ///   Gets or sets the height.
         /// </summary>
         /// <value>The height.</value>
@@ -253,9 +260,14 @@ namespace PropertyTools.Wpf
         public bool IsPassword { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is slidable.
+        ///   Gets or sets a value indicating whether this instance is "slidable".
         /// </summary>
         public bool IsSlidable { get; set; }
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether this instance is "spinnable".
+        /// </summary>
+        public bool IsSpinnable { get; set; }
 
         /// <summary>
         ///   Gets or sets the is visible descriptor.
@@ -392,6 +404,26 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The index of the sort.</value>
         public int SortIndex { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the spin control small change.
+        /// </summary>
+        public double SpinSmallChange { get; set; }
+
+        /// <summary>
+        /// Gets or sets the spin control large change.
+        /// </summary>
+        public double SpinLargeChange { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the spin control maximum.
+        /// </summary>
+        public double SpinMaximum { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the spin control minimum.
+        /// </summary>
+        public double SpinMinimum { get; set; }
 
         /// <summary>
         ///   Gets or sets the tab title.

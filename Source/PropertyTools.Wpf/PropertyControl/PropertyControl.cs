@@ -1141,6 +1141,12 @@ namespace PropertyTools.Wpf
             var propertyControl = this.CreatePropertyControl(pi);
             if (propertyControl != null)
             {
+                if (!double.IsNaN(pi.Width))
+                {
+                    propertyControl.Width = pi.Width;
+                    propertyControl.HorizontalAlignment = HorizontalAlignment.Left;
+                }
+
                 if (!double.IsNaN(pi.Height))
                 {
                     propertyControl.Height = pi.Height;

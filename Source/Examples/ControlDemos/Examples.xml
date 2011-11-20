@@ -9,4 +9,5 @@
   <Example Page="Pages\DockPanelSplitterPage.xaml" Title="DockPanelSplitter" Description=""/>
   <Example Page="Pages\EnumMenuItemPage.xaml" Title="EnumMenuItem" Description=""/>
   <Example Page="Pages\SimpleGridPage.xaml" Title="SimpleGrid" Description=""/>
+  <Example Page="Pages\SpinControlPage.xaml" Title="SpinControl" Description=""/>
 </Examples>

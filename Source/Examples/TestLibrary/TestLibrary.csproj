@@ -47,6 +47,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\TestSpinnableAttribute.cs" />
     <Compile Include="Tests\TestAutoUpdateTextAttribute.cs" />
     <Compile Include="Tests\TestConverterAttribute.cs" />
     <Compile Include="Tests\TestDataAnnotations.cs" />

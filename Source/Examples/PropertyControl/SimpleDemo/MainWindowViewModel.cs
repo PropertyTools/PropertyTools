@@ -12,7 +12,7 @@ namespace SimpleDemo
                 {
                     FirstName = "Anders",
                     LastName = "Andersen",
-                    Age = 9,
+                    Age = 29,
                     Gender = Genders.Male,
                     Weight = new Mass { Value = 70 },
                     Height = 1.82,

@@ -37,6 +37,7 @@ namespace TestLibrary
                     new TestFormatStringAttribute(),
                     new TestConverterAttribute(),
                     new TestSlidableAttribute(),
+                    new TestSpinnableAttribute(),
                     new TestFilePathAttribute(),
                     new TestDirectoryPathAttribute(),
                     new TestCommentAttribute(),

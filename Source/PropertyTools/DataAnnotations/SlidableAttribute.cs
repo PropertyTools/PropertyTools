@@ -88,11 +88,11 @@ namespace PropertyTools.DataAnnotations
         /// The tick frequency.
         /// </param>
         public SlidableAttribute(
-            double minimum, 
-            double maximum, 
-            double smallChange, 
-            double largeChange, 
-            bool snapToTicks, 
+            double minimum,
+            double maximum,
+            double smallChange,
+            double largeChange,
+            bool snapToTicks,
             double tickFrequency)
             : this(minimum, maximum, smallChange, largeChange)
         {

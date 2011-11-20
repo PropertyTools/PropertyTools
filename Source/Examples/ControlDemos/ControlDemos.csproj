@@ -58,6 +58,9 @@
     <Compile Include="Pages\ColorPicker2Page.xaml.cs">
       <DependentUpon>ColorPicker2Page.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SpinControlPage.xaml.cs">
+      <DependentUpon>SpinControlPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SimpleGridPage.xaml.cs">
       <DependentUpon>SimpleGridPage.xaml</DependentUpon>
     </Compile>
@@ -84,6 +87,10 @@
     <Page Include="Pages\ColorPickerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SpinControlPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\SimpleGridPage.xaml">
       <Generator>MSBuild:Compile</Generator>

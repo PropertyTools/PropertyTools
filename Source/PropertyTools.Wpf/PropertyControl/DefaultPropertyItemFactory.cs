@@ -488,10 +488,26 @@ namespace PropertyTools.Wpf
                 pi.SliderTickFrequency = sa.TickFrequency;
             }
 
+            var spa = pi.GetAttribute<SpinnableAttribute>();
+            if (spa != null)
+            {
+                pi.IsSpinnable = true;
+                pi.SpinMinimum = spa.Minimum;
+                pi.SpinMaximum = spa.Maximum;
+                pi.SpinSmallChange = spa.SmallChange;
+                pi.SpinLargeChange = spa.LargeChange;
+            }
+
             var wpa = pi.GetAttribute<WidePropertyAttribute>();
             if (wpa != null)
             {
                 pi.HeaderPlacement = wpa.ShowHeader ? HeaderPlacement.Above : HeaderPlacement.Hidden;
+            }
+
+            var wia = pi.GetAttribute<WidthAttribute>();
+            if (wia != null)
+            {
+                pi.Width = wia.Width;
             }
 
             var hpa = pi.GetAttribute<HeaderPlacementAttribute>();

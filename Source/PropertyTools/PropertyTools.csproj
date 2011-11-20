@@ -71,8 +71,10 @@
     <Compile Include="DataAnnotations\SlidableAttribute.cs" />
     <Compile Include="DataAnnotations\SortIndexAttribute.cs" />
     <Compile Include="DataAnnotations\ItemsSourcePropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\SpinnableAttribute.cs" />
     <Compile Include="DataAnnotations\VisibleByAttribute.cs" />
     <Compile Include="DataAnnotations\WidePropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\WidthAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

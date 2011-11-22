@@ -29,6 +29,28 @@ namespace PropertyTools.DataAnnotations
             this.Maximum = 100;
             this.SmallChange = 1;
         }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpinnableAttribute"/> class.
+        /// Initializes a new instance of the <see cref="SlidableAttribute"/> class.
+        /// </summary>
+        /// <param name="smallChange">The small change.</param>
+        public SpinnableAttribute(object smallChange)
+        {
+            this.SmallChange = smallChange;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpinnableAttribute"/> class.
+        /// Initializes a new instance of the <see cref="SlidableAttribute"/> class.
+        /// </summary>
+        /// <param name="smallChange">The small change.</param>
+        /// <param name="largeChange">The large change.</param>
+        public SpinnableAttribute(object smallChange, object largeChange)
+        {
+            this.SmallChange = smallChange;
+            this.LargeChange = largeChange;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpinnableAttribute"/> class.
@@ -38,7 +60,7 @@ namespace PropertyTools.DataAnnotations
         /// <param name="largeChange">The large change.</param>
         /// <param name="minimum">The minimum.</param>
         /// <param name="maximum">The maximum.</param>
-        public SpinnableAttribute(double smallChange, double largeChange, double minimum, double maximum)
+        public SpinnableAttribute(object smallChange, object largeChange, object minimum, object maximum)
         {
             this.Minimum = minimum;
             this.Maximum = maximum;
@@ -54,25 +76,25 @@ namespace PropertyTools.DataAnnotations
         /// Gets or sets the small change.
         /// </summary>
         /// <value>The small change.</value>
-        public double SmallChange { get; set; }
+        public object SmallChange { get; set; }
 
         /// <summary>
         /// Gets or sets the large change.
         /// </summary>
         /// <value>The large change.</value>
-        public double LargeChange { get; set; }
+        public object LargeChange { get; set; }
 
         /// <summary>
         ///   Gets or sets the maximum.
         /// </summary>
         /// <value>The maximum.</value>
-        public double Maximum { get; set; }
+        public object Maximum { get; set; }
 
         /// <summary>
         ///   Gets or sets the minimum.
         /// </summary>
         /// <value>The minimum.</value>
-        public double Minimum { get; set; }
+        public object Minimum { get; set; }
 
         #endregion
     }

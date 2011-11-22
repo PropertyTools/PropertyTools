@@ -278,7 +278,7 @@ Visibility="{Binding ShowHsvPanel, RelativeSource={RelativeSource Mode=Templated
                                             <RowDefinition />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <local:HsvControl Margin="1 0 1 0" BorderBrush="Gray" BorderThickness="1"
+                                        <local:HsvControl x:Name="PART_HSV" Margin="1 0 1 0" BorderBrush="Gray" BorderThickness="1"
                                       SelectedColor="{Binding SelectedColor, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                       Hue="{Binding Hue, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                       Saturation="{Binding Saturation, RelativeSource={RelativeSource Mode=TemplatedParent}}"

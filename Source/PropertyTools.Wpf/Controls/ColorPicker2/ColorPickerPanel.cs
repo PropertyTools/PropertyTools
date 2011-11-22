@@ -9,6 +9,7 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -19,53 +20,67 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Represents a control that lets the user pick a color.
     /// </summary>
+    [TemplatePart(Name = PartHsv, Type = typeof(HsvControl))]
     public class ColorPickerPanel : Control, INotifyPropertyChanged
     {
+        public const string PartHsv = "PART_HSV";
+
+        private HsvControl hsvControl;
+
+        /// <summary>
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            hsvControl = GetTemplateChild(PartHsv) as HsvControl;
+        }
+
         #region Constants and Fields
 
         /// <summary>
         ///   The alpha property.
         /// </summary>
         public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register(
-            "Alpha", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Alpha",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The blue property.
         /// </summary>
         public static readonly DependencyProperty BlueProperty = DependencyProperty.Register(
-            "Blue", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Blue",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The brightness property.
         /// </summary>
         public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register(
-            "Brightness", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Brightness",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The green property.
         /// </summary>
         public static readonly DependencyProperty GreenProperty = DependencyProperty.Register(
-            "Green", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Green",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The hue property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
-            "Hue", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Hue",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
@@ -78,31 +93,31 @@ namespace PropertyTools.Wpf
         ///   The red property.
         /// </summary>
         public static readonly DependencyProperty RedProperty = DependencyProperty.Register(
-            "Red", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Red",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The saturation property.
         /// </summary>
         public static readonly DependencyProperty SaturationProperty = DependencyProperty.Register(
-            "Saturation", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Saturation",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
         ///   The selected color property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
-            "SelectedColor", 
-            typeof(Color?), 
-            typeof(ColorPickerPanel), 
+            "SelectedColor",
+            typeof(Color?),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(
-                Color.FromArgb(0, 0, 0, 0), 
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
-                SelectedColorChanged, 
+                Color.FromArgb(0, 0, 0, 0),
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                SelectedColorChanged,
                 CoerceSelectedColorValue));
 
         /// <summary>
@@ -393,6 +408,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual object CoerceSelectedColorValue(object basevalue)
         {
+            Debug.WriteLine("ColorPickerPanel.CoerceSelectedColorValue {0}", basevalue);
             if (basevalue == null)
             {
                 return this.SelectedColor;
@@ -418,6 +434,8 @@ namespace PropertyTools.Wpf
             {
                 return;
             }
+
+            Debug.WriteLine("ColorPickerPanel.OnComponentChanged {0}", SelectedColor);
 
             var color = this.SelectedColor.Value;
             this.withinComponentChange = true;
@@ -505,6 +523,7 @@ namespace PropertyTools.Wpf
         /// </param>
         protected virtual void OnSelectedColorChanged(Color? newColor, Color? oldColor)
         {
+            Debug.WriteLine("ColorPickerPanel.OnSelectedColorChanged {0} ({1})", newColor,oldColor);
             if (!this.withinColorChange && !this.withinComponentChange && newColor != null)
             {
                 this.AddColorToRecentColorsIfMissing(newColor.Value);
@@ -774,12 +793,15 @@ namespace PropertyTools.Wpf
         /// </param>
         private void UpdateHSV(Color color)
         {
+            Debug.WriteLine("ColorPickerPanel.UpdateHSV {0}", color);
             this.withinColorChange = true;
+            if (hsvControl != null) hsvControl.withinUpdate = true;
             var hsv = color.ColorToHsv();
             this.Hue = (int)(hsv[0] * 360);
             this.Saturation = (int)(hsv[1] * 100);
             this.Brightness = (int)(hsv[2] * 100);
             this.withinColorChange = false;
+            if (hsvControl != null) hsvControl.withinUpdate = false;
         }
 
         /// <summary>
@@ -790,12 +812,15 @@ namespace PropertyTools.Wpf
         /// </param>
         private void UpdateRGB(Color color)
         {
+            Debug.WriteLine("ColorPickerPanel.UpdateRGB {0}", color);
             this.withinColorChange = true;
+            if (hsvControl!=null) hsvControl.withinUpdate = true;
             this.Alpha = color.A;
             this.Red = color.R;
             this.Green = color.G;
             this.Blue = color.B;
             this.withinColorChange = false;
+            if (hsvControl != null) hsvControl.withinUpdate = false;
         }
 
         #endregion

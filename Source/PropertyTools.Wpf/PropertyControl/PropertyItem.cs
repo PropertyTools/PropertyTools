@@ -408,22 +408,22 @@ namespace PropertyTools.Wpf
         /// <summary>
         ///   Gets or sets the spin control small change.
         /// </summary>
-        public double SpinSmallChange { get; set; }
+        public object SpinSmallChange { get; set; }
 
         /// <summary>
         /// Gets or sets the spin control large change.
         /// </summary>
-        public double SpinLargeChange { get; set; }
+        public object SpinLargeChange { get; set; }
 
         /// <summary>
         ///   Gets or sets the spin control maximum.
         /// </summary>
-        public double SpinMaximum { get; set; }
+        public object SpinMaximum { get; set; }
 
         /// <summary>
         ///   Gets or sets the spin control minimum.
         /// </summary>
-        public double SpinMinimum { get; set; }
+        public object SpinMinimum { get; set; }
 
         /// <summary>
         ///   Gets or sets the tab title.

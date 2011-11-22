@@ -304,12 +304,23 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected FrameworkElement CreateCommentControl(PropertyItem property)
         {
-            var b = new ContentControl
+            var tb = new TextBlock()
                 {
-                   VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(4), Focusable = false 
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(4),
+                    Focusable = false,
+                    TextWrapping = TextWrapping.Wrap
                 };
-            b.SetBinding(ContentControl.ContentProperty, property.CreateBinding());
-            return b;
+            ScrollViewer.SetHorizontalScrollBarVisibility(tb, ScrollBarVisibility.Hidden);
+            ScrollViewer.SetVerticalScrollBarVisibility(tb, ScrollBarVisibility.Hidden);
+            tb.SetBinding(TextBlock.TextProperty, property.CreateBinding());
+            return tb;
+            //var b = new ContentControl
+            //    {
+            //       VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(4), Focusable = false
+            //    };
+            //b.SetBinding(ContentControl.ContentProperty, property.CreateBinding());
+            //return b;
         }
 
         /// <summary>

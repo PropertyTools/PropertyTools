@@ -7,6 +7,7 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
@@ -23,14 +24,14 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        /// The down button geometry property.
+        ///   The down button geometry property.
         /// </summary>
         public static readonly DependencyProperty DownButtonGeometryProperty =
             DependencyProperty.Register(
                 "DownButtonGeometry", typeof(Geometry), typeof(SpinControl), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The large change property.
+        ///   The large change property.
         /// </summary>
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register(
             "LargeChange", typeof(object), typeof(SpinControl), new UIPropertyMetadata(10.0));
@@ -60,14 +61,14 @@ namespace PropertyTools.Wpf
             "SmallChange", typeof(object), typeof(SpinControl), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// The spin button width property.
+        ///   The spin button width property.
         /// </summary>
         public static readonly DependencyProperty SpinButtonWidthProperty =
             DependencyProperty.Register(
-                "SpinButtonWidth", typeof(GridLength), typeof(SpinControl), new UIPropertyMetadata(new GridLength(20)));
+                "SpinButtonWidth", typeof(GridLength), typeof(SpinControl), new UIPropertyMetadata(new GridLength(14)));
 
         /// <summary>
-        /// The up button geometry property.
+        ///   The up button geometry property.
         /// </summary>
         public static readonly DependencyProperty UpButtonGeometryProperty =
             DependencyProperty.Register(
@@ -77,11 +78,11 @@ namespace PropertyTools.Wpf
         ///   The value property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", 
-            typeof(object), 
-            typeof(SpinControl), 
+            "Value",
+            typeof(object),
+            typeof(SpinControl),
             new FrameworkPropertyMetadata(
-                0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SpinnerValueChanged, CoerceSpinnerValue));
+                null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SpinnerValueChanged, CoerceSpinnerValue));
 
         /// <summary>
         ///   The part down.
@@ -394,60 +395,295 @@ namespace PropertyTools.Wpf
         /// </param>
         private void ChangeValue(int sign, bool isLargeChange)
         {
-            double numericChange = 0;
-            if (isLargeChange)
+            var change = isLargeChange ? this.LargeChange : this.SmallChange;
+            if (change == null)
             {
-                if (this.LargeChange is double || this.LargeChange is int)
-                {
-                    numericChange = Convert.ToDouble(this.LargeChange);
-                }
+                return;
             }
-            else
+
+            if (this.Value != null)
             {
-                if (this.SmallChange is double || this.SmallChange is int)
+                var c = TypeDescriptor.GetConverter(this.Value);
+                if (c != null && c.CanConvertFrom(change.GetType()))
                 {
-                    numericChange = Convert.ToDouble(this.SmallChange);
+                    var convertedChange = c.ConvertFrom(change);
+                    object result;
+                    if (sign > 0)
+                    {
+                        if (ReflectionMath.TryAdd(this.Value, convertedChange, out result))
+                        {
+                            this.Value = this.CoerceSpinnerValue(result);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (ReflectionMath.TrySubtract(this.Value, convertedChange, out result))
+                        {
+                            this.Value = this.CoerceSpinnerValue(result);
+                            return;
+                        }
+                    }
                 }
             }
 
             if (this.Value is double)
             {
-                var newValue = (double)this.Value + numericChange * sign;
+                var doubleChange = Convert.ToDouble(change);
+                var currentValue = (double)this.Value;
+                var newValue = sign > 0 ? currentValue + doubleChange : currentValue - doubleChange;
+                if (sign > 0 && currentValue > double.MaxValue - doubleChange)
+                {
+                    newValue = double.MaxValue;
+                }
+
+                if (sign < 0 && currentValue < double.MinValue + doubleChange)
+                {
+                    newValue = double.MinValue;
+                }
+
                 this.Value = this.CoerceSpinnerValue(newValue);
+                return;
             }
 
             if (this.Value is int)
             {
-                var newValue = (int)this.Value + (int)(numericChange * sign);
+                var intChange = Convert.ToInt32(change);
+                var currentValue = (int)this.Value;
+                var newValue = sign > 0 ? currentValue + intChange : currentValue - intChange;
+                if (sign > 0 && currentValue > int.MaxValue - intChange)
+                {
+                    newValue = int.MaxValue;
+                }
+
+                if (sign < 0 && currentValue < int.MinValue + intChange)
+                {
+                    newValue = int.MinValue;
+                }
+
                 this.Value = this.CoerceSpinnerValue(newValue);
+                return;
+            }
+
+            if (this.Value is long)
+            {
+                var longChange = Convert.ToInt64(change);
+                var currentValue = (long)this.Value;
+                var newValue = sign > 0 ? currentValue + longChange : currentValue - longChange;
+                if (sign > 0 && currentValue > long.MaxValue - longChange)
+                {
+                    newValue = long.MaxValue;
+                }
+
+                if (sign < 0 && currentValue < long.MinValue + longChange)
+                {
+                    newValue = long.MinValue;
+                }
+
+                this.Value = this.CoerceSpinnerValue(newValue);
+                return;
+            }
+
+            if (this.Value is short)
+            {
+                var shortChange = Convert.ToInt16(change);
+                var currentValue = (short)this.Value;
+                var newValue = (short)(sign > 0 ? currentValue + shortChange : currentValue - shortChange);
+                if (sign > 0 && currentValue > short.MaxValue - shortChange)
+                {
+                    newValue = short.MaxValue;
+                }
+
+                if (sign < 0 && currentValue < short.MinValue + shortChange)
+                {
+                    newValue = short.MinValue;
+                }
+
+                this.Value = this.CoerceSpinnerValue(newValue);
+                return;
+            }
+
+            if (this.Value is ulong)
+            {
+                var intChange = Convert.ToUInt64(change);
+                var currentValue = (ulong)this.Value;
+                ulong newValue = sign > 0 ? currentValue + intChange : currentValue - intChange;
+                if (sign > 0 && currentValue > ulong.MaxValue - intChange)
+                {
+                    newValue = ulong.MaxValue;
+                }
+
+                if (sign < 0 && currentValue < ulong.MinValue + intChange)
+                {
+                    newValue = ulong.MinValue;
+                }
+
+                this.Value = this.CoerceSpinnerValue(newValue);
+
+                return;
+            }
+
+            if (this.Value is uint)
+            {
+                var intChange = Convert.ToUInt32(change);
+                var currentValue = (uint)this.Value;
+                uint newValue = sign > 0 ? currentValue + intChange : currentValue - intChange;
+                if (sign > 0 && currentValue > uint.MaxValue - intChange)
+                {
+                    newValue = uint.MaxValue;
+                }
+
+                if (sign < 0 && currentValue < uint.MinValue + intChange)
+                {
+                    newValue = uint.MinValue;
+                }
+
+                this.Value = this.CoerceSpinnerValue(newValue);
+
+                return;
+            }
+
+            if (this.Value is ushort)
+            {
+                var intChange = Convert.ToUInt16(change);
+                var currentValue = (ushort)this.Value;
+                var newValue = (ushort)(sign > 0 ? currentValue + intChange : currentValue - intChange);
+                if (sign > 0 && currentValue > ushort.MaxValue - intChange)
+                {
+                    newValue = ushort.MaxValue;
+                }
+
+                if (sign < 0 && currentValue < ushort.MinValue + intChange)
+                {
+                    newValue = ushort.MinValue;
+                }
+
+                this.Value = this.CoerceSpinnerValue(newValue);
+
+                return;
+            }
+
+            if (this.Value is byte)
+            {
+                var intChange = Convert.ToByte(change);
+                var currentValue = (byte)this.Value;
+                var newValue = (byte)(sign > 0 ? currentValue + intChange : currentValue - intChange);
+                if (sign > 0 && currentValue > byte.MaxValue - intChange)
+                {
+                    newValue = byte.MaxValue;
+                }
+
+                if (sign < 0 && currentValue < byte.MinValue + intChange)
+                {
+                    newValue = byte.MinValue;
+                }
+
+                this.Value = this.CoerceSpinnerValue(newValue);
+
+                return;
+            }
+
+            if (this.Value is sbyte)
+            {
+                var intChange = Convert.ToSByte(change);
+                var currentValue = (sbyte)this.Value;
+                var newValue = (sbyte)(sign > 0 ? currentValue + intChange : currentValue - intChange);
+                if (sign > 0 && currentValue > sbyte.MaxValue - intChange)
+                {
+                    newValue = sbyte.MaxValue;
+                }
+
+                if (sign < 0 && currentValue < sbyte.MinValue + intChange)
+                {
+                    newValue = sbyte.MinValue;
+                }
+
+                this.Value = this.CoerceSpinnerValue(newValue);
+
+                return;
+            }
+
+            if (this.Value is float)
+            {
+                var floatChange = Convert.ToSingle(change);
+                var currentValue = (float)this.Value;
+                float newValue = sign > 0 ? currentValue + floatChange : currentValue - floatChange;
+                if (sign > 0 && currentValue > float.MaxValue - floatChange)
+                {
+                    newValue = float.MaxValue;
+                }
+
+                if (sign < 0 && currentValue < float.MinValue + floatChange)
+                {
+                    newValue = float.MinValue;
+                }
+
+                this.Value = this.CoerceSpinnerValue(newValue);
+                return;
+            }
+
+            if (this.Value is decimal)
+            {
+                var decimalChange = Convert.ToDecimal(change);
+                var currentValue = (decimal)this.Value;
+                decimal newValue = sign > 0 ? currentValue + decimalChange : currentValue - decimalChange;
+                if (sign > 0 && currentValue > decimal.MaxValue - decimalChange)
+                {
+                    newValue = decimal.MaxValue;
+                }
+
+                if (sign < 0 && currentValue < decimal.MinValue + decimalChange)
+                {
+                    newValue = decimal.MinValue;
+                }
+
+                this.Value = this.CoerceSpinnerValue(newValue);
+                return;
             }
 
             if (this.Value is DateTime)
             {
                 object newValue = null;
-                if (isLargeChange)
+                if (change is TimeSpan)
                 {
-                    if (this.LargeChange is TimeSpan)
-                    {
-                        var span = (TimeSpan)this.LargeChange;
-                        newValue = ((DateTime)this.Value).AddDays(span.TotalDays * sign);
-                    }
-                }
-                else
-                {
-                    if (this.SmallChange is TimeSpan)
-                    {
-                        var span = (TimeSpan)this.SmallChange;
-                        newValue = ((DateTime)this.Value).AddDays(span.TotalDays * sign);
-                    }
+                    var span = (TimeSpan)change;
+                    newValue = ((DateTime)this.Value).AddDays(span.TotalDays * sign);
                 }
 
-                if (Math.Abs(numericChange) > double.Epsilon)
+                if (this.IsNumeric(change))
                 {
-                    newValue = ((DateTime)this.Value).AddDays(numericChange * sign);
+                    double doubleChange = Convert.ToDouble(change);
+                    if (Math.Abs(doubleChange) > double.Epsilon)
+                    {
+                        newValue = ((DateTime)this.Value).AddDays(doubleChange * sign);
+                    }
                 }
 
                 this.Value = this.CoerceSpinnerValue(newValue);
+                return;
+            }
+
+            if (this.Value is TimeSpan)
+            {
+                var current = (TimeSpan)this.Value;
+                object newValue = null;
+                if (change is TimeSpan)
+                {
+                    var span = (TimeSpan)change;
+                    newValue = sign > 0 ? current.Add(span) : current.Subtract(span);
+                }
+
+                if (this.IsNumeric(change))
+                {
+                    double doubleChange = Convert.ToDouble(change);
+                    if (Math.Abs(doubleChange) > double.Epsilon)
+                    {
+                        newValue = current.Add(TimeSpan.FromSeconds(doubleChange * sign));
+                    }
+                }
+
+                this.Value = this.CoerceSpinnerValue(newValue);
+                return;
             }
         }
 
@@ -462,29 +698,53 @@ namespace PropertyTools.Wpf
         /// </returns>
         private object CoerceSpinnerValue(object basevalue)
         {
-            double max = double.MaxValue;
-            if (this.Maximum is double || this.Maximum is int)
+            if (this.Value != null)
             {
-                max = Convert.ToDouble(this.Maximum);
+                var c = TypeDescriptor.GetConverter(this.Value);
+                if (this.Maximum != null && c != null && c.CanConvertFrom(this.Maximum.GetType()))
+                {
+                    var v = basevalue as IComparable;
+                    var maximum = c.ConvertFrom(this.Maximum) as IComparable;
+                    if (v != null && v.CompareTo(maximum) > 0)
+                    {
+                        return maximum;
+                    }
+                }
+
+                if (this.Minimum != null && c != null && c.CanConvertFrom(this.Minimum.GetType()))
+                {
+                    var v = basevalue as IComparable;
+                    var minimum = c.ConvertFrom(this.Minimum) as IComparable;
+                    if (v != null && v.CompareTo(minimum) < 0)
+                    {
+                        return minimum;
+                    }
+                }
             }
 
-            double min = double.MinValue;
-            if (this.Maximum is double || this.Maximum is int)
+            double numericMaximum = double.MaxValue;
+            if (this.Maximum != null && this.IsNumeric(this.Maximum))
             {
-                min = Convert.ToDouble(this.Minimum);
+                numericMaximum = Convert.ToDouble(this.Maximum);
+            }
+
+            double numericMinimum = double.MinValue;
+            if (this.Minimum != null && this.IsNumeric(this.Minimum))
+            {
+                numericMinimum = Convert.ToDouble(this.Minimum);
             }
 
             if (basevalue is double)
             {
                 var bv = (double)basevalue;
-                if (bv > max)
+                if (bv > numericMaximum)
                 {
-                    return max;
+                    return numericMaximum;
                 }
 
-                if (bv < min)
+                if (bv < numericMinimum)
                 {
-                    return min;
+                    return numericMinimum;
                 }
 
                 return bv;
@@ -493,14 +753,14 @@ namespace PropertyTools.Wpf
             if (basevalue is int)
             {
                 var bv = (int)basevalue;
-                if (bv > max)
+                if (bv > numericMaximum)
                 {
-                    return (int)max;
+                    return (int)numericMaximum;
                 }
 
-                if (bv < min)
+                if (bv < numericMinimum)
                 {
-                    return (int)min;
+                    return (int)numericMinimum;
                 }
 
                 return bv;
@@ -511,19 +771,19 @@ namespace PropertyTools.Wpf
                 var bv = (DateTime)basevalue;
                 if (this.Maximum is DateTime)
                 {
-                    DateTime dmax = Convert.ToDateTime(this.Maximum);
-                    if (bv > dmax)
+                    DateTime dateMaximum = Convert.ToDateTime(this.Maximum);
+                    if (bv > dateMaximum)
                     {
-                        return dmax;
+                        return dateMaximum;
                     }
                 }
 
                 if (this.Minimum is DateTime)
                 {
-                    DateTime dmin = Convert.ToDateTime(this.Minimum);
-                    if (bv < dmin)
+                    DateTime dateMinimum = Convert.ToDateTime(this.Minimum);
+                    if (bv < dateMinimum)
                     {
-                        return dmin;
+                        return dateMinimum;
                     }
                 }
 
@@ -546,6 +806,26 @@ namespace PropertyTools.Wpf
         {
             bool ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
             this.ChangeValue(-1, ctrl);
+        }
+
+        /// <summary>
+        /// Check if an object is of a numeric type.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// True if the value is of a numeric type.
+        /// </returns>
+        private bool IsNumeric(object value)
+        {
+            if (value is double || value is int || value is uint || value is long || value is ulong || value is short
+                || value is ushort || value is byte || value is sbyte || value is float || value is decimal)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

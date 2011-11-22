@@ -85,7 +85,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         ///   The within update flag.
         /// </summary>
-        private bool withinUpdate;
+        internal bool withinUpdate;
 #pragma warning restore 649
 
         #endregion

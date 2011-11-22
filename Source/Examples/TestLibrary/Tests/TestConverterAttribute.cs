@@ -41,12 +41,16 @@ namespace TestLibrary
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var c=(System.Drawing.Color)value;
+            if (value == null)
+                return Binding.DoNothing;
+            var c = (System.Drawing.Color)value;
             return System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+                return Binding.DoNothing;
             var c = (System.Windows.Media.Color)value;
             return System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B);
         }
@@ -81,69 +85,6 @@ namespace TestLibrary
         {
             var v = System.Convert.ToBoolean(value);
             return v ? 1 : 0;
-        }
-    }
-
-    [TypeConverter(typeof(MassConverter))]
-    public struct Mass
-    {
-        public double Value { get; set; }
-
-        public static Mass Parse(string s)
-        {
-            s = s.Replace("kg", "").Trim();
-            double value = double.Parse(s);
-            return new Mass { Value = value };
-        }
-
-        public override string ToString()
-        {
-            return Value + " kg";
-        }
-    }
-
-    public class MassConverter : TypeConverter
-    {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            if (sourceType == typeof(string)) return true;
-            return base.CanConvertFrom(context, sourceType);
-        }
-    }
-
-    [TypeConverter(typeof(LengthConverter))]
-    public struct Length
-    {
-        public double Value { get; set; }
-
-        internal static Length Parse(string s)
-        {
-            s = s.Replace("m", "").Trim();
-            double value = double.Parse(s);
-            return new Length { Value = value };
-        }
-
-        public override string ToString()
-        {
-            return Value + " m";
-        }
-    }
-
-    public class LengthConverter : TypeConverter
-    {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            if (sourceType == typeof(string)) return true;
-            return base.CanConvertFrom(context, sourceType);
-        }
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value is string)
-            {
-                var s = (string)value;
-                return Length.Parse(s);
-            }
-            return base.ConvertFrom(context, culture, value);
         }
     }
 }

@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,6 +48,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objects\Length.cs" />
+    <Compile Include="Objects\LengthConverter.cs" />
+    <Compile Include="Objects\Mass.cs" />
+    <Compile Include="Objects\MassConverter.cs" />
+    <Compile Include="Objects\Quantity.cs" />
+    <Compile Include="Objects\QuantityT.cs" />
+    <Compile Include="Objects\UnitHelper.cs" />
     <Compile Include="Tests\TestSpinnableAttribute.cs" />
     <Compile Include="Tests\TestAutoUpdateTextAttribute.cs" />
     <Compile Include="Tests\TestConverterAttribute.cs" />

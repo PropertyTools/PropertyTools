@@ -43,7 +43,7 @@ namespace TestLibrary
             throw new FormatException("Unknown unit.");
         }
 
-        public static T Parse<T>(string s) where T : Quantity, new()
+        public static T2 Parse<T2>(string s) where T2 : Quantity, new()
         {
             double value;
             string unit;
@@ -53,7 +53,7 @@ namespace TestLibrary
                 value *= GetUnitMultiplier(unit, typeof(T));
             }
 
-            return new T { Amount = value };
+            return new T2 { Amount = value };
         }
     }
 }

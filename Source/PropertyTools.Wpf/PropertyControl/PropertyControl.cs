@@ -2,6 +2,9 @@
 // <copyright file="PropertyControl.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   The property control.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
@@ -131,6 +134,16 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, SelectedObjectChanged));
 
         /// <summary>
+        ///   The selected tab index property.
+        /// </summary>
+        public static readonly DependencyProperty SelectedTabIndexProperty =
+            DependencyProperty.Register(
+                "SelectedTabIndex",
+                typeof(int),
+                typeof(PropertyControl),
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        /// <summary>
         ///   The show check box headers property.
         /// </summary>
         public static readonly DependencyProperty ShowCheckBoxHeadersProperty =
@@ -253,6 +266,11 @@ namespace PropertyTools.Wpf
         ///   The zero to visibility converter.
         /// </summary>
         private static readonly ZeroToVisibilityConverter ZeroToVisibilityConverter = new ZeroToVisibilityConverter();
+
+        /// <summary>
+        /// The current selected object type.
+        /// </summary>
+        private Type currentSelectedObjectType;
 
         /// <summary>
         ///   The panel control.
@@ -502,6 +520,25 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(SelectedObjectProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the index of the selected tab.
+        /// </summary>
+        /// <value>
+        ///   The index of the selected tab.
+        /// </value>
+        public int SelectedTabIndex
+        {
+            get
+            {
+                return (int)this.GetValue(SelectedTabIndexProperty);
+            }
+
+            set
+            {
+                this.SetValue(SelectedTabIndexProperty, value);
             }
         }
 
@@ -794,6 +831,7 @@ namespace PropertyTools.Wpf
                     {
                         var hc = new ContentControl
                             {
+                                Focusable = false,
                                 ContentTemplate = this.TabPageHeaderTemplate,
                                 Content =
                                     new HeaderViewModel
@@ -823,7 +861,7 @@ namespace PropertyTools.Wpf
                             group = new Expander { IsExpanded = currentCategory == null };
                             break;
                         case CategoryControlType.Template:
-                            group = new HeaderedContentControl { Template = this.CategoryControlTemplate };
+                            group = new HeaderedContentControl { Template = this.CategoryControlTemplate, Focusable = false };
                             break;
                     }
 
@@ -1260,12 +1298,13 @@ namespace PropertyTools.Wpf
                                     {
                                         Source = this.DescriptionIcon,
                                         Stretch = Stretch.None,
+                                        // SnapsToDevicePixels = true,
                                         Margin = new Thickness(0, 4, 4, 4),
-                                        VerticalAlignment = VerticalAlignment.Top
+                                        VerticalAlignment = VerticalAlignment.Top,
+                                        HorizontalAlignment = this.DescriptionIconAlignment
                                     };
 
                                 // RenderOptions.SetBitmapScalingMode(descriptionIconImage, BitmapScalingMode.NearestNeighbor);
-                                descriptionIconImage.HorizontalAlignment = this.DescriptionIconAlignment;
                                 labelPanel.Children.Add(descriptionIconImage);
                                 if (!string.IsNullOrWhiteSpace(pi.Description))
                                 {
@@ -1312,8 +1351,18 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void UpdateControls()
         {
+            var oldIndex = this.tabControl != null ? this.tabControl.SelectedIndex : -1;
+
             var items = this.CreateItems(this.SelectedObject, false);
             this.CreateControls(this.SelectedObject, items);
+
+            Type newSelectedObjectType = this.SelectedObject != null ? this.SelectedObject.GetType() : null;
+            if (newSelectedObjectType == this.currentSelectedObjectType && this.tabControl != null)
+            {
+                this.tabControl.SelectedIndex = oldIndex;
+            }
+
+            this.currentSelectedObjectType = newSelectedObjectType;
         }
 
         #endregion

@@ -75,6 +75,9 @@
     <Compile Include="DataAnnotations\VisibleByAttribute.cs" />
     <Compile Include="DataAnnotations\WidePropertyAttribute.cs" />
     <Compile Include="DataAnnotations\WidthAttribute.cs" />
+    <Compile Include="DragDrop\DropPosition.cs" />
+    <Compile Include="DragDrop\IDragSource.cs" />
+    <Compile Include="DragDrop\IDropTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

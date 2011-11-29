@@ -188,6 +188,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="TreeListBox\Common.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TreeListBox\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\ColorPicker2\ColorPicker2.cs" />
@@ -318,6 +326,12 @@
     <Compile Include="SimpleGrid\SimpleGrid.cs" />
     <Compile Include="SimpleGrid\StringCollectionConverter.cs" />
     <Compile Include="SimpleGrid\TypeDefinition.cs" />
+    <Compile Include="Controls\EditableTextBlock.cs" />
+    <Compile Include="TreeListBox\InsertionAdorner.cs" />
+    <Compile Include="TreeListBox\LevelToThicknessConverter.cs" />
+    <Compile Include="TreeListBox\TreeListBox.cs" />
+    <Compile Include="TreeListBox\TreeListBoxDragDropHelper.cs" />
+    <Compile Include="TreeListBox\TreeListBoxItem.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

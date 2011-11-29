@@ -1,0 +1,50 @@
+﻿using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Input;
+
+namespace TreeListBoxDemo
+{
+    using PropertyTools.Wpf;
+
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+            DataContext = new MainViewModel();
+            tree1.KeyDown += this.tree1_KeyDown;
+        }
+
+        void tree1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.F2:
+                    var cvm = ((TreeListBox)sender).SelectedItem as NodeViewModel;
+                    if (cvm != null) cvm.IsEditing = true;
+                    break;
+                case Key.Delete:
+                    Delete(null, null);
+                    break;
+            }
+        }
+
+        private void Delete(object sender, RoutedEventArgs e)
+        {
+            var idx = tree1.SelectedIndex;
+            var td = new List<NodeViewModel>();
+            foreach (NodeViewModel s in tree1.SelectedItems)
+            {
+                td.Add(s);
+            }
+            foreach (var s in td)
+            {
+                if (s.Parent != null) s.Parent.Children.Remove(s);
+            }
+            tree1.SelectedIndex = idx < tree1.Items.Count ? idx : idx - 1;
+        }
+    }
+}

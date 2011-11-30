@@ -31,18 +31,18 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty ChildrenBindingProperty =
             DependencyProperty.Register(
-                "ChildrenBinding", 
-                typeof(BindingBase), 
-                typeof(TreeListBox), 
+                "ChildrenBinding",
+                typeof(BindingBase),
+                typeof(TreeListBox),
                 new UIPropertyMetadata(new Binding("Children")));
 
         /// <summary>
         ///   The indentation property.
         /// </summary>
         public static readonly DependencyProperty IndentationProperty = DependencyProperty.Register(
-            "Indentation", 
-            typeof(double), 
-            typeof(TreeListBox), 
+            "Indentation",
+            typeof(double),
+            typeof(TreeListBox),
             new UIPropertyMetadata(10.0, (s, e) => ((TreeListBox)s).IndentationChanged()));
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty IsExpandedBindingProperty =
             DependencyProperty.Register(
-                "IsExpandedBinding", 
-                typeof(BindingBase), 
-                typeof(TreeListBox), 
+                "IsExpandedBinding",
+                typeof(BindingBase),
+                typeof(TreeListBox),
                 new UIPropertyMetadata(new Binding("IsExpanded")));
 
         /// <summary>
@@ -60,18 +60,18 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty IsSelectedBindingProperty =
             DependencyProperty.Register(
-                "IsSelectedBinding", 
-                typeof(BindingBase), 
-                typeof(TreeListBox), 
+                "IsSelectedBinding",
+                typeof(BindingBase),
+                typeof(TreeListBox),
                 new UIPropertyMetadata(new Binding("IsSelected")));
 
         /// <summary>
         ///   The tree source property.
         /// </summary>
         public static readonly DependencyProperty TreeSourceProperty = DependencyProperty.Register(
-            "HierarchySource", 
-            typeof(IEnumerable), 
-            typeof(TreeListBox), 
+            "HierarchySource",
+            typeof(IEnumerable),
+            typeof(TreeListBox),
             new UIPropertyMetadata(null, (s, e) => ((TreeListBox)s).HierarchySourceChanged(e)));
 
         /// <summary>
@@ -503,6 +503,11 @@ namespace PropertyTools.Wpf
                 foreach (var item in oldTreeSource)
                 {
                     var container = this.ContainerFromItem(item);
+                    if (container == null)
+                    {
+                        continue;
+                    }
+
                     if (container.IsExpanded)
                     {
                         container.IsExpanded = false;

@@ -73,6 +73,10 @@ namespace DirectoryDemo
                 return SubDirectories.Count > 0;
             }
         }
+
+        public bool IsSelected { get; set; }
+        public bool IsExpanded { get; set; }
+
         public override string ToString()
         {
             return DirectoryPath;
@@ -80,6 +84,9 @@ namespace DirectoryDemo
         public DirectoryViewModel(string path)
         {
             this.DirectoryPath = path;
+            int n = path.Count(c => c == '\\');
+            // enabling this will cause a bug - expanding is not working until items are loaded?
+            // IsExpanded = n < 2;
         }
     }
 }

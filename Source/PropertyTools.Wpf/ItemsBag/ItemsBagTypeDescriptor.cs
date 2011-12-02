@@ -55,7 +55,7 @@ namespace PropertyTools.Wpf
             var result = new List<PropertyDescriptor>();
             foreach (PropertyDescriptor pd in TypeDescriptor.GetProperties(this.bag.BiggestType))
             {
-                result.Add(new ItemsBagPropertyDescriptor(pd));
+                result.Add(new ItemsBagPropertyDescriptor(pd, this.bag.BiggestType));
             }
 
             return new PropertyDescriptorCollection(result.ToArray());

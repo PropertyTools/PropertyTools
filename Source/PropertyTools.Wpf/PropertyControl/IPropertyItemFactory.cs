@@ -6,6 +6,7 @@
 
 namespace PropertyTools.Wpf
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
 
     /// <summary>
@@ -39,5 +40,7 @@ namespace PropertyTools.Wpf
         void Reset();
 
         #endregion
+
+        IList<Tab> CreateModel(object instance, bool isEnumerable, PropertyControlOptions options);
     }
 }

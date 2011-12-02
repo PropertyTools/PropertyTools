@@ -288,6 +288,7 @@
     <Compile Include="PropertyControl\CategoryControlType.cs" />
     <Compile Include="PropertyControl\DefaultPropertyControlFactory.cs" />
     <Compile Include="PropertyControl\DefaultPropertyItemFactory.cs" />
+    <Compile Include="PropertyControl\Group.cs" />
     <Compile Include="PropertyControl\HeaderViewModel.cs" />
     <Compile Include="PropertyControl\IPropertyControlFactory.cs" />
     <Compile Include="PropertyControl\IPropertyItemFactory.cs" />
@@ -296,6 +297,7 @@
     <Compile Include="PropertyControl\PropertyItem.cs" />
     <Compile Include="Converters\ValidationErrorsToStringConverter.cs" />
     <Compile Include="Behaviors\WebBrowserBehavior.cs" />
+    <Compile Include="PropertyControl\Tab.cs" />
     <Compile Include="PropertyEditor\CategoryTemplateSelector.cs" />
     <Compile Include="PropertyControl\PropertyConverter.cs" />
     <Compile Include="PropertyEditor\PropertyEditor.cs" />

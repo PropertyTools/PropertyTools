@@ -8,8 +8,10 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Text;
     using System.Windows.Data;
 
@@ -20,6 +22,7 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class DefaultPropertyItemFactory : IPropertyItemFactory
     {
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -340,9 +343,9 @@ namespace PropertyTools.Wpf
             pi.Description = this.GetLocalizedDescription(description, declaringType);
 
             pi.Category = this.GetLocalizedString(categoryName, this.CurrentCategoryDeclaringType);
-            pi.CategoryDescription = this.GetLocalizedDescription(categoryName, this.CurrentCategoryDeclaringType);
+            // pi.CategoryDescription = this.GetLocalizedDescription(categoryName, this.CurrentCategoryDeclaringType);
             pi.Tab = this.GetLocalizedString(tabName, this.CurrentCategoryDeclaringType);
-            pi.TabDescription = this.GetLocalizedDescription(tabName, this.CurrentCategoryDeclaringType);
+            // pi.TabDescription = this.GetLocalizedDescription(tabName, this.CurrentCategoryDeclaringType);
 
             // Find descriptors by convention
             pi.IsEnabledDescriptor = pi.GetDescriptor(string.Format(this.EnabledPattern, pd.Name));
@@ -527,5 +530,91 @@ namespace PropertyTools.Wpf
         }
 
         #endregion
+
+        /// <summary>
+        /// Creates the property model.
+        /// </summary>
+        /// <param name="instance">
+        /// The instance.
+        /// </param>
+        /// <param name="isEnumerable">
+        /// if set to <c>true</c> [is enumerable].
+        /// </param>
+        /// <returns>
+        /// A list of <see cref="Tab"/>.
+        /// </returns>
+        public virtual IList<Tab> CreateModel(object instance, bool isEnumerable, PropertyControlOptions options)
+        {
+            if (instance == null)
+            {
+                return null;
+            }
+
+            var instanceType = instance.GetType();
+            var properties = TypeDescriptor.GetProperties(instance);
+
+            this.Reset();
+
+            var items = new List<PropertyItem>();
+            var tabs = new Dictionary<string, Tab>();
+            foreach (PropertyDescriptor pd in properties)
+            {
+                if (options.ShowDeclaredOnly && pd.ComponentType != instanceType)
+                {
+                    continue;
+                }
+
+                // Skip properties marked with [Browsable(false)]
+                if (!pd.IsBrowsable)
+                {
+                    continue;
+                }
+
+                // Read-only properties
+                if (!options.ShowReadOnlyProperties && pd.IsReadOnly)
+                {
+                    continue;
+                }
+
+                // If RequiredAttribute is set, skip properties that don't have the given attribute
+                if (options.RequiredAttribute != null
+                    && !AttributeHelper.ContainsAttributeOfType(pd.Attributes, options.RequiredAttribute))
+                {
+                    continue;
+                }
+
+                var pi = this.CreatePropertyItem(pd, instance);
+                items.Add(pi);
+            }
+
+            foreach (var pi in items.OrderBy(t => t.SortIndex))
+            {
+                var tabHeader = pi.Tab ?? string.Empty;
+                if (!tabs.ContainsKey(tabHeader))
+                {
+                    tabs.Add(tabHeader, new Tab { Header = pi.Tab });
+                }
+
+                var tab = tabs[tabHeader];
+                var group = tab.Groups.FirstOrDefault(g => g.Header == pi.Category);
+                if (group == null)
+                {
+                    group = new Group { Header = pi.Category };
+                    tab.Groups.Add(group);
+                }
+
+                group.Properties.Add(pi);
+            }
+
+
+            return tabs.Values.ToList();
+        }
+    }
+
+    public class PropertyControlOptions
+    {
+        public bool ShowDeclaredOnly { get; set; }
+        public bool ShowReadOnlyProperties { get; set; }
+        public Type RequiredAttribute { get; set; }
     }
 }

@@ -536,13 +536,12 @@ namespace PropertyTools.Wpf
             this.targetItemsControl = (TreeListBox)sender;
             object draggedItems = e.Data.GetData(this.format.Name);
 
-            this.DecideDropTarget(e);
             if (draggedItems != null)
             {
+                this.DecideDropTarget(e);
                 this.UpdateAdorner();
+                e.Handled = true;
             }
-
-            e.Handled = true;
         }
 
         /// <summary>
@@ -559,7 +558,12 @@ namespace PropertyTools.Wpf
             // Dragged Adorner is only created once on DragEnter + every time we enter the window. 
             // It's only removed once on the DragDrop, and every time we leave the window. (so no need to remove it here)
             this.RemoveAdorners();
-            e.Handled = true;
+
+            object draggedItems = e.Data.GetData(this.format.Name);
+            if (draggedItems != null)
+            {
+                e.Handled = true;
+            }
         }
 
         /// <summary>
@@ -575,13 +579,12 @@ namespace PropertyTools.Wpf
         {
             object draggedItems = e.Data.GetData(this.format.Name);
 
-            this.DecideDropTarget(e);
             if (draggedItems != null)
             {
+                this.DecideDropTarget(e);
                 this.UpdateAdorner();
+                e.Handled = true;
             }
-
-            e.Handled = true;
         }
 
         /// <summary>
@@ -631,9 +634,8 @@ namespace PropertyTools.Wpf
 
                     dt.Drop(ds, this.dropPosition, copy);
                 }
+                e.Handled = true;
             }
-
-            e.Handled = true;
         }
 
         /// <summary>

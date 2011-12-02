@@ -2,6 +2,9 @@
 // <copyright file="PropertyItem.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Represents a property.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
@@ -83,22 +86,12 @@ namespace PropertyTools.Wpf
         public bool AutoUpdateText { get; set; }
 
         /// <summary>
-        ///   Gets or sets the category title.
+        ///   Gets or sets the category.
         /// </summary>
-        /// <value>The category.</value>
+        /// <value>
+        ///   The category.
+        /// </value>
         public string Category { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the category description.
-        /// </summary>
-        /// <value>The category.</value>
-        public string CategoryDescription { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the category icon.
-        /// </summary>
-        /// <value>The category icon.</value>
-        public ImageSource CategoryIcon { get; set; }
 
         /// <summary>
         ///   Gets the columns.
@@ -199,12 +192,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The header placement.</value>
         public HeaderPlacement HeaderPlacement { get; set; }
-
-        /// <summary>
-        /// Gets or sets the width.
-        /// </summary>
-        /// <value>The width.</value>
-        public double Width { get; set; }
 
         /// <summary>
         ///   Gets or sets the height.
@@ -406,12 +393,7 @@ namespace PropertyTools.Wpf
         public int SortIndex { get; set; }
 
         /// <summary>
-        ///   Gets or sets the spin control small change.
-        /// </summary>
-        public object SpinSmallChange { get; set; }
-
-        /// <summary>
-        /// Gets or sets the spin control large change.
+        ///   Gets or sets the spin control large change.
         /// </summary>
         public object SpinLargeChange { get; set; }
 
@@ -426,22 +408,17 @@ namespace PropertyTools.Wpf
         public object SpinMinimum { get; set; }
 
         /// <summary>
-        ///   Gets or sets the tab title.
+        ///   Gets or sets the spin control small change.
         /// </summary>
-        /// <value>The tab.</value>
+        public object SpinSmallChange { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the tab.
+        /// </summary>
+        /// <value>
+        ///   The tab.
+        /// </value>
         public string Tab { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the tab description.
-        /// </summary>
-        /// <value>The tab.</value>
-        public string TabDescription { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the tab icon.
-        /// </summary>
-        /// <value>The tab icon.</value>
-        public ImageSource TabIcon { get; set; }
 
         /// <summary>
         ///   Gets or sets the text wrapping.
@@ -453,6 +430,12 @@ namespace PropertyTools.Wpf
         ///   Gets or sets a value indicating whether the property should use radio buttons.
         /// </summary>
         public bool UseRadioButtons { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the width.
+        /// </summary>
+        /// <value>The width.</value>
+        public double Width { get; set; }
 
         #endregion
 

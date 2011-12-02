@@ -29,13 +29,17 @@ namespace PropertyTools.Wpf
         /// Initializes a new instance of the <see cref="ItemsBagPropertyDescriptor"/> class.
         /// </summary>
         /// <param name="defaultDescriptor">
-        /// The default descriptor.
+        ///   The default descriptor.
         /// </param>
-        public ItemsBagPropertyDescriptor(PropertyDescriptor defaultDescriptor)
+        /// <param name="biggestType"></param>
+        public ItemsBagPropertyDescriptor(PropertyDescriptor defaultDescriptor, Type componentType)
             : base(defaultDescriptor)
         {
             this.defaultDescriptor = defaultDescriptor;
+            this.componentType = componentType;
         }
+
+        private Type componentType;
 
         #endregion
 
@@ -52,7 +56,7 @@ namespace PropertyTools.Wpf
         {
             get
             {
-                return typeof(ItemsBag);
+                return componentType;
             }
         }
 

@@ -13,6 +13,7 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -220,7 +221,7 @@ namespace PropertyTools.Wpf
                     foreach (var item in e.OldItems)
                     {
                         var container = this.ContainerFromItem(item);
-                        if (container.IsExpanded)
+                        if (container != null && container.IsExpanded)
                         {
                             container.IsExpanded = false;
                         }
@@ -406,7 +407,7 @@ namespace PropertyTools.Wpf
                         foreach (var topLevelItem in this.HierarchySource)
                         {
                             var topLevelContainer = this.ContainerFromItem(topLevelItem);
-                            if (topLevelContainer.IsExpanded)
+                            if (topLevelContainer != null && topLevelContainer.IsExpanded)
                             {
                                 topLevelContainer.IsExpanded = false;
                             }
@@ -462,16 +463,17 @@ namespace PropertyTools.Wpf
         protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
         {
             base.PrepareContainerForItemOverride(element, item);
-            var hli = (TreeListBoxItem)element;
-            if (hli != null && item != null)
+            // Debug.WriteLine(item);
+            var tli = (TreeListBoxItem)element;
+            if (tli != null && item != null)
             {
-                hli.ParentItem = this.parentContainerMap[item];
-                this.parentContainerMap.Remove(hli);
-                hli.Level = hli.ParentItem != null ? hli.ParentItem.Level + 1 : 0;
-                hli.SetBinding(ListBoxItem.IsSelectedProperty, this.IsSelectedBinding);
-                hli.SetBinding(TreeListBoxItem.IsExpandedProperty, this.IsExpandedBinding);
-                hli.SetBinding(TreeListBoxItem.ChildrenProperty, this.ChildrenBinding);
-                hli.HasItems = hli.Children != null && hli.Children.Cast<object>().Count() > 0;
+                tli.ParentItem = this.parentContainerMap[item];
+                this.parentContainerMap.Remove(item);
+                tli.Level = tli.ParentItem != null ? tli.ParentItem.Level + 1 : 0;
+                tli.SetBinding(ListBoxItem.IsSelectedProperty, this.IsSelectedBinding);
+                tli.SetBinding(TreeListBoxItem.IsExpandedProperty, this.IsExpandedBinding);
+                tli.SetBinding(TreeListBoxItem.ChildrenProperty, this.ChildrenBinding);
+                tli.HasItems = tli.Children != null && tli.Children.Cast<object>().Count() > 0;
             }
         }
 

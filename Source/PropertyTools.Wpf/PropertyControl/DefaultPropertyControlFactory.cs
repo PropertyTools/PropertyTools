@@ -2,6 +2,9 @@
 // <copyright file="DefaultPropertyControlFactory.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Provides a default property control factory.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
@@ -106,8 +109,8 @@ namespace PropertyTools.Wpf
                 {
                     var c = new ContentControl
                         {
-                            ContentTemplate = editor.EditorTemplate, 
-                            VerticalAlignment = VerticalAlignment.Center, 
+                            ContentTemplate = editor.EditorTemplate,
+                            VerticalAlignment = VerticalAlignment.Center,
                             HorizontalAlignment = HorizontalAlignment.Left
                         };
                     c.SetBinding(FrameworkElement.DataContextProperty, property.CreateOneWayBinding());
@@ -231,11 +234,12 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateBoolControl(PropertyItem property)
+        protected virtual FrameworkElement CreateBoolControl(PropertyItem property)
         {
             var c = new CheckBox
                 {
-                   VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left 
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Left
                 };
             c.SetBinding(ToggleButton.IsCheckedProperty, property.CreateBinding());
             return c;
@@ -250,7 +254,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateBrushControl(PropertyItem property)
+        protected virtual FrameworkElement CreateBrushControl(PropertyItem property)
         {
             var c = new ColorPicker();
             c.SetBinding(ColorPicker.SelectedColorProperty, property.CreateBinding());
@@ -266,7 +270,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateColorControl(PropertyItem property)
+        protected virtual FrameworkElement CreateColorControl(PropertyItem property)
         {
             var c = new ColorPicker2();
             c.SetBinding(ColorPicker2.SelectedColorProperty, property.CreateBinding());
@@ -282,7 +286,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateComboBoxControl(PropertyItem property)
+        protected virtual FrameworkElement CreateComboBoxControl(PropertyItem property)
         {
             var c = new ComboBox { IsEditable = property.IsEditable };
             c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
@@ -302,9 +306,9 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateCommentControl(PropertyItem property)
+        protected virtual FrameworkElement CreateCommentControl(PropertyItem property)
         {
-            var tb = new TextBlock()
+            var tb = new TextBlock
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     Margin = new Thickness(4),
@@ -315,12 +319,13 @@ namespace PropertyTools.Wpf
             ScrollViewer.SetVerticalScrollBarVisibility(tb, ScrollBarVisibility.Hidden);
             tb.SetBinding(TextBlock.TextProperty, property.CreateBinding());
             return tb;
-            //var b = new ContentControl
-            //    {
-            //       VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(4), Focusable = false
-            //    };
-            //b.SetBinding(ContentControl.ContentProperty, property.CreateBinding());
-            //return b;
+
+            // var b = new ContentControl
+            // {
+            // VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(4), Focusable = false
+            // };
+            // b.SetBinding(ContentControl.ContentProperty, property.CreateBinding());
+            // return b;
         }
 
         /// <summary>
@@ -332,7 +337,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateDateTimeControl(PropertyItem property)
+        protected virtual FrameworkElement CreateDateTimeControl(PropertyItem property)
         {
             var c = new DatePicker();
             c.SetBinding(DatePicker.SelectedDateProperty, property.CreateBinding());
@@ -348,16 +353,16 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateDefaultControl(PropertyItem property)
+        protected virtual FrameworkElement CreateDefaultControl(PropertyItem property)
         {
             // TextBox is the default control
             var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
             var c = new TextBox
                 {
-                    AcceptsReturn = property.AcceptsReturn, 
-                    MaxLength = property.MaxLength, 
-                    IsReadOnly = property.Descriptor.IsReadOnly, 
-                    TextWrapping = property.TextWrapping, 
+                    AcceptsReturn = property.AcceptsReturn,
+                    MaxLength = property.MaxLength,
+                    IsReadOnly = property.Descriptor.IsReadOnly,
+                    TextWrapping = property.TextWrapping,
                     VerticalScrollBarVisibility = ScrollBarVisibility.Auto
                 };
 
@@ -374,7 +379,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateDictionaryControl(PropertyItem property)
+        protected virtual FrameworkElement CreateDictionaryControl(PropertyItem property)
         {
             // todo
             var c = new ComboBox();
@@ -391,7 +396,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateDirectoryPathControl(PropertyItem property)
+        protected virtual FrameworkElement CreateDirectoryPathControl(PropertyItem property)
         {
             var c = new DirectoryPicker { FolderBrowserDialogService = this.FolderBrowserDialogService };
             c.SetBinding(DirectoryPicker.DirectoryProperty, property.CreateBinding());
@@ -410,7 +415,8 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateEnumControl(PropertyItem property, PropertyControlFactoryOptions options)
+        protected virtual FrameworkElement CreateEnumControl(
+            PropertyItem property, PropertyControlFactoryOptions options)
         {
             var isRadioButton = true;
             var enumType = TypeHelper.GetEnumType(property.Descriptor.PropertyType);
@@ -443,13 +449,13 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateFilePathControl(PropertyItem property)
+        protected virtual FrameworkElement CreateFilePathControl(PropertyItem property)
         {
             var c = new FilePicker
                 {
-                    Filter = property.FilePathFilter, 
-                    DefaultExtension = property.FilePathDefaultExtension, 
-                    UseOpenDialog = property.IsFileOpenDialog, 
+                    Filter = property.FilePathFilter,
+                    DefaultExtension = property.FilePathDefaultExtension,
+                    UseOpenDialog = property.IsFileOpenDialog,
                     FileDialogService = this.FileDialogService
                 };
             if (property.RelativePathDescriptor != null)
@@ -475,7 +481,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateFontFamilyControl(PropertyItem property)
+        protected virtual FrameworkElement CreateFontFamilyControl(PropertyItem property)
         {
             var c = new ComboBox { ItemsSource = GetFontFamilies() };
 
@@ -504,15 +510,15 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateFontPreview(PropertyItem property)
+        protected virtual FrameworkElement CreateFontPreview(PropertyItem property)
         {
             var c = new TextBox
                 {
-                    Background = Brushes.Transparent, 
-                    BorderBrush = null, 
-                    AcceptsReturn = true, 
-                    TextWrapping = TextWrapping.Wrap, 
-                    FontWeight = FontWeight.FromOpenTypeWeight(property.FontWeight), 
+                    Background = Brushes.Transparent,
+                    BorderBrush = null,
+                    AcceptsReturn = true,
+                    TextWrapping = TextWrapping.Wrap,
+                    FontWeight = FontWeight.FromOpenTypeWeight(property.FontWeight),
                     FontSize = property.FontSize
                 };
             TextOptions.SetTextFormattingMode(c, TextFormattingMode.Display);
@@ -535,7 +541,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateGridControl(PropertyItem property)
+        protected virtual FrameworkElement CreateGridControl(PropertyItem property)
         {
             var c = new SimpleGrid { CanDelete = property.ListCanRemove, CanInsert = property.ListCanAdd };
 
@@ -544,10 +550,10 @@ namespace PropertyTools.Wpf
             {
                 var cd = new ColumnDefinition
                     {
-                        DataField = ca.PropertyName, 
-                        Header = ca.Header, 
-                        FormatString = ca.FormatString, 
-                        Width = (GridLength)glc.ConvertFromInvariantString(ca.Width)
+                        DataField = ca.PropertyName,
+                        Header = ca.Header,
+                        FormatString = ca.FormatString,
+                        Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto)
                     };
                 switch (ca.Alignment.ToString().ToUpper())
                 {
@@ -578,7 +584,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateHtmlControl(PropertyItem property)
+        protected virtual FrameworkElement CreateHtmlControl(PropertyItem property)
         {
             var c = new WebBrowser();
             c.SetBinding(WebBrowserBehavior.NavigateToStringProperty, property.CreateBinding());
@@ -594,7 +600,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateImageControl(PropertyItem property)
+        protected virtual FrameworkElement CreateImageControl(PropertyItem property)
         {
             var c = new Image { Stretch = Stretch.Uniform, HorizontalAlignment = HorizontalAlignment.Left };
             c.SetBinding(Image.SourceProperty, property.CreateOneWayBinding());
@@ -610,7 +616,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateLinkControl(PropertyItem property)
+        protected virtual FrameworkElement CreateLinkControl(PropertyItem property)
         {
             var c = new LinkBlock { VerticalAlignment = VerticalAlignment.Center };
             c.SetBinding(TextBlock.TextProperty, new Binding(property.Descriptor.Name));
@@ -627,7 +633,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreatePasswordControl(PropertyItem property)
+        protected virtual FrameworkElement CreatePasswordControl(PropertyItem property)
         {
             var c = new PasswordBox();
             PasswordHelper.SetAttach(c, true);
@@ -644,7 +650,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateSecurePasswordControl(PropertyItem property)
+        protected virtual FrameworkElement CreateSecurePasswordControl(PropertyItem property)
         {
             // todoox
             var c = new PasswordBox();
@@ -663,7 +669,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateSliderControl(PropertyItem property)
+        protected virtual FrameworkElement CreateSliderControl(PropertyItem property)
         {
             var g = new Grid();
             g.ColumnDefinitions.Add(
@@ -672,11 +678,11 @@ namespace PropertyTools.Wpf
                 new System.Windows.Controls.ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             var s = new Slider
                 {
-                    Minimum = property.SliderMinimum, 
-                    Maximum = property.SliderMaximum, 
-                    SmallChange = property.SliderSmallChange, 
-                    LargeChange = property.SliderLargeChange, 
-                    TickFrequency = property.SliderTickFrequency, 
+                    Minimum = property.SliderMinimum,
+                    Maximum = property.SliderMaximum,
+                    SmallChange = property.SliderSmallChange,
+                    LargeChange = property.SliderLargeChange,
+                    TickFrequency = property.SliderTickFrequency,
                     IsSnapToTickEnabled = property.SliderSnapToTicks
                 };
             s.SetBinding(RangeBase.ValueProperty, property.CreateBinding());
@@ -712,19 +718,20 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        protected FrameworkElement CreateSpinControl(PropertyItem property)
+        protected virtual FrameworkElement CreateSpinControl(PropertyItem property)
         {
             var tb = new TextBox
                 {
-                   BorderThickness = new Thickness(0), HorizontalContentAlignment = HorizontalAlignment.Right 
+                    BorderThickness = new Thickness(0),
+                    HorizontalContentAlignment = HorizontalAlignment.Right
                 };
             tb.SetBinding(TextBox.TextProperty, property.CreateBinding());
             var c = new SpinControl
                 {
-                    Maximum = property.SpinMaximum, 
-                    Minimum = property.SpinMinimum, 
-                    SmallChange = property.SpinSmallChange, 
-                    LargeChange = property.SpinLargeChange, 
+                    Maximum = property.SpinMaximum,
+                    Minimum = property.SpinMinimum,
+                    SmallChange = property.SpinSmallChange,
+                    LargeChange = property.SpinLargeChange,
                     Content = tb
                 };
             c.SetBinding(SpinControl.ValueProperty, property.CreateBinding());

@@ -91,6 +91,7 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="UpButtonGeometry" Value="{StaticResource UpArrowGeometry}"/>
         <Setter Property="DownButtonGeometry" Value="{StaticResource DownArrowGeometry}"/>
         <Setter Property="Template">

@@ -77,5 +77,54 @@ namespace PropertyTools.Wpf
         }
 
         #endregion
+
+        /// <summary>
+        /// Determines whether the first type is assignable from the specified second type.
+        /// </summary>
+        /// <param name="firstType">Type of the first type.</param>
+        /// <param name="secondType">The type of the second type.</param>
+        /// <returns>
+        /// True if ok.
+        /// </returns>
+        public static bool Is(this Type firstType, Type secondType)
+        {
+            if (firstType.IsGenericType && secondType == firstType.GetGenericTypeDefinition())
+            {
+                return true;
+            }
+
+            // checking generic interfaces
+            foreach (var @interface in firstType.GetInterfaces())
+            {
+                if (@interface.IsGenericType)
+                {
+                    if (secondType == @interface.GetGenericTypeDefinition())
+                    {
+                        return true;
+                    }
+                }
+
+                if (secondType == @interface)
+                {
+                    return true;
+                }
+            }
+
+            var ult = Nullable.GetUnderlyingType(firstType);
+            if (ult != null)
+            {
+                if (secondType.IsAssignableFrom(ult))
+                {
+                    return true;
+                }
+            }
+
+            if (secondType.IsAssignableFrom(firstType))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

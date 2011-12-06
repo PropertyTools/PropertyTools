@@ -54,7 +54,7 @@
     </DrawingBrush>
 
     <DataTemplate x:Key="ColorPresenterTemplate">
-        <StackPanel Margin="4 0 20 0" Orientation="Horizontal" IsHitTestVisible="false">
+        <StackPanel Margin="4 0 4 0" Orientation="Horizontal" IsHitTestVisible="false">
             <Grid Width="13" Height="13" VerticalAlignment="Center">
                 <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                    Fill="{StaticResource SmallCheckerBoardBrush2}" SnapsToDevicePixels="True"
@@ -545,8 +545,7 @@ Color="{Binding RightColor,RelativeSource={RelativeSource TemplatedParent}}" Off
                     <Grid Name="MainGrid" SnapsToDevicePixels="true">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition
-MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0" />
+                            <ColumnDefinition Width="8"/>
                         </Grid.ColumnDefinitions>
 
                         <!-- The Popup color picker panel -->
@@ -575,7 +574,7 @@ MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}
                         <ContentPresenter IsHitTestVisible="false" Margin="{TemplateBinding Padding}"
                               Content="{Binding SelectedColor, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                               ContentTemplate="{StaticResource ColorPresenterTemplate}" VerticalAlignment="Center"
-                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              HorizontalAlignment="Stretch"
                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                         </ContentPresenter>
 

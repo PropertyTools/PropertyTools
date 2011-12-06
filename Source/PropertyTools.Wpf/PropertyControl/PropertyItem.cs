@@ -567,43 +567,7 @@ namespace PropertyTools.Wpf
         public bool Is(Type type)
         {
             var propertyType = this.ActualPropertyType;
-            if (propertyType.IsGenericType && type == propertyType.GetGenericTypeDefinition())
-            {
-                return true;
-            }
-
-            // checking generic interfaces
-            foreach (var @interface in propertyType.GetInterfaces())
-            {
-                if (@interface.IsGenericType)
-                {
-                    if (type == @interface.GetGenericTypeDefinition())
-                    {
-                        return true;
-                    }
-                }
-
-                if (type == @interface)
-                {
-                    return true;
-                }
-            }
-
-            var ult = Nullable.GetUnderlyingType(this.Descriptor.PropertyType);
-            if (ult != null)
-            {
-                if (type.IsAssignableFrom(ult))
-                {
-                    return true;
-                }
-            }
-
-            if (type.IsAssignableFrom(propertyType))
-            {
-                return true;
-            }
-
-            return false;
+            return propertyType.Is(type);
         }
 
         #endregion

@@ -12,5 +12,6 @@
         <ResourceDictionary Source="/PropertyTools.Wpf;component/PropertyControl/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/SimpleGrid/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/TreeListBox/Generic.xaml" />
+        <ResourceDictionary Source="/PropertyTools.Wpf;component/ItemsGrid/Generic.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

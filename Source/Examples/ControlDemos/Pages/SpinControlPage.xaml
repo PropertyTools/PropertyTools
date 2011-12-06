@@ -3,14 +3,14 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="300" d:DesignWidth="300" Background="Gray"
 	Title="FilePickerPage">
 
     <StackPanel Width="120" VerticalAlignment="Center">
         <p:SpinControl Value="{Binding DoubleValue}" Margin="4">
             <TextBox Text="{Binding DoubleValue, StringFormat={}{0:0.00}}" BorderThickness="0" HorizontalContentAlignment="Right"/>
         </p:SpinControl>
-        <p:SpinControl Value="{Binding IntValue}" Margin="4">
+        <p:SpinControl Value="{Binding IntValue}" Margin="4" Height="32">
             <TextBox Text="{Binding IntValue}" BorderThickness="0" HorizontalContentAlignment="Right"/>
         </p:SpinControl>
         <p:SpinControl Value="{Binding DateValue}" Minimum="{Binding MinimumDate}" Maximum="{Binding MaximumDate}" Margin="4">

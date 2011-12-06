@@ -134,6 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ItemsGrid\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\AboutDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -233,6 +237,11 @@
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="ItemsGrid\IItemsGridControlFactory.cs" />
+    <Compile Include="ItemsGrid\PropertyDefinition.cs" />
+    <Compile Include="ItemsGrid\ItemsGrid.cs" />
+    <Compile Include="ItemsGrid\ItemsGrid.Properties.cs" />
+    <Compile Include="ItemsGrid\ItemsGridControlFactory.cs" />
     <Compile Include="Dialogs\AboutViewModel.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Converters\ObjectToDoubleConverter.cs" />
@@ -322,9 +331,9 @@
     <Compile Include="SimpleGrid\CellRefConverter.cs" />
     <Compile Include="SimpleGrid\ColumnDefinition.cs" />
     <Compile Include="SimpleGrid\SimpleGrid.Properties.cs" />
-    <Compile Include="SimpleGrid\GridLengthCollectionConverter.cs" />
+    <Compile Include="Converters\GridLengthCollectionConverter.cs" />
     <Compile Include="SimpleGrid\ColumnAlignmentCollectionConverter.cs" />
-    <Compile Include="SimpleGrid\ReflectionMath.cs" />
+    <Compile Include="Helpers\ReflectionMath.cs" />
     <Compile Include="SimpleGrid\SimpleGrid.cs" />
     <Compile Include="SimpleGrid\StringCollectionConverter.cs" />
     <Compile Include="SimpleGrid\TypeDefinition.cs" />
@@ -371,7 +380,7 @@
     <Resource Include="Controls\ColorPicker\GreenUp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SimpleGrid\Templates\" />
+    <Resource Include="ItemsGrid\Cursors\AutoFill.cur" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="SimpleGrid\Cursors\AutoFill.cur" />
@@ -393,6 +402,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Controls\ColorPicker2\Hsv.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ItemsGrid\Cursors\Cross.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ItemsGrid\Cursors\DownArrow.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ItemsGrid\Cursors\RightArrow.cur" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

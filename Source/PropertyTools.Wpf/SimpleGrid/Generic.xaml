@@ -51,7 +51,7 @@
                 </Grid>
               </ScrollViewer>
               <!-- Column headers -->
-              <ScrollViewer Name="PART_ColumnScroller" Grid.Column="1" VerticalScrollBarVisibility="Hidden"
+              <ScrollViewer x:Name="PART_ColumnScroller" Grid.Column="1" VerticalScrollBarVisibility="Hidden"
                             HorizontalScrollBarVisibility="Hidden">
                 <Grid x:Name="PART_ColumnGrid" Cursor="/PropertyTools.Wpf;component/SimpleGrid/Cursors/DownArrow.cur"
                       Background="{StaticResource HeaderBackgroundBrush}">
@@ -59,7 +59,7 @@
                 </Grid>
               </ScrollViewer>
               <!-- Row headers -->
-              <ScrollViewer Name="PART_RowScroller" Grid.Row="1" VerticalScrollBarVisibility="Hidden"
+              <ScrollViewer x:Name="PART_RowScroller" Grid.Row="1" VerticalScrollBarVisibility="Hidden"
                             HorizontalScrollBarVisibility="Hidden">
                 <Grid x:Name="PART_RowGrid" Cursor="/PropertyTools.Wpf;component/SimpleGrid/Cursors/RightArrow.cur"
                       Background="{StaticResource HeaderBackgroundBrush}">

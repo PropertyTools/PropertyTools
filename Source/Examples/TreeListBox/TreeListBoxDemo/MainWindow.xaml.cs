@@ -46,5 +46,18 @@ namespace TreeListBoxDemo
             }
             tree1.SelectedIndex = idx < tree1.Items.Count ? idx : idx - 1;
         }
+
+        private void tree1_KeyDown_1(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Add)
+            {
+                var vm = tree1.SelectedValue as NodeViewModel;
+                if (vm != null)
+                {
+                    var child = vm.AddChild();
+                //    tree1.ExpandTo(child);
+                }
+            }
+        }
     }
 }

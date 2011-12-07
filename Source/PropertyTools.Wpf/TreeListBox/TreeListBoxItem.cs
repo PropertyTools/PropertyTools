@@ -10,6 +10,7 @@
 namespace PropertyTools.Wpf
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Windows;
     using System.Windows.Controls;
@@ -25,9 +26,9 @@ namespace PropertyTools.Wpf
         ///   The children property.
         /// </summary>
         public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Register(
-            "Children", 
-            typeof(IList), 
-            typeof(TreeListBoxItem), 
+            "Children",
+            typeof(IList),
+            typeof(TreeListBoxItem),
             new UIPropertyMetadata(null, (s, e) => ((TreeListBoxItem)s).ChildrenChanged(e)));
 
         /// <summary>
@@ -46,12 +47,12 @@ namespace PropertyTools.Wpf
         ///   The is expanded property.
         /// </summary>
         public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register(
-            "IsExpanded", 
-            typeof(bool), 
-            typeof(TreeListBoxItem), 
+            "IsExpanded",
+            typeof(bool),
+            typeof(TreeListBoxItem),
             new FrameworkPropertyMetadata(
-                false, 
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
+                false,
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 (s, e) => ((TreeListBoxItem)s).IsExpandedChanged()));
 
         /// <summary>
@@ -78,6 +79,7 @@ namespace PropertyTools.Wpf
         public TreeListBoxItem(TreeListBox owner)
         {
             this.Owner = owner;
+            this.ChildItems = new List<TreeListBoxItem>();
         }
 
         #endregion
@@ -178,7 +180,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         ///   Gets the parent item.
         /// </summary>
-        public TreeListBoxItem ParentItem { get; internal set; }
+        internal TreeListBoxItem ParentItem { get; set; }
+        internal IList<TreeListBoxItem> ChildItems { get; set; }
 
         #endregion
 
@@ -253,5 +256,13 @@ namespace PropertyTools.Wpf
         }
 
         #endregion
+
+        public TreeListBoxItem GetNextSibling()
+        {
+            if (ParentItem == null) return null;
+            int index = ParentItem.ChildItems.IndexOf(this);
+            if (index + 1 < ParentItem.ChildItems.Count) return ParentItem.ChildItems[index + 1];
+            return null;
+        }
     }
 }

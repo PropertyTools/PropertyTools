@@ -362,6 +362,8 @@ namespace PropertyTools.Wpf
                 pi.FontFamilyPropertyDescriptor = pi.GetDescriptor(fp.FontFamilyPropertyName);
             }
 
+            pi.IsFontFamilySelector = pi.GetAttribute<FontFamilySelectorAttribute>() != null;
+
             var fpa = pi.GetAttribute<FilePathAttribute>();
             pi.IsFilePath = fpa != null;
             if (fpa != null)

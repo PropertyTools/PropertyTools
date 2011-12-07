@@ -58,6 +58,7 @@
     <Compile Include="DataAnnotations\EnumDisplayNameAttribute.cs" />
     <Compile Include="DataAnnotations\FilePathAttribute.cs" />
     <Compile Include="DataAnnotations\FilterPropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\FontFamilySelectorAttribute.cs" />
     <Compile Include="DataAnnotations\FontPreviewAttribute.cs" />
     <Compile Include="DataAnnotations\FormatStringAttribute.cs" />
     <Compile Include="DataAnnotations\HeaderPlacement.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="DataAnnotations\OptionalAttribute.cs" />
     <Compile Include="DataAnnotations\RadioButtonsAttribute.cs" />
     <Compile Include="DataAnnotations\ResettableAttribute.cs" />
+    <Compile Include="DataAnnotations\ItemHeaderPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\SlidableAttribute.cs" />
     <Compile Include="DataAnnotations\SortIndexAttribute.cs" />
     <Compile Include="DataAnnotations\ItemsSourcePropertyAttribute.cs" />

@@ -11,14 +11,20 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Creates the display control.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <returns>The control.</returns>
-        FrameworkElement CreateDisplayControl(PropertyDefinition property);
+        /// <param name="instance">The instance.</param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        FrameworkElement CreateDisplayControl(PropertyDefinition property, object instance);
 
         /// <summary>
         /// Creates the edit control.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <returns>The control.</returns>
-        FrameworkElement CreateEditControl(PropertyDefinition property);
+        /// <param name="instance">The instance.</param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        FrameworkElement CreateEditControl(PropertyDefinition property, object instance);
     }
 }

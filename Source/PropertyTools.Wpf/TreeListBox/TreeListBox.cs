@@ -268,17 +268,32 @@ namespace PropertyTools.Wpf
                     if (parent.IsExpanded)
                     {
                         int i;
-                        if (e.NewStartingIndex + 1 < parent.Children.Count)
+                        if (e.NewStartingIndex + e.NewItems.Count < parent.Children.Count)
                         {
-                            var item0 = parent.Children[e.NewStartingIndex + 1];
-                            var i0 = this.Items.IndexOf(item0);
-                            i = i0;
+                            // inserted items
+                            var followingChild = parent.Children[e.NewStartingIndex + e.NewItems.Count];
+                            // int followingChildIndex = this.Items.IndexOf(followingSibling);
+                            i = this.Items.IndexOf(followingChild);
                         }
                         else
                         {
-                            var item0 = parent.Children[e.NewStartingIndex - 1];
-                            var i0 = this.Items.IndexOf(item0);
-                            i = i0 + 1;
+                            TreeListBoxItem sibling = null;
+                            // added items
+                            var siblingParent = parent;
+                            while (siblingParent != null)
+                            {
+                                sibling = siblingParent.GetNextSibling();
+                                if (sibling != null) break;
+                                siblingParent = siblingParent.ParentItem;
+                            }
+                            if (sibling != null)
+                            {
+                                i = this.ItemContainerGenerator.IndexFromContainer(sibling);
+                            }
+                            else
+                            {
+                                i = this.Items.Count;
+                            }
                         }
 
                         foreach (var item in e.NewItems)
@@ -463,17 +478,28 @@ namespace PropertyTools.Wpf
         protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
         {
             base.PrepareContainerForItemOverride(element, item);
-            // Debug.WriteLine(item);
-            var tli = (TreeListBoxItem)element;
-            if (tli != null && item != null)
+
+            var treeListBoxItem = (TreeListBoxItem)element;
+            if (treeListBoxItem != null && item != null)
             {
-                tli.ParentItem = this.parentContainerMap[item];
-                this.parentContainerMap.Remove(item);
-                tli.Level = tli.ParentItem != null ? tli.ParentItem.Level + 1 : 0;
-                tli.SetBinding(ListBoxItem.IsSelectedProperty, this.IsSelectedBinding);
-                tli.SetBinding(TreeListBoxItem.IsExpandedProperty, this.IsExpandedBinding);
-                tli.SetBinding(TreeListBoxItem.ChildrenProperty, this.ChildrenBinding);
-                tli.HasItems = tli.Children != null && tli.Children.Cast<object>().Count() > 0;
+                if (!parentContainerMap.ContainsKey(item))
+                {
+                    Debug.WriteLine("TreeListBox error: missing parent container for item {0}", item);
+                    return;
+                }
+
+                treeListBoxItem.ParentItem = this.parentContainerMap[item];
+                if (treeListBoxItem.ParentItem != null)
+                {
+                    treeListBoxItem.ParentItem.ChildItems.Add(treeListBoxItem);
+                }
+
+                // this.parentContainerMap.Remove(item);
+                treeListBoxItem.Level = treeListBoxItem.ParentItem != null ? treeListBoxItem.ParentItem.Level + 1 : 0;
+                treeListBoxItem.SetBinding(ListBoxItem.IsSelectedProperty, this.IsSelectedBinding);
+                treeListBoxItem.SetBinding(TreeListBoxItem.IsExpandedProperty, this.IsExpandedBinding);
+                treeListBoxItem.SetBinding(TreeListBoxItem.ChildrenProperty, this.ChildrenBinding);
+                treeListBoxItem.HasItems = treeListBoxItem.Children != null && treeListBoxItem.Children.Cast<object>().Count() > 0;
             }
         }
 
@@ -523,6 +549,7 @@ namespace PropertyTools.Wpf
             }
 
             this.Items.Clear();
+            this.parentContainerMap.Clear();
 
             if (this.HierarchySource != null)
             {
@@ -547,5 +574,22 @@ namespace PropertyTools.Wpf
         }
 
         #endregion
+
+        public void ExpandTo(object item)
+        {
+            // var container = ContainerFromItem(item);
+            var parents = new Stack<TreeListBoxItem>();
+            var parent = parentContainerMap[item];
+            while (parent != null)
+            {
+                parents.Push(parent);
+                parent = parent.ParentItem;
+            }
+            while (parents.Count > 0)
+            {
+                var parentItem = parents.Pop();
+                parentItem.IsExpanded = true;
+            }
+        }
     }
 }

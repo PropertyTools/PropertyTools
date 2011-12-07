@@ -167,5 +167,16 @@ namespace TreeListBoxDemo
         {
             return Name;
         }
+
+        public object AddChild()
+        {
+            var cn = this.Node as CompositeNode;
+            if (cn == null) return null;
+            var newChild = new CompositeNode() { Name = "New node" };
+            cn.Children.Add(newChild);
+            var vm = new NodeViewModel(newChild, this);
+            this.Children.Add(vm);
+            return vm;
+        }
     }
 }

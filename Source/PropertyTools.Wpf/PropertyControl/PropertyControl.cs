@@ -99,6 +99,13 @@ namespace PropertyTools.Wpf
                 "MinimumLabelWidth", typeof(double), typeof(PropertyControl), new UIPropertyMetadata(70.0));
 
         /// <summary>
+        /// The move focus on enter property.
+        /// </summary>
+        public static readonly DependencyProperty MoveFocusOnEnterProperty =
+            DependencyProperty.Register(
+                "MoveFocusOnEnter", typeof(bool), typeof(PropertyControl), new UIPropertyMetadata(false));
+
+        /// <summary>
         ///   The property control factory property.
         /// </summary>
         public static readonly DependencyProperty PropertyControlFactoryProperty =
@@ -134,7 +141,7 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, (s, e) => ((PropertyControl)s).OnSelectedObjectChanged(e)));
 
         /// <summary>
-        /// The selected objects property.
+        ///   The selected objects property.
         /// </summary>
         public static readonly DependencyProperty SelectedObjectsProperty =
             DependencyProperty.Register(
@@ -393,7 +400,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets CurrentObject.
+        ///   Gets or sets CurrentObject.
         /// </summary>
         public object CurrentObject { get; set; }
 
@@ -468,6 +475,25 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(MinimumLabelWidthProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether to move focus on unhandled Enter key down events.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if move focus on enter; otherwise, <c>false</c>.
+        /// </value>
+        public bool MoveFocusOnEnter
+        {
+            get
+            {
+                return (bool)this.GetValue(MoveFocusOnEnterProperty);
+            }
+
+            set
+            {
+                this.SetValue(MoveFocusOnEnterProperty, value);
             }
         }
 
@@ -987,7 +1013,7 @@ namespace PropertyTools.Wpf
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
-            if (e.Key == Key.Enter)
+            if (this.MoveFocusOnEnter && e.Key == Key.Enter)
             {
                 var textBox = e.OriginalSource as TextBox;
                 if (textBox != null)
@@ -1073,16 +1099,7 @@ namespace PropertyTools.Wpf
                         Margin = new Thickness(5, 0, 0, 0)
                     };
 
-                if (pi.OptionalDescriptor != null)
-                {
-                    cb.SetBinding(ToggleButton.IsCheckedProperty, new Binding(pi.OptionalDescriptor.Name));
-                }
-                else
-                {
-                    cb.SetBinding(
-                        ToggleButton.IsCheckedProperty,
-                        new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
-                }
+                cb.SetBinding(ToggleButton.IsCheckedProperty, pi.OptionalDescriptor != null ? new Binding(pi.OptionalDescriptor.Name) : new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
 
                 var g = new Grid();
                 g.Children.Add(cb);
@@ -1187,9 +1204,8 @@ namespace PropertyTools.Wpf
                     errorControl.SetBinding(
                         ContentControl.ContentProperty, new Binding("(Validation.Errors)") { Source = propertyControl });
 
-                    // replace the property control by a stack panel containig the property control and the error control.
-                    var sp = new StackPanel();
-                    sp.VerticalAlignment = VerticalAlignment.Center;
+                    // replace the property control by a stack panel containing the property control and the error control.
+                    var sp = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
                     sp.Children.Add(propertyControl);
                     sp.Children.Add(errorControl);
                     propertyControl = sp;
@@ -1249,7 +1265,6 @@ namespace PropertyTools.Wpf
                                     {
                                         Source = this.DescriptionIcon,
                                         Stretch = Stretch.None,
-                                        // SnapsToDevicePixels = true,
                                         Margin = new Thickness(0, 4, 4, 4),
                                         VerticalAlignment = VerticalAlignment.Top,
                                         HorizontalAlignment = this.DescriptionIconAlignment

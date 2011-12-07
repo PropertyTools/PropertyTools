@@ -138,7 +138,7 @@ namespace PropertyTools.Wpf
                 return this.CreateBrushControl(property);
             }
 
-            if (property.Is(typeof(FontFamily)))
+            if (property.Is(typeof(FontFamily)) || property.IsFontFamilySelector)
             {
                 return this.CreateFontFamilyControl(property);
             }

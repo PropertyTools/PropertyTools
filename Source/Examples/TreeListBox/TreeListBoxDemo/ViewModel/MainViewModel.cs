@@ -39,7 +39,7 @@ namespace TreeListBoxDemo
 
         private void AddRecursive(CompositeNode model, int levels)
         {
-            for (int i = 0; i < 26; i++)
+            for (int i = 0; i < 3; i++)
             {
                 var m2 = new CompositeNode { Name = model.Name + (char)('A' + i) };
                 model.Children.Add(m2);

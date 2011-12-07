@@ -828,7 +828,7 @@ namespace PropertyTools.Wpf.ItemsGrid
             }
 
             var item = this.GetItem(this.CurrentCell);
-            this.currentEditor = this.ControlFactory.CreateEditControl(d);
+            this.currentEditor = this.ControlFactory.CreateEditControl(d, item);
             this.currentEditor.DataContext = item;
             if (this.currentEditor == null)
             {
@@ -974,7 +974,7 @@ namespace PropertyTools.Wpf.ItemsGrid
 
             if (pd != null && item != null)
             {
-                element = this.ControlFactory.CreateDisplayControl(pd);
+                element = this.ControlFactory.CreateDisplayControl(pd, item);
                 element.DataContext = item;
 
                 element.VerticalAlignment = VerticalAlignment.Center;
@@ -1015,7 +1015,7 @@ namespace PropertyTools.Wpf.ItemsGrid
 
             var itemType = TypeHelper.FindBiggestCommonType(items);
 
-            // itemType=items.AsQueryable().ElementType; 
+            // var itemType = items.AsQueryable().ElementType;
 
             foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(itemType))
             {
@@ -1034,35 +1034,6 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// Gets the index of the specified item in the Content enumerable.
-        /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <returns>
-        /// The get index of item.
-        /// </returns>
-        protected int GetIndexOfItem(object item)
-        {
-            var list = this.Content as IEnumerable;
-            if (list != null)
-            {
-                int i = 0;
-                foreach (var listItem in list)
-                {
-                    if (listItem == item)
-                    {
-                        return i;
-                    }
-
-                    i++;
-                }
-            }
-
-            return -1;
-        }
-
-        /// <summary>
         /// Handles KeyDown events on the grid.
         /// </summary>
         /// <param name="e">
@@ -1072,9 +1043,9 @@ namespace PropertyTools.Wpf.ItemsGrid
         {
             base.OnKeyDown(e);
 
-            bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
-            bool shift = Keyboard.IsKeyDown(Key.LeftShift);
-            bool alt = Keyboard.IsKeyDown(Key.LeftAlt);
+            bool control = (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None;
+            bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
+            bool alt = (Keyboard.Modifiers & ModifierKeys.Alt) != ModifierKeys.None;
 
             int row = shift ? this.SelectionCell.Row : this.CurrentCell.Row;
             int column = shift ? this.SelectionCell.Column : this.CurrentCell.Column;
@@ -1805,7 +1776,8 @@ namespace PropertyTools.Wpf.ItemsGrid
             int column = this.GetCell(e.GetPosition(this.columnGrid)).Column;
             if (column >= 0)
             {
-                if (Keyboard.IsKeyDown(Key.LeftShift))
+                bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
+                if (shift)
                 {
                     this.CurrentCell = new CellRef(0, this.CurrentCell.Column);
                 }
@@ -2362,7 +2334,7 @@ namespace PropertyTools.Wpf.ItemsGrid
             }
             else
             {
-                bool shift = Keyboard.IsKeyDown(Key.LeftShift);
+                bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
 
                 if (!shift)
                 {
@@ -2469,7 +2441,8 @@ namespace PropertyTools.Wpf.ItemsGrid
             int row = this.GetCell(e.GetPosition(this.rowGrid)).Row;
             if (row >= 0)
             {
-                if (Keyboard.IsKeyDown(Key.LeftShift))
+                bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
+                if (shift)
                 {
                     this.CurrentCell = new CellRef(this.CurrentCell.Row, 0);
                 }
@@ -2694,7 +2667,7 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// </param>
         private void TextEditorPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            bool shift = Keyboard.IsKeyDown(Key.LeftShift);
+            bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
             var textEditor = sender as TextBox;
             if (textEditor == null)
             {

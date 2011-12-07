@@ -321,6 +321,11 @@ namespace PropertyTools.Wpf
         public object OptionalValue { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this property is a font family selector.
+        /// </summary>
+        public bool IsFontFamilySelector { get; set; }
+
+        /// <summary>
         ///   Gets or sets a value indicating whether to preview fonts.
         /// </summary>
         /// <value><c>true</c> if fonts should be previewed; otherwise, <c>false</c>.</value>

@@ -33,7 +33,8 @@
             x:Name="tree1" 
             Indentation="12" HierarchySource="{Binding Root}" 
             BorderThickness="0"
-            pt:TreeListBoxDragDropHelper.IsDragSource="True" pt:TreeListBoxDragDropHelper.IsDropTarget="True"/>
+            pt:TreeListBoxDragDropHelper.IsDragSource="True" pt:TreeListBoxDragDropHelper.IsDropTarget="True"
+            KeyDown="tree1_KeyDown_1"/>
 
     </DockPanel>
 </Window>

@@ -23,8 +23,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Creates the display control.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <returns>The control.</returns>
-        public virtual FrameworkElement CreateDisplayControl(PropertyDefinition property)
+        /// <param name="instance">The instance.</param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        public virtual FrameworkElement CreateDisplayControl(PropertyDefinition property, object instance)
         {
             var propertyType = property.Descriptor.PropertyType;
             if (propertyType.Is(typeof(bool)))
@@ -44,8 +47,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Creates the edit control.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <returns>The control.</returns>
-        public virtual FrameworkElement CreateEditControl(PropertyDefinition property)
+        /// <param name="instance">The instance.</param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        public virtual FrameworkElement CreateEditControl(PropertyDefinition property, object instance)
         {
             var propertyType = property.Descriptor.PropertyType;
             if (property.ItemsSourceProperty != null || property.ItemsSource != null)

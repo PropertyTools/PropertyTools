@@ -560,9 +560,8 @@ namespace PropertyTools.Wpf.ItemsGrid
 
                 this.sheetGrid.Children.Remove(this.currentEditor);
                 this.currentEditor = null;
+                this.Focus();
             }
-
-            this.Focus();
         }
 
         /// <summary>

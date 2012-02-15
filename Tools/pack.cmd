@@ -1,4 +1,4 @@
-
+mkdir ..\Packages\PropertyTools.Wpf
 copy ..\Output\PropertyTools.dll ..\Packages\PropertyTools.Wpf\lib
 copy ..\Output\PropertyTools.XML ..\Packages\PropertyTools.Wpf\lib
 copy ..\Output\PropertyTools.Wpf.dll ..\Packages\PropertyTools.Wpf\lib

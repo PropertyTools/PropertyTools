@@ -1,0 +1,1 @@
+devenv.exe ..\Source\PropertyTools.sln /Clean Release

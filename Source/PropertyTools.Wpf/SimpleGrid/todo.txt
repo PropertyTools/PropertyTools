@@ -1,0 +1,32 @@
+﻿todo:
+- add item issues
+- only update modified cells on INPC and INCC
+- update Content
+- custom edit/display Templates
+
+
+
+
+
+Supported data sources (set the data source in the Content property)
+- arrays (rank 1 or 2)
+- enumerables
+- lists (supports add, insert and delete)
+
+Editing of the following types is included
+- bool
+- enums
+- strings
+
+Custom display/edit templates can be defined in
+- ColumnDefinitions (these are only used in the defined column)
+- TypeDefinitions (these are used in any cell)
+
+Features
+- fit to width and proportional column widths (using Gridlengths)
+- autofill
+- copy/paste
+- zoom
+- insert/delete (IList only)
+- autogenerate columns
+

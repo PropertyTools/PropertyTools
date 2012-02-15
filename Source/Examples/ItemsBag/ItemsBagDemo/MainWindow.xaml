@@ -1,0 +1,73 @@
+﻿<Window x:Class="ItemsBagDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:local="clr-namespace:ItemsBagDemo"
+        Title="ItemsBagDemo" Height="350" Width="960">
+    <Window.Resources>
+        <pt:NullToVisibilityConverter x:Key="NullToVisibilityConverter" NullVisibility="Visible" NotNullVisibility="Hidden"/>
+        <Style x:Key="IndeterminateTextBoxStyle" TargetType="TextBox">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Value="{x:Null}">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientBrush.GradientStops>
+                                    <GradientStopCollection>
+                                        <GradientStop Color="#8bcfe8" Offset="0"/>
+                                        <GradientStop Color="#25598c" Offset="1"/>
+                                    </GradientStopCollection>
+                                </GradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="BorderBrush" Value="#275b83"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Header="List" Margin="4" Padding="4">
+            <ListBox  ItemsSource="{Binding Models}" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
+                            <CheckBox IsChecked="{Binding IsChecked}" Margin="4" VerticalAlignment="Center"/>
+                            <pt:RadioButtonList Value="{Binding Color}" Orientation="Horizontal" ItemPadding="4 0 4 0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="WPF Binding (all  items in the list)" Margin="4" Padding="4">
+            <StackPanel DataContext="{Binding Bag}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Margin="4"/>
+                <Grid Margin="4">
+                    <TextBox x:Name="name" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Rectangle HorizontalAlignment="Right" Margin="4" Width="10" Height="10" Stroke="#275b83" Visibility="{Binding Name, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NullToVisibilityConverter}}">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientBrush.GradientStops>
+                                    <GradientStopCollection>
+                                        <GradientStop Color="#8bcfe8" Offset="0"/>
+                                        <GradientStop Color="#25598c" Offset="1"/>
+                                    </GradientStopCollection>
+                                </GradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Grid>
+                <pt:RadioButtonList Value="{Binding Color, Mode=TwoWay}" EnumType="local:Colors" Margin="4"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Column="2" Header="PropertyControl (all  items in the list)" Margin="4" Padding="4">
+            <pt:PropertyControl SelectedObject="{Binding Bag}"/>
+        </GroupBox>
+    </Grid>
+</Window>

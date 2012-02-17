@@ -25,6 +25,16 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
+        /// The description converter property.
+        /// </summary>
+        public static readonly DependencyProperty DescriptionConverterProperty =
+            DependencyProperty.Register(
+                "DescriptionConverter", 
+                typeof(IValueConverter), 
+                typeof(RadioButtonList), 
+                new UIPropertyMetadata(new EnumDescriptionConverter()));
+
+        /// <summary>
         ///   The enum type property.
         /// </summary>
         public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(
@@ -72,7 +82,7 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes static members of the <see cref = "RadioButtonList" /> class.
+        ///   Initializes static members of the <see cref="RadioButtonList" /> class.
         /// </summary>
         static RadioButtonList()
         {
@@ -81,7 +91,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "RadioButtonList" /> class.
+        ///   Initializes a new instance of the <see cref="RadioButtonList" /> class.
         /// </summary>
         public RadioButtonList()
         {
@@ -93,9 +103,26 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
+        ///   Gets or sets the description converter.
+        /// </summary>
+        /// <value> The description converter. </value>
+        public IValueConverter DescriptionConverter
+        {
+            get
+            {
+                return (IValueConverter)this.GetValue(DescriptionConverterProperty);
+            }
+
+            set
+            {
+                this.SetValue(DescriptionConverterProperty, value);
+            }
+        }
+
+        /// <summary>
         ///   Gets or sets the type of the enum.
         /// </summary>
-        /// <value>The type of the enum.</value>
+        /// <value> The type of the enum. </value>
         public Type EnumType
         {
             get
@@ -112,7 +139,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         ///   Gets or sets the item margin.
         /// </summary>
-        /// <value>The item margin.</value>
+        /// <value> The item margin. </value>
         public Thickness ItemMargin
         {
             get
@@ -129,7 +156,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         ///   Gets or sets the item padding.
         /// </summary>
-        /// <value>The item padding.</value>
+        /// <value> The item padding. </value>
         public Thickness ItemPadding
         {
             get
@@ -146,7 +173,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         ///   Gets or sets the orientation.
         /// </summary>
-        /// <value>The orientation.</value>
+        /// <value> The orientation. </value>
         public Orientation Orientation
         {
             get
@@ -163,7 +190,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         ///   Gets or sets the value.
         /// </summary>
-        /// <value>The value.</value>
+        /// <value> The value. </value>
         public object Value
         {
             get
@@ -179,10 +206,10 @@ namespace PropertyTools.Wpf
 
         #endregion
 
-        #region Public Methods
+        #region Public Methods and Operators
 
         /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> .
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -199,27 +226,27 @@ namespace PropertyTools.Wpf
         #region Methods
 
         /// <summary>
-        /// The value changed.
+        /// Called when the Value changed or the EnumType changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
+        /// <param name="sender">
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args. 
         /// </param>
-        private static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            ((RadioButtonList)d).UpdateContent();
+            ((RadioButtonList)sender).UpdateContent();
         }
 
         /// <summary>
         /// The radio button list data context changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args. 
         /// </param>
         private void RadioButtonListDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -260,14 +287,14 @@ namespace PropertyTools.Wpf
 
             var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute();
             var converter = new EnumToBooleanConverter { EnumType = enumType };
-            var descriptionConverter = new EnumDescriptionConverter();
 
             foreach (var itemValue in enumValues)
             {
                 var rb = new RadioButton
                     {
                         Content =
-                            descriptionConverter.Convert(itemValue, typeof(string), null, CultureInfo.CurrentCulture), 
+                            this.DescriptionConverter.Convert(
+                                itemValue, typeof(string), null, CultureInfo.CurrentCulture), 
                         Padding = this.ItemPadding
                     };
 
@@ -277,8 +304,7 @@ namespace PropertyTools.Wpf
                     };
                 rb.SetBinding(ToggleButton.IsCheckedProperty, isCheckedBinding);
 
-                var itemMarginBinding = new Binding("ItemMargin") { Source = this };
-                rb.SetBinding(MarginProperty, itemMarginBinding);
+                rb.SetBinding(MarginProperty, new Binding("ItemMargin") { Source = this });
 
                 this.panel.Children.Add(rb);
             }

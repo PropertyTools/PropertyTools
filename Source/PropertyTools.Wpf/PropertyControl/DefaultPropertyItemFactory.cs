@@ -421,13 +421,6 @@ namespace PropertyTools.Wpf
                 pi.IsVisibleDescriptor = properties.Find(vba.PropertyName, false);
             }
 
-            if (pi.Is(typeof(IList)))
-            {
-                pi.MinimumHeight = 100;
-                pi.MaximumHeight = 240;
-                pi.HeaderPlacement = HeaderPlacement.Above;
-            }
-
             pi.IsOptional = pi.OptionalDescriptor != null;
 
             var oa = pi.GetAttribute<OptionalAttribute>();

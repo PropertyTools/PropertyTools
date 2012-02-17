@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DialogDemos.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ProjectPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\temp</Value>
+    </Setting>
+    <Setting Name="NewsChannel" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://go.microsoft.com/fwlink/?linkid=84795&amp;clcid=409</Value>
+    </Setting>
+    <Setting Name="ShowStartPage" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="WindowMenuItems" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="MRUItems" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">6</Value>
+    </Setting>
+    <Setting Name="StartupAction" Type="DialogDemos.StartupAction" Scope="User">
+      <Value Profile="(Default)">OpenProject</Value>
+    </Setting>
+    <Setting Name="UndoLevels" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{37466829-61F5-47FA-9E3E-9CEDCD9535C0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PropertyTools</RootNamespace>
+    <AssemblyName>PropertyTools</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Output\PropertyTools.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>PropertyTools.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataAnnotations\AutoUpdateTextAttribute.cs" />
+    <Compile Include="DataAnnotations\BasePathPropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\ColumnAttribute.cs" />
+    <Compile Include="DataAnnotations\ColumnsPropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\CommentAttribute.cs" />
+    <Compile Include="DataAnnotations\ConverterAttribute.cs" />
+    <Compile Include="DataAnnotations\DirectoryPathAttribute.cs" />
+    <Compile Include="DataAnnotations\EnableByAttribute.cs" />
+    <Compile Include="DataAnnotations\EnumDisplayNameAttribute.cs" />
+    <Compile Include="DataAnnotations\FilePathAttribute.cs" />
+    <Compile Include="DataAnnotations\FilterPropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\FontFamilySelectorAttribute.cs" />
+    <Compile Include="DataAnnotations\FontPreviewAttribute.cs" />
+    <Compile Include="DataAnnotations\FormatStringAttribute.cs" />
+    <Compile Include="DataAnnotations\HeaderPlacement.cs" />
+    <Compile Include="DataAnnotations\HeaderPlacementAttribute.cs" />
+    <Compile Include="DataAnnotations\HeightAttribute.cs" />
+    <Compile Include="DataAnnotations\IsEditableAttribute.cs" />
+    <Compile Include="DataAnnotations\ListAttribute.cs" />
+    <Compile Include="DataAnnotations\OptionalAttribute.cs" />
+    <Compile Include="DataAnnotations\RadioButtonsAttribute.cs" />
+    <Compile Include="DataAnnotations\ResettableAttribute.cs" />
+    <Compile Include="DataAnnotations\ItemHeaderPropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\SlidableAttribute.cs" />
+    <Compile Include="DataAnnotations\SortIndexAttribute.cs" />
+    <Compile Include="DataAnnotations\ItemsSourcePropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\SpinnableAttribute.cs" />
+    <Compile Include="DataAnnotations\VisibleByAttribute.cs" />
+    <Compile Include="DataAnnotations\WidePropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\WidthAttribute.cs" />
+    <Compile Include="DragDrop\DropPosition.cs" />
+    <Compile Include="DragDrop\IDragSource.cs" />
+    <Compile Include="DragDrop\IDropTarget.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PropertyTools.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

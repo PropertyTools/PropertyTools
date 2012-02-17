@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PropertyTools.Wpf.CategoryTemplateSelector" Collapsed="true">
+    <Position X="16" Y="8.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAIAACAAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\CategoryTemplateSelector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.DefaultPropertyViewModelFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="6.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AABABAgAEAAAgAQAAAAkgABAAAAAAAAAIAAAABACAQA=</HashCode>
+      <FileName>PropertyEditor\DefaultPropertyViewModelFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PropertyTools.Wpf.PropertyEditor" Collapsed="true">
+    <Position X="8" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hQBgCgEUiCtMIILxIDBCWmEj/JMGD9lBAJAABAgMASE=</HashCode>
+      <FileName>PropertyEditor\PropertyEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.PropertyValueChangedEventArgs" Collapsed="true">
+    <Position X="22.25" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.PropertyTemplateSelector" Collapsed="true">
+    <Position X="13.25" Y="8.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAACAAAAAAAAAAAAAAAAACAAAQQAAAAEAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyTemplateSelector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.CategoryViewModel" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAQAAAAEQAAQAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\CategoryViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.CheckBoxPropertyViewModel" Collapsed="true">
+    <Position X="8.75" Y="4" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\CheckBoxPropertyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.FilePathPropertyViewModel" Collapsed="true">
+    <Position X="14.25" Y="4" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\FilePathViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.DirectoryPathPropertyViewModel" Collapsed="true">
+    <Position X="19.75" Y="4" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\FilePathViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.OptionalPropertyViewModel" Collapsed="true">
+    <Position X="3.25" Y="4" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAIIAAAAAAAgAAAAAAAEAAgBIAAAAAAAAAAAYA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\OptionalPropertyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.PropertyViewModel" Collapsed="true">
+    <Position X="15" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AWQAUAAILEggEwQRQJFAIAQBAABwAYAAQACiAABwCAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\PropertyViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PropertyTools.Wpf.ResettablePropertyViewModel" Collapsed="true">
+    <Position X="11.5" Y="4" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAEQAAAAAAAAACAAAAAgBAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\ResettablePropertyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.SlidablePropertyViewModel" Collapsed="true">
+    <Position X="17" Y="4" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ABBAAAAAAAAAAAAIAAAGIAAAAAAAAEAAAQAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\SlidablePropertyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.TabViewModel" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAQAAQAAAAAEQEIAAAAAAEAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\TabViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.ViewModelBase" Collapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAABACAAAAAAIQEAAAAAAgAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\ViewModelBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PropertyTools.Wpf.WidePropertyViewModel" Collapsed="true">
+    <Position X="6" Y="4" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\WidePropertyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.TypeEditor">
+    <Position X="13.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABCAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\TypeEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="PropertyTools.Wpf.ShowCategoriesAs" Collapsed="true">
+    <Position X="21" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAACAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyEditor.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

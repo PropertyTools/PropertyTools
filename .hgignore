@@ -29,6 +29,7 @@ syntax: glob
 [Dd]ebug*/
 [Oo]bj/
 [Rr]elease*/
+Output/
 _ReSharper*/
 [Tt]est[Rr]esult*
 [Bb]uild[Ll]og.*

@@ -522,6 +522,12 @@ namespace PropertyTools.Wpf
                 pi.MaximumHeight = ha.MaximumHeight;
                 pi.AcceptsReturn = true;
             }
+
+            if (pi.Descriptor.PropertyType == typeof(TimeSpan) && pi.Converter == null)
+            {
+                pi.Converter = new TimeSpanToStringConverter();
+                pi.ConverterParameter = pi.FormatString;
+            }
         }
 
         #endregion

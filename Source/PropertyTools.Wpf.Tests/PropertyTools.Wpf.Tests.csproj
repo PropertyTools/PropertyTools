@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Helpers\ColorHelperTests.cs" />
     <Compile Include="Converters\ConverterTests.cs" />
+    <Compile Include="Helpers\FormattedTimeSpanParserTests.cs" />
     <Compile Include="Helpers\TimeSpanParserTests.cs" />
     <Compile Include="Helpers\TimeSpanFormatterTests.cs" />
     <Compile Include="Helpers\TypeHelperTests.cs" />

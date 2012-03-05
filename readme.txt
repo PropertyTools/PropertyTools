@@ -6,7 +6,7 @@ other reusable controls.
 
 License:       Ms-PL
 Project page:  http://propertytools.codeplex.com
-Mercurial:     https://hg01.codeplex.com/propertytools
+Mercurial:     https://hg.codeplex.com/propertytools
 
 Build requirements
 - Microsoft 4.0 Client Profile

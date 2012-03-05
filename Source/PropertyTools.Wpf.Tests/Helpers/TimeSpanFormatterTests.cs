@@ -1,6 +1,4 @@
 ﻿using NUnit.Framework;
-using PropertyTools.Wpf;
-using System.Windows.Media;
 
 namespace PropertyTools.Wpf.Tests
 {
@@ -19,7 +17,5 @@ namespace PropertyTools.Wpf.Tests
             Assert.AreEqual("1 07", string.Format(f, "{0:D hh}", span));
             Assert.AreEqual("01 07 03 02", string.Format(f, "{0:DD hh mm ss}",span));
         }
-
-
     }
 }

@@ -25,12 +25,17 @@ syntax: glob
 *.lib
 *.sbr
 *.scc
+
 [Bb]in
 [Dd]ebug*/
 [Oo]bj/
 [Rr]elease*/
 Output/
+ClientBin/
+
 _ReSharper*/
+*.dotCover
+
 [Tt]est[Rr]esult*
 [Bb]uild[Ll]og.*
 *.[Pp]ublish.xml

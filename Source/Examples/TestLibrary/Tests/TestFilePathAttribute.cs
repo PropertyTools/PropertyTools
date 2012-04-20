@@ -11,6 +11,7 @@ namespace TestLibrary
         public string OpenFilePath { get; set; }
 
         [FilePath(".txt", false)]
+        [FilterProperty("Filter")]
         public string SaveFilePath { get; set; }
 
         [FilePath(".txt", true)]
@@ -24,7 +25,7 @@ namespace TestLibrary
         public TestFilePathAttribute()
         {
             BasePath = Directory.GetCurrentDirectory();
-            Filter= "All files (*.*)|*.*";
+            Filter= "Text files (*.txt)|*.txt|Csv files (*.csv)|*.csv|All files (*.*)|*.*";
         }
 
         public override string ToString()

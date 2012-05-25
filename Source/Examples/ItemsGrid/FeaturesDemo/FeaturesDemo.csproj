@@ -37,12 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -55,6 +51,86 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Examples\Window403.xaml.cs">
+      <DependentUpon>Window403.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\ViewModel.cs" />
+    <Compile Include="Examples\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window101.xaml.cs">
+      <DependentUpon>Window101.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window102.xaml.cs">
+      <DependentUpon>Window102.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window103.xaml.cs">
+      <DependentUpon>Window103.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window201.xaml.cs">
+      <DependentUpon>Window201.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window202.xaml.cs">
+      <DependentUpon>Window202.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window301.xaml.cs">
+      <DependentUpon>Window301.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window302.xaml.cs">
+      <DependentUpon>Window302.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window303.xaml.cs">
+      <DependentUpon>Window303.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window401.xaml.cs">
+      <DependentUpon>Window401.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window402.xaml.cs">
+      <DependentUpon>Window402.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataTypes\Mass.cs" />
+    <Compile Include="DataTypes\MassConverter.cs" />
+    <Compile Include="Model\PlainOldObject.cs" />
+    <Page Include="Examples\Window403.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\Window103.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window102.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window402.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window401.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window202.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window201.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window303.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window302.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -63,14 +139,22 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExampleObject.cs" />
+    <Compile Include="Model\ExampleObject.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Examples\Window101.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\Window301.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Observable.cs" />
+    <Compile Include="Model\Observable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

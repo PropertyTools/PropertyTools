@@ -3,7 +3,7 @@
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
 // <summary>
-//   Represents a container for items in the <see cref="TreeListBox" />.
+//   Represents a container for items in the .
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,14 +16,14 @@ namespace PropertyTools.Wpf
     using System.Windows.Controls;
 
     /// <summary>
-    /// Represents a container for items in the <see cref="TreeListBox"/>.
+    /// Represents a container for items in the <see cref="TreeListBox"/> .
     /// </summary>
     public class TreeListBoxItem : ListBoxItem
     {
         #region Constants and Fields
 
         /// <summary>
-        ///   The children property.
+        /// The children property.
         /// </summary>
         public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Register(
             "Children",
@@ -32,19 +32,19 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, (s, e) => ((TreeListBoxItem)s).ChildrenChanged(e)));
 
         /// <summary>
-        ///   The has items property.
+        /// The has items property.
         /// </summary>
         public static readonly DependencyProperty HasItemsProperty = DependencyProperty.Register(
             "HasItems", typeof(bool), typeof(TreeListBoxItem), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The is drop target property.
+        /// The is drop target property.
         /// </summary>
         public static readonly DependencyProperty IsDropTargetProperty = DependencyProperty.Register(
             "IsDropTarget", typeof(bool), typeof(TreeListBoxItem), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The is expanded property.
+        /// The is expanded property.
         /// </summary>
         public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register(
             "IsExpanded",
@@ -56,13 +56,13 @@ namespace PropertyTools.Wpf
                 (s, e) => ((TreeListBoxItem)s).IsExpandedChanged()));
 
         /// <summary>
-        ///   The level property.
+        /// The level property.
         /// </summary>
         public static readonly DependencyProperty LevelProperty = DependencyProperty.Register(
             "Level", typeof(int), typeof(TreeListBoxItem), new UIPropertyMetadata(0));
 
         /// <summary>
-        ///   The handler.
+        /// The handler.
         /// </summary>
         private NotifyCollectionChangedEventHandler collectionChangedHandler;
 
@@ -73,12 +73,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Initializes a new instance of the <see cref="TreeListBoxItem"/> class.
         /// </summary>
-        /// <param name="owner">
-        /// The owner.
-        /// </param>
-        public TreeListBoxItem(TreeListBox owner)
+        /// <param name="parent">The parent.</param>
+        public TreeListBoxItem(TreeListBox parent)
         {
-            this.Owner = owner;
+            // The following is not working when TreeListBoxItems are disconnected...
+            // ItemsControl.ItemsControlFromItemContainer(this) as TreeListBox;
+            this.ParentTreeListBox = parent;
+
             this.ChildItems = new List<TreeListBoxItem>();
         }
 
@@ -87,10 +88,10 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the child items.
+        /// Gets or sets the child items.
         /// </summary>
         /// <value>
-        ///   The children.
+        /// The children. 
         /// </value>
         public IList Children
         {
@@ -106,7 +107,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this item has child items.
+        /// Gets or sets a value indicating whether this item has child items.
         /// </summary>
         public bool HasItems
         {
@@ -122,7 +123,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance should preview as a drop target.
+        /// Gets or sets a value indicating whether this instance should preview as a drop target.
         /// </summary>
         public bool IsDropTarget
         {
@@ -138,7 +139,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is expanded.
+        /// Gets or sets a value indicating whether this instance is expanded.
         /// </summary>
         public bool IsExpanded
         {
@@ -154,10 +155,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the hierarchy level of the item.
+        /// Gets or sets the hierarchy level of the item.
         /// </summary>
         /// <value>
-        ///   The level.
+        /// The level. 
         /// </value>
         public int Level
         {
@@ -171,27 +172,75 @@ namespace PropertyTools.Wpf
                 this.SetValue(LevelProperty, value);
             }
         }
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        ///   Gets the owner listbox.
+        /// Gets or sets the child items.
         /// </summary>
-        public TreeListBox Owner { get; private set; }
+        /// <value>
+        /// The child items. 
+        /// </value>
+        internal IList<TreeListBoxItem> ChildItems { get; set; }
 
         /// <summary>
-        ///   Gets the parent item.
+        /// Gets or sets the parent item.
         /// </summary>
         internal TreeListBoxItem ParentItem { get; set; }
-        internal IList<TreeListBoxItem> ChildItems { get; set; }
+
+        /// <summary>
+        /// Gets the parent TreeListBox.
+        /// </summary>
+        protected TreeListBox ParentTreeListBox { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// Gets the next sibling.
+        /// </summary>
+        /// <returns>
+        /// The next sibling. 
+        /// </returns>
+        public TreeListBoxItem GetNextSibling()
+        {
+            if (this.ParentItem == null)
+            {
+                return null;
+            }
+
+            int index = this.ParentItem.ChildItems.IndexOf(this);
+            if (index + 1 < this.ParentItem.ChildItems.Count)
+            {
+                return this.ParentItem.ChildItems[index + 1];
+            }
+
+            return this.ParentItem.GetNextSibling();
+        }
+
+        /// <summary>
+        /// Expands the parents of this item.
+        /// </summary>
+        public void ExpandParents()
+        {
+            while (this.ParentItem != null)
+            {
+                this.ParentItem.ExpandParents();
+                this.ParentItem.IsExpanded = true;
+            }
+        }
 
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// The children changed.
+        /// Handles changes in the Children property.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void ChildrenChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -207,44 +256,44 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles IsExpanded changes.
+        /// Handles changes in the IsExpanded property.
         /// </summary>
         private void IsExpandedChanged()
         {
             if (this.IsExpanded)
             {
-                this.Owner.Expand(this);
+                this.ParentTreeListBox.Expand(this);
             }
             else
             {
-                this.Owner.Collapse(this);
+                this.ParentTreeListBox.Collapse(this);
             }
         }
 
         /// <summary>
-        /// The subscribe for collection changes.
+        /// Subscribes for collection changes.
         /// </summary>
         /// <param name="parent">
-        /// The parent.
+        /// The parent. 
         /// </param>
         /// <param name="collection">
-        /// The collection.
+        /// The collection. 
         /// </param>
         private void SubscribeForCollectionChanges(TreeListBoxItem parent, IEnumerable collection)
         {
             var cc = collection as INotifyCollectionChanged;
             if (cc != null)
             {
-                this.collectionChangedHandler = (s, e) => this.Owner.ChildCollectionChanged(parent, e);
+                this.collectionChangedHandler = (s, e) => this.ParentTreeListBox.ChildCollectionChanged(parent, e);
                 cc.CollectionChanged += this.collectionChangedHandler;
             }
         }
 
         /// <summary>
-        /// The unsubscribe collection changes.
+        /// Unsubscribes collection changes.
         /// </summary>
         /// <param name="collection">
-        /// The collection.
+        /// The collection. 
         /// </param>
         private void UnsubscribeCollectionChanges(IEnumerable collection)
         {
@@ -256,13 +305,5 @@ namespace PropertyTools.Wpf
         }
 
         #endregion
-
-        public TreeListBoxItem GetNextSibling()
-        {
-            if (ParentItem == null) return null;
-            int index = ParentItem.ChildItems.IndexOf(this);
-            if (index + 1 < ParentItem.ChildItems.Count) return ParentItem.ChildItems[index + 1];
-            return null;
-        }
     }
 }

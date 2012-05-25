@@ -13,7 +13,7 @@ namespace PropertyTools.Wpf
     using System.Reflection;
 
     /// <summary>
-    /// The reflection extensions.
+    /// Provides reflection extensions.
     /// </summary>
     public static class ReflectionExtensions
     {
@@ -70,17 +70,19 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The get custom attributes.
+        /// Gets the custom attributes.
         /// </summary>
         /// <param name="fieldInfo">
         /// The field info.
         /// </param>
         /// <param name="inherit">
-        /// The inherit.
+        /// The inherit flag.
         /// </param>
         /// <typeparam name="T">
+        /// The type of attribute to get.
         /// </typeparam>
         /// <returns>
+        /// The attributes enumeration.
         /// </returns>
         public static IEnumerable<T> GetCustomAttributes<T>(this FieldInfo fieldInfo, bool inherit)
         {

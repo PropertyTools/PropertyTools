@@ -1,6 +1,7 @@
 ﻿<Window x:Class="PerformanceTest.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" Title="MainWindow" Height="350" Width="525">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:Wpf="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf.Obsolete" Title="MainWindow" Height="350" Width="525">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Tests">
@@ -8,6 +9,6 @@
                 <MenuItem Header="Clear" Click="Clear_Click"/>
             </MenuItem>
         </Menu>
-        <pt:PropertyEditor x:Name="propertyEditor1" Margin="8" Focusable="False"/>
+        <Wpf:PropertyEditor x:Name="propertyEditor1" Margin="8" Focusable="False"/>
     </DockPanel>
 </Window>

@@ -19,6 +19,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Controls;
     using System.Windows.Data;
     using System.Windows.Input;
+    using System.Windows.Media;
 
     /// <summary>
     /// Represents a hierarchical list box.
@@ -28,7 +29,7 @@ namespace PropertyTools.Wpf
         #region Constants and Fields
 
         /// <summary>
-        ///   The hierarchy items binding property.
+        /// The hierarchy items binding property.
         /// </summary>
         public static readonly DependencyProperty ChildrenBindingProperty =
             DependencyProperty.Register(
@@ -38,7 +39,7 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(new Binding("Children")));
 
         /// <summary>
-        ///   The indentation property.
+        /// The indentation property.
         /// </summary>
         public static readonly DependencyProperty IndentationProperty = DependencyProperty.Register(
             "Indentation",
@@ -47,17 +48,13 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(10.0, (s, e) => ((TreeListBox)s).IndentationChanged()));
 
         /// <summary>
-        ///   The is expanded binding property.
+        /// The is expanded binding property.
         /// </summary>
-        public static readonly DependencyProperty IsExpandedBindingProperty =
-            DependencyProperty.Register(
-                "IsExpandedBinding",
-                typeof(BindingBase),
-                typeof(TreeListBox),
-                new UIPropertyMetadata(new Binding("IsExpanded")));
+        public static readonly DependencyProperty IsExpandedPathProperty = DependencyProperty.Register(
+            "IsExpandedPath", typeof(string), typeof(TreeListBox), new UIPropertyMetadata("IsExpanded"));
 
         /// <summary>
-        ///   The is selected binding property.
+        /// The is selected binding property.
         /// </summary>
         public static readonly DependencyProperty IsSelectedBindingProperty =
             DependencyProperty.Register(
@@ -67,7 +64,7 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(new Binding("IsSelected")));
 
         /// <summary>
-        ///   The tree source property.
+        /// The tree source property.
         /// </summary>
         public static readonly DependencyProperty TreeSourceProperty = DependencyProperty.Register(
             "HierarchySource",
@@ -76,17 +73,35 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, (s, e) => ((TreeListBox)s).HierarchySourceChanged(e)));
 
         /// <summary>
-        ///   A map from item to parent container. This is used to set the Level property of the item once its container is generated.
+        /// Queue of items to expand.
+        /// </summary>
+        /// <remarks>
+        /// Cannot expand the items when preparing the container, so we use a queue to expand later.
+        /// </remarks>
+        private readonly Queue<TreeListBoxItem> expandItems = new Queue<TreeListBoxItem>();
+
+        /// <summary>
+        /// A map from item to parent container. This is used to set the Level property when the container of the item is generated.
         /// </summary>
         private readonly Dictionary<object, TreeListBoxItem> parentContainerMap =
             new Dictionary<object, TreeListBoxItem>();
+
+        /// <summary>
+        /// The is preparing container.
+        /// </summary>
+        private bool isPreparingContainer;
+
+        /// <summary>
+        /// Subscribed to the Rendering event.
+        /// </summary>
+        private bool isSubscribedToRenderingEvent;
 
         #endregion
 
         #region Constructors and Destructors
 
         /// <summary>
-        ///   Initializes static members of the <see cref = "TreeListBox" /> class.
+        /// Initializes static members of the <see cref="TreeListBox"/> class.
         /// </summary>
         static TreeListBox()
         {
@@ -99,9 +114,11 @@ namespace PropertyTools.Wpf
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the hierarchal items binding.
+        /// Gets or sets the hierarchal items binding.
         /// </summary>
-        /// <value>The hierarchy items binding.</value>
+        /// <value>
+        /// The hierarchy items binding. 
+        /// </value>
         public BindingBase ChildrenBinding
         {
             get
@@ -116,10 +133,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the hierarchy source.
+        /// Gets or sets the hierarchy source.
         /// </summary>
         /// <value>
-        ///   The hierarchy source.
+        /// The hierarchy source. 
         /// </value>
         public IEnumerable HierarchySource
         {
@@ -135,10 +152,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the indentation.
+        /// Gets or sets the indentation.
         /// </summary>
         /// <value>
-        ///   The indentation.
+        /// The indentation. 
         /// </value>
         public double Indentation
         {
@@ -154,26 +171,30 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the IsExpanded binding.
+        /// Gets or sets the IsExpanded binding.
         /// </summary>
-        /// <value>The is expanded binding.</value>
-        public BindingBase IsExpandedBinding
+        /// <value>
+        /// The is expanded binding. 
+        /// </value>
+        public string IsExpandedPath
         {
             get
             {
-                return (BindingBase)this.GetValue(IsExpandedBindingProperty);
+                return (string)this.GetValue(IsExpandedPathProperty);
             }
 
             set
             {
-                this.SetValue(IsExpandedBindingProperty, value);
+                this.SetValue(IsExpandedPathProperty, value);
             }
         }
 
         /// <summary>
-        ///   Gets or sets the IsSelected binding.
+        /// Gets or sets the IsSelected binding.
         /// </summary>
-        /// <value>The is selected binding.</value>
+        /// <value>
+        /// The is selected binding. 
+        /// </value>
         public BindingBase IsSelectedBinding
         {
             get
@@ -189,10 +210,22 @@ namespace PropertyTools.Wpf
 
         #endregion
 
-        #region Public Methods
+        #region Public Methods and Operators
 
         /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+        /// Expands the ancestors of the specified item.
+        /// </summary>
+        /// <param name="item">
+        /// The item. 
+        /// </param>
+        public void ExpandParents(object item)
+        {
+            var container = this.ContainerFromItem(item);
+            container.ExpandParents();
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> .
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -208,10 +241,10 @@ namespace PropertyTools.Wpf
         /// Handles child collection changes.
         /// </summary>
         /// <param name="parent">
-        /// The parent.
+        /// The parent. 
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data. 
         /// </param>
         internal void ChildCollectionChanged(TreeListBoxItem parent, NotifyCollectionChangedEventArgs e)
         {
@@ -272,34 +305,41 @@ namespace PropertyTools.Wpf
                         {
                             // inserted items
                             var followingChild = parent.Children[e.NewStartingIndex + e.NewItems.Count];
-                            // int followingChildIndex = this.Items.IndexOf(followingSibling);
                             i = this.Items.IndexOf(followingChild);
                         }
                         else
                         {
-                            TreeListBoxItem sibling = null;
-                            // added items
-                            var siblingParent = parent;
-                            while (siblingParent != null)
+                            // added items 
+                            var parentSibling = parent.GetNextSibling();
+                            if (parentSibling == null)
                             {
-                                sibling = siblingParent.GetNextSibling();
-                                if (sibling != null) break;
-                                siblingParent = siblingParent.ParentItem;
-                            }
-                            if (sibling != null)
-                            {
-                                i = this.ItemContainerGenerator.IndexFromContainer(sibling);
+                                // No sibling found, so add at the end of the list.
+                                i = this.Items.Count;
                             }
                             else
                             {
-                                i = this.Items.Count;
+                                // Found the sibling, so add the items before this item.
+                                i = this.Items.IndexOf(parentSibling.Content);
+                                //// int i0 = this.ItemContainerGenerator.IndexFromContainer(parentSibling);
                             }
                         }
 
-                        foreach (var item in e.NewItems)
+                        if (i < 0)
                         {
-                            this.parentContainerMap[item] = parent;
-                            this.Items.Insert(i++, item);
+                            Debug.WriteLine("TreeListBox bug.");
+                        }
+                        else
+                        {
+                            foreach (var item in e.NewItems)
+                            {
+                                this.parentContainerMap[item] = parent;
+                                if (this.Items.Contains(item))
+                                {
+                                    Debug.WriteLine("TreeListBox bug.");
+                                }
+
+                                this.Items.Insert(i++, item);
+                            }
                         }
                     }
 
@@ -313,7 +353,7 @@ namespace PropertyTools.Wpf
         /// Collapses the specified item.
         /// </summary>
         /// <param name="item">
-        /// The item.
+        /// The item. 
         /// </param>
         internal void Collapse(TreeListBoxItem item)
         {
@@ -343,13 +383,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the container from and index.
+        /// Gets the container from the specified index.
         /// </summary>
         /// <param name="index">
-        /// The index.
+        /// The index. 
         /// </param>
         /// <returns>
-        /// The container.
+        /// The container. 
         /// </returns>
         internal TreeListBoxItem ContainerFromIndex(int index)
         {
@@ -360,20 +400,43 @@ namespace PropertyTools.Wpf
         /// Expands the specified item.
         /// </summary>
         /// <param name="item">
-        /// The item.
+        /// The item. 
         /// </param>
         internal void Expand(TreeListBoxItem item)
         {
+            if (this.isPreparingContainer)
+            {
+                // cannot expand when preparing the container
+                // add the item to a queue, and expand later
+                this.expandItems.Enqueue(item);
+                if (!this.isSubscribedToRenderingEvent)
+                {
+                    CompositionTarget.Rendering += this.CompositionTargetRendering;
+                    this.isSubscribedToRenderingEvent = true;
+                }
+
+                return;
+            }
+
             if (item.Content == null || item.Children == null)
             {
                 return;
             }
 
-            int i0 = this.Items.IndexOf(item.Content) + 1;
-            foreach (var child in item.Children)
+            lock (this)
             {
-                this.Items.Insert(i0++, child);
-                this.parentContainerMap[child] = item;
+                int i0 = this.Items.IndexOf(item.Content) + 1;
+                foreach (var child in item.Children)
+                {
+                    if (this.Items.Contains(child))
+                    {
+                        Debug.WriteLine("TreeListBox bug.");
+                        continue;
+                    }
+
+                    this.Items.Insert(i0++, child);
+                    this.parentContainerMap[child] = item;
+                }
             }
         }
 
@@ -381,7 +444,7 @@ namespace PropertyTools.Wpf
         /// Creates or identifies the element used to display a specified item.
         /// </summary>
         /// <returns>
-        /// A <see cref="T:System.Windows.Controls.ListBoxItem"/>.
+        /// A <see cref="TreeListBoxItem"/> . 
         /// </returns>
         protected override DependencyObject GetContainerForItemOverride()
         {
@@ -392,10 +455,10 @@ namespace PropertyTools.Wpf
         /// Determines if the specified item is (or is eligible to be) its own ItemContainer.
         /// </summary>
         /// <param name="item">
-        /// Specified item.
+        /// Specified item. 
         /// </param>
         /// <returns>
-        /// true if the item is its own ItemContainer; otherwise, false.
+        /// true if the item is its own ItemContainer; otherwise, false. 
         /// </returns>
         protected override bool IsItemItsOwnContainerOverride(object item)
         {
@@ -406,7 +469,7 @@ namespace PropertyTools.Wpf
         /// Responds to the <see cref="E:System.Windows.UIElement.KeyDown"/> event.
         /// </summary>
         /// <param name="e">
-        /// Provides data for <see cref="T:System.Windows.Input.KeyEventArgs"/>.
+        /// Provides data for <see cref="T:System.Windows.Input.KeyEventArgs"/> . 
         /// </param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -453,7 +516,7 @@ namespace PropertyTools.Wpf
         /// Raises the <see cref="E:System.Windows.Controls.Control.MouseDoubleClick"/> routed event.
         /// </summary>
         /// <param name="e">
-        /// The event data.
+        /// The event data. 
         /// </param>
         protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
         {
@@ -470,47 +533,73 @@ namespace PropertyTools.Wpf
         /// Prepares the specified element to display the specified item.
         /// </summary>
         /// <param name="element">
-        /// Element used to display the specified item.
+        /// Element used to display the specified item. 
         /// </param>
         /// <param name="item">
-        /// Specified item.
+        /// Specified item. 
         /// </param>
         protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
         {
             base.PrepareContainerForItemOverride(element, item);
-
+            this.isPreparingContainer = true;
             var treeListBoxItem = (TreeListBoxItem)element;
-            if (treeListBoxItem != null && item != null)
+            if (treeListBoxItem == null || item == null)
             {
-                if (!parentContainerMap.ContainsKey(item))
-                {
-                    Debug.WriteLine("TreeListBox error: missing parent container for item {0}", item);
-                    return;
-                }
-
-                treeListBoxItem.ParentItem = this.parentContainerMap[item];
-                if (treeListBoxItem.ParentItem != null)
-                {
-                    treeListBoxItem.ParentItem.ChildItems.Add(treeListBoxItem);
-                }
-
-                // this.parentContainerMap.Remove(item);
-                treeListBoxItem.Level = treeListBoxItem.ParentItem != null ? treeListBoxItem.ParentItem.Level + 1 : 0;
-                treeListBoxItem.SetBinding(ListBoxItem.IsSelectedProperty, this.IsSelectedBinding);
-                treeListBoxItem.SetBinding(TreeListBoxItem.IsExpandedProperty, this.IsExpandedBinding);
-                treeListBoxItem.SetBinding(TreeListBoxItem.ChildrenProperty, this.ChildrenBinding);
-                treeListBoxItem.HasItems = treeListBoxItem.Children != null && treeListBoxItem.Children.Cast<object>().Count() > 0;
+                throw new InvalidOperationException();
             }
+
+            if (!this.parentContainerMap.ContainsKey(item))
+            {
+                throw new InvalidOperationException(
+                    string.Format("TreeListBox error: missing parent container for item {0}", item));
+            }
+
+            treeListBoxItem.ParentItem = this.parentContainerMap[item];
+            if (treeListBoxItem.ParentItem != null)
+            {
+                treeListBoxItem.ParentItem.ChildItems.Add(treeListBoxItem);
+            }
+
+            // this.parentContainerMap.Remove(item);
+            treeListBoxItem.Level = treeListBoxItem.ParentItem != null ? treeListBoxItem.ParentItem.Level + 1 : 0;
+            treeListBoxItem.SetBinding(ListBoxItem.IsSelectedProperty, this.IsSelectedBinding);
+            treeListBoxItem.SetBinding(TreeListBoxItem.ChildrenProperty, this.ChildrenBinding);
+            treeListBoxItem.SetBinding(TreeListBoxItem.IsExpandedProperty, new Binding(this.IsExpandedPath));
+            treeListBoxItem.HasItems = treeListBoxItem.Children != null && treeListBoxItem.Children.Cast<object>().Any();
+            this.isPreparingContainer = false;
+        }
+
+        /// <summary>
+        /// Handles the Rendering event.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender. 
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.EventArgs"/> instance containing the event data. 
+        /// </param>
+        private void CompositionTargetRendering(object sender, EventArgs e)
+        {
+            // expand the items in the queue
+            while (this.expandItems.Count > 0)
+            {
+                var item = this.expandItems.Dequeue();
+                this.Expand(item);
+            }
+
+            // unsubscribe
+            CompositionTarget.Rendering -= this.CompositionTargetRendering;
+            this.isSubscribedToRenderingEvent = false;
         }
 
         /// <summary>
         /// Gets the container from an item.
         /// </summary>
         /// <param name="item">
-        /// The item.
+        /// The item. 
         /// </param>
         /// <returns>
-        /// The container.
+        /// The container. 
         /// </returns>
         private TreeListBoxItem ContainerFromItem(object item)
         {
@@ -521,7 +610,7 @@ namespace PropertyTools.Wpf
         /// Handles changes in the HierarchySource.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
         /// </param>
         private void HierarchySourceChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -570,26 +659,24 @@ namespace PropertyTools.Wpf
             if (converter != null)
             {
                 converter.Indentation = this.Indentation;
+
+                // change the Level property in all items to update with the new indentation
+                // there is probably a better way to do this...
+                foreach (var item in this.Items)
+                {
+                    var container = this.ContainerFromItem(item);
+                    if (container == null)
+                    {
+                        continue;
+                    }
+
+                    var tmp = container.Level;
+                    container.Level++;
+                    container.Level = tmp;
+                }
             }
         }
 
         #endregion
-
-        public void ExpandTo(object item)
-        {
-            // var container = ContainerFromItem(item);
-            var parents = new Stack<TreeListBoxItem>();
-            var parent = parentContainerMap[item];
-            while (parent != null)
-            {
-                parents.Push(parent);
-                parent = parent.ParentItem;
-            }
-            while (parents.Count > 0)
-            {
-                var parentItem = parents.Pop();
-                parentItem.IsExpanded = true;
-            }
-        }
     }
 }

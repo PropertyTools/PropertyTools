@@ -42,7 +42,10 @@ namespace TreeListBoxDemo
             }
             foreach (var s in td)
             {
-                if (s.Parent != null) s.Parent.Children.Remove(s);
+                if (s.Parent != null)
+                {
+                    s.Parent.Children.Remove(s);
+                }
             }
             tree1.SelectedIndex = idx < tree1.Items.Count ? idx : idx - 1;
         }
@@ -55,9 +58,25 @@ namespace TreeListBoxDemo
                 if (vm != null)
                 {
                     var child = vm.AddChild();
-                //    tree1.ExpandTo(child);
+                    child.ExpandParents();
+                    tree1.SelectedItem = child;
+                    tree1.ScrollIntoView(child);
                 }
             }
+        }
+
+        private void ExpandClick(object sender, RoutedEventArgs e)
+        {
+            var vm = tree1.SelectedValue as NodeViewModel;
+            if (vm != null)
+                vm.IsExpanded = !vm.IsExpanded;
+        }
+
+        private void ExpandAllClick(object sender, RoutedEventArgs e)
+        {
+            var vm = tree1.SelectedValue as NodeViewModel;
+            if (vm != null)
+                vm.ExpandAll();
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿<Window x:Class="ViewModelDemo.Window1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
-        xmlns:System="clr-namespace:System;assembly=mscorlib" Title="ViewModelDemo" Height="500" Width="400">
+    xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf.Obsolete" 
+    Title="ViewModelDemo" Height="500" Width="400">
     <StackPanel Margin="8">
         <!--<StackPanel.LayoutTransform>
             <ScaleTransform ScaleX="2" ScaleY="2"/>

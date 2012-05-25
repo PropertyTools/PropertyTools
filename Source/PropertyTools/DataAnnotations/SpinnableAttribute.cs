@@ -32,7 +32,6 @@ namespace PropertyTools.DataAnnotations
         
         /// <summary>
         /// Initializes a new instance of the <see cref="SpinnableAttribute"/> class.
-        /// Initializes a new instance of the <see cref="SlidableAttribute"/> class.
         /// </summary>
         /// <param name="smallChange">The small change.</param>
         public SpinnableAttribute(object smallChange)
@@ -42,7 +41,6 @@ namespace PropertyTools.DataAnnotations
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpinnableAttribute"/> class.
-        /// Initializes a new instance of the <see cref="SlidableAttribute"/> class.
         /// </summary>
         /// <param name="smallChange">The small change.</param>
         /// <param name="largeChange">The large change.</param>
@@ -54,7 +52,6 @@ namespace PropertyTools.DataAnnotations
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpinnableAttribute"/> class.
-        /// Initializes a new instance of the <see cref="SlidableAttribute"/> class.
         /// </summary>
         /// <param name="smallChange">The small change.</param>
         /// <param name="largeChange">The large change.</param>

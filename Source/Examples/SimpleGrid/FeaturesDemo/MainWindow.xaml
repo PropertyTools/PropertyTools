@@ -1,4 +1,8 @@
-﻿<Window x:Class="SimpleGridDemo.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" xmlns:System="clr-namespace:System;assembly=mscorlib" Title="SimpleGrid Demo" Height="500" Width="900">
+﻿<Window x:Class="SimpleGridDemo.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:pt1="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf.Obsolete" Title="SimpleGrid Demo" Height="500" Width="900">
 	<Window.Resources></Window.Resources>
 	<DockPanel>
 		<Menu DockPanel.Dock="Top">
@@ -10,18 +14,18 @@
 				<MenuItem Header="Copy" Command="Copy" />
 				<MenuItem Header="Paste" Command="Paste" />
 				<Separator />
-				<MenuItem Header="Delete" Command="Delete" />
+				<MenuItem Header="Delete"/>
 			</MenuItem>
 		</Menu>
 		<TabControl>
 			<TabItem Header="Arrays">
 				<TabControl>
 					<TabItem Header="string[,]">
-						<pt:SimpleGrid Content="{Binding Data}" />
+                        <pt:SimpleGrid Content="{Binding Data}" />
 					</TabItem>
 					
                     <TabItem Header="double[,]">
-						<pt:SimpleGrid Content="{Binding Matrix}" FormatStrings="0.0000;0.0000;0.0000;0.0000" RowHeaders="M1x,M2x,M3x,M4x" ColumnHeaders="Mx1,Mx2,Mx3,Mx4" />
+                        <pt:SimpleGrid Content="{Binding Matrix}" FormatStrings="0.0000;0.0000;0.0000;0.0000" RowHeaders="M1x,M2x,M3x,M4x" ColumnHeaders="Mx1,Mx2,Mx3,Mx4" />
 					</TabItem>
 					
                     <TabItem Header="string[]">
@@ -91,7 +95,7 @@
                     
 					<TabItem Header="CustomTemplates">
 						<TabItem.Resources>
-							<pt:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+							<pt1:ColorToBrushConverter x:Key="ColorToBrushConverter" />
 						</TabItem.Resources>
 						<pt:SimpleGrid Content="{Binding ExampleItems}" DataFields="Boolean,Enum,Double,Integer,DateTime,String,Color" ColumnHeaders="Boolean,Enum,Double,Integer,Date,String,Color" FormatStrings=",,,,yyyy-MM-dd,," ColumnWidths="*,*,*,*,*,3*,140">
 							<pt:SimpleGrid.TypeDefinitions>
@@ -142,7 +146,7 @@
                     
                     <TabItem Header="ColumnDefinitions">
 						<TabItem.Resources>
-							<pt:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+							<pt1:ColorToBrushConverter x:Key="ColorToBrushConverter" />
 						</TabItem.Resources>
 						<pt:SimpleGrid Content="{Binding ExampleItems}" DefaultRowHeight="24">
 							<pt:SimpleGrid.ColumnDefinitions>

@@ -112,11 +112,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual object CoerceSelectedColorValue(object basevalue)
         {
-            System.Diagnostics.Debug.WriteLine("ColorPicker2.CoerceSelectedColorValue {0}", basevalue);
-
             if (basevalue == null)
             {
-                // Debug.WriteLine("ColorPicker2 coerced value to" + this.SelectedColor);
                 return this.SelectedColor;
             }
 
@@ -143,8 +140,6 @@ namespace PropertyTools.Wpf
         /// </param>
         protected virtual void OnSelectedColorChanged(DependencyPropertyChangedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("ColorPicker2.OnSelectedColorChanged {0}", SelectedColor);
-
         }
 
         /// <summary>

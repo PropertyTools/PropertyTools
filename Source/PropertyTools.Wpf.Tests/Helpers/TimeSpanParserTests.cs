@@ -1,10 +1,8 @@
-﻿using NUnit.Framework;
-using PropertyTools.Wpf;
-using System.Windows.Media;
-
+﻿
 namespace PropertyTools.Wpf.Tests
 {
     using System;
+    using NUnit.Framework;
 
     [TestFixture]
     public class TimeSpanParserTests
@@ -24,6 +22,7 @@ namespace PropertyTools.Wpf.Tests
             Assert.AreEqual(TimeSpan.FromDays(7), TimeSpanParser.Parse("3d+4d"));
             Assert.AreEqual(TimeSpan.FromDays(7), TimeSpanParser.Parse("6d 24h"));
         }
+
         [Test]
         public void Parse_Hours_ReturnsCorrectValue()
         {
@@ -37,6 +36,7 @@ namespace PropertyTools.Wpf.Tests
             Assert.AreEqual(TimeSpan.FromHours(7), TimeSpanParser.Parse("3h+4h"));
             Assert.AreEqual(TimeSpan.FromHours(7), TimeSpanParser.Parse("6h 60m"));
         }
+        
         [Test]
         public void Parse_Minutes_ReturnsCorrectValue()
         {
@@ -51,6 +51,7 @@ namespace PropertyTools.Wpf.Tests
             Assert.AreEqual(TimeSpan.FromMinutes(7), TimeSpanParser.Parse("3m+4m"));
             Assert.AreEqual(TimeSpan.FromMinutes(7), TimeSpanParser.Parse("6m 60s"));
         }
+
         [Test]
         public void Parse_Seconds_ReturnsCorrectValue()
         {
@@ -64,6 +65,5 @@ namespace PropertyTools.Wpf.Tests
             Assert.AreEqual(TimeSpan.FromSeconds(7.5), TimeSpanParser.Parse("7,5s"));
             Assert.AreEqual(TimeSpan.FromSeconds(7), TimeSpanParser.Parse("3s+4s"));
         }
-
     }
 }

@@ -12,6 +12,7 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.IO;
@@ -256,8 +257,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateBrushControl(PropertyItem property)
         {
-            var c = new ColorPicker();
-            c.SetBinding(ColorPicker.SelectedColorProperty, property.CreateBinding());
+            var c = new ColorPicker2();
+            c.SetBinding(ColorPicker2.SelectedColorProperty, property.CreateBinding());
             return c;
         }
 
@@ -543,14 +544,14 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateGridControl(PropertyItem property)
         {
-            var c = new SimpleGrid { CanDelete = property.ListCanRemove, CanInsert = property.ListCanAdd };
+            var c = new ItemsGrid { CanDelete = property.ListCanRemove, CanInsert = property.ListCanAdd };
 
             var glc = new GridLengthConverter();
             foreach (var ca in property.Columns.OrderBy(cd => cd.ColumnIndex))
             {
                 var cd = new ColumnDefinition
                     {
-                        DataField = ca.PropertyName,
+                        PropertyName = ca.PropertyName,
                         Header = ca.Header,
                         FormatString = ca.FormatString,
                         Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto)
@@ -571,8 +572,9 @@ namespace PropertyTools.Wpf
                 c.ColumnDefinitions.Add(cd);
             }
 
-            c.SetBinding(SimpleGrid.ContentProperty, property.CreateBinding());
+            c.SetBinding(ItemsGrid.ItemsSourceProperty, property.CreateBinding());
             return c;
+            return null;
         }
 
         /// <summary>
@@ -769,22 +771,22 @@ namespace PropertyTools.Wpf
             if (cachedFontFamilies == null)
             {
                 var list = new List<FontFamily>();
-                foreach (var ff in Fonts.SystemFontFamilies)
+                foreach (var fontFamily in Fonts.SystemFontFamilies)
                 {
                     // Instantiate a TypeFace object with the font settings you want to use
-                    var ltypFace = new Typeface(ff, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+                    var ltypFace = new Typeface(fontFamily, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
 
                     try
                     {
                         GlyphTypeface gtf;
                         if (ltypFace.TryGetGlyphTypeface(out gtf))
                         {
-                            list.Add(ff);
+                            list.Add(fontFamily);
                         }
                     }
                     catch (FileFormatException)
                     {
-                        Debug.WriteLine(ff + " failed.");
+                        Debug.WriteLine(fontFamily + " failed.");
                     }
                 }
 

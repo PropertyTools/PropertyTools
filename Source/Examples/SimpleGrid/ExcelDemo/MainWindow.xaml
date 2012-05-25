@@ -1,9 +1,12 @@
 ﻿<Window x:Class="ExcelDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" xmlns:ExcelDemo="clr-namespace:ExcelDemo" Title="ExcelDemo" Height="480" Width="640">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf.Obsolete" 
+        xmlns:ExcelDemo="clr-namespace:ExcelDemo" xmlns:Wpf="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="ExcelDemo" Height="480" Width="640">
     <Window.Resources>
-        <pt:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-    	<pt:CellRefConverter x:Key="CellRefConverter" />
+        <Wpf:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+    	<Wpf:CellRefConverter x:Key="CellRefConverter" />
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -26,13 +29,13 @@
             </ToggleButton>
             <Separator/>
             <RadioButton IsChecked="{Binding Alignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Left}">
-                <pt:Bitmap Source="Images/align_left.png"/>
+                <Wpf:Bitmap Source="Images/align_left.png"/>
             </RadioButton>
             <RadioButton IsChecked="{Binding Alignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Center}">
-                <pt:Bitmap Source="Images/align_center.png"/>
+                <Wpf:Bitmap Source="Images/align_center.png"/>
             </RadioButton>
             <RadioButton IsChecked="{Binding Alignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Right}">
-                <pt:Bitmap Source="Images/align_right.png"/>
+                <Wpf:Bitmap Source="Images/align_right.png"/>
             </RadioButton>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom">

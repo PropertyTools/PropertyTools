@@ -1,21 +1,9 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="DirectoryViewModel.cs" company="Microsoft">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace DirectoryDemo
+﻿namespace DirectoryDemo
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Text;
     using System.IO;
 
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class DirectoryViewModel
     {
         public string DirectoryPath { get; set; }
@@ -75,18 +63,17 @@ namespace DirectoryDemo
         }
 
         public bool IsSelected { get; set; }
+
         public bool IsExpanded { get; set; }
 
         public override string ToString()
         {
             return DirectoryPath;
         }
+
         public DirectoryViewModel(string path)
         {
             this.DirectoryPath = path;
-            int n = path.Count(c => c == '\\');
-            // enabling this will cause a bug - expanding is not working until items are loaded?
-            // IsExpanded = n < 2;
         }
     }
 }

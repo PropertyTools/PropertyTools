@@ -1,35 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainWindow.xaml.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Interaction logic for MainWindow.xaml
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace FeaturesDemo
 {
-    using System.Collections.ObjectModel;
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        public ObservableCollection<ExampleObject> Items { get; set; }
-
-        public MainWindow()
+        /// <summary>
+        /// Opens a window.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        private void OpenWindowClick(object sender, RoutedEventArgs e)
         {
-            InitializeComponent();
-            DataContext = this;
-            Items = new ObservableCollection<ExampleObject>();
-            Items.Add(new ExampleObject() { Boolean = true, DateTime = DateTime.Now, Color = Colors.Blue, Double = Math.PI, Enum = Fruit.Apple, Integer = 7, Selector = null, String = "Hello" });
-            Items.Add(new ExampleObject());
+            var type = (Type)((Button)sender).Tag;
+            var window = (Window)Activator.CreateInstance(type);
+            window.Show();
         }
     }
 }

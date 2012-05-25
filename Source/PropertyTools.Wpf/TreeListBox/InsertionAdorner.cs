@@ -14,7 +14,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Insertion bar adorner.
+    /// Provides an insertion bar adorner.
     /// </summary>
     /// <remarks>
     /// From http://bea.stollnitz.com/blog/?p=53

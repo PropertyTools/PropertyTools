@@ -55,14 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Pages\ColorPicker2Page.xaml.cs">
-      <DependentUpon>ColorPicker2Page.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\SpinControlPage.xaml.cs">
       <DependentUpon>SpinControlPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\SimpleGridPage.xaml.cs">
-      <DependentUpon>SimpleGridPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\DockPanelSplitterPage.xaml.cs">
       <DependentUpon>DockPanelSplitterPage.xaml</DependentUpon>
@@ -80,19 +74,15 @@
     <Compile Include="Pages\RadioButtonListPage.xaml.cs">
       <DependentUpon>RadioButtonListPage.xaml</DependentUpon>
     </Compile>
+    <None Include="Pages\ColorPicker2Page.xaml.cs">
+      <DependentUpon>ColorPicker2Page.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </None>
     <Page Include="Pages\ColorPicker2Page.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\ColorPickerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SpinControlPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\SimpleGridPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -115,9 +105,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Pages\ColorPickerPage.xaml.cs">
-      <DependentUpon>ColorPickerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FilePickerPage.xaml.cs">
       <DependentUpon>FilePickerPage.xaml</DependentUpon>

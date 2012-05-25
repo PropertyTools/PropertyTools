@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ScrollBehavior.cs" company="">
+// <copyright file="ScrollBehavior.cs" company="PropertyTools">
 // TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------

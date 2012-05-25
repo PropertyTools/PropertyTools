@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Windows;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="App.xaml.cs" company="PropertyTools">
+//   http://propertytools.codeplex.com, license: Ms-PL
+// </copyright>
+// <summary>
+//   Interaction logic for App.xaml
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace FeaturesDemo
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
     }
 }

@@ -2,9 +2,12 @@
 // <copyright file="ItemsGrid.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Represents a datagrid with a spreadsheet style.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyTools.Wpf.ItemsGrid
+namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
@@ -17,7 +20,6 @@ namespace PropertyTools.Wpf.ItemsGrid
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
-    using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Markup;
     using System.Windows.Media;
@@ -25,7 +27,8 @@ namespace PropertyTools.Wpf.ItemsGrid
     /// <summary>
     /// Represents a datagrid with a spreadsheet style.
     /// </summary>
-    [ContentProperty("Content")]
+    [ContentProperty("ItemsSource")]
+    [DefaultProperty("ItemsSource")]
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
     [TemplatePart(Name = PartSheetScroller, Type = typeof(ScrollViewer))]
     [TemplatePart(Name = PartSheetGrid, Type = typeof(Grid))]
@@ -46,132 +49,135 @@ namespace PropertyTools.Wpf.ItemsGrid
         #region Constants and Fields
 
         /// <summary>
-        ///   The auto fill box.
+        /// The auto fill box.
         /// </summary>
         private const string PartAutoFillBox = "PART_AutoFillBox";
 
         /// <summary>
-        ///   The auto fill selection.
+        /// The auto fill selection.
         /// </summary>
         private const string PartAutoFillSelection = "PART_AutoFillSelection";
 
         /// <summary>
-        ///   The column grid.
+        /// The column grid.
         /// </summary>
         private const string PartColumnGrid = "PART_ColumnGrid";
 
         /// <summary>
-        ///   The column scroller.
+        /// The column scroller.
         /// </summary>
         private const string PartColumnScroller = "PART_ColumnScroller";
 
         /// <summary>
-        ///   The column selection background.
+        /// The column selection background.
         /// </summary>
         private const string PartColumnSelectionBackground = "PART_ColumnSelectionBackground";
 
         /// <summary>
-        ///   The current background.
+        /// The current background.
         /// </summary>
         private const string PartCurrentBackground = "PART_CurrentBackground";
 
         /// <summary>
-        ///   The grid.
+        /// The grid.
         /// </summary>
         private const string PartGrid = "PART_Grid";
 
         /// <summary>
-        ///   The row grid.
+        /// The row grid.
         /// </summary>
         private const string PartRowGrid = "PART_RowGrid";
 
         /// <summary>
-        ///   The row scroller.
+        /// The row scroller.
         /// </summary>
         private const string PartRowScroller = "PART_RowScroller";
 
         /// <summary>
-        ///   The row selection background.
+        /// The row selection background.
         /// </summary>
         private const string PartRowSelectionBackground = "PART_RowSelectionBackground";
 
         /// <summary>
-        ///   The selection.
+        /// The selection.
         /// </summary>
         private const string PartSelection = "PART_Selection";
 
         /// <summary>
-        ///   The selection background.
+        /// The selection background.
         /// </summary>
         private const string PartSelectionBackground = "PART_SelectionBackground";
 
         /// <summary>
-        ///   The sheet grid.
+        /// The sheet grid.
         /// </summary>
         private const string PartSheetGrid = "PART_SheetGrid";
 
         /// <summary>
-        ///   The sheet scroller.
+        /// The sheet scroller.
         /// </summary>
         private const string PartSheetScroller = "PART_SheetScroller";
 
         /// <summary>
-        ///   The top left cell.
+        /// The top left cell.
         /// </summary>
         private const string PartTopLeft = "PART_TopLeft";
 
         /// <summary>
-        ///   The cell map.
+        /// The cell map.
         /// </summary>
         private readonly Dictionary<int, UIElement> cellMap = new Dictionary<int, UIElement>();
 
         /// <summary>
-        ///   The auto fill box.
+        /// The auto fill box.
         /// </summary>
         private Border autoFillBox;
 
         /// <summary>
-        ///   The auto fill cell.
+        /// The auto fill cell.
         /// </summary>
         private CellRef autoFillCell;
 
         /// <summary>
-        ///   The auto fill selection.
+        /// The auto fill selection.
         /// </summary>
         private Border autoFillSelection;
 
         /// <summary>
-        ///   The auto fill tool tip.
+        /// The auto fill tool tip.
         /// </summary>
         private ToolTip autoFillToolTip;
 
         /// <summary>
-        ///   The auto filler.
+        /// The auto filler.
         /// </summary>
         private AutoFiller autoFiller;
 
         /// <summary>
-        ///   The cell insertion index.
+        /// The index in the sheetGrid where new cells can be inserted.
         /// </summary>
+        /// <remarks>
+        /// The selection and autofill controls should always be at the end of the sheetGrid children collection.
+        /// </remarks>
         private int cellInsertionIndex;
 
         /// <summary>
-        ///   The column grid.
+        /// The column grid control.
         /// </summary>
         private Grid columnGrid;
 
         /// <summary>
-        ///   The column scroller.
+        /// The column scroller control.
         /// </summary>
         private ScrollViewer columnScroller;
 
         /// <summary>
-        ///   The column selection background.
+        /// The column selection background control.
         /// </summary>
         private Border columnSelectionBackground;
 
         /// <summary>
-        ///   The current background.
+        /// The current background control.
         /// </summary>
         private Border currentBackground;
 
@@ -181,72 +187,72 @@ namespace PropertyTools.Wpf.ItemsGrid
         private FrameworkElement currentEditor;
 
         /// <summary>
-        ///   The editing cells.
+        /// The editing cells.
         /// </summary>
         private IEnumerable<CellRef> editingCells;
 
         /// <summary>
-        ///   The end pressed.
+        /// The end pressed.
         /// </summary>
         private bool endPressed;
 
         /// <summary>
-        ///   The is capturing.
+        /// The is capturing.
         /// </summary>
         private bool isCapturing;
 
         /// <summary>
-        ///   The is selecting columns.
+        /// The is selecting columns.
         /// </summary>
         private bool isSelectingColumns;
 
         /// <summary>
-        ///   The is selecting rows.
+        /// The is selecting rows.
         /// </summary>
         private bool isSelectingRows;
 
         /// <summary>
-        ///   The row grid.
+        /// The row grid control.
         /// </summary>
         private Grid rowGrid;
 
         /// <summary>
-        ///   The row scroller.
+        /// The row scroller control.
         /// </summary>
         private ScrollViewer rowScroller;
 
         /// <summary>
-        ///   The row selection background.
+        /// The row selection background control.
         /// </summary>
         private Border rowSelectionBackground;
 
         /// <summary>
-        ///   The selection.
+        /// The selection control.
         /// </summary>
         private Border selection;
 
         /// <summary>
-        ///   The selection background.
+        /// The selection background control.
         /// </summary>
         private Border selectionBackground;
 
         /// <summary>
-        ///   The sheet grid.
+        /// The sheet grid control.
         /// </summary>
         private Grid sheetGrid;
 
         /// <summary>
-        ///   The sheet scroller.
+        /// The sheet scroller control.
         /// </summary>
         private ScrollViewer sheetScroller;
 
         /// <summary>
-        ///   The subcribed content.
+        /// Reference to the collection that has subscribed to the INotifyCollectionChanged event.
         /// </summary>
-        private object subcribedContent;
+        private object subcribedCollection;
 
         /// <summary>
-        ///   The topleft.
+        /// The topleft control.
         /// </summary>
         private Border topleft;
 
@@ -255,17 +261,77 @@ namespace PropertyTools.Wpf.ItemsGrid
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="ItemsGrid"/> class. 
+        /// Initializes static members of the <see cref="ItemsGrid"/> class.
         /// </summary>
         static ItemsGrid()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(ItemsGrid), new FrameworkPropertyMetadata(typeof(ItemsGrid)));
+
+            InsertRowsCommand = new RoutedCommand("InsertRows", typeof(ItemsGrid));
+            DeleteRowsCommand = new RoutedCommand("DeleteRows", typeof(ItemsGrid));
+            InsertColumnsCommand = new RoutedCommand("InsertColumns", typeof(ItemsGrid));
+            DeleteColumnsCommand = new RoutedCommand("DeleteColumns", typeof(ItemsGrid));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemsGrid"/> class.
+        /// </summary>
+        public ItemsGrid()
+        {
+            this.CommandBindings.Add(
+                new CommandBinding(
+                    InsertRowsCommand, (s, e) => this.InsertRows(), (s, e) => e.CanExecute = this.CanInsertRows));
+            this.CommandBindings.Add(
+                new CommandBinding(
+                    DeleteRowsCommand, (s, e) => this.DeleteRows(), (s, e) => e.CanExecute = this.CanDeleteRows));
+            this.CommandBindings.Add(
+                new CommandBinding(
+                    InsertColumnsCommand, (s, e) => this.InsertColumns(), (s, e) => e.CanExecute = this.CanInsertColumns));
+            this.CommandBindings.Add(
+                new CommandBinding(
+                    DeleteColumnsCommand, (s, e) => this.DeleteColumns(), (s, e) => e.CanExecute = this.CanDeleteColumns));
         }
 
         #endregion
 
-        #region Public Methods
+        #region Public Properties
+
+        /// <summary>
+        /// Gets the delete columns command.
+        /// </summary>
+        /// <value>
+        /// The delete columns command. 
+        /// </value>
+        public static ICommand DeleteColumnsCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the delete rows command.
+        /// </summary>
+        /// <value>
+        /// The delete rows command. 
+        /// </value>
+        public static ICommand DeleteRowsCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the insert columns command.
+        /// </summary>
+        /// <value>
+        /// The insert columns command. 
+        /// </value>
+        public static ICommand InsertColumnsCommand { get; private set; }
+
+        /// <summary>
+        /// Gets the insert rows command.
+        /// </summary>
+        /// <value>
+        /// The insert rows command. 
+        /// </value>
+        public static ICommand InsertRowsCommand { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         /// <summary>
         /// The auto size all columns.
@@ -280,10 +346,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The auto size column.
+        /// Auto-size the specified column.
         /// </summary>
         /// <param name="column">
-        /// The column.
+        /// The column. 
         /// </param>
         public void AutoSizeColumn(int column)
         {
@@ -314,7 +380,7 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The copy.
         /// </summary>
         /// <param name="separator">
-        /// The separator.
+        /// The separator. 
         /// </param>
         public void Copy(string separator)
         {
@@ -326,17 +392,17 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Deletes an item.
         /// </summary>
         /// <param name="index">
-        /// The index.
+        /// The index. 
         /// </param>
         /// <param name="updateGrid">
-        /// The update grid.
+        /// The update grid. 
         /// </param>
         /// <returns>
-        /// The delete item.
+        /// The delete item. 
         /// </returns>
         public bool DeleteItem(int index, bool updateGrid)
         {
-            var list = this.Content as IList;
+            var list = this.ItemsSource;
             if (list == null)
             {
                 return false;
@@ -361,7 +427,7 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The end text edit.
         /// </summary>
         /// <param name="commit">
-        /// The commit.
+        /// The commit. 
         /// </param>
         public void EndTextEdit(bool commit = true)
         {
@@ -380,27 +446,46 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// <summary>
         /// Gets the cell reference for the specified position.
         /// </summary>
-        /// <param name="position">
-        /// The position.
-        /// </param>
-        /// <returns>
-        /// The cell ref.
-        /// </returns>
-        public CellRef GetCell(Point position)
+        /// <param name="position">The position.</param>
+        /// <param name="isInAutoFillMode">if set to <c>true</c> [is in auto fill mode].</param>
+        /// <param name="relativeTo">The relative to.</param>
+        /// <returns>The cell reference.</returns>
+        public CellRef GetCell(Point position, bool isInAutoFillMode = false, CellRef relativeTo = default(CellRef))
         {
             double w = 0;
             int column = -1;
             int row = -1;
             for (int j = 0; j < this.sheetGrid.ColumnDefinitions.Count; j++)
             {
-                double aw = this.sheetGrid.ColumnDefinitions[j].ActualWidth;
-                if (position.X < w + aw)
+                double aw0 = j - 1 >= 0 ? this.sheetGrid.ColumnDefinitions[j - 1].ActualWidth : 0;
+                double aw1 = this.sheetGrid.ColumnDefinitions[j].ActualWidth;
+                double aw2 = j + 1 < this.sheetGrid.ColumnDefinitions.Count ? this.sheetGrid.ColumnDefinitions[j + 1].ActualWidth : 0;
+                if (isInAutoFillMode)
+                {
+                    if (relativeTo.Column <= j)
+                    {
+                        aw0 = 0;
+                        aw2 *= 0.5;
+                    }
+                    else
+                    {
+                        aw0 *= 0.5;
+                        aw2 = 0;
+                    }
+                }
+                else
+                {
+                    aw0 = 0;
+                    aw2 = 0;
+                }
+
+                if (position.X > w - aw0 && position.X < w + aw1 + aw2)
                 {
                     column = j;
                     break;
                 }
 
-                w += aw;
+                w += aw1;
             }
 
             if (w > 0 && column == -1)
@@ -438,9 +523,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Gets the element at the specified cell.
         /// </summary>
         /// <param name="cellRef">
-        /// The cell ref.
+        /// The cell reference. 
         /// </param>
         /// <returns>
+        /// The element, or null if the cell was not found. 
         /// </returns>
         public UIElement GetCellElement(CellRef cellRef)
         {
@@ -449,13 +535,13 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// Gets the cell string at the specified cell.
+        /// Gets the formatted string value for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell.
+        /// The cell. 
         /// </param>
         /// <returns>
-        /// The cell string.
+        /// The cell string. 
         /// </returns>
         public string GetCellString(CellRef cell)
         {
@@ -465,7 +551,7 @@ namespace PropertyTools.Wpf.ItemsGrid
                 return null;
             }
 
-            var formatString = this.GetFormatString(cell, value);
+            var formatString = this.GetFormatString(cell);
             return FormatValue(value, formatString);
         }
 
@@ -473,10 +559,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Gets the cell value from the Content property for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell reference.
+        /// The cell reference. 
         /// </param>
         /// <returns>
-        /// The get cell value.
+        /// The get cell value. 
         /// </returns>
         public object GetCellValue(CellRef cell)
         {
@@ -491,7 +577,12 @@ namespace PropertyTools.Wpf.ItemsGrid
                 var pd = this.GetPropertyDefinition(cell);
                 if (pd != null)
                 {
-                    return pd.Descriptor.GetValue(item);
+                    if (pd.Descriptor != null)
+                    {
+                        return pd.Descriptor.GetValue(item);
+                    }
+
+                    return item;
                 }
             }
 
@@ -499,12 +590,13 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The get position.
+        /// Gets the position of the specified cell.
         /// </summary>
         /// <param name="cellRef">
-        /// The cell ref.
+        /// The cell reference. 
         /// </param>
         /// <returns>
+        /// The upper-left position of the cell. 
         /// </returns>
         public Point GetPosition(CellRef cellRef)
         {
@@ -524,13 +616,13 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The get visible cells.
+        /// Gets the visible cells.
         /// </summary>
         /// <param name="topLeft">
-        /// The top left.
+        /// The top left. 
         /// </param>
         /// <param name="bottomRight">
-        /// The bottom right.
+        /// The bottom right. 
         /// </param>
         public void GetVisibleCells(out CellRef topLeft, out CellRef bottomRight)
         {
@@ -544,7 +636,7 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The hide editor.
+        /// Hides the current editor control.
         /// </summary>
         public void HideEditor()
         {
@@ -568,24 +660,23 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Inserts an item.
         /// </summary>
         /// <param name="index">
-        /// The index.
+        /// The index. 
         /// </param>
         /// <param name="updateGrid">
-        /// The update grid.
+        /// Determines whether the grid should be updated. 
         /// </param>
         /// <returns>
-        /// The insert item.
+        /// True if an item was inserted. 
         /// </returns>
         public bool InsertItem(int index, bool updateGrid = true)
         {
-            var list = this.Content as IList;
+            var list = this.ItemsSource;
             if (list == null)
             {
                 return false;
             }
 
-            var listType = list.GetType();
-            var itemType = GetListItemType(listType);
+            var itemType = TypeHelper.GetItemType(list);
 
             object newItem = null;
             if (itemType == typeof(string))
@@ -633,13 +724,13 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The move current cell.
+        /// Changes current cell with the specified delta.
         /// </summary>
         /// <param name="deltaRows">
-        /// The delta rows.
+        /// The change in rows. 
         /// </param>
         /// <param name="deltaColumns">
-        /// The delta columns.
+        /// The change in columns. 
         /// </param>
         public void MoveCurrentCell(int deltaRows, int deltaColumns)
         {
@@ -675,7 +766,7 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The on apply template.
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> .
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -695,6 +786,46 @@ namespace PropertyTools.Wpf.ItemsGrid
             this.autoFillSelection = this.Template.FindName(PartAutoFillSelection, this) as Border;
             this.autoFillBox = this.Template.FindName(PartAutoFillBox, this) as Border;
             this.topleft = this.Template.FindName(PartTopLeft, this) as Border;
+
+            if (this.sheetScroller == null)
+            {
+                throw new Exception(PartSheetScroller + " not found.");
+            }
+
+            if (this.rowScroller == null)
+            {
+                throw new Exception(PartRowScroller + " not found.");
+            }
+
+            if (this.columnScroller == null)
+            {
+                throw new Exception(PartColumnScroller + " not found.");
+            }
+
+            if (this.topleft == null)
+            {
+                throw new Exception(PartTopLeft + " not found.");
+            }
+
+            if (this.autoFillBox == null)
+            {
+                throw new Exception(PartAutoFillBox + " not found.");
+            }
+
+            if (this.columnGrid == null)
+            {
+                throw new Exception(PartColumnGrid + " not found.");
+            }
+
+            if (this.rowGrid == null)
+            {
+                throw new Exception(PartRowGrid + " not found.");
+            }
+
+            if (this.sheetGrid == null)
+            {
+                throw new Exception(PartSheetGrid + " not found.");
+            }
 
             this.sheetScroller.ScrollChanged += this.ScrollViewerScrollChanged;
             this.rowScroller.ScrollChanged += this.RowScrollerChanged;
@@ -723,7 +854,7 @@ namespace PropertyTools.Wpf.ItemsGrid
                 };
 
             this.UpdateGridContent();
-            this.OnSelectedCellsChanged();
+            this.SelectedCellsChanged();
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.CopyExecute));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, this.CutExecute));
@@ -732,7 +863,7 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The paste.
+        /// Pastes the content from the clipboard.
         /// </summary>
         public void Paste()
         {
@@ -775,16 +906,17 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The scroll into view.
+        /// Scroll the specified cell into view.
         /// </summary>
         /// <param name="cellRef">
-        /// The cell ref.
+        /// The cell reference. 
         /// </param>
         public void ScrollIntoView(CellRef cellRef)
         {
             var pos0 = this.GetPosition(cellRef);
             var pos1 = this.GetPosition(new CellRef(cellRef.Row + 1, cellRef.Column + 1));
 
+            // todo: get correct size
             double scrollBarWidth = 20;
             double scrollBarHeight = 20;
 
@@ -812,27 +944,30 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The show editor.
+        /// Shows the edit control for the current cell.
         /// </summary>
         /// <returns>
-        /// The show editor.
+        /// True if an edit control is shown. 
         /// </returns>
-        public bool ShowEditor()
+        public bool ShowEditControl()
         {
             this.HideEditor();
-            var d = this.GetPropertyDefinition(this.CurrentCell);
-            if (d == null)
+            var pd = this.GetPropertyDefinition(this.CurrentCell);
+            if (pd == null)
             {
                 return false;
             }
 
-            var item = this.GetItem(this.CurrentCell);
-            this.currentEditor = this.ControlFactory.CreateEditControl(d, item);
-            this.currentEditor.DataContext = item;
+            int index = this.GetItemIndex(this.CurrentCell);
+            var item = this.GetItem(index);
+            this.currentEditor = this.ControlFactory.CreateEditControl(pd, index);
+
             if (this.currentEditor == null)
             {
                 return false;
             }
+
+            this.SetElementDataContext(this.currentEditor, pd, item);
 
             var textEditor = this.currentEditor as TextBox;
             if (textEditor != null)
@@ -849,14 +984,19 @@ namespace PropertyTools.Wpf.ItemsGrid
             Grid.SetRow(this.currentEditor, this.CurrentCell.Row);
 
             this.sheetGrid.Children.Add(this.currentEditor);
-            this.currentEditor.Focus();
+
+            if (this.currentEditor.Visibility == Visibility.Visible)
+            {
+                this.currentEditor.Focus();
+            }
+
             return true;
         }
 
         /// <summary>
         /// The show text box editor.
         /// </summary>
-        public void ShowTextBoxEditor()
+        public void ShowTextBoxEditControl()
         {
             var textEditor = this.currentEditor as TextBox;
             if (textEditor != null)
@@ -869,13 +1009,13 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The to csv.
+        /// Exports the grid to csv.
         /// </summary>
         /// <param name="separator">
-        /// The separator.
+        /// The separator. 
         /// </param>
         /// <returns>
-        /// The to csv.
+        /// The csv string. 
         /// </returns>
         public string ToCsv(string separator = ";")
         {
@@ -898,35 +1038,51 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The try set cell value.
+        /// Tries to set the value in the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell.
+        /// The cell. 
         /// </param>
         /// <param name="value">
-        /// The value.
+        /// The value. 
         /// </param>
         /// <returns>
-        /// The try set cell value.
+        /// True if the value was set. 
         /// </returns>
         public virtual bool TrySetCellValue(CellRef cell, object value)
         {
-            var items = this.Content as IEnumerable;
-            if (items != null)
+            if (this.ItemsSource != null)
             {
-                var current = this.GetItem(cell);
+                int index = this.GetItemIndex(cell);
+                var current = this.GetItem(index);
 
-                var field = this.GetPropertyDefinition(cell);
-                if (field == null)
+                var pd = this.GetPropertyDefinition(cell);
+                if (pd == null)
                 {
                     return false;
                 }
 
                 object convertedValue;
-                if (current != null && !field.Descriptor.IsReadOnly
-                    && TryConvert(value, field.Descriptor.PropertyType, out convertedValue))
+                if (current != null && !pd.IsReadOnly && TryConvert(value, pd.PropertyType, out convertedValue))
                 {
-                    field.Descriptor.SetValue(current, convertedValue);
+                    if (pd.Descriptor != null)
+                    {
+                        pd.Descriptor.SetValue(current, convertedValue);
+                    }
+                    else
+                    {
+                        var list = this.ItemsSource;
+                        if (list != null)
+                        {
+                            list[index] = convertedValue;
+                        }
+
+                        if (!(list is INotifyCollectionChanged))
+                        {
+                            this.UpdateCellContent(cell);
+                        }
+                    }
+
                     return true;
                 }
             }
@@ -939,26 +1095,32 @@ namespace PropertyTools.Wpf.ItemsGrid
         #region Methods
 
         /// <summary>
-        /// The create element.
+        /// Creates the display control for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell.
+        /// The cell. 
         /// </param>
         /// <param name="pd">
-        /// The pd.
+        /// The pd. 
         /// </param>
         /// <param name="item">
-        /// The item.
+        /// The item. 
+        /// </param>
+        /// <param name="index">
+        /// The index. 
         /// </param>
         /// <returns>
+        /// The display control. 
         /// </returns>
-        protected virtual UIElement CreateElement(CellRef cell, PropertyDefinition pd, object item)
+        protected virtual UIElement CreateDisplayControl(
+            CellRef cell, PropertyDefinition pd = null, object item = null, int index = -1)
         {
             FrameworkElement element = null;
 
             if (item == null)
             {
-                item = this.GetItem(cell);
+                index = this.GetItemIndex(cell);
+                item = this.GetItem(index);
             }
 
             if (pd == null)
@@ -966,15 +1128,10 @@ namespace PropertyTools.Wpf.ItemsGrid
                 pd = this.GetPropertyDefinition(cell);
             }
 
-            if (item == null)
-            {
-                item = this.GetItem(cell);
-            }
-
             if (pd != null && item != null)
             {
-                element = this.ControlFactory.CreateDisplayControl(pd, item);
-                element.DataContext = item;
+                element = this.ControlFactory.CreateDisplayControl(pd, index);
+                this.SetElementDataContext(element, pd, item);
 
                 element.VerticalAlignment = VerticalAlignment.Center;
                 element.HorizontalAlignment = pd.HorizontalAlignment;
@@ -984,28 +1141,26 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The create instance.
+        /// Creates a new instance of the specified type.
         /// </summary>
         /// <param name="itemType">
-        /// The item type.
+        /// The type. 
         /// </param>
         /// <returns>
-        /// The create instance.
+        /// The new instance. 
         /// </returns>
         protected virtual object CreateInstance(Type itemType)
         {
-            object newItem;
-            newItem = Activator.CreateInstance(itemType);
-            return newItem;
+            return Activator.CreateInstance(itemType);
         }
 
         /// <summary>
-        /// The generate column definitions.
+        /// Auto-generates the column definitions.
         /// </summary>
         /// <param name="items">
-        /// The items.
+        /// The items. 
         /// </param>
-        protected virtual void GeneratePropertyDefinitions(IEnumerable items)
+        protected virtual void GenerateColumnDefinitions(IList items)
         {
             if (items == null)
             {
@@ -1014,18 +1169,33 @@ namespace PropertyTools.Wpf.ItemsGrid
 
             var itemType = TypeHelper.FindBiggestCommonType(items);
 
-            // var itemType = items.AsQueryable().ElementType;
+            var properties = TypeDescriptor.GetProperties(itemType);
 
-            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(itemType))
+            foreach (PropertyDescriptor descriptor in properties)
             {
                 if (!descriptor.IsBrowsable)
                 {
                     continue;
                 }
 
-                this.PropertyDefinitions.Add(
-                    new PropertyDefinition(descriptor)
+                this.ColumnDefinitions.Add(
+                    new ColumnDefinition
                         {
+                            Descriptor = descriptor,
+                            Header = descriptor.Name,
+                            HorizontalAlignment = this.DefaultHorizontalAlignment,
+                            Width = this.DefaultColumnWidth
+                        });
+            }
+
+            var itemsType = TypeHelper.GetItemType(items);
+            if (properties.Count == 0)
+            {
+                this.ColumnDefinitions.Add(
+                    new ColumnDefinition
+                        {
+                            PropertyType = itemsType,
+                            Header = itemsType.Name,
                             HorizontalAlignment = this.DefaultHorizontalAlignment,
                             Width = this.DefaultColumnWidth
                         });
@@ -1036,7 +1206,7 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Handles KeyDown events on the grid.
         /// </summary>
         /// <param name="e">
-        /// The event args.
+        /// The event arguments. 
         /// </param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -1051,6 +1221,11 @@ namespace PropertyTools.Wpf.ItemsGrid
 
             switch (e.Key)
             {
+                case Key.Enter:
+                    this.MoveCurrentCell(shift ? -1 : 1, 0);
+                    e.Handled = true;
+                    return;
+
                 case Key.Up:
                     if (row > 0)
                     {
@@ -1059,7 +1234,7 @@ namespace PropertyTools.Wpf.ItemsGrid
 
                     if (this.endPressed)
                     {
-                        this.FindNext(ref row, ref column, -1, 0);
+                        row = this.FindNextRow(row, column, -1);
                     }
 
                     if (control)
@@ -1076,7 +1251,7 @@ namespace PropertyTools.Wpf.ItemsGrid
 
                     if (this.endPressed)
                     {
-                        this.FindNext(ref row, ref column, 1, 0);
+                        row = this.FindNextRow(row, column, 1);
                     }
 
                     if (control)
@@ -1085,10 +1260,6 @@ namespace PropertyTools.Wpf.ItemsGrid
                     }
 
                     break;
-                case Key.Enter:
-                    this.MoveCurrentCell(shift ? -1 : 1, 0);
-                    e.Handled = true;
-                    return;
                 case Key.Left:
                     if (column > 0)
                     {
@@ -1097,7 +1268,7 @@ namespace PropertyTools.Wpf.ItemsGrid
 
                     if (this.endPressed)
                     {
-                        this.FindNext(ref row, ref column, 0, -1);
+                        column = this.FindNextColumn(row, column, -1);
                     }
 
                     if (control)
@@ -1114,7 +1285,7 @@ namespace PropertyTools.Wpf.ItemsGrid
 
                     if (this.endPressed)
                     {
-                        this.FindNext(ref row, ref column, 0, 1);
+                        column = this.FindNextColumn(row, column, 1);
                     }
 
                     if (control)
@@ -1124,6 +1295,8 @@ namespace PropertyTools.Wpf.ItemsGrid
 
                     break;
                 case Key.End:
+
+                    // Flag that the next key should be handled differently
                     this.endPressed = true;
                     break;
                 case Key.Home:
@@ -1134,7 +1307,7 @@ namespace PropertyTools.Wpf.ItemsGrid
                     this.Delete();
                     break;
                 case Key.F2:
-                    this.ShowTextBoxEditor();
+                    this.ShowTextBoxEditControl();
                     break;
                 case Key.Space:
                     if (this.ToggleCheck())
@@ -1165,6 +1338,7 @@ namespace PropertyTools.Wpf.ItemsGrid
 
             if (e.Key != Key.End)
             {
+                // Turn of special handling after the first key after End was pressed.
                 this.endPressed = false;
             }
 
@@ -1184,10 +1358,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The on mouse left button down.
+        /// Handles mouse left button down events.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
@@ -1198,10 +1372,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The on mouse left button up.
+        /// Handles mouse left button up events.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
@@ -1221,10 +1395,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The on mouse move.
+        /// Handles mouse move events.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -1235,8 +1409,10 @@ namespace PropertyTools.Wpf.ItemsGrid
                 return;
             }
 
+            bool isInAutoFillMode = this.autoFillSelection.Visibility == Visibility.Visible;
+
             var pos = e.GetPosition(this.sheetGrid);
-            var cellRef = this.GetCell(pos);
+            var cellRef = this.GetCell(pos, isInAutoFillMode, this.CurrentCell);
 
             if (cellRef.Column == -1 || cellRef.Row == -1)
             {
@@ -1253,15 +1429,15 @@ namespace PropertyTools.Wpf.ItemsGrid
                 return;
             }
 
-            if (this.autoFillSelection.Visibility == Visibility.Visible)
+            if (isInAutoFillMode)
             {
                 this.AutoFillCell = cellRef;
                 object result;
                 if (this.autoFiller.TryExtrapolate(
                     cellRef, this.CurrentCell, this.SelectionCell, this.AutoFillCell, out result))
                 {
-                    var fmt = this.GetFormatString(cellRef, result);
-                    this.autoFillToolTip.Content = FormatValue(result, fmt);
+                    var formatString = this.GetFormatString(cellRef);
+                    this.autoFillToolTip.Content = FormatValue(result, formatString);
                 }
 
                 this.autoFillToolTip.Placement = PlacementMode.Relative;
@@ -1278,10 +1454,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The on preview mouse wheel.
+        /// Handles mouse wheel preview events.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
@@ -1304,10 +1480,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The on text input.
+        /// Handles text input events.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         protected override void OnTextInput(TextCompositionEventArgs e)
         {
@@ -1317,17 +1493,22 @@ namespace PropertyTools.Wpf.ItemsGrid
                 return;
             }
 
+            if (this.currentEditor == null)
+            {
+                this.ShowEditControl();
+            }
+
             var textEditor = this.currentEditor as TextBox;
             if (textEditor != null)
             {
-                this.ShowTextBoxEditor();
+                this.ShowTextBoxEditControl();
                 textEditor.Text = e.Text;
                 textEditor.CaretIndex = textEditor.Text.Length;
             }
         }
 
         /// <summary>
-        /// The update all cells.
+        /// Updates all cells.
         /// </summary>
         protected void UpdateAllCells()
         {
@@ -1339,16 +1520,14 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The update cell content.
+        /// Updates the content of the specified cell.
         /// </summary>
         /// <param name="cellRef">
-        /// The cell ref.
+        /// The cell reference. 
         /// </param>
         protected void UpdateCellContent(CellRef cellRef)
         {
             var c = this.GetCellElement(cellRef);
-            var value = this.GetCellValue(cellRef);
-
             if (c != null)
             {
                 this.sheetGrid.Children.Remove(c);
@@ -1356,23 +1535,23 @@ namespace PropertyTools.Wpf.ItemsGrid
                 this.cellMap.Remove(cellRef.GetHashCode());
             }
 
-            this.InsertCellElement(cellRef, value, true);
+            this.InsertDisplayControl(cellRef);
         }
 
         /// <summary>
-        /// The clamp.
+        /// Clamps a value between a minimum and maximum limit.
         /// </summary>
         /// <param name="value">
-        /// The value.
+        /// The value. 
         /// </param>
         /// <param name="min">
-        /// The min.
+        /// The minimum. 
         /// </param>
         /// <param name="max">
-        /// The max.
+        /// The maximum. 
         /// </param>
         /// <returns>
-        /// The clamp.
+        /// The clamped value. 
         /// </returns>
         private static int Clamp(int value, int min, int max)
         {
@@ -1391,36 +1570,36 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The csv encode string.
+        /// Csv-encodes the specified string.
         /// </summary>
-        /// <param name="cell">
-        /// The cell.
+        /// <param name="input">
+        /// The input string. 
         /// </param>
         /// <returns>
-        /// The csv encode string.
+        /// The csv-encoded string. 
         /// </returns>
-        private static string CsvEncodeString(string cell)
+        private static string CsvEncodeString(string input)
         {
-            cell = cell.Replace("\"", "\"\"");
-            if (cell.Contains(";") || cell.Contains("\""))
+            input = input.Replace("\"", "\"\"");
+            if (input.Contains(";") || input.Contains("\""))
             {
-                cell = "\"" + cell + "\"";
+                input = "\"" + input + "\"";
             }
 
-            return cell;
+            return input;
         }
 
         /// <summary>
-        /// The format value.
+        /// Formats value.
         /// </summary>
         /// <param name="value">
-        /// The value.
+        /// The value. 
         /// </param>
         /// <param name="formatString">
-        /// The format string.
+        /// The format string. 
         /// </param>
         /// <returns>
-        /// The format value.
+        /// The format value. 
         /// </returns>
         private static string FormatValue(object value, string formatString)
         {
@@ -1428,77 +1607,23 @@ namespace PropertyTools.Wpf.ItemsGrid
             {
                 return value != null ? value.ToString() : null;
             }
-            else
-            {
-                if (!formatString.Contains("{0"))
-                {
-                    formatString = "{0:" + formatString + "}";
-                }
 
-                return string.Format(formatString, value);
-            }
-        }
-
-        /// <summary>
-        /// The get list item type.
-        /// </summary>
-        /// <param name="list">
-        /// The list.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        private static Type GetListItemType(IEnumerable list)
-        {
-            if (list == null)
+            if (!formatString.Contains("{0"))
             {
-                return null;
+                formatString = "{0:" + formatString + "}";
             }
 
-            foreach (var item in list)
-            {
-                if (item != null)
-                {
-                    return item.GetType();
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// The get list item type.
-        /// </summary>
-        /// <param name="listType">
-        /// The list type.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        private static Type GetListItemType(Type listType)
-        {
-            // http://stackoverflow.com/questions/1043755/c-generic-list-t-how-to-get-the-type-of-t
-            foreach (var interfaceType in listType.GetInterfaces())
-            {
-                if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IList<>))
-                {
-                    var args = interfaceType.GetGenericArguments();
-                    if (args.Length > 0)
-                    {
-                        return args[0];
-                    }
-                }
-            }
-
-            return null;
+            return string.Format(formatString, value);
         }
 
         /// <summary>
         /// The set element position.
         /// </summary>
         /// <param name="element">
-        /// The element.
+        /// The element. 
         /// </param>
         /// <param name="cell">
-        /// The cell.
+        /// The cell. 
         /// </param>
         private static void SetElementPosition(UIElement element, CellRef cell)
         {
@@ -1507,12 +1632,13 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The text to array.
+        /// Splits a string separated by \n and \t into an array.
         /// </summary>
         /// <param name="text">
-        /// The text.
+        /// The text. 
         /// </param>
         /// <returns>
+        /// An 2-dimensional array of strings. 
         /// </returns>
         private static string[,] TextToArray(string text)
         {
@@ -1554,40 +1680,19 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// Convert a HorizontalAlignment to a TextAlignment.
-        /// </summary>
-        /// <param name="a">
-        /// The a.
-        /// </param>
-        private static TextAlignment ToTextAlignment(HorizontalAlignment a)
-        {
-            switch (a)
-            {
-                case HorizontalAlignment.Left:
-                    return TextAlignment.Left;
-                case HorizontalAlignment.Center:
-                    return TextAlignment.Center;
-                case HorizontalAlignment.Right:
-                    return TextAlignment.Right;
-                default:
-                    return TextAlignment.Left;
-            }
-        }
-
-        /// <summary>
-        /// The try convert.
+        /// Tries to convert an object to the specified type.
         /// </summary>
         /// <param name="value">
-        /// The value.
+        /// The value. 
         /// </param>
         /// <param name="targetType">
-        /// The target type.
+        /// The target type. 
         /// </param>
         /// <param name="convertedValue">
-        /// The converted value.
+        /// The converted value. 
         /// </param>
         /// <returns>
-        /// The try convert.
+        /// True if conversion was successful. 
         /// </returns>
         private static bool TryConvert(object value, Type targetType, out object convertedValue)
         {
@@ -1618,7 +1723,7 @@ namespace PropertyTools.Wpf.ItemsGrid
                 }
 
                 var converter = TypeDescriptor.GetConverter(targetType);
-                if (converter != null && value != null && converter.CanConvertFrom(value.GetType()))
+                if (value != null && converter.CanConvertFrom(value.GetType()))
                 {
                     convertedValue = converter.ConvertFrom(value);
                     return true;
@@ -1636,27 +1741,33 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The add cell element.
+        /// Adds the display control for the specified cell.
         /// </summary>
         /// <param name="cellRef">
-        /// The cell ref.
+        /// The cell reference. 
         /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        private void AddCellElement(CellRef cellRef, object value)
+        private void AddDisplayControl(CellRef cellRef)
         {
-            this.InsertCellElement(cellRef, value, false);
+            int index = this.GetItemIndex(cellRef);
+            var e = this.CreateDisplayControl(cellRef, null, null, index);
+            if (e == null)
+            {
+                return;
+            }
+
+            SetElementPosition(e, cellRef);
+            this.sheetGrid.Children.Add(e);
+            this.cellMap.Add(cellRef.GetHashCode(), e);
         }
 
         /// <summary>
         /// The add item cell mouse left button down.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void AddItemCellMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -1669,10 +1780,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The auto fill box mouse left button down.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void AutoFillBoxMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -1681,79 +1792,13 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The build context menus.
-        /// </summary>
-        private void BuildContextMenus()
-        {
-            var rowsMenu = new ContextMenu();
-            if (this.CanInsertRows)
-            {
-                rowsMenu.Items.Add(new MenuItem { Header = "Insert", Command = new DelegateCommand(this.InsertRows) });
-            }
-
-            if (this.CanDeleteRows)
-            {
-                rowsMenu.Items.Add(new MenuItem { Header = "Delete", Command = new DelegateCommand(this.DeleteRows) });
-            }
-
-            if (rowsMenu.Items.Count > 0)
-            {
-                this.rowGrid.ContextMenu = rowsMenu;
-            }
-
-            var columnsMenu = new ContextMenu();
-            if (this.CanInsertColumns)
-            {
-                columnsMenu.Items.Add(new MenuItem { Header = "Insert" });
-            }
-
-            if (this.CanDeleteColumns)
-            {
-                columnsMenu.Items.Add(new MenuItem { Header = "Delete" });
-            }
-
-            if (columnsMenu.Items.Count > 0)
-            {
-                this.columnGrid.ContextMenu = columnsMenu;
-            }
-        }
-
-        /// <summary>
-        /// The cell checked.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void CellChecked(object sender, RoutedEventArgs e)
-        {
-            var chkbox = sender as CheckBox;
-            if (chkbox == null)
-            {
-                return;
-            }
-
-            int row = Grid.GetRow(chkbox);
-            int column = Grid.GetColumn(chkbox);
-
-            this.CurrentCell = new CellRef(row, column);
-            this.SelectionCell = new CellRef(row, column);
-
-            // Binding was not used here, so update the value of the cell
-            this.TrySetCellValue(this.CurrentCell, chkbox.IsChecked);
-            this.UpdateCellContent(this.CurrentCell);
-        }
-
-        /// <summary>
         /// The column grid loaded.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void ColumnGridLoaded(object sender, RoutedEventArgs e)
         {
@@ -1764,10 +1809,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The column grid mouse left button down.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void ColumnGridMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -1776,14 +1821,7 @@ namespace PropertyTools.Wpf.ItemsGrid
             if (column >= 0)
             {
                 bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
-                if (shift)
-                {
-                    this.CurrentCell = new CellRef(0, this.CurrentCell.Column);
-                }
-                else
-                {
-                    this.CurrentCell = new CellRef(0, column);
-                }
+                this.CurrentCell = shift ? new CellRef(0, this.CurrentCell.Column) : new CellRef(0, column);
 
                 this.SelectionCell = new CellRef(this.Rows - 1, column);
             }
@@ -1796,10 +1834,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The column grid mouse left button up.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void ColumnGridMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -1811,10 +1849,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The column grid mouse move.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void ColumnGridMouseMove(object sender, MouseEventArgs e)
         {
@@ -1836,10 +1874,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The column grid size changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void ColumnGridSizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -1850,10 +1888,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The column scroller changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void ColumnScrollerChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -1864,10 +1902,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The column splitter change completed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="dragCompletedEventArgs">
-        /// The drag completed event args.
+        /// The drag completed event args. 
         /// </param>
         private void ColumnSplitterChangeCompleted(object sender, DragCompletedEventArgs dragCompletedEventArgs)
         {
@@ -1889,10 +1927,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The column splitter change delta.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void ColumnSplitterChangeDelta(object sender, DragDeltaEventArgs e)
         {
@@ -1921,10 +1959,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The column splitter change started.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="dragStartedEventArgs">
-        /// The drag started event args.
+        /// The drag started event args. 
         /// </param>
         private void ColumnSplitterChangeStarted(object sender, DragStartedEventArgs dragStartedEventArgs)
         {
@@ -1935,10 +1973,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The column splitter double click.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void ColumnSplitterDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -1950,10 +1988,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The copy execute.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void CopyExecute(object sender, ExecutedRoutedEventArgs e)
         {
@@ -1964,10 +2002,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The cut execute.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void CutExecute(object sender, ExecutedRoutedEventArgs e)
         {
@@ -1987,13 +2025,39 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
+        /// Deletes the selected columns.
+        /// </summary>
+        private void DeleteColumns()
+        {
+            int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+            int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+            for (int i = to; i >= from; i--)
+            {
+                this.DeleteItem(i, false);
+            }
+
+            this.UpdateGridContent();
+
+            int maxColumn = this.Columns > 0 ? this.Columns - 1 : 0;
+            if (this.CurrentCell.Column > maxColumn)
+            {
+                this.CurrentCell = new CellRef(maxColumn, this.CurrentCell.Column);
+            }
+
+            if (this.SelectionCell.Column > maxColumn)
+            {
+                this.SelectionCell = new CellRef(maxColumn, this.SelectionCell.Column);
+            }
+        }
+
+        /// <summary>
         /// The delete execute.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void DeleteExecute(object sender, ExecutedRoutedEventArgs e)
         {
@@ -2001,7 +2065,7 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The delete rows.
+        /// Deletes the selected rows.
         /// </summary>
         private void DeleteRows()
         {
@@ -2027,22 +2091,24 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// Enumerate the items in the specified cell range.
-        ///   This is used to updated the SelectedItems property.
+        /// Enumerate the items in the specified cell range. This is used to update the SelectedItems property.
         /// </summary>
         /// <param name="cell0">
-        /// The cell 0.
+        /// The cell 0. 
         /// </param>
         /// <param name="cell1">
-        /// The cell 1.
+        /// The cell 1. 
         /// </param>
+        /// <returns>
+        /// The items enumeration. 
+        /// </returns>
         private IEnumerable EnumerateItems(CellRef cell0, CellRef cell1)
         {
-            var list = this.Content as IList;
+            var list = this.ItemsSource;
             if (list != null)
             {
-                int index0 = !this.ItemsInColumns ? cell0.Row : cell0.Column;
-                int index1 = !this.ItemsInColumns ? cell1.Row : cell1.Column;
+                int index0 = this.ItemsInRows ? cell0.Row : cell0.Column;
+                int index1 = this.ItemsInRows ? cell1.Row : cell1.Column;
                 int min = Math.Min(index0, index1);
                 int max = Math.Max(index0, index1);
                 for (int index = min; index <= max; index++)
@@ -2056,23 +2122,54 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The find next.
+        /// Finds the next column that contains an empty cell.
         /// </summary>
         /// <param name="row">
-        /// The row.
+        /// The row. 
         /// </param>
         /// <param name="column">
-        /// The column.
-        /// </param>
-        /// <param name="deltaRow">
-        /// The delta row.
+        /// The column. 
         /// </param>
         /// <param name="deltaColumn">
-        /// The delta column.
+        /// The delta column. 
         /// </param>
-        private void FindNext(ref int row, ref int column, int deltaRow, int deltaColumn)
+        /// <returns>
+        /// The new column. 
+        /// </returns>
+        private int FindNextColumn(int row, int column, int deltaColumn)
         {
-            while (row >= 0 && row < this.Rows && column >= 0 && column < this.Columns - 1)
+            while (column >= 0 && column < this.Columns - 1)
+            {
+                var v = this.GetCellValue(new CellRef(row, column));
+                if (v == null || string.IsNullOrEmpty(v.ToString()))
+                {
+                    break;
+                }
+
+                column += deltaColumn;
+            }
+
+            return column;
+        }
+
+        /// <summary>
+        /// Finds the next row that contains an empty cell.
+        /// </summary>
+        /// <param name="row">
+        /// The row. 
+        /// </param>
+        /// <param name="column">
+        /// The column. 
+        /// </param>
+        /// <param name="deltaRow">
+        /// The delta row. 
+        /// </param>
+        /// <returns>
+        /// The new row. 
+        /// </returns>
+        private int FindNextRow(int row, int column, int deltaRow)
+        {
+            while (row >= 0 && row < this.Rows)
             {
                 var v = this.GetCellValue(new CellRef(row, column));
                 if (v == null || string.IsNullOrEmpty(v.ToString()))
@@ -2081,17 +2178,19 @@ namespace PropertyTools.Wpf.ItemsGrid
                 }
 
                 row += deltaRow;
-                column += deltaColumn;
             }
+
+            return row;
         }
 
         /// <summary>
-        /// The get cell ref from ui element.
+        /// Gets a cell reference from the specified display control.
         /// </summary>
         /// <param name="element">
-        /// The element.
+        /// The element. 
         /// </param>
         /// <returns>
+        /// The cell reference. 
         /// </returns>
         private CellRef GetCellRefFromUIElement(UIElement element)
         {
@@ -2104,9 +2203,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Gets the column element for the specified column.
         /// </summary>
         /// <param name="column">
-        /// The column.
+        /// The column. 
         /// </param>
         /// <returns>
+        /// The column element. 
         /// </returns>
         private FrameworkElement GetColumnElement(int column)
         {
@@ -2114,196 +2214,173 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The get column header.
+        /// Gets the column header for the specified column.
         /// </summary>
         /// <param name="j">
-        /// The j.
+        /// The j. 
         /// </param>
         /// <returns>
-        /// The get column header.
+        /// The get column header. 
         /// </returns>
         private object GetColumnHeader(int j)
         {
-            var text = CellRef.ToColumnName(j);
-
-            if (!this.ItemsInColumns)
+            if (this.ItemsInRows)
             {
                 if (j < this.PropertyDefinitions.Count)
                 {
-                    return this.PropertyDefinitions[j].Header ?? text;
+                    return this.PropertyDefinitions[j].Header ?? CellRef.ToColumnName(j);
                 }
             }
 
-            return text;
+            return CellRef.ToColumnName(j);
         }
 
         /// <summary>
-        /// The get column width.
+        /// Gets the column width for the specified column.
         /// </summary>
         /// <param name="i">
-        /// The i.
+        /// The column index. 
         /// </param>
         /// <returns>
+        /// The column width. 
         /// </returns>
         private GridLength GetColumnWidth(int i)
         {
-            if (i < this.PropertyDefinitions.Count)
+            if (i < this.ColumnDefinitions.Count)
             {
-                if (this.PropertyDefinitions[i].Width.Value < 0)
+                var cd = this.ColumnDefinitions[i] as ColumnDefinition;
+                if (cd != null)
                 {
-                    return this.DefaultColumnWidth;
-                }
+                    if (cd.Width.Value < 0)
+                    {
+                        return this.DefaultColumnWidth;
+                    }
 
-                return this.PropertyDefinitions[i].Width;
+                    return cd.Width;
+                }
             }
 
             return this.DefaultColumnWidth;
         }
 
         /// <summary>
-        /// The get format string.
+        /// Gets the format string for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell.
-        /// </param>
-        /// <param name="value">
-        /// The value.
+        /// The cell. 
         /// </param>
         /// <returns>
-        /// The get format string.
+        /// The format string. 
         /// </returns>
-        private string GetFormatString(CellRef cell, object value)
+        private string GetFormatString(CellRef cell)
         {
-            int i = this.GetPropertyIndex(cell);
-            if (i < this.PropertyDefinitions.Count)
-            {
-                return this.PropertyDefinitions[i].FormatString;
-            }
-
-            return null;
+            var pd = this.GetPropertyDefinition(cell);
+            return pd != null ? pd.FormatString : null;
         }
 
         /// <summary>
-        /// The get item.
+        /// Gets the item for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell.
+        /// The cell. 
         /// </param>
         /// <returns>
-        /// The get item.
+        /// The item. 
         /// </returns>
         private object GetItem(CellRef cell)
         {
-            var list = this.Content as IList;
-            if (list != null)
+            return this.GetItem(this.GetItemIndex(cell));
+        }
+
+        /// <summary>
+        /// Gets the item for the specified index in the ItemsSource collection.
+        /// </summary>
+        /// <param name="index">
+        /// The item index. 
+        /// </param>
+        /// <returns>
+        /// The item. 
+        /// </returns>
+        private object GetItem(int index)
+        {
+            var list = this.ItemsSource;
+            if (list == null)
             {
-                int index = this.GetItemIndex(cell);
-                if (index >= 0 && index < list.Count)
-                {
-                    return list[index];
-                }
+                return null;
             }
 
-            var items = this.Content as IEnumerable;
-            if (items != null)
+            if (index >= 0 && index < list.Count)
             {
-                int i = 0;
-                foreach (var item in items)
-                {
-                    if ((!this.ItemsInColumns && i == cell.Row) || (!this.ItemsInColumns && i == cell.Column))
-                    {
-                        return item;
-                    }
-
-                    i++;
-                }
+                return list[index];
             }
 
             return null;
         }
 
         /// <summary>
-        /// The get item index.
+        /// Gets the item index for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell.
+        /// The cell. 
         /// </param>
         /// <returns>
-        /// The get item index.
+        /// The get item index. 
         /// </returns>
         private int GetItemIndex(CellRef cell)
         {
-            return !this.ItemsInColumns ? cell.Row : cell.Column;
+            if (this.WrapItems)
+            {
+                return this.ItemsInRows ? cell.Row * this.Columns + cell.Column : cell.Column * this.Rows + cell.Row;
+            }
+
+            return this.ItemsInRows ? cell.Row : cell.Column;
         }
 
         /// <summary>
-        /// The get property definition.
+        /// Gets the column/row definition for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell.
+        /// The cell. 
         /// </param>
         /// <returns>
+        /// The column/row definition. 
         /// </returns>
         private PropertyDefinition GetPropertyDefinition(CellRef cell)
         {
-            int fieldIndex = this.GetPropertyIndex(cell);
+            int index = this.ItemsInRows ? cell.Column : cell.Row;
 
-            if (fieldIndex < this.PropertyDefinitions.Count)
+            if (index < this.PropertyDefinitions.Count)
             {
-                return this.PropertyDefinitions[fieldIndex];
+                return this.PropertyDefinitions[index];
             }
 
             return null;
         }
 
         /// <summary>
-        /// The get field index.
-        /// </summary>
-        /// <param name="cell">
-        /// The cell.
-        /// </param>
-        /// <returns>
-        /// The get field index.
-        /// </returns>
-        private int GetPropertyIndex(CellRef cell)
-        {
-            return !this.ItemsInColumns ? cell.Column : cell.Row;
-        }
-
-        /// <summary>
-        /// The get row header.
+        /// Gets the row header.
         /// </summary>
         /// <param name="j">
-        /// The j.
+        /// The j. 
         /// </param>
         /// <returns>
-        /// The get row header.
+        /// The get row header. 
         /// </returns>
         private object GetRowHeader(int j)
         {
-            var text = CellRef.ToRowName(j);
-
             if (this.ItemsInColumns)
             {
-                if (j < this.PropertyDefinitions.Count)
-                {
-                    return this.PropertyDefinitions[j].Header;
-                }
+                return j < this.RowDefinitions.Count ? this.RowDefinitions[j].Header : CellRef.ToRowName(j);
             }
 
-            if (this.RowHeaders != null && j < this.RowHeaders.Count)
-            {
-                return this.RowHeaders[j];
-            }
-
-            return text;
+            return CellRef.ToRowName(j);
         }
 
         /// <summary>
-        /// The handle button down.
+        /// Handles the button down event.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void HandleButtonDown(MouseButtonEventArgs e)
         {
@@ -2350,38 +2427,38 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The insert cell element.
+        /// Inserts columns at the selected column.
         /// </summary>
-        /// <param name="cellRef">
-        /// The cell ref.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="insert">
-        /// The insert.
-        /// </param>
-        private void InsertCellElement(CellRef cellRef, object value, bool insert)
+        private void InsertColumns()
         {
-            // if (value == null)
-            // return;
-            var e = this.CreateElement(cellRef, null, null);
-            SetElementPosition(e, cellRef);
-            if (insert)
+            int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+            int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+            for (int i = 0; i < to - from + 1; i++)
             {
-                this.sheetGrid.Children.Insert(this.cellInsertionIndex, e);
-                this.cellInsertionIndex++;
-            }
-            else
-            {
-                this.sheetGrid.Children.Add(e);
+                this.InsertItem(from, false);
             }
 
+            this.UpdateGridContent();
+        }
+
+        /// <summary>
+        /// Inserts the display control for the specified cell.
+        /// </summary>
+        /// <param name="cellRef">
+        /// The cell reference. 
+        /// </param>
+        private void InsertDisplayControl(CellRef cellRef)
+        {
+            int index = this.GetItemIndex(cellRef);
+            var e = this.CreateDisplayControl(cellRef, null, null, index);
+            SetElementPosition(e, cellRef);
+            this.sheetGrid.Children.Insert(this.cellInsertionIndex, e);
+            this.cellInsertionIndex++;
             this.cellMap.Add(cellRef.GetHashCode(), e);
         }
 
         /// <summary>
-        /// The insert rows.
+        /// Inserts rows at the selection.
         /// </summary>
         private void InsertRows()
         {
@@ -2399,12 +2476,12 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The on content collection changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
-        private void OnContentCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // todo: update only changed rows/columns
             this.UpdateGridContent();
@@ -2414,10 +2491,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The paste execute.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void PasteExecute(object sender, ExecutedRoutedEventArgs e)
         {
@@ -2428,10 +2505,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The row grid mouse left button down.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void RowGridMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -2441,14 +2518,7 @@ namespace PropertyTools.Wpf.ItemsGrid
             if (row >= 0)
             {
                 bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
-                if (shift)
-                {
-                    this.CurrentCell = new CellRef(this.CurrentCell.Row, 0);
-                }
-                else
-                {
-                    this.CurrentCell = new CellRef(row, 0);
-                }
+                this.CurrentCell = shift ? new CellRef(this.CurrentCell.Row, 0) : new CellRef(row, 0);
 
                 this.SelectionCell = new CellRef(row, this.Columns - 1);
             }
@@ -2462,10 +2532,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The row grid mouse left button up.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void RowGridMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -2477,10 +2547,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The row grid mouse move.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void RowGridMouseMove(object sender, MouseEventArgs e)
         {
@@ -2501,10 +2571,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The row scroller changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void RowScrollerChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -2515,10 +2585,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The scroll viewer scroll changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void ScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -2537,16 +2607,16 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The selection to string.
+        /// Exports the selection to a string.
         /// </summary>
         /// <param name="separator">
-        /// The separator.
+        /// The separator. 
         /// </param>
         /// <param name="encode">
-        /// The encode.
+        /// Determines whether to csv encode the elements. 
         /// </param>
         /// <returns>
-        /// The selection to string.
+        /// The string. 
         /// </returns>
         private string SelectionToString(string separator, bool encode = false)
         {
@@ -2554,13 +2624,13 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The set check in selected cells.
+        /// Set the bool value in the selected cells.
         /// </summary>
         /// <param name="value">
-        /// The value.
+        /// The value. 
         /// </param>
         /// <returns>
-        /// The set check in selected cells.
+        /// True if cells were modified. 
         /// </returns>
         private bool SetCheckInSelectedCells(bool value)
         {
@@ -2581,34 +2651,51 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The sheet mouse left button down.
+        /// The set element data context.
+        /// </summary>
+        /// <param name="element">
+        /// The element. 
+        /// </param>
+        /// <param name="pd">
+        /// The pd. 
+        /// </param>
+        /// <param name="item">
+        /// The item. 
+        /// </param>
+        private void SetElementDataContext(FrameworkElement element, PropertyDefinition pd, object item)
+        {
+            element.DataContext = pd.Descriptor != null ? item : this.ItemsSource;
+        }
+
+        /// <summary>
+        /// Handles mouse left button down on the grid sheet.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void SheetMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
             {
-                this.ShowTextBoxEditor();
+                this.ShowTextBoxEditControl();
                 e.Handled = true;
             }
         }
 
         /// <summary>
-        /// The sheet to string.
+        /// Exports the whole grid sheet to a string.
         /// </summary>
         /// <param name="separator">
-        /// The separator.
+        /// The separator. 
         /// </param>
         /// <param name="encode">
-        /// The encode.
+        /// The encode. 
         /// </param>
         /// <returns>
-        /// The sheet to string.
+        /// The sheet to string. 
         /// </returns>
         private string SheetToString(string separator, bool encode = false)
         {
@@ -2616,27 +2703,29 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The subscribe notifications.
+        /// The text editor was loaded.
         /// </summary>
-        private void SubscribeToNotifications()
+        /// <param name="sender">
+        /// The sender. 
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data. 
+        /// </param>
+        private void TextEditorLoaded(object sender, RoutedEventArgs e)
         {
-            var ncc = this.Content as INotifyCollectionChanged;
-            if (ncc != null)
-            {
-                ncc.CollectionChanged += this.OnContentCollectionChanged;
-            }
-
-            this.subcribedContent = this.Content;
+            var tb = (TextBox)sender;
+            tb.CaretIndex = tb.Text.Length;
+            tb.SelectAll();
         }
 
         /// <summary>
         /// The text editor lost focus.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void TextEditorLostFocus(object sender, RoutedEventArgs e)
         {
@@ -2644,25 +2733,13 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The text editor was loaded.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
-        private void TextEditorLoaded(object sender, RoutedEventArgs e)
-        {
-            var tb = sender as TextBox;
-            tb.CaretIndex = tb.Text.Length;
-            tb.SelectAll();
-        }
-
-        /// <summary>
         /// Handles keydown events in the TextBox editor.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void TextEditorPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -2712,22 +2789,22 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The to string.
+        /// Exports the specified cell range to a string.
         /// </summary>
         /// <param name="cell1">
-        /// The cell 1.
+        /// The cell 1. 
         /// </param>
         /// <param name="cell2">
-        /// The cell 2.
+        /// The cell 2. 
         /// </param>
         /// <param name="separator">
-        /// The separator.
+        /// The separator. 
         /// </param>
         /// <param name="encode">
-        /// The encode.
+        /// Determines whether to csv encode the elements. 
         /// </param>
         /// <returns>
-        /// The to string.
+        /// The to string. 
         /// </returns>
         private string ToString(CellRef cell1, CellRef cell2, string separator, bool encode = false)
         {
@@ -2769,10 +2846,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        /// The toggle check.
+        /// Toggles the check in the current cell.
         /// </summary>
         /// <returns>
-        /// The toggle check.
+        /// True if the cell was modified. 
         /// </returns>
         private bool ToggleCheck()
         {
@@ -2791,10 +2868,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// The topleft mouse left button down.
         /// </summary>
         /// <param name="sender">
-        /// The sender.
+        /// The sender. 
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event arguments. 
         /// </param>
         private void TopleftMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -2809,342 +2886,13 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// </summary>
         private void UnsubscribeNotifications()
         {
-            var ncc = this.subcribedContent as INotifyCollectionChanged;
+            var ncc = this.subcribedCollection as INotifyCollectionChanged;
             if (ncc != null)
             {
-                ncc.CollectionChanged -= this.OnContentCollectionChanged;
+                ncc.CollectionChanged -= this.OnItemsCollectionChanged;
             }
 
-            this.subcribedContent = null;
-        }
-
-        /// <summary>
-        /// The update sheet.
-        /// </summary>
-        /// <param name="rows">
-        /// The rows.
-        /// </param>
-        /// <param name="columns">
-        /// The columns.
-        /// </param>
-        private void UpdateCells(int rows, int columns)
-        {
-            // int rank = cells.Rank;
-            // int rows = cells.GetUpperBound(0) + 1;
-            // int columns = rank > 1 ? cells.GetUpperBound(1) + 1 : 1;
-            this.sheetGrid.Children.Clear();
-            this.sheetGrid.Children.Add(this.selectionBackground);
-            this.sheetGrid.Children.Add(this.currentBackground);
-            this.cellMap.Clear();
-
-            // todo: UI virtualize grid lines (both rows and columns)
-
-            // Add row lines to the sheet
-            for (int i = 1; i <= rows; i++)
-            {
-                var border = new Border
-                    {
-                        BorderBrush = this.GridLineBrush,
-                        BorderThickness = new Thickness(0, 1, 0, 0)
-                    };
-
-                if (i < rows && this.AlternatingRowsBackground != null && i % 2 == 1)
-                {
-                    border.Background = this.AlternatingRowsBackground;
-                }
-
-                Grid.SetColumn(border, 0);
-                if (columns > 0)
-                {
-                    Grid.SetColumnSpan(border, columns);
-                }
-
-                Grid.SetRow(border, i);
-                this.sheetGrid.Children.Add(border);
-            }
-
-            if (rows > 0)
-            {
-                // Add column lines to the sheet
-                for (int i = 0; i < columns; i++)
-                {
-                    if (i == 0 && columns > 1)
-                    {
-                        continue;
-                    }
-
-                    var border = new Border
-                        {
-                            BorderBrush = this.GridLineBrush,
-                            BorderThickness = new Thickness(i > 0 ? 1 : 0, 0, i == columns - 1 ? 1 : 0, 0)
-                        };
-
-                    Grid.SetRow(border, 0);
-                    Grid.SetRowSpan(border, rows);
-                    Grid.SetColumn(border, i);
-                    this.sheetGrid.Children.Add(border);
-                }
-            }
-
-            this.cellInsertionIndex = this.sheetGrid.Children.Count;
-
-            // Add all cells to the sheet
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++)
-                {
-                    var cell = new CellRef(i, j);
-                    var value = this.GetCellValue(cell);
-                    this.AddCellElement(cell, value);
-                }
-            }
-
-            this.sheetGrid.Children.Add(this.selection);
-            this.sheetGrid.Children.Add(this.autoFillBox);
-            this.sheetGrid.Children.Add(this.autoFillSelection);
-        }
-
-        /// <summary>
-        /// The update column widths.
-        /// </summary>
-        private void UpdateColumnWidths()
-        {
-            this.sheetGrid.UpdateLayout();
-
-            for (int i = 0; i < this.Columns; i++)
-            {
-                if (this.GetColumnWidth(i) == GridLength.Auto || this.AutoSizeColumns)
-                {
-                    this.AutoSizeColumn(i);
-                }
-            }
-
-            this.sheetGrid.UpdateLayout();
-
-            for (int j = 0; j < this.sheetGrid.ColumnDefinitions.Count; j++)
-            {
-                this.columnGrid.ColumnDefinitions[j].Width =
-                    new GridLength(this.sheetGrid.ColumnDefinitions[j].ActualWidth);
-            }
-        }
-
-        /// <summary>
-        /// The update columns.
-        /// </summary>
-        /// <param name="columns">
-        /// The columns.
-        /// </param>
-        private void UpdateColumns(int columns)
-        {
-            this.Columns = columns;
-            this.rowGrid.ColumnDefinitions.Clear();
-            this.sheetGrid.ColumnDefinitions.Clear();
-            for (int i = 0; i < columns; i++)
-            {
-                var w = this.GetColumnWidth(i);
-                this.sheetGrid.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition { Width = w });
-
-                // the width of the header column will be updated later
-                this.columnGrid.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
-            }
-
-            // Add one empty column covering the vertical scrollbar
-            this.columnGrid.ColumnDefinitions.Add(
-                new System.Windows.Controls.ColumnDefinition { Width = new GridLength(40) });
-
-            this.columnGrid.Children.Clear();
-            this.columnGrid.Children.Add(this.columnSelectionBackground);
-            for (int j = 0; j < columns; j++)
-            {
-                object header = this.GetColumnHeader(j);
-                var cellref = new CellRef(!this.ItemsInColumns ? -1 : j, !this.ItemsInColumns ? j : -1);
-                var pd = this.GetPropertyDefinition(cellref);
-
-                var border = new Border
-                    {
-                        BorderBrush = this.HeaderBorderBrush,
-                        BorderThickness = new Thickness(0, 1, 1, 1),
-                        Margin = new Thickness(0, 0, j < columns - 1 ? -1 : 0, 0)
-                    };
-                Grid.SetColumn(border, j);
-                this.columnGrid.Children.Add(border);
-                var cell = new TextBlock
-                    {
-                        Text = header != null ? header.ToString() : "-",
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = pd.HorizontalAlignment,
-                        Padding = new Thickness(4, 2, 4, 2)
-                    };
-
-                Grid.SetColumn(cell, j);
-                this.columnGrid.Children.Add(cell);
-
-                if (this.CanResizeColumns)
-                {
-                    var splitter = new GridSplitter
-                        {
-                            ResizeDirection = GridResizeDirection.Columns,
-                            Background = Brushes.Transparent,
-                            Width = 4,
-                            Focusable = false,
-                            VerticalAlignment = VerticalAlignment.Stretch,
-                            HorizontalAlignment = HorizontalAlignment.Right
-                        };
-                    splitter.MouseDoubleClick += this.ColumnSplitterDoubleClick;
-                    splitter.DragStarted += this.ColumnSplitterChangeStarted;
-                    splitter.DragDelta += this.ColumnSplitterChangeDelta;
-                    splitter.DragCompleted += this.ColumnSplitterChangeCompleted;
-                    Grid.SetColumn(splitter, j);
-                    this.columnGrid.Children.Add(splitter);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Updates all the UIElements of the grid (both cells, headers, row and column lines).
-        /// </summary>
-        private void UpdateGridContent()
-        {
-            this.UnsubscribeNotifications();
-
-            if (this.sheetGrid == null)
-            {
-                // return if the template has not yet been applied
-                return;
-            }
-
-            int rows = -1;
-            int columns = -1;
-
-            if (this.AutoGenerateColumns && this.PropertyDefinitions.Count == 0)
-            {
-                this.GeneratePropertyDefinitions(this.Content as IEnumerable);
-            }
-
-            var items = this.Content as IEnumerable;
-            if (items != null)
-            {
-                int n = items.Cast<object>().Count();
-                int m = this.PropertyDefinitions.Count;
-
-                rows = !this.ItemsInColumns ? n : m;
-                columns = !this.ItemsInColumns ? m : n;
-            }
-
-            var visibility = rows >= 0 ? Visibility.Visible : Visibility.Hidden;
-
-            // Hide the row/column headers if the content is empty
-            this.rowScroller.Visibility =
-                this.columnScroller.Visibility = this.sheetScroller.Visibility = this.topleft.Visibility = visibility;
-
-            if (rows < 0)
-            {
-                return;
-            }
-
-            this.UpdateRows(rows);
-            this.UpdateColumns(columns);
-            this.UpdateCells(rows, columns);
-
-            this.UpdateColumnWidths();
-
-            this.SubscribeToNotifications();
-            this.BuildContextMenus();
-        }
-
-        /// <summary>
-        /// The update rows.
-        /// </summary>
-        /// <param name="rows">
-        /// The rows.
-        /// </param>
-        private void UpdateRows(int rows)
-        {
-            this.rowGrid.RowDefinitions.Clear();
-            this.sheetGrid.RowDefinitions.Clear();
-            this.rowGrid.Children.Clear();
-            this.rowGrid.Children.Add(this.rowSelectionBackground);
-
-            this.Rows = rows;
-
-            for (int i = 0; i < rows; i++)
-            {
-                this.sheetGrid.RowDefinitions.Add(new RowDefinition { Height = this.DefaultRowHeight });
-                this.rowGrid.RowDefinitions.Add(new RowDefinition { Height = this.DefaultRowHeight });
-            }
-
-            for (int i = 0; i < rows; i++)
-            {
-                object header = this.GetRowHeader(i);
-
-                var border = new Border
-                    {
-                        BorderBrush = this.HeaderBorderBrush,
-                        BorderThickness = new Thickness(1, 0, 1, 1),
-                        Margin = new Thickness(0, 0, 0, -1)
-                    };
-
-                Grid.SetRow(border, i);
-                this.rowGrid.Children.Add(border);
-
-                var cell = header as FrameworkElement;
-                if (cell == null)
-                {
-                    cell = new TextBlock
-                        {
-                            Text = header != null ? header.ToString() : "-",
-                            VerticalAlignment = VerticalAlignment.Center,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            Padding = new Thickness(4, 2, 4, 2)
-                        };
-                }
-
-                if (this.ItemHeaderPropertyPath != null && !this.ItemsInColumns)
-                {
-                    cell.DataContext = this.GetItem(new CellRef(i, -1));
-                    cell.SetBinding(TextBlock.TextProperty, new Binding(this.ItemHeaderPropertyPath));
-                }
-
-                Grid.SetRow(cell, i);
-                this.rowGrid.Children.Add(cell);
-            }
-
-            // Add "Insert" row header
-            if (this.CanInsertRows && this.AddItemHeader != null)
-            {
-                this.sheetGrid.RowDefinitions.Add(new RowDefinition { Height = this.DefaultRowHeight });
-                this.rowGrid.RowDefinitions.Add(new RowDefinition { Height = this.DefaultRowHeight });
-
-                var cell = new TextBlock
-                    {
-                        Text = this.AddItemHeader,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center
-                    };
-                var border = new Border
-                    {
-                        Background = Brushes.Transparent,
-                        BorderBrush = this.HeaderBorderBrush,
-                        BorderThickness = new Thickness(1, 0, 1, 1),
-                        Margin = new Thickness(0, 0, 0, 0)
-                    };
-
-                border.MouseLeftButtonDown += this.AddItemCellMouseLeftButtonDown;
-                Grid.SetRow(border, rows);
-
-                cell.Padding = new Thickness(4, 2, 4, 2);
-                Grid.SetRow(cell, rows);
-                this.rowGrid.Children.Add(cell);
-                this.rowGrid.Children.Add(border);
-            }
-            else
-            {
-                this.sheetGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                this.rowGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            }
-
-            // to cover a posisble scrollbar
-            this.rowGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20) });
+            this.subcribedCollection = null;
         }
 
         #endregion

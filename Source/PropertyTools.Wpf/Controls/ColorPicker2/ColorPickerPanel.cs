@@ -421,7 +421,6 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual object CoerceSelectedColorValue(object basevalue)
         {
-            Debug.WriteLine("ColorPickerPanel.CoerceSelectedColorValue {0}", basevalue);
             if (basevalue == null)
             {
                 return this.SelectedColor;
@@ -447,8 +446,6 @@ namespace PropertyTools.Wpf
             {
                 return;
             }
-
-            Debug.WriteLine("ColorPickerPanel.OnComponentChanged {0}", this.SelectedColor);
 
             var color = this.SelectedColor.Value;
             this.withinComponentChange = true;
@@ -536,7 +533,6 @@ namespace PropertyTools.Wpf
         /// </param>
         protected virtual void OnSelectedColorChanged(Color? newColor, Color? oldColor)
         {
-            Debug.WriteLine("ColorPickerPanel.OnSelectedColorChanged {0} ({1})", newColor, oldColor);
             if (!this.withinColorChange && !this.withinComponentChange && newColor != null)
             {
                 this.AddColorToRecentColorsIfMissing(newColor.Value);
@@ -808,7 +804,6 @@ namespace PropertyTools.Wpf
         /// </param>
         private void UpdateHSV(Color color)
         {
-            Debug.WriteLine("ColorPickerPanel.UpdateHSV {0}", color);
             this.withinColorChange = true;
             if (this.hsvControl != null)
             {
@@ -834,7 +829,6 @@ namespace PropertyTools.Wpf
         /// </param>
         private void UpdateRGB(Color color)
         {
-            Debug.WriteLine("ColorPickerPanel.UpdateRGB {0}", color);
             this.withinColorChange = true;
             if (this.hsvControl != null)
             {

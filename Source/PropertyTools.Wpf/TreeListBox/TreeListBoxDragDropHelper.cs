@@ -33,9 +33,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty DragDropTemplateProperty =
             DependencyProperty.RegisterAttached(
-                "DragDropTemplate", 
-                typeof(DataTemplate), 
-                typeof(TreeListBoxDragDropHelper), 
+                "DragDropTemplate",
+                typeof(DataTemplate),
+                typeof(TreeListBoxDragDropHelper),
                 new UIPropertyMetadata(null));
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty IsDragSourceProperty =
             DependencyProperty.RegisterAttached(
-                "IsDragSource", 
-                typeof(bool), 
-                typeof(TreeListBoxDragDropHelper), 
+                "IsDragSource",
+                typeof(bool),
+                typeof(TreeListBoxDragDropHelper),
                 new UIPropertyMetadata(false, IsDragSourceChanged));
 
         /// <summary>
@@ -53,20 +53,20 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty IsDropTargetProperty =
             DependencyProperty.RegisterAttached(
-                "IsDropTarget", 
-                typeof(bool), 
-                typeof(TreeListBoxDragDropHelper), 
+                "IsDropTarget",
+                typeof(bool),
+                typeof(TreeListBoxDragDropHelper),
                 new UIPropertyMetadata(false, IsDropTargetChanged));
-
-        /// <summary>
-        /// The format.
-        /// </summary>
-        private readonly DataFormat format = DataFormats.GetDataFormat("TreeListBox");
 
         /// <summary>
         /// The instance.
         /// </summary>
         private static TreeListBoxDragDropHelper instance;
+
+        /// <summary>
+        /// The format.
+        /// </summary>
+        private readonly DataFormat format = DataFormats.GetDataFormat("TreeListBox");
 
         /// <summary>
         /// The dragged data.
@@ -136,12 +136,7 @@ namespace PropertyTools.Wpf
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new TreeListBoxDragDropHelper();
-                }
-
-                return instance;
+                return instance ?? (instance = new TreeListBoxDragDropHelper());
             }
         }
 
@@ -150,12 +145,13 @@ namespace PropertyTools.Wpf
         #region Public Methods
 
         /// <summary>
-        /// The get drag drop template.
+        /// Gets the drag/drop template.
         /// </summary>
         /// <param name="obj">
         /// The obj.
         /// </param>
         /// <returns>
+        /// A data template.
         /// </returns>
         public static DataTemplate GetDragDropTemplate(DependencyObject obj)
         {
@@ -163,13 +159,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The get is drag source.
+        /// Gets the IsDragSource value.
         /// </summary>
         /// <param name="obj">
         /// The obj.
         /// </param>
         /// <returns>
-        /// The get is drag source.
+        /// The value.
         /// </returns>
         public static bool GetIsDragSource(DependencyObject obj)
         {
@@ -177,13 +173,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The get is drop target.
+        /// Gets the IsDropTarget value.
         /// </summary>
         /// <param name="obj">
         /// The obj.
         /// </param>
         /// <returns>
-        /// The get is drop target.
+        /// The value.
         /// </returns>
         public static bool GetIsDropTarget(DependencyObject obj)
         {
@@ -191,7 +187,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The get relative position.
+        /// Gets the relative position.
         /// </summary>
         /// <param name="container">
         /// The container.
@@ -200,10 +196,10 @@ namespace PropertyTools.Wpf
         /// The clicked point.
         /// </param>
         /// <param name="hasVerticalOrientation">
-        /// The has vertical orientation.
+        /// The vertical orientation.
         /// </param>
         /// <returns>
-        /// The get relative position.
+        /// The relative position.
         /// </returns>
         public static double GetRelativePosition(
             FrameworkElement container, Point clickedPoint, bool hasVerticalOrientation)
@@ -217,7 +213,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The is movement big enough.
+        /// Determines if the specified  movement is big enough.
         /// </summary>
         /// <param name="initialMousePosition">
         /// The initial mouse position.
@@ -226,7 +222,7 @@ namespace PropertyTools.Wpf
         /// The current position.
         /// </param>
         /// <returns>
-        /// The is movement big enough.
+        /// True if the movement is big enough.
         /// </returns>
         public static bool IsMovementBigEnough(Point initialMousePosition, Point currentPosition)
         {
@@ -283,13 +279,13 @@ namespace PropertyTools.Wpf
         #region Methods
 
         /// <summary>
-        /// The is drag source changed.
+        /// Determines if the drag source changed.
         /// </summary>
         /// <param name="obj">
         /// The obj.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
         private static void IsDragSourceChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
@@ -298,31 +294,31 @@ namespace PropertyTools.Wpf
             {
                 if (Equals(e.NewValue, true))
                 {
-                    dragSource.PreviewMouseLeftButtonDown += Instance.DragSource_PreviewMouseLeftButtonDown;
-                    dragSource.PreviewMouseLeftButtonUp += Instance.DragSource_PreviewMouseLeftButtonUp;
-                    dragSource.PreviewMouseRightButtonDown += Instance.DragSource_PreviewMouseLeftButtonDown;
-                    dragSource.PreviewMouseRightButtonUp += Instance.DragSource_PreviewMouseLeftButtonUp;
-                    dragSource.PreviewMouseMove += Instance.DragSource_PreviewMouseMove;
+                    dragSource.PreviewMouseLeftButtonDown += Instance.DragSourcePreviewMouseLeftButtonDown;
+                    dragSource.PreviewMouseLeftButtonUp += Instance.DragSourcePreviewMouseLeftButtonUp;
+                    dragSource.PreviewMouseRightButtonDown += Instance.DragSourcePreviewMouseLeftButtonDown;
+                    dragSource.PreviewMouseRightButtonUp += Instance.DragSourcePreviewMouseLeftButtonUp;
+                    dragSource.PreviewMouseMove += Instance.DragSourcePreviewMouseMove;
                 }
                 else
                 {
-                    dragSource.PreviewMouseLeftButtonDown -= Instance.DragSource_PreviewMouseLeftButtonDown;
-                    dragSource.PreviewMouseLeftButtonUp -= Instance.DragSource_PreviewMouseLeftButtonUp;
-                    dragSource.PreviewMouseRightButtonDown -= Instance.DragSource_PreviewMouseLeftButtonDown;
-                    dragSource.PreviewMouseRightButtonUp -= Instance.DragSource_PreviewMouseLeftButtonUp;
-                    dragSource.PreviewMouseMove -= Instance.DragSource_PreviewMouseMove;
+                    dragSource.PreviewMouseLeftButtonDown -= Instance.DragSourcePreviewMouseLeftButtonDown;
+                    dragSource.PreviewMouseLeftButtonUp -= Instance.DragSourcePreviewMouseLeftButtonUp;
+                    dragSource.PreviewMouseRightButtonDown -= Instance.DragSourcePreviewMouseLeftButtonDown;
+                    dragSource.PreviewMouseRightButtonUp -= Instance.DragSourcePreviewMouseLeftButtonUp;
+                    dragSource.PreviewMouseMove -= Instance.DragSourcePreviewMouseMove;
                 }
             }
         }
 
         /// <summary>
-        /// The is drop target changed.
+        /// Determines if the drop target changed.
         /// </summary>
         /// <param name="obj">
         /// The obj.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
         private static void IsDropTargetChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
@@ -332,24 +328,24 @@ namespace PropertyTools.Wpf
                 if (Equals(e.NewValue, true))
                 {
                     dropTarget.AllowDrop = true;
-                    dropTarget.PreviewDrop += Instance.DropTarget_PreviewDrop;
-                    dropTarget.PreviewDragEnter += Instance.DropTarget_PreviewDragEnter;
-                    dropTarget.PreviewDragOver += Instance.DropTarget_PreviewDragOver;
-                    dropTarget.PreviewDragLeave += Instance.DropTarget_PreviewDragLeave;
+                    dropTarget.PreviewDrop += Instance.DropTargetPreviewDrop;
+                    dropTarget.PreviewDragEnter += Instance.DropTargetPreviewDragEnter;
+                    dropTarget.PreviewDragOver += Instance.DropTargetPreviewDragOver;
+                    dropTarget.PreviewDragLeave += Instance.DropTargetPreviewDragLeave;
                 }
                 else
                 {
                     dropTarget.AllowDrop = false;
-                    dropTarget.PreviewDrop -= Instance.DropTarget_PreviewDrop;
-                    dropTarget.PreviewDragEnter -= Instance.DropTarget_PreviewDragEnter;
-                    dropTarget.PreviewDragOver -= Instance.DropTarget_PreviewDragOver;
-                    dropTarget.PreviewDragLeave -= Instance.DropTarget_PreviewDragLeave;
+                    dropTarget.PreviewDrop -= Instance.DropTargetPreviewDrop;
+                    dropTarget.PreviewDragEnter -= Instance.DropTargetPreviewDragEnter;
+                    dropTarget.PreviewDragOver -= Instance.DropTargetPreviewDragOver;
+                    dropTarget.PreviewDragLeave -= Instance.DropTargetPreviewDragLeave;
                 }
             }
         }
 
         /// <summary>
-        /// The create or update insertion adorner.
+        /// Creates or updates the insertion adorner.
         /// </summary>
         private void CreateOrUpdateInsertionAdorner()
         {
@@ -373,10 +369,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The decide drop target.
+        /// Decides the drop target.
         /// </summary>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
         private void DecideDropTarget(DragEventArgs e)
         {
@@ -427,15 +423,15 @@ namespace PropertyTools.Wpf
                 this.dropPosition = DropPosition.InsertBefore;
             }
 
-            if (this.targetItemContainer != null)
+            if (this.targetItemContainer != null && draggedItems != null)
             {
-                var dt = this.targetItemContainer.DataContext as IDropTarget;
+                var dropTarget = this.targetItemContainer.DataContext as IDropTarget;
                 bool copy = (e.Effects & DragDropEffects.Copy) != 0;
 
                 foreach (var draggedItem in draggedItems)
                 {
-                    var ds = draggedItem as IDragSource;
-                    if (!ds.IsDraggable || !dt.CanDrop(ds, this.dropPosition, copy))
+                    var dragSource = draggedItem as IDragSource;
+                    if ((dragSource == null || !dragSource.IsDraggable) || (dropTarget == null || !dropTarget.CanDrop(dragSource, this.dropPosition, copy)))
                     {
                         this.targetItemContainer = null;
                         e.Effects = DragDropEffects.None;
@@ -446,15 +442,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The drag source_ preview mouse left button down.
+        /// Handles the PreviewMouseLeftButtonDown event on the drag source.
         /// </summary>
         /// <param name="sender">
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
-        private void DragSource_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void DragSourcePreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.sourceItemsControl = (TreeListBox)sender;
             var visual = e.OriginalSource as Visual;
@@ -462,7 +458,7 @@ namespace PropertyTools.Wpf
             this.topWindow = Window.GetWindow(this.sourceItemsControl);
             this.initialMousePosition = e.GetPosition(this.topWindow);
 
-            this.sourceItemContainer = this.sourceItemsControl.ContainerFromElement(visual) as TreeListBoxItem;
+            this.sourceItemContainer = visual != null ? this.sourceItemsControl.ContainerFromElement(visual) as TreeListBoxItem : null;
             if (this.sourceItemContainer != null)
             {
                 this.draggedData = new List<IDragSource>();
@@ -481,29 +477,29 @@ namespace PropertyTools.Wpf
         // Drag = mouse down + move by a certain amount
 
         /// <summary>
-        /// The drag source_ preview mouse left button up.
+        /// Handles the PreviewMouseLeftButtonUp event on the drag source.
         /// </summary>
         /// <param name="sender">
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
-        private void DragSource_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void DragSourcePreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             this.draggedData = null;
         }
 
         /// <summary>
-        /// The drag source_ preview mouse move.
+        /// Handles the PreviewMouseMove event on the drag source.
         /// </summary>
         /// <param name="sender">
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
-        private void DragSource_PreviewMouseMove(object sender, MouseEventArgs e)
+        private void DragSourcePreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (this.draggedData != null)
             {
@@ -514,8 +510,7 @@ namespace PropertyTools.Wpf
 
                     var control = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
 
-                    DragDropEffects effects = DragDrop.DoDragDrop(
-                        (DependencyObject)sender, data, control ? DragDropEffects.Copy : DragDropEffects.Move);
+                    DragDrop.DoDragDrop((DependencyObject)sender, data, control ? DragDropEffects.Copy : DragDropEffects.Move);
 
                     this.draggedData = null;
                 }
@@ -523,15 +518,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The drop target_ preview drag enter.
+        /// Handles the PreviewDragEnter event on the drop target.
         /// </summary>
         /// <param name="sender">
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
-        private void DropTarget_PreviewDragEnter(object sender, DragEventArgs e)
+        private void DropTargetPreviewDragEnter(object sender, DragEventArgs e)
         {
             this.targetItemsControl = (TreeListBox)sender;
             object draggedItems = e.Data.GetData(this.format.Name);
@@ -545,15 +540,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The drop target_ preview drag leave.
+        /// Handles the PreviewDragLeave event on the drop target.
         /// </summary>
         /// <param name="sender">
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
-        private void DropTarget_PreviewDragLeave(object sender, DragEventArgs e)
+        private void DropTargetPreviewDragLeave(object sender, DragEventArgs e)
         {
             // Dragged Adorner is only created once on DragEnter + every time we enter the window. 
             // It's only removed once on the DragDrop, and every time we leave the window. (so no need to remove it here)
@@ -567,15 +562,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The drop target_ preview drag over.
+        /// Handles the PreviewDragOver event on the drop target.
         /// </summary>
         /// <param name="sender">
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
-        private void DropTarget_PreviewDragOver(object sender, DragEventArgs e)
+        private void DropTargetPreviewDragOver(object sender, DragEventArgs e)
         {
             object draggedItems = e.Data.GetData(this.format.Name);
 
@@ -588,15 +583,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The drop target_ preview drop.
+        /// Handles the PreviewDrop event on the drop target.
         /// </summary>
         /// <param name="sender">
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event args.
         /// </param>
-        private void DropTarget_PreviewDrop(object sender, DragEventArgs e)
+        private void DropTargetPreviewDrop(object sender, DragEventArgs e)
         {
             var draggedItems = e.Data.GetData(this.format.Name) as IList;
 
@@ -604,10 +599,15 @@ namespace PropertyTools.Wpf
             {
                 this.RemoveAdorners();
 
-                var dt = this.targetItemContainer.DataContext as IDropTarget;
+                if (this.targetItemContainer == null)
+                {
+                    return;
+                }
+
+                var dropTarget = this.targetItemContainer.DataContext as IDropTarget;
                 foreach (var draggedItem in draggedItems)
                 {
-                    if (dt == draggedItem)
+                    if (dropTarget == draggedItem)
                     {
                         return;
                     }
@@ -616,30 +616,31 @@ namespace PropertyTools.Wpf
                 bool copy = (e.Effects & DragDropEffects.Copy) != 0;
                 foreach (var draggedItem in draggedItems)
                 {
-                    var ds = draggedItem as IDragSource;
-                    if (!ds.IsDraggable)
+                    var dragSource = draggedItem as IDragSource;
+                    if (dragSource == null || !dragSource.IsDraggable)
                     {
                         continue;
                     }
 
-                    if (!dt.CanDrop(ds, this.dropPosition, copy))
+                    if (dropTarget == null || !dropTarget.CanDrop(dragSource, this.dropPosition, copy))
                     {
                         continue;
                     }
 
                     if (!copy)
                     {
-                        ds.Detach();
+                        dragSource.Detach();
                     }
 
-                    dt.Drop(ds, this.dropPosition, copy);
+                    dropTarget.Drop(dragSource, this.dropPosition, copy);
                 }
+
                 e.Handled = true;
             }
         }
 
         /// <summary>
-        /// The remove adorners.
+        /// Removes the adorners.
         /// </summary>
         private void RemoveAdorners()
         {
@@ -651,7 +652,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The remove insertion adorner.
+        /// Removes the insertion adorner.
         /// </summary>
         private void RemoveInsertionAdorner()
         {
@@ -663,7 +664,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The update adorner.
+        /// Updates the adorner.
         /// </summary>
         private void UpdateAdorner()
         {

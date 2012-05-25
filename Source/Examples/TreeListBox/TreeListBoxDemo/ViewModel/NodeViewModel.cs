@@ -161,6 +161,7 @@ namespace TreeListBoxDemo
         {
             this.Node = Node;
             this.Parent = parent;
+            this.IsExpanded = true;
         }
 
         public override string ToString()
@@ -168,15 +169,37 @@ namespace TreeListBoxDemo
             return Name;
         }
 
-        public object AddChild()
+        public NodeViewModel AddChild()
         {
             var cn = this.Node as CompositeNode;
-            if (cn == null) return null;
+            if (cn == null)
+            {
+                return null;
+            }
+
             var newChild = new CompositeNode() { Name = "New node" };
             cn.Children.Add(newChild);
             var vm = new NodeViewModel(newChild, this);
             this.Children.Add(vm);
             return vm;
+        }
+
+        public void ExpandParents()
+        {
+            if (this.Parent != null)
+            {
+                this.Parent.ExpandParents();
+                this.Parent.IsExpanded = true;
+            }
+        }
+
+        public void ExpandAll()
+        {
+            this.IsExpanded = true;
+            foreach (var child in this.Children)
+            {
+                child.ExpandAll();
+            }
         }
     }
 }

@@ -8,6 +8,8 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// The type helper.
@@ -30,6 +32,11 @@ namespace PropertyTools.Wpf
             Type type = null;
             foreach (var item in list)
             {
+                if (item == null)
+                {
+                    continue;
+                }
+
                 Type itemType = item.GetType();
                 if (type == null)
                 {
@@ -47,7 +54,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the underlying enum type of the specified type.
+        /// Gets the underlying enum type of the specified type, if the specified type is a nullable type.
         /// </summary>
         /// <param name="propertyType">
         /// The type.
@@ -77,6 +84,43 @@ namespace PropertyTools.Wpf
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets the type of the items in the specified enumeration.
+        /// </summary>
+        /// <param name="enumerable">The enumerable.</param>
+        /// <returns>The type of the items.</returns>
+        public static Type GetItemType(IEnumerable enumerable)
+        {
+            return enumerable != null ? enumerable.AsQueryable().ElementType : null;
+        }
+
+        /// <summary>
+        /// The get list item type.
+        /// </summary>
+        /// <param name="listType">
+        /// The list type.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        [Obsolete]
+        public static Type GetListElementType(Type listType)
+        {
+            // http://stackoverflow.com/questions/1043755/c-generic-list-t-how-to-get-the-type-of-t
+            foreach (var interfaceType in listType.GetInterfaces())
+            {
+                if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IList<>))
+                {
+                    var args = interfaceType.GetGenericArguments();
+                    if (args.Length > 0)
+                    {
+                        return args[0];
+                    }
+                }
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Determines whether the first type is assignable from the specified second type.

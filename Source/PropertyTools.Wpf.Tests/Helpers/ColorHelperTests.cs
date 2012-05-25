@@ -1,8 +1,10 @@
-﻿using NUnit.Framework;
-using System.Windows.Media;
-
+﻿
 namespace PropertyTools.Wpf.Tests
 {
+    using System.Windows.Media;
+
+    using NUnit.Framework;
+    
     [TestFixture]
     public class ColorHelperTests
     {

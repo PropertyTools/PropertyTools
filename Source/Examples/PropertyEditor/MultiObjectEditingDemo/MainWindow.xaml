@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
         xmlns:local="clr-namespace:MultiObjectEditingDemo"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="MultiObjectEditDemo" Height="350" Width="850">
+        xmlns:Wpf="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf.Obsolete" Title="MultiObjectEditDemo" Height="350" Width="850">
   <Window.Resources>
     <ObjectDataProvider MethodName="GetValues"
                     ObjectType="{x:Type sys:Enum}"
@@ -51,7 +51,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Label Grid.Row="1">Use Shift or Control to select multiple rows.</Label>
-        <pt:PropertyEditor Grid.Column="1" SelectedObjects="{Binding SelectedPeople}" DefaultTabName="Binding SelectedObjects" Margin="8 8 8 0" EnumAsRadioButtonsLimit="0" />
-        <pt:PropertyEditor Grid.Column="2" SelectedObject="{Binding SelectedPeople}" DefaultTabName="Binding SelectedObject" Margin="8 8 8 0"/>
+        <Wpf:PropertyEditor Grid.Column="1" SelectedObjects="{Binding SelectedPeople}" DefaultTabName="Binding SelectedObjects" Margin="8 8 8 0" EnumAsRadioButtonsLimit="0" />
+        <Wpf:PropertyEditor Grid.Column="2" SelectedObject="{Binding SelectedPeople}" DefaultTabName="Binding SelectedObject" Margin="8 8 8 0"/>
     </Grid>
 </Window>

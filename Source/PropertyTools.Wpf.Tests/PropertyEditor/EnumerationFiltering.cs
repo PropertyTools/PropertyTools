@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using System.ComponentModel;
-
-namespace PropertyTools.Wpf.Tests.PropertyEditor
+﻿namespace PropertyTools.Wpf.Tests.PropertyEditor
 {
-	 [TestFixture]
+    using System;
+    using System.ComponentModel;
+    using System.Linq;
+
+    using NUnit.Framework;
+    
+    [TestFixture]
 	public class EnumerationFiltering
 	{
 		public enum Enum1

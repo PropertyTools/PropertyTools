@@ -32,20 +32,22 @@ namespace TreeListBoxDemo
         public MainViewModel()
         {
             this.Model = new CompositeNode { Name = "Item" };
-            this.AddRecursive(this.Model, 3);
-            Title = "TreeListBox (N=" + Count + ")";
-            RootModel = new NodeViewModel(Model, null);
+            this.AddRecursive(this.Model, 4, 4);
+            this.Title = "TreeListBox (N=" + this.Count + ")";
+            this.RootModel = new NodeViewModel(this.Model, null);
         }
 
-        private void AddRecursive(CompositeNode model, int levels)
+        private void AddRecursive(CompositeNode model, int n, int levels)
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < n; i++)
             {
                 var m2 = new CompositeNode { Name = model.Name + (char)('A' + i) };
                 model.Children.Add(m2);
-                Count++;
+                this.Count++;
                 if (levels > 0)
-                    this.AddRecursive(m2, levels - 1);
+                {
+                    this.AddRecursive(m2, n, levels - 1);
+                }
             }
         }
 
@@ -53,7 +55,9 @@ namespace TreeListBoxDemo
         {
             var children = this.RootModel.Children as IList<NodeViewModel>;
             for (int i = 0; i < count; i++)
+            {
                 children[i].IsSelected = true;
+            }
         }
     }
 }

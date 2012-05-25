@@ -120,6 +120,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\PropertyTools.Wpf.Obsolete\PropertyTools.Wpf.Obsolete.csproj">
+      <Project>{B2DC9F6E-7C32-4AB1-BF13-9F3785B7ED48}</Project>
+      <Name>PropertyTools.Wpf.Obsolete</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj">
       <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>
       <Name>PropertyTools.Wpf</Name>

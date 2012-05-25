@@ -1,8 +1,27 @@
 ﻿<Window x:Class="FeaturesDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Wpf="clr-namespace:PropertyTools.Wpf.ItemsGrid;assembly=PropertyTools.Wpf" Title="ItemsGrid" Height="350" Width="900">
-    <Grid>
-        <Wpf:ItemsGrid Content="{Binding Items}" ItemHeaderPropertyPath="Integer"/>
-    </Grid>
+        xmlns:local="clr-namespace:FeaturesDemo" 
+        Title="ItemsGrid demos" SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="8"/>
+            <EventSetter Event="Click" Handler="OpenWindowClick"/>
+        </Style>
+    </Window.Resources>
+    <StackPanel>
+        <Button Content="ObservableCollection&lt;ExampleObject&gt;" Tag="{x:Type local:Window101}"/>
+        <Button Content="ObservableCollection&lt;ExampleObject&gt; (custom columns)" Tag="{x:Type local:Window102}"/>
+        <Button Content="ObservableCollection&lt;ExampleObject&gt; (items in columns)" Tag="{x:Type local:Window103}"/>
+        <Button Content="List&lt;PlainObject&gt;" Tag="{x:Type local:Window201}"/>
+        <Button Content="List&lt;PlainObject&gt; (custom columns)" Tag="{x:Type local:Window202}"/>
+
+        <Button Content="List&lt;int&gt;" Tag="{x:Type local:Window301}"/>
+        <Button Content="ObservableCollection&lt;double&gt;" Tag="{x:Type local:Window302}"/>
+        <Button Content="List&lt;Vector3D&gt;" Tag="{x:Type local:Window303}"/>
+
+        <Button Content="double[]" Tag="{x:Type local:Window401}"/>
+        <Button Content="double[] (WrapItems=True)" Tag="{x:Type local:Window402}"/>
+        <Button Content="Mass[] (WrapItems=True)" Tag="{x:Type local:Window403}"/>
+    </StackPanel>
 </Window>

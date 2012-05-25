@@ -1,11 +1,13 @@
 ﻿<Window x:Class="CustomEditorDemo.Window1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+    xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf.Obsolete"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
-    xmlns:clr2="clr-namespace:System.Collections;assembly=mscorlib" xmlns:local="clr-namespace:CustomEditorDemo" Title="CustomEditorDemo" Height="600" Width="400">
+    xmlns:clr2="clr-namespace:System.Collections;assembly=mscorlib" 
+    xmlns:local="clr-namespace:CustomEditorDemo"
+    xmlns:Wpf="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" Title="CustomEditorDemo" Height="600" Width="400">
     <Window.Resources>
-    	<pt:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+    	<Wpf:ColorToBrushConverter x:Key="ColorToBrushConverter" />
     	<local:ColorList x:Key="Colors"/>
         <!-- We are defining the custom editor here -->
         <DataTemplate x:Key="CustomDateTimeEditor">
@@ -48,9 +50,9 @@
         <pt:PropertyEditor SelectedObject="{Binding CurrentPerson}" ShowTabs="False" Margin="8">
             <!-- list of custom editors -->
             <pt:PropertyEditor.Editors>
-                <pt:TypeEditor EditedType="{x:Type System:DateTime}" EditorTemplate="{StaticResource CustomDateTimeEditor}"/>
-                <pt:TypeEditor EditedType="{x:Type System:Boolean}" EditorTemplate="{StaticResource YesNoEditor}"/>
-                <pt:TypeEditor EditedType="{x:Type Color}" EditorTemplate="{StaticResource SimpleColorPicker}"/>
+                <Wpf:TypeEditor EditedType="{x:Type System:DateTime}" EditorTemplate="{StaticResource CustomDateTimeEditor}"/>
+                <Wpf:TypeEditor EditedType="{x:Type System:Boolean}" EditorTemplate="{StaticResource YesNoEditor}"/>
+                <Wpf:TypeEditor EditedType="{x:Type Color}" EditorTemplate="{StaticResource SimpleColorPicker}"/>
             </pt:PropertyEditor.Editors>
         </pt:PropertyEditor>
 

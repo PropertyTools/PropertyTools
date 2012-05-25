@@ -1,9 +1,8 @@
 ﻿<Window x:Class="SimpleDemo.Window1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
-    xmlns:local="clr-namespace:SimpleDemo" 
-    Title="SimpleDemo" Width="400" Height="720">
+    xmlns:local="clr-namespace:SimpleDemo"
+    xmlns:Wpf="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf.Obsolete" Title="SimpleDemo" Width="400" Height="720">
     <Window.Resources>
         <local:Person x:Key="Person1" 
                       FirstName="Anders" LastName="Andersen" 
@@ -17,7 +16,7 @@
     </Window.Resources>
 
     <Grid>
-        <pt:PropertyEditor Margin="8" x:Name="editor1" SelectedObject="{StaticResource Person1}"/>
+        <Wpf:PropertyEditor Margin="8" x:Name="editor1" SelectedObject="{StaticResource Person1}"/>
     </Grid>
 
 </Window>

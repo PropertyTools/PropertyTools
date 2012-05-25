@@ -109,7 +109,6 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            // Debug.WriteLine("ItemsBag.RelayPropertyChanged on " + e.PropertyName);
             var handler = this.PropertyChanged;
             if (handler != null)
             {

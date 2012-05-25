@@ -15,8 +15,7 @@
         <Style TargetType="{x:Type local:TreeListBoxItem}">
           <Setter Property="BorderThickness" Value="1" />
           <Setter Property="Background" Value="Transparent" />
-          <Setter Property="Padding"
-                  Value="{Binding Level, RelativeSource={RelativeSource Self},Converter={StaticResource LevelToThicknessConverter}}" />
+          <Setter Property="Padding" Value="{Binding Level, RelativeSource={RelativeSource Self}, Converter={StaticResource LevelToThicknessConverter}}" />
           <Setter Property="Template">
             <Setter.Value>
               <ControlTemplate TargetType="{x:Type local:TreeListBoxItem}">

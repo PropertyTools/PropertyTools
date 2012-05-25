@@ -3,8 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
-      xmlns:local="clr-namespace:ExampleBrowser" mc:Ignorable="d" 
+      xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf.Obsolete"
+      xmlns:local="clr-namespace:ExampleBrowser" xmlns:Wpf="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+      mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300">
     <Page.Resources>
         <DataTemplate x:Key="AuthorListEditor">
@@ -29,7 +30,7 @@
     <StackPanel Width="400" VerticalAlignment="Center">
         <pt:PropertyEditor SelectedObject="{Binding SelectedBook}" >
             <pt:PropertyEditor.Editors>
-                <pt:TypeEditor EditedType="{x:Type local:AuthorList}" EditorTemplate="{StaticResource AuthorListEditor}"/>
+                <Wpf:TypeEditor EditedType="{x:Type local:AuthorList}" EditorTemplate="{StaticResource AuthorListEditor}"/>
             </pt:PropertyEditor.Editors>
         </pt:PropertyEditor>
     </StackPanel>

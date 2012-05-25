@@ -2,15 +2,17 @@
 // <copyright file="ItemsGrid.Properties.cs" company="PropertyTools">
 //   http://propertytools.codeplex.com, license: Ms-PL
 // </copyright>
+// <summary>
+//   Properties for the ItemsGrid.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyTools.Wpf.ItemsGrid
+namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -23,130 +25,141 @@ namespace PropertyTools.Wpf.ItemsGrid
         #region Constants and Fields
 
         /// <summary>
-        ///   The add item header property.
+        /// The add item header property.
         /// </summary>
         public static readonly DependencyProperty AddItemHeaderProperty = DependencyProperty.Register(
             "AddItemHeader", typeof(string), typeof(ItemsGrid), new UIPropertyMetadata("*"));
 
         /// <summary>
-        ///   The alternating rows background property.
+        /// The alternating rows background property.
         /// </summary>
         public static readonly DependencyProperty AlternatingRowsBackgroundProperty =
             DependencyProperty.Register(
                 "AlternatingRowsBackground", typeof(Brush), typeof(ItemsGrid), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The auto generate columns property.
+        /// The auto generate columns property.
         /// </summary>
         public static readonly DependencyProperty AutoGenerateColumnsProperty =
             DependencyProperty.Register(
                 "AutoGenerateColumns", typeof(bool), typeof(ItemsGrid), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The auto size columns property.
+        /// The auto insert property.
+        /// </summary>
+        public static readonly DependencyProperty AutoInsertProperty = DependencyProperty.Register(
+            "AutoInsert", typeof(bool), typeof(ItemsGrid), new UIPropertyMetadata(true));
+
+        /// <summary>
+        /// The auto size columns property.
         /// </summary>
         public static readonly DependencyProperty AutoSizeColumnsProperty =
             DependencyProperty.Register(
                 "AutoSizeColumns", typeof(bool), typeof(ItemsGrid), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The can delete property.
+        /// The can delete property.
         /// </summary>
         public static readonly DependencyProperty CanDeleteProperty = DependencyProperty.Register(
             "CanDelete", typeof(bool), typeof(ItemsGrid), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The can insert property.
+        /// The can insert property.
         /// </summary>
         public static readonly DependencyProperty CanInsertProperty = DependencyProperty.Register(
             "CanInsert", typeof(bool), typeof(ItemsGrid), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The can resize columns property.
+        /// The can resize columns property.
         /// </summary>
         public static readonly DependencyProperty CanResizeColumnsProperty =
             DependencyProperty.Register(
                 "CanResizeColumns", typeof(bool), typeof(ItemsGrid), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The content property.
+        /// The column header height property.
         /// </summary>
-        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register(
-            "Content", typeof(object), typeof(ItemsGrid), new UIPropertyMetadata(null, ContentChanged));
+        public static readonly DependencyProperty ColumnHeaderHeightProperty =
+            DependencyProperty.Register(
+                "ColumnHeaderHeight", typeof(GridLength), typeof(ItemsGrid), new UIPropertyMetadata(new GridLength(20)));
+
+        /// <summary>
+        /// The columns context menu property.
+        /// </summary>
+        public static readonly DependencyProperty ColumnsContextMenuProperty =
+            DependencyProperty.Register(
+                "ColumnsContextMenu", typeof(ContextMenu), typeof(ItemsGrid), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The control factory property.
         /// </summary>
         public static readonly DependencyProperty ControlFactoryProperty = DependencyProperty.Register(
-            "ControlFactory",
-            typeof(IItemsGridControlFactory),
-            typeof(ItemsGrid),
+            "ControlFactory", 
+            typeof(IItemsGridControlFactory), 
+            typeof(ItemsGrid), 
             new UIPropertyMetadata(new ItemsGridControlFactory()));
 
         /// <summary>
-        ///   The current cell property.
+        /// The current cell property.
         /// </summary>
         public static readonly DependencyProperty CurrentCellProperty = DependencyProperty.Register(
-            "CurrentCell",
-            typeof(CellRef),
-            typeof(ItemsGrid),
+            "CurrentCell", 
+            typeof(CellRef), 
+            typeof(ItemsGrid), 
             new FrameworkPropertyMetadata(
-                new CellRef(0, 0),
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                CurrentCellChanged,
+                new CellRef(0, 0), 
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
+                (d, e) => ((ItemsGrid)d).CurrentCellChanged(), 
                 CoerceCurrentCell));
 
         /// <summary>
-        ///   The default column width property.
+        /// The default column width property.
         /// </summary>
         public static readonly DependencyProperty DefaultColumnWidthProperty =
             DependencyProperty.Register(
-                "DefaultColumnWidth", typeof(GridLength), typeof(ItemsGrid), new UIPropertyMetadata(new GridLength(1, GridUnitType.Star)));
+                "DefaultColumnWidth", 
+                typeof(GridLength), 
+                typeof(ItemsGrid), 
+                new UIPropertyMetadata(new GridLength(1, GridUnitType.Star)));
 
         /// <summary>
-        ///   The default horizontal alignment property.
+        /// The default horizontal alignment property.
         /// </summary>
         public static readonly DependencyProperty DefaultHorizontalAlignmentProperty =
             DependencyProperty.Register(
-                "DefaultHorizontalAlignment",
-                typeof(HorizontalAlignment),
-                typeof(ItemsGrid),
+                "DefaultHorizontalAlignment", 
+                typeof(HorizontalAlignment), 
+                typeof(ItemsGrid), 
                 new UIPropertyMetadata(HorizontalAlignment.Center));
 
         /// <summary>
-        ///   The default row height property.
+        /// The default row height property.
         /// </summary>
         public static readonly DependencyProperty DefaultRowHeightProperty =
             DependencyProperty.Register(
                 "DefaultRowHeight", typeof(GridLength), typeof(ItemsGrid), new UIPropertyMetadata(new GridLength(20)));
 
         /// <summary>
-        ///   The easy insert property.
-        /// </summary>
-        public static readonly DependencyProperty EasyInsertProperty = DependencyProperty.Register(
-            "EasyInsert", typeof(bool), typeof(ItemsGrid), new UIPropertyMetadata(true));
-
-        /// <summary>
-        ///   The grid line brush property.
+        /// The grid line brush property.
         /// </summary>
         public static readonly DependencyProperty GridLineBrushProperty = DependencyProperty.Register(
-            "GridLineBrush",
-            typeof(Brush),
-            typeof(ItemsGrid),
+            "GridLineBrush", 
+            typeof(Brush), 
+            typeof(ItemsGrid), 
             new UIPropertyMetadata(new SolidColorBrush(Color.FromRgb(218, 220, 221))));
 
         /// <summary>
-        ///   The header border brush property.
+        /// The header border brush property.
         /// </summary>
         public static readonly DependencyProperty HeaderBorderBrushProperty =
             DependencyProperty.Register(
-                "HeaderBorderBrush",
-                typeof(Brush),
-                typeof(ItemsGrid),
+                "HeaderBorderBrush", 
+                typeof(Brush), 
+                typeof(ItemsGrid), 
                 new UIPropertyMetadata(new SolidColorBrush(Color.FromRgb(177, 181, 186))));
 
         /// <summary>
-        ///   The is virtualizing property.
+        /// The is virtualizing property.
         /// </summary>
         public static readonly DependencyProperty IsVirtualizingProperty = DependencyProperty.Register(
             "IsVirtualizing", typeof(bool), typeof(ItemsGrid), new UIPropertyMetadata(false));
@@ -159,40 +172,60 @@ namespace PropertyTools.Wpf.ItemsGrid
                 "ItemHeaderPropertyPath", typeof(string), typeof(ItemsGrid), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The items in columns property.
+        /// The items in columns property.
         /// </summary>
         public static readonly DependencyProperty ItemsInColumnsProperty = DependencyProperty.Register(
-            "ItemsInColumns", typeof(bool), typeof(ItemsGrid), new UIPropertyMetadata(false, ContentChanged));
+            "ItemsInColumns", 
+            typeof(bool), 
+            typeof(ItemsGrid), 
+            new UIPropertyMetadata(false, (d, e) => ((ItemsGrid)d).UpdateGridContent()));
 
         /// <summary>
-        ///   The row header width property.
+        /// The items source property.
+        /// </summary>
+        public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
+            "ItemsSource", 
+            typeof(IList), 
+            typeof(ItemsGrid), 
+            new UIPropertyMetadata(null, (d, e) => ((ItemsGrid)d).UpdateGridContent()));
+
+        /// <summary>
+        /// The row header width property.
         /// </summary>
         public static readonly DependencyProperty RowHeaderWidthProperty = DependencyProperty.Register(
             "RowHeaderWidth", typeof(GridLength), typeof(ItemsGrid), new UIPropertyMetadata(new GridLength(40)));
 
         /// <summary>
-        ///   The row headers property.
+        /// The rows context menu property.
         /// </summary>
-        public static readonly DependencyProperty RowHeadersProperty = DependencyProperty.Register(
-            "RowHeaders", typeof(List<string>), typeof(ItemsGrid), new UIPropertyMetadata(null, ContentChanged));
+        public static readonly DependencyProperty RowsContextMenuProperty =
+            DependencyProperty.Register(
+                "RowsContextMenu", typeof(ContextMenu), typeof(ItemsGrid), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The selected items property.
+        /// The selected items property.
         /// </summary>
         public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.Register(
             "SelectedItems", typeof(IEnumerable), typeof(ItemsGrid), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The selection cell property.
+        /// The selection cell property.
         /// </summary>
         public static readonly DependencyProperty SelectionCellProperty = DependencyProperty.Register(
-            "SelectionCell",
-            typeof(CellRef),
-            typeof(ItemsGrid),
-            new UIPropertyMetadata(new CellRef(0, 0), SelectionCellChanged, CoerceSelectionCell));
+            "SelectionCell", 
+            typeof(CellRef), 
+            typeof(ItemsGrid), 
+            new UIPropertyMetadata(
+                new CellRef(0, 0), (d, e) => ((ItemsGrid)d).SelectionCellChanged(), CoerceSelectionCell));
 
         /// <summary>
-        ///   The column definitions.
+        /// The wrap items property.
+        /// </summary>
+        public static readonly DependencyProperty WrapItemsProperty = DependencyProperty.Register(
+            "WrapItems", typeof(bool), typeof(ItemsGrid), new UIPropertyMetadata(false));
+
+        /// <summary>
+        /// The column definitions.
         /// </summary>
         private readonly Collection<PropertyDefinition> propertyDefinitions = new Collection<PropertyDefinition>();
 
@@ -201,9 +234,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         #region Public Properties
 
         /// <summary>
-        ///   Gets or sets the header used for the add item row/column. Default is "*".
+        /// Gets or sets the header used for the add item row/column. Default is "*".
         /// </summary>
-        /// <value>The add item header.</value>
+        /// <value>
+        /// The add item header. 
+        /// </value>
         public string AddItemHeader
         {
             get
@@ -218,9 +253,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the alternating rows background brush.
+        /// Gets or sets the alternating rows background brush.
         /// </summary>
-        /// <value>The alternating rows background.</value>
+        /// <value>
+        /// The alternating rows background. 
+        /// </value>
         public Brush AlternatingRowsBackground
         {
             get
@@ -235,9 +272,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the auto fill cell.
+        /// Gets or sets the auto fill cell.
         /// </summary>
-        /// <value>The auto fill cell.</value>
+        /// <value>
+        /// The auto fill cell. 
+        /// </value>
         public CellRef AutoFillCell
         {
             get
@@ -248,12 +287,12 @@ namespace PropertyTools.Wpf.ItemsGrid
             set
             {
                 this.autoFillCell = (CellRef)CoerceSelectionCell(this, value);
-                this.OnSelectedCellsChanged();
+                this.SelectedCellsChanged();
             }
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to auto generate columns.
+        /// Gets or sets a value indicating whether to auto generate columns.
         /// </summary>
         public bool AutoGenerateColumns
         {
@@ -269,9 +308,27 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether auto size columns is enabled.
+        /// Gets or sets a value indicating whether to allow automatic insert mode.
         /// </summary>
-        /// <value><c>true</c> if [auto size columns]; otherwise, <c>false</c>.</value>
+        public bool AutoInsert
+        {
+            get
+            {
+                return (bool)this.GetValue(AutoInsertProperty);
+            }
+
+            set
+            {
+                this.SetValue(AutoInsertProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether auto size columns is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [auto size columns]; otherwise, <c>false</c> . 
+        /// </value>
         public bool AutoSizeColumns
         {
             get
@@ -286,10 +343,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance can delete.
+        /// Gets or sets a value indicating whether this instance can delete.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance can delete; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance can delete; otherwise, <c>false</c> . 
         /// </value>
         public bool CanDelete
         {
@@ -305,10 +362,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance can insert.
+        /// Gets or sets a value indicating whether this instance can insert.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance can insert; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance can insert; otherwise, <c>false</c> . 
         /// </value>
         public bool CanInsert
         {
@@ -324,10 +381,10 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance can resize columns.
+        /// Gets or sets a value indicating whether this instance can resize columns.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance can resize columns; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance can resize columns; otherwise, <c>false</c> . 
         /// </value>
         public bool CanResizeColumns
         {
@@ -343,18 +400,54 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the content of the grid.
+        /// Gets the column definitions.
         /// </summary>
-        public object Content
+        /// <value>
+        /// The column definitions. 
+        /// </value>
+        public Collection<PropertyDefinition> ColumnDefinitions
         {
             get
             {
-                return this.GetValue(ContentProperty);
+                return this.propertyDefinitions;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the height of the column headers.
+        /// </summary>
+        /// <value>
+        /// The height of the column header. 
+        /// </value>
+        public GridLength ColumnHeaderHeight
+        {
+            get
+            {
+                return (GridLength)this.GetValue(ColumnHeaderHeightProperty);
             }
 
             set
             {
-                this.SetValue(ContentProperty, value);
+                this.SetValue(ColumnHeaderHeightProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the columns context menu.
+        /// </summary>
+        /// <value>
+        /// The columns context menu. 
+        /// </value>
+        public ContextMenu ColumnsContextMenu
+        {
+            get
+            {
+                return (ContextMenu)this.GetValue(ColumnsContextMenuProperty);
+            }
+
+            set
+            {
+                this.SetValue(ColumnsContextMenuProperty, value);
             }
         }
 
@@ -375,7 +468,7 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the current cell.
+        /// Gets or sets the current cell.
         /// </summary>
         public CellRef CurrentCell
         {
@@ -391,9 +484,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the default column width.
+        /// Gets or sets the default column width.
         /// </summary>
-        /// <value>The default width of the column.</value>
+        /// <value>
+        /// The default width of the column. 
+        /// </value>
         public GridLength DefaultColumnWidth
         {
             get
@@ -408,9 +503,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the default horizontal alignment.
+        /// Gets or sets the default horizontal alignment.
         /// </summary>
-        /// <value>The default horizontal alignment.</value>
+        /// <value>
+        /// The default horizontal alignment. 
+        /// </value>
         public HorizontalAlignment DefaultHorizontalAlignment
         {
             get
@@ -425,9 +522,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the default height of the row.
+        /// Gets or sets the default height of the row.
         /// </summary>
-        /// <value>The default height of the row.</value>
+        /// <value>
+        /// The default height of the row. 
+        /// </value>
         public GridLength DefaultRowHeight
         {
             get
@@ -442,25 +541,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to allow easy insert mode.
+        /// Gets or sets the grid line brush.
         /// </summary>
-        public bool EasyInsert
-        {
-            get
-            {
-                return (bool)this.GetValue(EasyInsertProperty);
-            }
-
-            set
-            {
-                this.SetValue(EasyInsertProperty, value);
-            }
-        }
-
-        /// <summary>
-        ///   Gets or sets the grid line brush.
-        /// </summary>
-        /// <value>The grid line brush.</value>
+        /// <value>
+        /// The grid line brush. 
+        /// </value>
         public Brush GridLineBrush
         {
             get
@@ -475,9 +560,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the header border brush.
+        /// Gets or sets the header border brush.
         /// </summary>
-        /// <value>The header border brush.</value>
+        /// <value>
+        /// The header border brush. 
+        /// </value>
         public Brush HeaderBorderBrush
         {
             get
@@ -508,26 +595,31 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to use columns for the items.
+        /// Gets or sets the items source.
         /// </summary>
-        public bool ItemsInColumns
+        /// <value>
+        /// The items source. 
+        /// </value>
+        public IList ItemsSource
         {
             get
             {
-                return (bool)this.GetValue(ItemsInColumnsProperty);
+                return (IList)this.GetValue(ItemsSourceProperty);
             }
 
             set
             {
-                this.SetValue(ItemsInColumnsProperty, value);
+                this.SetValue(ItemsSourceProperty, value);
             }
         }
 
         /// <summary>
-        ///   Gets the column definitions.
+        /// Gets the row definitions.
         /// </summary>
-        /// <value>The column definitions.</value>
-        public Collection<PropertyDefinition> PropertyDefinitions
+        /// <value>
+        /// The row definitions. 
+        /// </value>
+        public Collection<PropertyDefinition> RowDefinitions
         {
             get
             {
@@ -536,9 +628,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the width of the row header.
+        /// Gets or sets the width of the row headers.
         /// </summary>
-        /// <value>The width of the row header.</value>
+        /// <value>
+        /// The width of the row header. 
+        /// </value>
         public GridLength RowHeaderWidth
         {
             get
@@ -553,27 +647,30 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the row headers.
+        /// Gets or sets the rows context menu.
         /// </summary>
-        /// <value>The row headers.</value>
-        [TypeConverter(typeof(StringListConverter))]
-        public List<string> RowHeaders
+        /// <value>
+        /// The rows context menu. 
+        /// </value>
+        public ContextMenu RowsContextMenu
         {
             get
             {
-                return (List<string>)this.GetValue(RowHeadersProperty);
+                return (ContextMenu)this.GetValue(RowsContextMenuProperty);
             }
 
             set
             {
-                this.SetValue(RowHeadersProperty, value);
+                this.SetValue(RowsContextMenuProperty, value);
             }
         }
 
         /// <summary>
-        ///   Gets the selected cells.
+        /// Gets the selected cells.
         /// </summary>
-        /// <value>The selected cells.</value>
+        /// <value>
+        /// The selected cells. 
+        /// </value>
         public IEnumerable<CellRef> SelectedCells
         {
             get
@@ -594,9 +691,11 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the selected items.
+        /// Gets or sets the selected items.
         /// </summary>
-        /// <value>The selected items.</value>
+        /// <value>
+        /// The selected items. 
+        /// </value>
         public IEnumerable SelectedItems
         {
             get
@@ -611,8 +710,7 @@ namespace PropertyTools.Wpf.ItemsGrid
         }
 
         /// <summary>
-        ///   Gets or sets the cell defining the selection area.
-        ///   The selection area is defined by the CurrentCell and SelectionCell.
+        /// Gets or sets the cell defining the selection area. The selection area is defined by the CurrentCell and SelectionCell.
         /// </summary>
         public CellRef SelectionCell
         {
@@ -627,76 +725,136 @@ namespace PropertyTools.Wpf.ItemsGrid
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to wrap items in the defined columns.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [wrap items]; otherwise, <c>false</c> . 
+        /// </value>
+        public bool WrapItems
+        {
+            get
+            {
+                return (bool)this.GetValue(WrapItemsProperty);
+            }
+
+            set
+            {
+                this.SetValue(WrapItemsProperty, value);
+            }
+        }
+
         #endregion
 
         #region Properties
 
         /// <summary>
-        ///   Gets a value indicating whether this instance can delete columns.
+        /// Gets a value indicating whether this instance can delete columns.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance can delete columns; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance can delete columns; otherwise, <c>false</c> . 
         /// </value>
         protected virtual bool CanDeleteColumns
         {
             get
             {
-                return this.CanDelete && this.ItemsInColumns && this.Content is IList;
+                var list = this.ItemsSource;
+                return this.CanDelete && this.ItemsInColumns && list != null && !list.IsFixedSize;
             }
         }
 
         /// <summary>
-        ///   Gets a value indicating whether this instance can delete rows.
+        /// Gets a value indicating whether this instance can delete rows.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance can delete rows; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance can delete rows; otherwise, <c>false</c> . 
         /// </value>
         protected virtual bool CanDeleteRows
         {
             get
             {
-                return this.CanDelete && !this.ItemsInColumns && this.Content is IList;
+                var list = this.ItemsSource;
+                return this.CanDelete && this.ItemsInRows && list != null && !list.IsFixedSize;
             }
         }
 
         /// <summary>
-        ///   Gets a value indicating whether this instance can insert columns.
+        /// Gets a value indicating whether this instance can insert columns.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance can insert columns; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance can insert columns; otherwise, <c>false</c> . 
         /// </value>
         protected virtual bool CanInsertColumns
         {
             get
             {
-                return this.ItemsInColumns && this.CanInsert && this.Content is IList;
+                var list = this.ItemsSource;
+                return this.ItemsInColumns && this.CanInsert && list != null && !list.IsFixedSize;
             }
         }
 
         /// <summary>
-        ///   Gets a value indicating whether this instance can insert rows.
+        /// Gets a value indicating whether this instance can insert rows.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance can insert rows; otherwise, <c>false</c>.
+        /// <c>true</c> if this instance can insert rows; otherwise, <c>false</c> . 
         /// </value>
-        protected virtual bool CanInsertRows
+        private bool CanInsertRows
         {
             get
             {
-                return !this.ItemsInColumns && this.CanInsert && this.Content is IList;
+                var list = this.ItemsSource;
+                return this.ItemsInRows && this.CanInsert && list != null && !list.IsFixedSize;
             }
         }
 
         /// <summary>
-        ///   Gets or sets the number of columns.
+        /// Gets or sets the number of columns.
         /// </summary>
-        /// <value>The columns.</value>
+        /// <value>
+        /// The columns. 
+        /// </value>
         private int Columns { get; set; }
 
         /// <summary>
-        ///   Gets or sets the number of rows.
+        /// Gets or sets a value indicating whether to use columns for the items.
         /// </summary>
-        /// <value>The rows.</value>
+        private bool ItemsInColumns { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether to use rows for the items.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the items are in rows; otherwise, <c>false</c> . 
+        /// </value>
+        private bool ItemsInRows
+        {
+            get
+            {
+                return !this.ItemsInColumns;
+            }
+        }
+
+        /// <summary>
+        /// Gets the column definitions.
+        /// </summary>
+        /// <value>
+        /// The column definitions. 
+        /// </value>
+        private Collection<PropertyDefinition> PropertyDefinitions
+        {
+            get
+            {
+                return this.propertyDefinitions;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the number of rows.
+        /// </summary>
+        /// <value>
+        /// The rows. 
+        /// </value>
         private int Rows { get; set; }
 
         #endregion
@@ -707,13 +865,13 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Coerces the current cell.
         /// </summary>
         /// <param name="d">
-        /// The d.
+        /// The d. 
         /// </param>
         /// <param name="basevalue">
-        /// The basevalue.
+        /// The basevalue. 
         /// </param>
         /// <returns>
-        /// The coerced current cell.
+        /// The coerced current cell. 
         /// </returns>
         private static object CoerceCurrentCell(DependencyObject d, object basevalue)
         {
@@ -721,7 +879,7 @@ namespace PropertyTools.Wpf.ItemsGrid
             int row = cr.Row;
             int column = cr.Column;
             var sg = (ItemsGrid)d;
-            if (sg.EasyInsert)
+            if (sg.AutoInsert)
             {
                 row = Clamp(row, 0, sg.Rows - 1 + (sg.CanInsertRows ? 1 : 0));
                 column = Clamp(column, 0, sg.Columns - 1 + (sg.CanInsertColumns ? 1 : 0));
@@ -738,94 +896,50 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// <summary>
         /// Coerces the selection cell.
         /// </summary>
-        /// <param name="d">
-        /// The d.
+        /// <param name="sender">
+        /// The sender. 
         /// </param>
         /// <param name="basevalue">
-        /// The basevalue.
+        /// The basevalue. 
         /// </param>
         /// <returns>
-        /// The coerced selection cell.
+        /// The coerced selection cell. 
         /// </returns>
-        private static object CoerceSelectionCell(DependencyObject d, object basevalue)
+        private static object CoerceSelectionCell(DependencyObject sender, object basevalue)
         {
             var cr = (CellRef)basevalue;
             int row = cr.Row;
             int column = cr.Column;
-            var sg = (ItemsGrid)d;
+            var sg = (ItemsGrid)sender;
             row = Clamp(row, 0, sg.Rows - 1);
             column = Clamp(column, 0, sg.Columns - 1);
             return new CellRef(row, column);
         }
 
         /// <summary>
-        /// The content changed.
-        /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private static void ContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((ItemsGrid)d).UpdateGridContent();
-        }
-
-        /// <summary>
         /// The current cell changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private static void CurrentCellChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void CurrentCellChanged()
         {
-            ((ItemsGrid)d).OnCurrentCellChanged();
-        }
+            this.SelectedCellsChanged();
 
-        /// <summary>
-        /// The selection cell changed.
-        /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private static void SelectionCellChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((ItemsGrid)d).OnSelectionCellChanged();
-        }
-
-        /// <summary>
-        /// The on current cell changed.
-        /// </summary>
-        private void OnCurrentCellChanged()
-        {
-            this.OnSelectedCellsChanged();
-
-            // CurrentItem = GetItem(CurrentCell);
             this.ScrollIntoView(this.CurrentCell);
 
-            if (this.EasyInsert && (this.CurrentCell.Row >= this.Rows || this.CurrentCell.Column >= this.Columns))
+            if (this.AutoInsert && (this.CurrentCell.Row >= this.Rows || this.CurrentCell.Column >= this.Columns))
             {
                 this.InsertItem(-1);
             }
         }
 
         /// <summary>
-        /// The selected cells changed.
+        /// The selected cells changed, update the UI elements showing the selection.
         /// </summary>
-        private void OnSelectedCellsChanged()
+        private void SelectedCellsChanged()
         {
             if (this.selection == null)
             {
                 return;
             }
-
 
             int row = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
             int column = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
@@ -866,21 +980,21 @@ namespace PropertyTools.Wpf.ItemsGrid
             Grid.SetColumnSpan(this.autoFillSelection, cs);
             Grid.SetRowSpan(this.autoFillSelection, rs);
 
-            // Debug.WriteLine("OnSelectedCellsChanged\n"+Environment.StackTrace+"\n");
             this.SelectedItems = this.EnumerateItems(this.CurrentCell, this.SelectionCell);
 
-            if (!this.ShowEditor())
+            if (!this.ShowEditControl())
             {
                 this.HideEditor();
             }
         }
 
         /// <summary>
-        /// The on selection cell changed.
+        /// The selection cell changed.
         /// </summary>
-        private void OnSelectionCellChanged()
+        private void SelectionCellChanged()
         {
-            this.OnSelectedCellsChanged();
+            this.SelectedCellsChanged();
+
             this.ScrollIntoView(this.SelectionCell);
         }
 

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="TestCollection.cs" company="">
+// <copyright file="TestCollection.cs" company="PropertyTools">
 // TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------

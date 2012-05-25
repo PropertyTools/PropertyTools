@@ -77,6 +77,12 @@ namespace PropertyTools.Wpf
                 return true;
             }
 
+            if (o1 is int && o2 is double)
+            {
+                result = (int)((int)o1 * (double)o2);
+                return true;
+            }
+
             // Implementation of the multiply operator for TimeSpan
             if (o1 is TimeSpan && o2 is double)
             {

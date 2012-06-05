@@ -1,0 +1,1 @@
+msbuild.exe ..\Source\PropertyTools.sln /t:Rebuild /p:Configuration=Release > msbuild.txt

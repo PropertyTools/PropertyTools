@@ -1,0 +1,95 @@
+﻿<Window x:Class="ExcelDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf.Obsolete" 
+        xmlns:ExcelDemo="clr-namespace:ExcelDemo" xmlns:Wpf="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="ExcelDemo" Height="480" Width="640">
+    <Window.Resources>
+        <Wpf:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+    	<Wpf:CellRefConverter x:Key="CellRefConverter" />
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File"/>
+            <MenuItem Header="Edit"/>
+            <MenuItem Header="View"/>
+            <MenuItem Header="Insert"/>
+            <MenuItem Header="Format"/>
+            <MenuItem Header="Tools"/>
+            <MenuItem Header="Data"/>
+            <MenuItem Header="Window"/>
+            <MenuItem Header="Help"/>
+        </Menu>
+        <ToolBar DockPanel.Dock="Top" DataContext="{Binding CurrentCell}">
+            <ToggleButton IsChecked="{Binding IsBold}" Width="20">
+                <TextBlock FontWeight="Bold" FontFamily="Times New Roman" Text="B"/>
+            </ToggleButton>
+            <ToggleButton IsChecked="{Binding IsItalic}" Width="20">
+                <TextBlock FontStyle="Italic" FontFamily="Times New Roman" Text="I"/>
+            </ToggleButton>
+            <Separator/>
+            <RadioButton IsChecked="{Binding Alignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Left}">
+                <Wpf:Bitmap Source="Images/align_left.png"/>
+            </RadioButton>
+            <RadioButton IsChecked="{Binding Alignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Center}">
+                <Wpf:Bitmap Source="Images/align_center.png"/>
+            </RadioButton>
+            <RadioButton IsChecked="{Binding Alignment, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Right}">
+                <Wpf:Bitmap Source="Images/align_right.png"/>
+            </RadioButton>
+        </ToolBar>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock Text="Ready."/>
+        </StatusBar>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" MinWidth="60"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="20"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Background="LightGray" Grid.ColumnSpan="3"/>
+            <!--<ComboBox IsEditable="True" Text="{Binding CurrentCellRef, Mode=TwoWay}" ToolTip="Name Box" HorizontalContentAlignment="Center" Height="20" VerticalAlignment="Top"/>-->
+            <TextBox Text="{Binding CurrentCellRef, Converter={StaticResource CellRefConverter}}" ToolTip="Name Box" HorizontalContentAlignment="Center" Height="20" VerticalAlignment="Top"/>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" Width="20">
+                    <TextBlock FontStyle="Italic" FontFamily="Times New Roman">
+                        <Span>f<Span BaselineAlignment="Subscript">x</Span>
+                        </Span>
+                    </TextBlock>
+                </Button>
+            </Grid>
+            <TextBox Text="{Binding CurrentValue}" ToolTip="Formula Bar" Grid.Column="2"/>
+            <TabControl Grid.Row="1"  Grid.ColumnSpan="3" TabStripPlacement="Bottom" Margin="-1 -1 -1 2">
+                <TabItem Header="Sheet1">
+                    <pt:SimpleGrid x:Name="sheet1" Content="{Binding Strings}" CurrentCell="{Binding CurrentCellRef}" SelectionCell="{Binding SelectionCellRef}" FocusVisualStyle="{x:Null}">
+                        <!-- todo: templates for cell editing -->
+                        <pt:SimpleGrid.TypeDefinitions>
+                            <pt:TypeDefinition Type="{x:Type ExcelDemo:Cell}">
+                                <pt:TypeDefinition.DisplayTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="{Binding Alignment}" Text="{Binding Value}" FontWeight="{Binding FontWeight}" FontStyle="{Binding FontStyle}"/>
+                                    </DataTemplate>
+                                </pt:TypeDefinition.DisplayTemplate>
+                                <pt:TypeDefinition.EditTemplate>
+                                    <DataTemplate>
+                                        <TextBox Background="Yellow" HorizontalAlignment="{Binding Alignment}" Text="{Binding Value}" FontWeight="{Binding FontWeight}" FontStyle="{Binding FontStyle}"/>
+                                    </DataTemplate>
+                                </pt:TypeDefinition.EditTemplate>
+                            </pt:TypeDefinition>
+                        </pt:SimpleGrid.TypeDefinitions>
+                    </pt:SimpleGrid>
+                </TabItem>
+            </TabControl>
+            <GridSplitter Height="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.ColumnSpan="3" Background="Transparent"/>
+            <GridSplitter Width="4" HorizontalAlignment="Right" VerticalAlignment="Stretch" Background="Transparent"/>
+        </Grid>
+    </DockPanel>
+</Window>

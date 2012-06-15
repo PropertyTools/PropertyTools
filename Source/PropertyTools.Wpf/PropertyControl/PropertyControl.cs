@@ -313,7 +313,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The bool to visibility converter.
         /// </summary>
-        private static readonly BoolToVisibilityConverter BoolToVisibilityConverter = new BoolToVisibilityConverter();
+        private static readonly BooleanToVisibilityConverter BoolToVisibilityConverter = new BooleanToVisibilityConverter();
 
         /// <summary>
         /// The null to bool converter.
@@ -365,7 +365,6 @@ namespace PropertyTools.Wpf
         {
             this.PropertyControlFactory = new DefaultPropertyControlFactory();
             this.PropertyItemFactory = new DefaultPropertyItemFactory();
-            this.Factories = new List<IPropertyControlFactory>();
         }
 
         #endregion
@@ -508,14 +507,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the property control factories.
-        /// </summary>
-        /// <value>
-        /// The factories. 
-        /// </value>
-        public List<IPropertyControlFactory> Factories { get; set; }
-
-        /// <summary>
         /// Gets or sets the type of label width sharing.
         /// </summary>
         /// <value>
@@ -592,7 +583,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets PropertyControlFactory.
+        /// Gets or sets the property control factory.
         /// </summary>
         public IPropertyControlFactory PropertyControlFactory
         {

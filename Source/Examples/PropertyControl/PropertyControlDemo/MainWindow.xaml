@@ -143,21 +143,6 @@
                 TabPageHeaderTemplate="{StaticResource PageHeaderTemplate1}"
                 SelectedObject="{Binding SelectedItem}" Margin="8" DescriptionIcon="Images\lightbulb.png">
                 <!--<Wpf1:PropertyControl.ValidationTemplate Value="{StaticResource ValidationTemplate1}"/>-->
-                <pt:PropertyControl.Factories>
-                    <!--<pt:DefaultPropertyControlFactory>
-                        <pt:DefaultPropertyControlFactory.Editors>
-                            <pt:TypeEditor EditedType="System:Boolean">
-                                <pt:TypeEditor.EditorTemplate>
-                                    <DataTemplate>
-                                        <ToggleButton IsChecked="{Binding Mode=TwoWay, RelativeSource={RelativeSource Self}}" Content="Bool"/>
-                                    </DataTemplate>
-                                </pt:TypeEditor.EditorTemplate>
-                            </pt:TypeEditor>
-                        </pt:DefaultPropertyControlFactory.Editors>
-                    </pt:DefaultPropertyControlFactory>-->
-                    <local:LocalPropertyControlFactory>
-                    </local:LocalPropertyControlFactory>
-                </pt:PropertyControl.Factories>
             </pt:PropertyControl>
             <TextBox AcceptsReturn="True" IsReadOnly="True" Grid.Column="2" Padding="8" Text="{Binding Output, Mode=OneWay}" BorderThickness="1 0 0 0"/>
             <GridSplitter ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="8" Margin="-4,0,0,0" Background="Transparent"/>

@@ -128,6 +128,11 @@ namespace PropertyTools.Wpf
             {
                 var type = obj.GetType();
                 var pi = type.GetProperty(this.Name);
+                if (pi == null)
+                {
+                    continue;
+                }
+
                 var itemValue = pi.GetValue(obj, null);
                 if (value != null && !value.Equals(itemValue))
                 {

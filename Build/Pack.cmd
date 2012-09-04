@@ -1,15 +1,12 @@
 mkdir ..\Packages\PropertyTools.Wpf\lib
 mkdir ..\Packages\PropertyTools.Wpf\lib\NET40
+mkdir ..\Packages\PropertyTools.Wpf\lib\NET45
 
-set dest=..\Packages\PropertyTools.Wpf\lib\NET40
+copy ..\Output\NET40\PropertyTools.??? ..\Packages\PropertyTools.Wpf\lib\NET40
+copy ..\Output\NET40\PropertyTools.Wpf.??? ..\Packages\PropertyTools.Wpf\lib\NET40
 
-copy ..\Output\PropertyTools.dll %dest%
-copy ..\Output\PropertyTools.XML %dest%
-copy ..\Output\PropertyTools.pdb %dest%
-
-copy ..\Output\PropertyTools.Wpf.dll %dest%
-copy ..\Output\PropertyTools.Wpf.XML %dest%
-copy ..\Output\PropertyTools.Wpf.pdb %dest%
+copy ..\Output\NET45\PropertyTools.??? ..\Packages\PropertyTools.Wpf\lib\NET45
+copy ..\Output\NET45\PropertyTools.Wpf.??? ..\Packages\PropertyTools.Wpf\lib\NET45
 
 copy ..\license.txt ..\Packages\PropertyTools.Wpf
 

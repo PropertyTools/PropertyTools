@@ -34,8 +34,10 @@ syntax: glob
 Output/
 ClientBin/
 lib/
+packages/
 
 _ReSharper*/
+_TeamCity*/
 *.dotCover
 
 [Tt]est[Rr]esult*

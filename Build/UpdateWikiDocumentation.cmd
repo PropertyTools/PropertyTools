@@ -1,1 +1,1 @@
-..\Tools\Lynx\WikiDoc.exe /Output=..\output\Wiki ..\Output\PropertyTools.WPF.dll > UpdateWikiDocumentation.log
+..\Tools\Lynx\WikiDoc.exe /Output=..\output\Wiki ..\Output\NET45\PropertyTools.WPF.dll > UpdateWikiDocumentation.log

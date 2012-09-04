@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PropertyTools.Wpf</RootNamespace>
+    <AssemblyName>PropertyTools.Wpf</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\NET40\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\..\Output\NET40\PropertyTools.Wpf.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>PropertyTools.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\ColorPicker2\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DockPanelSplitter\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FilePicker\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PopupBox\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\RadioButtonList\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SpinControl\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ItemsGrid\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\AboutDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\WizardDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyControl\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\PropertyDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TreeListBox\Common.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TreeListBox\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\ColorPicker2\ColorPicker2.cs" />
+    <Compile Include="Controls\Bitmap.cs" />
+    <Compile Include="Controls\ColorPicker2\ColorPickerPanel.cs" />
+    <Compile Include="Controls\ColorPicker2\ColorPickerPanelStrings.cs" />
+    <Compile Include="Controls\ColorPicker2\ColorSlider.cs" />
+    <Compile Include="Controls\ColorPicker2\HsvControl.cs" />
+    <Compile Include="Controls\ColorPicker2\SpectrumSlider.cs" />
+    <Compile Include="Controls\DockPanelSplitter\DockPanelSplitter.cs" />
+    <Compile Include="Controls\EnumMenuItem.cs" />
+    <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />
+    <Compile Include="Controls\FilePicker\FilePicker.cs" />
+    <Compile Include="Controls\FilePicker\IFileDialogService.cs" />
+    <Compile Include="Controls\FilePicker\IFolderBrowserDialogService.cs" />
+    <Compile Include="Controls\FormattingTextBox.cs" />
+    <Compile Include="Controls\LinkBlock.cs" />
+    <Compile Include="Controls\PopupBox\PopupBox.cs" />
+    <Compile Include="Controls\SliderEx.cs" />
+    <Compile Include="Controls\SpinControl\SpinControl.cs" />
+    <Compile Include="Controls\StackPanelEx.cs" />
+    <Compile Include="Controls\TextBoxEx.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\ColorToComponentConverter.cs" />
+    <Compile Include="Converters\ColorToStringConverter.cs" />
+    <Compile Include="Converters\TimeSpanToStringConverter.cs" />
+    <Compile Include="Converters\DefinedColorToVisibilityConverter.cs" />
+    <Compile Include="Converters\ValueToVisibilityConverter.cs" />
+    <Compile Include="Converters\HueToColorConverter.cs" />
+    <Compile Include="Converters\ZeroToVisibilityConverter.cs" />
+    <Compile Include="Converters\DoubleToGridLengthConverter.cs" />
+    <Compile Include="Converters\EnumDescriptionConverter.cs" />
+    <Compile Include="Converters\NullToBoolConverter.cs" />
+    <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Helpers\AutoFiller.cs" />
+    <Compile Include="Helpers\CaptureScreenshot.cs" />
+    <Compile Include="Helpers\FormattedTimeSpanParser.cs" />
+    <Compile Include="ItemsGrid\CellRefConverter.cs" />
+    <Compile Include="ItemsGrid\Definitions\ColumnDefinition.cs" />
+    <Compile Include="ItemsGrid\Definitions\RowDefinition.cs" />
+    <Compile Include="ItemsGrid\ItemsGrid.Content.cs" />
+    <Compile Include="ItemsGrid\Interfaces\IItemsGridControlFactory.cs" />
+    <Compile Include="ItemsGrid\Definitions\PropertyDefinition.cs" />
+    <Compile Include="ItemsGrid\ItemsGrid.cs" />
+    <Compile Include="ItemsGrid\ItemsGrid.Properties.cs" />
+    <Compile Include="ItemsGrid\ControlFactory\ItemsGridControlFactory.cs" />
+    <Compile Include="Dialogs\AboutViewModel.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
+    <Compile Include="Converters\ObjectToDoubleConverter.cs" />
+    <Compile Include="Converters\ValueToBooleanConverter.cs" />
+    <Compile Include="Dialogs\AboutDialog.xaml.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\Shell32\BrowseForFolderDialog.cs" />
+    <Compile Include="Helpers\ColorHelper.cs" />
+    <Compile Include="Controls\RadioButtonList\RadioButtonList.cs" />
+    <Compile Include="Converters\BrushToColorConverter.cs" />
+    <Compile Include="Converters\ColorToBrushConverter.cs" />
+    <Compile Include="Converters\ColorToHexConverter.cs" />
+    <Compile Include="Converters\EnumToBooleanConverter.cs" />
+    <Compile Include="Converters\EnumValuesConverter.cs" />
+    <Compile Include="Converters\SelfProvider.cs" />
+    <Compile Include="Dialogs\WizardDialog.xaml.cs">
+      <DependentUpon>WizardDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\PasswordHelper.cs" />
+    <Compile Include="Helpers\PropertyInfoHelper.cs" />
+    <Compile Include="Helpers\TimeSpanFormatter.cs" />
+    <Compile Include="Helpers\TimeSpanParser.cs" />
+    <Compile Include="Helpers\TypeHelper.cs" />
+    <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Dialogs\PropertyDialog.xaml.cs">
+      <DependentUpon>PropertyDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ItemsBag\ItemsBag.cs" />
+    <Compile Include="ItemsBag\ItemsBagPropertyDescriptor.cs" />
+    <Compile Include="ItemsBag\ItemsBagTypeDescriptionProvider.cs" />
+    <Compile Include="ItemsBag\ItemsBagTypeDescriptor.cs" />
+    <Compile Include="PropertyControl\CategoryControlType.cs" />
+    <Compile Include="PropertyControl\DefaultPropertyControlFactory.cs" />
+    <Compile Include="PropertyControl\DefaultPropertyItemFactory.cs" />
+    <Compile Include="PropertyControl\Group.cs" />
+    <Compile Include="PropertyControl\HeaderViewModel.cs" />
+    <Compile Include="PropertyControl\IPropertyControlFactory.cs" />
+    <Compile Include="PropertyControl\IPropertyItemFactory.cs" />
+    <Compile Include="PropertyControl\PropertyControl.cs" />
+    <Compile Include="PropertyControl\PropertyControlFactoryOptions.cs" />
+    <Compile Include="PropertyControl\PropertyItem.cs" />
+    <Compile Include="Converters\ValidationErrorsToStringConverter.cs" />
+    <Compile Include="Behaviors\WebBrowserBehavior.cs" />
+    <Compile Include="PropertyControl\Tab.cs" />
+    <Compile Include="PropertyControl\PropertyConverter.cs" />
+    <Compile Include="Helpers\AttributeHelper.cs" />
+    <Compile Include="ItemsGrid\CellRef.cs" />
+    <Compile Include="Converters\GridLengthCollectionConverter.cs" />
+    <Compile Include="Helpers\ReflectionMath.cs" />
+    <Compile Include="Controls\EditableTextBlock.cs" />
+    <Compile Include="PropertyControl\TypeEditor.cs" />
+    <Compile Include="TreeListBox\InsertionAdorner.cs" />
+    <Compile Include="TreeListBox\LevelToThicknessConverter.cs" />
+    <Compile Include="TreeListBox\TreeListBox.cs" />
+    <Compile Include="TreeListBox\TreeListBoxDragDropHelper.cs" />
+    <Compile Include="TreeListBox\TreeListBoxItem.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="ClassDiagrams\Dialogs.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="PropertyTools.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ItemsGrid\Cursors\AutoFill.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\ColorPicker2\ColorPicker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\ColorPicker2\Hsv.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ItemsGrid\Cursors\Cross.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ItemsGrid\Cursors\DownArrow.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ItemsGrid\Cursors\RightArrow.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PropertyTools\PropertyTools_NET40.csproj">
+      <Project>{37466829-61F5-47FA-9E3E-9CEDCD9535C0}</Project>
+      <Name>PropertyTools_NET40</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

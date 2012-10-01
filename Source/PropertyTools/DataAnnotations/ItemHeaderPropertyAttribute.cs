@@ -8,6 +8,10 @@ namespace PropertyTools.DataAnnotations
     [AttributeUsage(AttributeTargets.Property)]
     public class ItemHeaderPropertyAttribute : Attribute
     {
+        /// <summary>
+        /// Gets or sets the item header property.
+        /// </summary>
+        /// <value>The item header property.</value>
         public string ItemHeaderProperty { get; set; }
 
         /// <summary>

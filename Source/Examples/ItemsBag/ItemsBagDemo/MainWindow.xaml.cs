@@ -16,8 +16,8 @@ namespace ItemsBagDemo
         {
             InitializeComponent();
             var models = new Model[2];
-            models[0] = new Model() { IsChecked = true, Name = "Jim" };
-            models[1] = new Model() { IsChecked = false, Name = "Joe" };
+            models[0] = new Model() { IsChecked = true, Name = "Jim", Value = 13 };
+            models[1] = new Model() { IsChecked = false, Name = "Joe", Value = 41 };
 
             Bag = new ItemsBag(models);
             Models = models;

@@ -38,6 +38,7 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
+                            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
                             <CheckBox IsChecked="{Binding IsChecked}" Margin="4" VerticalAlignment="Center"/>
                             <pt:RadioButtonList Value="{Binding Color}" Orientation="Horizontal" ItemPadding="4 0 4 0"/>
                         </StackPanel>

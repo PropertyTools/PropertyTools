@@ -26,12 +26,10 @@ namespace PropertyTools.Wpf
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsBagPropertyDescriptor"/> class.
+        /// Initializes a new instance of the <see cref="ItemsBagPropertyDescriptor" /> class.
         /// </summary>
-        /// <param name="defaultDescriptor">
-        ///   The default descriptor.
-        /// </param>
-        /// <param name="biggestType"></param>
+        /// <param name="defaultDescriptor">The default descriptor.</param>
+        /// <param name="componentType">Type of the component.</param>
         public ItemsBagPropertyDescriptor(PropertyDescriptor defaultDescriptor, Type componentType)
             : base(defaultDescriptor)
         {
@@ -213,7 +211,12 @@ namespace PropertyTools.Wpf
         {
             // http://stackoverflow.com/questions/108104/how-do-i-convert-a-system-type-to-its-nullable-version
             // Use Nullable.GetUnderlyingType() to remove the Nullable<T> wrapper if type is already nullable.
-            // type = Nullable.GetUnderlyingType(type);
+            var underlyingType = Nullable.GetUnderlyingType(type);
+            if (underlyingType != null)
+            {
+                return type;
+            }
+
             // if (type.IsValueType)
             return typeof(Nullable<>).MakeGenericType(type);
 

@@ -1,6 +1,7 @@
 namespace ItemsBagDemo
 {
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
 
     public enum Colors { Red, Green, Blue }
@@ -34,6 +35,21 @@ namespace ItemsBagDemo
             set
             {
                 this.name = value; RaisePropertyChanged("Name");
+            }
+        }
+
+        private int? value;
+
+        [Required]
+        public int? Value
+        {
+            get
+            {
+                return this.value;
+            }
+            set
+            {
+                this.value = value; RaisePropertyChanged("Value");
             }
         }
 

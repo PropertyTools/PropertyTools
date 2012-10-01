@@ -535,16 +535,11 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the property model.
         /// </summary>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
-        /// <param name="isEnumerable">
-        /// if set to <c>true</c> [is enumerable].
-        /// </param>
-        /// <returns>
-        /// A list of <see cref="Tab"/>.
-        /// </returns>
-        public virtual IList<Tab> CreateModel(object instance, bool isEnumerable, PropertyControlOptions options)
+        /// <param name="instance">The instance.</param>
+        /// <param name="isEnumerable">if set to <c>true</c> [is enumerable].</param>
+        /// <param name="options">The options.</param>
+        /// <returns>A list of <see cref="Tab" />.</returns>
+        public virtual IEnumerable<Tab> CreateModel(object instance, bool isEnumerable, IPropertyControlOptions options)
         {
             if (instance == null)
             {
@@ -612,10 +607,27 @@ namespace PropertyTools.Wpf
         }
     }
 
-    public class PropertyControlOptions
+    /// <summary>
+    /// Specifies options for the PropertyControl
+    /// </summary>
+    public interface IPropertyControlOptions
     {
-        public bool ShowDeclaredOnly { get; set; }
-        public bool ShowReadOnlyProperties { get; set; }
-        public Type RequiredAttribute { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether to show declared properties only.
+        /// </summary>
+        /// <value><c>true</c> if only declared properties should be shown; otherwise, <c>false</c>.</value>
+        bool ShowDeclaredOnly { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to show read only properties.
+        /// </summary>
+        /// <value><c>true</c> if read only properties should be shown; otherwise, <c>false</c>.</value>
+        bool ShowReadOnlyProperties { get; }
+
+        /// <summary>
+        /// Gets or sets the required attribute.
+        /// </summary>
+        /// <value>The required attribute.</value>
+        Type RequiredAttribute { get; }
     }
 }

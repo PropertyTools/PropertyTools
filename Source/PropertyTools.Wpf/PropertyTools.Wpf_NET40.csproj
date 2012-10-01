@@ -233,7 +233,6 @@
     <Compile Include="PropertyControl\DefaultPropertyControlFactory.cs" />
     <Compile Include="PropertyControl\DefaultPropertyItemFactory.cs" />
     <Compile Include="PropertyControl\Group.cs" />
-    <Compile Include="PropertyControl\HeaderViewModel.cs" />
     <Compile Include="PropertyControl\IPropertyControlFactory.cs" />
     <Compile Include="PropertyControl\IPropertyItemFactory.cs" />
     <Compile Include="PropertyControl\PropertyControl.cs" />

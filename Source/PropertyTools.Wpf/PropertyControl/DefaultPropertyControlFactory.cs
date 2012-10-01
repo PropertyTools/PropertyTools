@@ -574,7 +574,6 @@ namespace PropertyTools.Wpf
 
             c.SetBinding(ItemsGrid.ItemsSourceProperty, property.CreateBinding());
             return c;
-            return null;
         }
 
         /// <summary>

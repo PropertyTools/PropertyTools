@@ -640,9 +640,10 @@ namespace PropertyTools.Wpf
             this.Items.Clear();
             this.parentContainerMap.Clear();
 
-            if (this.HierarchySource != null)
+            var hierarchySource = this.HierarchySource;
+            if (hierarchySource != null)
             {
-                foreach (var item in this.HierarchySource)
+                foreach (var item in hierarchySource)
                 {
                     this.Items.Add(item);
                     this.parentContainerMap[item] = null;

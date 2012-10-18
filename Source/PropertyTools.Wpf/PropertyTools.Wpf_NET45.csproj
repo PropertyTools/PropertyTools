@@ -252,7 +252,6 @@
     <Compile Include="Controls\EditableTextBlock.cs" />
     <Compile Include="PropertyControl\TypeEditor.cs" />
     <Compile Include="TreeListBox\InsertionAdorner.cs" />
-    <Compile Include="TreeListBox\LevelToThicknessConverter.cs" />
     <Compile Include="TreeListBox\TreeListBox.cs" />
     <Compile Include="TreeListBox\TreeListBoxDragDropHelper.cs" />
     <Compile Include="TreeListBox\TreeListBoxItem.cs" />
@@ -290,12 +289,6 @@
     <Resource Include="ItemsGrid\Cursors\AutoFill.cur" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PropertyTools\PropertyTools_NET45.csproj">
-      <Project>{37466829-61F5-47FA-9E3E-9CEDCD9535C0}</Project>
-      <Name>PropertyTools_NET45</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Controls\ColorPicker2\ColorPicker.png" />
   </ItemGroup>
   <ItemGroup>
@@ -309,6 +302,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ItemsGrid\Cursors\RightArrow.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PropertyTools\PropertyTools_NET45.csproj">
+      <Project>{37466829-61F5-47FA-9E3E-9CEDCD9535C0}</Project>
+      <Name>PropertyTools_NET45</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

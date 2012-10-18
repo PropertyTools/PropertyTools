@@ -364,7 +364,8 @@ namespace PropertyTools.Wpf
                     MaxLength = property.MaxLength,
                     IsReadOnly = property.Descriptor.IsReadOnly,
                     TextWrapping = property.TextWrapping,
-                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    VerticalContentAlignment = double.IsNaN(property.Height) ? VerticalAlignment.Center : VerticalAlignment.Top
                 };
 
             c.SetBinding(TextBox.TextProperty, property.CreateBinding(trigger));
@@ -724,7 +725,8 @@ namespace PropertyTools.Wpf
             var tb = new TextBox
                 {
                     BorderThickness = new Thickness(0),
-                    HorizontalContentAlignment = HorizontalAlignment.Right
+                    HorizontalContentAlignment = HorizontalAlignment.Right,
+                    VerticalContentAlignment = VerticalAlignment.Center
                 };
             tb.SetBinding(TextBox.TextProperty, property.CreateBinding());
             var c = new SpinControl

@@ -24,7 +24,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Represents a property.
     /// </summary>
-    public class PropertyItem
+    public class PropertyItem : Observable
     {
         #region Constructors and Destructors
 
@@ -247,12 +247,12 @@ namespace PropertyTools.Wpf
         public bool IsPassword { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is "slidable".
+        ///   Gets or sets a value indicating whether this property should show a slider.
         /// </summary>
         public bool IsSlidable { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is "spinnable".
+        ///   Gets or sets a value indicating whether this property should show spin buttons.
         /// </summary>
         public bool IsSpinnable { get; set; }
 
@@ -455,7 +455,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The binding.
         /// </returns>
-        public Binding CreateBinding(UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
+        public virtual Binding CreateBinding(UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
         {
             var bindingMode = this.Descriptor.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
             var formatString = this.FormatString;
@@ -509,7 +509,7 @@ namespace PropertyTools.Wpf
             var type = typeof(T);
             foreach (var a in this.Descriptor.Attributes)
             {
-                if (type.IsAssignableFrom(a.GetType()))
+                if (type.IsInstanceOfType(a))
                 {
                     return a as T;
                 }

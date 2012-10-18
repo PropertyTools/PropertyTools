@@ -76,6 +76,9 @@
     <Compile Include="DragDrop\DropPosition.cs" />
     <Compile Include="DragDrop\IDragSource.cs" />
     <Compile Include="DragDrop\IDropTarget.cs" />
+    <Compile Include="Observable\CallerMemberNameAttribute.cs" />
+    <Compile Include="Observable\ExpressionUtilities.cs" />
+    <Compile Include="Observable\Observable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -99,6 +99,10 @@
       <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>
       <Name>PropertyTools.Wpf_NET45</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\PropertyTools\PropertyTools_NET45.csproj">
+      <Project>{37466829-61F5-47FA-9E3E-9CEDCD9535C0}</Project>
+      <Name>PropertyTools_NET45</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

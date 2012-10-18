@@ -96,7 +96,11 @@ namespace PropertyTools
         /// <remarks>
         /// This method uses the CallerMemberNameAttribute to determine the property name.
         /// </remarks>
-        protected bool SetValue<T>(ref T field, T value, [CallerMemberName] string propertyName)
+#if NET45
+        protected bool SetValue<T>(ref T field, T value, [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
+#else
+        protected bool SetValue<T>(ref T field, T value, string propertyName)
+#endif
         {
             if (Equals(field, value))
             {

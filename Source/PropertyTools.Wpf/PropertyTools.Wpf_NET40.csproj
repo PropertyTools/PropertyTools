@@ -249,7 +249,6 @@
     <Compile Include="Controls\EditableTextBlock.cs" />
     <Compile Include="PropertyControl\TypeEditor.cs" />
     <Compile Include="TreeListBox\InsertionAdorner.cs" />
-    <Compile Include="TreeListBox\LevelToThicknessConverter.cs" />
     <Compile Include="TreeListBox\TreeListBox.cs" />
     <Compile Include="TreeListBox\TreeListBoxDragDropHelper.cs" />
     <Compile Include="TreeListBox\TreeListBoxItem.cs" />

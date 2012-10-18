@@ -656,25 +656,15 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void IndentationChanged()
         {
-            var converter = this.TryFindResource("LevelToThicknessConverter") as LevelToThicknessConverter;
-            if (converter != null)
+            foreach (var item in this.Items)
             {
-                converter.Indentation = this.Indentation;
-
-                // change the Level property in all items to update with the new indentation
-                // there is probably a better way to do this...
-                foreach (var item in this.Items)
+                var container = this.ContainerFromItem(item);
+                if (container == null)
                 {
-                    var container = this.ContainerFromItem(item);
-                    if (container == null)
-                    {
-                        continue;
-                    }
-
-                    var tmp = container.Level;
-                    container.Level++;
-                    container.Level = tmp;
+                    continue;
                 }
+
+                container.LevelOrIndentationChanged();
             }
         }
 

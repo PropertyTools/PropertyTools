@@ -59,7 +59,13 @@ namespace PropertyTools.Wpf
         /// The level property.
         /// </summary>
         public static readonly DependencyProperty LevelProperty = DependencyProperty.Register(
-            "Level", typeof(int), typeof(TreeListBoxItem), new UIPropertyMetadata(0));
+            "Level", typeof(int), typeof(TreeListBoxItem), new UIPropertyMetadata(0, (s, e) => ((TreeListBoxItem)s).LevelChanged()));
+
+        /// <summary>
+        /// The level padding property.
+        /// </summary>
+        public static readonly DependencyProperty LevelPaddingProperty =
+            DependencyProperty.Register("LevelPadding", typeof(Thickness), typeof(TreeListBoxItem));
 
         /// <summary>
         /// The handler.
@@ -87,6 +93,16 @@ namespace PropertyTools.Wpf
 
         #region Public Properties
 
+        /// <summary>
+        /// Gets the padding due to hierarchy level and the parent control Indentation.
+        /// </summary>
+        /// <value>The level padding.</value>
+        public Thickness LevelPadding
+        {
+            get { return (Thickness)GetValue(LevelPaddingProperty); }
+            private set { this.SetValue(LevelPaddingProperty, value); }
+        }
+    
         /// <summary>
         /// Gets or sets the child items.
         /// </summary>
@@ -192,7 +208,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the parent TreeListBox.
         /// </summary>
-        protected TreeListBox ParentTreeListBox { get; set; }
+        protected TreeListBox ParentTreeListBox { get; private set; }
 
         #endregion
 
@@ -235,6 +251,22 @@ namespace PropertyTools.Wpf
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Handles changes in Level and Indentation (in the parent control).
+        /// </summary>
+        internal void LevelOrIndentationChanged()
+        {
+            this.LevelPadding = new Thickness(this.Level * this.ParentTreeListBox.Indentation, 0, 0, 0);
+        }
+
+        /// <summary>
+        /// Handles changes in Level.
+        /// </summary>
+        private void LevelChanged()
+        {
+            this.LevelOrIndentationChanged();
+        }
 
         /// <summary>
         /// Handles changes in the Children property.

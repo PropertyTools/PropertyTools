@@ -159,7 +159,7 @@ namespace PropertyTools.Wpf
                 return this.CreateLinkControl(property);
             }
 
-            if (property.ItemsSourceDescriptor != null)
+            if (property.ItemsSourceDescriptor != null || property.ItemsSource != null)
             {
                 return this.CreateComboBoxControl(property);
             }
@@ -289,11 +289,13 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateComboBoxControl(PropertyItem property)
         {
-            var c = new ComboBox { IsEditable = property.IsEditable };
-            c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
+            var c = new ComboBox { IsEditable = property.IsEditable, ItemsSource = property.ItemsSource };
+            if (property.ItemsSourceDescriptor != null)
+            {
+                c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
+            }
 
-            c.SetBinding(
-                property.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, property.CreateBinding());
+            c.SetBinding(property.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, property.CreateBinding());
 
             return c;
         }

@@ -10,6 +10,7 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
@@ -267,6 +268,12 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The values descriptor.</value>
         public PropertyDescriptor ItemsSourceDescriptor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the items source.
+        /// </summary>
+        /// <value>The items source.</value>
+        public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
         ///   Gets or sets a value indicating whether items can be added to the list.

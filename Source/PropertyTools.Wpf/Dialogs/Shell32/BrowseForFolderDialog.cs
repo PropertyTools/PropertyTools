@@ -353,7 +353,7 @@ namespace PropertyTools.Wpf.Shell32
         /// Shows the dialog (Win32::SHBrowseForFolder()).
         /// </summary>
         /// <returns>
-        /// The <see cref="bool?"/>.
+        /// True if OK was pressed.
         /// </returns>
         public bool? ShowDialog()
         {
@@ -367,7 +367,7 @@ namespace PropertyTools.Wpf.Shell32
         /// The owner.
         /// </param>
         /// <returns>
-        /// The <see cref="bool?"/>.
+        /// True if OK was pressed.
         /// </returns>
         public bool? ShowDialog(Window owner)
         {
@@ -494,7 +494,7 @@ namespace PropertyTools.Wpf.Shell32
         /// The owner.
         /// </param>
         /// <returns>
-        /// The <see cref="bool?"/>.
+        /// True if OK was pressed.
         /// </returns>
         private bool? PInvokeSHBrowseForFolder(Window owner)
         {

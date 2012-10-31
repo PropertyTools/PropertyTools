@@ -44,12 +44,13 @@ namespace PropertyTools.Wpf
         /// Filters on the browsable attribute.
         /// </summary>
         /// <typeparam name="T">
+        /// The enumeration type.
         /// </typeparam>
         /// <param name="arr">
-        /// The arr.
+        /// The array.
         /// </param>
         /// <returns>
-        /// The <see cref="List"/>.
+        /// The filtered values.
         /// </returns>
         public static List<object> FilterOnBrowsableAttribute<T>(this T arr) where T : IEnumerable
         {

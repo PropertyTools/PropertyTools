@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SpinControl.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a spinner control.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -21,61 +44,59 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartDown, Type = typeof(RepeatButton))]
     public class SpinControl : ContentControl
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The down button geometry property.
+        /// The down button geometry property.
         /// </summary>
         public static readonly DependencyProperty DownButtonGeometryProperty =
             DependencyProperty.Register(
                 "DownButtonGeometry", typeof(Geometry), typeof(SpinControl), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The large change property.
+        /// The large change property.
         /// </summary>
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register(
             "LargeChange", typeof(object), typeof(SpinControl), new UIPropertyMetadata(10.0));
 
         /// <summary>
-        ///   The maximum property.
+        /// The maximum property.
         /// </summary>
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
             "Maximum", typeof(object), typeof(SpinControl), new UIPropertyMetadata(100.0));
 
         /// <summary>
-        ///   The minimum property.
+        /// The minimum property.
         /// </summary>
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
             "Minimum", typeof(object), typeof(SpinControl), new UIPropertyMetadata(0.0));
 
         /// <summary>
-        ///   The repeat SmallChange property.
+        /// The repeat SmallChange property.
         /// </summary>
         public static readonly DependencyProperty RepeatIntervalProperty = DependencyProperty.Register(
             "RepeatInterval", typeof(int), typeof(SpinControl), new UIPropertyMetadata(50));
 
         /// <summary>
-        ///   The SmallChange property.
+        /// The SmallChange property.
         /// </summary>
         public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register(
             "SmallChange", typeof(object), typeof(SpinControl), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        ///   The spin button width property.
+        /// The spin button width property.
         /// </summary>
         public static readonly DependencyProperty SpinButtonWidthProperty =
             DependencyProperty.Register(
                 "SpinButtonWidth", typeof(GridLength), typeof(SpinControl), new UIPropertyMetadata(new GridLength(14)));
 
         /// <summary>
-        ///   The up button geometry property.
+        /// The up button geometry property.
         /// </summary>
         public static readonly DependencyProperty UpButtonGeometryProperty =
             DependencyProperty.Register(
                 "UpButtonGeometry", typeof(Geometry), typeof(SpinControl), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The value property.
+        /// The value property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value",
@@ -85,31 +106,27 @@ namespace PropertyTools.Wpf
                 null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SpinnerValueChanged, CoerceSpinnerValue));
 
         /// <summary>
-        ///   The part down.
+        /// The part down.
         /// </summary>
         private const string PartDown = "PART_DOWN";
 
         /// <summary>
-        ///   The part up.
+        /// The part up.
         /// </summary>
         private const string PartUp = "PART_UP";
 
         /// <summary>
-        ///   The down button.
+        /// The down button.
         /// </summary>
         private RepeatButton downbutton;
 
         /// <summary>
-        ///   The up button.
+        /// The up button.
         /// </summary>
         private RepeatButton upbutton;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "SpinControl" /> class.
+        /// Initializes static members of the <see cref = "SpinControl" /> class.
         /// </summary>
         static SpinControl()
         {
@@ -117,12 +134,8 @@ namespace PropertyTools.Wpf
                 typeof(SpinControl), new FrameworkPropertyMetadata(typeof(SpinControl)));
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets down button geometry.
+        /// Gets or sets down button geometry.
         /// </summary>
         /// <value>Down button geometry.</value>
         public Geometry DownButtonGeometry
@@ -139,7 +152,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the large change.
+        /// Gets or sets the large change.
         /// </summary>
         /// <value>The large change.</value>
         public object LargeChange
@@ -156,7 +169,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the maximum.
+        /// Gets or sets the maximum.
         /// </summary>
         /// <value>The maximum.</value>
         public object Maximum
@@ -173,7 +186,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the minimum.
+        /// Gets or sets the minimum.
         /// </summary>
         /// <value>The minimum.</value>
         public object Minimum
@@ -190,7 +203,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the repeat SmallChange (milliseconds).
+        /// Gets or sets the repeat SmallChange (milliseconds).
         /// </summary>
         /// <value>The repeat SmallChange.</value>
         public int RepeatInterval
@@ -207,7 +220,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the SmallChange.
+        /// Gets or sets the SmallChange.
         /// </summary>
         /// <value>The SmallChange.</value>
         public object SmallChange
@@ -224,7 +237,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the width of the spin buttons.
+        /// Gets or sets the width of the spin buttons.
         /// </summary>
         /// <value>The width of the spin button.</value>
         public GridLength SpinButtonWidth
@@ -241,7 +254,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets up button geometry.
+        /// Gets or sets up button geometry.
         /// </summary>
         /// <value>Up button geometry.</value>
         public Geometry UpButtonGeometry
@@ -258,7 +271,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the value.
+        /// Gets or sets the value.
         /// </summary>
         /// <value>The value.</value>
         public object Value
@@ -273,10 +286,6 @@ namespace PropertyTools.Wpf
                 this.SetValue(ValueProperty, value);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
@@ -297,10 +306,6 @@ namespace PropertyTools.Wpf
                 this.downbutton.Click += this.DownbuttonClick;
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The on mouse wheel.
@@ -843,6 +848,5 @@ namespace PropertyTools.Wpf
             this.ChangeValue(1, ctrl);
         }
 
-        #endregion
     }
 }

@@ -1,12 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TreeListBoxDragDropHelper.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Drag/drop helper class for the <see cref="TreeListBox" />.
+//   Drag/drop helper class for the <see cref="TreeListBox"/>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -26,8 +46,6 @@ namespace PropertyTools.Wpf
     /// </remarks>
     public class TreeListBoxDragDropHelper
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The drag drop template property.
         /// </summary>
@@ -125,12 +143,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         private Window topWindow;
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets the instance singleton.
+        /// Gets the instance singleton.
         /// </summary>
         private static TreeListBoxDragDropHelper Instance
         {
@@ -139,10 +153,6 @@ namespace PropertyTools.Wpf
                 return instance ?? (instance = new TreeListBoxDragDropHelper());
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets the drag/drop template.
@@ -274,10 +284,6 @@ namespace PropertyTools.Wpf
             obj.SetValue(IsDropTargetProperty, value);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Determines if the drag source changed.
         /// </summary>
@@ -358,7 +364,7 @@ namespace PropertyTools.Wpf
             {
                 if (this.targetItemContainer != null)
                 {
-                    // Here, I need to get adorner layer from targetItemContainer and not targetItemsControl. 
+                    // Here, I need to get adorner layer from targetItemContainer and not targetItemsControl.
                     // This way I get the AdornerLayer within ScrollContentPresenter, and not the one under AdornerDecorator (Snoop is awesome).
                     // If I used targetItemsControl, the adorner would hang out of ItemsControl when there's a horizontal scroll bar.
                     var adornerLayer = AdornerLayer.GetAdornerLayer(this.targetItemContainer);
@@ -376,12 +382,12 @@ namespace PropertyTools.Wpf
         /// </param>
         private void DecideDropTarget(DragEventArgs e)
         {
-            // If the types of the dragged data and ItemsControl's source are compatible, 
+            // If the types of the dragged data and ItemsControl's source are compatible,
             // there are 3 situations to have into account when deciding the drop target:
             // 1. mouse is over an items container
             // 2. mouse is over the empty part of an ItemsControl, but ItemsControl is not empty
             // 3. mouse is over an empty ItemsControl.
-            // The goal of this method is to decide on the values of the following properties: 
+            // The goal of this method is to decide on the values of the following properties:
             // targetItemContainer, insertionIndex and isInFirstHalf.
             int targetItemsControlCount = this.targetItemsControl.Items.Count;
             var draggedItems = e.Data.GetData(this.format.Name) as IList;
@@ -550,7 +556,7 @@ namespace PropertyTools.Wpf
         /// </param>
         private void DropTargetPreviewDragLeave(object sender, DragEventArgs e)
         {
-            // Dragged Adorner is only created once on DragEnter + every time we enter the window. 
+            // Dragged Adorner is only created once on DragEnter + every time we enter the window.
             // It's only removed once on the DragDrop, and every time we leave the window. (so no need to remove it here)
             this.RemoveAdorners();
 
@@ -687,6 +693,5 @@ namespace PropertyTools.Wpf
             this.CreateOrUpdateInsertionAdorner();
         }
 
-        #endregion
     }
 }

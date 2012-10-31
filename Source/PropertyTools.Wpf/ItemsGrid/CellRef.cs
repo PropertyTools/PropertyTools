@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CellRef.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a cell reference.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System.ComponentModel;
@@ -15,21 +38,15 @@ namespace PropertyTools.Wpf
     [TypeConverter(typeof(CellRefConverter))]
     public struct CellRef
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The column.
+        /// The column.
         /// </summary>
         private readonly int column;
 
         /// <summary>
-        ///   The row.
+        /// The row.
         /// </summary>
         private readonly int row;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CellRef"/> struct.
@@ -46,12 +63,8 @@ namespace PropertyTools.Wpf
             this.column = column;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the column.
+        /// Gets the column.
         /// </summary>
         public int Column
         {
@@ -62,7 +75,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the row.
+        /// Gets the row.
         /// </summary>
         public int Row
         {
@@ -71,10 +84,6 @@ namespace PropertyTools.Wpf
                 return this.row;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Converts a column number to a column name.
@@ -117,7 +126,7 @@ namespace PropertyTools.Wpf
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
         /// </returns>
         public override int GetHashCode()
         {
@@ -137,6 +146,5 @@ namespace PropertyTools.Wpf
             return string.Format("{0}{1}", ToColumnName(this.Column), this.Row + 1);
         }
 
-        #endregion
     }
 }

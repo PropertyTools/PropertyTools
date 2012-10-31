@@ -1,12 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TreeListBoxItem.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a container for items in the .
+//   Represents a container for items in the <see cref="TreeListBox"/> .
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System.Collections;
@@ -20,8 +40,6 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class TreeListBoxItem : ListBoxItem
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The children property.
         /// </summary>
@@ -72,10 +90,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         private NotifyCollectionChangedEventHandler collectionChangedHandler;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TreeListBoxItem"/> class.
         /// </summary>
@@ -89,10 +103,6 @@ namespace PropertyTools.Wpf
             this.ChildItems = new List<TreeListBoxItem>();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets the padding due to hierarchy level and the parent control Indentation.
         /// </summary>
@@ -102,12 +112,12 @@ namespace PropertyTools.Wpf
             get { return (Thickness)GetValue(LevelPaddingProperty); }
             private set { this.SetValue(LevelPaddingProperty, value); }
         }
-    
+
         /// <summary>
         /// Gets or sets the child items.
         /// </summary>
         /// <value>
-        /// The children. 
+        /// The children.
         /// </value>
         public IList Children
         {
@@ -174,7 +184,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the hierarchy level of the item.
         /// </summary>
         /// <value>
-        /// The level. 
+        /// The level.
         /// </value>
         public int Level
         {
@@ -188,15 +198,11 @@ namespace PropertyTools.Wpf
                 this.SetValue(LevelProperty, value);
             }
         }
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets or sets the child items.
         /// </summary>
         /// <value>
-        /// The child items. 
+        /// The child items.
         /// </value>
         internal IList<TreeListBoxItem> ChildItems { get; set; }
 
@@ -210,15 +216,11 @@ namespace PropertyTools.Wpf
         /// </summary>
         protected TreeListBox ParentTreeListBox { get; private set; }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         /// <summary>
         /// Gets the next sibling.
         /// </summary>
         /// <returns>
-        /// The next sibling. 
+        /// The next sibling.
         /// </returns>
         public TreeListBoxItem GetNextSibling()
         {
@@ -248,10 +250,6 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Handles changes in Level and Indentation (in the parent control).
         /// </summary>
@@ -272,7 +270,7 @@ namespace PropertyTools.Wpf
         /// Handles changes in the Children property.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ChildrenChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -306,10 +304,10 @@ namespace PropertyTools.Wpf
         /// Subscribes for collection changes.
         /// </summary>
         /// <param name="parent">
-        /// The parent. 
+        /// The parent.
         /// </param>
         /// <param name="collection">
-        /// The collection. 
+        /// The collection.
         /// </param>
         private void SubscribeForCollectionChanges(TreeListBoxItem parent, IEnumerable collection)
         {
@@ -325,7 +323,7 @@ namespace PropertyTools.Wpf
         /// Unsubscribes collection changes.
         /// </summary>
         /// <param name="collection">
-        /// The collection. 
+        /// The collection.
         /// </param>
         private void UnsubscribeCollectionChanges(IEnumerable collection)
         {
@@ -336,6 +334,5 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
     }
 }

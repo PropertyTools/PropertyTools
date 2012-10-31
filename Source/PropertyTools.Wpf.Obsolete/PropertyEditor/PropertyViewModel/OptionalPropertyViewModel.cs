@@ -1,9 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OptionalPropertyViewModel.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Properties that are nullable or marked [Optional(...)] are enabled/disabled by a checkbox
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -14,26 +37,20 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class OptionalPropertyViewModel : PropertyViewModel
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The optional descriptor.
+        /// The optional descriptor.
         /// </summary>
         private readonly PropertyDescriptor optionalDescriptor;
 
         /// <summary>
-        ///   The enabled but has no value.
+        /// The enabled but has no value.
         /// </summary>
         private bool enabledButHasNoValue;
 
         /// <summary>
-        ///   The previous value.
+        /// The previous value.
         /// </summary>
         private object previousValue;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionalPropertyViewModel"/> class.
@@ -83,12 +100,8 @@ namespace PropertyTools.Wpf
             this.IsPropertyNullable = true;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether IsOptionalChecked.
+        /// Gets or sets a value indicating whether IsOptionalChecked.
         /// </summary>
         public bool IsOptionalChecked
         {
@@ -137,12 +150,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets a value indicating whether IsPropertyNullable.
+        /// Gets a value indicating whether IsPropertyNullable.
         /// </summary>
         public bool IsPropertyNullable { get; private set; }
 
         /// <summary>
-        ///   Gets OptionalPropertyName.
+        /// Gets OptionalPropertyName.
         /// </summary>
         public string OptionalPropertyName
         {
@@ -156,10 +169,6 @@ namespace PropertyTools.Wpf
                 return null;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The subscribe value changed.
@@ -184,10 +193,6 @@ namespace PropertyTools.Wpf
                 this.UnsubscribeValueChanged(this.optionalDescriptor, this.IsOptionalChanged);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The get descriptor.
@@ -224,6 +229,5 @@ namespace PropertyTools.Wpf
             this.NotifyPropertyChanged("IsOptionalChecked");
         }
 
-        #endregion
     }
 }

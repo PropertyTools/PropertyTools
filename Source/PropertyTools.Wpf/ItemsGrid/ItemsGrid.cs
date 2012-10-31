@@ -1,12 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsGrid.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
 //   Represents a datagrid with a spreadsheet style.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -46,8 +66,6 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartTopLeft, Type = typeof(Border))]
     public partial class ItemsGrid : Control
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The auto fill box.
         /// </summary>
@@ -256,10 +274,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         private Border topleft;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes static members of the <see cref="ItemsGrid"/> class.
         /// </summary>
@@ -293,15 +307,11 @@ namespace PropertyTools.Wpf
                     DeleteColumnsCommand, (s, e) => this.DeleteColumns(), (s, e) => e.CanExecute = this.CanDeleteColumns));
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets the delete columns command.
         /// </summary>
         /// <value>
-        /// The delete columns command. 
+        /// The delete columns command.
         /// </value>
         public static ICommand DeleteColumnsCommand { get; private set; }
 
@@ -309,7 +319,7 @@ namespace PropertyTools.Wpf
         /// Gets the delete rows command.
         /// </summary>
         /// <value>
-        /// The delete rows command. 
+        /// The delete rows command.
         /// </value>
         public static ICommand DeleteRowsCommand { get; private set; }
 
@@ -317,7 +327,7 @@ namespace PropertyTools.Wpf
         /// Gets the insert columns command.
         /// </summary>
         /// <value>
-        /// The insert columns command. 
+        /// The insert columns command.
         /// </value>
         public static ICommand InsertColumnsCommand { get; private set; }
 
@@ -325,13 +335,9 @@ namespace PropertyTools.Wpf
         /// Gets the insert rows command.
         /// </summary>
         /// <value>
-        /// The insert rows command. 
+        /// The insert rows command.
         /// </value>
         public static ICommand InsertRowsCommand { get; private set; }
-
-        #endregion
-
-        #region Public Methods and Operators
 
         /// <summary>
         /// The auto size all columns.
@@ -349,7 +355,7 @@ namespace PropertyTools.Wpf
         /// Auto-size the specified column.
         /// </summary>
         /// <param name="column">
-        /// The column. 
+        /// The column.
         /// </param>
         public void AutoSizeColumn(int column)
         {
@@ -380,7 +386,7 @@ namespace PropertyTools.Wpf
         /// The copy.
         /// </summary>
         /// <param name="separator">
-        /// The separator. 
+        /// The separator.
         /// </param>
         public void Copy(string separator)
         {
@@ -392,13 +398,13 @@ namespace PropertyTools.Wpf
         /// Deletes an item.
         /// </summary>
         /// <param name="index">
-        /// The index. 
+        /// The index.
         /// </param>
         /// <param name="updateGrid">
-        /// The update grid. 
+        /// The update grid.
         /// </param>
         /// <returns>
-        /// The delete item. 
+        /// The delete item.
         /// </returns>
         public bool DeleteItem(int index, bool updateGrid)
         {
@@ -427,7 +433,7 @@ namespace PropertyTools.Wpf
         /// The end text edit.
         /// </summary>
         /// <param name="commit">
-        /// The commit. 
+        /// The commit.
         /// </param>
         public void EndTextEdit(bool commit = true)
         {
@@ -523,10 +529,10 @@ namespace PropertyTools.Wpf
         /// Gets the element at the specified cell.
         /// </summary>
         /// <param name="cellRef">
-        /// The cell reference. 
+        /// The cell reference.
         /// </param>
         /// <returns>
-        /// The element, or null if the cell was not found. 
+        /// The element, or null if the cell was not found.
         /// </returns>
         public UIElement GetCellElement(CellRef cellRef)
         {
@@ -538,10 +544,10 @@ namespace PropertyTools.Wpf
         /// Gets the formatted string value for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell. 
+        /// The cell.
         /// </param>
         /// <returns>
-        /// The cell string. 
+        /// The cell string.
         /// </returns>
         public string GetCellString(CellRef cell)
         {
@@ -559,10 +565,10 @@ namespace PropertyTools.Wpf
         /// Gets the cell value from the Content property for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell reference. 
+        /// The cell reference.
         /// </param>
         /// <returns>
-        /// The get cell value. 
+        /// The get cell value.
         /// </returns>
         public object GetCellValue(CellRef cell)
         {
@@ -593,10 +599,10 @@ namespace PropertyTools.Wpf
         /// Gets the position of the specified cell.
         /// </summary>
         /// <param name="cellRef">
-        /// The cell reference. 
+        /// The cell reference.
         /// </param>
         /// <returns>
-        /// The upper-left position of the cell. 
+        /// The upper-left position of the cell.
         /// </returns>
         public Point GetPosition(CellRef cellRef)
         {
@@ -619,10 +625,10 @@ namespace PropertyTools.Wpf
         /// Gets the visible cells.
         /// </summary>
         /// <param name="topLeft">
-        /// The top left. 
+        /// The top left.
         /// </param>
         /// <param name="bottomRight">
-        /// The bottom right. 
+        /// The bottom right.
         /// </param>
         public void GetVisibleCells(out CellRef topLeft, out CellRef bottomRight)
         {
@@ -660,13 +666,13 @@ namespace PropertyTools.Wpf
         /// Inserts an item.
         /// </summary>
         /// <param name="index">
-        /// The index. 
+        /// The index.
         /// </param>
         /// <param name="updateGrid">
-        /// Determines whether the grid should be updated. 
+        /// Determines whether the grid should be updated.
         /// </param>
         /// <returns>
-        /// True if an item was inserted. 
+        /// True if an item was inserted.
         /// </returns>
         public bool InsertItem(int index, bool updateGrid = true)
         {
@@ -727,10 +733,10 @@ namespace PropertyTools.Wpf
         /// Changes current cell with the specified delta.
         /// </summary>
         /// <param name="deltaRows">
-        /// The change in rows. 
+        /// The change in rows.
         /// </param>
         /// <param name="deltaColumns">
-        /// The change in columns. 
+        /// The change in columns.
         /// </param>
         public void MoveCurrentCell(int deltaRows, int deltaColumns)
         {
@@ -909,7 +915,7 @@ namespace PropertyTools.Wpf
         /// Scroll the specified cell into view.
         /// </summary>
         /// <param name="cellRef">
-        /// The cell reference. 
+        /// The cell reference.
         /// </param>
         public void ScrollIntoView(CellRef cellRef)
         {
@@ -947,7 +953,7 @@ namespace PropertyTools.Wpf
         /// Shows the edit control for the current cell.
         /// </summary>
         /// <returns>
-        /// True if an edit control is shown. 
+        /// True if an edit control is shown.
         /// </returns>
         public bool ShowEditControl()
         {
@@ -1012,10 +1018,10 @@ namespace PropertyTools.Wpf
         /// Exports the grid to csv.
         /// </summary>
         /// <param name="separator">
-        /// The separator. 
+        /// The separator.
         /// </param>
         /// <returns>
-        /// The csv string. 
+        /// The csv string.
         /// </returns>
         public string ToCsv(string separator = ";")
         {
@@ -1041,13 +1047,13 @@ namespace PropertyTools.Wpf
         /// Tries to set the value in the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell. 
+        /// The cell.
         /// </param>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <returns>
-        /// True if the value was set. 
+        /// True if the value was set.
         /// </returns>
         public virtual bool TrySetCellValue(CellRef cell, object value)
         {
@@ -1090,27 +1096,23 @@ namespace PropertyTools.Wpf
             return false;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Creates the display control for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell. 
+        /// The cell.
         /// </param>
         /// <param name="pd">
-        /// The pd. 
+        /// The pd.
         /// </param>
         /// <param name="item">
-        /// The item. 
+        /// The item.
         /// </param>
         /// <param name="index">
-        /// The index. 
+        /// The index.
         /// </param>
         /// <returns>
-        /// The display control. 
+        /// The display control.
         /// </returns>
         protected virtual UIElement CreateDisplayControl(
             CellRef cell, PropertyDefinition pd = null, object item = null, int index = -1)
@@ -1144,10 +1146,10 @@ namespace PropertyTools.Wpf
         /// Creates a new instance of the specified type.
         /// </summary>
         /// <param name="itemType">
-        /// The type. 
+        /// The type.
         /// </param>
         /// <returns>
-        /// The new instance. 
+        /// The new instance.
         /// </returns>
         protected virtual object CreateInstance(Type itemType)
         {
@@ -1158,7 +1160,7 @@ namespace PropertyTools.Wpf
         /// Auto-generates the column definitions.
         /// </summary>
         /// <param name="items">
-        /// The items. 
+        /// The items.
         /// </param>
         protected virtual void GenerateColumnDefinitions(IList items)
         {
@@ -1206,7 +1208,7 @@ namespace PropertyTools.Wpf
         /// Handles KeyDown events on the grid.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -1361,7 +1363,7 @@ namespace PropertyTools.Wpf
         /// Handles mouse left button down events.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
@@ -1375,7 +1377,7 @@ namespace PropertyTools.Wpf
         /// Handles mouse left button up events.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
@@ -1398,7 +1400,7 @@ namespace PropertyTools.Wpf
         /// Handles mouse move events.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -1457,7 +1459,7 @@ namespace PropertyTools.Wpf
         /// Handles mouse wheel preview events.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
@@ -1483,7 +1485,7 @@ namespace PropertyTools.Wpf
         /// Handles text input events.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         protected override void OnTextInput(TextCompositionEventArgs e)
         {
@@ -1523,7 +1525,7 @@ namespace PropertyTools.Wpf
         /// Updates the content of the specified cell.
         /// </summary>
         /// <param name="cellRef">
-        /// The cell reference. 
+        /// The cell reference.
         /// </param>
         protected void UpdateCellContent(CellRef cellRef)
         {
@@ -1542,16 +1544,16 @@ namespace PropertyTools.Wpf
         /// Clamps a value between a minimum and maximum limit.
         /// </summary>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <param name="min">
-        /// The minimum. 
+        /// The minimum.
         /// </param>
         /// <param name="max">
-        /// The maximum. 
+        /// The maximum.
         /// </param>
         /// <returns>
-        /// The clamped value. 
+        /// The clamped value.
         /// </returns>
         private static int Clamp(int value, int min, int max)
         {
@@ -1573,10 +1575,10 @@ namespace PropertyTools.Wpf
         /// Csv-encodes the specified string.
         /// </summary>
         /// <param name="input">
-        /// The input string. 
+        /// The input string.
         /// </param>
         /// <returns>
-        /// The csv-encoded string. 
+        /// The csv-encoded string.
         /// </returns>
         private static string CsvEncodeString(string input)
         {
@@ -1593,13 +1595,13 @@ namespace PropertyTools.Wpf
         /// Formats value.
         /// </summary>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <param name="formatString">
-        /// The format string. 
+        /// The format string.
         /// </param>
         /// <returns>
-        /// The format value. 
+        /// The format value.
         /// </returns>
         private static string FormatValue(object value, string formatString)
         {
@@ -1620,10 +1622,10 @@ namespace PropertyTools.Wpf
         /// The set element position.
         /// </summary>
         /// <param name="element">
-        /// The element. 
+        /// The element.
         /// </param>
         /// <param name="cell">
-        /// The cell. 
+        /// The cell.
         /// </param>
         private static void SetElementPosition(UIElement element, CellRef cell)
         {
@@ -1635,10 +1637,10 @@ namespace PropertyTools.Wpf
         /// Splits a string separated by \n and \t into an array.
         /// </summary>
         /// <param name="text">
-        /// The text. 
+        /// The text.
         /// </param>
         /// <returns>
-        /// An 2-dimensional array of strings. 
+        /// An 2-dimensional array of strings.
         /// </returns>
         private static string[,] TextToArray(string text)
         {
@@ -1683,16 +1685,16 @@ namespace PropertyTools.Wpf
         /// Tries to convert an object to the specified type.
         /// </summary>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <param name="targetType">
-        /// The target type. 
+        /// The target type.
         /// </param>
         /// <param name="convertedValue">
-        /// The converted value. 
+        /// The converted value.
         /// </param>
         /// <returns>
-        /// True if conversion was successful. 
+        /// True if conversion was successful.
         /// </returns>
         private static bool TryConvert(object value, Type targetType, out object convertedValue)
         {
@@ -1744,7 +1746,7 @@ namespace PropertyTools.Wpf
         /// Adds the display control for the specified cell.
         /// </summary>
         /// <param name="cellRef">
-        /// The cell reference. 
+        /// The cell reference.
         /// </param>
         private void AddDisplayControl(CellRef cellRef)
         {
@@ -1764,10 +1766,10 @@ namespace PropertyTools.Wpf
         /// The add item cell mouse left button down.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void AddItemCellMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -1780,10 +1782,10 @@ namespace PropertyTools.Wpf
         /// The auto fill box mouse left button down.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void AutoFillBoxMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -1795,10 +1797,10 @@ namespace PropertyTools.Wpf
         /// The column grid loaded.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ColumnGridLoaded(object sender, RoutedEventArgs e)
         {
@@ -1809,10 +1811,10 @@ namespace PropertyTools.Wpf
         /// The column grid mouse left button down.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ColumnGridMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -1834,10 +1836,10 @@ namespace PropertyTools.Wpf
         /// The column grid mouse left button up.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ColumnGridMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -1849,10 +1851,10 @@ namespace PropertyTools.Wpf
         /// The column grid mouse move.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ColumnGridMouseMove(object sender, MouseEventArgs e)
         {
@@ -1874,10 +1876,10 @@ namespace PropertyTools.Wpf
         /// The column grid size changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ColumnGridSizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -1888,10 +1890,10 @@ namespace PropertyTools.Wpf
         /// The column scroller changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ColumnScrollerChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -1902,10 +1904,10 @@ namespace PropertyTools.Wpf
         /// The column splitter change completed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="dragCompletedEventArgs">
-        /// The drag completed event args. 
+        /// The drag completed event args.
         /// </param>
         private void ColumnSplitterChangeCompleted(object sender, DragCompletedEventArgs dragCompletedEventArgs)
         {
@@ -1927,10 +1929,10 @@ namespace PropertyTools.Wpf
         /// The column splitter change delta.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ColumnSplitterChangeDelta(object sender, DragDeltaEventArgs e)
         {
@@ -1959,10 +1961,10 @@ namespace PropertyTools.Wpf
         /// The column splitter change started.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="dragStartedEventArgs">
-        /// The drag started event args. 
+        /// The drag started event args.
         /// </param>
         private void ColumnSplitterChangeStarted(object sender, DragStartedEventArgs dragStartedEventArgs)
         {
@@ -1973,10 +1975,10 @@ namespace PropertyTools.Wpf
         /// The column splitter double click.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ColumnSplitterDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -1988,10 +1990,10 @@ namespace PropertyTools.Wpf
         /// The copy execute.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void CopyExecute(object sender, ExecutedRoutedEventArgs e)
         {
@@ -2002,10 +2004,10 @@ namespace PropertyTools.Wpf
         /// The cut execute.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void CutExecute(object sender, ExecutedRoutedEventArgs e)
         {
@@ -2054,10 +2056,10 @@ namespace PropertyTools.Wpf
         /// The delete execute.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void DeleteExecute(object sender, ExecutedRoutedEventArgs e)
         {
@@ -2094,13 +2096,13 @@ namespace PropertyTools.Wpf
         /// Enumerate the items in the specified cell range. This is used to update the SelectedItems property.
         /// </summary>
         /// <param name="cell0">
-        /// The cell 0. 
+        /// The cell 0.
         /// </param>
         /// <param name="cell1">
-        /// The cell 1. 
+        /// The cell 1.
         /// </param>
         /// <returns>
-        /// The items enumeration. 
+        /// The items enumeration.
         /// </returns>
         private IEnumerable EnumerateItems(CellRef cell0, CellRef cell1)
         {
@@ -2125,16 +2127,16 @@ namespace PropertyTools.Wpf
         /// Finds the next column that contains an empty cell.
         /// </summary>
         /// <param name="row">
-        /// The row. 
+        /// The row.
         /// </param>
         /// <param name="column">
-        /// The column. 
+        /// The column.
         /// </param>
         /// <param name="deltaColumn">
-        /// The delta column. 
+        /// The delta column.
         /// </param>
         /// <returns>
-        /// The new column. 
+        /// The new column.
         /// </returns>
         private int FindNextColumn(int row, int column, int deltaColumn)
         {
@@ -2156,16 +2158,16 @@ namespace PropertyTools.Wpf
         /// Finds the next row that contains an empty cell.
         /// </summary>
         /// <param name="row">
-        /// The row. 
+        /// The row.
         /// </param>
         /// <param name="column">
-        /// The column. 
+        /// The column.
         /// </param>
         /// <param name="deltaRow">
-        /// The delta row. 
+        /// The delta row.
         /// </param>
         /// <returns>
-        /// The new row. 
+        /// The new row.
         /// </returns>
         private int FindNextRow(int row, int column, int deltaRow)
         {
@@ -2187,10 +2189,10 @@ namespace PropertyTools.Wpf
         /// Gets a cell reference from the specified display control.
         /// </summary>
         /// <param name="element">
-        /// The element. 
+        /// The element.
         /// </param>
         /// <returns>
-        /// The cell reference. 
+        /// The cell reference.
         /// </returns>
         private CellRef GetCellRefFromUIElement(UIElement element)
         {
@@ -2203,10 +2205,10 @@ namespace PropertyTools.Wpf
         /// Gets the column element for the specified column.
         /// </summary>
         /// <param name="column">
-        /// The column. 
+        /// The column.
         /// </param>
         /// <returns>
-        /// The column element. 
+        /// The column element.
         /// </returns>
         private FrameworkElement GetColumnElement(int column)
         {
@@ -2217,10 +2219,10 @@ namespace PropertyTools.Wpf
         /// Gets the column header for the specified column.
         /// </summary>
         /// <param name="j">
-        /// The j. 
+        /// The j.
         /// </param>
         /// <returns>
-        /// The get column header. 
+        /// The get column header.
         /// </returns>
         private object GetColumnHeader(int j)
         {
@@ -2239,10 +2241,10 @@ namespace PropertyTools.Wpf
         /// Gets the column width for the specified column.
         /// </summary>
         /// <param name="i">
-        /// The column index. 
+        /// The column index.
         /// </param>
         /// <returns>
-        /// The column width. 
+        /// The column width.
         /// </returns>
         private GridLength GetColumnWidth(int i)
         {
@@ -2267,10 +2269,10 @@ namespace PropertyTools.Wpf
         /// Gets the format string for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell. 
+        /// The cell.
         /// </param>
         /// <returns>
-        /// The format string. 
+        /// The format string.
         /// </returns>
         private string GetFormatString(CellRef cell)
         {
@@ -2282,10 +2284,10 @@ namespace PropertyTools.Wpf
         /// Gets the item for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell. 
+        /// The cell.
         /// </param>
         /// <returns>
-        /// The item. 
+        /// The item.
         /// </returns>
         private object GetItem(CellRef cell)
         {
@@ -2296,10 +2298,10 @@ namespace PropertyTools.Wpf
         /// Gets the item for the specified index in the ItemsSource collection.
         /// </summary>
         /// <param name="index">
-        /// The item index. 
+        /// The item index.
         /// </param>
         /// <returns>
-        /// The item. 
+        /// The item.
         /// </returns>
         private object GetItem(int index)
         {
@@ -2321,10 +2323,10 @@ namespace PropertyTools.Wpf
         /// Gets the item index for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell. 
+        /// The cell.
         /// </param>
         /// <returns>
-        /// The get item index. 
+        /// The get item index.
         /// </returns>
         private int GetItemIndex(CellRef cell)
         {
@@ -2340,10 +2342,10 @@ namespace PropertyTools.Wpf
         /// Gets the column/row definition for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell. 
+        /// The cell.
         /// </param>
         /// <returns>
-        /// The column/row definition. 
+        /// The column/row definition.
         /// </returns>
         private PropertyDefinition GetPropertyDefinition(CellRef cell)
         {
@@ -2361,10 +2363,10 @@ namespace PropertyTools.Wpf
         /// Gets the row header.
         /// </summary>
         /// <param name="j">
-        /// The j. 
+        /// The j.
         /// </param>
         /// <returns>
-        /// The get row header. 
+        /// The get row header.
         /// </returns>
         private object GetRowHeader(int j)
         {
@@ -2380,7 +2382,7 @@ namespace PropertyTools.Wpf
         /// Handles the button down event.
         /// </summary>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void HandleButtonDown(MouseButtonEventArgs e)
         {
@@ -2445,7 +2447,7 @@ namespace PropertyTools.Wpf
         /// Inserts the display control for the specified cell.
         /// </summary>
         /// <param name="cellRef">
-        /// The cell reference. 
+        /// The cell reference.
         /// </param>
         private void InsertDisplayControl(CellRef cellRef)
         {
@@ -2476,10 +2478,10 @@ namespace PropertyTools.Wpf
         /// The on content collection changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -2491,10 +2493,10 @@ namespace PropertyTools.Wpf
         /// The paste execute.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void PasteExecute(object sender, ExecutedRoutedEventArgs e)
         {
@@ -2505,10 +2507,10 @@ namespace PropertyTools.Wpf
         /// The row grid mouse left button down.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void RowGridMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -2532,10 +2534,10 @@ namespace PropertyTools.Wpf
         /// The row grid mouse left button up.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void RowGridMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -2547,10 +2549,10 @@ namespace PropertyTools.Wpf
         /// The row grid mouse move.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void RowGridMouseMove(object sender, MouseEventArgs e)
         {
@@ -2571,10 +2573,10 @@ namespace PropertyTools.Wpf
         /// The row scroller changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void RowScrollerChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -2585,10 +2587,10 @@ namespace PropertyTools.Wpf
         /// The scroll viewer scroll changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void ScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -2610,13 +2612,13 @@ namespace PropertyTools.Wpf
         /// Exports the selection to a string.
         /// </summary>
         /// <param name="separator">
-        /// The separator. 
+        /// The separator.
         /// </param>
         /// <param name="encode">
-        /// Determines whether to csv encode the elements. 
+        /// Determines whether to csv encode the elements.
         /// </param>
         /// <returns>
-        /// The string. 
+        /// The string.
         /// </returns>
         private string SelectionToString(string separator, bool encode = false)
         {
@@ -2627,10 +2629,10 @@ namespace PropertyTools.Wpf
         /// Set the bool value in the selected cells.
         /// </summary>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <returns>
-        /// True if cells were modified. 
+        /// True if cells were modified.
         /// </returns>
         private bool SetCheckInSelectedCells(bool value)
         {
@@ -2654,13 +2656,13 @@ namespace PropertyTools.Wpf
         /// The set element data context.
         /// </summary>
         /// <param name="element">
-        /// The element. 
+        /// The element.
         /// </param>
         /// <param name="pd">
-        /// The pd. 
+        /// The pd.
         /// </param>
         /// <param name="item">
-        /// The item. 
+        /// The item.
         /// </param>
         private void SetElementDataContext(FrameworkElement element, PropertyDefinition pd, object item)
         {
@@ -2671,10 +2673,10 @@ namespace PropertyTools.Wpf
         /// Handles mouse left button down on the grid sheet.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void SheetMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -2689,13 +2691,13 @@ namespace PropertyTools.Wpf
         /// Exports the whole grid sheet to a string.
         /// </summary>
         /// <param name="separator">
-        /// The separator. 
+        /// The separator.
         /// </param>
         /// <param name="encode">
-        /// The encode. 
+        /// The encode.
         /// </param>
         /// <returns>
-        /// The sheet to string. 
+        /// The sheet to string.
         /// </returns>
         private string SheetToString(string separator, bool encode = false)
         {
@@ -2706,10 +2708,10 @@ namespace PropertyTools.Wpf
         /// The text editor was loaded.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
         /// </param>
         private void TextEditorLoaded(object sender, RoutedEventArgs e)
         {
@@ -2722,10 +2724,10 @@ namespace PropertyTools.Wpf
         /// The text editor lost focus.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void TextEditorLostFocus(object sender, RoutedEventArgs e)
         {
@@ -2736,10 +2738,10 @@ namespace PropertyTools.Wpf
         /// Handles keydown events in the TextBox editor.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void TextEditorPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -2792,19 +2794,19 @@ namespace PropertyTools.Wpf
         /// Exports the specified cell range to a string.
         /// </summary>
         /// <param name="cell1">
-        /// The cell 1. 
+        /// The cell 1.
         /// </param>
         /// <param name="cell2">
-        /// The cell 2. 
+        /// The cell 2.
         /// </param>
         /// <param name="separator">
-        /// The separator. 
+        /// The separator.
         /// </param>
         /// <param name="encode">
-        /// Determines whether to csv encode the elements. 
+        /// Determines whether to csv encode the elements.
         /// </param>
         /// <returns>
-        /// The to string. 
+        /// The to string.
         /// </returns>
         private string ToString(CellRef cell1, CellRef cell2, string separator, bool encode = false)
         {
@@ -2849,7 +2851,7 @@ namespace PropertyTools.Wpf
         /// Toggles the check in the current cell.
         /// </summary>
         /// <returns>
-        /// True if the cell was modified. 
+        /// True if the cell was modified.
         /// </returns>
         private bool ToggleCheck()
         {
@@ -2868,10 +2870,10 @@ namespace PropertyTools.Wpf
         /// The topleft mouse left button down.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event arguments. 
+        /// The event arguments.
         /// </param>
         private void TopleftMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -2895,6 +2897,5 @@ namespace PropertyTools.Wpf
             this.subcribedCollection = null;
         }
 
-        #endregion
     }
 }

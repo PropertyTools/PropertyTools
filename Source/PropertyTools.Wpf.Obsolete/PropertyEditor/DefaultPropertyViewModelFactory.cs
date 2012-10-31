@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DefaultPropertyViewModelFactory.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   The default property view model factory.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System.ComponentModel;
@@ -18,23 +41,17 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class DefaultPropertyViewModelFactory : IPropertyViewModelFactory
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The owner.
+        /// The owner.
         /// </summary>
         protected readonly PropertyEditor owner;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultPropertyViewModelFactory"/> class.
         /// </summary>
         /// <param name="owner">
-        /// The owner PropertyEditor of the factory. 
-        ///   This is neccessary in order to get the PropertyTemplateSelector to work.
+        /// The owner PropertyEditor of the factory.
+        /// This is neccessary in order to get the PropertyTemplateSelector to work.
         /// </param>
         public DefaultPropertyViewModelFactory(PropertyEditor owner)
         {
@@ -44,46 +61,38 @@ namespace PropertyTools.Wpf
             this.UsePropertyPattern = "Use{0}";
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the IsEnabledPattern.
-        /// 
-        ///   Example using a "Is{0}Enabled" pattern:
-        ///   string City { get; set; }
-        ///   bool IsCityEnabled { get; set; }
-        ///   The state of the City property will be controlled by the IsCityEnabled property
+        /// Gets or sets the IsEnabledPattern.
+        ///
+        /// Example using a "Is{0}Enabled" pattern:
+        /// string City { get; set; }
+        /// bool IsCityEnabled { get; set; }
+        /// The state of the City property will be controlled by the IsCityEnabled property
         /// </summary>
         /// <value>The IsEnabledPattern.</value>
         public string IsEnabledPattern { get; set; }
 
         /// <summary>
-        ///   Gets or sets the IsVisiblePattern.
-        /// 
-        ///   Example using a "Is{0}Visible" pattern:
-        ///   string City { get; set; }
-        ///   bool IsCityVisible { get; set; }
-        ///   The visibility state of the City property will be controlled by the IsCityVisible property
+        /// Gets or sets the IsVisiblePattern.
+        ///
+        /// Example using a "Is{0}Visible" pattern:
+        /// string City { get; set; }
+        /// bool IsCityVisible { get; set; }
+        /// The visibility state of the City property will be controlled by the IsCityVisible property
         /// </summary>
         /// <value>The IsVisiblePattern.</value>
         public string IsVisiblePattern { get; set; }
 
         /// <summary>
-        ///   Gets or sets the UsePattern. This is used to create an "Optional" property.
-        /// 
-        ///   Example using a "Use{0}" pattern:
-        ///   string City { get; set; }
-        ///   bool UseCity { get; set; }
-        ///   The optional state of the City property will be controlled by the UseCity property
+        /// Gets or sets the UsePattern. This is used to create an "Optional" property.
+        ///
+        /// Example using a "Use{0}" pattern:
+        /// string City { get; set; }
+        /// bool UseCity { get; set; }
+        /// The optional state of the City property will be controlled by the UseCity property
         /// </summary>
         /// <value>The UsePropertyPattern.</value>
         public string UsePropertyPattern { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The create view model.
@@ -146,23 +155,23 @@ namespace PropertyTools.Wpf
             bool snapToTicks;
             TickPlacement tickPlacement;
             if (this.IsSlidable(
-                descriptor, 
-                out min, 
-                out max, 
-                out largeChange, 
-                out smallChange, 
-                out tickFrequency, 
-                out snapToTicks, 
+                descriptor,
+                out min,
+                out max,
+                out largeChange,
+                out smallChange,
+                out tickFrequency,
+                out snapToTicks,
                 out tickPlacement))
             {
                 propertyViewModel = new SlidablePropertyViewModel(instance, descriptor, this.owner)
                     {
-                        SliderMinimum = min, 
-                        SliderMaximum = max, 
-                        SliderLargeChange = largeChange, 
-                        SliderSmallChange = smallChange, 
-                        SliderSnapToTicks = snapToTicks, 
-                        SliderTickFrequency = tickFrequency, 
+                        SliderMinimum = min,
+                        SliderMaximum = max,
+                        SliderLargeChange = largeChange,
+                        SliderSmallChange = smallChange,
+                        SliderSnapToTicks = snapToTicks,
+                        SliderTickFrequency = tickFrequency,
                         SliderTickPlacement = tickPlacement
                     };
             }
@@ -174,7 +183,7 @@ namespace PropertyTools.Wpf
             {
                 propertyViewModel = new FilePathPropertyViewModel(instance, descriptor, this.owner)
                     {
-                       Filter = filter, DefaultExtension = defaultExtension, UseOpenDialog = useOpenDialog 
+                       Filter = filter, DefaultExtension = defaultExtension, UseOpenDialog = useOpenDialog
                     };
             }
 
@@ -256,10 +265,6 @@ namespace PropertyTools.Wpf
 
             return false;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The get format string.
@@ -485,13 +490,13 @@ namespace PropertyTools.Wpf
         /// The is slidable.
         /// </returns>
         protected virtual bool IsSlidable(
-            PropertyDescriptor descriptor, 
-            out double min, 
-            out double max, 
-            out double largeChange, 
-            out double smallChange, 
-            out double tickFrequency, 
-            out bool snapToTicks, 
+            PropertyDescriptor descriptor,
+            out double min,
+            out double max,
+            out double largeChange,
+            out double smallChange,
+            out double tickFrequency,
+            out bool snapToTicks,
             out TickPlacement tickPlacement)
         {
             min = max = largeChange = smallChange = 0;
@@ -541,6 +546,5 @@ namespace PropertyTools.Wpf
             return false;
         }
 
-        #endregion
     }
 }

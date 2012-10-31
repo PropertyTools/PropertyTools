@@ -1,12 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColorPickerPanel.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
 //   Represents a control that lets the user pick a color.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -26,131 +46,125 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartHsv, Type = typeof(HsvControl))]
     public class ColorPickerPanel : Control, INotifyPropertyChanged
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The alpha property.
+        /// The alpha property.
         /// </summary>
         public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register(
-            "Alpha", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Alpha",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        ///   The blue property.
+        /// The blue property.
         /// </summary>
         public static readonly DependencyProperty BlueProperty = DependencyProperty.Register(
-            "Blue", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Blue",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        ///   The brightness property.
+        /// The brightness property.
         /// </summary>
         public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register(
-            "Brightness", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Brightness",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        ///   The green property.
+        /// The green property.
         /// </summary>
         public static readonly DependencyProperty GreenProperty = DependencyProperty.Register(
-            "Green", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Green",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        ///   The hue property.
+        /// The hue property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
-            "Hue", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Hue",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        ///   The is picking property.
+        /// The is picking property.
         /// </summary>
         public static readonly DependencyProperty IsPickingProperty = DependencyProperty.Register(
             "IsPicking", typeof(bool), typeof(ColorPickerPanel), new UIPropertyMetadata(false, IsPickingChanged));
 
         /// <summary>
-        ///   The red property.
+        /// The red property.
         /// </summary>
         public static readonly DependencyProperty RedProperty = DependencyProperty.Register(
-            "Red", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Red",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        ///   The saturation property.
+        /// The saturation property.
         /// </summary>
         public static readonly DependencyProperty SaturationProperty = DependencyProperty.Register(
-            "Saturation", 
-            typeof(int), 
-            typeof(ColorPickerPanel), 
+            "Saturation",
+            typeof(int),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        ///   The selected color property.
+        /// The selected color property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
-            "SelectedColor", 
-            typeof(Color?), 
-            typeof(ColorPickerPanel), 
+            "SelectedColor",
+            typeof(Color?),
+            typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(
-                Color.FromArgb(0, 0, 0, 0), 
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
-                SelectedColorChanged, 
+                Color.FromArgb(0, 0, 0, 0),
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                SelectedColorChanged,
                 CoerceSelectedColorValue));
 
         /// <summary>
-        ///   The HSV control part name.
+        /// The HSV control part name.
         /// </summary>
         private const string PartHsv = "PART_HSV";
 
         /// <summary>
-        ///   The max number of recent colors.
+        /// The max number of recent colors.
         /// </summary>
         private static int maxNumberOfRecentColors = 20;
 
         /// <summary>
-        ///   The show hsv panel.
+        /// The show hsv panel.
         /// </summary>
         private static bool showHsvPanel;
 
         /// <summary>
-        ///   The HSV control.
+        /// The HSV control.
         /// </summary>
         private HsvControl hsvControl;
 
         /// <summary>
-        ///   The picking timer.
+        /// The picking timer.
         /// </summary>
         private DispatcherTimer pickingTimer;
 
         /// <summary>
-        ///   The within color change.
+        /// The within color change.
         /// </summary>
         private bool withinColorChange;
 
         /// <summary>
-        ///   The within component change.
+        /// The within component change.
         /// </summary>
         private bool withinComponentChange;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "ColorPickerPanel" /> class.
+        /// Initializes static members of the <see cref = "ColorPickerPanel" /> class.
         /// </summary>
         static ColorPickerPanel()
         {
@@ -161,51 +175,43 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ColorPickerPanel" /> class.
+        /// Initializes a new instance of the <see cref = "ColorPickerPanel" /> class.
         /// </summary>
         public ColorPickerPanel()
         {
             this.Unloaded += this.PanelUnloaded;
         }
 
-        #endregion
-
-        #region Public Events
-
         /// <summary>
-        ///   The property changed.
+        /// The property changed.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the recent colors.
+        /// Gets the recent colors.
         /// </summary>
         /// <value>The recent colors.</value>
         public static ObservableCollection<Color> RecentColors { get; private set; }
 
         /// <summary>
-        ///   Gets the standard colors.
+        /// Gets the standard colors.
         /// </summary>
         /// <value>The standard colors.</value>
         public static ObservableCollection<Color> StandardColors { get; private set; }
 
         /// <summary>
-        ///   Gets or sets Strings.
+        /// Gets or sets Strings.
         /// </summary>
         public static ColorPickerPanelStrings Strings { get; set; }
 
         /// <summary>
-        ///   Gets the theme colors.
+        /// Gets the theme colors.
         /// </summary>
         /// <value>The theme colors.</value>
         public static ObservableCollection<Color> ThemeColors { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the alpha value.
+        /// Gets or sets the alpha value.
         /// </summary>
         /// <value>The alpha.</value>
         public int Alpha
@@ -222,7 +228,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the blue.
+        /// Gets or sets the blue.
         /// </summary>
         /// <value>The blue.</value>
         public int Blue
@@ -239,7 +245,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the brightness.
+        /// Gets or sets the brightness.
         /// </summary>
         /// <value>The brightness.</value>
         public int Brightness
@@ -256,7 +262,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the green.
+        /// Gets or sets the green.
         /// </summary>
         /// <value>The green.</value>
         public int Green
@@ -273,7 +279,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the hue.
+        /// Gets or sets the hue.
         /// </summary>
         /// <value>The hue.</value>
         public int Hue
@@ -290,7 +296,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this user is picking colors on the screen.
+        /// Gets or sets a value indicating whether this user is picking colors on the screen.
         /// </summary>
         public bool IsPicking
         {
@@ -306,7 +312,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the max number of recent colors.
+        /// Gets or sets the max number of recent colors.
         /// </summary>
         /// <value>The max number of recent colors.</value>
         public int MaxNumberOfRecentColors
@@ -323,7 +329,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the red value.
+        /// Gets or sets the red value.
         /// </summary>
         /// <value>The red.</value>
         public int Red
@@ -340,7 +346,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the saturation.
+        /// Gets or sets the saturation.
         /// </summary>
         /// <value>The saturation.</value>
         public int Saturation
@@ -357,7 +363,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the selected color.
+        /// Gets or sets the selected color.
         /// </summary>
         /// <value>The color of the selected.</value>
         public Color? SelectedColor
@@ -374,10 +380,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to show the HSV panel.
+        /// Gets or sets a value indicating whether to show the HSV panel.
         /// </summary>
         /// <remarks>
-        ///   The backing field is static.
+        /// The backing field is static.
         /// </remarks>
         public bool ShowHsvPanel
         {
@@ -393,10 +399,6 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
         /// </summary>
@@ -405,10 +407,6 @@ namespace PropertyTools.Wpf
             base.OnApplyTemplate();
             this.hsvControl = this.GetTemplateChild(PartHsv) as HsvControl;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Coerces the selected color value.
@@ -592,91 +590,91 @@ namespace PropertyTools.Wpf
         /// </summary>
         private static void InitPalette()
         {
-            ThemeColors = new ObservableCollection<Color> 
+            ThemeColors = new ObservableCollection<Color>
             {
-                    Colors.White, 
-                    Colors.Black, 
-                    ColorHelper.UIntToColor(0xFFeeece1), 
-                    ColorHelper.UIntToColor(0xFF1f497d), 
-                    ColorHelper.UIntToColor(0xFF4f81bd), 
-                    ColorHelper.UIntToColor(0xFFc0504d), 
-                    ColorHelper.UIntToColor(0xFF9bbb59), 
-                    ColorHelper.UIntToColor(0xFF8064a2), 
-                    ColorHelper.UIntToColor(0xFF4bacc6), 
-                    ColorHelper.UIntToColor(0xFFf79646), 
-                    ColorHelper.UIntToColor(0xFFf2f2f2), 
-                    ColorHelper.UIntToColor(0xFF7f7f7f), 
-                    ColorHelper.UIntToColor(0xFFddd9c3), 
-                    ColorHelper.UIntToColor(0xFFc6d9f0), 
-                    ColorHelper.UIntToColor(0xFFdbe5f1), 
-                    ColorHelper.UIntToColor(0xFFf2dcdb), 
-                    ColorHelper.UIntToColor(0xFFebf1dd), 
-                    ColorHelper.UIntToColor(0xFFe5e0ec), 
-                    ColorHelper.UIntToColor(0xFFdbeef3), 
-                    ColorHelper.UIntToColor(0xFFfdeada), 
-                    ColorHelper.UIntToColor(0xFFd8d8d8), 
-                    ColorHelper.UIntToColor(0xFF595959), 
-                    ColorHelper.UIntToColor(0xFFc4bd97), 
-                    ColorHelper.UIntToColor(0xFF8db3e2), 
-                    ColorHelper.UIntToColor(0xFFb8cce4), 
-                    ColorHelper.UIntToColor(0xFFe5b9b7), 
-                    ColorHelper.UIntToColor(0xFFd7e3bc), 
-                    ColorHelper.UIntToColor(0xFFccc1d9), 
-                    ColorHelper.UIntToColor(0xFFb7dde8), 
-                    ColorHelper.UIntToColor(0xFFfbd5b5), 
-                    ColorHelper.UIntToColor(0xFFbfbfbf), 
-                    ColorHelper.UIntToColor(0xFF3f3f3f), 
-                    ColorHelper.UIntToColor(0xFF938953), 
-                    ColorHelper.UIntToColor(0xFF548dd4), 
-                    ColorHelper.UIntToColor(0xFF95b3d7), 
-                    ColorHelper.UIntToColor(0xFFd99694), 
-                    ColorHelper.UIntToColor(0xFFc3d69b), 
-                    ColorHelper.UIntToColor(0xFFb2a2c7), 
-                    ColorHelper.UIntToColor(0xFF92cddc), 
-                    ColorHelper.UIntToColor(0xFFfac08f), 
-                    ColorHelper.UIntToColor(0xFFa5a5a5), 
-                    ColorHelper.UIntToColor(0xFF262626), 
-                    ColorHelper.UIntToColor(0xFF494429), 
-                    ColorHelper.UIntToColor(0xFF17365d), 
-                    ColorHelper.UIntToColor(0xFF366092), 
-                    ColorHelper.UIntToColor(0xFF953734), 
-                    ColorHelper.UIntToColor(0xFF76923c), 
-                    ColorHelper.UIntToColor(0xFF5f497a), 
-                    ColorHelper.UIntToColor(0xFF31859b), 
-                    ColorHelper.UIntToColor(0xFFe36c09), 
-                    ColorHelper.UIntToColor(0xFF6f7f7f), 
-                    ColorHelper.UIntToColor(0xFF0c0c0c), 
-                    ColorHelper.UIntToColor(0xFF1d1b10), 
-                    ColorHelper.UIntToColor(0xFF0f243e), 
-                    ColorHelper.UIntToColor(0xFF244061), 
-                    ColorHelper.UIntToColor(0xFF632423), 
-                    ColorHelper.UIntToColor(0xFF4f6128), 
-                    ColorHelper.UIntToColor(0xFF3f3151), 
-                    ColorHelper.UIntToColor(0xFF205867), 
+                    Colors.White,
+                    Colors.Black,
+                    ColorHelper.UIntToColor(0xFFeeece1),
+                    ColorHelper.UIntToColor(0xFF1f497d),
+                    ColorHelper.UIntToColor(0xFF4f81bd),
+                    ColorHelper.UIntToColor(0xFFc0504d),
+                    ColorHelper.UIntToColor(0xFF9bbb59),
+                    ColorHelper.UIntToColor(0xFF8064a2),
+                    ColorHelper.UIntToColor(0xFF4bacc6),
+                    ColorHelper.UIntToColor(0xFFf79646),
+                    ColorHelper.UIntToColor(0xFFf2f2f2),
+                    ColorHelper.UIntToColor(0xFF7f7f7f),
+                    ColorHelper.UIntToColor(0xFFddd9c3),
+                    ColorHelper.UIntToColor(0xFFc6d9f0),
+                    ColorHelper.UIntToColor(0xFFdbe5f1),
+                    ColorHelper.UIntToColor(0xFFf2dcdb),
+                    ColorHelper.UIntToColor(0xFFebf1dd),
+                    ColorHelper.UIntToColor(0xFFe5e0ec),
+                    ColorHelper.UIntToColor(0xFFdbeef3),
+                    ColorHelper.UIntToColor(0xFFfdeada),
+                    ColorHelper.UIntToColor(0xFFd8d8d8),
+                    ColorHelper.UIntToColor(0xFF595959),
+                    ColorHelper.UIntToColor(0xFFc4bd97),
+                    ColorHelper.UIntToColor(0xFF8db3e2),
+                    ColorHelper.UIntToColor(0xFFb8cce4),
+                    ColorHelper.UIntToColor(0xFFe5b9b7),
+                    ColorHelper.UIntToColor(0xFFd7e3bc),
+                    ColorHelper.UIntToColor(0xFFccc1d9),
+                    ColorHelper.UIntToColor(0xFFb7dde8),
+                    ColorHelper.UIntToColor(0xFFfbd5b5),
+                    ColorHelper.UIntToColor(0xFFbfbfbf),
+                    ColorHelper.UIntToColor(0xFF3f3f3f),
+                    ColorHelper.UIntToColor(0xFF938953),
+                    ColorHelper.UIntToColor(0xFF548dd4),
+                    ColorHelper.UIntToColor(0xFF95b3d7),
+                    ColorHelper.UIntToColor(0xFFd99694),
+                    ColorHelper.UIntToColor(0xFFc3d69b),
+                    ColorHelper.UIntToColor(0xFFb2a2c7),
+                    ColorHelper.UIntToColor(0xFF92cddc),
+                    ColorHelper.UIntToColor(0xFFfac08f),
+                    ColorHelper.UIntToColor(0xFFa5a5a5),
+                    ColorHelper.UIntToColor(0xFF262626),
+                    ColorHelper.UIntToColor(0xFF494429),
+                    ColorHelper.UIntToColor(0xFF17365d),
+                    ColorHelper.UIntToColor(0xFF366092),
+                    ColorHelper.UIntToColor(0xFF953734),
+                    ColorHelper.UIntToColor(0xFF76923c),
+                    ColorHelper.UIntToColor(0xFF5f497a),
+                    ColorHelper.UIntToColor(0xFF31859b),
+                    ColorHelper.UIntToColor(0xFFe36c09),
+                    ColorHelper.UIntToColor(0xFF6f7f7f),
+                    ColorHelper.UIntToColor(0xFF0c0c0c),
+                    ColorHelper.UIntToColor(0xFF1d1b10),
+                    ColorHelper.UIntToColor(0xFF0f243e),
+                    ColorHelper.UIntToColor(0xFF244061),
+                    ColorHelper.UIntToColor(0xFF632423),
+                    ColorHelper.UIntToColor(0xFF4f6128),
+                    ColorHelper.UIntToColor(0xFF3f3151),
+                    ColorHelper.UIntToColor(0xFF205867),
                     ColorHelper.UIntToColor(0xFF974806)
                 };
 
-            StandardColors = new ObservableCollection<Color> 
+            StandardColors = new ObservableCollection<Color>
             {
-                    Colors.Firebrick, 
-                    Colors.Red, 
-                    Colors.Tomato, 
-                    Colors.OrangeRed, 
-                    Colors.Orange, 
-                    Colors.Gold, 
-                    Colors.Yellow, 
-                    Colors.YellowGreen, 
-                    Colors.SeaGreen, 
-                    Colors.DeepSkyBlue, 
-                    Colors.CornflowerBlue, 
-                    Colors.LightBlue, 
-                    Colors.DarkCyan, 
-                    Colors.MidnightBlue, 
-                    Colors.DarkOrchid, 
-                    Colors.Transparent, 
-                    Color.FromArgb(128, 0, 0, 0), 
-                    Color.FromArgb(128, 255, 255, 255), 
-                    ColorHelper.UndefinedColor, 
+                    Colors.Firebrick,
+                    Colors.Red,
+                    Colors.Tomato,
+                    Colors.OrangeRed,
+                    Colors.Orange,
+                    Colors.Gold,
+                    Colors.Yellow,
+                    Colors.YellowGreen,
+                    Colors.SeaGreen,
+                    Colors.DeepSkyBlue,
+                    Colors.CornflowerBlue,
+                    Colors.LightBlue,
+                    Colors.DarkCyan,
+                    Colors.MidnightBlue,
+                    Colors.DarkOrchid,
+                    Colors.Transparent,
+                    Color.FromArgb(128, 0, 0, 0),
+                    Color.FromArgb(128, 255, 255, 255),
+                    ColorHelper.UndefinedColor,
                     ColorHelper.Automatic
                 };
 
@@ -846,6 +844,5 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
     }
 }

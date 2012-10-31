@@ -1,12 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="InsertionAdorner.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Insertion bar adorner.
+//   Provides an insertion bar adorner.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -21,8 +41,6 @@ namespace PropertyTools.Wpf
     /// </remarks>
     public class InsertionAdorner : Adorner
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The pen.
         /// </summary>
@@ -43,12 +61,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         private readonly bool isSeparatorHorizontal;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes static members of the <see cref="InsertionAdorner"/> class. 
+        /// Initializes static members of the <see cref="InsertionAdorner"/> class.
         /// </summary>
         static InsertionAdorner()
         {
@@ -98,18 +112,10 @@ namespace PropertyTools.Wpf
             this.adornerLayer.Add(this);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets a value indicating whether IsInFirstHalf.
         /// </summary>
         public bool IsInFirstHalf { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Detaches this instance from the adorner layer.
@@ -118,10 +124,6 @@ namespace PropertyTools.Wpf
         {
             this.adornerLayer.Remove(this);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// When overridden in a derived class, participates in rendering operations that are directed by the layout system. The rendering instructions for this element are not used directly when this method is invoked, and are instead preserved for later asynchronous use by layout and drawing.
@@ -210,6 +212,5 @@ namespace PropertyTools.Wpf
             drawingContext.Pop();
         }
 
-        #endregion
     }
 }

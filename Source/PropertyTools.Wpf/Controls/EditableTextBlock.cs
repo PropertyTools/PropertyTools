@@ -154,6 +154,10 @@ namespace PropertyTools.Wpf
             {
                 this.BeginEdit();
             }
+            else
+            {
+                this.EndEdit(true);
+            }
         }
 
         /// <summary>

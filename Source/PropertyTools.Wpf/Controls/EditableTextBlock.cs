@@ -139,8 +139,9 @@ namespace PropertyTools.Wpf
             {
                 be.UpdateSource();
             }
-
+            this.internalIsEditingChange = true;
             this.IsEditing = false;
+            this.internalIsEditingChange = false;
             var p = this.Parent as Panel;
             p.Children.Remove(this.textBox);
             this.textBox = null;
@@ -151,11 +152,18 @@ namespace PropertyTools.Wpf
             }
         }
 
+        private bool internalIsEditingChange;
+
         /// <summary>
         /// Handles changes in IsEditing.
         /// </summary>
         private void IsEditingChanged()
         {
+            if (this.internalIsEditingChange)
+            {
+                return;
+            }
+
             if (this.IsEditing)
             {
                 this.BeginEdit();

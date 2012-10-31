@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FilePicker.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -84,7 +84,7 @@ namespace PropertyTools.Wpf
             "UseOpenDialog", typeof(bool), typeof(FilePicker), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Initializes static members of the <see cref = "FilePicker" /> class.
+        /// Initializes static members of the <see cref="FilePicker" /> class.
         /// </summary>
         static FilePicker()
         {
@@ -93,7 +93,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "FilePicker" /> class.
+        /// Initializes a new instance of the <see cref="FilePicker" /> class.
         /// </summary>
         public FilePicker()
         {
@@ -103,7 +103,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the base path.
         /// </summary>
-        /// <value>The base path.</value>
+        /// <value> The base path. </value>
         public string BasePath
         {
             get
@@ -120,13 +120,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the browse command.
         /// </summary>
-        /// <value>The browse command.</value>
+        /// <value> The browse command. </value>
         public ICommand BrowseCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the default extension.
         /// </summary>
-        /// <value>The default extension.</value>
+        /// <value> The default extension. </value>
         public string DefaultExtension
         {
             get
@@ -143,7 +143,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the file dialog service.
         /// </summary>
-        /// <value>The file dialog service.</value>
+        /// <value> The file dialog service. </value>
         public IFileDialogService FileDialogService
         {
             get
@@ -160,7 +160,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the file path.
         /// </summary>
-        /// <value>The file path.</value>
+        /// <value> The file path. </value>
         public string FilePath
         {
             get
@@ -177,7 +177,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the filter.
         /// </summary>
-        /// <value>The filter.</value>
+        /// <value> The filter. </value>
         public string Filter
         {
             get
@@ -194,7 +194,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether [use open dialog].
         /// </summary>
-        /// <value><c>true</c> if [use open dialog]; otherwise, <c>false</c>.</value>
+        /// <value> <c>true</c> if [use open dialog]; otherwise, <c>false</c> . </value>
         public bool UseOpenDialog
         {
             get
@@ -323,6 +323,5 @@ namespace PropertyTools.Wpf
             var relativeUri = uri2.MakeRelativeUri(uri1);
             return relativeUri.OriginalString.Replace('/', '\\');
         }
-
     }
 }

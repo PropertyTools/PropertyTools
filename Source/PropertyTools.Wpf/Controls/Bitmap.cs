@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Bitmap.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -72,7 +72,7 @@ namespace PropertyTools.Wpf
         private Point pixelOffset;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "Bitmap" /> class.
+        /// Initializes a new instance of the <see cref="Bitmap" /> class.
         /// </summary>
         public Bitmap()
         {
@@ -90,7 +90,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the source.
         /// </summary>
-        /// <value>The source.</value>
+        /// <value> The source. </value>
         public BitmapSource Source
         {
             get
@@ -250,9 +250,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the pixel offset.
         /// </summary>
-        /// <returns>
-        /// The pixel offset.
-        /// </returns>
+        /// <returns> The pixel offset. </returns>
         private Point GetPixelOffset()
         {
             var pixelOffset = new Point();
@@ -292,6 +290,7 @@ namespace PropertyTools.Wpf
         /// The v.
         /// </param>
         /// <returns>
+        /// The <see cref="Matrix"/>.
         /// </returns>
         private Matrix GetVisualTransform(Visual v)
         {
@@ -385,6 +384,7 @@ namespace PropertyTools.Wpf
         /// if set to <c>true</c> [success].
         /// </param>
         /// <returns>
+        /// The <see cref="Point"/>.
         /// </returns>
         private Point TryApplyVisualTransform(Point point, Visual v, bool inverse, bool throwOnError, out bool success)
         {
@@ -408,6 +408,5 @@ namespace PropertyTools.Wpf
 
             return point;
         }
-
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsGrid.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -275,7 +275,7 @@ namespace PropertyTools.Wpf
         private Border topleft;
 
         /// <summary>
-        /// Initializes static members of the <see cref="ItemsGrid"/> class.
+        /// Initializes static members of the <see cref="ItemsGrid" /> class.
         /// </summary>
         static ItemsGrid()
         {
@@ -289,7 +289,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsGrid"/> class.
+        /// Initializes a new instance of the <see cref="ItemsGrid" /> class.
         /// </summary>
         public ItemsGrid()
         {
@@ -310,33 +310,25 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the delete columns command.
         /// </summary>
-        /// <value>
-        /// The delete columns command.
-        /// </value>
+        /// <value> The delete columns command. </value>
         public static ICommand DeleteColumnsCommand { get; private set; }
 
         /// <summary>
         /// Gets the delete rows command.
         /// </summary>
-        /// <value>
-        /// The delete rows command.
-        /// </value>
+        /// <value> The delete rows command. </value>
         public static ICommand DeleteRowsCommand { get; private set; }
 
         /// <summary>
         /// Gets the insert columns command.
         /// </summary>
-        /// <value>
-        /// The insert columns command.
-        /// </value>
+        /// <value> The insert columns command. </value>
         public static ICommand InsertColumnsCommand { get; private set; }
 
         /// <summary>
         /// Gets the insert rows command.
         /// </summary>
-        /// <value>
-        /// The insert rows command.
-        /// </value>
+        /// <value> The insert rows command. </value>
         public static ICommand InsertRowsCommand { get; private set; }
 
         /// <summary>
@@ -452,10 +444,18 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the cell reference for the specified position.
         /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="isInAutoFillMode">if set to <c>true</c> [is in auto fill mode].</param>
-        /// <param name="relativeTo">The relative to.</param>
-        /// <returns>The cell reference.</returns>
+        /// <param name="position">
+        /// The position.
+        /// </param>
+        /// <param name="isInAutoFillMode">
+        /// if set to <c>true</c> [is in auto fill mode].
+        /// </param>
+        /// <param name="relativeTo">
+        /// The relative to.
+        /// </param>
+        /// <returns>
+        /// The cell reference.
+        /// </returns>
         public CellRef GetCell(Point position, bool isInAutoFillMode = false, CellRef relativeTo = default(CellRef))
         {
             double w = 0;
@@ -465,7 +465,9 @@ namespace PropertyTools.Wpf
             {
                 double aw0 = j - 1 >= 0 ? this.sheetGrid.ColumnDefinitions[j - 1].ActualWidth : 0;
                 double aw1 = this.sheetGrid.ColumnDefinitions[j].ActualWidth;
-                double aw2 = j + 1 < this.sheetGrid.ColumnDefinitions.Count ? this.sheetGrid.ColumnDefinitions[j + 1].ActualWidth : 0;
+                double aw2 = j + 1 < this.sheetGrid.ColumnDefinitions.Count
+                                 ? this.sheetGrid.ColumnDefinitions[j + 1].ActualWidth
+                                 : 0;
                 if (isInAutoFillMode)
                 {
                     if (relativeTo.Column <= j)
@@ -772,7 +774,8 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> .
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see
+        /// cref="M:System.Windows.FrameworkElement.ApplyTemplate" /> .
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -855,8 +858,7 @@ namespace PropertyTools.Wpf
 
             this.autoFillToolTip = new ToolTip
                 {
-                    Placement = PlacementMode.Bottom,
-                    PlacementTarget = this.autoFillSelection
+                   Placement = PlacementMode.Bottom, PlacementTarget = this.autoFillSelection
                 };
 
             this.UpdateGridContent();
@@ -952,9 +954,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Shows the edit control for the current cell.
         /// </summary>
-        /// <returns>
-        /// True if an edit control is shown.
-        /// </returns>
+        /// <returns> True if an edit control is shown. </returns>
         public bool ShowEditControl()
         {
             this.HideEditor();
@@ -2850,9 +2850,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Toggles the check in the current cell.
         /// </summary>
-        /// <returns>
-        /// True if the cell was modified.
-        /// </returns>
+        /// <returns> True if the cell was modified. </returns>
         private bool ToggleCheck()
         {
             bool value = true;
@@ -2896,6 +2894,5 @@ namespace PropertyTools.Wpf
 
             this.subcribedCollection = null;
         }
-
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsGrid.Properties.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -250,9 +250,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the header used for the add item row/column. Default is "*".
         /// </summary>
-        /// <value>
-        /// The add item header.
-        /// </value>
+        /// <value> The add item header. </value>
         public string AddItemHeader
         {
             get
@@ -269,9 +267,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the alternating rows background brush.
         /// </summary>
-        /// <value>
-        /// The alternating rows background.
-        /// </value>
+        /// <value> The alternating rows background. </value>
         public Brush AlternatingRowsBackground
         {
             get
@@ -288,9 +284,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the auto fill cell.
         /// </summary>
-        /// <value>
-        /// The auto fill cell.
-        /// </value>
+        /// <value> The auto fill cell. </value>
         public CellRef AutoFillCell
         {
             get
@@ -340,9 +334,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether auto size columns is enabled.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if [auto size columns]; otherwise, <c>false</c> .
-        /// </value>
+        /// <value> <c>true</c> if [auto size columns]; otherwise, <c>false</c> . </value>
         public bool AutoSizeColumns
         {
             get
@@ -359,9 +351,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether this instance can delete.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can delete; otherwise, <c>false</c> .
-        /// </value>
+        /// <value> <c>true</c> if this instance can delete; otherwise, <c>false</c> . </value>
         public bool CanDelete
         {
             get
@@ -378,9 +368,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether this instance can insert.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can insert; otherwise, <c>false</c> .
-        /// </value>
+        /// <value> <c>true</c> if this instance can insert; otherwise, <c>false</c> . </value>
         public bool CanInsert
         {
             get
@@ -397,9 +385,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether this instance can resize columns.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can resize columns; otherwise, <c>false</c> .
-        /// </value>
+        /// <value> <c>true</c> if this instance can resize columns; otherwise, <c>false</c> . </value>
         public bool CanResizeColumns
         {
             get
@@ -416,9 +402,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the column definitions.
         /// </summary>
-        /// <value>
-        /// The column definitions.
-        /// </value>
+        /// <value> The column definitions. </value>
         public Collection<PropertyDefinition> ColumnDefinitions
         {
             get
@@ -430,9 +414,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the height of the column headers.
         /// </summary>
-        /// <value>
-        /// The height of the column header.
-        /// </value>
+        /// <value> The height of the column header. </value>
         public GridLength ColumnHeaderHeight
         {
             get
@@ -449,9 +431,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the columns context menu.
         /// </summary>
-        /// <value>
-        /// The columns context menu.
-        /// </value>
+        /// <value> The columns context menu. </value>
         public ContextMenu ColumnsContextMenu
         {
             get
@@ -500,9 +480,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the default column width.
         /// </summary>
-        /// <value>
-        /// The default width of the column.
-        /// </value>
+        /// <value> The default width of the column. </value>
         public GridLength DefaultColumnWidth
         {
             get
@@ -519,9 +497,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the default horizontal alignment.
         /// </summary>
-        /// <value>
-        /// The default horizontal alignment.
-        /// </value>
+        /// <value> The default horizontal alignment. </value>
         public HorizontalAlignment DefaultHorizontalAlignment
         {
             get
@@ -538,9 +514,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the default height of the row.
         /// </summary>
-        /// <value>
-        /// The default height of the row.
-        /// </value>
+        /// <value> The default height of the row. </value>
         public GridLength DefaultRowHeight
         {
             get
@@ -557,9 +531,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the grid line brush.
         /// </summary>
-        /// <value>
-        /// The grid line brush.
-        /// </value>
+        /// <value> The grid line brush. </value>
         public Brush GridLineBrush
         {
             get
@@ -576,9 +548,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the header border brush.
         /// </summary>
-        /// <value>
-        /// The header border brush.
-        /// </value>
+        /// <value> The header border brush. </value>
         public Brush HeaderBorderBrush
         {
             get
@@ -611,9 +581,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the items source.
         /// </summary>
-        /// <value>
-        /// The items source.
-        /// </value>
+        /// <value> The items source. </value>
         public IList ItemsSource
         {
             get
@@ -630,9 +598,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the row definitions.
         /// </summary>
-        /// <value>
-        /// The row definitions.
-        /// </value>
+        /// <value> The row definitions. </value>
         public Collection<PropertyDefinition> RowDefinitions
         {
             get
@@ -644,9 +610,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the width of the row headers.
         /// </summary>
-        /// <value>
-        /// The width of the row header.
-        /// </value>
+        /// <value> The width of the row header. </value>
         public GridLength RowHeaderWidth
         {
             get
@@ -663,9 +627,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the rows context menu.
         /// </summary>
-        /// <value>
-        /// The rows context menu.
-        /// </value>
+        /// <value> The rows context menu. </value>
         public ContextMenu RowsContextMenu
         {
             get
@@ -682,9 +644,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the selected cells.
         /// </summary>
-        /// <value>
-        /// The selected cells.
-        /// </value>
+        /// <value> The selected cells. </value>
         public IEnumerable<CellRef> SelectedCells
         {
             get
@@ -707,9 +667,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the selected items.
         /// </summary>
-        /// <value>
-        /// The selected items.
-        /// </value>
+        /// <value> The selected items. </value>
         public IEnumerable SelectedItems
         {
             get
@@ -742,9 +700,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether to wrap items in the defined columns.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if [wrap items]; otherwise, <c>false</c> .
-        /// </value>
+        /// <value> <c>true</c> if [wrap items]; otherwise, <c>false</c> . </value>
         public bool WrapItems
         {
             get
@@ -761,9 +717,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets a value indicating whether this instance can delete columns.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can delete columns; otherwise, <c>false</c> .
-        /// </value>
+        /// <value> <c>true</c> if this instance can delete columns; otherwise, <c>false</c> . </value>
         protected virtual bool CanDeleteColumns
         {
             get
@@ -776,9 +730,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets a value indicating whether this instance can delete rows.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can delete rows; otherwise, <c>false</c> .
-        /// </value>
+        /// <value> <c>true</c> if this instance can delete rows; otherwise, <c>false</c> . </value>
         protected virtual bool CanDeleteRows
         {
             get
@@ -791,9 +743,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets a value indicating whether this instance can insert columns.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can insert columns; otherwise, <c>false</c> .
-        /// </value>
+        /// <value> <c>true</c> if this instance can insert columns; otherwise, <c>false</c> . </value>
         protected virtual bool CanInsertColumns
         {
             get
@@ -806,9 +756,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets a value indicating whether this instance can insert rows.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can insert rows; otherwise, <c>false</c> .
-        /// </value>
+        /// <value> <c>true</c> if this instance can insert rows; otherwise, <c>false</c> . </value>
         private bool CanInsertRows
         {
             get
@@ -821,9 +769,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the number of columns.
         /// </summary>
-        /// <value>
-        /// The columns.
-        /// </value>
+        /// <value> The columns. </value>
         private int Columns { get; set; }
 
         /// <summary>
@@ -834,9 +780,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets a value indicating whether to use rows for the items.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if the items are in rows; otherwise, <c>false</c> .
-        /// </value>
+        /// <value> <c>true</c> if the items are in rows; otherwise, <c>false</c> . </value>
         private bool ItemsInRows
         {
             get
@@ -848,9 +792,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the column definitions.
         /// </summary>
-        /// <value>
-        /// The column definitions.
-        /// </value>
+        /// <value> The column definitions. </value>
         private Collection<PropertyDefinition> PropertyDefinitions
         {
             get
@@ -862,9 +804,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the number of rows.
         /// </summary>
-        /// <value>
-        /// The rows.
-        /// </value>
+        /// <value> The rows. </value>
         private int Rows { get; set; }
 
         /// <summary>
@@ -1003,6 +943,5 @@ namespace PropertyTools.Wpf
 
             this.ScrollIntoView(this.SelectionCell);
         }
-
     }
 }

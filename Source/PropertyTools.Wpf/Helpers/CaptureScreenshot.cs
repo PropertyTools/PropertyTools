@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CaptureScreenshot.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -129,7 +129,7 @@ namespace PropertyTools.Wpf
         /// Capture the screenshot.
         ///  <returns>
         /// Bitmap source that can be used e.g. as background.
-        ///  </returns>
+        /// </returns>
         /// </summary>
         /// <param name="area">
         /// Area of screenshot.
@@ -168,6 +168,7 @@ namespace PropertyTools.Wpf
         /// The relative to.
         /// </param>
         /// <returns>
+        /// The <see cref="Point"/>.
         /// </returns>
         public static Point CorrectGetPosition(Visual relativeTo)
         {
@@ -180,6 +181,7 @@ namespace PropertyTools.Wpf
         /// The get mouse screen position.
         /// </summary>
         /// <returns>
+        /// The <see cref="Point"/>.
         /// </returns>
         public static Point GetMouseScreenPosition()
         {
@@ -265,6 +267,7 @@ namespace PropertyTools.Wpf
         /// The lpv bits.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("gdi32.dll")]
         private static extern IntPtr CreateBitmap(
@@ -283,6 +286,7 @@ namespace PropertyTools.Wpf
         /// The n height.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("gdi32.dll")]
         private static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
@@ -294,6 +298,7 @@ namespace PropertyTools.Wpf
         /// The hdc.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("gdi32.dll", SetLastError = true)]
         private static extern IntPtr CreateCompatibleDC(IntPtr hdc);
@@ -317,6 +322,7 @@ namespace PropertyTools.Wpf
         /// The h wnd.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("user32.dll")]
         private static extern IntPtr GetDC(IntPtr hWnd);
@@ -346,6 +352,7 @@ namespace PropertyTools.Wpf
         /// The hgdiobj.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("gdi32.dll", ExactSpelling = true, PreserveSig = true, SetLastError = true)]
         private static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);

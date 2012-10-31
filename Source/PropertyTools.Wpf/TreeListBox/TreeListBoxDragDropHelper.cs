@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TreeListBoxDragDropHelper.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Drag/drop helper class for the <see cref="TreeListBox"/>.
+//   Drag/drop helper class for the <see cref="TreeListBox" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -39,7 +39,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Drag/drop helper class for the <see cref="TreeListBox"/>.
+    /// Drag/drop helper class for the <see cref="TreeListBox" />.
     /// </summary>
     /// <remarks>
     /// Based on http://bea.stollnitz.com/blog/?p=53
@@ -158,7 +158,7 @@ namespace PropertyTools.Wpf
         /// Gets the drag/drop template.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The object.
         /// </param>
         /// <returns>
         /// A data template.
@@ -172,7 +172,7 @@ namespace PropertyTools.Wpf
         /// Gets the IsDragSource value.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The object.
         /// </param>
         /// <returns>
         /// The value.
@@ -186,7 +186,7 @@ namespace PropertyTools.Wpf
         /// Gets the IsDropTarget value.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The object.
         /// </param>
         /// <returns>
         /// The value.
@@ -237,16 +237,16 @@ namespace PropertyTools.Wpf
         public static bool IsMovementBigEnough(Point initialMousePosition, Point currentPosition)
         {
             return Math.Abs(currentPosition.X - initialMousePosition.X)
-                    >= SystemParameters.MinimumHorizontalDragDistance
-                    ||
-                    Math.Abs(currentPosition.Y - initialMousePosition.Y) >= SystemParameters.MinimumVerticalDragDistance;
+                   >= SystemParameters.MinimumHorizontalDragDistance
+                   ||
+                   Math.Abs(currentPosition.Y - initialMousePosition.Y) >= SystemParameters.MinimumVerticalDragDistance;
         }
 
         /// <summary>
         /// The set drag drop template.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The object.
         /// </param>
         /// <param name="value">
         /// The value.
@@ -260,7 +260,7 @@ namespace PropertyTools.Wpf
         /// The set is drag source.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The object.
         /// </param>
         /// <param name="value">
         /// The value.
@@ -274,7 +274,7 @@ namespace PropertyTools.Wpf
         /// The set is drop target.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The object.
         /// </param>
         /// <param name="value">
         /// The value.
@@ -288,7 +288,7 @@ namespace PropertyTools.Wpf
         /// Determines if the drag source changed.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The object.
         /// </param>
         /// <param name="e">
         /// The event args.
@@ -321,7 +321,7 @@ namespace PropertyTools.Wpf
         /// Determines if the drop target changed.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The object.
         /// </param>
         /// <param name="e">
         /// The event args.
@@ -437,7 +437,8 @@ namespace PropertyTools.Wpf
                 foreach (var draggedItem in draggedItems)
                 {
                     var dragSource = draggedItem as IDragSource;
-                    if ((dragSource == null || !dragSource.IsDraggable) || (dropTarget == null || !dropTarget.CanDrop(dragSource, this.dropPosition, copy)))
+                    if ((dragSource == null || !dragSource.IsDraggable)
+                        || (dropTarget == null || !dropTarget.CanDrop(dragSource, this.dropPosition, copy)))
                     {
                         this.targetItemContainer = null;
                         e.Effects = DragDropEffects.None;
@@ -464,7 +465,9 @@ namespace PropertyTools.Wpf
             this.topWindow = Window.GetWindow(this.sourceItemsControl);
             this.initialMousePosition = e.GetPosition(this.topWindow);
 
-            this.sourceItemContainer = visual != null ? this.sourceItemsControl.ContainerFromElement(visual) as TreeListBoxItem : null;
+            this.sourceItemContainer = visual != null
+                                           ? this.sourceItemsControl.ContainerFromElement(visual) as TreeListBoxItem
+                                           : null;
             if (this.sourceItemContainer != null)
             {
                 this.draggedData = new List<IDragSource>();
@@ -516,7 +519,8 @@ namespace PropertyTools.Wpf
 
                     var control = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
 
-                    DragDrop.DoDragDrop((DependencyObject)sender, data, control ? DragDropEffects.Copy : DragDropEffects.Move);
+                    DragDrop.DoDragDrop(
+                        (DependencyObject)sender, data, control ? DragDropEffects.Copy : DragDropEffects.Move);
 
                     this.draggedData = null;
                 }
@@ -692,6 +696,5 @@ namespace PropertyTools.Wpf
 
             this.CreateOrUpdateInsertionAdorner();
         }
-
     }
 }

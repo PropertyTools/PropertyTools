@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColorPickerPanel.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -32,7 +32,6 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -46,6 +45,11 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartHsv, Type = typeof(HsvControl))]
     public class ColorPickerPanel : Control, INotifyPropertyChanged
     {
+        /// <summary>
+        /// The HSV control part name.
+        /// </summary>
+        private const string PartHsv = "PART_HSV";
+
         /// <summary>
         /// The alpha property.
         /// </summary>
@@ -129,11 +133,6 @@ namespace PropertyTools.Wpf
                 CoerceSelectedColorValue));
 
         /// <summary>
-        /// The HSV control part name.
-        /// </summary>
-        private const string PartHsv = "PART_HSV";
-
-        /// <summary>
         /// The max number of recent colors.
         /// </summary>
         private static int maxNumberOfRecentColors = 20;
@@ -164,7 +163,7 @@ namespace PropertyTools.Wpf
         private bool withinComponentChange;
 
         /// <summary>
-        /// Initializes static members of the <see cref = "ColorPickerPanel" /> class.
+        /// Initializes static members of the <see cref="ColorPickerPanel" /> class.
         /// </summary>
         static ColorPickerPanel()
         {
@@ -175,7 +174,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "ColorPickerPanel" /> class.
+        /// Initializes a new instance of the <see cref="ColorPickerPanel" /> class.
         /// </summary>
         public ColorPickerPanel()
         {
@@ -190,13 +189,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the recent colors.
         /// </summary>
-        /// <value>The recent colors.</value>
+        /// <value> The recent colors. </value>
         public static ObservableCollection<Color> RecentColors { get; private set; }
 
         /// <summary>
         /// Gets the standard colors.
         /// </summary>
-        /// <value>The standard colors.</value>
+        /// <value> The standard colors. </value>
         public static ObservableCollection<Color> StandardColors { get; private set; }
 
         /// <summary>
@@ -207,13 +206,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the theme colors.
         /// </summary>
-        /// <value>The theme colors.</value>
+        /// <value> The theme colors. </value>
         public static ObservableCollection<Color> ThemeColors { get; private set; }
 
         /// <summary>
         /// Gets or sets the alpha value.
         /// </summary>
-        /// <value>The alpha.</value>
+        /// <value> The alpha. </value>
         public int Alpha
         {
             get
@@ -230,7 +229,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the blue.
         /// </summary>
-        /// <value>The blue.</value>
+        /// <value> The blue. </value>
         public int Blue
         {
             get
@@ -247,7 +246,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the brightness.
         /// </summary>
-        /// <value>The brightness.</value>
+        /// <value> The brightness. </value>
         public int Brightness
         {
             get
@@ -264,7 +263,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the green.
         /// </summary>
-        /// <value>The green.</value>
+        /// <value> The green. </value>
         public int Green
         {
             get
@@ -281,7 +280,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the hue.
         /// </summary>
-        /// <value>The hue.</value>
+        /// <value> The hue. </value>
         public int Hue
         {
             get
@@ -314,7 +313,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the max number of recent colors.
         /// </summary>
-        /// <value>The max number of recent colors.</value>
+        /// <value> The max number of recent colors. </value>
         public int MaxNumberOfRecentColors
         {
             get
@@ -331,7 +330,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the red value.
         /// </summary>
-        /// <value>The red.</value>
+        /// <value> The red. </value>
         public int Red
         {
             get
@@ -348,7 +347,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the saturation.
         /// </summary>
-        /// <value>The saturation.</value>
+        /// <value> The saturation. </value>
         public int Saturation
         {
             get
@@ -365,7 +364,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the selected color.
         /// </summary>
-        /// <value>The color of the selected.</value>
+        /// <value> The color of the selected. </value>
         public Color? SelectedColor
         {
             get
@@ -400,7 +399,8 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see
+        /// cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -591,7 +591,7 @@ namespace PropertyTools.Wpf
         private static void InitPalette()
         {
             ThemeColors = new ObservableCollection<Color>
-            {
+                {
                     Colors.White,
                     Colors.Black,
                     ColorHelper.UIntToColor(0xFFeeece1),
@@ -655,7 +655,7 @@ namespace PropertyTools.Wpf
                 };
 
             StandardColors = new ObservableCollection<Color>
-            {
+                {
                     Colors.Firebrick,
                     Colors.Red,
                     Colors.Tomato,
@@ -843,6 +843,5 @@ namespace PropertyTools.Wpf
                 this.hsvControl.withinUpdate = false;
             }
         }
-
     }
 }

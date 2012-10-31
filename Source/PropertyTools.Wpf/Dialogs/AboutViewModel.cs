@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AboutViewModel.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -124,7 +124,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the copy report text.
         /// </summary>
-        /// <value>The copy report text.</value>
+        /// <value> The copy report text. </value>
         public string CopyReportText { get; set; }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the file info.
         /// </summary>
-        /// <value>The file info.</value>
+        /// <value> The file info. </value>
         public FileInfo FileInfo { get; set; }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the file version info.
         /// </summary>
-        /// <value>The file version info.</value>
+        /// <value> The file version info. </value>
         public FileVersionInfo FileVersionInfo { get; set; }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the system info text.
         /// </summary>
-        /// <value>The system info text.</value>
+        /// <value> The system info text. </value>
         public string SystemInfoText { get; set; }
 
         /// <summary>
@@ -290,9 +290,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the report.
         /// </summary>
-        /// <returns>
-        /// The get report.
-        /// </returns>
+        /// <returns> The get report. </returns>
         public string GetReport()
         {
             var sb = new StringBuilder();
@@ -331,6 +329,5 @@ namespace PropertyTools.Wpf
             sb.AppendFormat("Domain: {0}", this.Domain);
             return sb.ToString();
         }
-
     }
 }

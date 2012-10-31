@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColorPicker2.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -40,6 +40,10 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartColorPickerPanel, Type = typeof(ColorPickerPanel))]
     public class ColorPicker2 : ComboBox
     {
+        /// <summary>
+        /// The color picker panel part constant.
+        /// </summary>
+        private const string PartColorPickerPanel = "PART_ColorPickerPanel";
 
         /// <summary>
         /// The selected color property.
@@ -55,17 +59,12 @@ namespace PropertyTools.Wpf
                 CoerceSelectedColorValue));
 
         /// <summary>
-        /// The color picker panel part constant.
-        /// </summary>
-        private const string PartColorPickerPanel = "PART_ColorPickerPanel";
-
-        /// <summary>
         /// The color picker panel.
         /// </summary>
         private ColorPickerPanel colorPickerPanel;
 
         /// <summary>
-        /// Initializes static members of the <see cref = "ColorPicker2" /> class.
+        /// Initializes static members of the <see cref="ColorPicker2" /> class.
         /// </summary>
         static ColorPicker2()
         {
@@ -83,7 +82,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the selected color.
         /// </summary>
-        /// <value>The color of the selected.</value>
+        /// <value> The color of the selected. </value>
         public Color? SelectedColor
         {
             get
@@ -98,7 +97,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Called when <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> is called.
+        /// Called when <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" /> is called.
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -177,6 +176,5 @@ namespace PropertyTools.Wpf
         {
             ((ColorPicker2)d).OnSelectedColorChanged(e);
         }
-
     }
 }

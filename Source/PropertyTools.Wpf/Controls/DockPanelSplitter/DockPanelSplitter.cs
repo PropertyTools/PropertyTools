@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DockPanelSplitter.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a control that lets the user change the size of elements in a <see cref="DockPanel"/>.
+//   Represents a control that lets the user change the size of elements in a <see cref="DockPanel" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -35,7 +35,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Represents a control that lets the user change the size of elements in a <see cref="DockPanel"/>.
+    /// Represents a control that lets the user change the size of elements in a <see cref="DockPanel" />.
     /// </summary>
     public class DockPanelSplitter : Control
     {
@@ -83,7 +83,7 @@ namespace PropertyTools.Wpf
         private double width; // current desired width of the element, can be less than minwidth
 
         /// <summary>
-        /// Initializes static members of the <see cref = "DockPanelSplitter" /> class.
+        /// Initializes static members of the <see cref="DockPanelSplitter" /> class.
         /// </summary>
         static DockPanelSplitter()
         {
@@ -100,7 +100,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "DockPanelSplitter" /> class.
+        /// Initializes a new instance of the <see cref="DockPanelSplitter" /> class.
         /// </summary>
         public DockPanelSplitter()
         {
@@ -144,7 +144,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the thickness (height or width, depending on orientation).
         /// </summary>
-        /// <value>The thickness.</value>
+        /// <value> The thickness. </value>
         public double Thickness
         {
             get
@@ -521,6 +521,5 @@ namespace PropertyTools.Wpf
                 this.element = dp.Children[i - 1] as FrameworkElement;
             }
         }
-
     }
 }

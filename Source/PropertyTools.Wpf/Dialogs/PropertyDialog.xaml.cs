@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PropertyDialog.xaml.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -43,7 +43,7 @@ namespace PropertyTools.Wpf
     public partial class PropertyDialog : Window
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref = "PropertyDialog" /> class.
+        /// Initializes a new instance of the <see cref="PropertyDialog" /> class.
         /// </summary>
         public PropertyDialog()
         {
@@ -59,7 +59,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether the apply button is visible.
         /// </summary>
-        /// <value><c>true</c> if this instance can apply; otherwise, <c>false</c>.</value>
+        /// <value> <c>true</c> if this instance can apply; otherwise, <c>false</c> . </value>
         public bool CanApply
         {
             get
@@ -76,7 +76,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the property control.
         /// </summary>
-        /// <value>The property control.</value>
+        /// <value> The property control. </value>
         public PropertyControl PropertyControl
         {
             get
@@ -91,7 +91,7 @@ namespace PropertyTools.Wpf
         /// editable operation.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The object.
         /// </param>
         /// <summary>
         /// This is used to clone the object.
@@ -329,6 +329,5 @@ namespace PropertyTools.Wpf
         {
             this.BeginEdit();
         }
-
     }
 }

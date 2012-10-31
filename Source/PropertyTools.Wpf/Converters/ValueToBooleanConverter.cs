@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ValueToBooleanConverter.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Converts <see cref="object"/> instances to <see cref="bool"/> instances.
+//   Converts <see cref="object" /> instances to <see cref="bool" /> instances.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -34,7 +34,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Data;
 
     /// <summary>
-    /// Converts <see cref="object"/> instances to <see cref="bool"/> instances.
+    /// Converts <see cref="object" /> instances to <see cref="bool" /> instances.
     /// </summary>
     [ValueConversion(typeof(object), typeof(bool))]
     public class ValueToBooleanConverter : IValueConverter
@@ -111,6 +111,5 @@ namespace PropertyTools.Wpf
 
             return Binding.DoNothing;
         }
-
     }
 }

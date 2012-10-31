@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FormattingTextBox.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -71,7 +71,7 @@ namespace PropertyTools.Wpf
         private bool userIsChanging = true;
 
         /// <summary>
-        /// Initializes static members of the <see cref = "FormattingTextBox" /> class.
+        /// Initializes static members of the <see cref="FormattingTextBox" /> class.
         /// </summary>
         static FormattingTextBox()
         {
@@ -82,7 +82,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the format provider.
         /// </summary>
-        /// <value>The format provider.</value>
+        /// <value> The format provider. </value>
         public IFormatProvider FormatProvider
         {
             get
@@ -99,7 +99,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the string format.
         /// </summary>
-        /// <value>The string format.</value>
+        /// <value> The string format. </value>
         public string StringFormat
         {
             get
@@ -116,7 +116,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
-        /// <value>The value.</value>
+        /// <value> The value. </value>
         public object Value
         {
             get
@@ -250,6 +250,5 @@ namespace PropertyTools.Wpf
                 this.Value = this.UnFormat(this.Text);
             }
         }
-
     }
 }

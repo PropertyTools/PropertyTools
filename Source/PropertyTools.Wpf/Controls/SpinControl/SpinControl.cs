@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SpinControl.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -44,6 +44,16 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartDown, Type = typeof(RepeatButton))]
     public class SpinControl : ContentControl
     {
+        /// <summary>
+        /// The part down.
+        /// </summary>
+        private const string PartDown = "PART_DOWN";
+
+        /// <summary>
+        /// The part up.
+        /// </summary>
+        private const string PartUp = "PART_UP";
+
         /// <summary>
         /// The down button geometry property.
         /// </summary>
@@ -106,16 +116,6 @@ namespace PropertyTools.Wpf
                 null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SpinnerValueChanged, CoerceSpinnerValue));
 
         /// <summary>
-        /// The part down.
-        /// </summary>
-        private const string PartDown = "PART_DOWN";
-
-        /// <summary>
-        /// The part up.
-        /// </summary>
-        private const string PartUp = "PART_UP";
-
-        /// <summary>
         /// The down button.
         /// </summary>
         private RepeatButton downbutton;
@@ -126,7 +126,7 @@ namespace PropertyTools.Wpf
         private RepeatButton upbutton;
 
         /// <summary>
-        /// Initializes static members of the <see cref = "SpinControl" /> class.
+        /// Initializes static members of the <see cref="SpinControl" /> class.
         /// </summary>
         static SpinControl()
         {
@@ -137,7 +137,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets down button geometry.
         /// </summary>
-        /// <value>Down button geometry.</value>
+        /// <value> Down button geometry. </value>
         public Geometry DownButtonGeometry
         {
             get
@@ -154,7 +154,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the large change.
         /// </summary>
-        /// <value>The large change.</value>
+        /// <value> The large change. </value>
         public object LargeChange
         {
             get
@@ -171,7 +171,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the maximum.
         /// </summary>
-        /// <value>The maximum.</value>
+        /// <value> The maximum. </value>
         public object Maximum
         {
             get
@@ -188,7 +188,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the minimum.
         /// </summary>
-        /// <value>The minimum.</value>
+        /// <value> The minimum. </value>
         public object Minimum
         {
             get
@@ -205,7 +205,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the repeat SmallChange (milliseconds).
         /// </summary>
-        /// <value>The repeat SmallChange.</value>
+        /// <value> The repeat SmallChange. </value>
         public int RepeatInterval
         {
             get
@@ -222,7 +222,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the SmallChange.
         /// </summary>
-        /// <value>The SmallChange.</value>
+        /// <value> The SmallChange. </value>
         public object SmallChange
         {
             get
@@ -239,7 +239,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the width of the spin buttons.
         /// </summary>
-        /// <value>The width of the spin button.</value>
+        /// <value> The width of the spin button. </value>
         public GridLength SpinButtonWidth
         {
             get
@@ -256,7 +256,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets up button geometry.
         /// </summary>
-        /// <value>Up button geometry.</value>
+        /// <value> Up button geometry. </value>
         public Geometry UpButtonGeometry
         {
             get
@@ -273,7 +273,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
-        /// <value>The value.</value>
+        /// <value> The value. </value>
         public object Value
         {
             get
@@ -288,7 +288,8 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see
+        /// cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -847,6 +848,5 @@ namespace PropertyTools.Wpf
             bool ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
             this.ChangeValue(1, ctrl);
         }
-
     }
 }

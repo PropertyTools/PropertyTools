@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HsvControl.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -103,6 +103,7 @@ namespace PropertyTools.Wpf
         private Thumb thumb;
 
 #pragma warning disable 649
+
         /// <summary>
         /// The within update flag.
         /// </summary>
@@ -110,7 +111,7 @@ namespace PropertyTools.Wpf
 #pragma warning restore 649
 
         /// <summary>
-        /// Initializes static members of the <see cref = "HsvControl" /> class.
+        /// Initializes static members of the <see cref="HsvControl" /> class.
         /// </summary>
         static HsvControl()
         {
@@ -124,11 +125,26 @@ namespace PropertyTools.Wpf
                 typeof(HsvControl), Thumb.DragCompletedEvent, new DragCompletedEventHandler(OnThumbDragCompleted));
         }
 
+        /// <summary>
+        /// The on thumb drag completed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private static void OnThumbDragCompleted(object sender, DragCompletedEventArgs e)
         {
             ((HsvControl)sender).OnThumbDragCompleted(e);
         }
 
+        /// <summary>
+        /// The on thumb drag completed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
         private void OnThumbDragCompleted(DragCompletedEventArgs sender)
         {
             var editableObject = this.DataContext as IEditableObject;
@@ -220,7 +236,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/>�routed event is raised on this element. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.</param>
+        /// <param name="e">
+        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.
+        /// </param>
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             var editableObject = this.DataContext as IEditableObject;
@@ -411,6 +429,5 @@ namespace PropertyTools.Wpf
 
             this.SelectedColor = ColorHelper.HsvToColor(this.Hue / 360.0, this.Saturation / 100.0, this.Value / 100.0);
         }
-
     }
 }

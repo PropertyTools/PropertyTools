@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BrowseForFolderDialog.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -46,7 +46,7 @@ namespace PropertyTools.Wpf.Shell32
         private BROWSEINFOW browseInfo;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "BrowseForFolderDialog" /> class.
+        /// Initializes a new instance of the <see cref="BrowseForFolderDialog" /> class.
         /// Constructs a BrowseForFolderDialog with default BrowseInfoFlags set to BIF_NEWDIALOGSTYLE.
         /// </summary>
         public BrowseForFolderDialog()
@@ -65,18 +65,10 @@ namespace PropertyTools.Wpf.Shell32
         /// <summary>
         /// The browse callback proc.
         /// </summary>
-        /// <param name="hwnd">
-        /// The hwnd.
-        /// </param>
-        /// <param name="uMsg">
-        /// The u msg.
-        /// </param>
-        /// <param name="lParam">
-        /// The l param.
-        /// </param>
-        /// <param name="lpData">
-        /// The lp data.
-        /// </param>
+        /// <param name="hwnd"> The hwnd. </param>
+        /// <param name="uMsg"> The u msg. </param>
+        /// <param name="lParam"> The l param. </param>
+        /// <param name="lpData"> The lp data. </param>
         public delegate int BrowseCallbackProc(IntPtr hwnd, MessageFromBrowser uMsg, IntPtr lParam, IntPtr lpData);
 
         /// <summary>
@@ -330,6 +322,7 @@ namespace PropertyTools.Wpf.Shell32
         /// The l param.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessageW(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
@@ -350,6 +343,7 @@ namespace PropertyTools.Wpf.Shell32
         /// The str.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessageW(
@@ -358,6 +352,9 @@ namespace PropertyTools.Wpf.Shell32
         /// <summary>
         /// Shows the dialog (Win32::SHBrowseForFolder()).
         /// </summary>
+        /// <returns>
+        /// The <see cref="bool?"/>.
+        /// </returns>
         public bool? ShowDialog()
         {
             return this.PInvokeSHBrowseForFolder(null);
@@ -369,6 +366,9 @@ namespace PropertyTools.Wpf.Shell32
         /// <param name="owner">
         /// The owner.
         /// </param>
+        /// <returns>
+        /// The <see cref="bool?"/>.
+        /// </returns>
         public bool? ShowDialog(Window owner)
         {
             return this.PInvokeSHBrowseForFolder(owner);
@@ -381,6 +381,7 @@ namespace PropertyTools.Wpf.Shell32
         /// The bi.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("shell32.dll")]
         private static extern IntPtr SHBrowseForFolderW([MarshalAs(UnmanagedType.LPStruct)] [In] [Out] BROWSEINFOW bi);
@@ -493,6 +494,7 @@ namespace PropertyTools.Wpf.Shell32
         /// The owner.
         /// </param>
         /// <returns>
+        /// The <see cref="bool?"/>.
         /// </returns>
         private bool? PInvokeSHBrowseForFolder(Window owner)
         {

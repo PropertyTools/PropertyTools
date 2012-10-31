@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TreeListBoxItem.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a container for items in the <see cref="TreeListBox"/> .
+//   Represents a container for items in the <see cref="TreeListBox" /> .
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -36,7 +36,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Controls;
 
     /// <summary>
-    /// Represents a container for items in the <see cref="TreeListBox"/> .
+    /// Represents a container for items in the <see cref="TreeListBox" /> .
     /// </summary>
     public class TreeListBoxItem : ListBoxItem
     {
@@ -74,16 +74,19 @@ namespace PropertyTools.Wpf
                 (s, e) => ((TreeListBoxItem)s).IsExpandedChanged()));
 
         /// <summary>
+        /// The level padding property.
+        /// </summary>
+        public static readonly DependencyProperty LevelPaddingProperty = DependencyProperty.Register(
+            "LevelPadding", typeof(Thickness), typeof(TreeListBoxItem));
+
+        /// <summary>
         /// The level property.
         /// </summary>
         public static readonly DependencyProperty LevelProperty = DependencyProperty.Register(
-            "Level", typeof(int), typeof(TreeListBoxItem), new UIPropertyMetadata(0, (s, e) => ((TreeListBoxItem)s).LevelChanged()));
-
-        /// <summary>
-        /// The level padding property.
-        /// </summary>
-        public static readonly DependencyProperty LevelPaddingProperty =
-            DependencyProperty.Register("LevelPadding", typeof(Thickness), typeof(TreeListBoxItem));
+            "Level",
+            typeof(int),
+            typeof(TreeListBoxItem),
+            new UIPropertyMetadata(0, (s, e) => ((TreeListBoxItem)s).LevelChanged()));
 
         /// <summary>
         /// The handler.
@@ -93,7 +96,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Initializes a new instance of the <see cref="TreeListBoxItem"/> class.
         /// </summary>
-        /// <param name="parent">The parent.</param>
+        /// <param name="parent">
+        /// The parent.
+        /// </param>
         public TreeListBoxItem(TreeListBox parent)
         {
             // The following is not working when TreeListBoxItems are disconnected...
@@ -104,21 +109,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the padding due to hierarchy level and the parent control Indentation.
-        /// </summary>
-        /// <value>The level padding.</value>
-        public Thickness LevelPadding
-        {
-            get { return (Thickness)GetValue(LevelPaddingProperty); }
-            private set { this.SetValue(LevelPaddingProperty, value); }
-        }
-
-        /// <summary>
         /// Gets or sets the child items.
         /// </summary>
-        /// <value>
-        /// The children.
-        /// </value>
+        /// <value> The children. </value>
         public IList Children
         {
             get
@@ -183,9 +176,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the hierarchy level of the item.
         /// </summary>
-        /// <value>
-        /// The level.
-        /// </value>
+        /// <value> The level. </value>
         public int Level
         {
             get
@@ -198,12 +189,28 @@ namespace PropertyTools.Wpf
                 this.SetValue(LevelProperty, value);
             }
         }
+
+        /// <summary>
+        /// Gets the padding due to hierarchy level and the parent control Indentation.
+        /// </summary>
+        /// <value> The level padding. </value>
+        public Thickness LevelPadding
+        {
+            get
+            {
+                return (Thickness)this.GetValue(LevelPaddingProperty);
+            }
+
+            private set
+            {
+                this.SetValue(LevelPaddingProperty, value);
+            }
+        }
+
         /// <summary>
         /// Gets or sets the child items.
         /// </summary>
-        /// <value>
-        /// The child items.
-        /// </value>
+        /// <value> The child items. </value>
         internal IList<TreeListBoxItem> ChildItems { get; set; }
 
         /// <summary>
@@ -217,11 +224,21 @@ namespace PropertyTools.Wpf
         protected TreeListBox ParentTreeListBox { get; private set; }
 
         /// <summary>
+        /// Expands the parents of this item.
+        /// </summary>
+        public void ExpandParents()
+        {
+            while (this.ParentItem != null)
+            {
+                this.ParentItem.ExpandParents();
+                this.ParentItem.IsExpanded = true;
+            }
+        }
+
+        /// <summary>
         /// Gets the next sibling.
         /// </summary>
-        /// <returns>
-        /// The next sibling.
-        /// </returns>
+        /// <returns> The next sibling. </returns>
         public TreeListBoxItem GetNextSibling()
         {
             if (this.ParentItem == null)
@@ -239,31 +256,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Expands the parents of this item.
-        /// </summary>
-        public void ExpandParents()
-        {
-            while (this.ParentItem != null)
-            {
-                this.ParentItem.ExpandParents();
-                this.ParentItem.IsExpanded = true;
-            }
-        }
-
-        /// <summary>
         /// Handles changes in Level and Indentation (in the parent control).
         /// </summary>
         internal void LevelOrIndentationChanged()
         {
             this.LevelPadding = new Thickness(this.Level * this.ParentTreeListBox.Indentation, 0, 0, 0);
-        }
-
-        /// <summary>
-        /// Handles changes in Level.
-        /// </summary>
-        private void LevelChanged()
-        {
-            this.LevelOrIndentationChanged();
         }
 
         /// <summary>
@@ -301,6 +298,14 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Handles changes in Level.
+        /// </summary>
+        private void LevelChanged()
+        {
+            this.LevelOrIndentationChanged();
+        }
+
+        /// <summary>
         /// Subscribes for collection changes.
         /// </summary>
         /// <param name="parent">
@@ -333,6 +338,5 @@ namespace PropertyTools.Wpf
                 cc.CollectionChanged -= this.collectionChangedHandler;
             }
         }
-
     }
 }

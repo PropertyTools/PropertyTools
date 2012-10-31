@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="NullToVisibilityConverter.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Converts <see cref="Visibility"/> instances to <see cref="object"/> instances.
+//   Converts <see cref="Visibility" /> instances to <see cref="object" /> instances.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -35,13 +35,13 @@ namespace PropertyTools.Wpf
     using System.Windows.Data;
 
     /// <summary>
-    /// Converts <see cref="Visibility"/> instances to <see cref="object"/> instances.
+    /// Converts <see cref="Visibility" /> instances to <see cref="object" /> instances.
     /// </summary>
     [ValueConversion(typeof(object), typeof(Visibility))]
     public class NullToVisibilityConverter : IValueConverter
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref = "NullToVisibilityConverter" /> class.
+        /// Initializes a new instance of the <see cref="NullToVisibilityConverter" /> class.
         /// </summary>
         public NullToVisibilityConverter()
         {
@@ -52,13 +52,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the not null visibility.
         /// </summary>
-        /// <value>The not null visibility.</value>
+        /// <value> The not null visibility. </value>
         public Visibility NotNullVisibility { get; set; }
 
         /// <summary>
         /// Gets or sets the null visibility.
         /// </summary>
-        /// <value>The null visibility.</value>
+        /// <value> The null visibility. </value>
         public Visibility NullVisibility { get; set; }
 
         /// <summary>
@@ -111,6 +111,5 @@ namespace PropertyTools.Wpf
         {
             return null;
         }
-
     }
 }

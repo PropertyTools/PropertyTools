@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DefaultPropertyControlFactory.cs" company="PropertyTools">
 //   The MIT License (MIT)
-//
+//   
 //   Copyright (c) 2012 Oystein Bjorke
-//
+//   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//
+//   
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//
+//   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -32,7 +32,6 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.IO;
@@ -55,7 +54,7 @@ namespace PropertyTools.Wpf
         private static FontFamily[] cachedFontFamilies;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref = "DefaultPropertyControlFactory" /> class.
+        /// Initializes a new instance of the <see cref="DefaultPropertyControlFactory" /> class.
         /// </summary>
         public DefaultPropertyControlFactory()
         {
@@ -66,27 +65,25 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the list of converters.
         /// </summary>
-        /// <value>The converters.</value>
+        /// <value> The converters. </value>
         public List<PropertyConverter> Converters { get; set; }
 
         /// <summary>
         /// Gets or sets the list of type editors.
         /// </summary>
-        /// <value>
-        /// The editors.
-        /// </value>
+        /// <value> The editors. </value>
         public List<TypeEditor> Editors { get; set; }
 
         /// <summary>
         /// Gets or sets the file dialog service.
         /// </summary>
-        /// <value>The file dialog service.</value>
+        /// <value> The file dialog service. </value>
         public IFileDialogService FileDialogService { get; set; }
 
         /// <summary>
         /// Gets or sets the folder browser dialog service.
         /// </summary>
-        /// <value>The folder browser dialog service.</value>
+        /// <value> The folder browser dialog service. </value>
         public IFolderBrowserDialogService FolderBrowserDialogService { get; set; }
 
         /// <summary>
@@ -241,8 +238,7 @@ namespace PropertyTools.Wpf
         {
             var c = new CheckBox
                 {
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Left
+                   VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left
                 };
             c.SetBinding(ToggleButton.IsCheckedProperty, property.CreateBinding());
             return c;
@@ -297,7 +293,8 @@ namespace PropertyTools.Wpf
                 c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
             }
 
-            c.SetBinding(property.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, property.CreateBinding());
+            c.SetBinding(
+                property.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, property.CreateBinding());
 
             return c;
         }
@@ -369,7 +366,8 @@ namespace PropertyTools.Wpf
                     IsReadOnly = property.Descriptor.IsReadOnly,
                     TextWrapping = property.TextWrapping,
                     VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                    VerticalContentAlignment = double.IsNaN(property.Height) ? VerticalAlignment.Center : VerticalAlignment.Top
+                    VerticalContentAlignment =
+                        double.IsNaN(property.Height) ? VerticalAlignment.Center : VerticalAlignment.Top
                 };
 
             c.SetBinding(TextBox.TextProperty, property.CreateBinding(trigger));
@@ -768,9 +766,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the font families.
         /// </summary>
-        /// <returns>
-        /// List of font families.
-        /// </returns>
+        /// <returns> List of font families. </returns>
         private static IEnumerable<FontFamily> GetFontFamilies()
         {
             if (cachedFontFamilies == null)
@@ -800,6 +796,5 @@ namespace PropertyTools.Wpf
 
             return cachedFontFamilies;
         }
-
     }
 }

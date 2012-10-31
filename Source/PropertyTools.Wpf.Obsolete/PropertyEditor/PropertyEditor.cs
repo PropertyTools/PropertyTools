@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PropertyEditor.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   The show categories as.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -24,17 +47,17 @@ namespace PropertyTools.Wpf
     public enum ShowCategoriesAs
     {
         /// <summary>
-        ///   The group box.
+        /// The group box.
         /// </summary>
-        GroupBox, 
+        GroupBox,
 
         /// <summary>
-        ///   The expander.
+        /// The expander.
         /// </summary>
-        Expander, 
+        Expander,
 
         /// <summary>
-        ///   The header.
+        /// The header.
         /// </summary>
         Header
     }
@@ -44,265 +67,259 @@ namespace PropertyTools.Wpf
     /// </summary>
     /// <remarks>
     /// This control is creting a PropertyViewModel and uses data templates to create the controls.
-    ///   Set the SelectedObject to define the contents of the control.
+    /// Set the SelectedObject to define the contents of the control.
     /// </remarks>
     [TemplatePart(Name = "PART_Grid", Type = typeof(Grid))]
     [TemplatePart(Name = "PART_Page", Type = typeof(ContentControl))]
     [TemplatePart(Name = "PART_Tabs", Type = typeof(TabControl))]
     public class PropertyEditor : Control
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The category template selector property.
+        /// The category template selector property.
         /// </summary>
         public static readonly DependencyProperty CategoryTemplateSelectorProperty =
             DependencyProperty.Register(
-                "CategoryTemplateSelector", 
-                typeof(CategoryTemplateSelector), 
-                typeof(PropertyEditor), 
+                "CategoryTemplateSelector",
+                typeof(CategoryTemplateSelector),
+                typeof(PropertyEditor),
                 new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The declared only property.
+        /// The declared only property.
         /// </summary>
         public static readonly DependencyProperty DeclaredOnlyProperty = DependencyProperty.Register(
             "DeclaredOnly", typeof(bool), typeof(PropertyEditor), new UIPropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
-        ///   The default category name property.
+        /// The default category name property.
         /// </summary>
         public static readonly DependencyProperty DefaultCategoryNameProperty =
             DependencyProperty.Register(
-                "DefaultCategoryName", 
-                typeof(string), 
-                typeof(PropertyEditor), 
+                "DefaultCategoryName",
+                typeof(string),
+                typeof(PropertyEditor),
                 new UIPropertyMetadata("Properties", AppearanceChanged));
 
         /// <summary>
-        ///   The default tab name property.
+        /// The default tab name property.
         /// </summary>
         public static readonly DependencyProperty DefaultTabNameProperty = DependencyProperty.Register(
             "DefaultTabName", typeof(string), typeof(PropertyEditor), new UIPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
-        ///   The enum as radio buttons limit property.
+        /// The enum as radio buttons limit property.
         /// </summary>
         public static readonly DependencyProperty EnumAsRadioButtonsLimitProperty =
             DependencyProperty.Register(
-                "EnumAsRadioButtonsLimit", 
-                typeof(int), 
-                typeof(PropertyEditor), 
+                "EnumAsRadioButtonsLimit",
+                typeof(int),
+                typeof(PropertyEditor),
                 new UIPropertyMetadata(4, AppearanceChanged));
 
         /// <summary>
-        ///   The error border thickness property.
+        /// The error border thickness property.
         /// </summary>
         public static readonly DependencyProperty ErrorBorderThicknessProperty =
             DependencyProperty.Register(
-                "ErrorBorderThickness", 
-                typeof(Thickness), 
-                typeof(PropertyEditor), 
+                "ErrorBorderThickness",
+                typeof(Thickness),
+                typeof(PropertyEditor),
                 new UIPropertyMetadata(new Thickness(4, 1, 4, 1)));
 
         /// <summary>
-        ///   The error template property.
+        /// The error template property.
         /// </summary>
         public static readonly DependencyProperty ErrorTemplateProperty = DependencyProperty.Register(
             "ErrorTemplate", typeof(DataTemplate), typeof(PropertyEditor), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The image provider property.
+        /// The image provider property.
         /// </summary>
         public static readonly DependencyProperty ImageProviderProperty = DependencyProperty.Register(
             "ImageProvider", typeof(IImageProvider), typeof(PropertyEditor), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The label alignment property.
+        /// The label alignment property.
         /// </summary>
         public static readonly DependencyProperty LabelAlignmentProperty = DependencyProperty.Register(
-            "LabelAlignment", 
-            typeof(HorizontalAlignment), 
-            typeof(PropertyEditor), 
+            "LabelAlignment",
+            typeof(HorizontalAlignment),
+            typeof(PropertyEditor),
             new UIPropertyMetadata(HorizontalAlignment.Left, AppearanceChanged));
 
         /// <summary>
-        ///   The label width property.
+        /// The label width property.
         /// </summary>
         public static readonly DependencyProperty LabelWidthProperty = DependencyProperty.Register(
             "LabelWidth", typeof(double), typeof(PropertyEditor), new UIPropertyMetadata(100.0));
 
         /// <summary>
-        ///   The localization service property.
+        /// The localization service property.
         /// </summary>
         public static readonly DependencyProperty LocalizationServiceProperty =
             DependencyProperty.Register(
-                "LocalizationService", 
-                typeof(ILocalizationService), 
-                typeof(PropertyEditor), 
+                "LocalizationService",
+                typeof(ILocalizationService),
+                typeof(PropertyEditor),
                 new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The property state provider property.
+        /// The property state provider property.
         /// </summary>
         public static readonly DependencyProperty PropertyStateProviderProperty =
             DependencyProperty.Register(
-                "PropertyStateProvider", 
-                typeof(IPropertyStateProvider), 
-                typeof(PropertyEditor), 
+                "PropertyStateProvider",
+                typeof(IPropertyStateProvider),
+                typeof(PropertyEditor),
                 new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The property template selector property.
+        /// The property template selector property.
         /// </summary>
         public static readonly DependencyProperty PropertyTemplateSelectorProperty =
             DependencyProperty.Register(
-                "PropertyTemplateSelector", 
-                typeof(PropertyTemplateSelector), 
-                typeof(PropertyEditor), 
+                "PropertyTemplateSelector",
+                typeof(PropertyTemplateSelector),
+                typeof(PropertyEditor),
                 new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The required attribute property.
+        /// The required attribute property.
         /// </summary>
         public static readonly DependencyProperty RequiredAttributeProperty =
             DependencyProperty.Register(
                 "RequiredAttribute", typeof(Type), typeof(PropertyEditor), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The selected object property.
+        /// The selected object property.
         /// </summary>
         public static readonly DependencyProperty SelectedObjectProperty = DependencyProperty.Register(
-            "SelectedObject", 
-            typeof(object), 
-            typeof(PropertyEditor), 
+            "SelectedObject",
+            typeof(object),
+            typeof(PropertyEditor),
             new UIPropertyMetadata(null, SelectedObjectChanged));
 
         /// <summary>
-        ///   The selected objects property.
+        /// The selected objects property.
         /// </summary>
         public static readonly DependencyProperty SelectedObjectsProperty =
             DependencyProperty.Register(
-                "SelectedObjects", 
-                typeof(IEnumerable), 
-                typeof(PropertyEditor), 
+                "SelectedObjects",
+                typeof(IEnumerable),
+                typeof(PropertyEditor),
                 new UIPropertyMetadata(null, SelectedObjectsChanged));
 
         /// <summary>
-        ///   The show bool header property.
+        /// The show bool header property.
         /// </summary>
         public static readonly DependencyProperty ShowBoolHeaderProperty = DependencyProperty.Register(
             "ShowBoolHeader", typeof(bool), typeof(PropertyEditor), new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
-        ///   The show categories as property.
+        /// The show categories as property.
         /// </summary>
         public static readonly DependencyProperty ShowCategoriesAsProperty =
             DependencyProperty.Register(
-                "ShowCategoriesAs", 
-                typeof(ShowCategoriesAs), 
-                typeof(PropertyEditor), 
+                "ShowCategoriesAs",
+                typeof(ShowCategoriesAs),
+                typeof(PropertyEditor),
                 new UIPropertyMetadata(ShowCategoriesAs.GroupBox, AppearanceChanged));
 
         /// <summary>
-        ///   The show read only properties property.
+        /// The show read only properties property.
         /// </summary>
         public static readonly DependencyProperty ShowReadOnlyPropertiesProperty =
             DependencyProperty.Register(
-                "ShowReadOnlyProperties", 
-                typeof(bool), 
-                typeof(PropertyEditor), 
+                "ShowReadOnlyProperties",
+                typeof(bool),
+                typeof(PropertyEditor),
                 new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
-        ///   The show tabs property.
+        /// The show tabs property.
         /// </summary>
         public static readonly DependencyProperty ShowTabsProperty = DependencyProperty.Register(
             "ShowTabs", typeof(bool), typeof(PropertyEditor), new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
-        ///   The use default category name for uncategorized properties property.
+        /// The use default category name for uncategorized properties property.
         /// </summary>
         public static readonly DependencyProperty UseDefaultCategoryNameForUncategorizedPropertiesProperty =
             DependencyProperty.Register(
-                "UseDefaultCategoryNameForUncategorizedProperties", 
-                typeof(bool), 
-                typeof(PropertyEditor), 
+                "UseDefaultCategoryNameForUncategorizedProperties",
+                typeof(bool),
+                typeof(PropertyEditor),
                 new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The warning template property.
+        /// The warning template property.
         /// </summary>
         public static readonly DependencyProperty WarningTemplateProperty =
             DependencyProperty.Register(
                 "WarningTemplate", typeof(DataTemplate), typeof(PropertyEditor), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The appearance category.
+        /// The appearance category.
         /// </summary>
         private const string CATEGORY_APPEARANCE = "Appearance";
 
         /// <summary>
-        ///   The grid part name.
+        /// The grid part name.
         /// </summary>
         private const string PART_GRID = "PART_Grid";
 
         /// <summary>
-        ///   The page part name.
+        /// The page part name.
         /// </summary>
         private const string PART_PAGE = "PART_Page";
 
         /// <summary>
-        ///   The tabs part name.
+        /// The tabs part name.
         /// </summary>
         private const string PART_TABS = "PART_Tabs";
 
         /// <summary>
-        ///   The property value changed event.
+        /// The property value changed event.
         /// </summary>
         private static readonly RoutedEvent PropertyValueChangedEvent =
             EventManager.RegisterRoutedEvent(
-                "PropertyValueChanged", 
-                RoutingStrategy.Bubble, 
-                typeof(EventHandler<PropertyValueChangedEventArgs>), 
+                "PropertyValueChanged",
+                RoutingStrategy.Bubble,
+                typeof(EventHandler<PropertyValueChangedEventArgs>),
                 typeof(PropertyEditor));
 
         /// <summary>
-        ///   The PropertyMap dictionary contains a map of all Properties of the current object being edited.
+        /// The PropertyMap dictionary contains a map of all Properties of the current object being edited.
         /// </summary>
         private readonly Dictionary<string, PropertyViewModel> propertyMap;
 
         /// <summary>
-        ///   The content control.
+        /// The content control.
         /// </summary>
         private ContentControl contentControl;
 
         /// <summary>
-        ///   The grid.
+        /// The grid.
         /// </summary>
         private Grid grid;
 
         /// <summary>
-        ///   The model.
+        /// The model.
         /// </summary>
         private IList<TabViewModel> model;
 
         /// <summary>
-        ///   The property view model factory.
+        /// The property view model factory.
         /// </summary>
         private IPropertyViewModelFactory propertyViewModelFactory;
 
         /// <summary>
-        ///   The tab control.
+        /// The tab control.
         /// </summary>
         private TabControl tabControl;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "PropertyEditor" /> class.
+        /// Initializes static members of the <see cref = "PropertyEditor" /> class.
         /// </summary>
         static PropertyEditor()
         {
@@ -311,7 +328,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "PropertyEditor" /> class.
+        /// Initializes a new instance of the <see cref = "PropertyEditor" /> class.
         /// </summary>
         public PropertyEditor()
         {
@@ -321,12 +338,8 @@ namespace PropertyTools.Wpf
             this.CategoryTemplateSelector = new CategoryTemplateSelector(this);
         }
 
-        #endregion
-
-        #region Public Events
-
         /// <summary>
-        ///   The property changed.
+        /// The property changed.
         /// </summary>
         public event EventHandler<PropertyValueChangedEventArgs> PropertyChanged
         {
@@ -341,12 +354,8 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets rortemplate.
+        /// Gets rortemplate.
         /// </summary>
         public static RoutedEvent rortemplate
         {
@@ -357,7 +366,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   The CategoryTemplateSelector is used to select the DataTemplate for the CategoryViewModels
+        /// The CategoryTemplateSelector is used to select the DataTemplate for the CategoryViewModels
         /// </summary>
         [Browsable(false)]
         public CategoryTemplateSelector CategoryTemplateSelector
@@ -374,9 +383,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Show only declared properties (not inherited properties).
-        ///   Specifies that only members declared at the level of the supplied type's hierarchy 
-        ///   should be considered. Inherited members are not considered.
+        /// Show only declared properties (not inherited properties).
+        /// Specifies that only members declared at the level of the supplied type's hierarchy
+        /// should be considered. Inherited members are not considered.
         /// </summary>
         [Category(CATEGORY_APPEARANCE)]
         public bool DeclaredOnly
@@ -393,7 +402,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets DefaultCategoryName.
+        /// Gets or sets DefaultCategoryName.
         /// </summary>
         public string DefaultCategoryName
         {
@@ -409,7 +418,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets DefaultTabName.
+        /// Gets or sets DefaultTabName.
         /// </summary>
         public string DefaultTabName
         {
@@ -425,7 +434,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Collection of custom editors
+        /// Collection of custom editors
         /// </summary>
         [Browsable(false)]
         public Collection<TypeEditor> Editors
@@ -438,9 +447,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the maximum number of enum values that can be shown using radio buttons.
-        ///   If the value is 0, Enums will always be shown as ComboBoxes.
-        ///   If the value is infinity, Enums will always be shown as Radiobuttons.
+        /// Gets or sets the maximum number of enum values that can be shown using radio buttons.
+        /// If the value is 0, Enums will always be shown as ComboBoxes.
+        /// If the value is infinity, Enums will always be shown as Radiobuttons.
         /// </summary>
         /// <value>The limit.</value>
         [Category(CATEGORY_APPEARANCE)]
@@ -458,7 +467,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets ErrorBorderThickness.
+        /// Gets or sets ErrorBorderThickness.
         /// </summary>
         public Thickness ErrorBorderThickness
         {
@@ -474,7 +483,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets ErrorTemplate.
+        /// Gets or sets ErrorTemplate.
         /// </summary>
         public DataTemplate ErrorTemplate
         {
@@ -490,17 +499,17 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets FileDialogService.
+        /// Gets or sets FileDialogService.
         /// </summary>
         public IFileDialogService FileDialogService { get; set; }
 
         /// <summary>
-        ///   Gets or sets FolderBrowserDialogService.
+        /// Gets or sets FolderBrowserDialogService.
         /// </summary>
         public IFolderBrowserDialogService FolderBrowserDialogService { get; set; }
 
         /// <summary>
-        ///   The ImageProvider can be used to provide images to the Tab icons.
+        /// The ImageProvider can be used to provide images to the Tab icons.
         /// </summary>
         [Browsable(false)]
         public IImageProvider ImageProvider
@@ -517,7 +526,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the alignment of property labels.
+        /// Gets or sets the alignment of property labels.
         /// </summary>
         public HorizontalAlignment LabelAlignment
         {
@@ -533,7 +542,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   The width of the property labels
+        /// The width of the property labels
         /// </summary>
         [Category(CATEGORY_APPEARANCE)]
         public double LabelWidth
@@ -550,7 +559,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Implement the LocalizationService to translate the tab, category and property strings and tooltips
+        /// Implement the LocalizationService to translate the tab, category and property strings and tooltips
         /// </summary>
         [Browsable(false)]
         public ILocalizationService LocalizationService
@@ -567,7 +576,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets PropertyStateProvider.
+        /// Gets or sets PropertyStateProvider.
         /// </summary>
         public IPropertyStateProvider PropertyStateProvider
         {
@@ -583,7 +592,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   The PropertyTemplateSelector is used to select the DataTemplate for each PropertyViewModel
+        /// The PropertyTemplateSelector is used to select the DataTemplate for each PropertyViewModel
         /// </summary>
         [Browsable(false)]
         public PropertyTemplateSelector PropertyTemplateSelector
@@ -600,9 +609,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the property view model factory.
-        ///   This factory is used to generate the view model based on the property descriptors.
-        ///   You can override this factory to create the view model based on your own attributes.
+        /// Gets or sets the property view model factory.
+        /// This factory is used to generate the view model based on the property descriptors.
+        /// You can override this factory to create the view model based on your own attributes.
         /// </summary>
         /// <value>The property view model factory.</value>
         [Browsable(false)]
@@ -625,8 +634,8 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the required attribute type.
-        ///   If the required attribute type is set, only properties where this attribute is set will be shown.
+        /// Gets or sets the required attribute type.
+        /// If the required attribute type is set, only properties where this attribute is set will be shown.
         /// </summary>
         [Browsable(false)]
         public Type RequiredAttribute
@@ -643,7 +652,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets SelectedObject.
+        /// Gets or sets SelectedObject.
         /// </summary>
         [Browsable(false)]
         public object SelectedObject
@@ -660,7 +669,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets SelectedObjects.
+        /// Gets or sets SelectedObjects.
         /// </summary>
         public IEnumerable SelectedObjects
         {
@@ -676,7 +685,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Show enum properties as ComboBox or RadioButtonList.
+        /// Show enum properties as ComboBox or RadioButtonList.
         /// </summary>
         [Category(CATEGORY_APPEARANCE)]
         public bool ShowBoolHeader
@@ -693,7 +702,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets ShowCategoriesAs.
+        /// Gets or sets ShowCategoriesAs.
         /// </summary>
         [Category(CATEGORY_APPEARANCE)]
         public ShowCategoriesAs ShowCategoriesAs
@@ -710,7 +719,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Show read-only properties.
+        /// Show read-only properties.
         /// </summary>
         [Category(CATEGORY_APPEARANCE)]
         public bool ShowReadOnlyProperties
@@ -727,8 +736,8 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Organize the properties in tabs.
-        ///   You should use the [Category("Tabname|Groupname")] attribute to define the tabs.
+        /// Organize the properties in tabs.
+        /// You should use the [Category("Tabname|Groupname")] attribute to define the tabs.
         /// </summary>
         [Category(CATEGORY_APPEARANCE)]
         public bool ShowTabs
@@ -745,9 +754,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to use the default category for uncategorized properties.
-        ///   When this flag is false, the last defined category will be used.
-        ///   The default value is false.
+        /// Gets or sets a value indicating whether to use the default category for uncategorized properties.
+        /// When this flag is false, the last defined category will be used.
+        /// The default value is false.
         /// </summary>
         public bool UseDefaultCategoryNameForUncategorizedProperties
         {
@@ -763,7 +772,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets WarningTemplate.
+        /// Gets or sets WarningTemplate.
         /// </summary>
         public DataTemplate WarningTemplate
         {
@@ -778,16 +787,12 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// This method takes an object Instance and creates the property model.
-        ///   The properties are organized in a hierarchy
-        ///   PropertyTab
-        ///   PropertyCategory
-        ///   Property|OptionalProperty|WideProperty|CheckBoxProperty
+        /// The properties are organized in a hierarchy
+        /// PropertyTab
+        /// PropertyCategory
+        /// Property|OptionalProperty|WideProperty|CheckBoxProperty
         /// </summary>
         /// <param name="instance">
         /// </param>
@@ -818,8 +823,8 @@ namespace PropertyTools.Wpf
                                  ? TypeDescriptor.GetProperties(instanceType)
                                  : TypeDescriptor.GetProperties(instance);
 
-            // The GetPropertyModel method does not return properties in a particular order, 
-            // such as alphabetical or declaration order. Your code must not depend on the 
+            // The GetPropertyModel method does not return properties in a particular order,
+            // such as alphabetical or declaration order. Your code must not depend on the
             // order in which properties are returned, because that order varies.
             TabViewModel currentTabViewModel = null;
             CategoryViewModel currentCategoryViewModel = null;
@@ -927,7 +932,7 @@ namespace PropertyTools.Wpf
             // Check that properties used as optional properties are not Browsable
             this.CheckOptionalProperties();
 
-            // Sort the model using a stable sort algorithm 
+            // Sort the model using a stable sort algorithm
             return this.SortPropertyModel(result);
         }
 
@@ -960,7 +965,7 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// Updates the content of the control
-        ///   (after initialization and SelectedObject changes)
+        /// (after initialization and SelectedObject changes)
         /// </summary>
         public void UpdateContent()
         {
@@ -1014,10 +1019,6 @@ namespace PropertyTools.Wpf
             this.UpdateErrorInfo();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The on key down.
         /// </summary>
@@ -1065,11 +1066,11 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// If a CategoryAttributes is given as
-        ///   [Category("TabA|GroupB")]
-        ///   this will be parsed into tabName="TabA" and categoryName="GroupB"
-        ///   If the CategoryAttribute is
-        ///   [Category("GroupC")]
-        ///   the method will not change tabName, but set categoryName="GroupC"
+        /// [Category("TabA|GroupB")]
+        /// this will be parsed into tabName="TabA" and categoryName="GroupB"
+        /// If the CategoryAttribute is
+        /// [Category("GroupC")]
+        /// the method will not change tabName, but set categoryName="GroupC"
         /// </summary>
         /// <param name="descriptor">
         /// The descriptor.
@@ -1288,10 +1289,10 @@ namespace PropertyTools.Wpf
         /// The current category view model.
         /// </param>
         private void GetOrCreateCategory(
-            Type instanceType, 
-            string categoryName, 
-            int SortIndex, 
-            TabViewModel currentTabViewModel, 
+            Type instanceType,
+            string categoryName,
+            int SortIndex,
+            TabViewModel currentTabViewModel,
             ref CategoryViewModel currentCategoryViewModel)
         {
             if (currentCategoryViewModel == null || currentCategoryViewModel.Name != categoryName)
@@ -1328,11 +1329,11 @@ namespace PropertyTools.Wpf
         /// The current category view model.
         /// </param>
         private void GetOrCreateTab(
-            Type instanceType, 
-            ICollection<TabViewModel> tabs, 
-            string tabName, 
-            int SortIndex, 
-            ref TabViewModel currentTabViewModel, 
+            Type instanceType,
+            ICollection<TabViewModel> tabs,
+            string tabName,
+            int SortIndex,
+            ref TabViewModel currentTabViewModel,
             ref CategoryViewModel currentCategoryViewModel)
         {
             if (currentTabViewModel == null || (currentTabViewModel.Name != tabName && this.ShowTabs))
@@ -1464,7 +1465,7 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// Invoke this method to raise a PropertyChanged event.
-        ///   This event only makes sense when editing single objects (not IEnumerables).
+        /// This event only makes sense when editing single objects (not IEnumerables).
         /// </summary>
         /// <param name="propertyName">
         /// The property Name.
@@ -1479,9 +1480,9 @@ namespace PropertyTools.Wpf
         {
             var args = new PropertyValueChangedEventArgs
                 {
-                    PropertyName = propertyName, 
-                    OldValue = oldValue, 
-                    NewValue = newValue, 
+                    PropertyName = propertyName,
+                    OldValue = oldValue,
+                    NewValue = newValue,
                     RoutedEvent = PropertyValueChangedEvent
                 };
             this.RaiseEvent(args);
@@ -1582,7 +1583,6 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
     }
 
     /// <summary>
@@ -1590,23 +1590,20 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class PropertyValueChangedEventArgs : RoutedEventArgs
     {
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets NewValue.
+        /// Gets or sets NewValue.
         /// </summary>
         public object NewValue { get; set; }
 
         /// <summary>
-        ///   Gets or sets OldValue.
+        /// Gets or sets OldValue.
         /// </summary>
         public object OldValue { get; set; }
 
         /// <summary>
-        ///   Gets or sets PropertyName.
+        /// Gets or sets PropertyName.
         /// </summary>
         public string PropertyName { get; set; }
 
-        #endregion
     }
 }

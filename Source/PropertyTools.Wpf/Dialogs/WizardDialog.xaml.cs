@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="WizardDialog.xaml.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a wizard dialog.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System.Collections.Generic;
@@ -14,26 +37,20 @@ namespace PropertyTools.Wpf
     /// </summary>
     public partial class WizardDialog : Window
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The current page property.
+        /// The current page property.
         /// </summary>
         public static readonly DependencyProperty CurrentPageProperty = DependencyProperty.Register(
             "CurrentPage", typeof(int), typeof(WizardDialog), new UIPropertyMetadata(-1, CurrentPage_Changed));
 
         /// <summary>
-        ///   The pages property.
+        /// The pages property.
         /// </summary>
         public static readonly DependencyProperty PagesProperty = DependencyProperty.Register(
             "Pages", typeof(List<object>), typeof(WizardDialog), new UIPropertyMetadata(null));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "WizardDialog" /> class.
+        /// Initializes a new instance of the <see cref = "WizardDialog" /> class.
         /// </summary>
         public WizardDialog()
         {
@@ -49,12 +66,8 @@ namespace PropertyTools.Wpf
             this.Loaded += this.WizardDialog_Loaded;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets CurrentPage.
+        /// Gets or sets CurrentPage.
         /// </summary>
         public int CurrentPage
         {
@@ -70,7 +83,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Pages.
+        /// Gets or sets Pages.
         /// </summary>
         public List<object> Pages
         {
@@ -84,10 +97,6 @@ namespace PropertyTools.Wpf
                 this.SetValue(PagesProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The current page_ changed.
@@ -193,6 +202,5 @@ namespace PropertyTools.Wpf
             this.CurrentPage = 0;
         }
 
-        #endregion
     }
 }

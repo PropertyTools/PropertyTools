@@ -1,9 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SlidablePropertyViewModel.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Properties marked [Slidable] are using a slider
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System.ComponentModel;
@@ -14,8 +37,6 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class SlidablePropertyViewModel : PropertyViewModel
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SlidablePropertyViewModel"/> class.
         /// </summary>
@@ -33,12 +54,8 @@ namespace PropertyTools.Wpf
         {
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets DoubleValue.
+        /// Gets or sets DoubleValue.
         /// </summary>
         public double DoubleValue
         {
@@ -76,40 +93,39 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets SliderLargeChange.
+        /// Gets or sets SliderLargeChange.
         /// </summary>
         public double SliderLargeChange { get; set; }
 
         /// <summary>
-        ///   Gets or sets SliderMaximum.
+        /// Gets or sets SliderMaximum.
         /// </summary>
         public double SliderMaximum { get; set; }
 
         /// <summary>
-        ///   Gets or sets SliderMinimum.
+        /// Gets or sets SliderMinimum.
         /// </summary>
         public double SliderMinimum { get; set; }
 
         /// <summary>
-        ///   Gets or sets SliderSmallChange.
+        /// Gets or sets SliderSmallChange.
         /// </summary>
         public double SliderSmallChange { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether SliderSnapToTicks.
+        /// Gets or sets a value indicating whether SliderSnapToTicks.
         /// </summary>
         public bool SliderSnapToTicks { get; set; }
 
         /// <summary>
-        ///   Gets or sets SliderTickFrequency.
+        /// Gets or sets SliderTickFrequency.
         /// </summary>
         public double SliderTickFrequency { get; set; }
 
         /// <summary>
-        ///   Gets or sets SliderTickPlacement.
+        /// Gets or sets SliderTickPlacement.
         /// </summary>
         public TickPlacement SliderTickPlacement { get; set; }
 
-        #endregion
     }
 }

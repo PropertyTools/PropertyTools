@@ -1,12 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PropertyControl.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
 //   The label width sharing.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -52,8 +72,6 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartScroller, Type = typeof(ScrollViewer))]
     public class PropertyControl : Control, IPropertyControlOptions
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The category control template property.
         /// </summary>
@@ -346,10 +364,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         private TabControl tabControl;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes static members of the <see cref="PropertyControl"/> class.
         /// </summary>
@@ -368,15 +382,11 @@ namespace PropertyTools.Wpf
             this.PropertyItemFactory = new DefaultPropertyItemFactory();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets the category control template.
         /// </summary>
         /// <value>
-        /// The category control template. 
+        /// The category control template.
         /// </value>
         public ControlTemplate CategoryControlTemplate
         {
@@ -395,7 +405,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the type of the category control.
         /// </summary>
         /// <value>
-        /// The type of the category control. 
+        /// The type of the category control.
         /// </value>
         public CategoryControlType CategoryControlType
         {
@@ -414,7 +424,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the category header template.
         /// </summary>
         /// <value>
-        /// The category header template. 
+        /// The category header template.
         /// </value>
         public DataTemplate CategoryHeaderTemplate
         {
@@ -438,7 +448,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the description icon.
         /// </summary>
         /// <value>
-        /// The description icon. 
+        /// The description icon.
         /// </value>
         public ImageSource DescriptionIcon
         {
@@ -457,7 +467,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the alignment for description icons.
         /// </summary>
         /// <value>
-        /// The description icon alignment. 
+        /// The description icon alignment.
         /// </value>
         public HorizontalAlignment DescriptionIconAlignment
         {
@@ -492,7 +502,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the limiting number of enum values for radio buttons lists.
         /// </summary>
         /// <value>
-        /// The limit. 
+        /// The limit.
         /// </value>
         public int EnumAsRadioButtonsLimit
         {
@@ -511,7 +521,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the type of label width sharing.
         /// </summary>
         /// <value>
-        /// The label width sharing. 
+        /// The label width sharing.
         /// </value>
         public LabelWidthSharing LabelWidthSharing
         {
@@ -530,7 +540,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the maximum width of the label.
         /// </summary>
         /// <value>
-        /// The maximum width of the label. 
+        /// The maximum width of the label.
         /// </value>
         public double MaximumLabelWidth
         {
@@ -549,7 +559,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the minimum width of the property labels.
         /// </summary>
         /// <value>
-        /// The minimum width. 
+        /// The minimum width.
         /// </value>
         public double MinimumLabelWidth
         {
@@ -568,7 +578,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets a value indicating whether to move focus on unhandled Enter key down events.
         /// </summary>
         /// <value>
-        /// <c>true</c> if move focus on enter; otherwise, <c>false</c> . 
+        /// <c>true</c> if move focus on enter; otherwise, <c>false</c> .
         /// </value>
         public bool MoveFocusOnEnter
         {
@@ -603,7 +613,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the property item factory.
         /// </summary>
         /// <value>
-        /// The property item factory. 
+        /// The property item factory.
         /// </value>
         public IPropertyItemFactory PropertyItemFactory
         {
@@ -622,7 +632,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the required attribute type.
         /// </summary>
         /// <value>
-        /// The required attribute type. 
+        /// The required attribute type.
         /// </value>
         public Type RequiredAttribute
         {
@@ -641,7 +651,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the selected object.
         /// </summary>
         /// <value>
-        /// The selected object. 
+        /// The selected object.
         /// </value>
         public object SelectedObject
         {
@@ -660,7 +670,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the selected objects.
         /// </summary>
         /// <value>
-        /// The selected objects. 
+        /// The selected objects.
         /// </value>
         public IEnumerable SelectedObjects
         {
@@ -679,7 +689,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the index of the selected tab.
         /// </summary>
         /// <value>
-        /// The index of the selected tab. 
+        /// The index of the selected tab.
         /// </value>
         public int SelectedTabIndex
         {
@@ -698,7 +708,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets a value indicating whether to show check box headers.
         /// </summary>
         /// <value>
-        /// <c>true</c> if check box headers should be shown; otherwise, <c>false</c> . 
+        /// <c>true</c> if check box headers should be shown; otherwise, <c>false</c> .
         /// </value>
         public bool ShowCheckBoxHeaders
         {
@@ -717,7 +727,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets a value indicating whether to show declared properties only.
         /// </summary>
         /// <value>
-        /// <c>true</c> if only declared properti should be shown; otherwise, <c>false</c> . 
+        /// <c>true</c> if only declared properti should be shown; otherwise, <c>false</c> .
         /// </value>
         public bool ShowDeclaredOnly
         {
@@ -752,7 +762,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets a value indicating whether to show read only properties].
         /// </summary>
         /// <value>
-        /// <c>true</c> if read only properties should be shown; otherwise, <c>false</c> . 
+        /// <c>true</c> if read only properties should be shown; otherwise, <c>false</c> .
         /// </value>
         public bool ShowReadOnlyProperties
         {
@@ -771,7 +781,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the tab header template.
         /// </summary>
         /// <value>
-        /// The tab header template. 
+        /// The tab header template.
         /// </value>
         public DataTemplate TabHeaderTemplate
         {
@@ -790,7 +800,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the tab page header template.
         /// </summary>
         /// <value>
-        /// The tab page header template. 
+        /// The tab page header template.
         /// </value>
         public DataTemplate TabPageHeaderTemplate
         {
@@ -809,7 +819,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the tab strip placement.
         /// </summary>
         /// <value>
-        /// The tab strip placement. 
+        /// The tab strip placement.
         /// </value>
         public Dock TabStripPlacement
         {
@@ -828,7 +838,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the tool tip template.
         /// </summary>
         /// <value>
-        /// The tool tip template. 
+        /// The tool tip template.
         /// </value>
         public DataTemplate ToolTipTemplate
         {
@@ -847,7 +857,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets a value indicating whether to use tabs.
         /// </summary>
         /// <value>
-        /// <c>true</c> if tabs should be used; otherwise, <c>false</c> . 
+        /// <c>true</c> if tabs should be used; otherwise, <c>false</c> .
         /// </value>
         public bool UseTabs
         {
@@ -866,7 +876,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the validation error style.
         /// </summary>
         /// <value>
-        /// The validation error style. 
+        /// The validation error style.
         /// </value>
         public Style ValidationErrorStyle
         {
@@ -885,7 +895,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the validation error template.
         /// </summary>
         /// <value>
-        /// The validation error template. 
+        /// The validation error template.
         /// </value>
         public DataTemplate ValidationErrorTemplate
         {
@@ -904,7 +914,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the validation template.
         /// </summary>
         /// <value>
-        /// The validation template. 
+        /// The validation template.
         /// </value>
         public ControlTemplate ValidationTemplate
         {
@@ -919,18 +929,14 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         /// <summary>
         /// Creates the controls.
         /// </summary>
         /// <param name="instance">
-        /// The instance. 
+        /// The instance.
         /// </param>
         /// <param name="tabs">
-        /// The tabs. 
+        /// The tabs.
         /// </param>
         public virtual void CreateControls(object instance, IEnumerable<Tab> tabs)
         {
@@ -1088,18 +1094,14 @@ namespace PropertyTools.Wpf
             this.UpdateControls();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Creates a tool tip.
         /// </summary>
         /// <param name="content">
-        /// The content. 
+        /// The content.
         /// </param>
         /// <returns>
-        /// The tool tip. 
+        /// The tool tip.
         /// </returns>
         protected virtual object CreateToolTip(string content)
         {
@@ -1120,7 +1122,7 @@ namespace PropertyTools.Wpf
         /// Invoked when an unhandled KeyDown attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.KeyEventArgs"/> that contains the event data. 
+        /// The <see cref="T:System.Windows.Input.KeyEventArgs"/> that contains the event data.
         /// </param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -1159,7 +1161,7 @@ namespace PropertyTools.Wpf
         /// Called when the selected object is changed.
         /// </summary>
         /// <param name="e">
-        /// The e. 
+        /// The e.
         /// </param>
         protected virtual void OnSelectedObjectChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -1171,10 +1173,10 @@ namespace PropertyTools.Wpf
         /// The appearance changed.
         /// </summary>
         /// <param name="d">
-        /// The d. 
+        /// The d.
         /// </param>
         /// <param name="e">
-        /// The e. 
+        /// The e.
         /// </param>
         private static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -1185,13 +1187,13 @@ namespace PropertyTools.Wpf
         /// Creates and adds the property panel.
         /// </summary>
         /// <param name="panel">
-        /// The panel where the property panel should be added. 
+        /// The panel where the property panel should be added.
         /// </param>
         /// <param name="pi">
-        /// The property. 
+        /// The property.
         /// </param>
         /// <param name="instance">
-        /// The instance. 
+        /// The instance.
         /// </param>
         private void AddPropertyPanel(Panel panel, PropertyItem pi, object instance)
         {
@@ -1305,7 +1307,7 @@ namespace PropertyTools.Wpf
 
                 default:
                     {
-                        // create the label panel 
+                        // create the label panel
                         var labelPanel = new DockPanel();
                         if (pi.HeaderPlacement == HeaderPlacement.Left)
                         {
@@ -1399,10 +1401,10 @@ namespace PropertyTools.Wpf
         /// Creates the label control.
         /// </summary>
         /// <param name="pi">
-        /// The property item. 
+        /// The property item.
         /// </param>
         /// <returns>
-        /// An element. 
+        /// An element.
         /// </returns>
         private FrameworkElement CreateLabel(PropertyItem pi)
         {
@@ -1444,10 +1446,10 @@ namespace PropertyTools.Wpf
         /// Creates the property control.
         /// </summary>
         /// <param name="pi">
-        /// The property item. 
+        /// The property item.
         /// </param>
         /// <returns>
-        /// An element. 
+        /// An element.
         /// </returns>
         private FrameworkElement CreatePropertyControl(PropertyItem pi)
         {
@@ -1459,7 +1461,7 @@ namespace PropertyTools.Wpf
         /// Handles changes in SelectedObjects.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data. 
+        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
         /// </param>
         private void SelectedObjectsChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -1525,6 +1527,5 @@ namespace PropertyTools.Wpf
             this.currentSelectedObjectType = newSelectedObjectType;
         }
 
-        #endregion
     }
 }

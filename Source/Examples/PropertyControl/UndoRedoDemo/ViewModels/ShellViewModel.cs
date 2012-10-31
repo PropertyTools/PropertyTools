@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ShellViewModel.cs" company="PropertyTools">
-//   
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a viewmodel for the shell.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace UndoRedoDemo
 {
     using System;
@@ -19,19 +42,13 @@ namespace UndoRedoDemo
     [Export(typeof(IShell))]
     public class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShell
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The output string builder.
+        /// The output string builder.
         /// </summary>
         private readonly StringBuilder outputBuilder = new StringBuilder();
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes static members of the <see cref="ShellViewModel"/> class. 
+        /// Initializes static members of the <see cref="ShellViewModel"/> class.
         /// </summary>
         static ShellViewModel()
         {
@@ -39,7 +56,7 @@ namespace UndoRedoDemo
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ShellViewModel" /> class.
+        /// Initializes a new instance of the <see cref = "ShellViewModel" /> class.
         /// </summary>
         public ShellViewModel()
         {
@@ -49,18 +66,14 @@ namespace UndoRedoDemo
             tl.OnAppend += this.AppendTraceMessage;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the undo redo service.
+        /// Gets or sets the undo redo service.
         /// </summary>
         /// <value>The undo redo service.</value>
         public static UndoRedoService UndoRedoService { get; set; }
 
         /// <summary>
-        ///   Gets the actual title.
+        /// Gets the actual title.
         /// </summary>
         /// <value>The actual title.</value>
         public string ActualTitle
@@ -83,7 +96,7 @@ namespace UndoRedoDemo
         }
 
         /// <summary>
-        ///   Gets a value indicating whether the selected item can be deleted.
+        /// Gets a value indicating whether the selected item can be deleted.
         /// </summary>
         public bool CanDeleteItem
         {
@@ -94,7 +107,7 @@ namespace UndoRedoDemo
         }
 
         /// <summary>
-        ///   Gets a value indicating whether the item can be modified.
+        /// Gets a value indicating whether the item can be modified.
         /// </summary>
         public bool CanModifyItem
         {
@@ -105,7 +118,7 @@ namespace UndoRedoDemo
         }
 
         /// <summary>
-        ///   Gets a value indicating whether redo is possible.
+        /// Gets a value indicating whether redo is possible.
         /// </summary>
         public bool CanRedo
         {
@@ -117,7 +130,7 @@ namespace UndoRedoDemo
         }
 
         /// <summary>
-        ///   Gets a value indicating whether undo is possible.
+        /// Gets a value indicating whether undo is possible.
         /// </summary>
         public bool CanUndo
         {
@@ -129,37 +142,33 @@ namespace UndoRedoDemo
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is modified.
+        /// Gets or sets a value indicating whether this instance is modified.
         /// </summary>
         public bool IsModified { get; set; }
 
         /// <summary>
-        ///   Gets or sets the measurements.
+        /// Gets or sets the measurements.
         /// </summary>
         /// <value>The measurements.</value>
         public UndoableCollection<Measurement> Measurements { get; set; }
 
         /// <summary>
-        ///   Gets or sets the output.
+        /// Gets or sets the output.
         /// </summary>
         /// <value>The output.</value>
         public string Output { get; set; }
 
         /// <summary>
-        ///   Gets or sets the index of the selected.
+        /// Gets or sets the index of the selected.
         /// </summary>
         /// <value>The index of the selected.</value>
         public int SelectedIndex { get; set; }
 
         /// <summary>
-        ///   Gets or sets the title.
+        /// Gets or sets the title.
         /// </summary>
         /// <value>The title.</value>
         public string Title { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Adds an item.
@@ -232,10 +241,6 @@ namespace UndoRedoDemo
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Appends the trace message.
         /// </summary>
@@ -256,6 +261,5 @@ namespace UndoRedoDemo
             this.Output = this.outputBuilder.ToString();
         }
 
-        #endregion
     }
 }

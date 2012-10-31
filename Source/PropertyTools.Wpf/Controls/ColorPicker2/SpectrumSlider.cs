@@ -1,9 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SpectrumSlider.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   The spectrum slider.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -15,35 +38,29 @@ namespace PropertyTools.Wpf
     /// </summary>
     /// <remarks>
     /// Original code by Ury Jamshy, 21 July 2011.
-    ///   See http://www.codeproject.com/KB/WPF/ColorPicker2010.aspx
-    ///   The Code Project Open License (CPOL)
-    ///   http://www.codeproject.com/info/cpol10.aspx
+    /// See http://www.codeproject.com/KB/WPF/ColorPicker2010.aspx
+    /// The Code Project Open License (CPOL)
+    /// http://www.codeproject.com/info/cpol10.aspx
     /// </remarks>
     public class SpectrumSlider : SliderEx
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The hue property.
+        /// The hue property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
-            "Hue", 
-            typeof(double), 
-            typeof(SpectrumSlider), 
+            "Hue",
+            typeof(double),
+            typeof(SpectrumSlider),
             new FrameworkPropertyMetadata(
                 (double)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnHuePropertyChanged));
 
         /// <summary>
-        ///   The within changing flag.
+        /// The within changing flag.
         /// </summary>
         private bool withinChanging;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "SpectrumSlider" /> class.
+        /// Initializes static members of the <see cref = "SpectrumSlider" /> class.
         /// </summary>
         static SpectrumSlider()
         {
@@ -52,19 +69,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "SpectrumSlider" /> class.
+        /// Initializes a new instance of the <see cref = "SpectrumSlider" /> class.
         /// </summary>
         public SpectrumSlider()
         {
             this.SetBackground();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets Hue.
+        /// Gets or sets Hue.
         /// </summary>
         public double Hue
         {
@@ -78,10 +91,6 @@ namespace PropertyTools.Wpf
                 this.SetValue(HueProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The on value changed.
@@ -134,7 +143,7 @@ namespace PropertyTools.Wpf
         {
             var backgroundBrush = new LinearGradientBrush
                 {
-                   StartPoint = new Point(0.5, 1), EndPoint = new Point(0.5, 0) 
+                   StartPoint = new Point(0.5, 1), EndPoint = new Point(0.5, 0)
                 };
 
             const int SpectrumColorCount = 30;
@@ -150,6 +159,5 @@ namespace PropertyTools.Wpf
             this.Background = backgroundBrush;
         }
 
-        #endregion
     }
 }

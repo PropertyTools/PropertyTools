@@ -1,9 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DefaultPropertyItemFactory.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Provides a default property item factory.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -23,10 +46,8 @@ namespace PropertyTools.Wpf
     public class DefaultPropertyItemFactory : IPropertyItemFactory
     {
 
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DefaultPropertyItemFactory" /> class.
+        /// Initializes a new instance of the <see cref = "DefaultPropertyItemFactory" /> class.
         /// </summary>
         public DefaultPropertyItemFactory()
         {
@@ -37,86 +58,74 @@ namespace PropertyTools.Wpf
             this.InheritCategories = true;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the default name of the category.
+        /// Gets or sets the default name of the category.
         /// </summary>
         /// <value>The default name of the category.</value>
         public string DefaultCategoryName { get; set; }
 
         /// <summary>
-        ///   Gets or sets the default name of the tab.
+        /// Gets or sets the default name of the tab.
         /// </summary>
         /// <value>The default name of the tab.</value>
         public string DefaultTabName { get; set; }
 
         /// <summary>
-        ///   Gets or sets the enabled pattern.
+        /// Gets or sets the enabled pattern.
         /// </summary>
         /// <value>The enabled pattern.</value>
         public string EnabledPattern { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether each property should inherit the category attribute from the property declared before.
+        /// Gets or sets a value indicating whether each property should inherit the category attribute from the property declared before.
         /// </summary>
         public bool InheritCategories { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to 'nicify' display names.
+        /// Gets or sets a value indicating whether to 'nicify' display names.
         /// </summary>
         /// <remarks>
-        ///   The 'nicifiying' adds spaces at the camel bumps.
+        /// The 'nicifiying' adds spaces at the camel bumps.
         /// </remarks>
         /// <value><c>true</c> if display names should be nicified; otherwise, <c>false</c>.</value>
         public bool NicifyDisplayNames { get; set; }
 
         /// <summary>
-        ///   Gets or sets the optional pattern.
+        /// Gets or sets the optional pattern.
         /// </summary>
         /// <value>The optional pattern.</value>
         public string OptionalPattern { get; set; }
 
         /// <summary>
-        ///   Gets or sets the visible pattern.
+        /// Gets or sets the visible pattern.
         /// </summary>
         /// <value>The visible pattern.</value>
         public string VisiblePattern { get; set; }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets or sets the current category.
+        /// Gets or sets the current category.
         /// </summary>
         /// <value>The current category.</value>
         protected string CurrentCategory { get; set; }
 
         /// <summary>
-        ///   Gets or sets the declaring type of the current category.
+        /// Gets or sets the declaring type of the current category.
         /// </summary>
         /// <value>
-        ///   The type of the current category.
+        /// The type of the current category.
         /// </value>
         protected Type CurrentCategoryDeclaringType { get; set; }
 
         /// <summary>
-        ///   Gets or sets the type of the current component.
+        /// Gets or sets the type of the current component.
         /// </summary>
         /// <remarks>
-        ///   This is used to avoid that Category attributes are inherited from superclass to subclass.
+        /// This is used to avoid that Category attributes are inherited from superclass to subclass.
         /// </remarks>
         /// <value>
-        ///   The type of the current component.
+        /// The type of the current component.
         /// </value>
         protected Type CurrentDeclaringType { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates a property item.
@@ -146,10 +155,6 @@ namespace PropertyTools.Wpf
             this.CurrentDeclaringType = null;
             this.CurrentCategoryDeclaringType = null;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Variables the display name of the name to.
@@ -530,8 +535,6 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
         /// <summary>
         /// Creates the property model.
         /// </summary>
@@ -601,7 +604,6 @@ namespace PropertyTools.Wpf
 
                 group.Properties.Add(pi);
             }
-
 
             return tabs.Values.ToList();
         }

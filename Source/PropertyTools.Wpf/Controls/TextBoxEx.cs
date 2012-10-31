@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TextBoxEx.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a TextBox that can update the binding on enter.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -17,28 +40,22 @@ namespace PropertyTools.Wpf
     [Obsolete]
     public class TextBoxEx : TextBox
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The move focus on enter property.
+        /// The move focus on enter property.
         /// </summary>
         public static readonly DependencyProperty MoveFocusOnEnterProperty =
             DependencyProperty.Register(
                 "MoveFocusOnEnter", typeof(bool), typeof(TextBoxEx), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The update binding on enter property.
+        /// The update binding on enter property.
         /// </summary>
         public static readonly DependencyProperty UpdateBindingOnEnterProperty =
             DependencyProperty.Register(
                 "UpdateBindingOnEnter", typeof(bool), typeof(TextBoxEx), new UIPropertyMetadata(true));
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether MoveFocusOnEnter.
+        /// Gets or sets a value indicating whether MoveFocusOnEnter.
         /// </summary>
         public bool MoveFocusOnEnter
         {
@@ -54,7 +71,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether UpdateBindingOnEnter.
+        /// Gets or sets a value indicating whether UpdateBindingOnEnter.
         /// </summary>
         public bool UpdateBindingOnEnter
         {
@@ -68,10 +85,6 @@ namespace PropertyTools.Wpf
                 this.SetValue(UpdateBindingOnEnterProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The on got focus.
@@ -122,7 +135,6 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
     }
 
     /*    Microsoft.Expression.Interactivity

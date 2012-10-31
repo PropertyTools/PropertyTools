@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColorPicker.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//
+//   Copyright (c) 2012 Oystein Bjorke
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a control that lets the user pick a color.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -23,96 +46,90 @@ namespace PropertyTools.Wpf
     /// </summary>
     public partial class ColorPicker : Control, INotifyPropertyChanged
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The is drop down open property.
+        /// The is drop down open property.
         /// </summary>
         public static readonly DependencyProperty IsDropDownOpenProperty = DependencyProperty.Register(
-            "IsDropDownOpen", 
-            typeof(bool), 
-            typeof(ColorPicker), 
+            "IsDropDownOpen",
+            typeof(bool),
+            typeof(ColorPicker),
             new UIPropertyMetadata(false, IsDropDownOpenChanged, CoerceIsDropDownOpen));
 
         /// <summary>
-        ///   The is picking property.
+        /// The is picking property.
         /// </summary>
         public static readonly DependencyProperty IsPickingProperty = DependencyProperty.Register(
             "IsPicking", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false, IsPickingChanged));
 
         /// <summary>
-        ///   The palette property.
+        /// The palette property.
         /// </summary>
         public static readonly DependencyProperty PaletteProperty = DependencyProperty.Register(
-            "Palette", 
-            typeof(ObservableCollection<Color>), 
-            typeof(ColorPicker), 
+            "Palette",
+            typeof(ObservableCollection<Color>),
+            typeof(ColorPicker),
             new UIPropertyMetadata(CreateDefaultPalette()));
 
         /// <summary>
-        ///   The selected color property.
+        /// The selected color property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
-            "SelectedColor", 
-            typeof(Color), 
-            typeof(ColorPicker), 
+            "SelectedColor",
+            typeof(Color),
+            typeof(ColorPicker),
             new FrameworkPropertyMetadata(
                 Color.FromArgb(0, 0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SelectedColorChanged));
 
         /// <summary>
-        ///   The show as hex property.
+        /// The show as hex property.
         /// </summary>
         public static readonly DependencyProperty ShowAsHexProperty = DependencyProperty.Register(
             "ShowAsHex", typeof(bool), typeof(ColorPicker), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///   The tab strip placement property.
+        /// The tab strip placement property.
         /// </summary>
         public static readonly DependencyProperty TabStripPlacementProperty =
             DependencyProperty.Register(
                 "TabStripPlacement", typeof(Dock), typeof(ColorPicker), new UIPropertyMetadata(Dock.Bottom));
 
         /// <summary>
-        ///   The brightness.
+        /// The brightness.
         /// </summary>
         private byte brightness;
 
         /// <summary>
-        ///   The hue.
+        /// The hue.
         /// </summary>
         private byte hue;
 
         /// <summary>
-        ///   The picking timer.
+        /// The picking timer.
         /// </summary>
         private DispatcherTimer pickingTimer;
 
         /// <summary>
-        ///   The saturation.
+        /// The saturation.
         /// </summary>
         private byte saturation;
 
         /// <summary>
-        ///   The static color list.
+        /// The static color list.
         /// </summary>
         private ListBox staticColorList;
 
         /// <summary>
-        ///   The update hsv.
+        /// The update hsv.
         /// </summary>
         private bool updateHSV = true;
 
         /// <summary>
-        ///   The update hex value.
+        /// The update hex value.
         /// </summary>
         private bool updateHexValue = true;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "ColorPicker" /> class.
+        /// Initializes static members of the <see cref = "ColorPicker" /> class.
         /// </summary>
         static ColorPicker()
         {
@@ -124,7 +141,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ColorPicker" /> class.
+        /// Initializes a new instance of the <see cref = "ColorPicker" /> class.
         /// </summary>
         public ColorPicker()
         {
@@ -133,21 +150,13 @@ namespace PropertyTools.Wpf
             // this.mouseEvent = this.PaletteList_MouseUp;
         }
 
-        #endregion
-
-        #region Public Events
-
         /// <summary>
-        ///   Occurs when a property value changes.
+        /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the alpha.
+        /// Gets or sets the alpha.
         /// </summary>
         /// <value>The alpha.</value>
         public byte Alpha
@@ -164,7 +173,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the alpha gradient.
+        /// Gets the alpha gradient.
         /// </summary>
         /// <value>The alpha gradient.</value>
         public Brush AlphaGradient
@@ -176,7 +185,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the blue.
+        /// Gets or sets the blue.
         /// </summary>
         /// <value>The blue.</value>
         public byte Blue
@@ -193,7 +202,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the brightness.
+        /// Gets or sets the brightness.
         /// </summary>
         /// <value>The brightness.</value>
         public byte Brightness
@@ -214,7 +223,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the brightness gradient.
+        /// Gets the brightness gradient.
         /// </summary>
         /// <value>The brightness gradient.</value>
         public Brush BrightnessGradient
@@ -222,14 +231,14 @@ namespace PropertyTools.Wpf
             get
             {
                 return new LinearGradientBrush(
-                    ColorHelper.HsvToColor(this.Hue, this.Saturation, 0), 
-                    ColorHelper.HsvToColor(this.Hue, this.Saturation, 255), 
+                    ColorHelper.HsvToColor(this.Hue, this.Saturation, 0),
+                    ColorHelper.HsvToColor(this.Hue, this.Saturation, 255),
                     0);
             }
         }
 
         /// <summary>
-        ///   Gets the name of the color.
+        /// Gets the name of the color.
         /// </summary>
         /// <value>The name of the color.</value>
         public string ColorName
@@ -273,7 +282,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the green.
+        /// Gets or sets the green.
         /// </summary>
         /// <value>The green.</value>
         public byte Green
@@ -290,7 +299,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the hex value.
+        /// Gets or sets the hex value.
         /// </summary>
         /// <value>The hex value.</value>
         public string HexValue
@@ -309,7 +318,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the hue.
+        /// Gets or sets the hue.
         /// </summary>
         /// <value>The hue.</value>
         public byte Hue
@@ -329,7 +338,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether the color picker popup is open.
+        /// Gets or sets a value indicating whether the color picker popup is open.
         /// </summary>
         public bool IsDropDownOpen
         {
@@ -345,10 +354,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets if picking colors from the screen is active.
+        /// Gets or sets if picking colors from the screen is active.
         /// </summary>
         /// <remarks>
-        ///   Use the 'SHIFT' button to select colors when this mode is active.
+        /// Use the 'SHIFT' button to select colors when this mode is active.
         /// </remarks>
         public bool IsPicking
         {
@@ -364,7 +373,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the palette.
+        /// Gets or sets the palette.
         /// </summary>
         /// <value>The palette.</value>
         public ObservableCollection<Color> Palette
@@ -381,7 +390,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the red.
+        /// Gets or sets the red.
         /// </summary>
         /// <value>The red.</value>
         public byte Red
@@ -398,7 +407,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the saturation.
+        /// Gets or sets the saturation.
         /// </summary>
         /// <value>The saturation.</value>
         public byte Saturation
@@ -419,7 +428,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the saturation gradient.
+        /// Gets the saturation gradient.
         /// </summary>
         /// <value>The saturation gradient.</value>
         public Brush SaturationGradient
@@ -427,14 +436,14 @@ namespace PropertyTools.Wpf
             get
             {
                 return new LinearGradientBrush(
-                    ColorHelper.HsvToColor(this.Hue, 0, this.Brightness), 
-                    ColorHelper.HsvToColor(this.Hue, 255, this.Brightness), 
+                    ColorHelper.HsvToColor(this.Hue, 0, this.Brightness),
+                    ColorHelper.HsvToColor(this.Hue, 255, this.Brightness),
                     0);
             }
         }
 
         /// <summary>
-        ///   Gets or sets the selected color.
+        /// Gets or sets the selected color.
         /// </summary>
         /// <value>The color of the selected.</value>
         public Color SelectedColor
@@ -451,7 +460,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to show as color names as hex strings.
+        /// Gets or sets a value indicating whether to show as color names as hex strings.
         /// </summary>
         /// <value><c>true</c> if show as hex; otherwise, <c>false</c>.</value>
         public bool ShowAsHex
@@ -468,7 +477,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the tab strip placement.
+        /// Gets or sets the tab strip placement.
         /// </summary>
         /// <value>The tab strip placement.</value>
         public Dock TabStripPlacement
@@ -483,10 +492,6 @@ namespace PropertyTools.Wpf
                 this.SetValue(TabStripPlacementProperty, value);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates the default palette.
@@ -545,10 +550,6 @@ namespace PropertyTools.Wpf
             base.OnApplyTemplate();
             this.staticColorList = this.Template.FindName("PART_StaticColorList", this) as ListBox;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Invoked when an unhandled <see cref="E:System.Windows.Input.Keyboard.KeyDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
@@ -908,6 +909,5 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
     }
 }

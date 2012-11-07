@@ -149,6 +149,18 @@ namespace PropertyTools.Wpf
         public PropertyDescriptor Descriptor { get; set; }
 
         /// <summary>
+        /// Gets a value indicating whether this property is read only.
+        /// </summary>
+        /// <value><c>true</c> if this property is read only; otherwise, <c>false</c>.</value>
+        public bool IsReadOnly
+        {
+            get
+            {
+                return this.Descriptor.IsReadOnly;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the display name.
         /// </summary>
         /// <value> The display name. </value>
@@ -534,8 +546,6 @@ namespace PropertyTools.Wpf
                     yield return a as T;
                 }
             }
-
-            yield break;
         }
 
         /// <summary>

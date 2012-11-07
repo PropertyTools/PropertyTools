@@ -34,6 +34,7 @@ namespace PropertyTools.Wpf
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Security;
@@ -226,7 +227,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates the bool control.
+        /// Creates the checkbox control.
         /// </summary>
         /// <param name="property">
         /// The property.
@@ -238,8 +239,16 @@ namespace PropertyTools.Wpf
         {
             var c = new CheckBox
                 {
-                   VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Left
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Left
                 };
+            
+            if (property.Descriptor.IsReadOnly)
+            {
+                c.IsHitTestVisible = false;
+                c.Focusable = false;
+            }
+
             c.SetBinding(ToggleButton.IsCheckedProperty, property.CreateBinding());
             return c;
         }
@@ -408,7 +417,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates the enum control.
+        /// Creates the select control.
         /// </summary>
         /// <param name="property">
         /// The property.
@@ -559,7 +568,7 @@ namespace PropertyTools.Wpf
                         FormatString = ca.FormatString,
                         Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto)
                     };
-                switch (ca.Alignment.ToString().ToUpper())
+                switch (ca.Alignment.ToString(CultureInfo.InvariantCulture).ToUpper())
                 {
                     case "L":
                         cd.HorizontalAlignment = HorizontalAlignment.Left;

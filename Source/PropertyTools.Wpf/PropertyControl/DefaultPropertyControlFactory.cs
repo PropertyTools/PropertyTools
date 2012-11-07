@@ -242,7 +242,7 @@ namespace PropertyTools.Wpf
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Left
                 };
-            
+
             if (property.Descriptor.IsReadOnly)
             {
                 c.IsHitTestVisible = false;
@@ -372,12 +372,18 @@ namespace PropertyTools.Wpf
                 {
                     AcceptsReturn = property.AcceptsReturn,
                     MaxLength = property.MaxLength,
-                    IsReadOnly = property.Descriptor.IsReadOnly,
+                    IsReadOnly = property.IsReadOnly,
                     TextWrapping = property.TextWrapping,
                     VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                     VerticalContentAlignment =
                         double.IsNaN(property.Height) ? VerticalAlignment.Center : VerticalAlignment.Top
                 };
+
+            if (property.IsReadOnly)
+            {
+                // c.Opacity = 0.8;
+                c.Foreground = Brushes.RoyalBlue;
+            }
 
             c.SetBinding(TextBox.TextProperty, property.CreateBinding(trigger));
             return c;
@@ -530,6 +536,7 @@ namespace PropertyTools.Wpf
                     Background = Brushes.Transparent,
                     BorderBrush = null,
                     AcceptsReturn = true,
+                    IsReadOnly = property.IsReadOnly,
                     TextWrapping = TextWrapping.Wrap,
                     FontWeight = FontWeight.FromOpenTypeWeight(property.FontWeight),
                     FontSize = property.FontSize
@@ -735,6 +742,7 @@ namespace PropertyTools.Wpf
         {
             var tb = new TextBox
                 {
+                    IsReadOnly = property.IsReadOnly,
                     BorderThickness = new Thickness(0),
                     HorizontalContentAlignment = HorizontalAlignment.Right,
                     VerticalContentAlignment = VerticalAlignment.Center

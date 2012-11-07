@@ -29,10 +29,13 @@ namespace TestLibrary
     public class TestReadOnlyProperties : TestBase
     {
         public string Name { get; private set; }
+        
+        public bool IsChecked { get; private set; }
 
         public TestReadOnlyProperties()
         {
-            Name = "John";
+            this.Name = "John";
+            this.IsChecked = true;
         }
 
         public override string ToString()

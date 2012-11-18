@@ -12,7 +12,6 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.IO;
@@ -22,6 +21,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
+    using System.Windows.Input;
     using System.Windows.Media;
 
     /// <summary>
@@ -358,7 +358,7 @@ namespace PropertyTools.Wpf
         {
             // TextBox is the default control
             var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
-            var c = new TextBox
+            var c = new TextBoxEx
                 {
                     AcceptsReturn = property.AcceptsReturn,
                     MaxLength = property.MaxLength,

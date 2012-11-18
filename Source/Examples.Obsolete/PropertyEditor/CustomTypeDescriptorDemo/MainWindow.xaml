@@ -1,0 +1,8 @@
+﻿<Window x:Class="CustomTypeDescriptorDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:Wpf="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf.Obsolete" Title="CustomTypeDescriptorDemo" Height="480" Width="640">
+    <Grid Margin="4">
+        <Wpf:PropertyEditor x:Name="pe1"/>
+    </Grid>
+</Window>

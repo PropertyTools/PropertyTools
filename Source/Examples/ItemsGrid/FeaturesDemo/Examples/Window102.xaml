@@ -1,0 +1,21 @@
+﻿<Window x:Class="FeaturesDemo.Window102"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:local="clr-namespace:FeaturesDemo" 
+        Title="ObservableCollection&lt;ExampleObject&gt; custom columns" Height="450" Width="900"
+        FocusManager.FocusedElement="{Binding ElementName=grid1}">
+    <Window.Resources>
+        <local:ViewModel x:Key="ViewModel"/>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource ViewModel}">
+        <p:ItemsGrid x:Name="grid1" ItemsSource="{Binding Items100}">
+            <p:ItemsGrid.ColumnDefinitions>
+                <p:ColumnDefinition PropertyName="String" Header="string"/>
+                <p:ColumnDefinition PropertyName="Integer" Header="integer"/>
+                <p:ColumnDefinition PropertyName="Enum" Header="enum"/>
+                <p:ColumnDefinition PropertyName="Selector" Header="selector"/>
+            </p:ItemsGrid.ColumnDefinitions>
+        </p:ItemsGrid>
+    </Grid>
+</Window>

@@ -12,7 +12,7 @@
     </Style>
 
     <DataTemplate x:Key="ValidationErrorTemplate">
-        <Label Foreground="Red" Content="{Binding Converter={StaticResource ValiationErrorsToStringConverter}}" />
+        <TextBlock TextWrapping="Wrap" Foreground="Red" Text="{Binding Converter={StaticResource ValiationErrorsToStringConverter}}" />
     </DataTemplate>
 
     <DataTemplate x:Key="ToolTipTemplate">

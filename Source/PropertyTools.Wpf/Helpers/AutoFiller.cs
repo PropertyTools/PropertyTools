@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AutoFiller.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Provides extrapolation functionality for the auto filler.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -13,21 +36,15 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class AutoFiller
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The get cell value function.
+        /// The get cell value function.
         /// </summary>
         private readonly Func<CellRef, object> GetCellValue;
 
         /// <summary>
-        ///   The set cell value function.
+        /// The set cell value function.
         /// </summary>
         private readonly Func<CellRef, object, bool> TrySetCellValue;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutoFiller"/> class.
@@ -43,10 +60,6 @@ namespace PropertyTools.Wpf
             this.GetCellValue = getCellValue;
             this.TrySetCellValue = trySetCellValue;
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The auto fill.
@@ -103,7 +116,8 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// True if extrapolation was successful.
         /// </returns>
-        public bool TryExtrapolate(CellRef cell, CellRef currentCell, CellRef selectionCell, CellRef autoFillRef, out object result)
+        public bool TryExtrapolate(
+            CellRef cell, CellRef currentCell, CellRef selectionCell, CellRef autoFillRef, out object result)
         {
             int selMinRow = Math.Min(currentCell.Row, selectionCell.Row);
             int selMaxRow = Math.Max(currentCell.Row, selectionCell.Row);
@@ -156,10 +170,6 @@ namespace PropertyTools.Wpf
             result = null;
             return false;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Clamps the specified value between i0 and i1.
@@ -275,7 +285,5 @@ namespace PropertyTools.Wpf
                 return false;
             }
         }
-
-        #endregion
     }
 }

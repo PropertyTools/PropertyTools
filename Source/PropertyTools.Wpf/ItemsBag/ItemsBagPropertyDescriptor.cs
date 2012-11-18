@@ -1,35 +1,61 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsBagPropertyDescriptor.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Provides a property descriptor for an object in the <see cref="ItemsBag" />.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
     using System.ComponentModel;
 
     /// <summary>
-    /// Provides a property descriptor for an object in the <see cref="ItemsBag"/>.
+    /// Provides a property descriptor for an object in the <see cref="ItemsBag" />.
     /// </summary>
     public class ItemsBagPropertyDescriptor : PropertyDescriptor
     {
-        #region Constants and Fields
+        /// <summary>
+        /// The component type.
+        /// </summary>
+        private readonly Type componentType;
 
         /// <summary>
-        ///   The default descriptor.
+        /// The default descriptor.
         /// </summary>
         private readonly PropertyDescriptor defaultDescriptor;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsBagPropertyDescriptor" /> class.
+        /// Initializes a new instance of the <see cref="ItemsBagPropertyDescriptor"/> class.
         /// </summary>
-        /// <param name="defaultDescriptor">The default descriptor.</param>
-        /// <param name="componentType">Type of the component.</param>
+        /// <param name="defaultDescriptor">
+        /// The default descriptor.
+        /// </param>
+        /// <param name="componentType">
+        /// Type of the component.
+        /// </param>
         public ItemsBagPropertyDescriptor(PropertyDescriptor defaultDescriptor, Type componentType)
             : base(defaultDescriptor)
         {
@@ -37,32 +63,26 @@ namespace PropertyTools.Wpf
             this.componentType = componentType;
         }
 
-        private Type componentType;
-
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   When overridden in a derived class, gets the type of the component this property is bound to.
+        /// When overridden in a derived class, gets the type of the component this property is bound to.
         /// </summary>
-        /// <value></value>
-        /// <returns>A <see cref = "T:System.Type" /> that represents the type of component this property is bound to. When the <see
-        ///    cref = "M:System.ComponentModel.PropertyDescriptor.GetValue(System.Object)" /> or <see
-        ///    cref = "M:System.ComponentModel.PropertyDescriptor.SetValue(System.Object,System.Object)" /> methods are invoked, the object specified might be an instance of this type.</returns>
+        /// <value> </value>
+        /// <returns> A <see cref="T:System.Type" /> that represents the type of component this property is bound to. When the <see
+        /// cref="M:System.ComponentModel.PropertyDescriptor.GetValue(System.Object)" /> or <see
+        /// cref="M:System.ComponentModel.PropertyDescriptor.SetValue(System.Object,System.Object)" /> methods are invoked, the object specified might be an instance of this type. </returns>
         public override Type ComponentType
         {
             get
             {
-                return componentType;
+                return this.componentType;
             }
         }
 
         /// <summary>
-        ///   When overridden in a derived class, gets a value indicating whether this property is read-only.
+        /// When overridden in a derived class, gets a value indicating whether this property is read-only.
         /// </summary>
-        /// <value></value>
-        /// <returns>true if the property is read-only; otherwise, false.</returns>
+        /// <value> </value>
+        /// <returns> true if the property is read-only; otherwise, false. </returns>
         public override bool IsReadOnly
         {
             get
@@ -72,10 +92,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   When overridden in a derived class, gets the type of the property.
+        /// When overridden in a derived class, gets the type of the property.
         /// </summary>
-        /// <value></value>
-        /// <returns>A <see cref = "T:System.Type" /> that represents the type of the property.</returns>
+        /// <value> </value>
+        /// <returns> A <see cref="T:System.Type" /> that represents the type of the property. </returns>
         public override Type PropertyType
         {
             get
@@ -89,10 +109,6 @@ namespace PropertyTools.Wpf
                 return this.defaultDescriptor.PropertyType;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// When overridden in a derived class, returns whether resetting an object changes its value.
@@ -195,10 +211,6 @@ namespace PropertyTools.Wpf
             return false;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Gets the type of the nullable.
         /// </summary>
@@ -206,6 +218,7 @@ namespace PropertyTools.Wpf
         /// The type.
         /// </param>
         /// <returns>
+        /// The <see cref="Type"/>.
         /// </returns>
         private Type GetNullableType(Type type)
         {
@@ -223,7 +236,5 @@ namespace PropertyTools.Wpf
             // else
             // return type;
         }
-
-        #endregion
     }
 }

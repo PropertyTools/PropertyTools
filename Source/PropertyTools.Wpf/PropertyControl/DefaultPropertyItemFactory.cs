@@ -1,13 +1,35 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DefaultPropertyItemFactory.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Provides a default property item factory.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
@@ -22,11 +44,8 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class DefaultPropertyItemFactory : IPropertyItemFactory
     {
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DefaultPropertyItemFactory" /> class.
+        /// Initializes a new instance of the <see cref="DefaultPropertyItemFactory" /> class.
         /// </summary>
         public DefaultPropertyItemFactory()
         {
@@ -37,86 +56,151 @@ namespace PropertyTools.Wpf
             this.InheritCategories = true;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the default name of the category.
+        /// Gets or sets the default name of the category.
         /// </summary>
-        /// <value>The default name of the category.</value>
+        /// <value> The default name of the category. </value>
         public string DefaultCategoryName { get; set; }
 
         /// <summary>
-        ///   Gets or sets the default name of the tab.
+        /// Gets or sets the default name of the tab.
         /// </summary>
-        /// <value>The default name of the tab.</value>
+        /// <value> The default name of the tab. </value>
         public string DefaultTabName { get; set; }
 
         /// <summary>
-        ///   Gets or sets the enabled pattern.
+        /// Gets or sets the enabled pattern.
         /// </summary>
-        /// <value>The enabled pattern.</value>
+        /// <value> The enabled pattern. </value>
         public string EnabledPattern { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether each property should inherit the category attribute from the property declared before.
+        /// Gets or sets a value indicating whether each property should inherit the category attribute from the property declared before.
         /// </summary>
         public bool InheritCategories { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to 'nicify' display names.
+        /// Gets or sets a value indicating whether to 'nicify' display names.
         /// </summary>
         /// <remarks>
-        ///   The 'nicifiying' adds spaces at the camel bumps.
+        /// The 'nicifiying' adds spaces at the camel bumps.
         /// </remarks>
-        /// <value><c>true</c> if display names should be nicified; otherwise, <c>false</c>.</value>
+        /// <value> <c>true</c> if display names should be nicified; otherwise, <c>false</c> . </value>
         public bool NicifyDisplayNames { get; set; }
 
         /// <summary>
-        ///   Gets or sets the optional pattern.
+        /// Gets or sets the optional pattern.
         /// </summary>
-        /// <value>The optional pattern.</value>
+        /// <value> The optional pattern. </value>
         public string OptionalPattern { get; set; }
 
         /// <summary>
-        ///   Gets or sets the visible pattern.
+        /// Gets or sets the visible pattern.
         /// </summary>
-        /// <value>The visible pattern.</value>
+        /// <value> The visible pattern. </value>
         public string VisiblePattern { get; set; }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets or sets the current category.
+        /// Gets or sets the current category.
         /// </summary>
-        /// <value>The current category.</value>
+        /// <value> The current category. </value>
         protected string CurrentCategory { get; set; }
 
         /// <summary>
-        ///   Gets or sets the declaring type of the current category.
+        /// Gets or sets the declaring type of the current category.
         /// </summary>
-        /// <value>
-        ///   The type of the current category.
-        /// </value>
+        /// <value> The type of the current category. </value>
         protected Type CurrentCategoryDeclaringType { get; set; }
 
         /// <summary>
-        ///   Gets or sets the type of the current component.
+        /// Gets or sets the type of the current component.
         /// </summary>
         /// <remarks>
-        ///   This is used to avoid that Category attributes are inherited from superclass to subclass.
+        /// This is used to avoid that Category attributes are inherited from superclass to subclass.
         /// </remarks>
-        /// <value>
-        ///   The type of the current component.
-        /// </value>
+        /// <value> The type of the current component. </value>
         protected Type CurrentDeclaringType { get; set; }
 
-        #endregion
+        /// <summary>
+        /// Creates the property model.
+        /// </summary>
+        /// <param name="instance">
+        /// The instance.
+        /// </param>
+        /// <param name="isEnumerable">
+        /// if set to <c>true</c> [is enumerable].
+        /// </param>
+        /// <param name="options">
+        /// The options.
+        /// </param>
+        /// <returns>
+        /// A list of <see cref="Tab"/> .
+        /// </returns>
+        public virtual IEnumerable<Tab> CreateModel(object instance, bool isEnumerable, IPropertyControlOptions options)
+        {
+            if (instance == null)
+            {
+                return null;
+            }
 
-        #region Public Methods
+            var instanceType = instance.GetType();
+            var properties = TypeDescriptor.GetProperties(instance);
+
+            this.Reset();
+
+            var items = new List<PropertyItem>();
+            var tabs = new Dictionary<string, Tab>();
+            foreach (PropertyDescriptor pd in properties)
+            {
+                if (options.ShowDeclaredOnly && pd.ComponentType != instanceType)
+                {
+                    continue;
+                }
+
+                // Skip properties marked with [Browsable(false)]
+                if (!pd.IsBrowsable)
+                {
+                    continue;
+                }
+
+                // Read-only properties
+                if (!options.ShowReadOnlyProperties && pd.IsReadOnly)
+                {
+                    continue;
+                }
+
+                // If RequiredAttribute is set, skip properties that don't have the given attribute
+                if (options.RequiredAttribute != null
+                    && !AttributeHelper.ContainsAttributeOfType(pd.Attributes, options.RequiredAttribute))
+                {
+                    continue;
+                }
+
+                var pi = this.CreatePropertyItem(pd, instance);
+                items.Add(pi);
+            }
+
+            foreach (var pi in items.OrderBy(t => t.SortIndex))
+            {
+                var tabHeader = pi.Tab ?? string.Empty;
+                if (!tabs.ContainsKey(tabHeader))
+                {
+                    tabs.Add(tabHeader, new Tab { Header = pi.Tab });
+                }
+
+                var tab = tabs[tabHeader];
+                var group = tab.Groups.FirstOrDefault(g => g.Header == pi.Category);
+                if (group == null)
+                {
+                    group = new Group { Header = pi.Category };
+                    tab.Groups.Add(group);
+                }
+
+                group.Properties.Add(pi);
+            }
+
+            return tabs.Values.ToList();
+        }
 
         /// <summary>
         /// Creates a property item.
@@ -146,10 +230,6 @@ namespace PropertyTools.Wpf
             this.CurrentDeclaringType = null;
             this.CurrentCategoryDeclaringType = null;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Variables the display name of the name to.
@@ -343,8 +423,10 @@ namespace PropertyTools.Wpf
             pi.Description = this.GetLocalizedDescription(description, declaringType);
 
             pi.Category = this.GetLocalizedString(categoryName, this.CurrentCategoryDeclaringType);
+
             // pi.CategoryDescription = this.GetLocalizedDescription(categoryName, this.CurrentCategoryDeclaringType);
             pi.Tab = this.GetLocalizedString(tabName, this.CurrentCategoryDeclaringType);
+
             // pi.TabDescription = this.GetLocalizedDescription(tabName, this.CurrentCategoryDeclaringType);
 
             // Find descriptors by convention
@@ -529,82 +611,6 @@ namespace PropertyTools.Wpf
                 pi.ConverterParameter = pi.FormatString;
             }
         }
-
-        #endregion
-
-        /// <summary>
-        /// Creates the property model.
-        /// </summary>
-        /// <param name="instance">The instance.</param>
-        /// <param name="isEnumerable">if set to <c>true</c> [is enumerable].</param>
-        /// <param name="options">The options.</param>
-        /// <returns>A list of <see cref="Tab" />.</returns>
-        public virtual IEnumerable<Tab> CreateModel(object instance, bool isEnumerable, IPropertyControlOptions options)
-        {
-            if (instance == null)
-            {
-                return null;
-            }
-
-            var instanceType = instance.GetType();
-            var properties = TypeDescriptor.GetProperties(instance);
-
-            this.Reset();
-
-            var items = new List<PropertyItem>();
-            var tabs = new Dictionary<string, Tab>();
-            foreach (PropertyDescriptor pd in properties)
-            {
-                if (options.ShowDeclaredOnly && pd.ComponentType != instanceType)
-                {
-                    continue;
-                }
-
-                // Skip properties marked with [Browsable(false)]
-                if (!pd.IsBrowsable)
-                {
-                    continue;
-                }
-
-                // Read-only properties
-                if (!options.ShowReadOnlyProperties && pd.IsReadOnly)
-                {
-                    continue;
-                }
-
-                // If RequiredAttribute is set, skip properties that don't have the given attribute
-                if (options.RequiredAttribute != null
-                    && !AttributeHelper.ContainsAttributeOfType(pd.Attributes, options.RequiredAttribute))
-                {
-                    continue;
-                }
-
-                var pi = this.CreatePropertyItem(pd, instance);
-                items.Add(pi);
-            }
-
-            foreach (var pi in items.OrderBy(t => t.SortIndex))
-            {
-                var tabHeader = pi.Tab ?? string.Empty;
-                if (!tabs.ContainsKey(tabHeader))
-                {
-                    tabs.Add(tabHeader, new Tab { Header = pi.Tab });
-                }
-
-                var tab = tabs[tabHeader];
-                var group = tab.Groups.FirstOrDefault(g => g.Header == pi.Category);
-                if (group == null)
-                {
-                    group = new Group { Header = pi.Category };
-                    tab.Groups.Add(group);
-                }
-
-                group.Properties.Add(pi);
-            }
-
-
-            return tabs.Values.ToList();
-        }
     }
 
     /// <summary>
@@ -613,21 +619,21 @@ namespace PropertyTools.Wpf
     public interface IPropertyControlOptions
     {
         /// <summary>
+        /// Gets or sets the required attribute.
+        /// </summary>
+        /// <value> The required attribute. </value>
+        Type RequiredAttribute { get; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to show declared properties only.
         /// </summary>
-        /// <value><c>true</c> if only declared properties should be shown; otherwise, <c>false</c>.</value>
+        /// <value> <c>true</c> if only declared properties should be shown; otherwise, <c>false</c> . </value>
         bool ShowDeclaredOnly { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to show read only properties.
         /// </summary>
-        /// <value><c>true</c> if read only properties should be shown; otherwise, <c>false</c>.</value>
+        /// <value> <c>true</c> if read only properties should be shown; otherwise, <c>false</c> . </value>
         bool ShowReadOnlyProperties { get; }
-
-        /// <summary>
-        /// Gets or sets the required attribute.
-        /// </summary>
-        /// <value>The required attribute.</value>
-        Type RequiredAttribute { get; }
     }
 }

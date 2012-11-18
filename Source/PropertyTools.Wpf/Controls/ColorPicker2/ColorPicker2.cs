@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColorPicker2.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a control that lets the user pick a color.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -17,60 +40,49 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartColorPickerPanel, Type = typeof(ColorPickerPanel))]
     public class ColorPicker2 : ComboBox
     {
-
-        #region Constants and Fields
-
         /// <summary>
-        ///   The selected color property.
-        /// </summary>
-        public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
-            "SelectedColor", 
-            typeof(Color?), 
-            typeof(ColorPicker2), 
-            new FrameworkPropertyMetadata(
-                Color.FromArgb(0, 0, 0, 0), 
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
-                SelectedColorChanged, 
-                CoerceSelectedColorValue));
-
-        /// <summary>
-        ///   The color picker panel part constant.
+        /// The color picker panel part constant.
         /// </summary>
         private const string PartColorPickerPanel = "PART_ColorPickerPanel";
 
         /// <summary>
-        ///   The color picker panel.
+        /// The selected color property.
+        /// </summary>
+        public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
+            "SelectedColor",
+            typeof(Color?),
+            typeof(ColorPicker2),
+            new FrameworkPropertyMetadata(
+                Color.FromArgb(0, 0, 0, 0),
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                SelectedColorChanged,
+                CoerceSelectedColorValue));
+
+        /// <summary>
+        /// The color picker panel.
         /// </summary>
         private ColorPickerPanel colorPickerPanel;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "ColorPicker2" /> class.
+        /// Initializes static members of the <see cref="ColorPicker2" /> class.
         /// </summary>
         static ColorPicker2()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(ColorPicker2), new FrameworkPropertyMetadata(typeof(ColorPicker2)));
             SelectedValueProperty.OverrideMetadata(
-                typeof(ColorPicker2), 
+                typeof(ColorPicker2),
                 new FrameworkPropertyMetadata(
-                    Color.FromArgb(0, 0, 0, 0), 
-                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
-                    SelectedColorChanged, 
+                    Color.FromArgb(0, 0, 0, 0),
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    SelectedColorChanged,
                     CoerceSelectedColorValue));
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the selected color.
+        /// Gets or sets the selected color.
         /// </summary>
-        /// <value>The color of the selected.</value>
+        /// <value> The color of the selected. </value>
         public Color? SelectedColor
         {
             get
@@ -84,22 +96,14 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
-        /// Called when <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> is called.
+        /// Called when <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" /> is called.
         /// </summary>
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             this.colorPickerPanel = this.GetTemplateChild(PartColorPickerPanel) as ColorPickerPanel;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Coerces the selected color value.
@@ -172,7 +176,5 @@ namespace PropertyTools.Wpf
         {
             ((ColorPicker2)d).OnSelectedColorChanged(e);
         }
-
-        #endregion
     }
 }

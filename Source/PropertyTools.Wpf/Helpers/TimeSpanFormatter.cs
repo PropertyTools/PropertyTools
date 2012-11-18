@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TimeSpanFormatter.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Formats the TimeSpan to a string.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -17,29 +40,19 @@ namespace PropertyTools.Wpf
     /// </remarks>
     public class TimeSpanFormatter : IFormatProvider, ICustomFormatter
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The format parser.
+        /// The format parser.
         /// </summary>
         private readonly Regex formatParser;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "TimeSpanFormatter" /> class.
+        /// Initializes a new instance of the <see cref="TimeSpanFormatter" /> class.
         /// </summary>
         public TimeSpanFormatter()
         {
             this.formatParser = new Regex(
                 "D{1,2}|H{1,2}|M{1,2}|S{1,2}|d{1,2}|h{1,2}|m{1,2}|s{1,2}|f{1,7}", RegexOptions.Compiled);
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Converts the value of a specified timespan to an equivalent string representation using specified format and culture-specific formatting information.
@@ -54,7 +67,7 @@ namespace PropertyTools.Wpf
         /// An object that supplies format information about the current instance.
         /// </param>
         /// <returns>
-        /// The string representation of the value of <paramref name="arg"/>, formatted as specified by <paramref name="format"/> and <paramref name="formatProvider"/>.
+        /// The string representation of the value of <paramref name="arg"/> , formatted as specified by <paramref name="format"/> and <paramref name="formatProvider"/> .
         /// </returns>
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {
@@ -80,7 +93,7 @@ namespace PropertyTools.Wpf
         /// An object that specifies the type of format object to return.
         /// </param>
         /// <returns>
-        /// An instance of the object specified by <paramref name="formatType"/>, if the <see cref="T:System.IFormatProvider"/> implementation can supply that type of object; otherwise, null.
+        /// An instance of the object specified by <paramref name="formatType"/> , if the <see cref="T:System.IFormatProvider"/> implementation can supply that type of object; otherwise, null.
         /// </returns>
         public object GetFormat(Type formatType)
         {
@@ -91,10 +104,6 @@ namespace PropertyTools.Wpf
 
             return null;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Evaluates a match.
@@ -176,7 +185,5 @@ namespace PropertyTools.Wpf
         {
             return m => this.EvaluateMatch(m, timeSpan);
         }
-
-        #endregion
     }
 }

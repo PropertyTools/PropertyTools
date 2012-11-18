@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CaptureScreenshot.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Captures a screenshot using gdi32 functions.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -21,98 +44,92 @@ namespace PropertyTools.Wpf
     /// </remarks>
     public static class CaptureScreenshot
     {
-        #region Enums
-
         /// <summary>
         /// The ternary raster operations.
         /// </summary>
         private enum TernaryRasterOperations : uint
         {
             /// <summary>
-            ///   dest = source
+            /// dest = source
             /// </summary>
-            SRCCOPY = 0x00CC0020, 
+            SRCCOPY = 0x00CC0020,
 
             /// <summary>
-            ///   dest = source OR dest
+            /// dest = source OR dest
             /// </summary>
-            SRCPAINT = 0x00EE0086, 
+            SRCPAINT = 0x00EE0086,
 
             /// <summary>
-            ///   dest = source AND dest
+            /// dest = source AND dest
             /// </summary>
-            SRCAND = 0x008800C6, 
+            SRCAND = 0x008800C6,
 
             /// <summary>
-            ///   dest = source XOR dest
+            /// dest = source XOR dest
             /// </summary>
-            SRCINVERT = 0x00660046, 
+            SRCINVERT = 0x00660046,
 
             /// <summary>
-            ///   dest = source AND (NOT dest)
+            /// dest = source AND (NOT dest)
             /// </summary>
-            SRCERASE = 0x00440328, 
+            SRCERASE = 0x00440328,
 
             /// <summary>
-            ///   dest = (NOT source)
+            /// dest = (NOT source)
             /// </summary>
-            NOTSRCCOPY = 0x00330008, 
+            NOTSRCCOPY = 0x00330008,
 
             /// <summary>
-            ///   dest = (NOT src) AND (NOT dest)
+            /// dest = (NOT src) AND (NOT dest)
             /// </summary>
-            NOTSRCERASE = 0x001100A6, 
+            NOTSRCERASE = 0x001100A6,
 
             /// <summary>
-            ///   dest = (source AND pattern)
+            /// dest = (source AND pattern)
             /// </summary>
-            MERGECOPY = 0x00C000CA, 
+            MERGECOPY = 0x00C000CA,
 
             /// <summary>
-            ///   dest = (NOT source) OR dest
+            /// dest = (NOT source) OR dest
             /// </summary>
-            MERGEPAINT = 0x00BB0226, 
+            MERGEPAINT = 0x00BB0226,
 
             /// <summary>
-            ///   dest = pattern
+            /// dest = pattern
             /// </summary>
-            PATCOPY = 0x00F00021, 
+            PATCOPY = 0x00F00021,
 
             /// <summary>
-            ///   dest = DPSnoo
+            /// dest = DPSnoo
             /// </summary>
-            PATPAINT = 0x00FB0A09, 
+            PATPAINT = 0x00FB0A09,
 
             /// <summary>
-            ///   dest = pattern XOR dest
+            /// dest = pattern XOR dest
             /// </summary>
-            PATINVERT = 0x005A0049, 
+            PATINVERT = 0x005A0049,
 
             /// <summary>
-            ///   dest = (NOT dest)
+            /// dest = (NOT dest)
             /// </summary>
-            DSTINVERT = 0x00550009, 
+            DSTINVERT = 0x00550009,
 
             /// <summary>
-            ///   dest = BLACK
+            /// dest = BLACK
             /// </summary>
-            BLACKNESS = 0x00000042, 
+            BLACKNESS = 0x00000042,
 
             /// <summary>
-            ///   dest = WHITE
+            /// dest = WHITE
             /// </summary>
             WHITENESS = 0x00FF0062
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Capture the screenshot.
-        ///   <returns>
+        ///  <returns>
         /// Bitmap source that can be used e.g. as background.
-        ///   </returns>
+        /// </returns>
         /// </summary>
         /// <param name="area">
         /// Area of screenshot.
@@ -126,14 +143,14 @@ namespace PropertyTools.Wpf
 
             // TODO: BitBlt may fail horribly
             BitBlt(
-                memDC, 
-                0, 
-                0, 
-                (int)area.Width, 
-                (int)area.Height, 
-                screenDC, 
-                (int)area.X, 
-                (int)area.Y, 
+                memDC,
+                0,
+                0,
+                (int)area.Width,
+                (int)area.Height,
+                screenDC,
+                (int)area.X,
+                (int)area.Y,
                 TernaryRasterOperations.SRCCOPY);
             BitmapSource bsource = Imaging.CreateBitmapSourceFromHBitmap(
                 hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
@@ -151,6 +168,7 @@ namespace PropertyTools.Wpf
         /// The relative to.
         /// </param>
         /// <returns>
+        /// The <see cref="Point"/>.
         /// </returns>
         public static Point CorrectGetPosition(Visual relativeTo)
         {
@@ -163,6 +181,7 @@ namespace PropertyTools.Wpf
         /// The get mouse screen position.
         /// </summary>
         /// <returns>
+        /// The <see cref="Point"/>.
         /// </returns>
         public static Point GetMouseScreenPosition()
         {
@@ -170,10 +189,6 @@ namespace PropertyTools.Wpf
             GetCursorPos(ref w32Mouse);
             return new Point(w32Mouse.X, w32Mouse.Y);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The get cursor pos.
@@ -223,14 +238,14 @@ namespace PropertyTools.Wpf
         /// </returns>
         [DllImport("gdi32.dll")]
         private static extern bool BitBlt(
-            IntPtr hdc, 
-            int nXDest, 
-            int nYDest, 
-            int nWidth, 
-            int nHeight, 
-            IntPtr hdcSrc, 
-            int nXSrc, 
-            int nYSrc, 
+            IntPtr hdc,
+            int nXDest,
+            int nYDest,
+            int nWidth,
+            int nHeight,
+            IntPtr hdcSrc,
+            int nXSrc,
+            int nYSrc,
             TernaryRasterOperations dwRop);
 
         /// <summary>
@@ -252,6 +267,7 @@ namespace PropertyTools.Wpf
         /// The lpv bits.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("gdi32.dll")]
         private static extern IntPtr CreateBitmap(
@@ -270,6 +286,7 @@ namespace PropertyTools.Wpf
         /// The n height.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("gdi32.dll")]
         private static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
@@ -281,6 +298,7 @@ namespace PropertyTools.Wpf
         /// The hdc.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("gdi32.dll", SetLastError = true)]
         private static extern IntPtr CreateCompatibleDC(IntPtr hdc);
@@ -304,6 +322,7 @@ namespace PropertyTools.Wpf
         /// The h wnd.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("user32.dll")]
         private static extern IntPtr GetDC(IntPtr hWnd);
@@ -333,11 +352,10 @@ namespace PropertyTools.Wpf
         /// The hgdiobj.
         /// </param>
         /// <returns>
+        /// The <see cref="IntPtr"/>.
         /// </returns>
         [DllImport("gdi32.dll", ExactSpelling = true, PreserveSig = true, SetLastError = true)]
         private static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
-
-        #endregion
 
         /// <summary>
         /// The win 32 point.
@@ -346,12 +364,12 @@ namespace PropertyTools.Wpf
         internal struct Win32Point
         {
             /// <summary>
-            ///   The x.
+            /// The x.
             /// </summary>
             public int X;
 
             /// <summary>
-            ///   The y.
+            /// The y.
             /// </summary>
             public int Y;
         };

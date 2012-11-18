@@ -1,12 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EditableTextBlock.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
 //   Provides an editable text block.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -20,10 +40,8 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class EditableTextBlock : TextBlock
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The is editing property.
+        /// The is editing property.
         /// </summary>
         public static readonly DependencyProperty IsEditingProperty = DependencyProperty.Register(
             "IsEditing",
@@ -35,21 +53,17 @@ namespace PropertyTools.Wpf
                 (s, e) => ((EditableTextBlock)s).IsEditingChanged()));
 
         /// <summary>
-        ///   The oldfocus.
+        /// The oldfocus.
         /// </summary>
         private IInputElement oldfocus;
 
         /// <summary>
-        ///   The text box.
+        /// The text box.
         /// </summary>
         private TextBox textBox;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "EditableTextBlock" /> class.
+        /// Initializes static members of the <see cref="EditableTextBlock" /> class.
         /// </summary>
         static EditableTextBlock()
         {
@@ -58,12 +72,8 @@ namespace PropertyTools.Wpf
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is editing.
+        /// Gets or sets a value indicating whether this instance is editing.
         /// </summary>
         public bool IsEditing
         {
@@ -77,10 +87,6 @@ namespace PropertyTools.Wpf
                 this.SetValue(IsEditingProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Begins the edit.
@@ -133,8 +139,9 @@ namespace PropertyTools.Wpf
             {
                 be.UpdateSource();
             }
-
+            this.internalIsEditingChange = true;
             this.IsEditing = false;
+            this.internalIsEditingChange = false;
             var p = this.Parent as Panel;
             p.Children.Remove(this.textBox);
             this.textBox = null;
@@ -145,14 +152,25 @@ namespace PropertyTools.Wpf
             }
         }
 
+        private bool internalIsEditingChange;
+
         /// <summary>
         /// Handles changes in IsEditing.
         /// </summary>
         private void IsEditingChanged()
         {
+            if (this.internalIsEditingChange)
+            {
+                return;
+            }
+
             if (this.IsEditing)
             {
                 this.BeginEdit();
+            }
+            else
+            {
+                this.EndEdit(true);
             }
         }
 
@@ -192,7 +210,5 @@ namespace PropertyTools.Wpf
         {
             this.EndEdit(true);
         }
-
-        #endregion
     }
 }

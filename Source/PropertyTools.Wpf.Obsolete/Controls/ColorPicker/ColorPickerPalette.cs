@@ -1,9 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColorPickerPalette.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a control that lets the user pick a color.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -29,60 +52,54 @@ namespace PropertyTools.Wpf
     /// </summary>
     public partial class ColorPicker
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The current store property.
+        /// The current store property.
         /// </summary>
         public static readonly DependencyProperty CurrentStoreProperty = DependencyProperty.Register(
-            "CurrentStore", 
-            typeof(string), 
-            typeof(ColorPicker), 
+            "CurrentStore",
+            typeof(string),
+            typeof(ColorPicker),
             new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        ///   The persistent palette property.
+        /// The persistent palette property.
         /// </summary>
         public static readonly DependencyProperty PersistentPaletteProperty =
             DependencyProperty.Register(
-                "PersistentPalette", 
-                typeof(ObservableCollection<ColorWrapper>), 
-                typeof(ColorPicker), 
+                "PersistentPalette",
+                typeof(ObservableCollection<ColorWrapper>),
+                typeof(ColorPicker),
                 new UIPropertyMetadata(CreateEmptyPalette()));
 
         /// <summary>
-        ///   The selected persistent color property.
+        /// The selected persistent color property.
         /// </summary>
         private static readonly DependencyProperty SelectedPersistentColorProperty =
             DependencyProperty.Register(
-                "SelectedPersistentColor", 
-                typeof(ColorWrapper), 
-                typeof(ColorPicker), 
+                "SelectedPersistentColor",
+                typeof(ColorWrapper),
+                typeof(ColorPicker),
                 new FrameworkPropertyMetadata(
-                    new ColorWrapper(Colors.Black), 
-                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
+                    new ColorWrapper(Colors.Black),
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     SelectedPersistentColorChanged));
 
 #pragma warning disable 649
         /// <summary>
-        ///   Event handler for use by multiple controls
+        /// Event handler for use by multiple controls
         /// </summary>
         private readonly MouseButtonEventHandler mouseEvent;
 #pragma warning restore 649
 
         /// <summary>
-        ///   Reference to the listbox that holds the persistent palette
+        /// Reference to the listbox that holds the persistent palette
         /// </summary>
         private ListBox persistentList;
 
         /// <summary>
-        ///   Reference to the listbox that holds the static palette
+        /// Reference to the listbox that holds the static palette
         /// </summary>
         private ListBox staticList;
-
-        #endregion
-
-        #region Enums
 
         /// <summary>
         /// The mode.
@@ -90,43 +107,39 @@ namespace PropertyTools.Wpf
         private enum Mode
         {
             /// <summary>
-            ///   The none.
+            /// The none.
             /// </summary>
-            None, 
+            None,
 
             /// <summary>
-            ///   The add.
+            /// The add.
             /// </summary>
-            Add, 
+            Add,
 
             /// <summary>
-            ///   The remove.
+            /// The remove.
             /// </summary>
-            Remove, 
+            Remove,
 
             /// <summary>
-            ///   The update.
+            /// The update.
             /// </summary>
             Update
         };
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets DefaultPalettePath.
+        /// Gets or sets DefaultPalettePath.
         /// </summary>
         public static string DefaultPalettePath { get; set; }
 
         /// <summary>
-        ///   Gets or sets the settings file where the ColorPicker will store user settings.
+        /// Gets or sets the settings file where the ColorPicker will store user settings.
         /// </summary>
         /// <value>The settings file.</value>
         public static string SettingsFile { get; set; }
 
         /// <summary>
-        ///   Gets or sets CurrentStore.
+        /// Gets or sets CurrentStore.
         /// </summary>
         public string CurrentStore
         {
@@ -142,7 +155,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets PersistentPalette.
+        /// Gets or sets PersistentPalette.
         /// </summary>
         public ObservableCollection<ColorWrapper> PersistentPalette
         {
@@ -158,7 +171,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets SelectedPersistentColor.
+        /// Gets or sets SelectedPersistentColor.
         /// </summary>
         public ColorWrapper SelectedPersistentColor
         {
@@ -172,10 +185,6 @@ namespace PropertyTools.Wpf
                 this.SetValue(SelectedPersistentColorProperty, value);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates the empty palette.
@@ -250,10 +259,6 @@ namespace PropertyTools.Wpf
 
             this.StoreLastUsedPalette(path);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Gets the mode of operation
@@ -433,7 +438,7 @@ namespace PropertyTools.Wpf
                 {
                     if (m == Mode.Update)
                     {
-                        // Update the persistent palette with the current color	
+                        // Update the persistent palette with the current color
                         cw.Color = this.SelectedColor;
                         this.UpdateCurrentPaletteStore();
                     }
@@ -523,6 +528,5 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
     }
 }

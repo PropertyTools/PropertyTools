@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TypeHelper.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   The type helper.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -16,8 +39,6 @@ namespace PropertyTools.Wpf
     /// </summary>
     public static class TypeHelper
     {
-        #region Public Methods
-
         /// <summary>
         /// Finds the biggest common type of items in the list.
         /// </summary>
@@ -83,13 +104,15 @@ namespace PropertyTools.Wpf
             return null;
         }
 
-        #endregion
-
         /// <summary>
         /// Gets the type of the items in the specified enumeration.
         /// </summary>
-        /// <param name="enumerable">The enumerable.</param>
-        /// <returns>The type of the items.</returns>
+        /// <param name="enumerable">
+        /// The enumerable.
+        /// </param>
+        /// <returns>
+        /// The type of the items.
+        /// </returns>
         public static Type GetItemType(IEnumerable enumerable)
         {
             return enumerable != null ? enumerable.AsQueryable().ElementType : null;
@@ -102,6 +125,7 @@ namespace PropertyTools.Wpf
         /// The list type.
         /// </param>
         /// <returns>
+        /// The <see cref="Type"/>.
         /// </returns>
         [Obsolete]
         public static Type GetListElementType(Type listType)
@@ -125,8 +149,12 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether the first type is assignable from the specified second type.
         /// </summary>
-        /// <param name="firstType">Type of the first type.</param>
-        /// <param name="secondType">The type of the second type.</param>
+        /// <param name="firstType">
+        /// Type of the first type.
+        /// </param>
+        /// <param name="secondType">
+        /// The type of the second type.
+        /// </param>
         /// <returns>
         /// True if ok.
         /// </returns>

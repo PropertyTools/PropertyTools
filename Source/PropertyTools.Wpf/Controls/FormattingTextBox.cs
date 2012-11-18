@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FormattingTextBox.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a TextBox with a bindable StringFormat property.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -17,44 +40,38 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class FormattingTextBox : TextBox
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The format provider property.
+        /// The format provider property.
         /// </summary>
         public static readonly DependencyProperty FormatProviderProperty = DependencyProperty.Register(
-            "FormatProvider", 
-            typeof(IFormatProvider), 
-            typeof(FormattingTextBox), 
+            "FormatProvider",
+            typeof(IFormatProvider),
+            typeof(FormattingTextBox),
             new UIPropertyMetadata(CultureInfo.InvariantCulture));
 
         /// <summary>
-        ///   The string format property.
+        /// The string format property.
         /// </summary>
         public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register(
             "StringFormat", typeof(string), typeof(FormattingTextBox), new UIPropertyMetadata(null, StringFormatChanged));
 
         /// <summary>
-        ///   The value property.
+        /// The value property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", 
-            typeof(object), 
-            typeof(FormattingTextBox), 
+            "Value",
+            typeof(object),
+            typeof(FormattingTextBox),
             new FrameworkPropertyMetadata(
                 null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChangedCallback));
 
         /// <summary>
-        ///   The user is changing.
+        /// The user is changing.
         /// </summary>
         private bool userIsChanging = true;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "FormattingTextBox" /> class.
+        /// Initializes static members of the <see cref="FormattingTextBox" /> class.
         /// </summary>
         static FormattingTextBox()
         {
@@ -62,14 +79,10 @@ namespace PropertyTools.Wpf
             TextProperty.OverrideMetadata(typeof(FormattingTextBox), new FrameworkPropertyMetadata(TextChangedCallback));
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the format provider.
+        /// Gets or sets the format provider.
         /// </summary>
-        /// <value>The format provider.</value>
+        /// <value> The format provider. </value>
         public IFormatProvider FormatProvider
         {
             get
@@ -84,9 +97,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the string format.
+        /// Gets or sets the string format.
         /// </summary>
-        /// <value>The string format.</value>
+        /// <value> The string format. </value>
         public string StringFormat
         {
             get
@@ -101,9 +114,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the value.
+        /// Gets or sets the value.
         /// </summary>
-        /// <value>The value.</value>
+        /// <value> The value. </value>
         public object Value
         {
             get
@@ -116,10 +129,6 @@ namespace PropertyTools.Wpf
                 this.SetValue(ValueProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The string format changed.
@@ -241,7 +250,5 @@ namespace PropertyTools.Wpf
                 this.Value = this.UnFormat(this.Text);
             }
         }
-
-        #endregion
     }
 }

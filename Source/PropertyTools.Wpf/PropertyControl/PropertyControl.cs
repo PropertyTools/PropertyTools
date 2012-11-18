@@ -927,7 +927,8 @@ namespace PropertyTools.Wpf
                 {
                     var scroller = new ScrollViewer
                         {
-                           VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Content = tabItems
+                            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                            Content = tabItems
                         };
                     var tabitem = new TabItem { Header = tab.Header, Content = scroller };
 
@@ -948,7 +949,9 @@ namespace PropertyTools.Wpf
                 {
                     var hc = new ContentControl
                         {
-                           Focusable = false, ContentTemplate = this.TabPageHeaderTemplate, Content = tab
+                            Focusable = false,
+                            ContentTemplate = this.TabPageHeaderTemplate,
+                            Content = tab
                         };
                     tabItems.Children.Add(hc);
                 }
@@ -970,7 +973,8 @@ namespace PropertyTools.Wpf
                         case CategoryControlType.Template:
                             group = new HeaderedContentControl
                                 {
-                                   Template = this.CategoryControlTemplate, Focusable = false
+                                    Template = this.CategoryControlTemplate,
+                                    Focusable = false
                                 };
                             break;
                     }
@@ -994,7 +998,8 @@ namespace PropertyTools.Wpf
                             VisibilityProperty,
                             new Binding("VisibleChildrenCount")
                                 {
-                                   Source = categoryItems, Converter = ZeroToVisibilityConverter
+                                    Source = categoryItems,
+                                    Converter = ZeroToVisibilityConverter
                                 });
 
                         if (this.LabelWidthSharing == LabelWidthSharing.SharedInGroup)
@@ -1184,7 +1189,7 @@ namespace PropertyTools.Wpf
                 if (pi.IsOptional)
                 {
                     propertyControl.SetBinding(
-                        IsEnabledProperty,
+                        UIElement.IsEnabledProperty,
                         pi.OptionalDescriptor != null
                             ? new Binding(pi.OptionalDescriptor.Name)
                             : new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
@@ -1202,21 +1207,26 @@ namespace PropertyTools.Wpf
                         propertyControl.Style = this.ValidationErrorStyle;
                     }
 
-                    var errorControl = new ContentControl { ContentTemplate = this.ValidationErrorTemplate };
+                    var errorControl = new ContentControl
+                                           {
+                                               ContentTemplate = this.ValidationErrorTemplate,
+                                               Focusable = false
+                                           };
                     errorControl.SetBinding(
-                        VisibilityProperty,
+                        UIElement.VisibilityProperty,
                         new Binding("(Validation.HasError)")
                             {
-                               Source = propertyControl, Converter = BoolToVisibilityConverter
+                                Source = propertyControl,
+                                Converter = BoolToVisibilityConverter
                             });
                     errorControl.SetBinding(
                         ContentControl.ContentProperty, new Binding("(Validation.Errors)") { Source = propertyControl });
 
-                    // replace the property control by a stack panel containing the property control and the error control.
-                    var sp = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
-                    sp.Children.Add(propertyControl);
-                    sp.Children.Add(errorControl);
-                    propertyControl = sp;
+                    // Add a row to the panel
+                    propertyPanel.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
+                    propertyPanel.Children.Add(errorControl);
+                    Grid.SetRow(errorControl, 1);
+                    Grid.SetColumn(errorControl, 1);
                 }
 
                 Grid.SetColumn(propertyControl, 1);

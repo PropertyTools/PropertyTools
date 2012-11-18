@@ -42,9 +42,11 @@ namespace TestLibrary
         public int Age { get; set; }
 
         [DependsOn("Honey")]
+        [Description("You cannot select both.")]
         public bool CondensedMilk { get; set; }
 
         [DependsOn("CondensedMilk")]
+        [Description("You cannot select both.")]
         public bool Honey { get; set; }
 
         [Browsable(false)]
@@ -54,12 +56,13 @@ namespace TestLibrary
             {
                 switch (columnName)
                 {
-                    case "Name": return string.IsNullOrEmpty(Name) ? "Name is empty." : null;
-                    case "Age": return Age < 0 ? "Age less than 0." : null;
+                    case "Name": return string.IsNullOrEmpty(Name) ? "The name should be specified." : null;
+                    case "Age": return Age < 0 ? "The age should not be less than 0." : null;
                     case "CondensedMilk":
                     case "Honey":
-                        return CondensedMilk && Honey ? "You cannot have both condensed milk and honey!" : null;
+                        return this.CondensedMilk && this.Honey ? "You cannot have both condensed milk and honey!" : null;
                 }
+
                 return null;
             }
         }
@@ -69,17 +72,14 @@ namespace TestLibrary
         {
             get
             {
-                if (Name == "") return "Name is empty!";
-                if (Age < 0) return "Age is less than 0!";
-                if (CondensedMilk && Honey) return "You cannot have both condensed milk and honey!";
-                return null;
+                return this["Name"] ?? this["Age"] ?? this["Honey"];
             }
         }
 
         public TestDataErrorInfo()
         {
-            Name = "Mike";
-            Age = 3;
+            this.Name = "Mike";
+            this.Age = 3;
         }
 
         public override string ToString()

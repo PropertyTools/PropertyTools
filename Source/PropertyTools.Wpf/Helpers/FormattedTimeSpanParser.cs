@@ -1,9 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FormattedTimeSpanParser.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   TimeSpan parser that use a format string to evaluate the input string.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -18,8 +41,6 @@ namespace PropertyTools.Wpf
     /// </remarks>
     public class FormattedTimeSpanParser
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The special characters.
         /// </summary>
@@ -30,10 +51,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         private readonly Regex conversionExpression =
             new Regex("D{1,2}|H{1,2}|M{1,2}|S{1,2}|d{1,2}|h{1,2}|m{1,2}|s{1,2}|f{1,7}", RegexOptions.Compiled);
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FormattedTimeSpanParser"/> class.
@@ -53,7 +70,7 @@ namespace PropertyTools.Wpf
             // replace all format codes by regular expression groups
             // the name of the groups is the same as the format code ("hh", "mm" etc.)
             formatString = this.conversionExpression.Replace(
-                formatString, 
+                formatString,
                 m =>
                     {
                         string length = "{1," + m.Value.Length + "}";
@@ -73,27 +90,19 @@ namespace PropertyTools.Wpf
             this.Expression = new Regex(formatString, RegexOptions.Compiled);
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets or sets the regular expression.
         /// </summary>
         private Regex Expression { get; set; }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         /// <summary>
         /// Parses the specified time span string.
         /// </summary>
         /// <param name="value">
-        /// The value. 
+        /// The value.
         /// </param>
         /// <returns>
-        /// A time span. 
+        /// A time span.
         /// </returns>
         public TimeSpan Parse(string value)
         {
@@ -151,7 +160,5 @@ namespace PropertyTools.Wpf
 
             return new TimeSpan(days, hours, minutes, seconds, milliseconds);
         }
-
-        #endregion
     }
 }

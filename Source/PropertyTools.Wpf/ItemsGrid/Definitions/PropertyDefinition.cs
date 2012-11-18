@@ -1,12 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PropertyDefinition.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
 //   Describes properties that applies to columns or rows in an ItemsGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -23,8 +43,6 @@ namespace PropertyTools.Wpf
     /// </summary>
     public abstract class PropertyDefinition
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The property descriptor.
         /// </summary>
@@ -35,52 +53,36 @@ namespace PropertyTools.Wpf
         /// </summary>
         private Type propertyType;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyDefinition"/> class.
+        /// Initializes a new instance of the <see cref="PropertyDefinition" /> class.
         /// </summary>
         protected PropertyDefinition()
         {
             this.MaxLength = int.MaxValue;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Gets or sets the converter.
         /// </summary>
-        /// <value>
-        /// The converter. 
-        /// </value>
+        /// <value> The converter. </value>
         public IValueConverter Converter { get; set; }
 
         /// <summary>
         /// Gets or sets the converter culture.
         /// </summary>
-        /// <value>
-        /// The converter culture. 
-        /// </value>
+        /// <value> The converter culture. </value>
         public CultureInfo ConverterCulture { get; set; }
 
         /// <summary>
         /// Gets or sets the converter parameter.
         /// </summary>
-        /// <value>
-        /// The converter parameter. 
-        /// </value>
+        /// <value> The converter parameter. </value>
         public object ConverterParameter { get; set; }
 
         /// <summary>
         /// Gets or sets the property descriptor.
         /// </summary>
-        /// <value>
-        /// The descriptor. 
-        /// </value>
+        /// <value> The descriptor. </value>
         public PropertyDescriptor Descriptor
         {
             get
@@ -106,25 +108,19 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the format string.
         /// </summary>
-        /// <value>
-        /// The format string. 
-        /// </value>
+        /// <value> The format string. </value>
         public string FormatString { get; set; }
 
         /// <summary>
         /// Gets or sets the header.
         /// </summary>
-        /// <value>
-        /// The header. 
-        /// </value>
+        /// <value> The header. </value>
         public string Header { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal alignment.
         /// </summary>
-        /// <value>
-        /// The horizontal alignment. 
-        /// </value>
+        /// <value> The horizontal alignment. </value>
         public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
@@ -140,17 +136,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the items source (for ComboBox).
         /// </summary>
-        /// <value>
-        /// The items source. 
-        /// </value>
+        /// <value> The items source. </value>
         public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
         /// Gets or sets the property name of an items source (for ComboBox).
         /// </summary>
-        /// <value>
-        /// The items source property. 
-        /// </value>
+        /// <value> The items source property. </value>
         public string ItemsSourceProperty { get; set; }
 
         /// <summary>
@@ -161,17 +153,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the name of the property.
         /// </summary>
-        /// <value>
-        /// The name of the property. 
-        /// </value>
+        /// <value> The name of the property. </value>
         public string PropertyName { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the property.
         /// </summary>
-        /// <value>
-        /// The type of the property. 
-        /// </value>
+        /// <value> The type of the property. </value>
         public Type PropertyType
         {
             get
@@ -195,21 +183,17 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         /// <summary>
         /// Creates a binding.
         /// </summary>
         /// <param name="index">
-        /// The index. 
+        /// The index.
         /// </param>
         /// <param name="trigger">
-        /// The trigger. 
+        /// The trigger.
         /// </param>
         /// <returns>
-        /// A binding. 
+        /// A binding.
         /// </returns>
         public Binding CreateBinding(int index, UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
         {
@@ -222,12 +206,12 @@ namespace PropertyTools.Wpf
 
             var binding = new Binding(this.GetBindingPath(index))
                 {
-                    Mode = bindingMode, 
-                    Converter = this.Converter, 
-                    ConverterParameter = this.ConverterParameter, 
-                    StringFormat = formatString, 
-                    UpdateSourceTrigger = trigger, 
-                    ValidatesOnDataErrors = true, 
+                    Mode = bindingMode,
+                    Converter = this.Converter,
+                    ConverterParameter = this.ConverterParameter,
+                    StringFormat = formatString,
+                    UpdateSourceTrigger = trigger,
+                    ValidatesOnDataErrors = true,
                     ValidatesOnExceptions = true
                 };
             if (this.ConverterCulture != null)
@@ -242,10 +226,10 @@ namespace PropertyTools.Wpf
         /// Creates the one way binding.
         /// </summary>
         /// <param name="index">
-        /// The index. 
+        /// The index.
         /// </param>
         /// <returns>
-        /// A binding. 
+        /// A binding.
         /// </returns>
         public Binding CreateOneWayBinding(int index)
         {
@@ -254,19 +238,25 @@ namespace PropertyTools.Wpf
             return b;
         }
 
-        #endregion
-
-        #region Methods
+        /// <summary>
+        /// Gets the binding path.
+        /// </summary>
+        /// <param name="index">
+        /// The index.
+        /// </param>
+        /// <returns>
+        /// The binding path.
+        /// </returns>
+        protected virtual string GetBindingPath(int index)
+        {
+            return this.Descriptor != null ? this.Descriptor.Name : "[" + index + "]";
+        }
 
         /// <summary>
         /// Gets the first attribute of the specified type.
         /// </summary>
-        /// <typeparam name="T">
-        /// Type of attribute. 
-        /// </typeparam>
-        /// <returns>
-        /// The attribute, or null. 
-        /// </returns>
+        /// <typeparam name="T"> Type of attribute. </typeparam>
+        /// <returns> The attribute, or null. </returns>
         protected T GetFirstAttribute<T>() where T : Attribute
         {
             if (this.Descriptor == null)
@@ -287,27 +277,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the binding path.
-        /// </summary>
-        /// <param name="index">
-        /// The index. 
-        /// </param>
-        /// <returns>
-        /// The binding path. 
-        /// </returns>
-        protected virtual string GetBindingPath(int index)
-        {
-            return this.Descriptor != null ? this.Descriptor.Name : "[" + index + "]";
-        }
-
-        /// <summary>
         /// Sets the enum items source.
         /// </summary>
         protected void SetEnumItemsSource()
         {
             this.ItemsSource = Enum.GetValues(this.PropertyType);
         }
-
-        #endregion
     }
 }

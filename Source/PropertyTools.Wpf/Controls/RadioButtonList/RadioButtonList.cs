@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RadioButtonList.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a control that shows a list of radiobuttons.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -22,67 +45,61 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartPanel, Type = typeof(StackPanel))]
     public class RadioButtonList : Control
     {
-        #region Constants and Fields
+        /// <summary>
+        /// The part panel.
+        /// </summary>
+        private const string PartPanel = "PART_Panel";
 
         /// <summary>
         /// The description converter property.
         /// </summary>
         public static readonly DependencyProperty DescriptionConverterProperty =
             DependencyProperty.Register(
-                "DescriptionConverter", 
-                typeof(IValueConverter), 
-                typeof(RadioButtonList), 
+                "DescriptionConverter",
+                typeof(IValueConverter),
+                typeof(RadioButtonList),
                 new UIPropertyMetadata(new EnumDescriptionConverter()));
 
         /// <summary>
-        ///   The enum type property.
+        /// The enum type property.
         /// </summary>
         public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(
             "EnumType", typeof(Type), typeof(RadioButtonList), new UIPropertyMetadata(null, ValueChanged));
 
         /// <summary>
-        ///   The item margin property.
+        /// The item margin property.
         /// </summary>
         public static readonly DependencyProperty ItemMarginProperty = DependencyProperty.Register(
             "ItemMargin", typeof(Thickness), typeof(RadioButtonList), new UIPropertyMetadata(new Thickness(0, 4, 0, 4)));
 
         /// <summary>
-        ///   The item padding property.
+        /// The item padding property.
         /// </summary>
         public static readonly DependencyProperty ItemPaddingProperty = DependencyProperty.Register(
             "ItemPadding", typeof(Thickness), typeof(RadioButtonList), new UIPropertyMetadata(new Thickness(4, 0, 0, 0)));
 
         /// <summary>
-        ///   The orientation property.
+        /// The orientation property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
             "Orientation", typeof(Orientation), typeof(RadioButtonList), new UIPropertyMetadata(Orientation.Vertical));
 
         /// <summary>
-        ///   The value property.
+        /// The value property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", 
-            typeof(object), 
-            typeof(RadioButtonList), 
+            "Value",
+            typeof(object),
+            typeof(RadioButtonList),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChanged));
 
         /// <summary>
-        ///   The part panel.
-        /// </summary>
-        private const string PartPanel = "PART_Panel";
-
-        /// <summary>
-        ///   The panel.
+        /// The panel.
         /// </summary>
         private StackPanel panel;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref="RadioButtonList" /> class.
+        /// Initializes static members of the <see cref="RadioButtonList" /> class.
         /// </summary>
         static RadioButtonList()
         {
@@ -91,19 +108,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref="RadioButtonList" /> class.
+        /// Initializes a new instance of the <see cref="RadioButtonList" /> class.
         /// </summary>
         public RadioButtonList()
         {
             this.DataContextChanged += this.RadioButtonListDataContextChanged;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the description converter.
+        /// Gets or sets the description converter.
         /// </summary>
         /// <value> The description converter. </value>
         public IValueConverter DescriptionConverter
@@ -120,7 +133,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the type of the enum.
+        /// Gets or sets the type of the enum.
         /// </summary>
         /// <value> The type of the enum. </value>
         public Type EnumType
@@ -137,7 +150,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the item margin.
+        /// Gets or sets the item margin.
         /// </summary>
         /// <value> The item margin. </value>
         public Thickness ItemMargin
@@ -154,7 +167,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the item padding.
+        /// Gets or sets the item padding.
         /// </summary>
         /// <value> The item padding. </value>
         public Thickness ItemPadding
@@ -171,7 +184,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the orientation.
+        /// Gets or sets the orientation.
         /// </summary>
         /// <value> The orientation. </value>
         public Orientation Orientation
@@ -188,7 +201,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the value.
+        /// Gets or sets the value.
         /// </summary>
         /// <value> The value. </value>
         public object Value
@@ -204,12 +217,9 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/> .
+        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see
+        /// cref="M:System.Windows.FrameworkElement.ApplyTemplate" /> .
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -221,18 +231,14 @@ namespace PropertyTools.Wpf
             this.UpdateContent();
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Called when the Value changed or the EnumType changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event args. 
+        /// The event args.
         /// </param>
         private static void ValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
@@ -243,10 +249,10 @@ namespace PropertyTools.Wpf
         /// The radio button list data context changed.
         /// </summary>
         /// <param name="sender">
-        /// The sender. 
+        /// The sender.
         /// </param>
         /// <param name="e">
-        /// The event args. 
+        /// The event args.
         /// </param>
         private void RadioButtonListDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -294,13 +300,13 @@ namespace PropertyTools.Wpf
                     {
                         Content =
                             this.DescriptionConverter.Convert(
-                                itemValue, typeof(string), null, CultureInfo.CurrentCulture), 
+                                itemValue, typeof(string), null, CultureInfo.CurrentCulture),
                         Padding = this.ItemPadding
                     };
 
                 var isCheckedBinding = new Binding("Value")
                     {
-                       Converter = converter, ConverterParameter = itemValue, Source = this, Mode = BindingMode.TwoWay 
+                       Converter = converter, ConverterParameter = itemValue, Source = this, Mode = BindingMode.TwoWay
                     };
                 rb.SetBinding(ToggleButton.IsCheckedProperty, isCheckedBinding);
 
@@ -309,7 +315,5 @@ namespace PropertyTools.Wpf
                 this.panel.Children.Add(rb);
             }
         }
-
-        #endregion
     }
 }

@@ -1,12 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsGridControlFactory.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
 //   Creates display and edit controls for the ItemsGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -21,19 +41,17 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class ItemsGridControlFactory : IItemsGridControlFactory
     {
-        #region Public Methods and Operators
-
         /// <summary>
         /// Creates a display control.
         /// </summary>
         /// <param name="d">
-        /// The definition. 
+        /// The definition.
         /// </param>
         /// <param name="index">
-        /// The index. 
+        /// The index.
         /// </param>
         /// <returns>
-        /// The display control. 
+        /// The display control.
         /// </returns>
         public virtual FrameworkElement CreateDisplayControl(PropertyDefinition d, int index)
         {
@@ -55,13 +73,13 @@ namespace PropertyTools.Wpf
         /// Creates an edit control.
         /// </summary>
         /// <param name="d">
-        /// The definition. 
+        /// The definition.
         /// </param>
         /// <param name="index">
-        /// The index. 
+        /// The index.
         /// </param>
         /// <returns>
-        /// The edit control. 
+        /// The edit control.
         /// </returns>
         public virtual FrameworkElement CreateEditControl(PropertyDefinition d, int index)
         {
@@ -84,28 +102,23 @@ namespace PropertyTools.Wpf
             return this.CreateTextBox(d, index);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Creates a check box control.
         /// </summary>
         /// <param name="d">
-        /// The definition. 
+        /// The definition.
         /// </param>
         /// <param name="index">
         /// The index.
         /// </param>
         /// <returns>
-        /// A CheckBox. 
+        /// A CheckBox.
         /// </returns>
         protected virtual FrameworkElement CreateCheckBoxControl(PropertyDefinition d, int index)
         {
             var c = new CheckBox
                 {
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = d.HorizontalAlignment
+                   VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = d.HorizontalAlignment
                 };
             c.SetBinding(ToggleButton.IsCheckedProperty, d.CreateBinding(index));
             return c;
@@ -115,13 +128,13 @@ namespace PropertyTools.Wpf
         /// Creates a color picker control.
         /// </summary>
         /// <param name="d">
-        /// The definition. 
+        /// The definition.
         /// </param>
         /// <param name="index">
         /// The index.
         /// </param>
         /// <returns>
-        /// A color picker. 
+        /// A color picker.
         /// </returns>
         protected virtual FrameworkElement CreateColorPickerControl(PropertyDefinition d, int index)
         {
@@ -139,13 +152,13 @@ namespace PropertyTools.Wpf
         /// Creates a color preview control.
         /// </summary>
         /// <param name="d">
-        /// The definition. 
+        /// The definition.
         /// </param>
         /// <param name="index">
-        /// The index. 
+        /// The index.
         /// </param>
         /// <returns>
-        /// A preview control. 
+        /// A preview control.
         /// </returns>
         protected virtual FrameworkElement CreateColorPreviewControl(PropertyDefinition d, int index)
         {
@@ -169,13 +182,13 @@ namespace PropertyTools.Wpf
         /// Creates a combo box.
         /// </summary>
         /// <param name="d">
-        /// The definition. 
+        /// The definition.
         /// </param>
         /// <param name="index">
         /// The index.
         /// </param>
         /// <returns>
-        /// A ComboBox. 
+        /// A ComboBox.
         /// </returns>
         protected virtual FrameworkElement CreateComboBox(PropertyDefinition d, int index)
         {
@@ -200,13 +213,13 @@ namespace PropertyTools.Wpf
         /// Creates a text block control.
         /// </summary>
         /// <param name="d">
-        /// The definition. 
+        /// The definition.
         /// </param>
         /// <param name="index">
         /// The index.
         /// </param>
         /// <returns>
-        /// A TextBlock. 
+        /// A TextBlock.
         /// </returns>
         protected virtual FrameworkElement CreateTextBlockControl(PropertyDefinition d, int index)
         {
@@ -225,13 +238,13 @@ namespace PropertyTools.Wpf
         /// Creates a text box.
         /// </summary>
         /// <param name="d">
-        /// The definition. 
+        /// The definition.
         /// </param>
         /// <param name="index">
         /// The index.
         /// </param>
         /// <returns>
-        /// A TextBox. 
+        /// A TextBox.
         /// </returns>
         protected virtual FrameworkElement CreateTextBox(PropertyDefinition d, int index)
         {
@@ -247,7 +260,5 @@ namespace PropertyTools.Wpf
 
             return tb;
         }
-
-        #endregion
     }
 }

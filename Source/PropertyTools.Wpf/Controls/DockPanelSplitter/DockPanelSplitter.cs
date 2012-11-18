@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DockPanelSplitter.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a control that lets the user change the size of elements in a <see cref="DockPanel" />.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -12,61 +35,55 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Represents a control that lets the user change the size of elements in a <see cref="DockPanel"/>.
+    /// Represents a control that lets the user change the size of elements in a <see cref="DockPanel" />.
     /// </summary>
     public class DockPanelSplitter : Control
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The proportional resize property.
+        /// The proportional resize property.
         /// </summary>
         public static readonly DependencyProperty ProportionalResizeProperty =
             DependencyProperty.Register(
                 "ProportionalResize", typeof(bool), typeof(DockPanelSplitter), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The thickness property.
+        /// The thickness property.
         /// </summary>
         public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
             "Thickness", typeof(double), typeof(DockPanelSplitter), new UIPropertyMetadata(4.0, ThicknessChanged));
 
         /// <summary>
-        ///   The element.
+        /// The element.
         /// </summary>
         private FrameworkElement element; // element to resize (target element)
 
         /// <summary>
-        ///   The height.
+        /// The height.
         /// </summary>
         private double height; // current desired height of the element, can be less than minheight
 
         /// <summary>
-        ///   The previous parent height.
+        /// The previous parent height.
         /// </summary>
         private double previousParentHeight; // current height of parent element, used for proportional resize
 
         /// <summary>
-        ///   The previous parent width.
+        /// The previous parent width.
         /// </summary>
         private double previousParentWidth; // current width of parent element, used for proportional resize
 
         /// <summary>
-        ///   The start drag point.
+        /// The start drag point.
         /// </summary>
         private Point startDragPoint;
 
         /// <summary>
-        ///   The width.
+        /// The width.
         /// </summary>
         private double width; // current desired width of the element, can be less than minwidth
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "DockPanelSplitter" /> class.
+        /// Initializes static members of the <see cref="DockPanelSplitter" /> class.
         /// </summary>
         static DockPanelSplitter()
         {
@@ -83,7 +100,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DockPanelSplitter" /> class.
+        /// Initializes a new instance of the <see cref="DockPanelSplitter" /> class.
         /// </summary>
         public DockPanelSplitter()
         {
@@ -93,12 +110,8 @@ namespace PropertyTools.Wpf
             this.UpdateHeightOrWidth();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets a value indicating whether this splitter is horizontal.
+        /// Gets a value indicating whether this splitter is horizontal.
         /// </summary>
         public bool IsHorizontal
         {
@@ -110,10 +123,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to resize elements proportionally.
+        /// Gets or sets a value indicating whether to resize elements proportionally.
         /// </summary>
         /// <remarks>
-        ///   Set to false if you don't want the element to be resized when the parent is resized.
+        /// Set to false if you don't want the element to be resized when the parent is resized.
         /// </remarks>
         public bool ProportionalResize
         {
@@ -129,9 +142,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the thickness (height or width, depending on orientation).
+        /// Gets or sets the thickness (height or width, depending on orientation).
         /// </summary>
-        /// <value>The thickness.</value>
+        /// <value> The thickness. </value>
         public double Thickness
         {
             get
@@ -144,10 +157,6 @@ namespace PropertyTools.Wpf
                 this.SetValue(ThicknessProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
@@ -506,13 +515,11 @@ namespace PropertyTools.Wpf
             int i = dp.Children.IndexOf(this);
 
             // The splitter cannot be the first child of the parent DockPanel
-            // The splitter works on the 'older' sibling 
+            // The splitter works on the 'older' sibling
             if (i > 0 && dp.Children.Count > 0)
             {
                 this.element = dp.Children[i - 1] as FrameworkElement;
             }
         }
-
-        #endregion
     }
 }

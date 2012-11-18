@@ -1,42 +1,55 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsBagTypeDescriptionProvider.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Provides a type description provider for the <see cref="ItemsBag" />.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
     using System.ComponentModel;
 
     /// <summary>
-    /// Provides a type description provider for the <see cref="ItemsBag"/>.
+    /// Provides a type description provider for the <see cref="ItemsBag" />.
     /// </summary>
     public class ItemsBagTypeDescriptionProvider : TypeDescriptionProvider
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The default type provider.
+        /// The default type provider.
         /// </summary>
         private static readonly TypeDescriptionProvider DefaultTypeProvider =
             TypeDescriptor.GetProvider(typeof(ItemsBag));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "ItemsBagTypeDescriptionProvider" /> class.
+        /// Initializes a new instance of the <see cref="ItemsBagTypeDescriptionProvider" /> class.
         /// </summary>
         public ItemsBagTypeDescriptionProvider()
             : base(DefaultTypeProvider)
         {
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Gets a custom type descriptor for the given type and object.
@@ -45,7 +58,7 @@ namespace PropertyTools.Wpf
         /// The type of object for which to retrieve the type descriptor.
         /// </param>
         /// <param name="instance">
-        /// An instance of the type. Can be null if no instance was passed to the <see cref="T:System.ComponentModel.TypeDescriptor"/>.
+        /// An instance of the type. Can be null if no instance was passed to the <see cref="T:System.ComponentModel.TypeDescriptor"/> .
         /// </param>
         /// <returns>
         /// An <see cref="T:System.ComponentModel.ICustomTypeDescriptor"/> that can provide metadata for the type.
@@ -56,7 +69,5 @@ namespace PropertyTools.Wpf
 
             return instance == null ? defaultDescriptor : new ItemsBagTypeDescriptor(defaultDescriptor, instance);
         }
-
-        #endregion
     }
 }

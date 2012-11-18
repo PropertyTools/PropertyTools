@@ -1,12 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DefaultPropertyControlFactory.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
 //   Provides a default property control factory.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -14,6 +34,7 @@ namespace PropertyTools.Wpf
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Security;
@@ -29,19 +50,13 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class DefaultPropertyControlFactory : IPropertyControlFactory
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The cached font families.
+        /// The cached font families.
         /// </summary>
         private static FontFamily[] cachedFontFamilies;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "DefaultPropertyControlFactory" /> class.
+        /// Initializes a new instance of the <see cref="DefaultPropertyControlFactory" /> class.
         /// </summary>
         public DefaultPropertyControlFactory()
         {
@@ -49,44 +64,34 @@ namespace PropertyTools.Wpf
             this.Editors = new List<TypeEditor>();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the list of converters.
+        /// Gets or sets the list of converters.
         /// </summary>
-        /// <value>The converters.</value>
+        /// <value> The converters. </value>
         public List<PropertyConverter> Converters { get; set; }
 
         /// <summary>
-        ///   Gets or sets the list of type editors.
+        /// Gets or sets the list of type editors.
         /// </summary>
-        /// <value>
-        ///   The editors.
-        /// </value>
+        /// <value> The editors. </value>
         public List<TypeEditor> Editors { get; set; }
 
         /// <summary>
-        ///   Gets or sets the file dialog service.
+        /// Gets or sets the file dialog service.
         /// </summary>
-        /// <value>The file dialog service.</value>
+        /// <value> The file dialog service. </value>
         public IFileDialogService FileDialogService { get; set; }
 
         /// <summary>
-        ///   Gets or sets the folder browser dialog service.
+        /// Gets or sets the folder browser dialog service.
         /// </summary>
-        /// <value>The folder browser dialog service.</value>
+        /// <value> The folder browser dialog service. </value>
         public IFolderBrowserDialogService FolderBrowserDialogService { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether to use the DatePicker control for DateTime values.
+        /// Gets or sets a value indicating whether to use the DatePicker control for DateTime values.
         /// </summary>
         public bool UseDatePicker { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Creates the control for a property.
@@ -159,7 +164,7 @@ namespace PropertyTools.Wpf
                 return this.CreateLinkControl(property);
             }
 
-            if (property.ItemsSourceDescriptor != null)
+            if (property.ItemsSourceDescriptor != null || property.ItemsSource != null)
             {
                 return this.CreateComboBoxControl(property);
             }
@@ -222,12 +227,8 @@ namespace PropertyTools.Wpf
             return this.CreateDefaultControl(property);
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
-        /// Creates the bool control.
+        /// Creates the checkbox control.
         /// </summary>
         /// <param name="property">
         /// The property.
@@ -242,6 +243,13 @@ namespace PropertyTools.Wpf
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Left
                 };
+
+            if (property.Descriptor.IsReadOnly)
+            {
+                c.IsHitTestVisible = false;
+                c.Focusable = false;
+            }
+
             c.SetBinding(ToggleButton.IsCheckedProperty, property.CreateBinding());
             return c;
         }
@@ -289,8 +297,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateComboBoxControl(PropertyItem property)
         {
-            var c = new ComboBox { IsEditable = property.IsEditable };
-            c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
+            var c = new ComboBox { IsEditable = property.IsEditable, ItemsSource = property.ItemsSource };
+            if (property.ItemsSourceDescriptor != null)
+            {
+                c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
+            }
 
             c.SetBinding(
                 property.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, property.CreateBinding());
@@ -362,11 +373,18 @@ namespace PropertyTools.Wpf
                 {
                     AcceptsReturn = property.AcceptsReturn,
                     MaxLength = property.MaxLength,
-                    IsReadOnly = property.Descriptor.IsReadOnly,
+                    IsReadOnly = property.IsReadOnly,
                     TextWrapping = property.TextWrapping,
                     VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                    VerticalContentAlignment = double.IsNaN(property.Height) ? VerticalAlignment.Center : VerticalAlignment.Top
+                    VerticalContentAlignment =
+                        double.IsNaN(property.Height) ? VerticalAlignment.Center : VerticalAlignment.Top
                 };
+
+            if (property.IsReadOnly)
+            {
+                // c.Opacity = 0.8;
+                c.Foreground = Brushes.RoyalBlue;
+            }
 
             c.SetBinding(TextBox.TextProperty, property.CreateBinding(trigger));
             return c;
@@ -406,7 +424,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates the enum control.
+        /// Creates the select control.
         /// </summary>
         /// <param name="property">
         /// The property.
@@ -519,6 +537,7 @@ namespace PropertyTools.Wpf
                     Background = Brushes.Transparent,
                     BorderBrush = null,
                     AcceptsReturn = true,
+                    IsReadOnly = property.IsReadOnly,
                     TextWrapping = TextWrapping.Wrap,
                     FontWeight = FontWeight.FromOpenTypeWeight(property.FontWeight),
                     FontSize = property.FontSize
@@ -557,7 +576,7 @@ namespace PropertyTools.Wpf
                         FormatString = ca.FormatString,
                         Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto)
                     };
-                switch (ca.Alignment.ToString().ToUpper())
+                switch (ca.Alignment.ToString(CultureInfo.InvariantCulture).ToUpper())
                 {
                     case "L":
                         cd.HorizontalAlignment = HorizontalAlignment.Left;
@@ -724,6 +743,7 @@ namespace PropertyTools.Wpf
         {
             var tb = new TextBox
                 {
+                    IsReadOnly = property.IsReadOnly,
                     BorderThickness = new Thickness(0),
                     HorizontalContentAlignment = HorizontalAlignment.Right,
                     VerticalContentAlignment = VerticalAlignment.Center
@@ -764,9 +784,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the font families.
         /// </summary>
-        /// <returns>
-        /// List of font families.
-        /// </returns>
+        /// <returns> List of font families. </returns>
         private static IEnumerable<FontFamily> GetFontFamilies()
         {
             if (cachedFontFamilies == null)
@@ -796,7 +814,5 @@ namespace PropertyTools.Wpf
 
             return cachedFontFamilies;
         }
-
-        #endregion
     }
 }

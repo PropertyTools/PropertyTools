@@ -1,9 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColumnAttribute.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Specifies a grid column.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -14,16 +37,10 @@ namespace PropertyTools.DataAnnotations
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class ColumnAttribute : Attribute
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The type id.
+        /// The type id.
         /// </summary>
         private readonly object typeId;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnAttribute"/> class.
@@ -47,11 +64,11 @@ namespace PropertyTools.DataAnnotations
         /// The alignment.
         /// </param>
         public ColumnAttribute(
-            int columnIndex, 
-            string propertyName, 
-            string header = null, 
-            string formatString = null, 
-            string width = "Auto", 
+            int columnIndex,
+            string propertyName,
+            string header = null,
+            string formatString = null,
+            string width = "Auto",
             char alignment = 'C')
         {
             this.ColumnIndex = columnIndex;
@@ -63,42 +80,38 @@ namespace PropertyTools.DataAnnotations
             this.typeId = Guid.NewGuid();
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the alignment (L, R, C or S).
+        /// Gets or sets the alignment (L, R, C or S).
         /// </summary>
         /// <value>The alignment.</value>
         public char Alignment { get; set; }
 
         /// <summary>
-        ///   Gets or sets the index of the column.
+        /// Gets or sets the index of the column.
         /// </summary>
         /// <value>The index of the column.</value>
         public int ColumnIndex { get; set; }
 
         /// <summary>
-        ///   Gets or sets the format string.
+        /// Gets or sets the format string.
         /// </summary>
         /// <value>The format string.</value>
         public string FormatString { get; set; }
 
         /// <summary>
-        ///   Gets or sets the header.
+        /// Gets or sets the header.
         /// </summary>
         /// <value>The header.</value>
         public string Header { get; set; }
 
         /// <summary>
-        ///   Gets or sets the name of the property.
+        /// Gets or sets the name of the property.
         /// </summary>
         /// <value>The name of the property.</value>
         public string PropertyName { get; set; }
 
         /// <summary>
-        ///   When implemented in a derived class, gets a unique identifier for this <see cref = "T:System.Attribute" />.
+        /// When implemented in a derived class, gets a unique identifier for this <see cref = "T:System.Attribute" />.
         /// </summary>
         /// <value></value>
         /// <returns>An <see cref = "T:System.Object" /> that is a unique identifier for the attribute.</returns>
@@ -111,11 +124,10 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        ///   Gets or sets the width.
+        /// Gets or sets the width.
         /// </summary>
         /// <value>The width.</value>
         public string Width { get; set; }
 
-        #endregion
     }
 }

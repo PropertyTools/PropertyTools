@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ItemsGrid.Content.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a datagrid with a spreadsheet style.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System.Collections.Specialized;
@@ -20,85 +43,6 @@ namespace PropertyTools.Wpf
     public partial class ItemsGrid
     {
         /// <summary>
-        /// Updates all the UIElements of the grid (both cells, headers, row and column lines).
-        /// </summary>
-        private void UpdateGridContent()
-        {
-            this.UnsubscribeNotifications();
-
-            if (this.sheetGrid == null)
-            {
-                // return if the template has not yet been applied
-                return;
-            }
-
-            this.ClearContent();
-
-            if (this.ItemsSource == null)
-            {
-                return;
-            }
-
-            if (this.AutoGenerateColumns && this.PropertyDefinitions.Count == 0)
-            {
-                // Auto-generate the columns
-                this.GenerateColumnDefinitions(this.ItemsSource);
-            }
-
-            // If PropertyType is undefined, use the type of the items in the ItemsSource
-            var itemsType = TypeHelper.GetItemType(this.ItemsSource);
-            foreach (var pd in PropertyDefinitions)
-            {
-                if (pd.PropertyType == null)
-                {
-                    pd.PropertyType = itemsType;
-                }
-            }
-
-            // Determine if columns or rows are defined
-            ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
-
-            // If only PropertyName has been defined, use the type of the items to get the descriptor.
-            var itemType = TypeHelper.GetItemType(this.ItemsSource);
-            foreach (var pd in this.PropertyDefinitions)
-            {
-                if (pd.Descriptor == null && !string.IsNullOrEmpty(pd.PropertyName))
-                {
-                    pd.Descriptor = TypeDescriptor.GetProperties(itemType)[pd.PropertyName];
-                }
-            }
-
-            int n = this.ItemsSource.Cast<object>().Count();
-            int m = this.PropertyDefinitions.Count;
-
-            if (this.WrapItems)
-            {
-                n /= m;
-            }
-
-            int rows = this.ItemsInRows ? n : m;
-            int columns = this.ItemsInRows ? m : n;
-
-            var visibility = rows >= 0 ? Visibility.Visible : Visibility.Hidden;
-
-            // Hide the row/column headers if the content is empty
-            this.rowScroller.Visibility = this.columnScroller.Visibility = this.sheetScroller.Visibility = this.topleft.Visibility = visibility;
-
-            if (rows < 0)
-            {
-                return;
-            }
-
-            this.UpdateRows(rows);
-            this.UpdateColumns(columns);
-            this.UpdateCells(rows, columns);
-
-            this.UpdateColumnWidths();
-
-            this.SubscribeToNotifications();
-        }
-
-        /// <summary>
         /// Clears the content of the control.
         /// </summary>
         private void ClearContent()
@@ -114,6 +58,20 @@ namespace PropertyTools.Wpf
             this.sheetGrid.ColumnDefinitions.Clear();
             this.sheetGrid.Children.Clear();
             this.cellMap.Clear();
+        }
+
+        /// <summary>
+        /// The subscribe notifications.
+        /// </summary>
+        private void SubscribeToNotifications()
+        {
+            var collection = this.ItemsSource as INotifyCollectionChanged;
+            if (collection != null)
+            {
+                collection.CollectionChanged += this.OnItemsCollectionChanged;
+            }
+
+            this.subcribedCollection = this.ItemsSource;
         }
 
         /// <summary>
@@ -134,10 +92,9 @@ namespace PropertyTools.Wpf
             for (int i = 1; i <= rows; i++)
             {
                 var border = new Border
-                {
-                    BorderBrush = this.GridLineBrush,
-                    BorderThickness = new Thickness(0, 1, 0, 0)
-                };
+                    {
+                       BorderBrush = this.GridLineBrush, BorderThickness = new Thickness(0, 1, 0, 0)
+                    };
 
                 if (i < rows && this.AlternatingRowsBackground != null && i % 2 == 1)
                 {
@@ -165,10 +122,10 @@ namespace PropertyTools.Wpf
                     }
 
                     var border = new Border
-                    {
-                        BorderBrush = this.GridLineBrush,
-                        BorderThickness = new Thickness(i > 0 ? 1 : 0, 0, i == columns - 1 ? 1 : 0, 0)
-                    };
+                        {
+                            BorderBrush = this.GridLineBrush,
+                            BorderThickness = new Thickness(i > 0 ? 1 : 0, 0, i == columns - 1 ? 1 : 0, 0)
+                        };
 
                     Grid.SetRow(border, 0);
                     Grid.SetRowSpan(border, rows);
@@ -240,7 +197,7 @@ namespace PropertyTools.Wpf
                 new System.Windows.Controls.ColumnDefinition { Width = new GridLength(40) });
 
             // set the context menu
-            this.columnGrid.ContextMenu = ColumnsContextMenu;
+            this.columnGrid.ContextMenu = this.ColumnsContextMenu;
 
             this.columnGrid.Children.Add(this.columnSelectionBackground);
             for (int j = 0; j < columns; j++)
@@ -250,21 +207,23 @@ namespace PropertyTools.Wpf
                 var pd = this.GetPropertyDefinition(cellref);
 
                 var border = new Border
-                {
-                    BorderBrush = this.HeaderBorderBrush,
-                    BorderThickness = new Thickness(0, 1, 1, 1),
-                    Margin = new Thickness(0, 0, j < columns - 1 ? -1 : 0, 0)
-                };
+                    {
+                        BorderBrush = this.HeaderBorderBrush,
+                        BorderThickness = new Thickness(0, 1, 1, 1),
+                        Margin = new Thickness(0, 0, j < columns - 1 ? -1 : 0, 0)
+                    };
                 Grid.SetColumn(border, j);
                 this.columnGrid.Children.Add(border);
 
-                var cell = header as FrameworkElement ?? new TextBlock
-                {
-                    Text = header != null ? header.ToString() : "-",
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = pd.HorizontalAlignment,
-                    Padding = new Thickness(4, 2, 4, 2)
-                };
+                var cell = header as FrameworkElement
+                           ??
+                           new TextBlock
+                               {
+                                   Text = header != null ? header.ToString() : "-",
+                                   VerticalAlignment = VerticalAlignment.Center,
+                                   HorizontalAlignment = pd.HorizontalAlignment,
+                                   Padding = new Thickness(4, 2, 4, 2)
+                               };
 
                 Grid.SetColumn(cell, j);
                 this.columnGrid.Children.Add(cell);
@@ -272,14 +231,14 @@ namespace PropertyTools.Wpf
                 if (this.CanResizeColumns)
                 {
                     var splitter = new GridSplitter
-                    {
-                        ResizeDirection = GridResizeDirection.Columns,
-                        Background = Brushes.Transparent,
-                        Width = 4,
-                        Focusable = false,
-                        VerticalAlignment = VerticalAlignment.Stretch,
-                        HorizontalAlignment = HorizontalAlignment.Right
-                    };
+                        {
+                            ResizeDirection = GridResizeDirection.Columns,
+                            Background = Brushes.Transparent,
+                            Width = 4,
+                            Focusable = false,
+                            VerticalAlignment = VerticalAlignment.Stretch,
+                            HorizontalAlignment = HorizontalAlignment.Right
+                        };
                     splitter.MouseDoubleClick += this.ColumnSplitterDoubleClick;
                     splitter.DragStarted += this.ColumnSplitterChangeStarted;
                     splitter.DragDelta += this.ColumnSplitterChangeDelta;
@@ -288,6 +247,86 @@ namespace PropertyTools.Wpf
                     this.columnGrid.Children.Add(splitter);
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates all the UIElements of the grid (both cells, headers, row and column lines).
+        /// </summary>
+        private void UpdateGridContent()
+        {
+            this.UnsubscribeNotifications();
+
+            if (this.sheetGrid == null)
+            {
+                // return if the template has not yet been applied
+                return;
+            }
+
+            this.ClearContent();
+
+            if (this.ItemsSource == null)
+            {
+                return;
+            }
+
+            if (this.AutoGenerateColumns && this.PropertyDefinitions.Count == 0)
+            {
+                // Auto-generate the columns
+                this.GenerateColumnDefinitions(this.ItemsSource);
+            }
+
+            // If PropertyType is undefined, use the type of the items in the ItemsSource
+            var itemsType = TypeHelper.GetItemType(this.ItemsSource);
+            foreach (var pd in this.PropertyDefinitions)
+            {
+                if (pd.PropertyType == null)
+                {
+                    pd.PropertyType = itemsType;
+                }
+            }
+
+            // Determine if columns or rows are defined
+            this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
+
+            // If only PropertyName has been defined, use the type of the items to get the descriptor.
+            var itemType = TypeHelper.GetItemType(this.ItemsSource);
+            foreach (var pd in this.PropertyDefinitions)
+            {
+                if (pd.Descriptor == null && !string.IsNullOrEmpty(pd.PropertyName))
+                {
+                    pd.Descriptor = TypeDescriptor.GetProperties(itemType)[pd.PropertyName];
+                }
+            }
+
+            int n = this.ItemsSource.Cast<object>().Count();
+            int m = this.PropertyDefinitions.Count;
+
+            if (this.WrapItems)
+            {
+                n /= m;
+            }
+
+            int rows = this.ItemsInRows ? n : m;
+            int columns = this.ItemsInRows ? m : n;
+
+            var visibility = rows >= 0 ? Visibility.Visible : Visibility.Hidden;
+
+            // Hide the row/column headers if the content is empty
+            this.rowScroller.Visibility =
+                this.columnScroller.Visibility = this.sheetScroller.Visibility = this.topleft.Visibility = visibility;
+
+            if (rows < 0)
+            {
+                return;
+            }
+
+            this.UpdateRows(rows);
+            this.UpdateColumns(columns);
+            this.UpdateCells(rows, columns);
+
+            this.UpdateColumnWidths();
+
+            this.SubscribeToNotifications();
         }
 
         /// <summary>
@@ -304,8 +343,10 @@ namespace PropertyTools.Wpf
 
             for (int i = 0; i < rows; i++)
             {
-                this.sheetGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
-                this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
+                this.sheetGrid.RowDefinitions.Add(
+                    new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
+                this.rowGrid.RowDefinitions.Add(
+                    new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
             }
 
             for (int i = 0; i < rows; i++)
@@ -313,22 +354,24 @@ namespace PropertyTools.Wpf
                 object header = this.GetRowHeader(i);
 
                 var border = new Border
-                {
-                    BorderBrush = this.HeaderBorderBrush,
-                    BorderThickness = new Thickness(1, 0, 1, 1),
-                    Margin = new Thickness(0, 0, 0, -1)
-                };
+                    {
+                        BorderBrush = this.HeaderBorderBrush,
+                        BorderThickness = new Thickness(1, 0, 1, 1),
+                        Margin = new Thickness(0, 0, 0, -1)
+                    };
 
                 Grid.SetRow(border, i);
                 this.rowGrid.Children.Add(border);
 
-                var cell = header as FrameworkElement ?? new TextBlock
-                    {
-                        Text = header != null ? header.ToString() : "-",
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        Padding = new Thickness(4, 2, 4, 2)
-                    };
+                var cell = header as FrameworkElement
+                           ??
+                           new TextBlock
+                               {
+                                   Text = header != null ? header.ToString() : "-",
+                                   VerticalAlignment = VerticalAlignment.Center,
+                                   HorizontalAlignment = HorizontalAlignment.Center,
+                                   Padding = new Thickness(4, 2, 4, 2)
+                               };
 
                 if (this.ItemHeaderPropertyPath != null && this.ItemsInRows)
                 {
@@ -343,22 +386,24 @@ namespace PropertyTools.Wpf
             // Add "Insert" row header
             if (this.CanInsertRows && this.AddItemHeader != null)
             {
-                this.sheetGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
-                this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
+                this.sheetGrid.RowDefinitions.Add(
+                    new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
+                this.rowGrid.RowDefinitions.Add(
+                    new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
 
                 var cell = new TextBlock
-                {
-                    Text = this.AddItemHeader,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center
-                };
+                    {
+                        Text = this.AddItemHeader,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
                 var border = new Border
-                {
-                    Background = Brushes.Transparent,
-                    BorderBrush = this.HeaderBorderBrush,
-                    BorderThickness = new Thickness(1, 0, 1, 1),
-                    Margin = new Thickness(0, 0, 0, 0)
-                };
+                    {
+                        Background = Brushes.Transparent,
+                        BorderBrush = this.HeaderBorderBrush,
+                        BorderThickness = new Thickness(1, 0, 1, 1),
+                        Margin = new Thickness(0, 0, 0, 0)
+                    };
 
                 border.MouseLeftButtonDown += this.AddItemCellMouseLeftButtonDown;
                 Grid.SetRow(border, rows);
@@ -370,29 +415,16 @@ namespace PropertyTools.Wpf
             }
             else
             {
-                this.sheetGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
+                this.sheetGrid.RowDefinitions.Add(
+                    new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
                 this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
             }
 
             // set the context menu
-            this.rowGrid.ContextMenu = RowsContextMenu;
+            this.rowGrid.ContextMenu = this.RowsContextMenu;
 
             // to cover a posisble scrollbar
             this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = new GridLength(20) });
-        }
-
-        /// <summary>
-        /// The subscribe notifications.
-        /// </summary>
-        private void SubscribeToNotifications()
-        {
-            var collection = this.ItemsSource as INotifyCollectionChanged;
-            if (collection != null)
-            {
-                collection.CollectionChanged += this.OnItemsCollectionChanged;
-            }
-
-            this.subcribedCollection = this.ItemsSource;
         }
     }
 }

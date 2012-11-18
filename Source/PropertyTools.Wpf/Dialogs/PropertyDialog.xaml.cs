@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PropertyDialog.xaml.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a property editing dialog.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -19,10 +42,8 @@ namespace PropertyTools.Wpf
     /// </summary>
     public partial class PropertyDialog : Window
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "PropertyDialog" /> class.
+        /// Initializes a new instance of the <see cref="PropertyDialog" /> class.
         /// </summary>
         public PropertyDialog()
         {
@@ -35,14 +56,10 @@ namespace PropertyTools.Wpf
             this.DataContextChanged += this.PropertyDialogDataContextChanged;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether the apply button is visible.
+        /// Gets or sets a value indicating whether the apply button is visible.
         /// </summary>
-        /// <value><c>true</c> if this instance can apply; otherwise, <c>false</c>.</value>
+        /// <value> <c>true</c> if this instance can apply; otherwise, <c>false</c> . </value>
         public bool CanApply
         {
             get
@@ -57,9 +74,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the property control.
+        /// Gets the property control.
         /// </summary>
-        /// <value>The property control.</value>
+        /// <value> The property control. </value>
         public PropertyControl PropertyControl
         {
             get
@@ -68,23 +85,19 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
-        /// This stores the current "copy" of the object. 
-        ///   If it is non-null, then we are in the middle of an 
-        ///   editable operation.
+        /// This stores the current "copy" of the object.
+        /// If it is non-null, then we are in the middle of an
+        /// editable operation.
         /// </summary>
         /// <param name="obj">
-        /// The obj.
+        /// The object.
         /// </param>
         /// <summary>
-        /// This is used to clone the object.  
-        ///   Override the method to provide a more efficient clone.  
-        ///   The default implementation simply reflects across 
-        ///   the object copying every field.
+        /// This is used to clone the object.
+        /// Override the method to provide a more efficient clone.
+        /// The default implementation simply reflects across
+        /// the object copying every field.
         /// </summary>
         /// <returns>
         /// Clone of current object
@@ -230,7 +243,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void CommitChanges()
         {
-            // copy changes from cloned object (stored in PropertyEditor.DataContext) 
+            // copy changes from cloned object (stored in PropertyEditor.DataContext)
             // to the original object (stored in DataContext)
             var clone = this.PropertyControl.DataContext;
             if (clone == null)
@@ -316,7 +329,5 @@ namespace PropertyTools.Wpf
         {
             this.BeginEdit();
         }
-
-        #endregion
     }
 }

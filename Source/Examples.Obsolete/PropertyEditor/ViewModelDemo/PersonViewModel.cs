@@ -1,3 +1,29 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PersonViewModel.cs" company="PropertyTools">
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 using System;
 using System.ComponentModel;
 using PropertyTools.Wpf;
@@ -17,7 +43,6 @@ namespace ViewModelDemo
         }
 
         [Category("Personal data|General")]
-        #region Anonymous (INotifyPropertyChanged Property)
         [DisplayName("Is anonymous"), Description("If this person is anonymous")]
         public bool Anonymous
         {
@@ -31,9 +56,6 @@ namespace ViewModelDemo
                 }
             }
         }
-        #endregion
-
-        #region Name (INotifyPropertyChanged Property)
         [DisplayName("Full name"), Description("The full name of the person")]
         public string Name
         {
@@ -47,10 +69,7 @@ namespace ViewModelDemo
                 }
             }
         }
-        #endregion
-
-        #region Height (INotifyPropertyChanged Property)
-        [DisplayName("Height (m)"), Description("The height of the person"), 
+        [DisplayName("Height (m)"), Description("The height of the person"),
         Slidable(0, 2, 0.01, 0.1), FormatString("0.00")]
         public double Height
         {
@@ -64,9 +83,6 @@ namespace ViewModelDemo
                 }
             }
         }
-        #endregion
-
-        #region Age (INotifyPropertyChanged Property)
         [DisplayName("Age (years)"), Description("The age of the person"), Slidable(0,100)]
         public double Age
         {
@@ -80,9 +96,6 @@ namespace ViewModelDemo
                 }
             }
         }
-        #endregion
-
-        #region PropertyChanged Block
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(string property)
@@ -93,19 +106,12 @@ namespace ViewModelDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-        #endregion
-
-        #region IPropertyState members
         public void UpdatePropertyStates(PropertyStateBag stateBag)
         {
             stateBag.Enable("Age", !String.IsNullOrEmpty(Name));
             stateBag.Enable("Height", !Anonymous);
             stateBag.Enable("Name", !Anonymous);
         }
-        #endregion
-
-        #region IDataErrorInfo Members
-
         [Browsable(false)]
         public string Error
         {
@@ -134,6 +140,5 @@ namespace ViewModelDemo
             }
         }
 
-        #endregion
     }
 }

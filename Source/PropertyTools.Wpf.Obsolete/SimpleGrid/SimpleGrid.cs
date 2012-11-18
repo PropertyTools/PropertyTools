@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SimpleGrid.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a datagrid with a spreadsheet style.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -47,244 +70,238 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PART_EnumEditor, Type = typeof(ComboBox))]
     public partial class SimpleGrid : Control
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The par t_ auto fill box.
+        /// The par t_ auto fill box.
         /// </summary>
         private const string PART_AutoFillBox = "PART_AutoFillBox";
 
         /// <summary>
-        ///   The par t_ auto fill selection.
+        /// The par t_ auto fill selection.
         /// </summary>
         private const string PART_AutoFillSelection = "PART_AutoFillSelection";
 
         /// <summary>
-        ///   The par t_ column grid.
+        /// The par t_ column grid.
         /// </summary>
         private const string PART_ColumnGrid = "PART_ColumnGrid";
 
         /// <summary>
-        ///   The par t_ column scroller.
+        /// The par t_ column scroller.
         /// </summary>
         private const string PART_ColumnScroller = "PART_ColumnScroller";
 
         /// <summary>
-        ///   The par t_ column selection background.
+        /// The par t_ column selection background.
         /// </summary>
         private const string PART_ColumnSelectionBackground = "PART_ColumnSelectionBackground";
 
         /// <summary>
-        ///   The par t_ current background.
+        /// The par t_ current background.
         /// </summary>
         private const string PART_CurrentBackground = "PART_CurrentBackground";
 
         /// <summary>
-        ///   The par t_ enum editor.
+        /// The par t_ enum editor.
         /// </summary>
         private const string PART_EnumEditor = "PART_EnumEditor";
 
         /// <summary>
-        ///   The par t_ grid.
+        /// The par t_ grid.
         /// </summary>
         private const string PART_Grid = "PART_Grid";
 
         /// <summary>
-        ///   The par t_ row grid.
+        /// The par t_ row grid.
         /// </summary>
         private const string PART_RowGrid = "PART_RowGrid";
 
         /// <summary>
-        ///   The par t_ row scroller.
+        /// The par t_ row scroller.
         /// </summary>
         private const string PART_RowScroller = "PART_RowScroller";
 
         /// <summary>
-        ///   The par t_ row selection background.
+        /// The par t_ row selection background.
         /// </summary>
         private const string PART_RowSelectionBackground = "PART_RowSelectionBackground";
 
         /// <summary>
-        ///   The par t_ selection.
+        /// The par t_ selection.
         /// </summary>
         private const string PART_Selection = "PART_Selection";
 
         /// <summary>
-        ///   The par t_ selection background.
+        /// The par t_ selection background.
         /// </summary>
         private const string PART_SelectionBackground = "PART_SelectionBackground";
 
         /// <summary>
-        ///   The par t_ sheet grid.
+        /// The par t_ sheet grid.
         /// </summary>
         private const string PART_SheetGrid = "PART_SheetGrid";
 
         /// <summary>
-        ///   The par t_ sheet scroller.
+        /// The par t_ sheet scroller.
         /// </summary>
         private const string PART_SheetScroller = "PART_SheetScroller";
 
         /// <summary>
-        ///   The par t_ text editor.
+        /// The par t_ text editor.
         /// </summary>
         private const string PART_TextEditor = "PART_TextEditor";
 
         /// <summary>
-        ///   The par t_ top left.
+        /// The par t_ top left.
         /// </summary>
         private const string PART_TopLeft = "PART_TopLeft";
 
         /// <summary>
-        ///   The cell map.
+        /// The cell map.
         /// </summary>
         private readonly Dictionary<int, UIElement> cellMap = new Dictionary<int, UIElement>();
 
         /// <summary>
-        ///   The auto fill box.
+        /// The auto fill box.
         /// </summary>
         private Border autoFillBox;
 
         /// <summary>
-        ///   The auto fill cell.
+        /// The auto fill cell.
         /// </summary>
         private CellRef autoFillCell;
 
         /// <summary>
-        ///   The auto fill selection.
+        /// The auto fill selection.
         /// </summary>
         private Border autoFillSelection;
 
         /// <summary>
-        ///   The auto fill tool tip.
+        /// The auto fill tool tip.
         /// </summary>
         private ToolTip autoFillToolTip;
 
         /// <summary>
-        ///   The auto filler.
+        /// The auto filler.
         /// </summary>
         private AutoFiller autoFiller;
 
         /// <summary>
-        ///   The cell insertion index.
+        /// The cell insertion index.
         /// </summary>
         private int cellInsertionIndex;
 
         /// <summary>
-        ///   The column grid.
+        /// The column grid.
         /// </summary>
         private Grid columnGrid;
 
         /// <summary>
-        ///   The column scroller.
+        /// The column scroller.
         /// </summary>
         private ScrollViewer columnScroller;
 
         /// <summary>
-        ///   The column selection background.
+        /// The column selection background.
         /// </summary>
         private Border columnSelectionBackground;
 
         /// <summary>
-        ///   The content editor.
+        /// The content editor.
         /// </summary>
         private ContentControl contentEditor;
 
         /// <summary>
-        ///   The current background.
+        /// The current background.
         /// </summary>
         private Border currentBackground;
 
         /// <summary>
-        ///   The editing cells.
+        /// The editing cells.
         /// </summary>
         private IEnumerable<CellRef> editingCells;
 
         /// <summary>
-        ///   The end pressed.
+        /// The end pressed.
         /// </summary>
         private bool endPressed;
 
         /// <summary>
-        ///   The enum editor.
+        /// The enum editor.
         /// </summary>
         private ComboBox enumEditor;
 
         /// <summary>
-        ///   The grid.
+        /// The grid.
         /// </summary>
         private Grid grid;
 
         /// <summary>
-        ///   The is capturing.
+        /// The is capturing.
         /// </summary>
         private bool isCapturing;
 
         /// <summary>
-        ///   The is selecting columns.
+        /// The is selecting columns.
         /// </summary>
         private bool isSelectingColumns;
 
         /// <summary>
-        ///   The is selecting rows.
+        /// The is selecting rows.
         /// </summary>
         private bool isSelectingRows;
 
         /// <summary>
-        ///   The row grid.
+        /// The row grid.
         /// </summary>
         private Grid rowGrid;
 
         /// <summary>
-        ///   The row scroller.
+        /// The row scroller.
         /// </summary>
         private ScrollViewer rowScroller;
 
         /// <summary>
-        ///   The row selection background.
+        /// The row selection background.
         /// </summary>
         private Border rowSelectionBackground;
 
         /// <summary>
-        ///   The selection.
+        /// The selection.
         /// </summary>
         private Border selection;
 
         /// <summary>
-        ///   The selection background.
+        /// The selection background.
         /// </summary>
         private Border selectionBackground;
 
         /// <summary>
-        ///   The sheet grid.
+        /// The sheet grid.
         /// </summary>
         private Grid sheetGrid;
 
         /// <summary>
-        ///   The sheet scroller.
+        /// The sheet scroller.
         /// </summary>
         private ScrollViewer sheetScroller;
 
         /// <summary>
-        ///   The subcribed content.
+        /// The subcribed content.
         /// </summary>
         private object subcribedContent;
 
         /// <summary>
-        ///   The text editor.
+        /// The text editor.
         /// </summary>
         private TextBox textEditor;
 
         /// <summary>
-        ///   The topleft.
+        /// The topleft.
         /// </summary>
         private Border topleft;
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "SimpleGrid" /> class.
+        /// Initializes static members of the <see cref = "SimpleGrid" /> class.
         /// </summary>
         static SimpleGrid()
         {
@@ -292,12 +309,8 @@ namespace PropertyTools.Wpf
                 typeof(SimpleGrid), new FrameworkPropertyMetadata(typeof(SimpleGrid)));
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets a value indicating whether to use column definitions.
+        /// Gets a value indicating whether to use column definitions.
         /// </summary>
         protected bool UseColumnDefinitions
         {
@@ -306,10 +319,6 @@ namespace PropertyTools.Wpf
                 return this.ColumnDefinitions.Count > 0;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The auto size all columns.
@@ -796,7 +805,7 @@ namespace PropertyTools.Wpf
 
             this.autoFillToolTip = new ToolTip
                 {
-                   Placement = PlacementMode.Bottom, PlacementTarget = this.autoFillSelection 
+                   Placement = PlacementMode.Bottom, PlacementTarget = this.autoFillSelection
                 };
 
             this.UpdateGridContent();
@@ -1103,10 +1112,6 @@ namespace PropertyTools.Wpf
 
             return false;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The create element.
@@ -1676,8 +1681,8 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// Virtualizes the UIElements for the visible cells.
-        ///   Adds elements for the visible cells not currently in the logical tree.
-        ///   Removes elements for the nonvisible cells.
+        /// Adds elements for the visible cells not currently in the logical tree.
+        /// Removes elements for the nonvisible cells.
         /// </summary>
         protected void VirtualizeCells()
         {
@@ -2484,7 +2489,7 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// Enumerate the items in the specified cell range.
-        ///   This is used to updated the SelectedItems property.
+        /// This is used to updated the SelectedItems property.
         /// </summary>
         /// <param name="cell0">
         /// The cell 0.
@@ -3507,8 +3512,8 @@ namespace PropertyTools.Wpf
 
                 var border = new Border
                     {
-                        BorderBrush = this.HeaderBorderBrush, 
-                        BorderThickness = new Thickness(0, 1, 1, 1), 
+                        BorderBrush = this.HeaderBorderBrush,
+                        BorderThickness = new Thickness(0, 1, 1, 1),
                         Margin = new Thickness(0, 0, j < columns - 1 ? -1 : 0, 0)
                     };
                 Grid.SetColumn(border, j);
@@ -3519,11 +3524,11 @@ namespace PropertyTools.Wpf
                 {
                     cell = new TextBlock
                         {
-                            Text = header != null ? header.ToString() : "-", 
-                            VerticalAlignment = VerticalAlignment.Center, 
+                            Text = header != null ? header.ToString() : "-",
+                            VerticalAlignment = VerticalAlignment.Center,
                             HorizontalAlignment =
                                 this.GetHorizontalAlignment(
-                                    new CellRef(!this.ItemsInColumns ? -1 : j, !this.ItemsInColumns ? j : -1)), 
+                                    new CellRef(!this.ItemsInColumns ? -1 : j, !this.ItemsInColumns ? j : -1)),
                             Padding = new Thickness(4, 2, 4, 2)
                         };
                 }
@@ -3535,11 +3540,11 @@ namespace PropertyTools.Wpf
                 {
                     var splitter = new GridSplitter
                         {
-                            ResizeDirection = GridResizeDirection.Columns, 
-                            Background = Brushes.Transparent, 
-                            Width = 4, 
-                            Focusable = false, 
-                            VerticalAlignment = VerticalAlignment.Stretch, 
+                            ResizeDirection = GridResizeDirection.Columns,
+                            Background = Brushes.Transparent,
+                            Width = 4,
+                            Focusable = false,
+                            VerticalAlignment = VerticalAlignment.Stretch,
                             HorizontalAlignment = HorizontalAlignment.Right
                         };
                     splitter.MouseDoubleClick += this.ColumnSplitterDoubleClick;
@@ -3642,8 +3647,8 @@ namespace PropertyTools.Wpf
 
                 var border = new Border
                     {
-                        BorderBrush = this.HeaderBorderBrush, 
-                        BorderThickness = new Thickness(1, 0, 1, 1), 
+                        BorderBrush = this.HeaderBorderBrush,
+                        BorderThickness = new Thickness(1, 0, 1, 1),
                         Margin = new Thickness(0, 0, 0, -1)
                     };
 
@@ -3655,9 +3660,9 @@ namespace PropertyTools.Wpf
                 {
                     cell = new TextBlock
                         {
-                            Text = header != null ? header.ToString() : "-", 
-                            VerticalAlignment = VerticalAlignment.Center, 
-                            HorizontalAlignment = HorizontalAlignment.Center, 
+                            Text = header != null ? header.ToString() : "-",
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Center,
                             Padding = new Thickness(4, 2, 4, 2)
                         };
                 }
@@ -3674,16 +3679,16 @@ namespace PropertyTools.Wpf
 
                 var cell = new TextBlock
                     {
-                        Text = this.AddItemHeader, 
+                        Text = this.AddItemHeader,
                         // ToolTip = "Add row",
-                        VerticalAlignment = VerticalAlignment.Center, 
+                        VerticalAlignment = VerticalAlignment.Center,
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
                 var border = new Border
                     {
-                        Background = Brushes.Transparent, 
-                        BorderBrush = this.HeaderBorderBrush, 
-                        BorderThickness = new Thickness(1, 0, 1, 1), 
+                        Background = Brushes.Transparent,
+                        BorderBrush = this.HeaderBorderBrush,
+                        BorderThickness = new Thickness(1, 0, 1, 1),
                         Margin = new Thickness(0, 0, 0, 0)
                     };
 
@@ -3731,7 +3736,7 @@ namespace PropertyTools.Wpf
             {
                 var border = new Border
                     {
-                       BorderBrush = this.GridLineBrush, BorderThickness = new Thickness(0, 1, 0, 0) 
+                       BorderBrush = this.GridLineBrush, BorderThickness = new Thickness(0, 1, 0, 0)
                     };
 
                 if (i < rows && this.AlternatingRowsBackground != null && i % 2 == 1)
@@ -3761,7 +3766,7 @@ namespace PropertyTools.Wpf
 
                     var border = new Border
                         {
-                            BorderBrush = this.GridLineBrush, 
+                            BorderBrush = this.GridLineBrush,
                             BorderThickness = new Thickness(i > 0 ? 1 : 0, 0, i == columns - 1 ? 1 : 0, 0)
                         };
 
@@ -3800,6 +3805,5 @@ namespace PropertyTools.Wpf
             this.sheetGrid.Children.Add(this.enumEditor);
         }
 
-        #endregion
     }
 }

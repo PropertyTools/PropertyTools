@@ -1,9 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ColorHelper.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Static <see cref="Color" /> helper methods.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -11,14 +34,12 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Static <see cref="Color"/> helper methods.
+    /// Static <see cref="Color" /> helper methods.
     /// </summary>
     public static class ColorHelper
     {
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "ColorHelper" /> class.
+        /// Initializes static members of the <see cref="ColorHelper" /> class.
         /// </summary>
         static ColorHelper()
         {
@@ -26,23 +47,15 @@ namespace PropertyTools.Wpf
             UndefinedColor = Color.FromArgb(0, 0, 0, 0);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets the automatic color.
+        /// Gets the automatic color.
         /// </summary>
         public static Color Automatic { get; private set; }
 
         /// <summary>
-        ///   Gets the undefined color.
+        /// Gets the undefined color.
         /// </summary>
         public static Color UndefinedColor { get; private set; }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Change the alpha value of a color.
@@ -433,7 +446,7 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// Convert from HSV to <see cref="Color"/>.
-        ///   http://en.wikipedia.org/wiki/HSL_color_space
+        /// http://en.wikipedia.org/wiki/HSL_color_space
         /// </summary>
         /// <param name="hue">
         /// The Hue value [0,1].
@@ -586,7 +599,5 @@ namespace PropertyTools.Wpf
             var b = (byte)(color >> 0);
             return Color.FromArgb(a, r, g, b);
         }
-
-        #endregion
     }
 }

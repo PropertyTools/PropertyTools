@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="PropertyViewModel.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   The Property ViewModel
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -18,31 +41,25 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class PropertyViewModel : ViewModelBase, IDataErrorInfo, IEditableObject
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The time span formatter.
+        /// The time span formatter.
         /// </summary>
         private static readonly TimeSpanFormatter timeSpanFormatter = new TimeSpanFormatter();
 
         /// <summary>
-        ///   The is enabled.
+        /// The is enabled.
         /// </summary>
         private bool isEnabled = true;
 
         /// <summary>
-        ///   The is visible.
+        /// The is visible.
         /// </summary>
         private bool isVisible = true;
 
         /// <summary>
-        ///   The setting values.
+        /// The setting values.
         /// </summary>
         private bool settingValues;
-
-        #endregion
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyViewModel"/> class.
@@ -69,23 +86,19 @@ namespace PropertyTools.Wpf
             this.SetByThis = false;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets a value indicating whether the property should be edited as multiline.
+        /// Gets or sets a value indicating whether the property should be edited as multiline.
         /// </summary>
         /// <value><c>true</c> if multiline; otherwise, <c>false</c>.</value>
         public bool AcceptsReturn { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this text property should use PropertyChanged as UpdateTrigger.
+        /// Gets or sets a value indicating whether this text property should use PropertyChanged as UpdateTrigger.
         /// </summary>
         public bool AutoUpdateText { get; set; }
 
         /// <summary>
-        ///   Gets the category.
+        /// Gets the category.
         /// </summary>
         /// <value>The category.</value>
         public string Category
@@ -97,7 +110,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the description.
+        /// Gets the description.
         /// </summary>
         /// <value>The description.</value>
         public string Description
@@ -109,13 +122,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the property descriptor.
+        /// Gets or sets the property descriptor.
         /// </summary>
         /// <value>The descriptor.</value>
         public PropertyDescriptor Descriptor { get; private set; }
 
         /// <summary>
-        ///   Gets the display name.
+        /// Gets the display name.
         /// </summary>
         /// <value>The display name.</value>
         public string DisplayName
@@ -127,7 +140,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the first instance if the Instance is an Enumerable, otherwise return the Instance.
+        /// Gets the first instance if the Instance is an Enumerable, otherwise return the Instance.
         /// </summary>
         /// <value>The first instance.</value>
         public object FirstInstance
@@ -150,25 +163,25 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the format string.
+        /// Gets or sets the format string.
         /// </summary>
         /// <value>The format string.</value>
         public string FormatString { get; set; }
 
         /// <summary>
-        ///   Gets or sets the height of the editor for the property.
+        /// Gets or sets the height of the editor for the property.
         /// </summary>
         /// <value>The height.</value>
         public double Height { get; set; }
 
         /// <summary>
-        ///   Gets or sets the instance.
+        /// Gets or sets the instance.
         /// </summary>
         /// <value>The instance.</value>
         public object Instance { get; private set; }
 
         /// <summary>
-        ///   Gets the instances or a single Instance as an Enumerable.
+        /// Gets the instances or a single Instance as an Enumerable.
         /// </summary>
         /// <value>The instances.</value>
         public IEnumerable Instances
@@ -196,10 +209,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this property is enabled.
+        /// Gets or sets a value indicating whether this property is enabled.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is enabled; otherwise, <c>false</c>.
+        ///  <c>true</c> if this instance is enabled; otherwise, <c>false</c>.
         /// </value>
         public bool IsEnabled
         {
@@ -232,24 +245,24 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the descriptor for the property's IsEnabled.
+        /// Gets or sets the descriptor for the property's IsEnabled.
         /// </summary>
         /// <value>The is enabled descriptor.</value>
         public PropertyDescriptor IsEnabledDescriptor { get; set; }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this instance is enumerable.
+        /// Gets or sets a value indicating whether this instance is enumerable.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is enumerable; otherwise, <c>false</c>.
+        ///  <c>true</c> if this instance is enumerable; otherwise, <c>false</c>.
         /// </value>
         public bool IsEnumerable { get; set; }
 
         /// <summary>
-        ///   Gets a value indicating whether this instance is read only.
+        /// Gets a value indicating whether this instance is read only.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is read only; otherwise, <c>false</c>.
+        ///  <c>true</c> if this instance is read only; otherwise, <c>false</c>.
         /// </value>
         public bool IsReadOnly
         {
@@ -260,10 +273,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether this property is Visible.
+        /// Gets or sets a value indicating whether this property is Visible.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is Visible; otherwise, <c>false</c>.
+        ///  <c>true</c> if this instance is Visible; otherwise, <c>false</c>.
         /// </value>
         public bool IsVisible
         {
@@ -297,16 +310,16 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the descriptor for the property's IsVisible.
+        /// Gets or sets the descriptor for the property's IsVisible.
         /// </summary>
         /// <value>The is Visible descriptor.</value>
         public PropertyDescriptor IsVisibleDescriptor { get; set; }
 
         /// <summary>
-        ///   Gets a value indicating whether this instance is writeable.
+        /// Gets a value indicating whether this instance is writeable.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is writeable; otherwise, <c>false</c>.
+        ///  <c>true</c> if this instance is writeable; otherwise, <c>false</c>.
         /// </value>
         public bool IsWriteable
         {
@@ -317,12 +330,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the max length of text.
+        /// Gets or sets the max length of text.
         /// </summary>
         public int MaxLength { get; set; }
 
         /// <summary>
-        ///   Gets the name of the property.
+        /// Gets the name of the property.
         /// </summary>
         /// <value>The name.</value>
         public string Name
@@ -334,12 +347,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets OldValue.
+        /// Gets or sets OldValue.
         /// </summary>
         public object OldValue { get; set; }
 
         /// <summary>
-        ///   Gets the property error.
+        /// Gets the property error.
         /// </summary>
         /// <value>The property error.</value>
         public string PropertyError
@@ -353,7 +366,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the name of the property.
+        /// Gets the name of the property.
         /// </summary>
         /// <value>The name of the property.</value>
         public string PropertyName
@@ -365,7 +378,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the property template selector.
+        /// Gets the property template selector.
         /// </summary>
         /// <value>The property template selector.</value>
         public PropertyTemplateSelector PropertyTemplateSelector
@@ -377,7 +390,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the type of the property.
+        /// Gets the type of the property.
         /// </summary>
         /// <value>The type of the property.</value>
         public Type PropertyType
@@ -389,7 +402,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the property warning.
+        /// Gets the property warning.
         /// </summary>
         /// <value>The property warning.</value>
         public string PropertyWarning
@@ -403,19 +416,19 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets whether Value was set by this ViewModel
+        /// Gets or sets whether Value was set by this ViewModel
         /// </summary>
         /// <value>True if this ViewModel set Value, false otherwise</value>
         public bool SetByThis { get; set; }
 
         /// <summary>
-        ///   Gets or sets the text wrapping for multiline strings.
+        /// Gets or sets the text wrapping for multiline strings.
         /// </summary>
         /// <value>The text wrapping mode.</value>
         public TextWrapping TextWrapping { get; set; }
 
         /// <summary>
-        ///   Gets or sets the value of the property.
+        /// Gets or sets the value of the property.
         /// </summary>
         /// <value>The value.</value>
         public object Value
@@ -475,7 +488,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets the visibility of the property.
+        /// Gets the visibility of the property.
         /// </summary>
         /// <value>The visibility.</value>
         public Visibility Visibility
@@ -486,12 +499,8 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Explicit Interface Properties
-
         /// <summary>
-        ///   Gets Error.
+        /// Gets Error.
         /// </summary>
         string IDataErrorInfo.Error
         {
@@ -507,15 +516,11 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Explicit Interface Indexers
-
         /// <summary>
-        ///   The i data error info.this.
+        /// The i data error info.this.
         /// </summary>
         /// <param name = "columnName">
-        ///   The column name.
+        /// The column name.
         /// </param>
         string IDataErrorInfo.this[string columnName]
         {
@@ -530,10 +535,6 @@ namespace PropertyTools.Wpf
                 return null;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The begin edit.
@@ -616,10 +617,6 @@ namespace PropertyTools.Wpf
             this.NotifyPropertyChanged("PropertyWarning");
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The format value.
         /// </summary>
@@ -666,7 +663,7 @@ namespace PropertyTools.Wpf
         /// </param>
         /// <returns>
         /// If all components in the enumerable are equal, it returns the value.
-        ///   If values are different, it returns null.
+        /// If values are different, it returns null.
         /// </returns>
         protected object GetValueFromEnumerable(IEnumerable componentList)
         {
@@ -829,8 +826,7 @@ namespace PropertyTools.Wpf
 
                             value = converter.ConvertFrom(null, CultureInfo.InvariantCulture, value);
                         }
-                            
-                            
+
                             // Catch FormatExceptions
                         catch (Exception)
                         {
@@ -976,6 +972,5 @@ namespace PropertyTools.Wpf
             this.NotifyPropertyChanged("Visibility");
         }
 
-        #endregion
     }
 }

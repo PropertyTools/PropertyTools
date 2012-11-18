@@ -1,9 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FilePicker.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Represents a control that allows the user to pick a file.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -19,55 +42,49 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class FilePicker : Control
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The base path property.
+        /// The base path property.
         /// </summary>
         public static readonly DependencyProperty BasePathProperty = DependencyProperty.Register(
             "BasePath", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The default extension property.
+        /// The default extension property.
         /// </summary>
         public static readonly DependencyProperty DefaultExtensionProperty =
             DependencyProperty.Register(
                 "DefaultExtension", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The file dialog service property.
+        /// The file dialog service property.
         /// </summary>
         public static readonly DependencyProperty FileDialogServiceProperty =
             DependencyProperty.Register(
                 "FileDialogService", typeof(IFileDialogService), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The file path property.
+        /// The file path property.
         /// </summary>
         public static readonly DependencyProperty FilePathProperty = DependencyProperty.Register(
-            "FilePath", 
-            typeof(string), 
-            typeof(FilePicker), 
+            "FilePath",
+            typeof(string),
+            typeof(FilePicker),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        ///   The filter property.
+        /// The filter property.
         /// </summary>
         public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(
             "Filter", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///   The use open dialog property.
+        /// The use open dialog property.
         /// </summary>
         public static readonly DependencyProperty UseOpenDialogProperty = DependencyProperty.Register(
             "UseOpenDialog", typeof(bool), typeof(FilePicker), new UIPropertyMetadata(true));
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "FilePicker" /> class.
+        /// Initializes static members of the <see cref="FilePicker" /> class.
         /// </summary>
         static FilePicker()
         {
@@ -76,21 +93,17 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "FilePicker" /> class.
+        /// Initializes a new instance of the <see cref="FilePicker" /> class.
         /// </summary>
         public FilePicker()
         {
             this.BrowseCommand = new DelegateCommand(this.Browse);
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets the base path.
+        /// Gets or sets the base path.
         /// </summary>
-        /// <value>The base path.</value>
+        /// <value> The base path. </value>
         public string BasePath
         {
             get
@@ -105,15 +118,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the browse command.
+        /// Gets or sets the browse command.
         /// </summary>
-        /// <value>The browse command.</value>
+        /// <value> The browse command. </value>
         public ICommand BrowseCommand { get; set; }
 
         /// <summary>
-        ///   Gets or sets the default extension.
+        /// Gets or sets the default extension.
         /// </summary>
-        /// <value>The default extension.</value>
+        /// <value> The default extension. </value>
         public string DefaultExtension
         {
             get
@@ -128,9 +141,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the file dialog service.
+        /// Gets or sets the file dialog service.
         /// </summary>
-        /// <value>The file dialog service.</value>
+        /// <value> The file dialog service. </value>
         public IFileDialogService FileDialogService
         {
             get
@@ -145,9 +158,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the file path.
+        /// Gets or sets the file path.
         /// </summary>
-        /// <value>The file path.</value>
+        /// <value> The file path. </value>
         public string FilePath
         {
             get
@@ -162,9 +175,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets the filter.
+        /// Gets or sets the filter.
         /// </summary>
-        /// <value>The filter.</value>
+        /// <value> The filter. </value>
         public string Filter
         {
             get
@@ -179,9 +192,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether [use open dialog].
+        /// Gets or sets a value indicating whether [use open dialog].
         /// </summary>
-        /// <value><c>true</c> if [use open dialog]; otherwise, <c>false</c>.</value>
+        /// <value> <c>true</c> if [use open dialog]; otherwise, <c>false</c> . </value>
         public bool UseOpenDialog
         {
             get
@@ -194,10 +207,6 @@ namespace PropertyTools.Wpf
                 this.SetValue(UseOpenDialogProperty, value);
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Open the browse dialog.
@@ -230,7 +239,7 @@ namespace PropertyTools.Wpf
                 {
                     var d = new OpenFileDialog
                         {
-                           FileName = this.FilePath, Filter = this.Filter, DefaultExt = this.DefaultExtension 
+                           FileName = this.FilePath, Filter = this.Filter, DefaultExt = this.DefaultExtension
                         };
                     if (true == d.ShowDialog())
                     {
@@ -242,7 +251,7 @@ namespace PropertyTools.Wpf
                 {
                     var d = new SaveFileDialog
                         {
-                           FileName = this.FilePath, Filter = this.Filter, DefaultExt = this.DefaultExtension 
+                           FileName = this.FilePath, Filter = this.Filter, DefaultExt = this.DefaultExtension
                         };
                     if (true == d.ShowDialog())
                     {
@@ -314,7 +323,5 @@ namespace PropertyTools.Wpf
             var relativeUri = uri2.MakeRelativeUri(uri1);
             return relativeUri.OriginalString.Replace('/', '\\');
         }
-
-        #endregion
     }
 }

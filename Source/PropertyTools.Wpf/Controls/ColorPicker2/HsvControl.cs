@@ -1,9 +1,32 @@
-// --------------------------------------------------------------------------------------------------------------------
+ï»¿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HsvControl.cs" company="PropertyTools">
-//   http://propertytools.codeplex.com, license: Ms-PL
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2012 Oystein Bjorke
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a
+//   copy of this software and associated documentation files (the
+//   "Software"), to deal in the Software without restriction, including
+//   without limitation the rights to use, copy, modify, merge, publish,
+//   distribute, sublicense, and/or sell copies of the Software, and to
+//   permit persons to whom the Software is furnished to do so, subject to
+//   the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included
+//   in all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   The hsv control.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace PropertyTools.Wpf
 {
     using System.ComponentModel;
@@ -18,17 +41,15 @@ namespace PropertyTools.Wpf
     /// </summary>
     /// <remarks>
     /// Original code by Ury Jamshy, 21 July 2011.
-    ///   See http://www.codeproject.com/KB/WPF/ColorPicker2010.aspx
-    ///   The Code Project Open License (CPOL)
-    ///   http://www.codeproject.com/info/cpol10.aspx
+    /// See http://www.codeproject.com/KB/WPF/ColorPicker2010.aspx
+    /// The Code Project Open License (CPOL)
+    /// http://www.codeproject.com/info/cpol10.aspx
     /// </remarks>
     [TemplatePart(Name = PartThumb, Type = typeof(Thumb))]
     public class HsvControl : Control
     {
-        #region Constants and Fields
-
         /// <summary>
-        ///   The hue property.
+        /// The hue property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
             "Hue",
@@ -38,7 +59,7 @@ namespace PropertyTools.Wpf
                 (double)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnHueChanged));
 
         /// <summary>
-        ///   The saturation property.
+        /// The saturation property.
         /// </summary>
         public static readonly DependencyProperty SaturationProperty = DependencyProperty.Register(
             "Saturation",
@@ -48,7 +69,7 @@ namespace PropertyTools.Wpf
                 (double)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSaturationChanged));
 
         /// <summary>
-        ///   The selected color property.
+        /// The selected color property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
             "SelectedColor",
@@ -57,7 +78,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(Colors.Transparent, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        ///   The value property.
+        /// The value property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value",
@@ -67,51 +88,63 @@ namespace PropertyTools.Wpf
                 (double)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
         /// <summary>
-        ///   The thumb name.
+        /// The thumb name.
         /// </summary>
         private const string PartThumb = "PART_Thumb";
 
         /// <summary>
-        ///   The thumb transform.
+        /// The thumb transform.
         /// </summary>
         private readonly TranslateTransform thumbTransform = new TranslateTransform();
 
         /// <summary>
-        ///   The thumb.
+        /// The thumb.
         /// </summary>
         private Thumb thumb;
 
 #pragma warning disable 649
+
         /// <summary>
-        ///   The within update flag.
+        /// The within update flag.
         /// </summary>
         internal bool withinUpdate;
 #pragma warning restore 649
 
-        #endregion
-
-        #region Constructors and Destructors
-
         /// <summary>
-        ///   Initializes static members of the <see cref = "HsvControl" /> class.
+        /// Initializes static members of the <see cref="HsvControl" /> class.
         /// </summary>
         static HsvControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(HsvControl), new FrameworkPropertyMetadata(typeof(HsvControl)));
 
-            // Register Event Handler for the Thumb 
+            // Register Event Handler for the Thumb
             EventManager.RegisterClassHandler(
                 typeof(HsvControl), Thumb.DragDeltaEvent, new DragDeltaEventHandler(OnThumbDragDelta));
             EventManager.RegisterClassHandler(
                 typeof(HsvControl), Thumb.DragCompletedEvent, new DragCompletedEventHandler(OnThumbDragCompleted));
         }
 
+        /// <summary>
+        /// The on thumb drag completed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private static void OnThumbDragCompleted(object sender, DragCompletedEventArgs e)
         {
             ((HsvControl)sender).OnThumbDragCompleted(e);
         }
 
+        /// <summary>
+        /// The on thumb drag completed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
         private void OnThumbDragCompleted(DragCompletedEventArgs sender)
         {
             var editableObject = this.DataContext as IEditableObject;
@@ -121,12 +154,8 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
-        ///   Gets or sets Hue.
+        /// Gets or sets Hue.
         /// </summary>
         public double Hue
         {
@@ -142,7 +171,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Saturation.
+        /// Gets or sets Saturation.
         /// </summary>
         public double Saturation
         {
@@ -158,7 +187,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets SelectedColor.
+        /// Gets or sets SelectedColor.
         /// </summary>
         public Color? SelectedColor
         {
@@ -174,7 +203,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets Value.
+        /// Gets or sets Value.
         /// </summary>
         public double Value
         {
@@ -188,10 +217,6 @@ namespace PropertyTools.Wpf
                 this.SetValue(ValueProperty, value);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The on apply template.
@@ -208,14 +233,12 @@ namespace PropertyTools.Wpf
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/> routed event is raised on this element. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/>ï¿½routed event is raised on this element. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.</param>
+        /// <param name="e">
+        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.
+        /// </param>
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             var editableObject = this.DataContext as IEditableObject;
@@ -406,7 +429,5 @@ namespace PropertyTools.Wpf
 
             this.SelectedColor = ColorHelper.HsvToColor(this.Hue / 360.0, this.Saturation / 100.0, this.Value / 100.0);
         }
-
-        #endregion
     }
 }

@@ -37,7 +37,7 @@ namespace TestLibrary
         public double Angle { get; set; }
 
         [Spinnable(10, 90, 0, 360)]
-        [FormatString("{0:0}�")]
+        [FormatString("{0:0}°")]
         [Width(100)]
         public double AngleWithFormatString { get; set; }
 

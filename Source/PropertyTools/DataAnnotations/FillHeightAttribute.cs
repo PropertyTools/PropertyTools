@@ -1,5 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestSlidableAttribute.cs" company="PropertyTools">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FillHeightAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,26 +24,19 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace TestLibrary
+
+namespace PropertyTools.DataAnnotations
 {
-    using PropertyTools.DataAnnotations;
+    using System;
 
-    public class TestSlidableAttribute : TestBase
+    /// <summary>
+    ///   Specifies that the propertycontrol should fill the entire height of the tab page.
+    /// </summary>
+    /// <remarks>
+    /// This requires only one property on the tab page. 
+    /// </remarks>
+    [AttributeUsage(AttributeTargets.Property)]
+    public class FillHeightAttribute : Attribute
     {
-        [Slidable(0, 360, 45, 1)]
-        [FormatString("0.00")]
-        public double Angle { get; set; }
-
-        [Slidable(0, 360, 5, 1, true, 45)]
-        [FormatString("{0:0}°")]
-        public double AngleWithSnapping { get; set; }
-
-        [Slidable(0, 365)]
-        public int Days { get; set; }
-
-        public override string ToString()
-        {
-            return "Slidable attribute";
-        }
     }
 }

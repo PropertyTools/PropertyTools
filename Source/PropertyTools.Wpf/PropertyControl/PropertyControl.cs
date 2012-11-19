@@ -897,17 +897,10 @@ namespace PropertyTools.Wpf
             this.tabControl.Items.Clear();
             this.panelControl.Children.Clear();
 
-            if (this.UseTabs)
-            {
-                this.tabControl.DataContext = instance;
-            }
-            else
-            {
-                this.panelControl.DataContext = instance;
-            }
+            this.tabControl.DataContext = instance;
 
-            this.tabControl.Visibility = this.UseTabs ? Visibility.Visible : Visibility.Hidden;
-            this.scrollViewer.Visibility = !this.UseTabs ? Visibility.Visible : Visibility.Hidden;
+            this.tabControl.Visibility = Visibility.Visible;
+            this.scrollViewer.Visibility = Visibility.Hidden;
 
             if (tabs == null)
             {
@@ -916,105 +909,42 @@ namespace PropertyTools.Wpf
 
             foreach (var tab in tabs)
             {
-                var tabItems = new StackPanel();
+                bool fillHeight = tab.Groups.Count == 1 && tab.Groups[0].Properties.Count == 1 && tab.Groups[0].Properties[0].FillHeight;
+
+                // Create the panel for the tab content
+                var tabPanel = new Grid();
 
                 if (this.LabelWidthSharing == LabelWidthSharing.SharedInTab)
                 {
-                    Grid.SetIsSharedSizeScope(tabItems, true);
+                    Grid.SetIsSharedSizeScope(tabPanel, true);
                 }
 
-                if (this.UseTabs)
-                {
-                    var scroller = new ScrollViewer
-                        {
-                            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                            Content = tabItems
-                        };
-                    var tabitem = new TabItem { Header = tab.Header, Content = scroller };
-
-                    if (this.TabHeaderTemplate != null)
+                var tabItemContent = new ScrollViewer
                     {
-                        tabitem.Header = tab;
-                        tabitem.HeaderTemplate = this.TabHeaderTemplate;
-                    }
+                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        Content = tabPanel
+                    };
 
-                    this.tabControl.Items.Add(tabitem);
-                }
-                else
+                var tabitem = new TabItem { Header = tab.Header, Content = tabItemContent };
+                this.tabControl.Items.Add(tabitem);
+
+
+                if (this.TabHeaderTemplate != null)
                 {
-                    this.panelControl.Children.Add(tabItems);
+                    tabitem.Header = tab;
+                    tabitem.HeaderTemplate = this.TabHeaderTemplate;
                 }
 
-                if (this.TabPageHeaderTemplate != null)
-                {
-                    var hc = new ContentControl
-                        {
-                            Focusable = false,
-                            ContentTemplate = this.TabPageHeaderTemplate,
-                            Content = tab
-                        };
-                    tabItems.Children.Add(hc);
-                }
+                this.AddTabPageHeader(tab, tabPanel);
 
-                bool first = true;
+                int i = 0;
                 foreach (var g in tab.Groups)
                 {
-                    var categoryItems = new StackPanelEx();
-                    HeaderedContentControl group = null;
-
-                    switch (this.CategoryControlType)
-                    {
-                        case CategoryControlType.GroupBox:
-                            group = new GroupBox { Margin = new Thickness(0, 4, 0, 4) };
-                            break;
-                        case CategoryControlType.Expander:
-                            group = new Expander { IsExpanded = first };
-                            break;
-                        case CategoryControlType.Template:
-                            group = new HeaderedContentControl
-                                {
-                                    Template = this.CategoryControlTemplate,
-                                    Focusable = false
-                                };
-                            break;
-                    }
-
-                    first = false;
-
-                    if (group != null)
-                    {
-                        if (this.CategoryHeaderTemplate != null)
-                        {
-                            group.HeaderTemplate = this.CategoryHeaderTemplate;
-                            group.Header = g;
-                        }
-                        else
-                        {
-                            group.Header = g.Header;
-                        }
-
-                        // Hide the group control if all child properties are invisible.
-                        group.SetBinding(
-                            VisibilityProperty,
-                            new Binding("VisibleChildrenCount")
-                                {
-                                    Source = categoryItems,
-                                    Converter = ZeroToVisibilityConverter
-                                });
-
-                        if (this.LabelWidthSharing == LabelWidthSharing.SharedInGroup)
-                        {
-                            Grid.SetIsSharedSizeScope(categoryItems, true);
-                        }
-
-                        group.Content = categoryItems;
-                        tabItems.Children.Add(group);
-                    }
-
+                    var groupPanel = this.CreatePropertyPanel(g, tabPanel, i++, fillHeight);
                     foreach (var pi in g.Properties)
                     {
                         // create and add the property panel (label, tooltip icon and property control)
-                        this.AddPropertyPanel(categoryItems, pi, instance);
+                        this.AddPropertyPanel(groupPanel, pi, instance);
                     }
                 }
             }
@@ -1029,6 +959,143 @@ namespace PropertyTools.Wpf
             {
                 this.tabControl.SelectedItem = this.tabControl.Items[index];
             }
+        }
+
+        /// <summary>
+        /// Creates the controls (not using tab control).
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        /// <param name="tabs">The tab collection.</param>
+        public virtual void CreateControlsTabless(object instance, IEnumerable<Tab> tabs)
+        {
+            if (this.tabControl == null)
+            {
+                return;
+            }
+
+            this.tabControl.Items.Clear();
+            this.panelControl.Children.Clear();
+            this.tabControl.Visibility = Visibility.Hidden;
+            this.scrollViewer.Visibility = Visibility.Visible;
+            if (tabs == null)
+            {
+                return;
+            }
+
+            this.panelControl.DataContext = instance;
+
+
+            foreach (var tab in tabs)
+            {
+                // Create the panel for the properties
+                var panel = new Grid();
+
+                if (this.LabelWidthSharing == LabelWidthSharing.SharedInTab)
+                {
+                    Grid.SetIsSharedSizeScope(panel, true);
+                }
+
+                this.panelControl.Children.Add(panel);
+
+                this.AddTabPageHeader(tab, panel);
+
+                // Add the groups
+                int i = 0;
+                foreach (var g in tab.Groups)
+                {
+                    var propertyPanel = this.CreatePropertyPanel(g, panel, i++, false);
+
+                    foreach (var pi in g.Properties)
+                    {
+                        // create and add the property panel (label, tooltip icon and property control)
+                        this.AddPropertyPanel(propertyPanel, pi, instance);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates the content control and property panel.
+        /// </summary>
+        /// <param name="g">The g.</param>
+        /// <param name="tabItems">The tab items.</param>
+        /// <param name="index">The index.</param>
+        /// <param name="fillHeight">stretch vertically if set to <c>true</c>.</param>
+        /// <returns>Panel.</returns>
+        private Panel CreatePropertyPanel(Group g, Grid tabItems, int index, bool fillHeight)
+        {
+            if (fillHeight)
+            {
+                var p = new Grid();
+                tabItems.Children.Add(p);
+                Grid.SetRow(p, tabItems.RowDefinitions.Count);
+                tabItems.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                return p;
+            }
+
+            var propertyPanel = new StackPanelEx();
+
+            HeaderedContentControl groupContentControl = null;
+            switch (this.CategoryControlType)
+            {
+                case CategoryControlType.GroupBox:
+                    groupContentControl = new GroupBox { Margin = new Thickness(0, 4, 0, 4) };
+                    break;
+                case CategoryControlType.Expander:
+                    groupContentControl = new Expander { IsExpanded = index == 0 };
+                    break;
+                case CategoryControlType.Template:
+                    groupContentControl = new HeaderedContentControl { Template = this.CategoryControlTemplate, Focusable = false };
+                    break;
+            }
+
+            if (groupContentControl != null)
+            {
+                if (this.CategoryHeaderTemplate != null)
+                {
+                    groupContentControl.HeaderTemplate = this.CategoryHeaderTemplate;
+                    groupContentControl.Header = g;
+                }
+                else
+                {
+                    groupContentControl.Header = g.Header;
+                }
+
+                // Hide the group control if all child properties are invisible.
+                groupContentControl.SetBinding(
+                    VisibilityProperty,
+                    new Binding("VisibleChildrenCount") { Source = propertyPanel, Converter = ZeroToVisibilityConverter });
+
+                if (this.LabelWidthSharing == LabelWidthSharing.SharedInGroup)
+                {
+                    Grid.SetIsSharedSizeScope(propertyPanel, true);
+                }
+
+                groupContentControl.Content = propertyPanel;
+                tabItems.Children.Add(groupContentControl);
+                Grid.SetRow(groupContentControl, tabItems.RowDefinitions.Count);
+
+                tabItems.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
+            }
+
+            return propertyPanel;
+        }
+
+        /// <summary>
+        /// Adds the tab page header if TabPageHeaderTemplate is specified.
+        /// </summary>
+        /// <param name="tab">The tab.</param>
+        /// <param name="panel">The tab panel.</param>
+        private void AddTabPageHeader(Tab tab, Grid panel)
+        {
+            if (this.TabPageHeaderTemplate == null)
+            {
+                return;
+            }
+
+            panel.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
+            var hc = new ContentControl { Focusable = false, ContentTemplate = this.TabPageHeaderTemplate, Content = tab };
+            panel.Children.Add(hc);
         }
 
         /// <summary>
@@ -1464,7 +1531,14 @@ namespace PropertyTools.Wpf
             var oldIndex = this.tabControl != null ? this.tabControl.SelectedIndex : -1;
 
             var tabs = this.PropertyItemFactory.CreateModel(this.CurrentObject, false, this);
-            this.CreateControls(this.CurrentObject, tabs);
+            if (this.UseTabs)
+            {
+                this.CreateControls(this.CurrentObject, tabs);
+            }
+            else
+            {
+                this.CreateControlsTabless(this.CurrentObject, tabs);
+            }
 
             Type newSelectedObjectType = this.CurrentObject != null ? this.CurrentObject.GetType() : null;
             var currentObject = this.CurrentObject as ItemsBag;

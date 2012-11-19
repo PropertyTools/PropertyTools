@@ -376,8 +376,7 @@ namespace PropertyTools.Wpf
                     IsReadOnly = property.IsReadOnly,
                     TextWrapping = property.TextWrapping,
                     VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                    VerticalContentAlignment =
-                        double.IsNaN(property.Height) ? VerticalAlignment.Center : VerticalAlignment.Top
+                    VerticalContentAlignment = property.AcceptsReturn ? VerticalAlignment.Top : VerticalAlignment.Center
                 };
 
             if (property.IsReadOnly)
@@ -532,7 +531,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateFontPreview(PropertyItem property)
         {
-            var c = new TextBox
+            var c = new TextBoxEx
                 {
                     Background = Brushes.Transparent,
                     BorderBrush = null,
@@ -710,7 +709,7 @@ namespace PropertyTools.Wpf
             g.Children.Add(s);
 
             var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
-            var c = new TextBox { IsReadOnly = property.Descriptor.IsReadOnly };
+            var c = new TextBoxEx { IsReadOnly = property.Descriptor.IsReadOnly };
 
             var formatString = property.FormatString;
             if (formatString != null && !formatString.StartsWith("{"))
@@ -741,7 +740,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateSpinControl(PropertyItem property)
         {
-            var tb = new TextBox
+            var tb = new TextBoxEx
                 {
                     IsReadOnly = property.IsReadOnly,
                     BorderThickness = new Thickness(0),

@@ -215,6 +215,12 @@ namespace PropertyTools.Wpf
         public HeaderPlacement HeaderPlacement { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to stretch to the available height.
+        /// </summary>
+        /// <value><c>true</c> if fill height is enabled; otherwise, <c>false</c>.</value>
+        public bool FillHeight { get; set; }
+
+        /// <summary>
         /// Gets or sets the height.
         /// </summary>
         /// <value> The height. </value>

@@ -605,6 +605,13 @@ namespace PropertyTools.Wpf
                 pi.AcceptsReturn = true;
             }
 
+            var fha = pi.GetAttribute<FillHeightAttribute>();
+            if (fha != null)
+            {
+                pi.FillHeight = true;
+                pi.AcceptsReturn = true;
+            }
+
             if (pi.Descriptor.PropertyType == typeof(TimeSpan) && pi.Converter == null)
             {
                 pi.Converter = new TimeSpanToStringConverter();

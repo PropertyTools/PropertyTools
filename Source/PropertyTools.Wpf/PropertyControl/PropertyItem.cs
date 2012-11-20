@@ -185,6 +185,12 @@ namespace PropertyTools.Wpf
         public PropertyDescriptor FilterDescriptor { get; set; }
 
         /// <summary>
+        /// Gets or sets the default extension descriptor.
+        /// </summary>
+        /// <value>The default extension descriptor.</value>
+        public PropertyDescriptor DefaultExtensionDescriptor { get; set; }
+
+        /// <summary>
         /// Gets or sets the font family property descriptor.
         /// </summary>
         /// <value> The font family property descriptor. </value>

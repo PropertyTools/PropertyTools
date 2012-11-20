@@ -455,6 +455,24 @@ namespace PropertyTools.Wpf
                 pi.IsFileOpenDialog = fpa.UseOpenDialog;
             }
 
+            var ifpa = pi.GetAttribute<InputFilePathAttribute>();
+            if (ifpa != null)
+            {
+                pi.IsFilePath = true;
+                pi.IsFileOpenDialog = true;
+                pi.FilePathFilter = ifpa.Filter;
+                pi.FilePathDefaultExtension = ifpa.DefaultExtension;
+            }
+
+            var ofpa = pi.GetAttribute<OutputFilePathAttribute>();
+            if (ofpa != null)
+            {
+                pi.IsFilePath = true;
+                pi.IsFileOpenDialog = false;
+                pi.FilePathFilter = ofpa.Filter;
+                pi.FilePathDefaultExtension = ofpa.DefaultExtension;
+            }
+
             var dpa = pi.GetAttribute<DirectoryPathAttribute>();
             pi.IsDirectoryPath = dpa != null;
 
@@ -542,6 +560,12 @@ namespace PropertyTools.Wpf
             if (fa != null)
             {
                 pi.FilterDescriptor = properties.Find(fa.PropertyName, false);
+            }
+
+            var dea = pi.GetAttribute<DefaultExtensionPropertyAttribute>();
+            if (dea != null)
+            {
+                pi.DefaultExtensionDescriptor = properties.Find(dea.PropertyName, false);
             }
 
             var fsa = pi.GetAttribute<FormatStringAttribute>();

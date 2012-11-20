@@ -41,7 +41,7 @@ namespace PropertyTools.DataAnnotations
         /// Initializes a new instance of the <see cref="FilterPropertyAttribute"/> class.
         /// </summary>
         /// <param name="propertyName">
-        /// Name of the property.
+        /// Name of the property that contains the filter.
         /// </param>
         public FilterPropertyAttribute(string propertyName)
         {
@@ -53,6 +53,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The name of the property.</value>
         public string PropertyName { get; set; }
-
     }
 }

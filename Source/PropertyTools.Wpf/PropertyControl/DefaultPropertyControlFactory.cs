@@ -487,6 +487,11 @@ namespace PropertyTools.Wpf
                 c.SetBinding(FilePicker.FilterProperty, new Binding(property.FilterDescriptor.Name));
             }
 
+            if (property.DefaultExtensionDescriptor != null)
+            {
+                c.SetBinding(FilePicker.DefaultExtensionProperty, new Binding(property.DefaultExtensionDescriptor.Name));
+            }
+
             c.SetBinding(FilePicker.FilePathProperty, property.CreateBinding());
             return c;
         }

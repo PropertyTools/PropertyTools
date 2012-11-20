@@ -26,32 +26,49 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace TestLibrary
 {
+    using System.ComponentModel;
     using System.IO;
 
     using PropertyTools.DataAnnotations;
 
     public class TestFilePathAttribute : TestBase
     {
-        [FilePath(".txt", true)]
+        [InputFilePath(".txt")]
         [FilterProperty("Filter")]
         public string OpenFilePath { get; set; }
 
-        [FilePath(".txt", false)]
+        [OutputFilePath(".txt")]
         [FilterProperty("Filter")]
         public string SaveFilePath { get; set; }
 
-        [FilePath(".txt", true)]
+        [InputFilePath(".txt")]
+        public string InputFilePath { get; set; }
+
+        [OutputFilePath(".html")]
+        public string OutputFilePath { get; set; }
+
+        [InputFilePath]
+        [DefaultExtensionProperty("TestPathExtension")]
+        [FilterProperty("TestPathFilter")]
+        public string TestPath { get; set; }
+        [Browsable(false)]
+        public string TestPathFilter { get { return "CSV files (*.csv)|*.csv"; } }
+        [Browsable(false)]
+        public string TestPathExtension { get { return ".csv"; } }
+
+        [InputFilePath(".txt")]
         [BasePathProperty("BasePath")]
         public string RelativePath { get; set; }
 
         public string BasePath { get; private set; }
 
+        [Browsable(false)]
         public string Filter { get; private set; }
 
         public TestFilePathAttribute()
         {
-            BasePath = Directory.GetCurrentDirectory();
-            Filter= "Text files (*.txt)|*.txt|Csv files (*.csv)|*.csv|All files (*.*)|*.*";
+            this.BasePath = Directory.GetCurrentDirectory();
+            this.Filter = "Text files (*.txt)|*.txt|Csv files (*.csv)|*.csv|All files (*.*)|*.*";
         }
 
         public override string ToString()

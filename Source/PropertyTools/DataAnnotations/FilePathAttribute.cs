@@ -52,24 +52,9 @@ namespace PropertyTools.DataAnnotations
         /// <param name="useOpenDialog">
         /// if set to <c>true</c> [use open dialog].
         /// </param>
-        public FilePathAttribute(string filter, string defaultExt, bool useOpenDialog = true)
+        public FilePathAttribute(bool useOpenDialog = true, string defaultExt = null, string filter = null)
         {
             this.Filter = filter;
-            this.DefaultExtension = defaultExt;
-            this.UseOpenDialog = useOpenDialog;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FilePathAttribute"/> class.
-        /// </summary>
-        /// <param name="defaultExt">
-        /// The default extension.
-        /// </param>
-        /// <param name="useOpenDialog">
-        /// if set to <c>true</c> [use open dialog].
-        /// </param>
-        public FilePathAttribute(string defaultExt, bool useOpenDialog = true)
-        {
             this.DefaultExtension = defaultExt;
             this.UseOpenDialog = useOpenDialog;
         }

@@ -446,15 +446,6 @@ namespace PropertyTools.Wpf
 
             pi.IsFontFamilySelector = pi.GetAttribute<FontFamilySelectorAttribute>() != null;
 
-            var fpa = pi.GetAttribute<FilePathAttribute>();
-            pi.IsFilePath = fpa != null;
-            if (fpa != null)
-            {
-                pi.FilePathFilter = fpa.Filter;
-                pi.FilePathDefaultExtension = fpa.DefaultExtension;
-                pi.IsFileOpenDialog = fpa.UseOpenDialog;
-            }
-
             var ifpa = pi.GetAttribute<InputFilePathAttribute>();
             if (ifpa != null)
             {

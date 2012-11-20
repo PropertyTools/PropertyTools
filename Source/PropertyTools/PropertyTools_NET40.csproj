@@ -53,7 +53,6 @@
     <Compile Include="DataAnnotations\DirectoryPathAttribute.cs" />
     <Compile Include="DataAnnotations\EnableByAttribute.cs" />
     <Compile Include="DataAnnotations\EnumDisplayNameAttribute.cs" />
-    <Compile Include="DataAnnotations\FilePathAttribute.cs" />
     <Compile Include="DataAnnotations\FillHeightAttribute.cs" />
     <Compile Include="DataAnnotations\FilterPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\FontFamilySelectorAttribute.cs" />

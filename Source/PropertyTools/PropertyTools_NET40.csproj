@@ -53,7 +53,7 @@
     <Compile Include="DataAnnotations\DirectoryPathAttribute.cs" />
     <Compile Include="DataAnnotations\EnableByAttribute.cs" />
     <Compile Include="DataAnnotations\EnumDisplayNameAttribute.cs" />
-    <Compile Include="DataAnnotations\FillHeightAttribute.cs" />
+    <Compile Include="DataAnnotations\FillTabAttribute.cs" />
     <Compile Include="DataAnnotations\FilterPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\FontFamilySelectorAttribute.cs" />
     <Compile Include="DataAnnotations\FontPreviewAttribute.cs" />
@@ -61,6 +61,8 @@
     <Compile Include="DataAnnotations\HeaderPlacement.cs" />
     <Compile Include="DataAnnotations\HeaderPlacementAttribute.cs" />
     <Compile Include="DataAnnotations\HeightAttribute.cs" />
+    <Compile Include="DataAnnotations\InputDirection.cs" />
+    <Compile Include="DataAnnotations\InputDirectionAttribute.cs" />
     <Compile Include="DataAnnotations\InputFilePathAttribute.cs" />
     <Compile Include="DataAnnotations\IsEditableAttribute.cs" />
     <Compile Include="DataAnnotations\ListAttribute.cs" />

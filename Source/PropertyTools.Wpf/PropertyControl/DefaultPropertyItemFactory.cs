@@ -494,6 +494,12 @@ namespace PropertyTools.Wpf
                 pi.ListMaximumNumberOfItems = la.MaximumNumberOfItems;
             }
 
+            var ida = pi.GetAttribute<InputDirectionAttribute>();
+            if (ida != null)
+            {
+                pi.InputDirection = ida.InputDirection;
+            }
+
             var sia = pi.GetAttribute<SortIndexAttribute>();
             if (sia != null)
             {
@@ -620,10 +626,10 @@ namespace PropertyTools.Wpf
                 pi.AcceptsReturn = true;
             }
 
-            var fha = pi.GetAttribute<FillHeightAttribute>();
-            if (fha != null)
+            var fta = pi.GetAttribute<FillTabAttribute>();
+            if (fta != null)
             {
-                pi.FillHeight = true;
+                pi.FillTab = true;
                 pi.AcceptsReturn = true;
             }
 

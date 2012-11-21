@@ -752,7 +752,7 @@ namespace PropertyTools.Wpf
                 column--;
             }
 
-            if (row >= this.Rows && !this.CanInsertRows)
+            if (row >= this.Rows && (!this.CanInsertRows || !this.EasyInsert))
             {
                 column++;
                 row = 0;
@@ -761,11 +761,21 @@ namespace PropertyTools.Wpf
             if (column < 0)
             {
                 column = 0;
+                row--;
+                if (row < 0)
+                {
+                    row = this.Rows - 1;
+                }
             }
 
-            if (column >= this.Columns && !this.CanInsertColumns)
+            if (column >= this.Columns && (!this.CanInsertColumns || !this.EasyInsert))
             {
                 column = 0;
+                row++;
+                if (row >= this.Rows)
+                {
+                    row = 0;
+                }
             }
 
             this.CurrentCell = new CellRef(row, column);
@@ -858,7 +868,8 @@ namespace PropertyTools.Wpf
 
             this.autoFillToolTip = new ToolTip
                 {
-                   Placement = PlacementMode.Bottom, PlacementTarget = this.autoFillSelection
+                    Placement = PlacementMode.Bottom,
+                    PlacementTarget = this.autoFillSelection
                 };
 
             this.UpdateGridContent();
@@ -1171,7 +1182,23 @@ namespace PropertyTools.Wpf
 
             var itemType = TypeHelper.FindBiggestCommonType(items);
 
-            var properties = TypeDescriptor.GetProperties(itemType);
+            PropertyDescriptorCollection properties = null;
+
+            // Try to get the property descriptors from an instance
+            foreach (var item in items)
+            {
+                if (item != null && item.GetType() == itemType)
+                {
+                    properties = TypeDescriptor.GetProperties(item);
+                    break;
+                }
+            }
+
+            // Otherwise get the descriptors from the type
+            if (properties == null)
+            {
+                properties = TypeDescriptor.GetProperties(itemType);
+            }
 
             foreach (PropertyDescriptor descriptor in properties)
             {
@@ -1224,7 +1251,14 @@ namespace PropertyTools.Wpf
             switch (e.Key)
             {
                 case Key.Enter:
-                    this.MoveCurrentCell(shift ? -1 : 1, 0);
+                    if (this.InputDirection == InputDirection.Vertical)
+                    {
+                        this.MoveCurrentCell(shift ? -1 : 1, 0);
+                    }
+                    else
+                    {
+                        this.MoveCurrentCell(0, shift ? -1 : 1);
+                    }
                     e.Handled = true;
                     return;
 
@@ -2780,7 +2814,14 @@ namespace PropertyTools.Wpf
                     break;
                 case Key.Enter:
                     this.EndTextEdit();
-                    this.MoveCurrentCell(shift ? -1 : 1, 0);
+                    if (this.InputDirection == InputDirection.Vertical)
+                    {
+                        this.MoveCurrentCell(shift ? -1 : 1, 0);
+                    }
+                    else
+                    {
+                        this.MoveCurrentCell(0, shift ? -1 : 1);
+                    }
                     e.Handled = true;
                     break;
                 case Key.Escape:

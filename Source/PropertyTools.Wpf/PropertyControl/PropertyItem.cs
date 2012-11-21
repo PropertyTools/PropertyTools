@@ -74,7 +74,14 @@ namespace PropertyTools.Wpf
             this.ListCanAdd = true;
             this.ListCanRemove = true;
             this.ListMaximumNumberOfItems = int.MaxValue;
+            this.InputDirection = InputDirection.Vertical;            
         }
+
+        /// <summary>
+        /// Gets or sets the input direction.
+        /// </summary>
+        /// <value>The input direction.</value>
+        public InputDirection InputDirection { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to accept return.
@@ -221,10 +228,10 @@ namespace PropertyTools.Wpf
         public HeaderPlacement HeaderPlacement { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to stretch to the available height.
+        /// Gets or sets a value indicating whether to stretch to the available tab size.
         /// </summary>
-        /// <value><c>true</c> if fill height is enabled; otherwise, <c>false</c>.</value>
-        public bool FillHeight { get; set; }
+        /// <value><c>true</c> if fill is enabled; otherwise, <c>false</c>.</value>
+        public bool FillTab { get; set; }
 
         /// <summary>
         /// Gets or sets the height.

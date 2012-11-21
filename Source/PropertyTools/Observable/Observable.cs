@@ -71,7 +71,7 @@ namespace PropertyTools
         /// </param>
         protected void RaisePropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
+            var handler = this.PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
@@ -180,6 +180,5 @@ namespace PropertyTools
                         CultureInfo.InvariantCulture, "{0} is not a property of {1}", propertyName, type.FullName));
             }
         }
-
     }
 }

@@ -113,12 +113,12 @@
                 <MenuItem Header="Exit" Click="FileExitClick"/>
             </MenuItem>
             <MenuItem Header="PropertyControl">
-                <MenuItem Header="Show checkbox headers" IsChecked="{Binding ShowCheckBoxHeaders, ElementName=pc}" IsCheckable="true"/>
                 <MenuItem Header="Show description icons" IsChecked="{Binding ShowDescriptionIcons, ElementName=pc}" IsCheckable="true"/>
                 <MenuItem Header="Show declared only" IsChecked="{Binding ShowDeclaredOnly, ElementName=pc}" IsCheckable="true"/>
                 <MenuItem Header="Show read-only properties" IsChecked="{Binding ShowReadOnlyProperties, ElementName=pc}" IsCheckable="true"/>
                 <MenuItem Header="Use tabs" IsChecked="{Binding UseTabs, ElementName=pc}" IsCheckable="true"/>
                 <MenuItem Header="Enable label width resizing" IsChecked="{Binding EnableLabelWidthResizing, ElementName=pc}" IsCheckable="true"/>
+                <pt:EnumMenuItem Header="CheckBoxLayout" SelectedValue="{Binding CheckBoxLayout, ElementName=pc}"/>
                 <pt:EnumMenuItem Header="LabelWidthSharing" SelectedValue="{Binding LabelWidthSharing, ElementName=pc}"/>
                 <pt:EnumMenuItem Header="CategoryControlType" SelectedValue="{Binding CategoryControlType, ElementName=pc}"/>
                 <pt:EnumMenuItem Header="TabStripPlacement" SelectedValue="{Binding TabStripPlacement, ElementName=pc}"/>

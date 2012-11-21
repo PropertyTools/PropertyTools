@@ -65,6 +65,27 @@ namespace PropertyTools.Wpf
     }
 
     /// <summary>
+    /// Specifies the layout for checkboxes.
+    /// </summary>
+    public enum CheckBoxLayout
+    {
+        /// <summary>
+        /// Show the header, then the check box without content
+        /// </summary>
+        Header,
+
+        /// <summary>
+        /// Hide the header, show the check box with the display name as content
+        /// </summary>
+        HideHeader,
+
+        /// <summary>
+        /// Collapse the header, show the check box with the display name as content
+        /// </summary>
+        CollapseHeader
+    }
+
+    /// <summary>
     /// The property control.
     /// </summary>
     [TemplatePart(Name = PartTabs, Type = typeof(TabControl))]
@@ -236,14 +257,14 @@ namespace PropertyTools.Wpf
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// The show check box headers property.
+        /// The CheckboxLayout property.
         /// </summary>
-        public static readonly DependencyProperty ShowCheckBoxHeadersProperty =
+        public static readonly DependencyProperty CheckBoxLayoutProperty =
             DependencyProperty.Register(
-                "ShowCheckBoxHeaders",
-                typeof(bool),
+                "CheckBoxLayout",
+                typeof(CheckBoxLayout),
                 typeof(PropertyControl),
-                new UIPropertyMetadata(true, AppearanceChanged));
+                new UIPropertyMetadata(CheckBoxLayout.Header, AppearanceChanged));
 
         /// <summary>
         /// The show declared only property.
@@ -675,20 +696,16 @@ namespace PropertyTools.Wpf
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to show check box headers.
-        /// </summary>
-        /// <value> <c>true</c> if check box headers should be shown; otherwise, <c>false</c> . </value>
-        public bool ShowCheckBoxHeaders
+        public CheckBoxLayout CheckBoxLayout
         {
             get
             {
-                return (bool)this.GetValue(ShowCheckBoxHeadersProperty);
+                return (CheckBoxLayout)this.GetValue(CheckBoxLayoutProperty);
             }
 
             set
             {
-                this.SetValue(ShowCheckBoxHeadersProperty, value);
+                this.SetValue(CheckBoxLayoutProperty, value);
             }
         }
 
@@ -1301,13 +1318,19 @@ namespace PropertyTools.Wpf
 
             var actualHeaderPlacement = pi.HeaderPlacement;
 
-            if (!this.ShowCheckBoxHeaders && propertyControl is CheckBox)
-            {
-                actualHeaderPlacement = HeaderPlacement.Collapsed;
-                var cb = propertyControl as CheckBox;
-                cb.Content = propertyLabel;
+            var checkBoxPropertyControl = propertyControl as CheckBox;
 
-                propertyLabel = null;
+            if (checkBoxPropertyControl != null)
+            {
+                if (this.CheckBoxLayout != CheckBoxLayout.Header)
+                {
+                    checkBoxPropertyControl.Content = propertyLabel;
+                    propertyLabel = null;
+                }
+                if (this.CheckBoxLayout == CheckBoxLayout.CollapseHeader)
+                {
+                    actualHeaderPlacement = HeaderPlacement.Collapsed;                    
+                }
             }
 
             switch (actualHeaderPlacement)

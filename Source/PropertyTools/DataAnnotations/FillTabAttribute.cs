@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FillHeightAttribute.cs" company="PropertyTools">
+// <copyright file="FillTabAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -30,13 +30,13 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    ///   Specifies that the propertycontrol should fill the entire height of the tab page.
+    ///   Specifies that the propertycontrol should fill the entire size of the tab page.
     /// </summary>
     /// <remarks>
     /// This requires only one property on the tab page. 
     /// </remarks>
     [AttributeUsage(AttributeTargets.Property)]
-    public class FillHeightAttribute : Attribute
+    public class FillTabAttribute : Attribute
     {
     }
 }

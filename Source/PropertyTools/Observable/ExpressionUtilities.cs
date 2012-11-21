@@ -51,7 +51,7 @@ namespace PropertyTools
         /// </returns>
         public static string GetName<T>(Expression<Func<T>> memberAccessExpression)
         {
-            Expression expression = memberAccessExpression.Body;
+            var expression = memberAccessExpression.Body;
             switch (memberAccessExpression.Body.NodeType)
             {
                 case ExpressionType.MemberAccess:

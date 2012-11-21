@@ -916,6 +916,9 @@ namespace PropertyTools.Wpf
 
             this.tabControl.DataContext = instance;
 
+            // Set padding to zero - control margin on the tabitems instead
+            this.tabControl.Padding = new Thickness(0);
+
             this.tabControl.Visibility = Visibility.Visible;
             this.scrollViewer.Visibility = Visibility.Hidden;
 
@@ -926,7 +929,7 @@ namespace PropertyTools.Wpf
 
             foreach (var tab in tabs)
             {
-                bool fillHeight = tab.Groups.Count == 1 && tab.Groups[0].Properties.Count == 1 && tab.Groups[0].Properties[0].FillHeight;
+                bool fillTab = tab.Groups.Count == 1 && tab.Groups[0].Properties.Count == 1 && tab.Groups[0].Properties[0].FillTab;
 
                 // Create the panel for the tab content
                 var tabPanel = new Grid();
@@ -936,15 +939,21 @@ namespace PropertyTools.Wpf
                     Grid.SetIsSharedSizeScope(tabPanel, true);
                 }
 
-                var tabItemContent = new ScrollViewer
-                    {
-                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                        Content = tabPanel
-                    };
+                var tabitem = new TabItem { Header = tab.Header, Padding = new Thickness(4) };
 
-                var tabitem = new TabItem { Header = tab.Header, Content = tabItemContent };
+                if (fillTab)
+                {
+                    tabitem.Content = tabPanel;
+                }
+                else
+                {
+                    tabitem.Content = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Content = tabPanel };
+                }
+
                 this.tabControl.Items.Add(tabitem);
 
+                // set no margin if 'fill tab' and no tab page header
+                tabPanel.Margin = new Thickness(fillTab && this.TabPageHeaderTemplate == null ? 0 : 4);
 
                 if (this.TabHeaderTemplate != null)
                 {
@@ -957,7 +966,7 @@ namespace PropertyTools.Wpf
                 int i = 0;
                 foreach (var g in tab.Groups)
                 {
-                    var groupPanel = this.CreatePropertyPanel(g, tabPanel, i++, fillHeight);
+                    var groupPanel = this.CreatePropertyPanel(g, tabPanel, i++, fillTab);
                     foreach (var pi in g.Properties)
                     {
                         // create and add the property panel (label, tooltip icon and property control)
@@ -1037,11 +1046,11 @@ namespace PropertyTools.Wpf
         /// <param name="g">The g.</param>
         /// <param name="tabItems">The tab items.</param>
         /// <param name="index">The index.</param>
-        /// <param name="fillHeight">stretch vertically if set to <c>true</c>.</param>
-        /// <returns>Panel.</returns>
-        private Panel CreatePropertyPanel(Group g, Grid tabItems, int index, bool fillHeight)
+        /// <param name="fillTab">Stretch the panel if set to <c>true</c>.</param>
+        /// <returns>The property panel.</returns>
+        private Panel CreatePropertyPanel(Group g, Grid tabItems, int index, bool fillTab)
         {
-            if (fillHeight)
+            if (fillTab)
             {
                 var p = new Grid();
                 tabItems.Children.Add(p);
@@ -1231,7 +1240,11 @@ namespace PropertyTools.Wpf
         /// </param>
         private void AddPropertyPanel(Panel panel, PropertyItem pi, object instance)
         {
-            var propertyPanel = new Grid { Margin = new Thickness(2) };
+            var propertyPanel = new Grid();
+            if (!pi.FillTab)
+            {
+                propertyPanel.Margin = new Thickness(2);
+            }
 
             var labelColumn = new System.Windows.Controls.ColumnDefinition
                 {
@@ -1243,7 +1256,11 @@ namespace PropertyTools.Wpf
 
             propertyPanel.ColumnDefinitions.Add(labelColumn);
             propertyPanel.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
-            propertyPanel.RowDefinitions.Add(new System.Windows.Controls.RowDefinition());
+            var rd = new System.Windows.Controls.RowDefinition()
+                         {
+                             Height = pi.FillTab ? new GridLength(1, GridUnitType.Star) : GridLength.Auto
+                         };
+            propertyPanel.RowDefinitions.Add(rd);
 
             var propertyLabel = this.CreateLabel(pi);
             var propertyControl = this.CreatePropertyControl(pi);
@@ -1329,7 +1346,7 @@ namespace PropertyTools.Wpf
                 }
                 if (this.CheckBoxLayout == CheckBoxLayout.CollapseHeader)
                 {
-                    actualHeaderPlacement = HeaderPlacement.Collapsed;                    
+                    actualHeaderPlacement = HeaderPlacement.Collapsed;
                 }
             }
 

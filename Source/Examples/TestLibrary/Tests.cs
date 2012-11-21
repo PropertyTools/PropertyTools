@@ -65,7 +65,7 @@ namespace TestLibrary
                     new TestDirectoryPathAttribute(),
                     new TestCommentAttribute(),
                     new TestHeaderPlacementAttribute(),
-                    new TestFillHeightAttribute(),
+                    new TestFillTabAttribute(),
                     new TestPassword(),
                     new TestPerformance(),
                     new TestCollections(),

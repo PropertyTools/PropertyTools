@@ -119,26 +119,29 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The get list item type.
+        /// Gets the item type from a list type.
         /// </summary>
         /// <param name="listType">
         /// The list type.
         /// </param>
         /// <returns>
-        /// The <see cref="Type"/>.
+        /// The <see cref="Type"/> of the elements.
         /// </returns>
-        [Obsolete]
         public static Type GetListElementType(Type listType)
         {
             // http://stackoverflow.com/questions/1043755/c-generic-list-t-how-to-get-the-type-of-t
             foreach (var interfaceType in listType.GetInterfaces())
             {
-                if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IList<>))
+                if (interfaceType.IsGenericType)
                 {
-                    var args = interfaceType.GetGenericArguments();
-                    if (args.Length > 0)
+                    var gtd = interfaceType.GetGenericTypeDefinition();
+                    if (gtd == typeof(ICollection<>) || gtd == typeof(IList<>))
                     {
-                        return args[0];
+                        var args = interfaceType.GetGenericArguments();
+                        if (args.Length > 0)
+                        {
+                            return args[0];
+                        }
                     }
                 }
             }

@@ -151,7 +151,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The update column widths.
+        /// Updates column widths.
         /// </summary>
         private void UpdateColumnWidths()
         {
@@ -175,10 +175,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The update columns.
+        /// Updates the specified columns.
         /// </summary>
         /// <param name="columns">
-        /// The columns.
+        /// The column index.
         /// </param>
         private void UpdateColumns(int columns)
         {

@@ -214,14 +214,14 @@ namespace PropertyTools.Wpf
                 return this.CreateSpinControl(property);
             }
 
-            if (property.Is(typeof(IList)))
-            {
-                return this.CreateGridControl(property);
-            }
-
-            if (property.Is(typeof(IDictionary)))
+            if (property.Is(typeof(IDictionary)) || property.Is(typeof(IDictionary<,>)))
             {
                 return this.CreateDictionaryControl(property);
+            }
+
+            if (property.Is(typeof(ICollection)) || property.Is(typeof(ICollection<>)))
+            {
+                return this.CreateGridControl(property);
             }
 
             return this.CreateDefaultControl(property);
@@ -568,7 +568,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateGridControl(PropertyItem property)
         {
-            var c = new ItemsGrid { CanDelete = property.ListCanRemove, CanInsert = property.ListCanAdd };
+            var c = new ItemsGrid { CanDelete = property.ListCanRemove, CanInsert = property.ListCanAdd, InputDirection = property.InputDirection };
 
             var glc = new GridLengthConverter();
             foreach (var ca in property.Columns.OrderBy(cd => cd.ColumnIndex))

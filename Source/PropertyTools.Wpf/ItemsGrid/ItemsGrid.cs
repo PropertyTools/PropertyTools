@@ -1182,22 +1182,19 @@ namespace PropertyTools.Wpf
 
             var itemType = TypeHelper.FindBiggestCommonType(items);
 
-            PropertyDescriptorCollection properties = null;
+            var properties = TypeDescriptor.GetProperties(itemType);
 
-            // Try to get the property descriptors from an instance
-            foreach (var item in items)
+            if (properties.Count == 0)
             {
-                if (item != null && item.GetType() == itemType)
+                // Otherwise try to get the property descriptors from an instance
+                foreach (var item in items)
                 {
-                    properties = TypeDescriptor.GetProperties(item);
-                    break;
+                    if (item != null && item.GetType() == itemType)
+                    {
+                        properties = TypeDescriptor.GetProperties(item);
+                        break;
+                    }
                 }
-            }
-
-            // Otherwise get the descriptors from the type
-            if (properties == null)
-            {
-                properties = TypeDescriptor.GetProperties(itemType);
             }
 
             foreach (PropertyDescriptor descriptor in properties)

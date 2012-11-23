@@ -43,7 +43,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         static ColorHelper()
         {
-            Automatic = Color.FromArgb(1, 0, 0, 0);
+            Automatic = Color.FromArgb(0, 0, 0, 1);
             UndefinedColor = Color.FromArgb(0, 0, 0, 0);
         }
 

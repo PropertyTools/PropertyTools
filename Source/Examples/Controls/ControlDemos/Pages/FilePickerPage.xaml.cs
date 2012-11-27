@@ -32,6 +32,8 @@ using System.Windows.Controls;
 
 namespace ControlsDemo
 {
+    using System;
+
     /// <summary>
     /// Interaction logic for FilePickerPage.xaml
     /// </summary>
@@ -48,10 +50,12 @@ namespace ControlsDemo
     {
         private string _directory;
         private string _filePath;
+        private string _basePath;
 
         public FilePickerViewModel()
         {
             FilePath = @"C:\autoexec.bat";
+            BasePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             Directory = @"C:\Windows";
         }
 
@@ -62,6 +66,16 @@ namespace ControlsDemo
             {
                 _filePath = value;
                 RaisePropertyChanged("FilePath");
+            }
+        }
+        
+        public string BasePath
+        {
+            get { return _basePath; }
+            set
+            {
+                _basePath = value;
+                RaisePropertyChanged("BasePath");
             }
         }
 

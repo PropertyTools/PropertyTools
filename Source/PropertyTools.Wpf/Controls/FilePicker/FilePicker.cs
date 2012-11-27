@@ -321,7 +321,8 @@ namespace PropertyTools.Wpf
 
             var uri2 = new Uri(bp);
             var relativeUri = uri2.MakeRelativeUri(uri1);
-            return relativeUri.OriginalString.Replace('/', '\\');
+            var relativePath = Uri.UnescapeDataString(relativeUri.OriginalString);
+            return relativePath.Replace('/', '\\');
         }
     }
 }

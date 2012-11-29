@@ -42,7 +42,6 @@ namespace PropertyTools.Wpf
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
-    using System.Windows.Input;
     using System.Windows.Media;
 
     /// <summary>
@@ -749,7 +748,7 @@ namespace PropertyTools.Wpf
                 {
                     IsReadOnly = property.IsReadOnly,
                     BorderThickness = new Thickness(0),
-                    HorizontalContentAlignment = HorizontalAlignment.Right,
+                    HorizontalContentAlignment = ConvertHorizontalAlignment(property.HorizontalAlignment),
                     VerticalContentAlignment = VerticalAlignment.Center
                 };
             tb.SetBinding(TextBox.TextProperty, property.CreateBinding());
@@ -763,6 +762,24 @@ namespace PropertyTools.Wpf
                 };
             c.SetBinding(SpinControl.ValueProperty, property.CreateBinding());
             return c;
+        }
+
+        /// <summary>
+        /// Converts the horizontal alignment.
+        /// </summary>
+        /// <param name="a">The alignment to convert.</param>
+        /// <returns>A <see cref="HorizontalAlignment"/>.</returns>
+        protected HorizontalAlignment ConvertHorizontalAlignment(DataAnnotations.HorizontalAlignment a)
+        {
+            switch (a)
+            {
+                case DataAnnotations.HorizontalAlignment.Center:
+                    return HorizontalAlignment.Center;
+                case DataAnnotations.HorizontalAlignment.Right:
+                    return HorizontalAlignment.Right;
+                    default:
+                    return HorizontalAlignment.Left;
+            }
         }
 
         /// <summary>

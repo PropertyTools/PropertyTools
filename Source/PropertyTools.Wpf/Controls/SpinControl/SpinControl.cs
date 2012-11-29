@@ -31,6 +31,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
@@ -53,6 +54,25 @@ namespace PropertyTools.Wpf
         /// The part up.
         /// </summary>
         private const string PartUp = "PART_UP";
+
+
+
+        /// <summary>
+        /// Gets or sets the culture used when parsing the LargeChange/SmallChange properties.
+        /// </summary>
+        /// <value>The culture.</value>
+        public CultureInfo Culture
+        {
+            get { return (CultureInfo)GetValue(CultureProperty); }
+            set { SetValue(CultureProperty, value); }
+        }
+
+        /// <summary>
+        /// The culture property
+        /// </summary>
+        public static readonly DependencyProperty CultureProperty =
+            DependencyProperty.Register("Culture", typeof(CultureInfo), typeof(SpinControl), new UIPropertyMetadata(null));
+
 
         /// <summary>
         /// The down button geometry property.
@@ -409,10 +429,11 @@ namespace PropertyTools.Wpf
 
             if (this.Value != null)
             {
+                ITypeDescriptorContext context = null;
                 var c = TypeDescriptor.GetConverter(this.Value);
-                if (c != null && c.CanConvertFrom(change.GetType()))
+                if (c.CanConvertFrom(null, change.GetType()))
                 {
-                    var convertedChange = c.ConvertFrom(change);
+                    var convertedChange = c.ConvertFrom(context, this.Culture ?? CultureInfo.InvariantCulture, change);
                     object result;
                     if (sign > 0)
                     {
@@ -706,21 +727,22 @@ namespace PropertyTools.Wpf
         {
             if (this.Value != null)
             {
+                ITypeDescriptorContext context = null;
                 var c = TypeDescriptor.GetConverter(this.Value);
-                if (this.Maximum != null && c != null && c.CanConvertFrom(this.Maximum.GetType()))
+                if (this.Maximum != null && c != null && c.CanConvertFrom(context, this.Maximum.GetType()))
                 {
                     var v = basevalue as IComparable;
-                    var maximum = c.ConvertFrom(this.Maximum) as IComparable;
+                    var maximum = c.ConvertFrom(context, this.Culture ?? CultureInfo.InvariantCulture, this.Maximum) as IComparable;
                     if (v != null && v.CompareTo(maximum) > 0)
                     {
                         return maximum;
                     }
                 }
 
-                if (this.Minimum != null && c != null && c.CanConvertFrom(this.Minimum.GetType()))
+                if (this.Minimum != null && c != null && c.CanConvertFrom(context, this.Minimum.GetType()))
                 {
                     var v = basevalue as IComparable;
-                    var minimum = c.ConvertFrom(this.Minimum) as IComparable;
+                    var minimum = c.ConvertFrom(context, this.Culture ?? CultureInfo.InvariantCulture, this.Minimum) as IComparable;
                     if (v != null && v.CompareTo(minimum) < 0)
                     {
                         return minimum;

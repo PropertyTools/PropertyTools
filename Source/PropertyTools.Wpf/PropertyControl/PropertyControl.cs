@@ -43,6 +43,8 @@ namespace PropertyTools.Wpf
 
     using PropertyTools.DataAnnotations;
 
+    using HorizontalAlignment = System.Windows.HorizontalAlignment;
+
     /// <summary>
     /// The label width sharing.
     /// </summary>
@@ -1256,7 +1258,7 @@ namespace PropertyTools.Wpf
 
             propertyPanel.ColumnDefinitions.Add(labelColumn);
             propertyPanel.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
-            var rd = new System.Windows.Controls.RowDefinition()
+            var rd = new System.Windows.Controls.RowDefinition
                          {
                              Height = pi.FillTab ? new GridLength(1, GridUnitType.Star) : GridLength.Auto
                          };

@@ -63,6 +63,8 @@
     <Compile Include="DataAnnotations\HeaderPlacement.cs" />
     <Compile Include="DataAnnotations\HeaderPlacementAttribute.cs" />
     <Compile Include="DataAnnotations\HeightAttribute.cs" />
+    <Compile Include="DataAnnotations\HorizontalAlignment.cs" />
+    <Compile Include="DataAnnotations\HorizontalAlignmentAttribute.cs" />
     <Compile Include="DataAnnotations\InputDirection.cs" />
     <Compile Include="DataAnnotations\InputDirectionAttribute.cs" />
     <Compile Include="DataAnnotations\InputFilePathAttribute.cs" />

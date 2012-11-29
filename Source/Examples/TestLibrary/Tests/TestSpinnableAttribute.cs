@@ -37,6 +37,7 @@ namespace TestLibrary
         public double Angle { get; set; }
 
         [Spinnable(10, 90, 0, 360)]
+        [HorizontalAlignment(HorizontalAlignment.Right)]
         [FormatString("{0:0}°")]
         [Width(100)]
         public double AngleWithFormatString { get; set; }
@@ -59,7 +60,11 @@ namespace TestLibrary
         [Width(100)]
         public Length Length { get; set; }
 
-        [Spinnable(1,10), Width(100)]
+        [Spinnable("1", "2.5", "0", "100")]
+        [Width(100)]
+        public double? Length2 { get; set; }
+
+        [Spinnable(1, 10), Width(100)]
         public byte Byte { get; set; }
         [Spinnable(1, 10), Width(100)]
         public sbyte SByte { get; set; }

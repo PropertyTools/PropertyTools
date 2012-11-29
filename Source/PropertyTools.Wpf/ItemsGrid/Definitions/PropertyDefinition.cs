@@ -33,10 +33,11 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.ComponentModel;
     using System.Globalization;
-    using System.Windows;
     using System.Windows.Data;
 
     using PropertyTools.DataAnnotations;
+
+    using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
     /// <summary>
     /// Describes properties that applies to columns or rows in an ItemsGrid.

@@ -42,6 +42,8 @@ namespace PropertyTools.Wpf
 
     using PropertyTools.DataAnnotations;
 
+    using HorizontalAlignment = PropertyTools.DataAnnotations.HorizontalAlignment;
+
     /// <summary>
     /// Represents a property.
     /// </summary>
@@ -68,6 +70,7 @@ namespace PropertyTools.Wpf
             this.MaxLength = int.MaxValue;
             this.MoveFocusOnEnter = true;
             this.HeaderPlacement = HeaderPlacement.Left;
+            this.HorizontalAlignment = HorizontalAlignment.Left;
             this.DataTypes = new List<DataType>();
             this.Columns = new List<ColumnAttribute>();
 
@@ -226,6 +229,11 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value> The header placement. </value>
         public HeaderPlacement HeaderPlacement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the horizontal alignment.
+        /// </summary>
+        public PropertyTools.DataAnnotations.HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to stretch to the available tab size.

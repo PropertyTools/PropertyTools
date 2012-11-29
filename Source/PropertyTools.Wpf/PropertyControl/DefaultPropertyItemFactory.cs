@@ -617,12 +617,18 @@ namespace PropertyTools.Wpf
                 pi.HeaderPlacement = hpa.HeaderPlacement;
             }
 
-            var ha = pi.GetAttribute<HeightAttribute>();
+            var ha = pi.GetAttribute<HorizontalAlignmentAttribute>();
             if (ha != null)
             {
-                pi.Height = ha.Height;
-                pi.MinimumHeight = ha.MinimumHeight;
-                pi.MaximumHeight = ha.MaximumHeight;
+                pi.HorizontalAlignment = ha.HorizontalAlignment;
+            }
+
+            var hea = pi.GetAttribute<HeightAttribute>();
+            if (hea != null)
+            {
+                pi.Height = hea.Height;
+                pi.MinimumHeight = hea.MinimumHeight;
+                pi.MaximumHeight = hea.MaximumHeight;
                 pi.AcceptsReturn = true;
             }
 

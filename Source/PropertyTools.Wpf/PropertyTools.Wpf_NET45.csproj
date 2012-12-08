@@ -177,6 +177,7 @@
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Helpers\AutoFiller.cs" />
     <Compile Include="Helpers\CaptureScreenshot.cs" />
+    <Compile Include="Helpers\DelegateCommandBinding.cs" />
     <Compile Include="Helpers\FormattedTimeSpanParser.cs" />
     <Compile Include="ItemsGrid\CellRefConverter.cs" />
     <Compile Include="ItemsGrid\Definitions\ColumnDefinition.cs" />

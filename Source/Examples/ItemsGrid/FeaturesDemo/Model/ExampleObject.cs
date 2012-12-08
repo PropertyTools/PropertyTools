@@ -76,7 +76,20 @@ namespace FeaturesDemo
         public string String
         {
             get { return s; }
-            set { s = value; RaisePropertyChanged("String"); }
+            set
+            {
+                s = value;
+                RaisePropertyChanged("String");
+                RaisePropertyChanged("ReadOnlyString");
+            }
+        }
+
+        public string ReadOnlyString
+        {
+            get
+            {
+                return s != null ? "L=" + s.Length.ToString() : null;
+            }
         }
 
         private Color color;

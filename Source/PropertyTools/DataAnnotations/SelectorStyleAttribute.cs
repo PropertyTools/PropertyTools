@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RadioButtonsAttribute.cs" company="PropertyTools">
+// <copyright file="SelectorStyleAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies that the property should use radio buttons.
+//   Specifies what control style a selector property should use.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.DataAnnotations
@@ -32,10 +32,26 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    /// Specifies that the property should use radio buttons.
+    /// Specifies what control style a selector property should use.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class RadioButtonsAttribute : Attribute
+    public class SelectorStyleAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectorStyleAttribute" /> class.
+        /// </summary>
+        /// <param name="selectorStyle">The selector style.</param>
+        public SelectorStyleAttribute(SelectorStyle selectorStyle)
+        {
+            this.SelectorStyle = selectorStyle;
+        }
+
+        /// <summary>
+        /// Gets the selector style.
+        /// </summary>
+        /// <value>
+        /// The selector style.
+        /// </value>
+        public SelectorStyle SelectorStyle { get; private set; }
     }
 }

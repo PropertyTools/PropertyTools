@@ -45,7 +45,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Represents a datagrid with a spreadsheet style.
+    /// Displays enumerable data in a customizable grid.
     /// </summary>
     [ContentProperty("ItemsSource")]
     [DefaultProperty("ItemsSource")]
@@ -82,7 +82,7 @@ namespace PropertyTools.Wpf
         private const string PartColumnGrid = "PART_ColumnGrid";
 
         /// <summary>
-        /// The column scroller.
+        /// The column scroll viewer.
         /// </summary>
         private const string PartColumnScroller = "PART_ColumnScroller";
 
@@ -107,7 +107,7 @@ namespace PropertyTools.Wpf
         private const string PartRowGrid = "PART_RowGrid";
 
         /// <summary>
-        /// The row scroller.
+        /// The row scroll viewer.
         /// </summary>
         private const string PartRowScroller = "PART_RowScroller";
 
@@ -132,7 +132,7 @@ namespace PropertyTools.Wpf
         private const string PartSheetGrid = "PART_SheetGrid";
 
         /// <summary>
-        /// The sheet scroller.
+        /// The sheet scroll viewer.
         /// </summary>
         private const string PartSheetScroller = "PART_SheetScroller";
 
@@ -172,10 +172,10 @@ namespace PropertyTools.Wpf
         private AutoFiller autoFiller;
 
         /// <summary>
-        /// The index in the sheetGrid where new cells can be inserted.
+        /// The index in the sheet grid where new cells can be inserted.
         /// </summary>
         /// <remarks>
-        /// The selection and autofill controls should always be at the end of the sheetGrid children collection.
+        /// The selection and auto fill controls should always be at the end of the sheetGrid children collection.
         /// </remarks>
         private int cellInsertionIndex;
 
@@ -185,7 +185,7 @@ namespace PropertyTools.Wpf
         private Grid columnGrid;
 
         /// <summary>
-        /// The column scroller control.
+        /// The column scroll view control.
         /// </summary>
         private ScrollViewer columnScroller;
 
@@ -235,7 +235,7 @@ namespace PropertyTools.Wpf
         private Grid rowGrid;
 
         /// <summary>
-        /// The row scroller control.
+        /// The row scroll viewer control.
         /// </summary>
         private ScrollViewer rowScroller;
 
@@ -260,7 +260,7 @@ namespace PropertyTools.Wpf
         private Grid sheetGrid;
 
         /// <summary>
-        /// The sheet scroller control.
+        /// The sheet scroll viewer control.
         /// </summary>
         private ScrollViewer sheetScroller;
 
@@ -270,7 +270,7 @@ namespace PropertyTools.Wpf
         private object subcribedCollection;
 
         /// <summary>
-        /// The topleft control.
+        /// The top/left control.
         /// </summary>
         private Border topleft;
 
@@ -367,7 +367,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The copy.
+        /// Copies items to the clipboard.
         /// </summary>
         public void Copy()
         {
@@ -375,7 +375,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The copy.
+        /// Copies the selected cells.
         /// </summary>
         /// <param name="separator">
         /// The separator.
@@ -383,7 +383,22 @@ namespace PropertyTools.Wpf
         public void Copy(string separator)
         {
             var text = this.SelectionToString(separator);
-            Clipboard.SetText(text);
+            var array = this.SelectionToArray();
+
+            var dataObject = new DataObject();
+            dataObject.SetText(text);
+
+            try
+            {
+                dataObject.SetData(typeof(ItemsGrid), array);
+            }
+            catch (Exception e)
+            {
+                // nonserializable values?
+                Debug.WriteLine(e);
+            }
+
+            Clipboard.SetDataObject(dataObject);
         }
 
         /// <summary>
@@ -882,25 +897,37 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Pastes the content from the clipboard.
+        /// Pastes the content from the clipboard to the current selection.
         /// </summary>
         public void Paste()
         {
-            if (!Clipboard.ContainsText())
+            object[,] values = null;
+
+            var dataObject = Clipboard.GetDataObject();
+            if (dataObject != null)
+            {
+                var data = dataObject.GetData(typeof(ItemsGrid));
+                values = data as object[,];
+            }
+
+            if (values == null && Clipboard.ContainsText())
+            {
+                string text = Clipboard.GetText().Trim();
+                values = TextToArray(text);
+            }
+
+            if (values == null)
             {
                 return;
             }
-
-            string text = Clipboard.GetText().Trim();
-            var textArray = TextToArray(text);
 
             int rowMin = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
             int columnMin = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
             int rowMax = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
             int columnMax = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
 
-            int rows = textArray.GetUpperBound(0) + 1;
-            int columns = textArray.GetUpperBound(1) + 1;
+            int rows = values.GetUpperBound(0) + 1;
+            int columns = values.GetUpperBound(1) + 1;
 
             for (int i = rowMin; i <= rowMax || i < rowMin + rows; i++)
             {
@@ -914,7 +941,7 @@ namespace PropertyTools.Wpf
 
                 for (int j = columnMin; j <= columnMax || j < columnMin + columns; j++)
                 {
-                    string value = textArray[(i - rowMin) % rows, (j - columnMin) % columns];
+                    object value = values[(i - rowMin) % rows, (j - columnMin) % columns];
                     this.TrySetCellValue(new CellRef(i, j), value);
                 }
             }
@@ -936,18 +963,18 @@ namespace PropertyTools.Wpf
             var pos1 = this.GetPosition(new CellRef(cellRef.Row + 1, cellRef.Column + 1));
 
             // todo: get correct size
-            double scrollBarWidth = 20;
-            double scrollBarHeight = 20;
+            const double ScrollBarWidth = 20;
+            const double ScrollBarHeight = 20;
 
             if (pos0.X < this.sheetScroller.HorizontalOffset)
             {
                 this.sheetScroller.ScrollToHorizontalOffset(pos0.X);
             }
 
-            if (pos1.X > this.sheetScroller.HorizontalOffset + this.sheetScroller.ActualWidth - scrollBarWidth)
+            if (pos1.X > this.sheetScroller.HorizontalOffset + this.sheetScroller.ActualWidth - ScrollBarWidth)
             {
                 this.sheetScroller.ScrollToHorizontalOffset(
-                    Math.Max(pos1.X - this.sheetScroller.ActualWidth + scrollBarWidth, 0));
+                    Math.Max(pos1.X - this.sheetScroller.ActualWidth + ScrollBarWidth, 0));
             }
 
             if (pos0.Y < this.sheetScroller.VerticalOffset)
@@ -955,10 +982,10 @@ namespace PropertyTools.Wpf
                 this.sheetScroller.ScrollToVerticalOffset(pos0.Y);
             }
 
-            if (pos1.Y > this.sheetScroller.VerticalOffset + this.sheetScroller.ActualHeight - scrollBarHeight)
+            if (pos1.Y > this.sheetScroller.VerticalOffset + this.sheetScroller.ActualHeight - ScrollBarHeight)
             {
                 this.sheetScroller.ScrollToVerticalOffset(
-                    Math.Max(pos1.Y - this.sheetScroller.ActualHeight + scrollBarHeight, 0));
+                    Math.Max(pos1.Y - this.sheetScroller.ActualHeight + ScrollBarHeight, 0));
             }
         }
 
@@ -970,7 +997,7 @@ namespace PropertyTools.Wpf
         {
             this.HideEditor();
             var pd = this.GetPropertyDefinition(this.CurrentCell);
-            if (pd == null)
+            if (pd == null || pd.IsReadOnly)
             {
                 return false;
             }
@@ -1026,13 +1053,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Exports the grid to csv.
+        /// Exports the grid to comma separated values.
         /// </summary>
         /// <param name="separator">
         /// The separator.
         /// </param>
         /// <returns>
-        /// The csv string.
+        /// The comma separated values string.
         /// </returns>
         public string ToCsv(string separator = ";")
         {
@@ -1114,7 +1141,7 @@ namespace PropertyTools.Wpf
         /// The cell.
         /// </param>
         /// <param name="pd">
-        /// The pd.
+        /// The property definition.
         /// </param>
         /// <param name="item">
         /// The item.
@@ -1256,6 +1283,7 @@ namespace PropertyTools.Wpf
                     {
                         this.MoveCurrentCell(0, shift ? -1 : 1);
                     }
+
                     e.Handled = true;
                     return;
 
@@ -1499,7 +1527,7 @@ namespace PropertyTools.Wpf
             bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
             if (control)
             {
-                double s = 1 + e.Delta * 0.0004;
+                double s = 1 + (e.Delta * 0.0004);
                 var tg = new TransformGroup();
                 if (this.LayoutTransform != null)
                 {
@@ -1603,13 +1631,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Csv-encodes the specified string.
+        /// Encodes the specified string for use in a comma separated value file.
         /// </summary>
         /// <param name="input">
         /// The input string.
         /// </param>
         /// <returns>
-        /// The csv-encoded string.
+        /// The encoded string.
         /// </returns>
         private static string CsvEncodeString(string input)
         {
@@ -1673,7 +1701,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// An 2-dimensional array of strings.
         /// </returns>
-        private static string[,] TextToArray(string text)
+        private static object[,] TextToArray(string text)
         {
             int rows = 0;
             int columns = 0;
@@ -1693,7 +1721,7 @@ namespace PropertyTools.Wpf
                 return null;
             }
 
-            var result = new string[rows, columns];
+            var result = new object[rows, columns];
             int row = 0;
             foreach (string line in lines)
             {
@@ -1918,7 +1946,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column scroller changed.
+        /// Handles changes in the column scroll viewer.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -2243,7 +2271,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private FrameworkElement GetColumnElement(int column)
         {
-            return this.columnGrid.Children[1 + 3 * column + 1] as FrameworkElement;
+            return this.columnGrid.Children[1 + (3 * column) + 1] as FrameworkElement;
         }
 
         /// <summary>
@@ -2363,7 +2391,7 @@ namespace PropertyTools.Wpf
         {
             if (this.WrapItems)
             {
-                return this.ItemsInRows ? cell.Row * this.Columns + cell.Column : cell.Column * this.Rows + cell.Row;
+                return this.ItemsInRows ? (cell.Row * this.Columns) + cell.Column : (cell.Column * this.Rows) + cell.Row;
             }
 
             return this.ItemsInRows ? cell.Row : cell.Column;
@@ -2601,7 +2629,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The row scroller changed.
+        /// Handles changes in the row scroll viewer.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -2615,7 +2643,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The scroll viewer scroll changed.
+        /// Handles scroll changes in the scroll viewers (both horizontal and vertical).
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -2640,13 +2668,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Exports the selection to a string.
+        /// Formats the selected cells as a string.
         /// </summary>
         /// <param name="separator">
         /// The separator.
         /// </param>
         /// <param name="encode">
-        /// Determines whether to csv encode the elements.
+        /// Determines whether to encode the elements.
         /// </param>
         /// <returns>
         /// The string.
@@ -2657,7 +2685,16 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Set the bool value in the selected cells.
+        /// Converts the selected cells to an array of objects.
+        /// </summary>
+        /// <returns>The array.</returns>
+        private object[,] SelectionToArray()
+        {
+            return this.ToArray(this.CurrentCell, this.SelectionCell);
+        }
+
+        /// <summary>
+        /// Sets the boolean value in the selected cells.
         /// </summary>
         /// <param name="value">
         /// The value.
@@ -2684,13 +2721,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The set element data context.
+        /// Sets the data context for the specified element.
         /// </summary>
         /// <param name="element">
         /// The element.
         /// </param>
         /// <param name="pd">
-        /// The pd.
+        /// The property definition.
         /// </param>
         /// <param name="item">
         /// The item.
@@ -2766,7 +2803,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles keydown events in the TextBox editor.
+        /// Handles key down events in the TextBox editor.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -2819,6 +2856,7 @@ namespace PropertyTools.Wpf
                     {
                         this.MoveCurrentCell(0, shift ? -1 : 1);
                     }
+
                     e.Handled = true;
                     break;
                 case Key.Escape:
@@ -2841,7 +2879,7 @@ namespace PropertyTools.Wpf
         /// The separator.
         /// </param>
         /// <param name="encode">
-        /// Determines whether to csv encode the elements.
+        /// Determines whether to encode the elements.
         /// </param>
         /// <returns>
         /// The to string.
@@ -2886,6 +2924,34 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Converts the specified cell range to an array.
+        /// </summary>
+        /// <param name="cell1">The cell1.</param>
+        /// <param name="cell2">The cell2.</param>
+        /// <returns>An array.</returns>
+        private object[,] ToArray(CellRef cell1, CellRef cell2)
+        {
+            int rowMin = Math.Min(cell1.Row, cell2.Row);
+            int columnMin = Math.Min(cell1.Column, cell2.Column);
+            int rowMax = Math.Max(cell1.Row, cell2.Row);
+            int columnMax = Math.Max(cell1.Column, cell2.Column);
+
+            int m = rowMax - rowMin + 1;
+            int n = columnMax - columnMin + 1;
+            var result = new object[m, n];
+
+            for (int i = rowMin; i <= rowMax; i++)
+            {
+                for (int j = columnMin; j <= columnMax; j++)
+                {
+                    result[i - rowMin, j - columnMin] = this.GetCellValue(new CellRef(i, j));
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Toggles the check in the current cell.
         /// </summary>
         /// <returns> True if the cell was modified. </returns>
@@ -2903,7 +2969,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The topleft mouse left button down.
+        /// Handles mouse left button down events on the top/left selection control.
         /// </summary>
         /// <param name="sender">
         /// The sender.

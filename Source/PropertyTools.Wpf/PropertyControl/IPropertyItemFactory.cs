@@ -66,7 +66,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A property item.
         /// </returns>
-        PropertyItem CreatePropertyItem(PropertyDescriptor pd, object instance);
+        PropertyItem CreatePropertyItem(PropertyDescriptor pd, PropertyDescriptorCollection descriptors, object instance);
 
         /// <summary>
         /// Resets this factory.

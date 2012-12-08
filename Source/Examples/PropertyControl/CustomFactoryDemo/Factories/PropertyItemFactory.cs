@@ -39,17 +39,17 @@ namespace CustomFactoryDemo
     /// </summary>
     public class PropertyItemFactory : DefaultPropertyItemFactory
     {
-        protected override PropertyItem CreateCore(PropertyDescriptor pd, object instance)
+        protected override PropertyItem CreateCore(PropertyDescriptor pd, PropertyDescriptorCollection properties)
         {
             // Check if the property is decorated with an "ImportantAttribute"
             var ia = AttributeHelper.GetFirstAttribute<ImportantAttribute>(pd);
             if (ia != null)
             {
                 // Create a custom PropertyItem instance
-                return new ImportantPropertyItem(pd, instance);
+                return new ImportantPropertyItem(pd, properties);
             }
 
-            return base.CreateCore(pd, instance);
+            return base.CreateCore(pd, properties);
         }
 
         protected override string GetDisplayName(PropertyDescriptor pd, Type declaringType)

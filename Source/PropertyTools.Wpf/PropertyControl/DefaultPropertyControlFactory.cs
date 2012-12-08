@@ -436,25 +436,41 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateEnumControl(
             PropertyItem property, PropertyControlFactoryOptions options)
         {
-            var isRadioButton = true;
             var enumType = TypeHelper.GetEnumType(property.Descriptor.PropertyType);
             var values = Enum.GetValues(enumType);
-            if (values.Length > options.EnumAsRadioButtonsLimit && !property.UseRadioButtons)
+            var style = property.SelectorStyle;
+            if (style == DataAnnotations.SelectorStyle.Auto)
             {
-                isRadioButton = false;
+                style = values.Length > options.EnumAsRadioButtonsLimit
+                            ? DataAnnotations.SelectorStyle.ComboBox
+                            : DataAnnotations.SelectorStyle.RadioButtons;
             }
 
-            if (isRadioButton)
+            switch (style)
             {
-                var c = new RadioButtonList { EnumType = property.Descriptor.PropertyType };
-                c.SetBinding(RadioButtonList.ValueProperty, property.CreateBinding());
-                return c;
-            }
-            else
-            {
-                var c = new ComboBox { ItemsSource = Enum.GetValues(enumType) };
-                c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
-                return c;
+                case DataAnnotations.SelectorStyle.RadioButtons:
+                    {
+                        var c = new RadioButtonList { EnumType = property.Descriptor.PropertyType };
+                        c.SetBinding(RadioButtonList.ValueProperty, property.CreateBinding());
+                        return c;
+                    }
+
+                case DataAnnotations.SelectorStyle.ComboBox:
+                    {
+                        var c = new ComboBox { ItemsSource = Enum.GetValues(enumType) };
+                        c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
+                        return c;
+                    }
+
+                case DataAnnotations.SelectorStyle.ListBox:
+                    {
+                        var c = new ListBox { ItemsSource = Enum.GetValues(enumType) };
+                        c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
+                        return c;
+                    }
+
+                default:
+                    return null;
             }
         }
 
@@ -777,7 +793,7 @@ namespace PropertyTools.Wpf
                     return HorizontalAlignment.Center;
                 case DataAnnotations.HorizontalAlignment.Right:
                     return HorizontalAlignment.Right;
-                    default:
+                default:
                     return HorizontalAlignment.Left;
             }
         }

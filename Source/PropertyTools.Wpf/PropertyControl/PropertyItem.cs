@@ -474,7 +474,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether the property should use radio buttons.
         /// </summary>
-        public bool UseRadioButtons { get; set; }
+        public SelectorStyle SelectorStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the width.

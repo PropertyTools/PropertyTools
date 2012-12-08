@@ -70,9 +70,10 @@
     <Compile Include="DataAnnotations\ListAttribute.cs" />
     <Compile Include="DataAnnotations\OptionalAttribute.cs" />
     <Compile Include="DataAnnotations\OutputFilePathAttribute.cs" />
-    <Compile Include="DataAnnotations\RadioButtonsAttribute.cs" />
     <Compile Include="DataAnnotations\ResettableAttribute.cs" />
     <Compile Include="DataAnnotations\ItemHeaderPropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\SelectorStyle.cs" />
+    <Compile Include="DataAnnotations\SelectorStyleAttribute.cs" />
     <Compile Include="DataAnnotations\SlidableAttribute.cs" />
     <Compile Include="DataAnnotations\SortIndexAttribute.cs" />
     <Compile Include="DataAnnotations\ItemsSourcePropertyAttribute.cs" />

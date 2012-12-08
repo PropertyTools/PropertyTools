@@ -429,7 +429,12 @@ namespace PropertyTools.Wpf
             pi.IsVisibleDescriptor = pi.GetDescriptor(string.Format(this.VisiblePattern, pd.Name));
             pi.OptionalDescriptor = pi.GetDescriptor(string.Format(this.OptionalPattern, pd.Name));
 
-            pi.UseRadioButtons = pi.GetAttribute<RadioButtonsAttribute>() != null;
+            var ssa = pi.GetAttribute<SelectorStyleAttribute>();
+            if (ssa != null)
+            {
+                pi.SelectorStyle = ssa.SelectorStyle;
+            }
+
             var fp = pi.GetAttribute<FontPreviewAttribute>();
             pi.PreviewFonts = fp != null;
             if (fp != null)

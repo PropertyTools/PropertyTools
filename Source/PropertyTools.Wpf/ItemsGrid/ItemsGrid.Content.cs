@@ -93,7 +93,8 @@ namespace PropertyTools.Wpf
             {
                 var border = new Border
                     {
-                       BorderBrush = this.GridLineBrush, BorderThickness = new Thickness(0, 1, 0, 0)
+                        BorderBrush = this.GridLineBrush,
+                        BorderThickness = new Thickness(0, 1, 0, 0)
                     };
 
                 if (i < rows && this.AlternatingRowsBackground != null && i % 2 == 1)
@@ -155,6 +156,11 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void UpdateColumnWidths()
         {
+            if (!this.IsLoaded)
+            {
+                return;
+            }
+
             this.sheetGrid.UpdateLayout();
 
             for (int i = 0; i < this.Columns; i++)

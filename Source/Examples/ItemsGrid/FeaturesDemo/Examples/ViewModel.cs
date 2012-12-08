@@ -45,8 +45,10 @@ namespace FeaturesDemo
         /// </summary>
         public ViewModel()
         {
-            this.Items100 = new ObservableCollection<ExampleObject>
-                {
+            this.Items100 = new ObservableCollection<ExampleObject>();
+            for (int i = 0; i < 500; i++)
+            {
+                this.Items100.Add(
                     new ExampleObject
                         {
                             Boolean = true,
@@ -57,7 +59,8 @@ namespace FeaturesDemo
                             Integer = 7,
                             Selector = null,
                             String = "Hello"
-                        },
+                        });
+                this.Items100.Add(
                     new ExampleObject
                         {
                             Boolean = false,
@@ -68,8 +71,8 @@ namespace FeaturesDemo
                             Integer = -1,
                             Selector = null,
                             String = "World"
-                        }
-                };
+                        });
+            };
 
             this.Items200 = new List<PlainOldObject>
                 {

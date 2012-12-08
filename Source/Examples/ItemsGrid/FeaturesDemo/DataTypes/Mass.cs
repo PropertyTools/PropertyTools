@@ -32,6 +32,7 @@ namespace FeaturesDemo
     using System.Text.RegularExpressions;
 
     [TypeConverter(typeof(MassConverter))]
+    [Serializable]
     public struct Mass
     {
         public static Mass Kilogram = new Mass(1);

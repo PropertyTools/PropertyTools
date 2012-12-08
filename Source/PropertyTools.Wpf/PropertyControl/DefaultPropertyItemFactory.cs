@@ -176,7 +176,7 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                var pi = this.CreatePropertyItem(pd, instance);
+                var pi = this.CreatePropertyItem(pd, properties, instance);
                 items.Add(pi);
             }
 
@@ -214,10 +214,10 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A property item.
         /// </returns>
-        public virtual PropertyItem CreatePropertyItem(PropertyDescriptor pd, object instance)
+        public virtual PropertyItem CreatePropertyItem(PropertyDescriptor pd, PropertyDescriptorCollection propertyDescriptors, object instance)
         {
-            var pi = this.CreateCore(pd, instance);
-            this.SetProperties(pi);
+            var pi = this.CreateCore(pd, propertyDescriptors);
+            this.SetProperties(pi, instance);
             return pi;
         }
 
@@ -270,18 +270,14 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the property item instance.
         /// </summary>
-        /// <param name="pd">
-        /// The pd.
-        /// </param>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
+        /// <param name="pd">The pd.</param>
+        /// <param name="propertyDescriptors">The property descriptors.</param>
         /// <returns>
         /// The core.
         /// </returns>
-        protected virtual PropertyItem CreateCore(PropertyDescriptor pd, object instance)
+        protected virtual PropertyItem CreateCore(PropertyDescriptor pd, PropertyDescriptorCollection propertyDescriptors)
         {
-            return new PropertyItem(pd, instance);
+            return new PropertyItem(pd, propertyDescriptors);
         }
 
         /// <summary>
@@ -361,20 +357,19 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets the properties.
         /// </summary>
-        /// <param name="pi">
-        /// The property item.
-        /// </param>
-        protected virtual void SetProperties(PropertyItem pi)
+        /// <param name="pi">The property item.</param>
+        /// <param name="instance">The instance.</param>
+        protected virtual void SetProperties(PropertyItem pi, object instance)
         {
             var pd = pi.Descriptor;
             var properties = pi.Properties;
 
-            var tabName = this.DefaultTabName ?? pi.Instance.GetType().Name;
+            var tabName = this.DefaultTabName ?? instance.GetType().Name;
             var categoryName = this.DefaultCategoryName;
 
             // find the declaring type
             Type declaringType = pi.Descriptor.ComponentType;
-            var propertyInfo = pi.Instance.GetType().GetProperty(pi.Descriptor.Name);
+            var propertyInfo = instance.GetType().GetProperty(pi.Descriptor.Name);
             if (propertyInfo != null)
             {
                 declaringType = propertyInfo.DeclaringType;

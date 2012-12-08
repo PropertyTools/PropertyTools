@@ -41,8 +41,13 @@ namespace CustomFactoryDemo
     /// </remarks>
     public class ImportantPropertyItem : PropertyItem
     {
-        public ImportantPropertyItem(PropertyDescriptor pd, object instance)
-            : base(pd, instance)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImportantPropertyItem" /> class.
+        /// </summary>
+        /// <param name="pd">The pd.</param>
+        /// <param name="properties">The properties.</param>
+        public ImportantPropertyItem(PropertyDescriptor pd, PropertyDescriptorCollection properties)
+            : base(pd, properties)
         {
         }
     }

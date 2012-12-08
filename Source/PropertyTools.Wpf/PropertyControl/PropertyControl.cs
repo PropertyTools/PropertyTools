@@ -53,12 +53,12 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The shared in tab.
         /// </summary>
-        SharedInTab,
+        SharedInTab, 
 
         /// <summary>
         /// The shared in group.
         /// </summary>
-        SharedInGroup,
+        SharedInGroup, 
 
         /// <summary>
         /// The not shared.
@@ -74,12 +74,12 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Show the header, then the check box without content
         /// </summary>
-        Header,
+        Header, 
 
         /// <summary>
         /// Hide the header, show the check box with the display name as content
         /// </summary>
-        HideHeader,
+        HideHeader, 
 
         /// <summary>
         /// Collapse the header, show the check box with the display name as content
@@ -96,17 +96,17 @@ namespace PropertyTools.Wpf
     public class PropertyControl : Control, IPropertyControlOptions
     {
         /// <summary>
-        /// The panel part constant.
+        /// The panel part name.
         /// </summary>
         private const string PartPanel = "PART_Panel";
 
         /// <summary>
-        /// The scroller part constant.
+        /// The scroll control part name.
         /// </summary>
         private const string PartScroller = "PART_Scroller";
 
         /// <summary>
-        /// The tabs part constant.
+        /// The tab control part name.
         /// </summary>
         private const string PartTabs = "PART_Tabs";
 
@@ -115,9 +115,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty CategoryControlTemplateProperty =
             DependencyProperty.Register(
-                "CategoryControlTemplate",
-                typeof(ControlTemplate),
-                typeof(PropertyControl),
+                "CategoryControlTemplate", 
+                typeof(ControlTemplate), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(null));
 
         /// <summary>
@@ -125,9 +125,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty CategoryControlTypeProperty =
             DependencyProperty.Register(
-                "CategoryControlType",
-                typeof(CategoryControlType),
-                typeof(PropertyControl),
+                "CategoryControlType", 
+                typeof(CategoryControlType), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(CategoryControlType.GroupBox, AppearanceChanged));
 
         /// <summary>
@@ -141,9 +141,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty DescriptionIconAlignmentProperty =
             DependencyProperty.Register(
-                "DescriptionIconAlignment",
-                typeof(HorizontalAlignment),
-                typeof(PropertyControl),
+                "DescriptionIconAlignment", 
+                typeof(HorizontalAlignment), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(HorizontalAlignment.Right, AppearanceChanged));
 
         /// <summary>
@@ -157,9 +157,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty EnableLabelWidthResizingProperty =
             DependencyProperty.Register(
-                "EnableLabelWidthResizing",
-                typeof(bool),
-                typeof(PropertyControl),
+                "EnableLabelWidthResizing", 
+                typeof(bool), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
@@ -167,9 +167,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty EnumAsRadioButtonsLimitProperty =
             DependencyProperty.Register(
-                "EnumAsRadioButtonsLimit",
-                typeof(int),
-                typeof(PropertyControl),
+                "EnumAsRadioButtonsLimit", 
+                typeof(int), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(4, AppearanceChanged));
 
         /// <summary>
@@ -177,9 +177,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty LabelWidthSharingProperty =
             DependencyProperty.Register(
-                "LabelWidthSharing",
-                typeof(LabelWidthSharing),
-                typeof(PropertyControl),
+                "LabelWidthSharing", 
+                typeof(LabelWidthSharing), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(LabelWidthSharing.SharedInTab, AppearanceChanged));
 
         /// <summary>
@@ -208,9 +208,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty PropertyControlFactoryProperty =
             DependencyProperty.Register(
-                "PropertyControlFactory",
-                typeof(IPropertyControlFactory),
-                typeof(PropertyControl),
+                "PropertyControlFactory", 
+                typeof(IPropertyControlFactory), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(null));
 
         /// <summary>
@@ -224,18 +224,18 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty RequiredAttributeProperty =
             DependencyProperty.Register(
-                "RequiredAttribute",
-                typeof(Type),
-                typeof(PropertyControl),
+                "RequiredAttribute", 
+                typeof(Type), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// The selected object property.
         /// </summary>
         public static readonly DependencyProperty SelectedObjectProperty = DependencyProperty.Register(
-            "SelectedObject",
-            typeof(object),
-            typeof(PropertyControl),
+            "SelectedObject", 
+            typeof(object), 
+            typeof(PropertyControl), 
             new UIPropertyMetadata(null, (s, e) => ((PropertyControl)s).OnSelectedObjectChanged(e)));
 
         /// <summary>
@@ -243,9 +243,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty SelectedObjectsProperty =
             DependencyProperty.Register(
-                "SelectedObjects",
-                typeof(IEnumerable),
-                typeof(PropertyControl),
+                "SelectedObjects", 
+                typeof(IEnumerable), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(null, (s, e) => ((PropertyControl)s).SelectedObjectsChanged(e)));
 
         /// <summary>
@@ -253,29 +253,28 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty SelectedTabIndexProperty =
             DependencyProperty.Register(
-                "SelectedTabIndex",
-                typeof(int),
-                typeof(PropertyControl),
+                "SelectedTabIndex", 
+                typeof(int), 
+                typeof(PropertyControl), 
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
         /// The CheckboxLayout property.
         /// </summary>
-        public static readonly DependencyProperty CheckBoxLayoutProperty =
-            DependencyProperty.Register(
-                "CheckBoxLayout",
-                typeof(CheckBoxLayout),
-                typeof(PropertyControl),
-                new UIPropertyMetadata(CheckBoxLayout.Header, AppearanceChanged));
+        public static readonly DependencyProperty CheckBoxLayoutProperty = DependencyProperty.Register(
+            "CheckBoxLayout", 
+            typeof(CheckBoxLayout), 
+            typeof(PropertyControl), 
+            new UIPropertyMetadata(CheckBoxLayout.Header, AppearanceChanged));
 
         /// <summary>
         /// The show declared only property.
         /// </summary>
         public static readonly DependencyProperty ShowDeclaredOnlyProperty =
             DependencyProperty.Register(
-                "ShowDeclaredOnly",
-                typeof(bool),
-                typeof(PropertyControl),
+                "ShowDeclaredOnly", 
+                typeof(bool), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
@@ -283,9 +282,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty ShowDescriptionIconsProperty =
             DependencyProperty.Register(
-                "ShowDescriptionIcons",
-                typeof(bool),
-                typeof(PropertyControl),
+                "ShowDescriptionIcons", 
+                typeof(bool), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
@@ -293,9 +292,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty ShowReadOnlyPropertiesProperty =
             DependencyProperty.Register(
-                "ShowReadOnlyProperties",
-                typeof(bool),
-                typeof(PropertyControl),
+                "ShowReadOnlyProperties", 
+                typeof(bool), 
+                typeof(PropertyControl), 
                 new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
@@ -513,7 +512,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the limiting number of enum values for radio buttons lists.
+        /// Gets or sets the maximum number of values to show for radio buttons lists.
         /// </summary>
         /// <value> The limit. </value>
         public int EnumAsRadioButtonsLimit
@@ -631,23 +630,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the required attribute type.
-        /// </summary>
-        /// <value> The required attribute type. </value>
-        public Type RequiredAttribute
-        {
-            get
-            {
-                return (Type)this.GetValue(RequiredAttributeProperty);
-            }
-
-            set
-            {
-                this.SetValue(RequiredAttributeProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the selected object.
         /// </summary>
         /// <value> The selected object. </value>
@@ -698,6 +680,12 @@ namespace PropertyTools.Wpf
             }
         }
 
+        /// <summary>
+        /// Gets or sets the check box layout.
+        /// </summary>
+        /// <value>
+        /// The check box layout.
+        /// </value>
         public CheckBoxLayout CheckBoxLayout
         {
             get
@@ -708,23 +696,6 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(CheckBoxLayoutProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to show declared properties only.
-        /// </summary>
-        /// <value> <c>true</c> if only declared properti should be shown; otherwise, <c>false</c> . </value>
-        public bool ShowDeclaredOnly
-        {
-            get
-            {
-                return (bool)this.GetValue(ShowDeclaredOnlyProperty);
-            }
-
-            set
-            {
-                this.SetValue(ShowDeclaredOnlyProperty, value);
             }
         }
 
@@ -741,23 +712,6 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(ShowDescriptionIconsProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to show read only properties].
-        /// </summary>
-        /// <value> <c>true</c> if read only properties should be shown; otherwise, <c>false</c> . </value>
-        public bool ShowReadOnlyProperties
-        {
-            get
-            {
-                return (bool)this.GetValue(ShowReadOnlyPropertiesProperty);
-            }
-
-            set
-            {
-                this.SetValue(ShowReadOnlyPropertiesProperty, value);
             }
         }
 
@@ -898,6 +852,57 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the required attribute type.
+        /// </summary>
+        /// <value> The required attribute type. </value>
+        public Type RequiredAttribute
+        {
+            get
+            {
+                return (Type)this.GetValue(RequiredAttributeProperty);
+            }
+
+            set
+            {
+                this.SetValue(RequiredAttributeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to show declared properties only.
+        /// </summary>
+        /// <value> <c>true</c> if only declared properties should be shown; otherwise, <c>false</c> . </value>
+        public bool ShowDeclaredOnly
+        {
+            get
+            {
+                return (bool)this.GetValue(ShowDeclaredOnlyProperty);
+            }
+
+            set
+            {
+                this.SetValue(ShowDeclaredOnlyProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to show read only properties].
+        /// </summary>
+        /// <value> <c>true</c> if read only properties should be shown; otherwise, <c>false</c> . </value>
+        public bool ShowReadOnlyProperties
+        {
+            get
+            {
+                return (bool)this.GetValue(ShowReadOnlyPropertiesProperty);
+            }
+
+            set
+            {
+                this.SetValue(ShowReadOnlyPropertiesProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Creates the controls.
         /// </summary>
         /// <param name="instance">
@@ -931,7 +936,8 @@ namespace PropertyTools.Wpf
 
             foreach (var tab in tabs)
             {
-                bool fillTab = tab.Groups.Count == 1 && tab.Groups[0].Properties.Count == 1 && tab.Groups[0].Properties[0].FillTab;
+                bool fillTab = tab.Groups.Count == 1 && tab.Groups[0].Properties.Count == 1
+                               && tab.Groups[0].Properties[0].FillTab;
 
                 // Create the panel for the tab content
                 var tabPanel = new Grid();
@@ -949,7 +955,11 @@ namespace PropertyTools.Wpf
                 }
                 else
                 {
-                    tabitem.Content = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Content = tabPanel };
+                    tabitem.Content = new ScrollViewer
+                                          {
+                                              VerticalScrollBarVisibility = ScrollBarVisibility.Auto, 
+                                              Content = tabPanel
+                                          };
                 }
 
                 this.tabControl.Items.Add(tabitem);
@@ -992,8 +1002,12 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the controls (not using tab control).
         /// </summary>
-        /// <param name="instance">The instance.</param>
-        /// <param name="tabs">The tab collection.</param>
+        /// <param name="instance">
+        /// The instance.
+        /// </param>
+        /// <param name="tabs">
+        /// The tab collection.
+        /// </param>
         public virtual void CreateControlsTabless(object instance, IEnumerable<Tab> tabs)
         {
             if (this.tabControl == null)
@@ -1011,7 +1025,6 @@ namespace PropertyTools.Wpf
             }
 
             this.panelControl.DataContext = instance;
-
 
             foreach (var tab in tabs)
             {
@@ -1045,11 +1058,21 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the content control and property panel.
         /// </summary>
-        /// <param name="g">The g.</param>
-        /// <param name="tabItems">The tab items.</param>
-        /// <param name="index">The index.</param>
-        /// <param name="fillTab">Stretch the panel if set to <c>true</c>.</param>
-        /// <returns>The property panel.</returns>
+        /// <param name="g">
+        /// The g.
+        /// </param>
+        /// <param name="tabItems">
+        /// The tab items.
+        /// </param>
+        /// <param name="index">
+        /// The index.
+        /// </param>
+        /// <param name="fillTab">
+        /// Stretch the panel if set to <c>true</c>.
+        /// </param>
+        /// <returns>
+        /// The property panel.
+        /// </returns>
         private Panel CreatePropertyPanel(Group g, Grid tabItems, int index, bool fillTab)
         {
             if (fillTab)
@@ -1057,7 +1080,8 @@ namespace PropertyTools.Wpf
                 var p = new Grid();
                 tabItems.Children.Add(p);
                 Grid.SetRow(p, tabItems.RowDefinitions.Count);
-                tabItems.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                tabItems.RowDefinitions.Add(
+                    new System.Windows.Controls.RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 return p;
             }
 
@@ -1073,7 +1097,11 @@ namespace PropertyTools.Wpf
                     groupContentControl = new Expander { IsExpanded = index == 0 };
                     break;
                 case CategoryControlType.Template:
-                    groupContentControl = new HeaderedContentControl { Template = this.CategoryControlTemplate, Focusable = false };
+                    groupContentControl = new HeaderedContentControl
+                                              {
+                                                  Template = this.CategoryControlTemplate, 
+                                                  Focusable = false
+                                              };
                     break;
             }
 
@@ -1091,8 +1119,12 @@ namespace PropertyTools.Wpf
 
                 // Hide the group control if all child properties are invisible.
                 groupContentControl.SetBinding(
-                    VisibilityProperty,
-                    new Binding("VisibleChildrenCount") { Source = propertyPanel, Converter = ZeroToVisibilityConverter });
+                    VisibilityProperty, 
+                    new Binding("VisibleChildrenCount")
+                        {
+                            Source = propertyPanel, 
+                            Converter = ZeroToVisibilityConverter
+                        });
 
                 if (this.LabelWidthSharing == LabelWidthSharing.SharedInGroup)
                 {
@@ -1112,8 +1144,12 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Adds the tab page header if TabPageHeaderTemplate is specified.
         /// </summary>
-        /// <param name="tab">The tab.</param>
-        /// <param name="panel">The tab panel.</param>
+        /// <param name="tab">
+        /// The tab.
+        /// </param>
+        /// <param name="panel">
+        /// The tab panel.
+        /// </param>
         private void AddTabPageHeader(Tab tab, Grid panel)
         {
             if (this.TabPageHeaderTemplate == null)
@@ -1122,7 +1158,12 @@ namespace PropertyTools.Wpf
             }
 
             panel.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
-            var hc = new ContentControl { Focusable = false, ContentTemplate = this.TabPageHeaderTemplate, Content = tab };
+            var hc = new ContentControl
+                         {
+                             Focusable = false, 
+                             ContentTemplate = this.TabPageHeaderTemplate, 
+                             Content = tab
+                         };
             panel.Children.Add(hc);
         }
 
@@ -1249,18 +1290,25 @@ namespace PropertyTools.Wpf
             }
 
             var labelColumn = new System.Windows.Controls.ColumnDefinition
-                {
-                    Width = GridLength.Auto,
-                    MinWidth = this.MinimumLabelWidth,
-                    MaxWidth = this.MaximumLabelWidth,
-                    SharedSizeGroup = this.LabelWidthSharing != LabelWidthSharing.NotShared ? "labelColumn" : null
-                };
+                                  {
+                                      Width = GridLength.Auto, 
+                                      MinWidth = this.MinimumLabelWidth, 
+                                      MaxWidth = this.MaximumLabelWidth, 
+                                      SharedSizeGroup =
+                                          this.LabelWidthSharing
+                                          != LabelWidthSharing.NotShared
+                                              ? "labelColumn"
+                                              : null
+                                  };
 
             propertyPanel.ColumnDefinitions.Add(labelColumn);
             propertyPanel.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
             var rd = new System.Windows.Controls.RowDefinition
                          {
-                             Height = pi.FillTab ? new GridLength(1, GridUnitType.Star) : GridLength.Auto
+                             Height =
+                                 pi.FillTab
+                                     ? new GridLength(1, GridUnitType.Star)
+                                     : GridLength.Auto
                          };
             propertyPanel.RowDefinitions.Add(rd);
 
@@ -1292,7 +1340,7 @@ namespace PropertyTools.Wpf
                 if (pi.IsOptional)
                 {
                     propertyControl.SetBinding(
-                        UIElement.IsEnabledProperty,
+                        IsEnabledProperty, 
                         pi.OptionalDescriptor != null
                             ? new Binding(pi.OptionalDescriptor.Name)
                             : new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
@@ -1312,21 +1360,22 @@ namespace PropertyTools.Wpf
 
                     var errorControl = new ContentControl
                                            {
-                                               ContentTemplate = this.ValidationErrorTemplate,
+                                               ContentTemplate = this.ValidationErrorTemplate, 
                                                Focusable = false
                                            };
                     errorControl.SetBinding(
-                        UIElement.VisibilityProperty,
+                        VisibilityProperty, 
                         new Binding("(Validation.HasError)")
                             {
-                                Source = propertyControl,
+                                Source = propertyControl, 
                                 Converter = BoolToVisibilityConverter
                             });
                     errorControl.SetBinding(
                         ContentControl.ContentProperty, new Binding("(Validation.Errors)") { Source = propertyControl });
 
                     // Add a row to the panel
-                    propertyPanel.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
+                    propertyPanel.RowDefinitions.Add(
+                        new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
                     propertyPanel.Children.Add(errorControl);
                     Grid.SetRow(errorControl, 1);
                     Grid.SetColumn(errorControl, 1);
@@ -1346,6 +1395,7 @@ namespace PropertyTools.Wpf
                     checkBoxPropertyControl.Content = propertyLabel;
                     propertyLabel = null;
                 }
+
                 if (this.CheckBoxLayout == CheckBoxLayout.CollapseHeader)
                 {
                     actualHeaderPlacement = HeaderPlacement.Collapsed;
@@ -1402,13 +1452,14 @@ namespace PropertyTools.Wpf
                             if (!string.IsNullOrWhiteSpace(pi.Description))
                             {
                                 var descriptionIconImage = new Image
-                                    {
-                                        Source = this.DescriptionIcon,
-                                        Stretch = Stretch.None,
-                                        Margin = new Thickness(0, 4, 4, 4),
-                                        VerticalAlignment = VerticalAlignment.Top,
-                                        HorizontalAlignment = this.DescriptionIconAlignment
-                                    };
+                                                               {
+                                                                   Source = this.DescriptionIcon, 
+                                                                   Stretch = Stretch.None, 
+                                                                   Margin = new Thickness(0, 4, 4, 4), 
+                                                                   VerticalAlignment = VerticalAlignment.Top, 
+                                                                   HorizontalAlignment =
+                                                                       this.DescriptionIconAlignment
+                                                               };
 
                                 // RenderOptions.SetBitmapScalingMode(descriptionIconImage, BitmapScalingMode.NearestNeighbor);
                                 labelPanel.Children.Add(descriptionIconImage);
@@ -1441,7 +1492,7 @@ namespace PropertyTools.Wpf
             if (pi.IsVisibleDescriptor != null)
             {
                 propertyPanel.SetBinding(
-                    VisibilityProperty,
+                    VisibilityProperty, 
                     new Binding(pi.IsVisibleDescriptor.Name) { Converter = BoolToVisibilityConverter });
             }
 
@@ -1450,9 +1501,9 @@ namespace PropertyTools.Wpf
                 propertyPanel.Children.Add(
                     new GridSplitter
                         {
-                            Width = 4,
-                            Background = Brushes.Transparent,
-                            HorizontalAlignment = HorizontalAlignment.Right,
+                            Width = 4, 
+                            Background = Brushes.Transparent, 
+                            HorizontalAlignment = HorizontalAlignment.Right, 
                             Focusable = false
                         });
             }
@@ -1475,23 +1526,23 @@ namespace PropertyTools.Wpf
             if (!pi.IsOptional)
             {
                 propertyLabel = new Label
-                    {
-                        Content = pi.DisplayName,
-                        VerticalAlignment = VerticalAlignment.Top,
-                        Margin = new Thickness(0, 4, 0, 0)
-                    };
+                                    {
+                                        Content = pi.DisplayName, 
+                                        VerticalAlignment = VerticalAlignment.Top, 
+                                        Margin = new Thickness(0, 4, 0, 0)
+                                    };
             }
             else
             {
                 var cb = new CheckBox
-                    {
-                        Content = pi.DisplayName,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Margin = new Thickness(5, 0, 0, 0)
-                    };
+                             {
+                                 Content = pi.DisplayName, 
+                                 VerticalAlignment = VerticalAlignment.Center, 
+                                 Margin = new Thickness(5, 0, 0, 0)
+                             };
 
                 cb.SetBinding(
-                    ToggleButton.IsCheckedProperty,
+                    ToggleButton.IsCheckedProperty, 
                     pi.OptionalDescriptor != null
                         ? new Binding(pi.OptionalDescriptor.Name)
                         : new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
@@ -1582,7 +1633,7 @@ namespace PropertyTools.Wpf
                 this.CreateControlsTabless(this.CurrentObject, tabs);
             }
 
-            Type newSelectedObjectType = this.CurrentObject != null ? this.CurrentObject.GetType() : null;
+            var newSelectedObjectType = this.CurrentObject != null ? this.CurrentObject.GetType() : null;
             var currentObject = this.CurrentObject as ItemsBag;
             if (currentObject != null)
             {

@@ -55,14 +55,10 @@ namespace PropertyTools.Wpf
         /// <param name="propertyDescriptor">
         /// The property descriptor.
         /// </param>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
-        public PropertyItem(PropertyDescriptor propertyDescriptor, object instance)
+        public PropertyItem(PropertyDescriptor propertyDescriptor, PropertyDescriptorCollection propertyDescriptors)
         {
             this.Descriptor = propertyDescriptor;
-            this.Properties = TypeDescriptor.GetProperties(instance);
-            this.Instance = instance;
+            this.Properties = propertyDescriptors;
 
             this.Width = double.NaN;
             this.Height = double.NaN;
@@ -246,12 +242,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value> The height. </value>
         public double Height { get; set; }
-
-        /// <summary>
-        /// Gets or sets the instance.
-        /// </summary>
-        /// <value> The instance. </value>
-        public object Instance { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the property is a comment.

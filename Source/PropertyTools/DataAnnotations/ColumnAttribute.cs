@@ -43,33 +43,23 @@ namespace PropertyTools.DataAnnotations
         private readonly object typeId;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ColumnAttribute" /> class.
         /// </summary>
-        /// <param name="columnIndex">
-        /// The column index.
-        /// </param>
-        /// <param name="propertyName">
-        /// The property name.
-        /// </param>
-        /// <param name="header">
-        /// The header.
-        /// </param>
-        /// <param name="formatString">
-        /// The format string.
-        /// </param>
-        /// <param name="width">
-        /// The width.
-        /// </param>
-        /// <param name="alignment">
-        /// The alignment.
-        /// </param>
+        /// <param name="columnIndex">The column index.</param>
+        /// <param name="propertyName">The property name.</param>
+        /// <param name="header">The header.</param>
+        /// <param name="formatString">The format string.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="alignment">The alignment.</param>
+        /// <param name="isReadOnly">The columns is read only if set to <c>true</c>.</param>
         public ColumnAttribute(
             int columnIndex,
             string propertyName,
             string header = null,
             string formatString = null,
             string width = "Auto",
-            char alignment = 'C')
+            char alignment = 'C',
+            bool isReadOnly = false)
         {
             this.ColumnIndex = columnIndex;
             this.PropertyName = propertyName;
@@ -77,6 +67,7 @@ namespace PropertyTools.DataAnnotations
             this.FormatString = formatString;
             this.Width = width;
             this.Alignment = alignment;
+            this.IsReadOnly = isReadOnly;
             this.typeId = Guid.NewGuid();
         }
 
@@ -85,6 +76,15 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The alignment.</value>
         public char Alignment { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the column values are read only (overriding default binding mode).
+        /// </summary>
+        /// <value><c>true</c> if the column is read only; otherwise, <c>false</c>.</value>
+        /// <remarks>
+        /// If this property is set to true, the binding mode will be one-way also for properties with setters.
+        /// </remarks>
+        public bool IsReadOnly { get; set; }
 
         /// <summary>
         /// Gets or sets the index of the column.

@@ -593,7 +593,8 @@ namespace PropertyTools.Wpf
                         PropertyName = ca.PropertyName,
                         Header = ca.Header,
                         FormatString = ca.FormatString,
-                        Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto)
+                        Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto),
+                        IsReadOnly = ca.IsReadOnly
                     };
                 switch (ca.Alignment.ToString(CultureInfo.InvariantCulture).ToUpper())
                 {

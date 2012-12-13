@@ -65,6 +65,14 @@ namespace FeaturesDemo
             set { integer = value; RaisePropertyChanged("Integer"); }
         }
 
+        private int readOnlyInteger;
+        [ReadOnly(true)]
+        public int ReadOnlyInteger
+        {
+            get { return readOnlyInteger; }
+            set { readOnlyInteger = value; RaisePropertyChanged("ReadOnlyInteger"); }
+        }
+
         private DateTime dateTime;
         public DateTime DateTime
         {

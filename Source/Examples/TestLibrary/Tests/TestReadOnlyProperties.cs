@@ -26,15 +26,21 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace TestLibrary
 {
+    using System.ComponentModel;
+
     public class TestReadOnlyProperties : TestBase
     {
         public string Name { get; private set; }
+
+        [ReadOnly(true)]
+        public string Title { get; set; }
         
         public bool IsChecked { get; private set; }
 
         public TestReadOnlyProperties()
         {
             this.Name = "John";
+            this.Title = "President";
             this.IsChecked = true;
         }
 

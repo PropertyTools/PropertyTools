@@ -13,6 +13,7 @@
             <p:ItemsGrid.ColumnDefinitions>
                 <p:ColumnDefinition PropertyName="String" Header="string"/>
                 <p:ColumnDefinition PropertyName="Integer" Header="integer"/>
+                <p:ColumnDefinition PropertyName="Integer" Header="ReadOnly" IsReadOnly="True"/>
                 <p:ColumnDefinition PropertyName="Enum" Header="enum"/>
                 <p:ColumnDefinition PropertyName="Selector" Header="selector"/>
             </p:ItemsGrid.ColumnDefinitions>

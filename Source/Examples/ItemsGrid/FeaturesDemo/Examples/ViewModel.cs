@@ -46,7 +46,7 @@ namespace FeaturesDemo
         public ViewModel()
         {
             this.Items100 = new ObservableCollection<ExampleObject>();
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 50; i++)
             {
                 this.Items100.Add(
                     new ExampleObject

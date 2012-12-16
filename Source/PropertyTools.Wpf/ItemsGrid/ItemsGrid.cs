@@ -40,6 +40,7 @@ namespace PropertyTools.Wpf
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
+    using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Markup;
     using System.Windows.Media;
@@ -362,8 +363,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            this.sheetGrid.ColumnDefinitions[column].Width =
-                this.columnGrid.ColumnDefinitions[column].Width = new GridLength((int)maxwidth + 2);
+            this.sheetGrid.ColumnDefinitions[column].Width = new GridLength((int)maxwidth + 2);
         }
 
         /// <summary>
@@ -1005,11 +1005,12 @@ namespace PropertyTools.Wpf
             int index = this.GetItemIndex(this.CurrentCell);
             var item = this.GetItem(index);
             this.currentEditor = this.ControlFactory.CreateEditControl(pd, index);
-
             if (this.currentEditor == null)
             {
                 return false;
             }
+
+            this.currentEditor.SourceUpdated += this.CurrentCellSourceUpdated;
 
             this.SetElementDataContext(this.currentEditor, pd, item);
 
@@ -1038,7 +1039,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The show text box editor.
+        /// Shows the text box editor.
         /// </summary>
         public void ShowTextBoxEditControl()
         {
@@ -1172,6 +1173,8 @@ namespace PropertyTools.Wpf
             {
                 element = this.ControlFactory.CreateDisplayControl(pd, index);
                 this.SetElementDataContext(element, pd, item);
+
+                element.SourceUpdated += this.CurrentCellSourceUpdated;
 
                 element.VerticalAlignment = VerticalAlignment.Center;
                 element.HorizontalAlignment = pd.HorizontalAlignment;
@@ -1802,6 +1805,24 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Handles changes in the currents cell.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="DataTransferEventArgs" /> instance containing the event data.</param>
+        private void CurrentCellSourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            // The source of the binding for the current cell was updated
+            // (e.g. checkbox (display control) was changed or a combobox (edit control) was changed
+            var value = this.GetCellValue(this.CurrentCell);
+
+            // Set the same value in all selected cells.
+            foreach (var cell in this.SelectedCells)
+            {
+                this.TrySetCellValue(cell, value);
+            }
+        }
+
+        /// <summary>
         /// Adds the display control for the specified cell.
         /// </summary>
         /// <param name="cellRef">
@@ -1960,7 +1981,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column splitter change completed.
+        /// Handles the column splitter change completed event.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -1977,15 +1998,10 @@ namespace PropertyTools.Wpf
                 tt.IsOpen = false;
                 gs.ToolTip = null;
             }
-
-            for (int i = 0; i < this.sheetGrid.ColumnDefinitions.Count; i++)
-            {
-                this.sheetGrid.ColumnDefinitions[i].Width = this.columnGrid.ColumnDefinitions[i].Width;
-            }
         }
 
         /// <summary>
-        /// The column splitter change delta.
+        /// Handles the column splitter change delta event.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -2007,7 +2023,7 @@ namespace PropertyTools.Wpf
 
             int column = Grid.GetColumn(gs);
             var width = this.columnGrid.ColumnDefinitions[column].ActualWidth;
-            tt.Content = string.Format("Width: {0}", width); // device-independent units
+            tt.Content = string.Format("Width: {0:0.#}", width); // device-independent units
 
             tt.PlacementTarget = this.columnGrid;
             tt.Placement = PlacementMode.Relative;

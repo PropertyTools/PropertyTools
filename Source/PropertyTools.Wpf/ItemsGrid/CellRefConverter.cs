@@ -93,7 +93,7 @@ namespace PropertyTools.Wpf
             int column = 0;
             for (int i = columnString.Length - 1; i >= 0; i--)
             {
-                column += column * 26 + columnString[i] - 'A';
+                column += (column * 26) + columnString[i] - 'A';
             }
 
             return new CellRef(row, column);

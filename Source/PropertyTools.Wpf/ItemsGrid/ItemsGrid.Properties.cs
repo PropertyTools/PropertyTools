@@ -561,6 +561,7 @@ namespace PropertyTools.Wpf
             {
                 return (bool)this.GetValue(EasyInsertProperty);
             }
+
             set
             {
                 this.SetValue(EasyInsertProperty, value);
@@ -611,6 +612,7 @@ namespace PropertyTools.Wpf
             {
                 return (InputDirection)this.GetValue(InputDirectionProperty);
             }
+
             set
             {
                 this.SetValue(InputDirectionProperty, value);
@@ -881,7 +883,7 @@ namespace PropertyTools.Wpf
         ///     The d.
         /// </param>
         /// <param name="basevalue">
-        ///     The basevalue.
+        ///     The base value.
         /// </param>
         /// <returns>
         ///     The coerced current cell.
@@ -913,7 +915,7 @@ namespace PropertyTools.Wpf
         ///     The sender.
         /// </param>
         /// <param name="basevalue">
-        ///     The basevalue.
+        ///     The base value.
         /// </param>
         /// <returns>
         ///     The coerced selection cell.

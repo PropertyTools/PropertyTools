@@ -205,7 +205,10 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            c.SetBinding(d.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, d.CreateBinding(index));
+            var binding = d.CreateBinding(index);
+            binding.NotifyOnSourceUpdated = true;
+            c.SetBinding(d.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);
+
             return c;
         }
 

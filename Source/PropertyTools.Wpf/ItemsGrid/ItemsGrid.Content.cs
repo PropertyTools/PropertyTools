@@ -192,10 +192,14 @@ namespace PropertyTools.Wpf
             for (int i = 0; i < columns; i++)
             {
                 var w = this.GetColumnWidth(i);
-                this.sheetGrid.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition { Width = w });
+                var cd1 = new System.Windows.Controls.ColumnDefinition { Width = w };
+                this.sheetGrid.ColumnDefinitions.Add(cd1);
 
-                // the width of the header column will be updated later
-                this.columnGrid.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
+                // bind the width of the header column to the width of the sheet column
+                var cd2 = new System.Windows.Controls.ColumnDefinition();
+                this.columnGrid.ColumnDefinitions.Add(cd2);
+                var binding = new Binding("Width") { Source = cd1, Mode = BindingMode.TwoWay };
+                cd2.SetBinding(System.Windows.Controls.ColumnDefinition.WidthProperty, binding);
             }
 
             // Add one empty column covering the vertical scrollbar

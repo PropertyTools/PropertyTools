@@ -213,7 +213,8 @@ namespace PropertyTools.Wpf
                     StringFormat = formatString,
                     UpdateSourceTrigger = trigger,
                     ValidatesOnDataErrors = true,
-                    ValidatesOnExceptions = true
+                    ValidatesOnExceptions = true,
+                    NotifyOnSourceUpdated = true
                 };
             if (this.ConverterCulture != null)
             {
@@ -268,7 +269,7 @@ namespace PropertyTools.Wpf
             var type = typeof(T);
             foreach (var a in this.Descriptor.Attributes)
             {
-                if (type.IsAssignableFrom(a.GetType()))
+                if (type.IsInstanceOfType(a))
                 {
                     return a as T;
                 }
@@ -278,7 +279,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Sets the enum items source.
+        /// Sets the items source for enumerable properties.
         /// </summary>
         protected void SetEnumItemsSource()
         {

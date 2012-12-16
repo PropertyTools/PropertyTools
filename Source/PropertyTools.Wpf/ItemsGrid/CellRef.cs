@@ -101,7 +101,7 @@ namespace PropertyTools.Wpf
             {
                 int i = column / 26;
                 result += ((char)('A' + i - 1)).ToString(CultureInfo.InvariantCulture);
-                column = column - i * 26;
+                column = column - (i * 26);
             }
 
             result += ((char)('A' + column)).ToString(CultureInfo.InvariantCulture);

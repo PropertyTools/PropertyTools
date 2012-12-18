@@ -40,8 +40,22 @@ namespace FeaturesDemo
         private bool boolean;
         public bool Boolean
         {
+            get
+            {
+                return boolean;
+            }
+
+            set
+            {
+                boolean = value;
+                RaisePropertyChanged("Boolean");
+                RaisePropertyChanged("ReadOnlyBoolean");
+            }
+        }
+
+        public bool ReadOnlyBoolean
+        {
             get { return boolean; }
-            set { boolean = value; RaisePropertyChanged("Boolean"); }
         }
 
         private Fruit _enum;

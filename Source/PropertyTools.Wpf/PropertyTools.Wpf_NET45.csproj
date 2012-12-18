@@ -81,6 +81,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\CheckMark\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\DockPanelSplitter\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -150,6 +154,7 @@
     <Compile Include="Controls\ColorPicker2\ColorSlider.cs" />
     <Compile Include="Controls\ColorPicker2\HsvControl.cs" />
     <Compile Include="Controls\ColorPicker2\SpectrumSlider.cs" />
+    <Compile Include="Controls\CheckMark\CheckMark.cs" />
     <Compile Include="Controls\DockPanelSplitter\DockPanelSplitter.cs" />
     <Compile Include="Controls\EnumMenuItem.cs" />
     <Compile Include="Controls\FilePicker\DirectoryPicker.cs" />

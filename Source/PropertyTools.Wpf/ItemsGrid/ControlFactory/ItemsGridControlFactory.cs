@@ -116,9 +116,22 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateCheckBoxControl(PropertyDefinition d, int index)
         {
+            if (d.IsReadOnly)
+            {
+                var cm = new CheckMark
+                            {
+                                VerticalAlignment = VerticalAlignment.Center,
+                                HorizontalAlignment = d.HorizontalAlignment
+                            };
+                cm.SetBinding(CheckMark.IsCheckedProperty, d.CreateBinding(index));
+                return cm;
+            }
+
             var c = new CheckBox
                 {
-                   VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = d.HorizontalAlignment
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = d.HorizontalAlignment,
+                    IsEnabled = !d.IsReadOnly
                 };
             c.SetBinding(ToggleButton.IsCheckedProperty, d.CreateBinding(index));
             return c;

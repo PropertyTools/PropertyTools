@@ -384,10 +384,40 @@ namespace PropertyTools.Wpf
                 c.Foreground = Brushes.RoyalBlue;
             }
 
-            c.SetBinding(TextBox.TextProperty, property.CreateBinding(trigger));
+            var binding = property.CreateBinding(trigger);
+            if (property.ActualPropertyType != typeof(string) && IsNullable(property.ActualPropertyType))
+            {
+                // Empty values should set the source to null
+                // Set the value that is used in the target when the value of the source is null.
+                binding.TargetNullValue = string.Empty;
+            }
+
+            c.SetBinding(TextBox.TextProperty, binding);
             return c;
         }
 
+        /// <summary>
+        /// Determines whether the specified type is nullable.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns><c>true</c> if the specified type is nullable; otherwise, <c>false</c>.</returns>
+        private bool IsNullable(Type type)
+        {
+            if (!type.IsValueType)
+            {
+                // Reference types are nullable
+                return true;
+            }
+            
+            if (Nullable.GetUnderlyingType(type) != null)
+            {
+                // Nullable value type
+                return true;
+            }
+        
+            // Value type
+            return false;
+        }
         /// <summary>
         /// Creates the dictionary control.
         /// </summary>

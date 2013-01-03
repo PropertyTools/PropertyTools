@@ -26,6 +26,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace TestLibrary
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows.Markup;
 
@@ -49,6 +50,19 @@ namespace TestLibrary
         [Description("You cannot select both.")]
         public bool Honey { get; set; }
 
+        [ItemsSourceProperty("Countries")]
+        [Description("Required field.")]
+        public string Country { get; set; }
+
+        [Browsable(false)]
+        public IEnumerable<string> Countries
+        {
+            get
+            {
+                return new[] { "Norway", "Sweden", "Denmark", "Finland", string.Empty };
+            }
+        }
+
         [Browsable(false)]
         public string this[string columnName]
         {
@@ -57,10 +71,16 @@ namespace TestLibrary
                 switch (columnName)
                 {
                     case "Name": return string.IsNullOrEmpty(Name) ? "The name should be specified." : null;
-                    case "Age": return Age < 0 ? "The age should not be less than 0." : null;
+                    case "Age":
+                        {
+                            if (Age > 130) return "The age is probably too large";
+                            if (Age < 0) return "The age should not be less than 0.";
+                            return null;
+                        }
                     case "CondensedMilk":
                     case "Honey":
                         return this.CondensedMilk && this.Honey ? "You cannot have both condensed milk and honey!" : null;
+                    case "Country": return string.IsNullOrEmpty(Country) ? "The country should be specified." : null;
                 }
 
                 return null;
@@ -72,7 +92,7 @@ namespace TestLibrary
         {
             get
             {
-                return this["Name"] ?? this["Age"] ?? this["Honey"];
+                return this["Name"] ?? this["Age"] ?? this["Honey"] ?? this["Country"];
             }
         }
 
@@ -80,6 +100,7 @@ namespace TestLibrary
         {
             this.Name = "Mike";
             this.Age = 3;
+            this.Country = "Norway";
         }
 
         public override string ToString()

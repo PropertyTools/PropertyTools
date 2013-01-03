@@ -37,7 +37,7 @@ namespace TestLibrary
 
     public enum Fruits4 { [Browsable(false)] Apple, [Browsable(false)] Pears, [Browsable(false)] Bananas }
 
-    public enum Fruits5 { [Description("Epler")] Apple, [Description("P�rer")] Pears, [Description("Bananer")] Bananas }
+    public enum Fruits5 { [Description("Epler")] Apple, [Description("Pærer")] Pears, [Description("Bananer")] Bananas }
 
     [Flags]
     public enum Fruits6 { Apple=1, Pears=2, Bananas=4 }

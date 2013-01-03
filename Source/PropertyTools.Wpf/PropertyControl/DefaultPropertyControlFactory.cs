@@ -296,7 +296,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateComboBoxControl(PropertyItem property)
         {
-            var c = new ComboBox { IsEditable = property.IsEditable, ItemsSource = property.ItemsSource };
+            var c = new ComboBox { IsEditable = property.IsEditable, ItemsSource = property.ItemsSource, VerticalContentAlignment = VerticalAlignment.Center };
             if (property.ItemsSourceDescriptor != null)
             {
                 c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
@@ -408,13 +408,13 @@ namespace PropertyTools.Wpf
                 // Reference types are nullable
                 return true;
             }
-            
+
             if (Nullable.GetUnderlyingType(type) != null)
             {
                 // Nullable value type
                 return true;
             }
-        
+
             // Value type
             return false;
         }

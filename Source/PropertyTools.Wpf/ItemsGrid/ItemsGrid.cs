@@ -755,7 +755,7 @@ namespace PropertyTools.Wpf
         /// <param name="deltaColumns">
         /// The change in columns.
         /// </param>
-        public void MoveCurrentCell(int deltaRows, int deltaColumns)
+        public void ChangeCurrentCell(int deltaRows, int deltaColumns)
         {
             int row = this.CurrentCell.Row;
             int column = this.CurrentCell.Column;
@@ -771,6 +771,10 @@ namespace PropertyTools.Wpf
             {
                 column++;
                 row = 0;
+                if (column >= this.Columns)
+                {
+                    column = 0;
+                }
             }
 
             if (column < 0)
@@ -1041,7 +1045,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Shows the text box editor.
         /// </summary>
-        public void ShowTextBoxEditControl()
+        public bool ShowTextBoxEditControl()
         {
             var textEditor = this.currentEditor as TextBox;
             if (textEditor != null)
@@ -1050,7 +1054,26 @@ namespace PropertyTools.Wpf
                 textEditor.Focus();
                 textEditor.CaretIndex = textEditor.Text.Length;
                 textEditor.SelectAll();
+                return true;
             }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Opens the combo box control.
+        /// </summary>
+        public bool OpenComboBoxControl()
+        {
+            var comboBox = this.currentEditor as ComboBox;
+            if (comboBox != null)
+            {
+                comboBox.IsDropDownOpen = true;
+                comboBox.Focus();
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -1280,11 +1303,11 @@ namespace PropertyTools.Wpf
                 case Key.Enter:
                     if (this.InputDirection == InputDirection.Vertical)
                     {
-                        this.MoveCurrentCell(shift ? -1 : 1, 0);
+                        this.ChangeCurrentCell(shift ? -1 : 1, 0);
                     }
                     else
                     {
-                        this.MoveCurrentCell(0, shift ? -1 : 1);
+                        this.ChangeCurrentCell(0, shift ? -1 : 1);
                     }
 
                     e.Handled = true;
@@ -1308,7 +1331,7 @@ namespace PropertyTools.Wpf
 
                     break;
                 case Key.Down:
-                    if (row < this.Rows - 1 || this.CanInsertRows)
+                    if (row < this.Rows - 1 || (this.CanInsertRows && this.EasyInsert))
                     {
                         row++;
                     }
@@ -1342,7 +1365,7 @@ namespace PropertyTools.Wpf
 
                     break;
                 case Key.Right:
-                    if (column < this.Columns - 1 || this.CanInsertColumns)
+                    if (column < this.Columns - 1 || (this.CanInsertColumns && this.EasyInsert))
                     {
                         column++;
                     }
@@ -1371,8 +1394,19 @@ namespace PropertyTools.Wpf
                     this.Delete();
                     break;
                 case Key.F2:
-                    this.ShowTextBoxEditControl();
-                    break;
+                    if (this.ShowTextBoxEditControl())
+                    {
+                        e.Handled = true;
+                    }
+
+                    return;
+                case Key.F4:
+                    if (this.OpenComboBoxControl())
+                    {
+                        e.Handled = true;
+                    }
+
+                    return;
                 case Key.Space:
                     if (this.ToggleCheck())
                     {
@@ -1483,12 +1517,12 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            if (cellRef.Row >= this.Rows && !this.CanInsertRows)
+            if (cellRef.Row >= this.Rows && (!this.CanInsertRows || !this.EasyInsert))
             {
                 return;
             }
 
-            if (cellRef.Column > this.Columns && !this.CanInsertColumns)
+            if (cellRef.Column > this.Columns && (!this.CanInsertColumns || !this.EasyInsert))
             {
                 return;
             }
@@ -1569,6 +1603,8 @@ namespace PropertyTools.Wpf
                 textEditor.Text = e.Text;
                 textEditor.CaretIndex = textEditor.Text.Length;
             }
+
+            e.Handled = true;
         }
 
         /// <summary>
@@ -2257,6 +2293,11 @@ namespace PropertyTools.Wpf
                 row += deltaRow;
             }
 
+            if (row >= this.Rows && this.Rows > 0)
+            {
+                row = this.Rows - 1;
+            }
+            
             return row;
         }
 
@@ -2469,12 +2510,12 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            if (cellRef.Row >= this.Rows && !this.CanInsertRows)
+            if (cellRef.Row >= this.Rows && (!this.CanInsertRows || !this.EasyInsert))
             {
                 return;
             }
 
-            if (cellRef.Column > this.Columns && !this.CanInsertColumns)
+            if (cellRef.Column > this.Columns && (!this.CanInsertColumns || !this.EasyInsert))
             {
                 return;
             }
@@ -2866,11 +2907,11 @@ namespace PropertyTools.Wpf
                     this.EndTextEdit();
                     if (this.InputDirection == InputDirection.Vertical)
                     {
-                        this.MoveCurrentCell(shift ? -1 : 1, 0);
+                        this.ChangeCurrentCell(shift ? -1 : 1, 0);
                     }
                     else
                     {
-                        this.MoveCurrentCell(0, shift ? -1 : 1);
+                        this.ChangeCurrentCell(0, shift ? -1 : 1);
                     }
 
                     e.Handled = true;

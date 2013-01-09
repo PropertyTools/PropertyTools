@@ -51,6 +51,7 @@
     <Compile Include="DataAnnotations\ConverterAttribute.cs" />
     <Compile Include="DataAnnotations\DefaultExtensionPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\DirectoryPathAttribute.cs" />
+    <Compile Include="DataAnnotations\EasyInsertAttribute.cs" />
     <Compile Include="DataAnnotations\EnableByAttribute.cs" />
     <Compile Include="DataAnnotations\EnumDisplayNameAttribute.cs" />
     <Compile Include="DataAnnotations\FillTabAttribute.cs" />

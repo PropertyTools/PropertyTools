@@ -77,10 +77,16 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the input direction.
+        /// Gets or sets the input direction (for ItemsGrid control).
         /// </summary>
         /// <value>The input direction.</value>
         public InputDirection InputDirection { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether 'easy insert' is enabled in an ItemsGrid control.
+        /// </summary>
+        /// <value><c>true</c> if easy insert is enabled; otherwise, <c>false</c>.</value>
+        public bool EasyInsert { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to accept return.

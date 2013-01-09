@@ -1283,6 +1283,7 @@ namespace PropertyTools.Wpf
         /// </param>
         private void AddPropertyPanel(Panel panel, PropertyItem pi, object instance)
         {
+            // TODO: refactor this method - too long and complex...
             var propertyPanel = new Grid();
             if (!pi.FillTab)
             {

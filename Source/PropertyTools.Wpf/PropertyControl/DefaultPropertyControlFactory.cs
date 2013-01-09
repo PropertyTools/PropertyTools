@@ -613,7 +613,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateGridControl(PropertyItem property)
         {
-            var c = new ItemsGrid { CanDelete = property.ListCanRemove, CanInsert = property.ListCanAdd, InputDirection = property.InputDirection };
+            var c = new ItemsGrid { CanDelete = property.ListCanRemove, CanInsert = property.ListCanAdd, InputDirection = property.InputDirection, EasyInsert = property.EasyInsert };
 
             var glc = new GridLengthConverter();
             foreach (var ca in property.Columns.OrderBy(cd => cd.ColumnIndex))

@@ -500,6 +500,12 @@ namespace PropertyTools.Wpf
                 pi.InputDirection = ida.InputDirection;
             }
 
+            var eia = pi.GetAttribute<EasyInsertAttribute>();
+            if (eia != null)
+            {
+                pi.EasyInsert = eia.EasyInsert;
+            }
+
             var sia = pi.GetAttribute<SortIndexAttribute>();
             if (sia != null)
             {

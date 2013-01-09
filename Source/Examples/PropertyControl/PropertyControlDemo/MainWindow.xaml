@@ -19,10 +19,18 @@
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate x:Key="HeaderTemplate2">
+        <Style x:Key="TabHeaderErrorsStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding HasErrors}" Value="True">
+                    <Setter Property="TextBlock.Foreground" Value="Red"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <DataTemplate x:Key="HeaderTemplate2" DataType="pt:Tab">
             <StackPanel Orientation="Horizontal">
-                <pt:Bitmap Source="Images\chart.png"/>
-                <TextBlock Text="{Binding}" Margin="4 0 0 0"/>
+                <pt:Bitmap Source="Images\chart.png" Margin="0 0 4 0"/>
+                <TextBlock Text="{Binding Header}" Margin="4 0 0 0" Style="{StaticResource TabHeaderErrorsStyle}"/>
             </StackPanel>
         </DataTemplate>
 

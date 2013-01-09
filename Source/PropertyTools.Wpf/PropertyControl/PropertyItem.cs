@@ -50,11 +50,10 @@ namespace PropertyTools.Wpf
     public class PropertyItem : Observable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyItem"/> class.
+        /// Initializes a new instance of the <see cref="PropertyItem" /> class.
         /// </summary>
-        /// <param name="propertyDescriptor">
-        /// The property descriptor.
-        /// </param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="propertyDescriptors">The property descriptors.</param>
         public PropertyItem(PropertyDescriptor propertyDescriptor, PropertyDescriptorCollection propertyDescriptors)
         {
             this.Descriptor = propertyDescriptor;
@@ -73,7 +72,7 @@ namespace PropertyTools.Wpf
             this.ListCanAdd = true;
             this.ListCanRemove = true;
             this.ListMaximumNumberOfItems = int.MaxValue;
-            this.InputDirection = InputDirection.Vertical;            
+            this.InputDirection = InputDirection.Vertical;
         }
 
         /// <summary>
@@ -235,7 +234,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the horizontal alignment.
         /// </summary>
-        public PropertyTools.DataAnnotations.HorizontalAlignment HorizontalAlignment { get; set; }
+        public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to stretch to the available tab size.
@@ -489,6 +488,20 @@ namespace PropertyTools.Wpf
         public double Width { get; set; }
 
         /// <summary>
+        /// Gets the name of the property.
+        /// </summary>
+        /// <value>
+        /// The name of the property.
+        /// </value>
+        public string PropertyName
+        {
+            get
+            {
+                return this.Descriptor.Name;
+            }
+        }
+
+        /// <summary>
         /// Creates a binding.
         /// </summary>
         /// <param name="trigger">
@@ -506,7 +519,7 @@ namespace PropertyTools.Wpf
                 formatString = "{0:" + formatString + "}";
             }
 
-            var binding = new Binding(this.Descriptor.Name)
+            var binding = new Binding(this.PropertyName)
                 {
                     Mode = bindingMode,
                     Converter = this.Converter,

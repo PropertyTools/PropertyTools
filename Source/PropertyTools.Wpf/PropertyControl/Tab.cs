@@ -29,14 +29,19 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
 {
+    using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
     using System.Windows.Media;
 
     /// <summary>
     /// Represents a tab in a <see cref="PropertyControl" />.
     /// </summary>
-    public class Tab
+    public class Tab : Observable
     {
+        private bool hasErrors;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Tab" /> class.
         /// </summary>
@@ -69,12 +74,42 @@ namespace PropertyTools.Wpf
         public ImageSource Icon { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this tab contains properties with errors.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this tab has errors; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasErrors
+        {
+            get
+            {
+                return this.hasErrors;
+            }
+
+            set
+            {
+                this.SetValue(ref this.hasErrors, value, () => this.HasErrors);
+            }
+        }
+
+        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns> A <see cref="System.String" /> that represents this instance. </returns>
         public override string ToString()
         {
             return this.Header;
+        }
+        
+        public bool Contains(string propertyName)
+        {
+            return this.Groups.Any(g => g.Properties.Any(p => p.PropertyName == propertyName));
+        }
+
+        public void UpdateHasErrors(IDataErrorInfo dei)
+        {
+            // validate all properties in this tab
+            this.HasErrors = this.Groups.Any(g => g.Properties.Any(p => !string.IsNullOrEmpty(dei[p.PropertyName])));
         }
     }
 }

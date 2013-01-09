@@ -95,8 +95,11 @@ namespace PropertyTools.Wpf
             {
                 this.descriptor = value;
 
-                this.IsReadOnly = this.IsReadOnly || this.descriptor.IsReadOnly;
-                this.PropertyType = this.descriptor.PropertyType;
+                this.IsReadOnly = this.IsReadOnly || (this.descriptor != null && this.descriptor.IsReadOnly);
+                if (this.descriptor != null)
+                {
+                    this.PropertyType = this.descriptor.PropertyType;
+                }
 
                 var ispa = this.GetFirstAttribute<ItemsSourcePropertyAttribute>();
                 if (ispa != null)

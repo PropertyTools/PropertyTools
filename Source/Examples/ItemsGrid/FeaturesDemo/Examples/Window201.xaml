@@ -9,6 +9,6 @@
         <local:ViewModel x:Key="ViewModel"/>
     </Window.Resources>
     <Grid DataContext="{StaticResource ViewModel}">
-        <p:ItemsGrid x:Name="grid1" ItemsSource="{Binding Items200}"/>
+        <p:ItemsGrid x:Name="grid1" ItemsSource="{Binding Items200}" EasyInsert="False"/>
     </Grid>
 </Window>

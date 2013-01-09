@@ -218,11 +218,26 @@ namespace PropertyTools.Wpf
                 }
             }
 
+            c.DropDownClosed += (s, e) => FocusParentItemsGrid(c);
             var binding = d.CreateBinding(index);
             binding.NotifyOnSourceUpdated = true;
             c.SetBinding(d.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);
 
             return c;
+        }
+
+        private static void FocusParentItemsGrid(DependencyObject c)
+        {
+            var parent = VisualTreeHelper.GetParent(c);
+            while (parent != null && !(parent is ItemsGrid))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            var u = parent as UIElement;
+            if (u != null)
+            {
+                u.Focus();
+            }
         }
 
         /// <summary>

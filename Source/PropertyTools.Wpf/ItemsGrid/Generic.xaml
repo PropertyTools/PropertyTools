@@ -1,0 +1,92 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:local="clr-namespace:PropertyTools.Wpf">
+
+    <LinearGradientBrush x:Key="SelectionBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFD45A" />
+            <GradientStop Offset="1" Color="#FFEF71" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="SelectionBrush2" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFD45A" />
+            <GradientStop Offset="1" Color="#FFEF71" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#dfe3e8" />
+    <Style TargetType="{x:Type local:ItemsGrid}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="RowsContextMenu">
+            <Setter.Value>
+                <ContextMenu>
+                    <MenuItem Header="Insert" Command="local:ItemsGrid.InsertRowsCommand"/>
+                    <MenuItem Header="Delete" Command="local:ItemsGrid.DeleteRowsCommand"/>
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ColumnsContextMenu">
+            <Setter.Value>
+                <ContextMenu>
+                    <MenuItem Header="Insert" Command="local:ItemsGrid.InsertColumnsCommand"/>
+                    <MenuItem Header="Delete" Command="local:ItemsGrid.DeleteColumnsCommand"/>
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ItemsGrid}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid x:Name="PART_Grid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="{TemplateBinding ColumnHeaderHeight}" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{TemplateBinding RowHeaderWidth}" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <!-- The grid cell area (sheet) -->
+                            <ScrollViewer x:Name="PART_SheetScroller" Focusable="False" Grid.Row="1" Grid.Column="1"
+                            HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                <Grid x:Name="PART_SheetGrid" Background="Transparent" Cursor="/PropertyTools.Wpf;component/ItemsGrid/Cursors/Cross.cur">
+                                    <Border x:Name="PART_SelectionBackground" Background="#b7dbff" />
+                                    <Border x:Name="PART_CurrentBackground" Background="White" />
+                                    <Border x:Name="PART_Selection" BorderBrush="Black" BorderThickness="3" Margin="-1,-1,-2,-2" />
+                                    <Border x:Name="PART_AutoFillSelection" BorderBrush="Gray" BorderThickness="3" Margin="-1,-1,-2,-2" Visibility="Hidden" />
+                                    <Border x:Name="PART_AutoFillBox" Width="7" Height="7" SnapsToDevicePixels="True" Cursor="/PropertyTools.Wpf;component/ItemsGrid/Cursors/AutoFill.cur" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Black" BorderBrush="White" BorderThickness="1" Margin="0, 0, -4, -4" />
+                                </Grid>
+                            </ScrollViewer>
+                            <!-- Column headers -->
+                            <ScrollViewer x:Name="PART_ColumnScroller" Grid.Column="1" VerticalScrollBarVisibility="Hidden"
+                            HorizontalScrollBarVisibility="Hidden">
+                                <Grid x:Name="PART_ColumnGrid" Cursor="/PropertyTools.Wpf;component/ItemsGrid/Cursors/DownArrow.cur"
+                      Background="{StaticResource HeaderBackgroundBrush}">
+                                    <Border x:Name="PART_ColumnSelectionBackground" Background="{StaticResource SelectionBrush}" />
+                                </Grid>
+                            </ScrollViewer>
+                            <!-- Row headers -->
+                            <ScrollViewer x:Name="PART_RowScroller" Grid.Row="1" VerticalScrollBarVisibility="Hidden"
+                            HorizontalScrollBarVisibility="Hidden">
+                                <Grid x:Name="PART_RowGrid" Cursor="/PropertyTools.Wpf;component/ItemsGrid/Cursors/RightArrow.cur"
+                      Background="{StaticResource HeaderBackgroundBrush}">
+                                    <Border x:Name="PART_RowSelectionBackground" Background="{StaticResource SelectionBrush2}" />
+                                </Grid>
+                            </ScrollViewer>
+                            <!-- The top-left cell -->
+                            <Grid>
+                                <Border x:Name="PART_TopLeft" Cursor="/PropertyTools.Wpf;component/ItemsGrid/Cursors/Cross.cur"
+                        Background="{StaticResource HeaderBackgroundBrush}" BorderBrush="#b1b5ba" BorderThickness="1,1,1,1" Margin="0,0,0,0">
+                                    <Path Data="F1 M0,11 L11,11 L11,0 z" Fill="#30000000" HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom" Margin="3" />
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

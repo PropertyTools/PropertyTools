@@ -1,0 +1,35 @@
+﻿<Window x:Class="UndoRedoDemo.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:local="clr-namespace:UndoRedoDemo.Views" Title="{Binding ActualTitle}" Width="640" Height="480">
+    <Window.Resources>
+        <DataTemplate x:Key="ItemTemplate">
+            <TextBlock Text="{Binding Time}"/>
+        </DataTemplate>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit" Name="Exit"/>
+            </MenuItem>
+            <MenuItem Header="Edit" DataContext="{Binding UndoRedoService}">
+                <MenuItem Header="Undo" Name="Undo"/>
+                <MenuItem Header="Redo" Name="Redo"/>
+            </MenuItem>
+        </Menu>
+        <ToolBarPanel DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Content="Add" Name="AddItem"/>
+                <Button Content="Delete" Name="DeleteItem"/>
+                <Button Content="Modify" Name="ModifyItem"/>
+            </ToolBar>
+        </ToolBarPanel>
+        <DockPanel>
+            <ListBox Name="list1" ItemsSource="{Binding Measurements}" SelectedIndex="{Binding SelectedIndex}" DockPanel.Dock="Left" Width="200" ItemTemplate="{StaticResource ItemTemplate}"/>
+            <TextBox Text="{Binding Output}" local:TextBoxBehaviors.ScrollToBottomWhenChanged="True" AcceptsReturn="True" Height="120" DockPanel.Dock="Bottom"/>
+        	<pt:PropertyControl SelectedObject="{Binding SelectedItem, ElementName=list1}"/>
+        </DockPanel>
+    </DockPanel>
+
+</Window>

@@ -27,6 +27,7 @@
 //   Represents a control that shows a check mark (not editable CheckBox without the box).
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -37,14 +38,11 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class CheckMark : Control
     {
-        public bool IsChecked
-        {
-            get { return (bool)GetValue(IsCheckedProperty); }
-            set { SetValue(IsCheckedProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsCheckedProperty =
-            DependencyProperty.Register("IsChecked", typeof(bool), typeof(CheckMark), new PropertyMetadata(false));
+        /// <summary>
+        /// The is checked property
+        /// </summary>
+        public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
+            "IsChecked", typeof(bool), typeof(CheckMark), new PropertyMetadata(false));
 
         /// <summary>
         /// Initializes static members of the <see cref="CheckMark" /> class.
@@ -55,5 +53,20 @@ namespace PropertyTools.Wpf
                 typeof(CheckMark), new FrameworkPropertyMetadata(typeof(CheckMark)));
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is checked.
+        /// </summary>
+        /// <value><c>true</c> if this instance is checked; otherwise, <c>false</c>.</value>
+        public bool IsChecked
+        {
+            get
+            {
+                return (bool)this.GetValue(IsCheckedProperty);
+            }
+            set
+            {
+                this.SetValue(IsCheckedProperty, value);
+            }
+        }
     }
 }

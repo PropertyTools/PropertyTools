@@ -205,15 +205,10 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a property item.
         /// </summary>
-        /// <param name="pd">
-        /// The property descriptor.
-        /// </param>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
-        /// <returns>
-        /// A property item.
-        /// </returns>
+        /// <param name="pd">The property descriptor.</param>
+        /// <param name="propertyDescriptors">The property descriptors.</param>
+        /// <param name="instance">The instance.</param>
+        /// <returns>A property item.</returns>
         public virtual PropertyItem CreatePropertyItem(PropertyDescriptor pd, PropertyDescriptorCollection propertyDescriptors, object instance)
         {
             var pi = this.CreateCore(pd, propertyDescriptors);

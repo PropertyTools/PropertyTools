@@ -1279,15 +1279,10 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates and adds the property panel.
         /// </summary>
-        /// <param name="panel">
-        /// The panel where the property panel should be added.
-        /// </param>
-        /// <param name="pi">
-        /// The property.
-        /// </param>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
+        /// <param name="panel">The panel where the property panel should be added.</param>
+        /// <param name="pi">The property.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="tab">The tab.</param>
         private void AddPropertyPanel(Panel panel, PropertyItem pi, object instance, Tab tab)
         {
             // TODO: refactor this method - too long and complex...

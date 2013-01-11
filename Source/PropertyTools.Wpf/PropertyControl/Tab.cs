@@ -27,9 +27,9 @@
 //   Represents a tab in a <see cref="PropertyControl" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
@@ -62,22 +62,10 @@ namespace PropertyTools.Wpf
         public List<Group> Groups { get; private set; }
 
         /// <summary>
-        /// Gets or sets the header.
-        /// </summary>
-        /// <value> The header. </value>
-        public string Header { get; set; }
-
-        /// <summary>
-        /// Gets or sets the icon.
-        /// </summary>
-        /// <value> The icon. </value>
-        public ImageSource Icon { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether this tab contains properties with errors.
         /// </summary>
         /// <value>
-        /// <c>true</c> if this tab has errors; otherwise, <c>false</c>.
+        ///     <c>true</c> if this tab has errors; otherwise, <c>false</c>.
         /// </value>
         public bool HasErrors
         {
@@ -93,6 +81,28 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the header.
+        /// </summary>
+        /// <value> The header. </value>
+        public string Header { get; set; }
+
+        /// <summary>
+        /// Gets or sets the icon.
+        /// </summary>
+        /// <value> The icon. </value>
+        public ImageSource Icon { get; set; }
+
+        /// <summary>
+        /// Determines whether the tab contains the specified property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns><c>true</c> if the tab contains the specified property; otherwise, <c>false</c>.</returns>
+        public bool Contains(string propertyName)
+        {
+            return this.Groups.Any(g => g.Properties.Any(p => p.PropertyName == propertyName));
+        }
+
+        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns> A <see cref="System.String" /> that represents this instance. </returns>
@@ -100,12 +110,11 @@ namespace PropertyTools.Wpf
         {
             return this.Header;
         }
-        
-        public bool Contains(string propertyName)
-        {
-            return this.Groups.Any(g => g.Properties.Any(p => p.PropertyName == propertyName));
-        }
 
+        /// <summary>
+        /// Updates the has errors property.
+        /// </summary>
+        /// <param name="dei">The instance.</param>
         public void UpdateHasErrors(IDataErrorInfo dei)
         {
             // validate all properties in this tab

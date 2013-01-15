@@ -323,6 +323,12 @@ namespace PropertyTools.Wpf
         public PropertyDescriptor ItemsSourceDescriptor { get; set; }
 
         /// <summary>
+        /// Gets or sets the items source for list items.
+        /// </summary>
+        /// <value>The items source.</value>
+        public IEnumerable ListItemItemsSource { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether items can be added to the list.
         /// </summary>
         public bool ListCanAdd { get; set; }

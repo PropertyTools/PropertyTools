@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IsEditableAttribute.cs" company="PropertyTools">
+// <copyright file="ListItemItemsSourcePropertyAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies that the property is editable.
+//   Specifies that the property is optional.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.DataAnnotations
@@ -32,10 +32,25 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    /// Specifies that the property is editable.
+    /// Specifies the name of a property that contains values for the items in the decorated list property.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class IsEditableAttribute : Attribute
+    public class ListItemItemsSourcePropertyAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListItemItemsSourcePropertyAttribute"/> class.
+        /// </summary>
+        /// <param name="propertyName">
+        /// Name of the property.
+        /// </param>
+        public ListItemItemsSourcePropertyAttribute(string propertyName)
+        {
+            this.PropertyName = propertyName;
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the property.
+        /// </summary>
+        /// <value>The name of the property.</value>
+        public string PropertyName { get; set; }
     }
 }

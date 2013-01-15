@@ -42,16 +42,21 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Finds the biggest common type of items in the list.
         /// </summary>
-        /// <param name="list">
+        /// <param name="items">
         /// The list.
         /// </param>
         /// <returns>
         /// The biggest common type.
         /// </returns>
-        public static Type FindBiggestCommonType(IEnumerable list)
+        public static Type FindBiggestCommonType(IEnumerable items)
         {
+            if (items == null)
+            {
+                return null;
+            }
+
             Type type = null;
-            foreach (var item in list)
+            foreach (var item in items)
             {
                 if (item == null)
                 {
@@ -69,6 +74,11 @@ namespace PropertyTools.Wpf
                 {
                     type = type.BaseType;
                 }
+            }
+
+            if (type == null && items is IList)
+            {
+                type = ((IList)items).AsQueryable().ElementType;
             }
 
             return type;

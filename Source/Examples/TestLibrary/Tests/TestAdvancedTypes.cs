@@ -37,6 +37,11 @@ namespace TestLibrary
 
     public class TestAdvancedTypes : TestBase
     {
+        public TestAdvancedTypes()
+        {
+            Uri = new Uri("http://www.google.com");
+        }
+
         [Category("System")]
         public DateTime DateTime { get; set; }
         public TimeSpan TimeSpan { get; set; }

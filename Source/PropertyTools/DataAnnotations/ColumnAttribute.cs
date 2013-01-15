@@ -45,6 +45,33 @@ namespace PropertyTools.DataAnnotations
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnAttribute" /> class.
         /// </summary>
+        /// <param name="columnIndex">Index of the column.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        public ColumnAttribute(int columnIndex, string propertyName)
+        {
+            this.ColumnIndex = columnIndex;
+            this.PropertyName = propertyName;
+            this.typeId = Guid.NewGuid();
+            this.Width = "Auto";
+            this.Alignment = 'C';
+            this.IsReadOnly = false;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColumnAttribute" /> class.
+        /// </summary>
+        /// <param name="columnIndex">Index of the column.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="header">The header.</param>
+        public ColumnAttribute(int columnIndex, string propertyName, string header)
+            : this(columnIndex, propertyName)
+        {
+            this.Header = header;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColumnAttribute" /> class.
+        /// </summary>
         /// <param name="columnIndex">The column index.</param>
         /// <param name="propertyName">The property name.</param>
         /// <param name="header">The header.</param>
@@ -55,20 +82,17 @@ namespace PropertyTools.DataAnnotations
         public ColumnAttribute(
             int columnIndex,
             string propertyName,
-            string header = null,
-            string formatString = null,
+            string header,
+            string formatString,
             string width = "Auto",
             char alignment = 'C',
             bool isReadOnly = false)
+            : this(columnIndex, propertyName, header)
         {
-            this.ColumnIndex = columnIndex;
-            this.PropertyName = propertyName;
-            this.Header = header;
             this.FormatString = formatString;
             this.Width = width;
             this.Alignment = alignment;
             this.IsReadOnly = isReadOnly;
-            this.typeId = Guid.NewGuid();
         }
 
         /// <summary>
@@ -124,7 +148,7 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Gets or sets the width.
+        /// Gets or sets the width ("Auto", "0.5*" etc. are ok).
         /// </summary>
         /// <value>The width.</value>
         public string Width { get; set; }

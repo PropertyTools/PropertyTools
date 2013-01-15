@@ -30,9 +30,11 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Windows.Data;
@@ -143,13 +145,42 @@ namespace PropertyTools.Wpf
                 return null;
             }
 
-            var instanceType = instance.GetType();
-            var properties = TypeDescriptor.GetProperties(instance);
-
             this.Reset();
 
-            var items = new List<PropertyItem>();
             var tabs = new Dictionary<string, Tab>();
+            foreach (var pi in this.CreatePropertyItems(instance, options).OrderBy(t => t.SortIndex))
+            {
+                var tabHeader = pi.Tab ?? string.Empty;
+                if (!tabs.ContainsKey(tabHeader))
+                {
+                    tabs.Add(tabHeader, new Tab { Header = pi.Tab });
+                }
+
+                var tab = tabs[tabHeader];
+                var group = tab.Groups.FirstOrDefault(g => g.Header == pi.Category);
+                if (group == null)
+                {
+                    group = new Group { Header = pi.Category };
+                    tab.Groups.Add(group);
+                }
+
+                group.Properties.Add(pi);
+            }
+
+            return tabs.Values.ToList();
+        }
+
+        /// <summary>
+        /// Creates property items for all properties in the specified object.
+        /// </summary>
+        /// <param name="instance">The object instance.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>Enumeration of PropertyItem.</returns>
+        private IEnumerable<PropertyItem> CreatePropertyItems(object instance, IPropertyControlOptions options)
+        {
+            var instanceType = instance.GetType();
+
+            var properties = TypeDescriptor.GetProperties(instance);
             foreach (PropertyDescriptor pd in properties)
             {
                 if (options.ShowDeclaredOnly && pd.ComponentType != instanceType)
@@ -176,30 +207,8 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                var pi = this.CreatePropertyItem(pd, properties, instance);
-                items.Add(pi);
+                yield return this.CreatePropertyItem(pd, properties, instance);
             }
-
-            foreach (var pi in items.OrderBy(t => t.SortIndex))
-            {
-                var tabHeader = pi.Tab ?? string.Empty;
-                if (!tabs.ContainsKey(tabHeader))
-                {
-                    tabs.Add(tabHeader, new Tab { Header = pi.Tab });
-                }
-
-                var tab = tabs[tabHeader];
-                var group = tab.Groups.FirstOrDefault(g => g.Header == pi.Category);
-                if (group == null)
-                {
-                    group = new Group { Header = pi.Category };
-                    tab.Groups.Add(group);
-                }
-
-                group.Properties.Add(pi);
-            }
-
-            return tabs.Values.ToList();
         }
 
         /// <summary>
@@ -238,19 +247,18 @@ namespace PropertyTools.Wpf
         protected static string NicifyString(string variableName)
         {
             var sb = new StringBuilder();
-            Func<char, bool> isUpper = ch => ch.ToString() == ch.ToString().ToUpper();
             for (int i = 0; i < variableName.Length; i++)
             {
-                if (i > 0 && isUpper(variableName[i]) && !isUpper(variableName[i - 1]))
+                if (i > 0 && char.IsUpper(variableName[i]) && !char.IsUpper(variableName[i - 1]))
                 {
                     sb.Append(" ");
-                    if (i == variableName.Length - 1 || isUpper(variableName[i + 1]))
+                    if (i == variableName.Length - 1 || char.IsUpper(variableName[i + 1]))
                     {
                         sb.Append(variableName[i]);
                     }
                     else
                     {
-                        sb.Append(variableName[i].ToString().ToLower());
+                        sb.Append(variableName[i].ToString(CultureInfo.InvariantCulture).ToLower());
                     }
 
                     continue;
@@ -356,9 +364,6 @@ namespace PropertyTools.Wpf
         /// <param name="instance">The instance.</param>
         protected virtual void SetProperties(PropertyItem pi, object instance)
         {
-            var pd = pi.Descriptor;
-            var properties = pi.Properties;
-
             var tabName = this.DefaultTabName ?? instance.GetType().Name;
             var categoryName = this.DefaultCategoryName;
 
@@ -382,14 +387,14 @@ namespace PropertyTools.Wpf
                 this.CurrentCategory = null;
             }
 
-            var ca = AttributeHelper.GetFirstAttribute<CategoryAttribute>(pd);
+            var ca = pi.GetAttribute<CategoryAttribute>();
             if (ca != null)
             {
                 this.CurrentCategory = ca.Category;
                 this.CurrentCategoryDeclaringType = declaringType;
             }
 
-            var category = this.CurrentCategory ?? (this.DefaultCategoryName ?? pd.Category);
+            var category = this.CurrentCategory ?? (this.DefaultCategoryName ?? pi.Descriptor.Category);
 
             if (category != null)
             {
@@ -406,42 +411,71 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            var displayName = this.GetDisplayName(pd, declaringType);
-            var description = this.GetDescription(pd, declaringType);
+            var displayName = this.GetDisplayName(pi.Descriptor, declaringType);
+            var description = this.GetDescription(pi.Descriptor, declaringType);
 
             pi.DisplayName = this.GetLocalizedString(displayName, declaringType);
             pi.Description = this.GetLocalizedDescription(description, declaringType);
 
             pi.Category = this.GetLocalizedString(categoryName, this.CurrentCategoryDeclaringType);
-
-            // pi.CategoryDescription = this.GetLocalizedDescription(categoryName, this.CurrentCategoryDeclaringType);
             pi.Tab = this.GetLocalizedString(tabName, this.CurrentCategoryDeclaringType);
 
+            // pi.CategoryDescription = this.GetLocalizedDescription(categoryName, this.CurrentCategoryDeclaringType);
             // pi.TabDescription = this.GetLocalizedDescription(tabName, this.CurrentCategoryDeclaringType);
 
             // Find descriptors by convention
-            pi.IsEnabledDescriptor = pi.GetDescriptor(string.Format(this.EnabledPattern, pd.Name));
-            pi.IsVisibleDescriptor = pi.GetDescriptor(string.Format(this.VisiblePattern, pd.Name));
-            pi.OptionalDescriptor = pi.GetDescriptor(string.Format(this.OptionalPattern, pd.Name));
+            pi.IsEnabledDescriptor = pi.GetDescriptor(string.Format(this.EnabledPattern, pi.PropertyName));
+            pi.IsVisibleDescriptor = pi.GetDescriptor(string.Format(this.VisiblePattern, pi.PropertyName));
+            pi.OptionalDescriptor = pi.GetDescriptor(string.Format(this.OptionalPattern, pi.PropertyName));
 
-            var ssa = pi.GetAttribute<SelectorStyleAttribute>();
+            foreach (Attribute attribute in pi.Descriptor.Attributes)
+            {
+                this.SetAttribute(attribute, pi, instance);
+            }
+
+            pi.IsOptional = pi.OptionalDescriptor != null;
+
+            if (pi.IsComment)
+            {
+                pi.HeaderPlacement = HeaderPlacement.Hidden;
+            }
+
+            if (pi.Descriptor.PropertyType == typeof(TimeSpan) && pi.Converter == null)
+            {
+                pi.Converter = new TimeSpanToStringConverter();
+                pi.ConverterParameter = pi.FormatString;
+            }
+        }
+
+        /// <summary>
+        /// Sets the attribute.
+        /// </summary>
+        /// <param name="attribute">The attribute.</param>
+        /// <param name="pi">The pi.</param>
+        /// <param name="instance">The instance.</param>
+        protected virtual void SetAttribute(Attribute attribute, PropertyItem pi, object instance)
+        {
+            var ssa = attribute as SelectorStyleAttribute;
             if (ssa != null)
             {
                 pi.SelectorStyle = ssa.SelectorStyle;
             }
 
-            var fp = pi.GetAttribute<FontPreviewAttribute>();
-            pi.PreviewFonts = fp != null;
+            var fp = attribute as FontPreviewAttribute;
             if (fp != null)
             {
+                pi.PreviewFonts = true;
                 pi.FontSize = fp.Size;
                 pi.FontWeight = fp.Weight;
                 pi.FontFamilyPropertyDescriptor = pi.GetDescriptor(fp.FontFamilyPropertyName);
             }
 
-            pi.IsFontFamilySelector = pi.GetAttribute<FontFamilySelectorAttribute>() != null;
+            if (attribute is FontFamilySelectorAttribute)
+            {
+                pi.IsFontFamilySelector = true;
+            }
 
-            var ifpa = pi.GetAttribute<InputFilePathAttribute>();
+            var ifpa = attribute as InputFilePathAttribute;
             if (ifpa != null)
             {
                 pi.IsFilePath = true;
@@ -450,7 +484,7 @@ namespace PropertyTools.Wpf
                 pi.FilePathDefaultExtension = ifpa.DefaultExtension;
             }
 
-            var ofpa = pi.GetAttribute<OutputFilePathAttribute>();
+            var ofpa = attribute as OutputFilePathAttribute;
             if (ofpa != null)
             {
                 pi.IsFilePath = true;
@@ -459,10 +493,13 @@ namespace PropertyTools.Wpf
                 pi.FilePathDefaultExtension = ofpa.DefaultExtension;
             }
 
-            var dpa = pi.GetAttribute<DirectoryPathAttribute>();
-            pi.IsDirectoryPath = dpa != null;
+            if (attribute is DirectoryPathAttribute)
+            {
+                pi.IsDirectoryPath = true;
+            }
 
-            foreach (var da in pi.GetAttributes<DataTypeAttribute>())
+            var da = attribute as DataTypeAttribute;
+            if (da != null)
             {
                 pi.DataTypes.Add(da.DataType);
                 switch (da.DataType)
@@ -476,12 +513,13 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            foreach (var da in pi.GetAttributes<ColumnAttribute>())
+            var ca = attribute as ColumnAttribute;
+            if (ca != null)
             {
-                pi.Columns.Add(da);
+                pi.Columns.Add(ca);
             }
 
-            var la = pi.GetAttribute<ListAttribute>();
+            var la = attribute as ListAttribute;
             if (la != null)
             {
                 pi.ListCanAdd = la.CanAdd;
@@ -489,96 +527,107 @@ namespace PropertyTools.Wpf
                 pi.ListMaximumNumberOfItems = la.MaximumNumberOfItems;
             }
 
-            var ida = pi.GetAttribute<InputDirectionAttribute>();
+            var ida = attribute as InputDirectionAttribute;
             if (ida != null)
             {
                 pi.InputDirection = ida.InputDirection;
             }
 
-            var eia = pi.GetAttribute<EasyInsertAttribute>();
+            var eia = attribute as EasyInsertAttribute;
             if (eia != null)
             {
                 pi.EasyInsert = eia.EasyInsert;
             }
 
-            var sia = pi.GetAttribute<SortIndexAttribute>();
+            var sia = attribute as SortIndexAttribute;
             if (sia != null)
             {
                 pi.SortIndex = sia.SortIndex;
             }
 
-            var eba = pi.GetAttribute<EnableByAttribute>();
+            var eba = attribute as EnableByAttribute;
             if (eba != null)
             {
-                pi.IsEnabledDescriptor = properties.Find(eba.PropertyName, false);
+                pi.IsEnabledDescriptor = pi.GetDescriptor(eba.PropertyName);
             }
 
-            var vba = pi.GetAttribute<VisibleByAttribute>();
+            var vba = attribute as VisibleByAttribute;
             if (vba != null)
             {
-                pi.IsVisibleDescriptor = properties.Find(vba.PropertyName, false);
+                pi.IsVisibleDescriptor = pi.GetDescriptor(vba.PropertyName);
             }
 
-            pi.IsOptional = pi.OptionalDescriptor != null;
-
-            var oa = pi.GetAttribute<OptionalAttribute>();
+            var oa = attribute as OptionalAttribute;
             if (oa != null)
             {
+                pi.IsOptional = true;
                 if (oa.PropertyName != null)
                 {
-                    pi.OptionalDescriptor = properties.Find(oa.PropertyName, false);
+                    pi.OptionalDescriptor = pi.GetDescriptor(oa.PropertyName);
                 }
-
-                pi.IsOptional = true;
             }
 
-            pi.IsComment = pi.GetAttribute<CommentAttribute>() != null;
-            if (pi.IsComment)
+            if (attribute is CommentAttribute)
             {
-                pi.HeaderPlacement = HeaderPlacement.Hidden;
+                pi.IsComment = true;
             }
 
-            pi.IsEditable = pi.GetAttribute<IsEditableAttribute>() != null;
+            var ea = attribute as EditableAttribute;
+            if (ea != null)
+            {
+                pi.IsEditable = ea.AllowEdit;
+            }
 
-            pi.AutoUpdateText = pi.GetAttribute<AutoUpdateTextAttribute>() != null;
+            if (attribute is AutoUpdateTextAttribute)
+            {
+                pi.AutoUpdateText = true;
+            }
 
-            var ispa = pi.GetAttribute<ItemsSourcePropertyAttribute>();
+            var ispa = attribute as ItemsSourcePropertyAttribute;
             if (ispa != null)
             {
-                pi.ItemsSourceDescriptor = properties.Find(ispa.PropertyName, false);
+                pi.ItemsSourceDescriptor = pi.GetDescriptor(ispa.PropertyName);
             }
 
-            var rpa = pi.GetAttribute<BasePathPropertyAttribute>();
+            var liispa = attribute as ListItemItemsSourcePropertyAttribute;
+            if (liispa != null)
+            {
+                var p = TypeDescriptor.GetProperties(instance)[liispa.PropertyName];
+                var listItemItemsSource = p != null ? p.GetValue(instance) as IEnumerable : null;
+                pi.ListItemItemsSource = listItemItemsSource;
+            }
+
+            var rpa = attribute as BasePathPropertyAttribute;
             if (rpa != null)
             {
-                pi.RelativePathDescriptor = properties.Find(rpa.BasePathPropertyName, false);
+                pi.RelativePathDescriptor = pi.GetDescriptor(rpa.BasePathPropertyName);
             }
 
-            var fa = pi.GetAttribute<FilterPropertyAttribute>();
+            var fa = attribute as FilterPropertyAttribute;
             if (fa != null)
             {
-                pi.FilterDescriptor = properties.Find(fa.PropertyName, false);
+                pi.FilterDescriptor = pi.GetDescriptor(fa.PropertyName);
             }
 
-            var dea = pi.GetAttribute<DefaultExtensionPropertyAttribute>();
+            var dea = attribute as DefaultExtensionPropertyAttribute;
             if (dea != null)
             {
-                pi.DefaultExtensionDescriptor = properties.Find(dea.PropertyName, false);
+                pi.DefaultExtensionDescriptor = pi.GetDescriptor(dea.PropertyName);
             }
 
-            var fsa = pi.GetAttribute<FormatStringAttribute>();
+            var fsa = attribute as FormatStringAttribute;
             if (fsa != null)
             {
                 pi.FormatString = fsa.FormatString;
             }
 
-            var coa = pi.GetAttribute<ConverterAttribute>();
+            var coa = attribute as ConverterAttribute;
             if (coa != null)
             {
                 pi.Converter = Activator.CreateInstance(coa.ConverterType) as IValueConverter;
             }
 
-            var sa = pi.GetAttribute<SlidableAttribute>();
+            var sa = attribute as SlidableAttribute;
             if (sa != null)
             {
                 pi.IsSlidable = true;
@@ -590,7 +639,7 @@ namespace PropertyTools.Wpf
                 pi.SliderTickFrequency = sa.TickFrequency;
             }
 
-            var spa = pi.GetAttribute<SpinnableAttribute>();
+            var spa = attribute as SpinnableAttribute;
             if (spa != null)
             {
                 pi.IsSpinnable = true;
@@ -600,31 +649,31 @@ namespace PropertyTools.Wpf
                 pi.SpinLargeChange = spa.LargeChange;
             }
 
-            var wpa = pi.GetAttribute<WidePropertyAttribute>();
+            var wpa = attribute as WidePropertyAttribute;
             if (wpa != null)
             {
                 pi.HeaderPlacement = wpa.ShowHeader ? HeaderPlacement.Above : HeaderPlacement.Hidden;
             }
 
-            var wia = pi.GetAttribute<WidthAttribute>();
+            var wia = attribute as WidthAttribute;
             if (wia != null)
             {
                 pi.Width = wia.Width;
             }
 
-            var hpa = pi.GetAttribute<HeaderPlacementAttribute>();
+            var hpa = attribute as HeaderPlacementAttribute;
             if (hpa != null)
             {
                 pi.HeaderPlacement = hpa.HeaderPlacement;
             }
 
-            var ha = pi.GetAttribute<HorizontalAlignmentAttribute>();
+            var ha = attribute as HorizontalAlignmentAttribute;
             if (ha != null)
             {
                 pi.HorizontalAlignment = ha.HorizontalAlignment;
             }
 
-            var hea = pi.GetAttribute<HeightAttribute>();
+            var hea = attribute as HeightAttribute;
             if (hea != null)
             {
                 pi.Height = hea.Height;
@@ -633,17 +682,11 @@ namespace PropertyTools.Wpf
                 pi.AcceptsReturn = true;
             }
 
-            var fta = pi.GetAttribute<FillTabAttribute>();
+            var fta = attribute as FillTabAttribute;
             if (fta != null)
             {
                 pi.FillTab = true;
                 pi.AcceptsReturn = true;
-            }
-
-            if (pi.Descriptor.PropertyType == typeof(TimeSpan) && pi.Converter == null)
-            {
-                pi.Converter = new TimeSpanToStringConverter();
-                pi.ConverterParameter = pi.FormatString;
             }
         }
     }

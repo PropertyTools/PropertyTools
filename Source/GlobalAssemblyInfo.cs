@@ -1,9 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SelectorStyle.cs" company="PropertyTools">
+﻿//-----------------------------------------------------------------------
+// <copyright file="GlobalAssemblyInfo.cs" company="OxyPlot">
 //   The MIT License (MIT)
-//   
+//
 //   Copyright (c) 2012 Oystein Bjorke
-//   
+//
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
 //   "Software"), to deal in the Software without restriction, including
@@ -11,10 +11,10 @@
 //   distribute, sublicense, and/or sell copies of the Software, and to
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
-//   
+//
 //   The above copyright notice and this permission notice shall be included
 //   in all copies or substantial portions of the Software.
-//   
+//
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 //   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 //   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -23,36 +23,19 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Defines the style of selector controls.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
-namespace PropertyTools.DataAnnotations
-{
-    /// <summary>
-    /// Defines the style of selector controls.
-    /// </summary>
-    public enum SelectorStyle
-    {
-        /// <summary>
-        /// Automatic style.
-        /// </summary>
-        Auto,
+using System.Reflection;
+using System.Runtime.InteropServices;
 
-        /// <summary>
-        /// Use radio buttons.
-        /// </summary>
-        RadioButtons,
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyProduct("PropertyTools for WPF")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyCopyright("Copyright (C) Oystein Bjorke 2012.")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
-        /// <summary>
-        /// Use combo box.
-        /// </summary>
-        ComboBox,
+[assembly: ComVisible(false)]
 
-        /// <summary>
-        /// Use list box.
-        /// </summary>
-        ListBox
-    }
-}
+[assembly: AssemblyVersion("2013.1.1.1")]
+[assembly: AssemblyFileVersion("2013.1.1.1")]

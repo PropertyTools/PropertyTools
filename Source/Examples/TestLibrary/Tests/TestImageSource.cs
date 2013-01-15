@@ -40,7 +40,7 @@ namespace TestLibrary
 
         private string path;
 
-        [InputFilePath("Images files|*.png;*.jpg", ".png")]
+        [InputFilePath(".png", "Images files|*.png;*.jpg")]
         public string Path
         {
             get

@@ -49,6 +49,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="MainViewModel.cs" />
     <Compile Include="LocalPropertyControlFactory.cs" />
     <Page Include="MainWindow.xaml">

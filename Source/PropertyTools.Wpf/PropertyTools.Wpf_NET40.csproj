@@ -44,6 +44,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <IntermediateOutputPath>C:\Users\YSTEIN~1\AppData\Local\Temp\vs7CD4.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,6 +55,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>..\..\Output\NET40\PropertyTools.Wpf.XML</DocumentationFile>
+    <IntermediateOutputPath>C:\Users\YSTEIN~1\AppData\Local\Temp\vs7CD4.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -144,6 +146,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Controls\ColorPicker2\ColorPicker2.cs" />
     <Compile Include="Controls\Bitmap.cs" />
     <Compile Include="Controls\ColorPicker2\ColorPickerPanel.cs" />
@@ -218,16 +223,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="Dialogs\PropertyDialog.xaml.cs">
       <DependentUpon>PropertyDialog.xaml</DependentUpon>
     </Compile>
@@ -258,16 +253,7 @@
     <Compile Include="TreeListBox\TreeListBox.cs" />
     <Compile Include="TreeListBox\TreeListBoxDragDropHelper.cs" />
     <Compile Include="TreeListBox\TreeListBoxItem.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <None Include="ClassDiagrams\Dialogs.cd" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
     <None Include="PropertyTools.snk" />
   </ItemGroup>
@@ -308,7 +294,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PropertyTools\PropertyTools_NET40.csproj">
-      <Project>{37466829-61F5-47FA-9E3E-9CEDCD9535C0}</Project>
+      <Project>{37466829-61f5-47fa-9e3e-9cedcd9535c0}</Project>
       <Name>PropertyTools_NET40</Name>
     </ProjectReference>
   </ItemGroup>

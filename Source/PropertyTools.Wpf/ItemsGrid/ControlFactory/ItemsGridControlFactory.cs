@@ -214,7 +214,8 @@ namespace PropertyTools.Wpf
             {
                 if (d.ItemsSourceProperty != null)
                 {
-                    c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(d.ItemsSourceProperty));
+                    var itemsSourceBinding = new Binding(d.ItemsSourceProperty);
+                    c.SetBinding(ItemsControl.ItemsSourceProperty, itemsSourceBinding);
                 }
             }
 

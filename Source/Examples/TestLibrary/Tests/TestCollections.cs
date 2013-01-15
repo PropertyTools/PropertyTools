@@ -30,6 +30,7 @@ namespace TestLibrary
     using System.Collections.ObjectModel;
     using System.ComponentModel;
 
+    using PropertyTools;
     using PropertyTools.DataAnnotations;
 
     public class TestCollections : TestBase
@@ -64,6 +65,7 @@ namespace TestLibrary
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         public Collection<Item> Collection { get; set; }
 
+
         [Category("Custom|Specified columns")]
         [Column(0, "Name", "Name", null, "2*", 'L')]
         [Column(1, "Fraction", "%", "P2", "1*", 'R')]
@@ -73,6 +75,15 @@ namespace TestLibrary
         [Category("Observable|ObservableCollection")]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         public ObservableCollection<Item> ObservableCollection { get; set; }
+
+        [Category("ItemsSource at each item")]
+        [HeaderPlacement(HeaderPlacement.Collapsed)]
+        [ListItemItemsSourceProperty("Cities")]
+        [Column(0, "", "City")]
+        public ObservableCollection<string> ListOfCities { get; set; }
+
+        [Browsable(false)]
+        public IEnumerable<string> Cities { get { return new[] { "Oslo", "Reykjavik", "New York" }; } }
 
         public TestCollections()
         {
@@ -87,6 +98,7 @@ namespace TestLibrary
             Collection = new Collection<Item>();
             Collection2 = new Collection<Item>();
             ObservableCollection = new ObservableCollection<Item>();
+            ListOfCities = new ObservableCollection<string>();
         }
 
         public override string ToString()
@@ -95,14 +107,48 @@ namespace TestLibrary
         }
     }
 
-    public class Item : INotifyPropertyChanged
+    public class Item : Observable
     {
-        public string Name { get; set; }
-        public int Number { get; set; }
-        public double Fraction { get; set; }
+        private string name;
 
-#pragma warning disable 67
-        public event PropertyChangedEventHandler PropertyChanged;
-#pragma warning restore 67
+        private int number;
+
+        private double fraction;
+
+        public string Name
+        {
+            get
+            {
+                return this.name;
+            }
+            set
+            {
+                this.SetValue(ref name, value, () => Name);
+            }
+        }
+
+        public int Number
+        {
+            get
+            {
+                return this.number;
+            }
+            set
+            {
+                this.SetValue(ref number, value, () => Number);
+            }
+        }
+
+        public double Fraction
+        {
+            get
+            {
+                return this.fraction;
+            }
+            set
+            {
+                this.SetValue(ref fraction, value, () => Fraction);
+            }
+        }
     }
 }

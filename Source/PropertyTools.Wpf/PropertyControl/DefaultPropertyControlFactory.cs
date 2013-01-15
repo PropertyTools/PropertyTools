@@ -237,17 +237,22 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateBoolControl(PropertyItem property)
         {
+            if (property.Descriptor.IsReadOnly)
+            {
+                var cm = new CheckMark
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Left
+                };
+                cm.SetBinding(CheckMark.IsCheckedProperty, property.CreateBinding());
+                return cm;
+            }
+
             var c = new CheckBox
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Left
                 };
-
-            if (property.Descriptor.IsReadOnly)
-            {
-                c.IsHitTestVisible = false;
-                c.Focusable = false;
-            }
 
             c.SetBinding(ToggleButton.IsCheckedProperty, property.CreateBinding());
             return c;
@@ -302,8 +307,7 @@ namespace PropertyTools.Wpf
                 c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
             }
 
-            c.SetBinding(
-                property.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, property.CreateBinding());
+            c.SetBinding(property.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, property.CreateBinding());
 
             return c;
         }
@@ -613,7 +617,14 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateGridControl(PropertyItem property)
         {
-            var c = new ItemsGrid { CanDelete = property.ListCanRemove, CanInsert = property.ListCanAdd, InputDirection = property.InputDirection, EasyInsert = property.EasyInsert };
+            var c = new ItemsGrid
+            {
+                CanDelete = property.ListCanRemove,
+                CanInsert = property.ListCanAdd,
+                InputDirection = property.InputDirection,
+                EasyInsert = property.EasyInsert,
+                AutoGenerateColumns = property.Columns.Count == 0
+            };
 
             var glc = new GridLengthConverter();
             foreach (var ca in property.Columns.OrderBy(cd => cd.ColumnIndex))
@@ -626,6 +637,12 @@ namespace PropertyTools.Wpf
                         Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto),
                         IsReadOnly = ca.IsReadOnly
                     };
+
+                if (ca.PropertyName == string.Empty && property.ListItemItemsSource != null)
+                {
+                    cd.ItemsSource = property.ListItemItemsSource;
+                }
+
                 switch (ca.Alignment.ToString(CultureInfo.InvariantCulture).ToUpper())
                 {
                     case "L":

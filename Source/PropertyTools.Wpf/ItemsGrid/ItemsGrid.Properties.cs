@@ -979,6 +979,8 @@ namespace PropertyTools.Wpf
             Grid.SetRow(this.currentBackground, this.CurrentCell.Row);
             Grid.SetColumn(this.currentBackground, this.CurrentCell.Column);
 
+            this.UpdateSelectionVisibility();
+
             Grid.SetColumn(this.autoFillBox, column + columnspan - 1);
             Grid.SetRow(this.autoFillBox, row + rowspan - 1);
 
@@ -1001,6 +1003,32 @@ namespace PropertyTools.Wpf
             {
                 this.HideEditor();
             }
+        }
+
+        /// <summary>
+        /// Updates the selection visibility.
+        /// </summary>
+        private void UpdateSelectionVisibility()
+        {
+            this.currentBackground.Visibility = this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
+                                                    ? Visibility.Visible
+                                                    : Visibility.Hidden;
+            this.autoFillBox.Visibility = this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
+                                              ? Visibility.Visible
+                                              : Visibility.Hidden;
+            this.selectionBackground.Visibility = this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
+                                                      ? Visibility.Visible
+                                                      : Visibility.Hidden;
+            this.columnSelectionBackground.Visibility = this.CurrentCell.Column < this.Columns
+                                                            ? Visibility.Visible
+                                                            : Visibility.Hidden;
+            this.rowSelectionBackground.Visibility = this.CurrentCell.Row < this.Rows ? Visibility.Visible : Visibility.Hidden;
+            this.selection.Visibility = this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
+                                            ? Visibility.Visible
+                                            : Visibility.Hidden;
+            this.selection.Visibility = this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
+                                            ? Visibility.Visible
+                                            : Visibility.Hidden;
         }
 
         /// <summary>

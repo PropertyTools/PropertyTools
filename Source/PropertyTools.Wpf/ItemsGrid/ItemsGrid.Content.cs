@@ -335,6 +335,7 @@ namespace PropertyTools.Wpf
             this.UpdateCells(rows, columns);
 
             this.UpdateColumnWidths();
+            this.UpdateSelectionVisibility();
 
             this.SubscribeToNotifications();
         }

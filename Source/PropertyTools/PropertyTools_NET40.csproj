@@ -67,8 +67,8 @@
     <Compile Include="DataAnnotations\InputDirection.cs" />
     <Compile Include="DataAnnotations\InputDirectionAttribute.cs" />
     <Compile Include="DataAnnotations\InputFilePathAttribute.cs" />
-    <Compile Include="DataAnnotations\IsEditableAttribute.cs" />
     <Compile Include="DataAnnotations\ListAttribute.cs" />
+    <Compile Include="DataAnnotations\ListItemItemsSourcePropertyAttribute.cs" />
     <Compile Include="DataAnnotations\OptionalAttribute.cs" />
     <Compile Include="DataAnnotations\OutputFilePathAttribute.cs" />
     <Compile Include="DataAnnotations\ResettableAttribute.cs" />

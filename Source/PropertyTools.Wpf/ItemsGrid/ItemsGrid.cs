@@ -1006,6 +1006,11 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
+            if (this.CurrentCell.Row >= this.Rows || this.CurrentCell.Column >= this.Columns)
+            {
+                return false;
+            }
+
             int index = this.GetItemIndex(this.CurrentCell);
             var item = this.GetItem(index);
             this.currentEditor = this.ControlFactory.CreateEditControl(pd, index);
@@ -2297,7 +2302,7 @@ namespace PropertyTools.Wpf
             {
                 row = this.Rows - 1;
             }
-            
+
             return row;
         }
 

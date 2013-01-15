@@ -28,6 +28,7 @@ namespace TestLibrary
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
 
     using PropertyTools.DataAnnotations;
 
@@ -40,12 +41,12 @@ namespace TestLibrary
         public string SelectedItem { get; set; }
 
         [ItemsSourceProperty("Items")]
-        [IsEditable]
+        [Editable(true)]
         public string EditableItem { get; set; }
 
         public TestItemsSourcePropertyAttribute()
         {
-            Items = new List<string> { "Oslo", "Stockholm", "K�benhavn" };
+            Items = new List<string> { "Oslo", "Stockholm", "København" };
         }
 
         public override string ToString()

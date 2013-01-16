@@ -74,7 +74,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="ColorItemTemplate">
-        <Grid Margin="0 2 2 2" Width="13" Height="13" HorizontalAlignment="Center" SnapsToDevicePixels="True"
+        <Grid Margin="1 2 1 2" Width="13" Height="13" HorizontalAlignment="Center" SnapsToDevicePixels="True"
           ToolTip="{Binding Converter={StaticResource ColorToStringConverter2}}">
             <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                  Fill="{StaticResource SmallCheckerBoardBrush2}" SnapsToDevicePixels="True"
@@ -91,6 +91,10 @@
         </Grid>
     </DataTemplate>
 
+    <Style x:Key="ColorItemContainerStyle" TargetType="ListBoxItem">
+        <Setter Property="Padding" Value="0" />
+    </Style>
+    
     <!--<DataTemplate x:Key="ColorItemTemplate2">
         <Grid Background="{StaticResource SmallCheckerBoardBrush2}" Margin="0 2 2 -1" Width="13" Height="13"
           HorizontalAlignment="Center">
@@ -247,7 +251,7 @@ Visibility="{Binding ShowHsvPanel, RelativeSource={RelativeSource Mode=Templated
                                 <ListBox
 ItemsSource="{Binding ThemeColors, RelativeSource={RelativeSource Mode=TemplatedParent}}"
 SelectedValue="{Binding SelectedColor, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-BorderThickness="0 1 0 1" ItemTemplate="{StaticResource ColorItemTemplate}"
+BorderThickness="0 1 0 1" ItemTemplate="{StaticResource ColorItemTemplate}" ItemContainerStyle="{StaticResource ColorItemContainerStyle}"
 ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
                                 <TextBlock
 Text="{Binding Strings.StandardColors,RelativeSource={RelativeSource Mode=TemplatedParent}}"
@@ -255,14 +259,14 @@ Style="{StaticResource HeaderStyle}" />
                                 <ListBox Style="{StaticResource Box}"
                          ItemsSource="{Binding StandardColors, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                          SelectedValue="{Binding SelectedColor, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                         ItemTemplate="{StaticResource ColorItemTemplate}" ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
+                         ItemTemplate="{StaticResource ColorItemTemplate}"  ItemContainerStyle="{StaticResource ColorItemContainerStyle}" ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
                                 <TextBlock
 Text="{Binding Strings.RecentColors,RelativeSource={RelativeSource Mode=TemplatedParent}}"
 Style="{StaticResource HeaderStyle}" />
                                 <ListBox Style="{StaticResource BottomBox}"
                          ItemsSource="{Binding RecentColors, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                          SelectedValue="{Binding SelectedColor, RelativeSource={RelativeSource Mode=TemplatedParent}}" BorderThickness="0 1 0 0"
-                         ItemTemplate="{StaticResource ColorItemTemplate}" ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
+                         ItemTemplate="{StaticResource ColorItemTemplate}" ItemContainerStyle="{StaticResource ColorItemContainerStyle}" ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
                             </StackPanel>
                         </Grid>
                         <Grid
@@ -552,8 +556,7 @@ Color="{Binding RightColor,RelativeSource={RelativeSource TemplatedParent}}" Off
                         <Popup Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" Placement="Bottom"
                    Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                    PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                            <theme:SystemDropShadowChrome Name="Shdw" Color="Transparent"
-                                            MinWidth="{Binding ActualWidth, ElementName=MainGrid}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                            <theme:SystemDropShadowChrome Name="Shdw" Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
                                 <Border x:Name="DropDownBorder" BorderThickness="1"
                         BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
                         Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">

@@ -42,7 +42,10 @@ namespace TestLibrary
         public TestEnumeration Color { get; set; }
 
         [EnableBy("IsColorOk")]
-        public string String { get; set; }
+        public string EnableByIsColorOkProperty { get; set; }
+
+        [EnableBy("Color", TestEnumeration.Blue)]
+        public string EnableByBlueColor { get; set; }
 
         [Browsable(false)]
         public bool IsColorOk

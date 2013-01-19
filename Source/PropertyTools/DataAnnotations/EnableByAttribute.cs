@@ -46,6 +46,13 @@ namespace PropertyTools.DataAnnotations
         public EnableByAttribute(string propertyName)
         {
             this.PropertyName = propertyName;
+            this.PropertyValue = null;
+        }
+
+        public EnableByAttribute(string propertyName, object propertyValue)
+        {
+            this.PropertyName = propertyName;
+            this.PropertyValue = propertyValue;
         }
 
         /// <summary>
@@ -54,5 +61,9 @@ namespace PropertyTools.DataAnnotations
         /// <value>The name of the property.</value>
         public string PropertyName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the value that enables the attributed property.
+        /// </summary>
+        public object PropertyValue { get; set; }
     }
 }

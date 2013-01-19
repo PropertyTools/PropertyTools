@@ -549,6 +549,7 @@ namespace PropertyTools.Wpf
             if (eba != null)
             {
                 pi.IsEnabledDescriptor = pi.GetDescriptor(eba.PropertyName);
+                pi.IsEnabledValue = eba.PropertyValue;
             }
 
             var vba = attribute as VisibleByAttribute;

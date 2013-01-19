@@ -359,6 +359,12 @@ namespace PropertyTools.Wpf
             new BooleanToVisibilityConverter();
 
         /// <summary>
+        /// The value to boolean converter.
+        /// </summary>
+        private static readonly ValueToBooleanConverter ValueToBooleanConverter =
+            new ValueToBooleanConverter();
+
+        /// <summary>
         /// The null to bool converter.
         /// </summary>
         private static readonly NullToBoolConverter NullToBoolConverter = new NullToBoolConverter { NullValue = false };
@@ -1494,7 +1500,13 @@ namespace PropertyTools.Wpf
 
             if (pi.IsEnabledDescriptor != null)
             {
-                propertyPanel.SetBinding(IsEnabledProperty, new Binding(pi.IsEnabledDescriptor.Name));
+                var isEnabledBinding = new Binding(pi.IsEnabledDescriptor.Name);
+                if (pi.IsEnabledValue != null)
+                {
+                    isEnabledBinding.ConverterParameter = pi.IsEnabledValue;
+                    isEnabledBinding.Converter = ValueToBooleanConverter;
+                }
+                propertyPanel.SetBinding(IsEnabledProperty, isEnabledBinding);
             }
 
             if (pi.IsVisibleDescriptor != null)

@@ -270,6 +270,11 @@ namespace PropertyTools.Wpf
         public PropertyDescriptor IsEnabledDescriptor { get; set; }
 
         /// <summary>
+        /// Gets or sets the value that enables the property.
+        /// </summary>
+        public object IsEnabledValue { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the property is a file open dialog.
         /// </summary>
         public bool IsFileOpenDialog { get; set; }

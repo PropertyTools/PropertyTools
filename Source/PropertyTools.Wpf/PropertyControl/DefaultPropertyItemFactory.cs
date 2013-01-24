@@ -598,6 +598,13 @@ namespace PropertyTools.Wpf
                 pi.ListItemItemsSource = listItemItemsSource;
             }
 
+            var clpa = attribute as CheckableItemsAttribute;
+            if (clpa != null)
+            {
+                pi.CheckableItemsIsCheckedPropertyName = clpa.IsCheckedPropertyName;
+                pi.CheckableItemsContentPropertyName = clpa.ContentPropertyName;
+            }
+
             var rpa = attribute as BasePathPropertyAttribute;
             if (rpa != null)
             {

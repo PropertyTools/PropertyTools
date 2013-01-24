@@ -513,6 +513,16 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the name of the Content property for a property of checkable items.
+        /// </summary>
+        public string CheckableItemsContentPropertyName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the IsChecked property for a property of checkable items.
+        /// </summary>
+        public string CheckableItemsIsCheckedPropertyName { get; set; }
+
+        /// <summary>
         /// Creates a binding.
         /// </summary>
         /// <param name="trigger">

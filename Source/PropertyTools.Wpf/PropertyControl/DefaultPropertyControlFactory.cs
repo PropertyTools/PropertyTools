@@ -213,6 +213,11 @@ namespace PropertyTools.Wpf
                 return this.CreateSpinControl(property);
             }
 
+            if (property.CheckableItemsIsCheckedPropertyName != null)
+            {
+                return this.CreateCheckableItems(property);
+            }
+
             if (property.Is(typeof(IDictionary)) || property.Is(typeof(IDictionary<,>)))
             {
                 return this.CreateDictionaryControl(property);
@@ -826,6 +831,25 @@ namespace PropertyTools.Wpf
                 };
             c.SetBinding(SpinControl.ValueProperty, property.CreateBinding());
             return c;
+        }
+
+        /// <summary>
+        /// Creates a sequence of checkboxes.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>A FrameworkElement.</returns>
+        protected virtual FrameworkElement CreateCheckableItems(PropertyItem property)
+        {
+            var lb = new ItemsControl();
+            var rectangleFactory = new FrameworkElementFactory(typeof(CheckBox));
+            rectangleFactory.SetBinding(ToggleButton.IsCheckedProperty, new Binding(property.CheckableItemsIsCheckedPropertyName));
+            rectangleFactory.SetBinding(ContentControl.ContentProperty, new Binding(property.CheckableItemsContentPropertyName));
+
+            lb.ItemTemplate = new DataTemplate { VisualTree = rectangleFactory };
+            lb.SetBinding(ItemsControl.ItemsSourceProperty, property.CreateBinding());
+            lb.Margin = new Thickness(0, 6, 0, 6);
+
+            return lb;
         }
 
         /// <summary>

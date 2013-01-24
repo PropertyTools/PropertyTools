@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ListItemItemsSourcePropertyAttribute.cs" company="PropertyTools">
+// <copyright file="CheckableItemsAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the name of a property that contains values for the items in the decorated list property.
+//   Specifies the name of the properties that controls the IsChecked and Content of checkable items.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.DataAnnotations
@@ -32,25 +32,31 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    /// Specifies the name of a property that contains values for the items in the decorated list property.
+    /// Specifies the name of the properties that controls the IsChecked and Content of checkable items.
     /// </summary>
-    public class ListItemItemsSourcePropertyAttribute : Attribute
+    public class CheckableItemsAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListItemItemsSourcePropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="CheckableItemsAttribute" /> class.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property.
-        /// </param>
-        public ListItemItemsSourcePropertyAttribute(string propertyName)
+        /// <param name="isCheckedPropertyName">Name of the IsChecked property.</param>
+        /// <param name="contentPropertyName">Name of the Content property.</param>
+        public CheckableItemsAttribute(string isCheckedPropertyName, string contentPropertyName = "")
         {
-            this.PropertyName = propertyName;
+            this.IsCheckedPropertyName = isCheckedPropertyName;
+            this.ContentPropertyName = contentPropertyName;
         }
 
         /// <summary>
-        /// Gets or sets the name of the property.
+        /// Gets or sets the name of the IsChecked property.
         /// </summary>
         /// <value>The name of the property.</value>
-        public string PropertyName { get; set; }
+        public string IsCheckedPropertyName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the content property.
+        /// </summary>
+        /// <value>The name of the content property.</value>
+        public string ContentPropertyName { get; set; }
     }
 }

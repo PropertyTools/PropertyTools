@@ -71,6 +71,7 @@ namespace TestLibrary
                     new TestCollections(),
                     new TestDictionary(),
                     new TestItemsSourcePropertyAttribute(),
+                    new TestCheckableItems(),
                     new TestImageSource(),
                     new TestAutoUpdateTextAttribute(),
                     new TestDataAnnotations(),

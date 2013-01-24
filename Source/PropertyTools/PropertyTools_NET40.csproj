@@ -49,6 +49,7 @@
     <Compile Include="DataAnnotations\ColumnsPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\CommentAttribute.cs" />
     <Compile Include="DataAnnotations\ConverterAttribute.cs" />
+    <Compile Include="DataAnnotations\CheckableItemsAttribute.cs" />
     <Compile Include="DataAnnotations\DefaultExtensionPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\DirectoryPathAttribute.cs" />
     <Compile Include="DataAnnotations\EasyInsertAttribute.cs" />

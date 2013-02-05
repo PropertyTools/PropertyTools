@@ -778,6 +778,20 @@ namespace PropertyTools.Wpf
                 return bv;
             }
 
+            if (basevalue is float) 
+            {
+                var bv = (float)basevalue;
+                if (bv > numericMaximum) {
+                    return (float)numericMaximum;
+                }
+
+                if (bv < numericMinimum) {
+                    return (float)numericMinimum;
+                }
+
+                return bv;
+            }
+
             if (basevalue is int)
             {
                 var bv = (int)basevalue;

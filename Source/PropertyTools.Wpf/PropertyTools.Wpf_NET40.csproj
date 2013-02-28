@@ -44,7 +44,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <IntermediateOutputPath>C:\Users\YSTEIN~1\AppData\Local\Temp\vs7CD4.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,7 +54,6 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>..\..\Output\NET40\PropertyTools.Wpf.XML</DocumentationFile>
-    <IntermediateOutputPath>C:\Users\YSTEIN~1\AppData\Local\Temp\vs7CD4.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -173,6 +171,7 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToComponentConverter.cs" />
     <Compile Include="Converters\ColorToStringConverter.cs" />
+    <Compile Include="Converters\FontFamilyConverter.cs" />
     <Compile Include="Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="Converters\DefinedColorToVisibilityConverter.cs" />
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />

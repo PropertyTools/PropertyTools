@@ -40,6 +40,8 @@ namespace TestLibrary
         public TestAdvancedTypes()
         {
             Uri = new Uri("http://www.google.com");
+            FontFamily = new FontFamily("Arial");
+            FontFamilySelector = "Times New Roman";
         }
 
         [Category("System")]
@@ -67,6 +69,9 @@ namespace TestLibrary
         public FontFamily FontFamilyWithPreview { get; set; }
 
         public FontFamily FontFamily { get { return FontFamilyWithPreview; } set { FontFamilyWithPreview = value; } }
+
+        [FontFamilySelector]
+        public string FontFamilySelector { get; set; }
 
         [FontPreview("FontFamily", 32, 500)]
         public string FontPreview

@@ -174,6 +174,7 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToComponentConverter.cs" />
     <Compile Include="Converters\ColorToStringConverter.cs" />
+    <Compile Include="Converters\FontFamilyConverter.cs" />
     <Compile Include="Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="Converters\DefinedColorToVisibilityConverter.cs" />
     <Compile Include="Converters\ValueToVisibilityConverter.cs" />

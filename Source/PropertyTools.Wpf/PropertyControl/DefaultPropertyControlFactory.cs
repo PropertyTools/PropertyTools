@@ -50,6 +50,11 @@ namespace PropertyTools.Wpf
     public class DefaultPropertyControlFactory : IPropertyControlFactory
     {
         /// <summary>
+        /// The font family converter
+        /// </summary>
+        private static readonly FontFamilyConverter FontFamilyConverter = new FontFamilyConverter();
+
+        /// <summary>
         /// The cached font families.
         /// </summary>
         private static FontFamily[] cachedFontFamilies;
@@ -575,7 +580,13 @@ namespace PropertyTools.Wpf
                 c.ItemTemplate = dt;
             }
 
-            c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
+            var binding = property.CreateBinding();
+            if (property.ActualPropertyType == typeof(string))
+            {
+                binding.Converter = FontFamilyConverter;
+            }
+
+            c.SetBinding(Selector.SelectedValueProperty, binding);
             return c;
         }
 

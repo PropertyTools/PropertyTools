@@ -72,7 +72,7 @@ namespace PropertyTools.Wpf
                 return Visibility.Visible;
             }
 
-            return Binding.DoNothing;
+            return DependencyProperty.UnsetValue;
         }
 
         /// <summary>

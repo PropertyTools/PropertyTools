@@ -34,6 +34,7 @@ namespace TestLibrary
     using System.Windows.Media.Media3D;
 
     using PropertyTools.DataAnnotations;
+    using PropertyTools.Wpf;
 
     public class TestAdvancedTypes : TestBase
     {
@@ -63,6 +64,7 @@ namespace TestLibrary
 
         [Category("System.Windows.Media")]
         public Color Color { get; set; }
+        [Converter(typeof(ColorToBrushConverter))]
         public SolidColorBrush SolidColorBrush { get; set; }
 
         [FontPreview(16)]

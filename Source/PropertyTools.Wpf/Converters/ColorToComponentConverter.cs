@@ -31,6 +31,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
     using System.Windows.Media;
 
@@ -63,7 +64,7 @@ namespace PropertyTools.Wpf
             var component = parameter as string;
             if (value == null || component == null)
             {
-                return Binding.DoNothing;
+                return DependencyProperty.UnsetValue;
             }
 
             var c = (Color)value;
@@ -86,7 +87,7 @@ namespace PropertyTools.Wpf
                     return (int)(hsv[2] * 100);
             }
 
-            return Binding.DoNothing;
+            return DependencyProperty.UnsetValue;
         }
 
         /// <summary>
@@ -109,7 +110,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Binding.DoNothing;
+            return DependencyProperty.UnsetValue;
         }
     }
 }

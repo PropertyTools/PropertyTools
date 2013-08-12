@@ -31,6 +31,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
 
     /// <summary>
@@ -89,7 +90,7 @@ namespace PropertyTools.Wpf
         {
             if (value == null)
             {
-                return Binding.DoNothing;
+                return DependencyProperty.UnsetValue;
             }
 
             try
@@ -100,7 +101,7 @@ namespace PropertyTools.Wpf
                     return parameter;
                 }
 
-                return Binding.DoNothing;
+                return DependencyProperty.UnsetValue;
             }
             catch (ArgumentException)
             {
@@ -109,7 +110,7 @@ namespace PropertyTools.Wpf
             {
             }
 
-            return Binding.DoNothing;
+            return DependencyProperty.UnsetValue;
         }
     }
 }

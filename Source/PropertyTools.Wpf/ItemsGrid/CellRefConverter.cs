@@ -31,6 +31,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
 
     /// <summary>
@@ -66,7 +67,7 @@ namespace PropertyTools.Wpf
 
             if (targetType != typeof(CellRef))
             {
-                return Binding.DoNothing;
+                return DependencyProperty.UnsetValue;
             }
 
             if (value == null)

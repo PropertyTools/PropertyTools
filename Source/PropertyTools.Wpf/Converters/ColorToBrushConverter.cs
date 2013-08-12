@@ -31,6 +31,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
     using System.Windows.Media;
 
@@ -60,9 +61,15 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            var underlyingType = Nullable.GetUnderlyingType(targetType);
             if (value == null)
             {
-                return Binding.DoNothing;
+                if (underlyingType != null)
+                {
+                    return null;
+                }
+
+                return DependencyProperty.UnsetValue;
             }
 
             if (typeof(Brush).IsAssignableFrom(targetType))
@@ -73,7 +80,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            if (targetType == typeof(Color))
+            if (targetType == typeof(Color) || underlyingType == typeof(Color))
             {
                 if (value is SolidColorBrush)
                 {
@@ -81,7 +88,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            return Binding.DoNothing;
+            return DependencyProperty.UnsetValue;
         }
 
         /// <summary>

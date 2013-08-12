@@ -31,6 +31,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
 
     /// <summary>
@@ -74,7 +75,7 @@ namespace PropertyTools.Wpf
 
             if (targetType != typeof(string))
             {
-                return Binding.DoNothing;
+                return DependencyProperty.UnsetValue;
             }
 
             var timespan = (TimeSpan)value;
@@ -115,21 +116,21 @@ namespace PropertyTools.Wpf
             var input = value as string;
             if (input == null)
             {
-                return Binding.DoNothing;
+                return DependencyProperty.UnsetValue;
             }
 
             if (targetType != typeof(TimeSpan))
             {
-                return Binding.DoNothing;
+                return DependencyProperty.UnsetValue;
             }
 
-            var formatstring = parameter as string;
-            if (string.IsNullOrWhiteSpace(formatstring))
+            var formatString = parameter as string;
+            if (string.IsNullOrWhiteSpace(formatString))
             {
                 return TimeSpan.Parse(input);
             }
 
-            var parser = new FormattedTimeSpanParser(formatstring);
+            var parser = new FormattedTimeSpanParser(formatString);
             return parser.Parse(input);
         }
     }

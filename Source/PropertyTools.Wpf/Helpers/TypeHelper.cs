@@ -78,7 +78,7 @@ namespace PropertyTools.Wpf
 
             if (type == null && items is IList)
             {
-                type = ((IList)items).AsQueryable().ElementType;
+                type = items.AsQueryable().ElementType;
             }
 
             return type;

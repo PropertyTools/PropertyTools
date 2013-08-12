@@ -31,6 +31,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
 
     /// <summary>
@@ -92,7 +93,7 @@ namespace PropertyTools.Wpf
                 return (float)value;
             }
 
-            return Binding.DoNothing;
+            return DependencyProperty.UnsetValue;
         }
 
         /// <summary>
@@ -118,7 +119,7 @@ namespace PropertyTools.Wpf
             // if (targetType==typeof(double))
             return value;
 
-            // return Binding.DoNothing;
+            // return DependencyProperty.UnsetValue;
         }
     }
 }

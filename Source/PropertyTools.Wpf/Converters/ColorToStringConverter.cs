@@ -33,6 +33,7 @@ namespace PropertyTools.Wpf
     using System.Collections.Generic;
     using System.Globalization;
     using System.Reflection;
+    using System.Windows;
     using System.Windows.Data;
     using System.Windows.Media;
 
@@ -158,7 +159,7 @@ namespace PropertyTools.Wpf
             var s = value as string;
             if (s == null)
             {
-                return Binding.DoNothing;
+                return DependencyProperty.UnsetValue;
             }
 
             Color color;
@@ -174,7 +175,7 @@ namespace PropertyTools.Wpf
                 return c;
             }
 
-            return Binding.DoNothing;
+            return DependencyProperty.UnsetValue;
         }
     }
 }

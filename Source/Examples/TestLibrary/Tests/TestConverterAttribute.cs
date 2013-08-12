@@ -29,6 +29,7 @@ namespace TestLibrary
     using System;
     using System.ComponentModel;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
 
     using PropertyTools.DataAnnotations;
@@ -68,7 +69,10 @@ namespace TestLibrary
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
-                return Binding.DoNothing;
+            {
+                return DependencyProperty.UnsetValue;
+            }
+
             var c = (System.Drawing.Color)value;
             return System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
         }
@@ -76,7 +80,10 @@ namespace TestLibrary
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
-                return Binding.DoNothing;
+            {
+                return DependencyProperty.UnsetValue;
+            }
+
             var c = (System.Windows.Media.Color)value;
             return System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B);
         }
@@ -93,8 +100,15 @@ namespace TestLibrary
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var v = System.Convert.ToDouble(value);
-            return v / 180 * Math.PI;
+            try
+            {
+                var v = System.Convert.ToDouble(value);
+                return v / 180 * Math.PI;
+            }
+            catch (FormatException)
+            {
+                return DependencyProperty.UnsetValue;
+            }
         }
     }
 

@@ -108,12 +108,12 @@ namespace PropertyTools.Wpf
                     {
                         if (this.UpdateBindingOnEnter)
                         {
-                            // update binding
+                            // get the binding to the Text property
                             var b = this.GetBindingExpression(TextProperty);
                             if (b != null)
                             {
+                                // update the source (do not update the target)
                                 b.UpdateSource();
-                                b.UpdateTarget();
                             }
                         }
 
@@ -174,35 +174,4 @@ namespace PropertyTools.Wpf
             e.Handled = true;
         }
     }
-
-    /*    Microsoft.Expression.Interactivity
-        public class UpdateOnEnterBehavior : Behavior<TextBox>
-        {
-            protected override void OnAttached()
-            {
-                base.OnAttached();
-                AssociatedObject.OnPreviewKeyDown += PreviewKeyDown;
-            }
-
-            protected override void OnDetaching()
-            {
-                base.OnDetaching();
-                AssociatedObject.OnPreviewKeyDown -= PreviewKeyDown;
-            }
-
-            private void PreviewKeyDown(object sender,
-                System.Windows.Input.KeyboardFocusChangedEventArgs e)
-            {
-                if (e.Key == Key.Enter && !AcceptsReturn)
-                {
-                        // update binding
-                        var b = AssociatedObject.GetBindingExpression(TextBox.TextProperty);
-                        if (b != null)
-                        {
-                            b.UpdateSource();
-                            b.UpdateTarget();
-                        }
-                }
-            }
-        }*/
 }

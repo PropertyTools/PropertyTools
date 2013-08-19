@@ -34,6 +34,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
     using System.Linq;
     using System.Windows.Media;
+    using System.Windows.Media.Imaging;
 
     /// <summary>
     /// Represents a tab in a <see cref="PropertyControl" />.
@@ -90,7 +91,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the icon.
         /// </summary>
         /// <value> The icon. </value>
-        public ImageSource Icon { get; set; }
+        public BitmapSource Icon { get; set; }
 
         /// <summary>
         /// Determines whether the tab contains the specified property.

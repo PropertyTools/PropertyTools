@@ -33,9 +33,9 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
+    using System.Windows.Automation;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
@@ -1588,7 +1588,9 @@ namespace PropertyTools.Wpf
         private FrameworkElement CreatePropertyControl(PropertyItem pi)
         {
             var options = new PropertyControlFactoryOptions { EnumAsRadioButtonsLimit = this.EnumAsRadioButtonsLimit };
-            return this.PropertyControlFactory.CreateControl(pi, options);
+            var control = this.PropertyControlFactory.CreateControl(pi, options);
+            control.SetValue(AutomationProperties.AutomationIdProperty, pi.PropertyName);
+            return control;
         }
 
         /// <summary>

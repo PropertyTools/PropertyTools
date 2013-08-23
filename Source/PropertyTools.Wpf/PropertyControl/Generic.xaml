@@ -67,8 +67,8 @@
                   BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid>
                             <TabControl x:Name="PART_Tabs" SelectedIndex="{TemplateBinding SelectedTabIndex}" 
-                          TabStripPlacement="{TemplateBinding TabStripPlacement}" Focusable="false"/>
-                            <ScrollViewer x:Name="PART_Scroller" VerticalScrollBarVisibility="Auto" Focusable="false">
+                          TabStripPlacement="{TemplateBinding TabStripPlacement}" Focusable="false" AutomationProperties.AutomationId="Tabs"/>
+                            <ScrollViewer x:Name="PART_Scroller" VerticalScrollBarVisibility="Auto" Focusable="false" AutomationProperties.AutomationId="Scroller">
                                 <StackPanel x:Name="PART_Panel" />
                             </ScrollViewer>
                         </Grid>

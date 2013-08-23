@@ -575,7 +575,7 @@ namespace PropertyTools.Wpf
                 factory.SetValue(TextBlock.FontSizeProperty, property.FontSize);
                 factory.SetValue(TextBlock.FontWeightProperty, FontWeight.FromOpenTypeWeight(property.FontWeight));
                 factory.SetBinding(TextBlock.TextProperty, new Binding());
-                factory.SetBinding(TextBlock.FontFamilyProperty, new Binding());
+                factory.SetBinding(TextBlock.FontFamilyProperty, new Binding { Converter = FontFamilyConverter });
                 dt.VisualTree = factory;
                 c.ItemTemplate = dt;
             }

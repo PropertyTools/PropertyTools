@@ -36,6 +36,8 @@ namespace TestLibrary
     using PropertyTools.DataAnnotations;
     using PropertyTools.Wpf;
 
+    using FontFamilyConverter = PropertyTools.Wpf.FontFamilyConverter;
+
     public class TestAdvancedTypes : TestBase
     {
         public TestAdvancedTypes()
@@ -51,7 +53,9 @@ namespace TestLibrary
         public Uri Uri { get; set; }
 
         [Category("System.Numerics")]
+        [Converter(typeof(ComplexConverter))]
         public Complex Complex { get; set; }
+        [Converter(typeof(BigIntegerConverter))]
         public BigInteger BigInteger { get; set; }
 
         [Category("System.Windows")]
@@ -73,6 +77,7 @@ namespace TestLibrary
         public FontFamily FontFamily { get { return FontFamilyWithPreview; } set { FontFamilyWithPreview = value; } }
 
         [FontFamilySelector]
+        [Converter(typeof(FontFamilyConverter))]
         public string FontFamilySelector { get; set; }
 
         [FontPreview("FontFamily", 32, 500)]

@@ -29,13 +29,14 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
     using System.Windows.Media;
 
     /// <summary>
     /// Converts <see cref="FontFamily" /> instances to <see cref="string" /> instances.
     /// </summary>
-    [ValueConversion(typeof(string), typeof(FontFamily))]
+    [ValueConversion(typeof(FontFamily), typeof(string))]
     public class FontFamilyConverter : IValueConverter
     {
         /// <summary>
@@ -58,8 +59,47 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var name = (string)value;
-            return new FontFamily(name);
+            try
+            {
+                if (value == null)
+                {
+                    return null;
+                }
+
+                var name = value as string;
+                if (name != null)
+                {
+                    if (targetType == typeof(FontFamily))
+                    {
+                        return new FontFamily(name);
+                    }
+
+                    if (targetType == typeof(string))
+                    {
+                        return name;
+                    }
+                }
+                
+                var family = value as FontFamily;
+                if (family != null)
+                {
+                    if (targetType == typeof(string))
+                    {
+                        return family.ToString();
+                    }
+
+                    if (targetType == typeof(FontFamily))
+                    {
+                        return family;
+                    }
+                }
+
+                return DependencyProperty.UnsetValue;
+            }
+            catch
+            {
+                return DependencyProperty.UnsetValue;
+            }
         }
 
         /// <summary>
@@ -82,8 +122,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var ff = (FontFamily)value;
-            return ff.Source;
+            return this.Convert(value, targetType, parameter, culture);
         }
     }
 }

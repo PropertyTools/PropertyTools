@@ -34,12 +34,8 @@ namespace TestLibrary
 
     public class TestCommentAttribute : TestBase
     {
-        public int Number1 { get; set; }
-
         [Comment]
         public string Comment1 { get; private set; }
-
-        public int Number2 { get; set; }
 
         [Comment]
         public string Comment2 { get; private set; }
@@ -47,11 +43,21 @@ namespace TestLibrary
         [Comment]
         public string Comment3 { get; private set; }
 
+        [Comment]
+        [HeaderPlacement(HeaderPlacement.Hidden)]
+        public string Comment4 { get; private set; }
+
+        [Comment]
+        [HeaderPlacement(HeaderPlacement.Collapsed)]
+        public string Comment5 { get; private set; }
+
         public TestCommentAttribute()
         {
             Comment1 = "This is a comment.";
             Comment2 = "This is a multiline\ncomment.";
             Comment3 = "This is a wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping comment.";
+            Comment4 = "Comment with hidden header";
+            Comment5 = "Comment with collapsed header";
 
             //var pfc = new PathFigureCollectionConverter();
             //var figures = "M 20,20 L 140,20 L 140,140 L 20,140 L 20,20 M 80,30 L 130,80 L 80,130 L 30,80 L 80,30 M 60,60 L 100,60 L 100,100 L 60,100 L 60,60 M 80,65 L 95,80 L 80,95 L 65,80 L 80,65";

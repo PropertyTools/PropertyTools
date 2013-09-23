@@ -435,11 +435,6 @@ namespace PropertyTools.Wpf
 
             pi.IsOptional = pi.OptionalDescriptor != null;
 
-            if (pi.IsComment)
-            {
-                pi.HeaderPlacement = HeaderPlacement.Hidden;
-            }
-
             if (pi.Descriptor.PropertyType == typeof(TimeSpan) && pi.Converter == null)
             {
                 pi.Converter = new TimeSpanToStringConverter();

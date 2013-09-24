@@ -26,40 +26,79 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace TestLibrary
 {
+    using System;
     using System.ComponentModel;
+    using System.Globalization;
 
     [TypeConverter(typeof(MassConverter))]
-    public class Mass : Quantity<Mass>
+    public class Mass : IFormattable, IComparable
     {
-        static Mass()
+        private double value;
+
+        public double Value
         {
-            RegisterUnit("kg", new Mass(1));
-            RegisterUnit("g", new Mass(1e-3));
-            RegisterUnit("mg", new Mass(1e-6));
-            RegisterUnit("tonne", new Mass(1000)); // Metric
-            RegisterUnit("longton", new Mass(1016.047)); // UK, new Mass( Imperial system
-            RegisterUnit("shortton", new Mass(907.1847)); // US
-            RegisterUnit("lb", new Mass(0.45359237));
+            get
+            {
+                return this.value;
+            }
         }
 
-        public Mass()
+        public Mass(double value)
         {
-
+            this.value = value;
         }
 
-        public Mass(double amount)
+        public static Mass operator +(Mass left, Mass right)
         {
-            this.Amount = amount;
+            return new Mass(left.Value + right.Value);
         }
 
-        protected override string GetStandardUnit()
+        public static Mass operator -(Mass left, Mass right)
         {
-            return "kg";
+            return new Mass(left.Value - right.Value);
         }
 
-        public static Mass Parse(string s)
+        public static Mass operator *(Mass left, double right)
         {
-            return Parse<Mass>(s);
+            return new Mass(left.Value * right);
+        }
+
+        public static Mass operator *(double left, Mass right)
+        {
+            return new Mass(left * right.Value);
+        }
+
+        public override string ToString()
+        {
+            return this.ToString("", CultureInfo.CurrentCulture);
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is Mass)
+            {
+                return this.value.CompareTo(((Mass)obj).value);
+            }
+
+            return 1;
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return this.Value.ToString(format, formatProvider) + " kg";
+        }
+
+        public static Mass Parse(string s, IFormatProvider formatProvider)
+        {
+            double value;
+            string unit;
+            if (!UnitUtilities.TrySplitValueAndUnit(s, formatProvider, out value, out unit))
+            {
+                throw new FormatException("Invalid format.");
+            }
+
+            // TODO: handle unit
+            return new Mass(value);
         }
     }
 }

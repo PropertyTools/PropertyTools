@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Quantity.cs" company="PropertyTools">
+// <copyright file="UnitUtilities.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -27,21 +27,26 @@
 namespace TestLibrary
 {
     using System;
+    using System.Text.RegularExpressions;
 
-    public abstract class Quantity : IComparable<Quantity>, IComparable
+    public static class UnitUtilities
     {
-        public double Amount { get; set; }
+        private static Regex unitAndValueExpression = new Regex(@"^\s*(?<value>[\d\.\,]+)*\s*(?<unit>.*)\s*$");
 
-        public int CompareTo(object obj)
+        public static bool TrySplitValueAndUnit(string s, IFormatProvider provider, out double value, out string unit)
         {
-            return CompareTo(obj as Quantity);
-        }
+            s = s.Trim();
+            Match m = unitAndValueExpression.Match(s);
+            if (!m.Success)
+            {
+                value = 0;
+                unit = null;
+                return false;
+            }
 
-        public int CompareTo(Quantity other)
-        {
-            return other != null ? Amount.CompareTo(other.Amount) : 0;
+            value = double.Parse(m.Groups["value"].Value, provider);
+            unit = m.Groups["unit"].Value;
+            return true;
         }
-
-//        public abstract double GetUnitMultiplier(string unit);
     }
 }

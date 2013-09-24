@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Addtion, subctraction and multiplication for all kinds of objects (by reflection to invoke the operators).
+//   Addition, subtraction and multiplication for all kinds of objects (by reflection to invoke the operators).
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -33,10 +33,46 @@ namespace PropertyTools.Wpf
     using System.Linq;
 
     /// <summary>
-    /// Addtion, subctraction and multiplication for all kinds of objects (by reflection to invoke the operators).
+    /// Addition, subtraction and multiplication for all kinds of objects (by reflection to invoke the operators).
     /// </summary>
     public static class ReflectionMath
     {
+        /// <summary>
+        /// Tries to parse the specified string.
+        /// </summary>
+        /// <param name="type">The target type.</param>
+        /// <param name="s">The arguments.</param>
+        /// <param name="provider">The format provider.</param>
+        /// <param name="result">The result.</param>
+        /// <returns><c>true</c> if parsing successful, <c>false</c> otherwise.</returns>
+        public static bool TryParse(Type type, string s, IFormatProvider provider, out object result)
+        {
+            try
+            {
+                var t1 = typeof(string);
+                var t2 = provider.GetType();
+                var mi =
+                    type.GetMethods().FirstOrDefault(m =>
+                    {
+                        var p = m.GetParameters();
+                        return m.Name == "Parse" && p.Length == 2 && p[0].ParameterType.IsAssignableFrom(t1) && p[1].ParameterType.IsAssignableFrom(t2);
+                    });
+                if (mi == null)
+                {
+                    result = null;
+                    return false;
+                }
+
+                result = mi.Invoke(null, parameters: new object[] { s, provider });
+                return true;
+            }
+            catch
+            {
+                result = null;
+                return false;
+            }
+        }
+
         /// <summary>
         /// Performs addition with the op_Addition operator. A return value indicates whether the addition succeeded or failed.
         /// </summary>
@@ -148,7 +184,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The try invoke.
+        /// Tries to invoke invoke the specified method.
         /// </summary>
         /// <param name="methodName">
         /// The method name.
@@ -173,7 +209,7 @@ namespace PropertyTools.Wpf
                 var t2 = o2.GetType();
                 var mi =
                     t1.GetMethods().FirstOrDefault(
-                        m => m.Name == methodName && m.GetParameters()[1].ParameterType == t2);
+                        m => m.Name == methodName && m.GetParameters()[1].ParameterType.IsAssignableFrom(t2));
                 if (mi == null)
                 {
                     result = null;

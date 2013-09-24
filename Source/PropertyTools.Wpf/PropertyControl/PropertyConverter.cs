@@ -34,10 +34,10 @@ namespace PropertyTools.Wpf
     using System.Windows.Data;
 
     /// <summary>
-    /// Represents a property converter.
+    /// Provides an <see cref="IValueConverter"/> for a specified type.
     /// </summary>
     /// <remarks>
-    /// Add property converters to the PropertyControl.Converters collection.
+    /// PropertyConverters can be registered in the <see cref="PropertyControl"/>.Converters collection.
     /// </remarks>
     public class PropertyConverter
     {
@@ -49,24 +49,28 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyConverter"/> class.
+        /// Initializes a new instance of the <see cref="PropertyConverter" /> class.
         /// </summary>
-        /// <param name="propertyType">
-        /// Type of the property.
-        /// </param>
-        /// <param name="converter">
-        /// The converter.
-        /// </param>
-        public PropertyConverter(Type propertyType, IValueConverter converter)
+        /// <param name="propertyType">Type of the property.</param>
+        /// <param name="converter">The converter.</param>
+        /// <param name="convertNullables">Convert nullable objects if set to <c>true</c>.</param>
+        public PropertyConverter(Type propertyType, IValueConverter converter, bool convertNullables = true)
         {
             this.PropertyType = propertyType;
             this.Converter = converter;
+            this.ConvertNullables = convertNullables;
         }
 
         /// <summary>
         /// Gets or sets template for this type.
         /// </summary>
         public IValueConverter Converter { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to convert nullable objects.
+        /// </summary>
+        /// <value><c>true</c> if nullable objects should be converted; otherwise, <c>false</c>.</value>
+        public bool ConvertNullables { get; set; }
 
         /// <summary>
         /// Gets or sets the type to edit.
@@ -102,6 +106,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         public bool IsAssignable(Type type)
         {
+            if (this.ConvertNullables)
+            {
+                type = Nullable.GetUnderlyingType(type) ?? type;
+            }
+
             return this.PropertyType.IsAssignableFrom(type);
         }
     }

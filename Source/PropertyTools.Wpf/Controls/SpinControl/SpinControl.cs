@@ -55,8 +55,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         private const string PartUp = "PART_UP";
 
-
-
         /// <summary>
         /// Gets or sets the culture used when parsing the LargeChange/SmallChange properties.
         /// </summary>
@@ -329,22 +327,21 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The on mouse wheel.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseWheel" /> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseWheelEventArgs" /> that contains the event data.</param>
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
             bool ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            bool shift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
             if (e.Delta > 0)
             {
-                this.ChangeValue(1, ctrl);
+                this.ChangeValue(1, ctrl || shift);
             }
             else
             {
-                this.ChangeValue(-1, ctrl);
+                this.ChangeValue(-1, ctrl || shift);
             }
 
             e.Handled = true;
@@ -427,6 +424,33 @@ namespace PropertyTools.Wpf
                 return;
             }
 
+            if (change is string)
+            {
+                object c;
+                var type = this.Value.GetType();
+                if (ReflectionMath.TryParse(type, (string)change, CultureInfo.InvariantCulture, out c))
+                {
+
+                    object result;
+                    if (sign > 0)
+                    {
+                        if (ReflectionMath.TryAdd(this.Value, c, out result))
+                        {
+                            this.Value = result;
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (ReflectionMath.TrySubtract(this.Value, c, out result))
+                        {
+                            this.Value = result;
+                            //this.Value = c.Convert(this.CoerceSpinnerValue(result), typeof(string), null, this.Culture);
+                            return;
+                        }
+                    }
+                }
+            }
             if (this.Value != null)
             {
                 ITypeDescriptorContext context = null;
@@ -725,6 +749,36 @@ namespace PropertyTools.Wpf
         /// </returns>
         private object CoerceSpinnerValue(object basevalue)
         {
+            if (basevalue == null)
+            {
+                return basevalue;
+            }
+
+            if (this.Maximum != null)
+            {
+                var maximumType = this.Maximum.GetType();
+                if (maximumType == basevalue.GetType())
+                {
+                    if (Compare(basevalue, this.Maximum) == 1)
+                    {
+                        return this.Maximum;
+                    }
+                }
+            }
+
+            if (this.Minimum != null)
+            {
+                var minimumType = this.Minimum.GetType();
+                if (minimumType == basevalue.GetType())
+                {
+                    if (Compare(basevalue, this.Minimum) == -1)
+                    {
+                        return this.Minimum;
+                    }
+                }
+            }
+
+
             if (this.Value != null)
             {
                 ITypeDescriptorContext context = null;
@@ -732,7 +786,9 @@ namespace PropertyTools.Wpf
                 if (this.Maximum != null && c != null && c.CanConvertFrom(context, this.Maximum.GetType()))
                 {
                     var v = basevalue as IComparable;
-                    var maximum = c.ConvertFrom(context, this.Culture ?? CultureInfo.InvariantCulture, this.Maximum) as IComparable;
+                    var maximum =
+                        c.ConvertFrom(context, this.Culture ?? CultureInfo.InvariantCulture, this.Maximum) as
+                        IComparable;
                     if (v != null && v.CompareTo(maximum) > 0)
                     {
                         return maximum;
@@ -742,7 +798,9 @@ namespace PropertyTools.Wpf
                 if (this.Minimum != null && c != null && c.CanConvertFrom(context, this.Minimum.GetType()))
                 {
                     var v = basevalue as IComparable;
-                    var minimum = c.ConvertFrom(context, this.Culture ?? CultureInfo.InvariantCulture, this.Minimum) as IComparable;
+                    var minimum =
+                        c.ConvertFrom(context, this.Culture ?? CultureInfo.InvariantCulture, this.Minimum) as
+                        IComparable;
                     if (v != null && v.CompareTo(minimum) < 0)
                     {
                         return minimum;
@@ -750,16 +808,32 @@ namespace PropertyTools.Wpf
                 }
             }
 
+            double numericValue = double.NaN;
+            if (this.IsNumeric(basevalue))
+            {
+                numericValue = Convert.ToDouble(basevalue);
+            }
+
             double numericMaximum = double.MaxValue;
             if (this.Maximum != null && this.IsNumeric(this.Maximum))
             {
                 numericMaximum = Convert.ToDouble(this.Maximum);
+                if (double.IsNaN(numericValue) && numericValue > numericMaximum)
+                {
+                    return numericMaximum;
+                }
             }
 
             double numericMinimum = double.MinValue;
             if (this.Minimum != null && this.IsNumeric(this.Minimum))
             {
                 numericMinimum = Convert.ToDouble(this.Minimum);
+                if (double.IsNaN(numericValue) && numericValue < numericMaximum)
+                {
+                    {
+                        return numericMinimum;
+                    }
+                }
             }
 
             if (basevalue is double)
@@ -778,14 +852,16 @@ namespace PropertyTools.Wpf
                 return bv;
             }
 
-            if (basevalue is float) 
+            if (basevalue is float)
             {
                 var bv = (float)basevalue;
-                if (bv > numericMaximum) {
+                if (bv > numericMaximum)
+                {
                     return (float)numericMaximum;
                 }
 
-                if (bv < numericMinimum) {
+                if (bv < numericMinimum)
+                {
                     return (float)numericMinimum;
                 }
 
@@ -833,6 +909,17 @@ namespace PropertyTools.Wpf
             }
 
             return basevalue;
+        }
+
+        private int Compare(object v1, object v2)
+        {
+            var c1 = v1 as IComparable;
+            if (c1 == null)
+            {
+                return -2;
+            }
+
+            return c1.CompareTo(v2);
         }
 
         /// <summary>

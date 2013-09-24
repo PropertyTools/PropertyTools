@@ -67,6 +67,8 @@
     <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="LengthConverter.cs" />
+    <Compile Include="LocalPropertyItemFactory.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="LocalPropertyControlFactory.cs" />
     <Page Include="MainWindow.xaml">

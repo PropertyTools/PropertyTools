@@ -254,6 +254,11 @@ namespace PropertyTools.Wpf
         public bool IsComment { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the property contains content that should be shown in a ContentControl.
+        /// </summary>
+        public bool IsContent { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the property is a directory path.
         /// </summary>
         public bool IsDirectoryPath { get; set; }
@@ -531,7 +536,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The binding.
         /// </returns>
-        public virtual Binding CreateBinding(UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
+        public virtual Binding CreateBinding(UpdateSourceTrigger trigger = UpdateSourceTrigger.Default, bool applyConverter = true)
         {
             var bindingMode = this.Descriptor.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
             var formatString = this.FormatString;
@@ -543,7 +548,7 @@ namespace PropertyTools.Wpf
             var binding = new Binding(this.PropertyName)
                 {
                     Mode = bindingMode,
-                    Converter = this.Converter,
+                    Converter = applyConverter ? this.Converter : null,
                     ConverterParameter = this.ConverterParameter,
                     StringFormat = formatString,
                     UpdateSourceTrigger = trigger,

@@ -234,12 +234,14 @@
     <Compile Include="PropertyControl\DefaultPropertyItemFactory.cs" />
     <Compile Include="PropertyControl\Group.cs" />
     <Compile Include="PropertyControl\IPropertyControlFactory.cs" />
+    <Compile Include="PropertyControl\IPropertyControlOptions.cs" />
     <Compile Include="PropertyControl\IPropertyItemFactory.cs" />
     <Compile Include="PropertyControl\PropertyControl.cs" />
     <Compile Include="PropertyControl\PropertyControlFactoryOptions.cs" />
     <Compile Include="PropertyControl\PropertyItem.cs" />
     <Compile Include="Converters\ValidationErrorsToStringConverter.cs" />
     <Compile Include="Behaviors\WebBrowserBehavior.cs" />
+    <Compile Include="Utilities\StringUtilities.cs" />
     <Compile Include="PropertyControl\Tab.cs" />
     <Compile Include="PropertyControl\PropertyConverter.cs" />
     <Compile Include="Helpers\AttributeHelper.cs" />

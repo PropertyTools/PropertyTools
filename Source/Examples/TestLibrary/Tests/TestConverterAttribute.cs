@@ -47,10 +47,12 @@ namespace TestLibrary
         [Description("System.Drawing.Color")]
         public System.Drawing.Color Color { get; set; }
 
-        [Category("TypeConverter")]
-        public Mass Mass { get; set; }
-
+        [Description("The value converter is registered in the property control factory.")]
         public Length Length { get; set; }
+
+        [Category("TypeConverter")]
+        [Description("The type converter is registered by the TypeConverterAttribute on the Mass type.")]
+        public Mass Mass { get; set; }
 
         public TestConverterAttribute()
         {

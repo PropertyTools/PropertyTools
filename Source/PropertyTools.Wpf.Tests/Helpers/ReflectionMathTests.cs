@@ -27,6 +27,7 @@
 namespace SpreadsheetDemo.Tests
 {
     using System;
+    using System.Globalization;
     using System.Windows;
     using NUnit.Framework;
     using PropertyTools.Wpf;
@@ -96,6 +97,14 @@ namespace SpreadsheetDemo.Tests
             object d2;
             Assert.IsTrue(ReflectionMath.TrySubtract(o2, o1, out d2));
             Assert.AreEqual(d, d2);
+        }
+
+        [Test]
+        public void TryParse_Double_ReturnsCorrectValue()
+        {
+            object pi;
+            Assert.IsTrue(ReflectionMath.TryParse(typeof(double), "3.14", CultureInfo.InvariantCulture, out pi));
+            Assert.AreEqual(3.14, pi);
         }
     }
 }

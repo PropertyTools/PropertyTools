@@ -48,15 +48,13 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Objects\Length.cs" />
-    <Compile Include="Objects\LengthConverter.cs" />
     <Compile Include="Objects\Mass.cs" />
     <Compile Include="Objects\MassConverter.cs" />
-    <Compile Include="Objects\Quantity.cs" />
-    <Compile Include="Objects\QuantityT.cs" />
-    <Compile Include="Objects\UnitHelper.cs" />
+    <Compile Include="Objects\UnitUtilities.cs" />
     <Compile Include="Tests\BigIntegerConverter.cs" />
     <Compile Include="Tests\ComplexConverter.cs" />
     <Compile Include="Tests\TestCheckableItems.cs" />
+    <Compile Include="Tests\TestContentAttribute.cs" />
     <Compile Include="Tests\TestFillTabAttribute.cs" />
     <Compile Include="Tests\TestSpinnableAttribute.cs" />
     <Compile Include="Tests\TestAutoUpdateTextAttribute.cs" />

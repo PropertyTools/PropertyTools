@@ -26,57 +26,76 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace TestLibrary
 {
-    using System.ComponentModel;
+    using System;
 
-    [TypeConverter(typeof(LengthConverter))]
-    public class Length : Quantity<Length>
+    public struct Length : IFormattable, IComparable
     {
-        static Length()
+        private double value;
+
+        public double Value
         {
-            RegisterUnit("m", new Length(1));
-            RegisterUnit("mm", new Length(1e-3));
-            RegisterUnit("cm", new Length(1e-2));
-            RegisterUnit("dm", new Length(1e-1));
-            RegisterUnit("km", new Length(1e3));
-
-            RegisterUnit("mile", new Length(1609.344)); // international
-            RegisterUnit("usmile", new Length(1609.347)); // US survey
-            RegisterUnit("nauticalmile", new Length(1852)); // nautical
-
-            RegisterUnit("ft", new Length(0.3048));
-            RegisterUnit("'", new Length(0.3048));
-            RegisterUnit("yd", new Length(0.9144));
-            RegisterUnit("in", new Length(0.0254));
-            RegisterUnit("\"", new Length(0.0254));
+            get
+            {
+                return this.value;
+            }
         }
 
-        public Length()
+        public Length(double value)
         {
+            this.value = value;
         }
 
-        public Length(double amount)
+        public static Length operator +(Length left, Length right)
         {
-            this.Amount = amount;
+            return new Length(left.Value + right.Value);
         }
 
-        protected override string GetStandardUnit()
+        public static Length operator -(Length left, Length right)
         {
-            return "m";
+            return new Length(left.Value - right.Value);
         }
 
-        public static Length operator +(Length mass1, Length mass2)
+        public static Length operator *(Length left, double right)
         {
-            return new Length { Amount = mass1.Amount + mass2.Amount };
+            return new Length(left.Value * right);
         }
 
-        public static Length operator -(Length mass1, Length mass2)
+        public static Length operator *(double left, Length right)
         {
-            return new Length { Amount = mass1.Amount - mass2.Amount };
+            return new Length(left * right.Value);
         }
 
-        public static Length Parse(string s)
+        public override string ToString()
         {
-            return Parse<Length>(s);
+            return this.Value + " m";
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is Length)
+            {
+                return this.value.CompareTo(((Length)obj).value);
+            }
+
+            return 1;
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return this.Value.ToString(format, formatProvider) + " m";
+        }
+
+        public static Length Parse(string s, IFormatProvider formatProvider)
+        {
+            double value;
+            string unit;
+            if (!UnitUtilities.TrySplitValueAndUnit(s, formatProvider, out value, out unit))
+            {
+                throw new FormatException("Invalid format.");
+            }
+
+            // TODO: handle unit
+            return new Length(value);
         }
     }
 }

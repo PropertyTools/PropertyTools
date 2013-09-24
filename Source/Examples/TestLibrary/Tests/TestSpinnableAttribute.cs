@@ -60,9 +60,13 @@ namespace TestLibrary
         [Width(100)]
         public Length Length { get; set; }
 
+        [Spinnable("1m", "2.5m", "0m", "100m")]
+        [Width(100)]
+        public Length? Length2 { get; set; }
+
         [Spinnable("1", "2.5", "0", "100")]
         [Width(100)]
-        public double? Length2 { get; set; }
+        public double? NullableDouble { get; set; }
 
         [Spinnable(1, 10), Width(100)]
         public byte Byte { get; set; }
@@ -92,9 +96,12 @@ namespace TestLibrary
 
         public TestSpinnableAttribute()
         {
-            Date = DateTime.Now;
-            Length = new Length() { Amount = 25 };
-            Info = "The spin control also supports mouse wheel, up/down/pgup/pgdn keys.";
+            this.Date = DateTime.Now;
+            this.Length = new Length(25);
+            this.Length2 = new Length(25);
+            this.NullableDouble = 25;
+
+            this.Info = "The spin control also supports mouse wheel, up/down/pgup/pgdn keys.";
         }
 
         public override string ToString()

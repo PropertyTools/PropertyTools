@@ -30,9 +30,16 @@ namespace PropertyControlDemo
 
     using PropertyTools.Wpf;
 
-    public class LocalPropertyControlFactory : IPropertyControlFactory
+    using TestLibrary;
+
+    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
     {
-        public FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        public LocalPropertyControlFactory()
+        {
+            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
+        }
+
+        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
         {
             //if (property.Is(typeof(DateTime)))
             //{
@@ -42,7 +49,7 @@ namespace PropertyControlDemo
             //    return dp;
             //}
 
-            return null;
+            return base.CreateControl(pi, options);
         }
     }
 }

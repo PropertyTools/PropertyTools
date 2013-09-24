@@ -64,6 +64,7 @@ namespace TestLibrary
                     new TestFilePathAttribute(),
                     new TestDirectoryPathAttribute(),
                     new TestCommentAttribute(),
+                    new TestContentAttribute(),
                     new TestHeaderPlacementAttribute(),
                     new TestFillTabAttribute(),
                     new TestPassword(),

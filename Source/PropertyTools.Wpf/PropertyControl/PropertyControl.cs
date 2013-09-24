@@ -33,6 +33,7 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Windows;
     using System.Windows.Automation;
@@ -96,21 +97,6 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartScroller, Type = typeof(ScrollViewer))]
     public class PropertyControl : Control, IPropertyControlOptions
     {
-        /// <summary>
-        /// The panel part name.
-        /// </summary>
-        private const string PartPanel = "PART_Panel";
-
-        /// <summary>
-        /// The scroll control part name.
-        /// </summary>
-        private const string PartScroller = "PART_Scroller";
-
-        /// <summary>
-        /// The tab control part name.
-        /// </summary>
-        private const string PartTabs = "PART_Tabs";
-
         /// <summary>
         /// The category control template property.
         /// </summary>
@@ -353,7 +339,22 @@ namespace PropertyTools.Wpf
                 "ValidationTemplate", typeof(ControlTemplate), typeof(PropertyControl), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The bool to visibility converter.
+        /// The panel part name.
+        /// </summary>
+        private const string PartPanel = "PART_Panel";
+
+        /// <summary>
+        /// The scroll control part name.
+        /// </summary>
+        private const string PartScroller = "PART_Scroller";
+
+        /// <summary>
+        /// The tab control part name.
+        /// </summary>
+        private const string PartTabs = "PART_Tabs";
+
+        /// <summary>
+        /// The boolean to visibility converter.
         /// </summary>
         private static readonly BooleanToVisibilityConverter BoolToVisibilityConverter =
             new BooleanToVisibilityConverter();
@@ -1069,118 +1070,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates the content control and property panel.
-        /// </summary>
-        /// <param name="g">
-        /// The g.
-        /// </param>
-        /// <param name="tabItems">
-        /// The tab items.
-        /// </param>
-        /// <param name="index">
-        /// The index.
-        /// </param>
-        /// <param name="fillTab">
-        /// Stretch the panel if set to <c>true</c>.
-        /// </param>
-        /// <returns>
-        /// The property panel.
-        /// </returns>
-        private Panel CreatePropertyPanel(Group g, Grid tabItems, int index, bool fillTab)
-        {
-            if (fillTab)
-            {
-                var p = new Grid();
-                tabItems.Children.Add(p);
-                Grid.SetRow(p, tabItems.RowDefinitions.Count);
-                tabItems.RowDefinitions.Add(
-                    new System.Windows.Controls.RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                return p;
-            }
-
-            var propertyPanel = new StackPanelEx();
-
-            HeaderedContentControl groupContentControl = null;
-            switch (this.CategoryControlType)
-            {
-                case CategoryControlType.GroupBox:
-                    groupContentControl = new GroupBox { Margin = new Thickness(0, 4, 0, 4) };
-                    break;
-                case CategoryControlType.Expander:
-                    groupContentControl = new Expander { IsExpanded = index == 0 };
-                    break;
-                case CategoryControlType.Template:
-                    groupContentControl = new HeaderedContentControl
-                                              {
-                                                  Template = this.CategoryControlTemplate,
-                                                  Focusable = false
-                                              };
-                    break;
-            }
-
-            if (groupContentControl != null)
-            {
-                if (this.CategoryHeaderTemplate != null)
-                {
-                    groupContentControl.HeaderTemplate = this.CategoryHeaderTemplate;
-                    groupContentControl.Header = g;
-                }
-                else
-                {
-                    groupContentControl.Header = g.Header;
-                }
-
-                // Hide the group control if all child properties are invisible.
-                groupContentControl.SetBinding(
-                    VisibilityProperty,
-                    new Binding("VisibleChildrenCount")
-                        {
-                            Source = propertyPanel,
-                            Converter = ZeroToVisibilityConverter
-                        });
-
-                if (this.LabelWidthSharing == LabelWidthSharing.SharedInGroup)
-                {
-                    Grid.SetIsSharedSizeScope(propertyPanel, true);
-                }
-
-                groupContentControl.Content = propertyPanel;
-                tabItems.Children.Add(groupContentControl);
-                Grid.SetRow(groupContentControl, tabItems.RowDefinitions.Count);
-
-                tabItems.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
-            }
-
-            return propertyPanel;
-        }
-
-        /// <summary>
-        /// Adds the tab page header if TabPageHeaderTemplate is specified.
-        /// </summary>
-        /// <param name="tab">
-        /// The tab.
-        /// </param>
-        /// <param name="panel">
-        /// The tab panel.
-        /// </param>
-        private void AddTabPageHeader(Tab tab, Grid panel)
-        {
-            if (this.TabPageHeaderTemplate == null)
-            {
-                return;
-            }
-
-            panel.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
-            var hc = new ContentControl
-                         {
-                             Focusable = false,
-                             ContentTemplate = this.TabPageHeaderTemplate,
-                             Content = tab
-                         };
-            panel.Children.Add(hc);
-        }
-
-        /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see
         /// cref="M:System.Windows.FrameworkElement.ApplyTemplate" /> .
         /// </summary>
@@ -1283,12 +1172,125 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Creates the content control and property panel.
+        /// </summary>
+        /// <param name="g">
+        /// The g.
+        /// </param>
+        /// <param name="tabItems">
+        /// The tab items.
+        /// </param>
+        /// <param name="index">
+        /// The index.
+        /// </param>
+        /// <param name="fillTab">
+        /// Stretch the panel if set to <c>true</c>.
+        /// </param>
+        /// <returns>
+        /// The property panel.
+        /// </returns>
+        private Panel CreatePropertyPanel(Group g, Grid tabItems, int index, bool fillTab)
+        {
+            if (fillTab)
+            {
+                var p = new Grid();
+                tabItems.Children.Add(p);
+                Grid.SetRow(p, tabItems.RowDefinitions.Count);
+                tabItems.RowDefinitions.Add(
+                    new System.Windows.Controls.RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                return p;
+            }
+
+            var propertyPanel = new StackPanelEx();
+
+            HeaderedContentControl groupContentControl = null;
+            switch (this.CategoryControlType)
+            {
+                case CategoryControlType.GroupBox:
+                    groupContentControl = new GroupBox { Margin = new Thickness(0, 4, 0, 4) };
+                    break;
+                case CategoryControlType.Expander:
+                    groupContentControl = new Expander { IsExpanded = index == 0 };
+                    break;
+                case CategoryControlType.Template:
+                    groupContentControl = new HeaderedContentControl
+                    {
+                        Template = this.CategoryControlTemplate,
+                        Focusable = false
+                    };
+                    break;
+            }
+
+            if (groupContentControl != null)
+            {
+                if (this.CategoryHeaderTemplate != null)
+                {
+                    groupContentControl.HeaderTemplate = this.CategoryHeaderTemplate;
+                    groupContentControl.Header = g;
+                }
+                else
+                {
+                    groupContentControl.Header = g.Header;
+                }
+
+                // Hide the group control if all child properties are invisible.
+                groupContentControl.SetBinding(
+                    VisibilityProperty,
+                    new Binding("VisibleChildrenCount")
+                    {
+                        Source = propertyPanel,
+                        Converter = ZeroToVisibilityConverter
+                    });
+
+                if (this.LabelWidthSharing == LabelWidthSharing.SharedInGroup)
+                {
+                    Grid.SetIsSharedSizeScope(propertyPanel, true);
+                }
+
+                groupContentControl.Content = propertyPanel;
+                tabItems.Children.Add(groupContentControl);
+                Grid.SetRow(groupContentControl, tabItems.RowDefinitions.Count);
+
+                tabItems.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
+            }
+
+            return propertyPanel;
+        }
+
+        /// <summary>
+        /// Adds the tab page header if TabPageHeaderTemplate is specified.
+        /// </summary>
+        /// <param name="tab">
+        /// The tab.
+        /// </param>
+        /// <param name="panel">
+        /// The tab panel.
+        /// </param>
+        private void AddTabPageHeader(Tab tab, Grid panel)
+        {
+            if (this.TabPageHeaderTemplate == null)
+            {
+                return;
+            }
+
+            panel.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
+            var hc = new ContentControl
+            {
+                Focusable = false,
+                ContentTemplate = this.TabPageHeaderTemplate,
+                Content = tab
+            };
+            panel.Children.Add(hc);
+        }
+
+        /// <summary>
         /// Creates and adds the property panel.
         /// </summary>
         /// <param name="panel">The panel where the property panel should be added.</param>
         /// <param name="pi">The property.</param>
         /// <param name="instance">The instance.</param>
         /// <param name="tab">The tab.</param>
+        [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         private void AddPropertyPanel(Panel panel, PropertyItem pi, object instance, Tab tab)
         {
             // TODO: refactor this method - too long and complex...
@@ -1350,9 +1352,7 @@ namespace PropertyTools.Wpf
                 {
                     propertyControl.SetBinding(
                         IsEnabledProperty,
-                        pi.OptionalDescriptor != null
-                            ? new Binding(pi.OptionalDescriptor.Name)
-                            : new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
+                        pi.OptionalDescriptor != null ? new Binding(pi.OptionalDescriptor.Name) : new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
                 }
 
                 var dataErrorInfoInstance = instance as IDataErrorInfo;
@@ -1381,7 +1381,7 @@ namespace PropertyTools.Wpf
                                                    NotifyOnTargetUpdated = true
                                                };
 
-                    errorControl.SetBinding(UIElement.VisibilityProperty, hasErrorsBinding);
+                    errorControl.SetBinding(VisibilityProperty, hasErrorsBinding);
 
                     // When the visibility of the error control is changed, updated the HasErrors of the tab
                     errorControl.TargetUpdated += (s, e) => tab.UpdateHasErrors(dataErrorInfoInstance);
@@ -1506,6 +1506,7 @@ namespace PropertyTools.Wpf
                     isEnabledBinding.ConverterParameter = pi.IsEnabledValue;
                     isEnabledBinding.Converter = ValueToBooleanConverter;
                 }
+
                 propertyPanel.SetBinding(IsEnabledProperty, isEnabledBinding);
             }
 
@@ -1563,9 +1564,7 @@ namespace PropertyTools.Wpf
 
                 cb.SetBinding(
                     ToggleButton.IsCheckedProperty,
-                    pi.OptionalDescriptor != null
-                        ? new Binding(pi.OptionalDescriptor.Name)
-                        : new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
+                    pi.OptionalDescriptor != null ? new Binding(pi.OptionalDescriptor.Name) : new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
 
                 var g = new Grid();
                 g.Children.Add(cb);
@@ -1589,7 +1588,11 @@ namespace PropertyTools.Wpf
         {
             var options = new PropertyControlFactoryOptions { EnumAsRadioButtonsLimit = this.EnumAsRadioButtonsLimit };
             var control = this.PropertyControlFactory.CreateControl(pi, options);
-            control.SetValue(AutomationProperties.AutomationIdProperty, pi.PropertyName);
+            if (control != null)
+            {
+                control.SetValue(AutomationProperties.AutomationIdProperty, pi.PropertyName);
+            }
+
             return control;
         }
 

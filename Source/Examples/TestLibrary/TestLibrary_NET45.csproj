@@ -55,15 +55,13 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Objects\Length.cs" />
-    <Compile Include="Objects\LengthConverter.cs" />
     <Compile Include="Objects\Mass.cs" />
     <Compile Include="Objects\MassConverter.cs" />
-    <Compile Include="Objects\Quantity.cs" />
-    <Compile Include="Objects\QuantityT.cs" />
-    <Compile Include="Objects\UnitHelper.cs" />
+    <Compile Include="Objects\UnitUtilities.cs" />
     <Compile Include="Tests\BigIntegerConverter.cs" />
     <Compile Include="Tests\ComplexConverter.cs" />
     <Compile Include="Tests\TestCheckableItems.cs" />
+    <Compile Include="Tests\TestContentAttribute.cs" />
     <Compile Include="Tests\TestFillTabAttribute.cs" />
     <Compile Include="Tests\TestSpinnableAttribute.cs" />
     <Compile Include="Tests\TestAutoUpdateTextAttribute.cs" />
@@ -101,6 +99,9 @@
     <Compile Include="Tests\TestVisibleProperties.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\sheep.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\PropertyTools.Wpf\PropertyTools.Wpf_NET45.csproj">
       <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>
       <Name>PropertyTools.Wpf_NET45</Name>
@@ -109,9 +110,6 @@
       <Project>{37466829-61F5-47FA-9E3E-9CEDCD9535C0}</Project>
       <Name>PropertyTools_NET45</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\sheep.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

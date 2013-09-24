@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PropertyControlDemo"
         xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
-        xmlns:System="clr-namespace:System;assembly=mscorlib" Title="PropertyControlDemo" Height="720" Width="960">
+        Title="PropertyControlDemo" Height="720" Width="960">
     <Window.Resources>
         <DataTemplate x:Key="HeaderTemplate1">
             <StackPanel Orientation="Horizontal">
@@ -114,6 +114,8 @@
                 <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding Converter={StaticResource ValiationErrorsToStringConverter}}" Margin="4 0 0 0" Foreground="Red" VerticalAlignment="Center"/>
             </Grid>
         </DataTemplate>
+        <local:LocalPropertyControlFactory x:Key="PropertyControlFactory"/>
+        <local:LocalPropertyItemFactory x:Key="PropertyItemFactory"/>
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -143,8 +145,11 @@
             <ListBox x:Name="ModelsList" ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedItem}" IsSynchronizedWithCurrentItem="True"
                      BorderThickness="0 0 1 0"/>
 
-            <pt:PropertyControl Grid.Column="1" x:Name="pc" 
-                                ValidationErrorTemplate="{StaticResource ValidationErrorTemplate1}"
+            <pt:PropertyControl 
+                Grid.Column="1" 
+                x:Name="pc" ValidationErrorTemplate="{StaticResource ValidationErrorTemplate1}"
+                PropertyControlFactory="{StaticResource PropertyControlFactory}"
+                PropertyItemFactory="{StaticResource PropertyItemFactory}"
                 CategoryControlTemplate="{StaticResource CategoryControlTemplate1}"
                 CategoryHeaderTemplate="{StaticResource HeaderTemplate1}"
                 TabHeaderTemplate="{StaticResource HeaderTemplate2}"

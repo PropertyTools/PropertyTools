@@ -34,9 +34,7 @@ namespace PropertyTools.Wpf
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Globalization;
     using System.Linq;
-    using System.Text;
     using System.Windows.Data;
 
     using PropertyTools.DataAnnotations;
@@ -54,7 +52,7 @@ namespace PropertyTools.Wpf
             this.EnabledPattern = "Is{0}Enabled";
             this.VisiblePattern = "Is{0}Visible";
             this.OptionalPattern = "Use{0}";
-            this.NicifyDisplayNames = true;
+            this.ModifyCamelCaseDisplayNames = true;
             this.InheritCategories = true;
         }
 
@@ -82,13 +80,10 @@ namespace PropertyTools.Wpf
         public bool InheritCategories { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to 'nicify' display names.
+        /// Gets or sets a value indicating whether to add spaces at the camel bumps of the display names.
         /// </summary>
-        /// <remarks>
-        /// The 'nicifiying' adds spaces at the camel bumps.
-        /// </remarks>
-        /// <value> <c>true</c> if display names should be nicified; otherwise, <c>false</c> . </value>
-        public bool NicifyDisplayNames { get; set; }
+        /// <value> <c>true</c> if display names should be modified; otherwise, <c>false</c> . </value>
+        public bool ModifyCamelCaseDisplayNames { get; set; }
 
         /// <summary>
         /// Gets or sets the optional pattern.
@@ -171,12 +166,36 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Creates a property item.
+        /// </summary>
+        /// <param name="pd">The property descriptor.</param>
+        /// <param name="propertyDescriptors">The property descriptors.</param>
+        /// <param name="instance">The instance.</param>
+        /// <returns>A property item.</returns>
+        public virtual PropertyItem CreatePropertyItem(PropertyDescriptor pd, PropertyDescriptorCollection propertyDescriptors, object instance)
+        {
+            var pi = this.CreateCore(pd, propertyDescriptors);
+            this.SetProperties(pi, instance);
+            return pi;
+        }
+
+        /// <summary>
+        /// Resets this factory.
+        /// </summary>
+        public void Reset()
+        {
+            this.CurrentCategory = null;
+            this.CurrentDeclaringType = null;
+            this.CurrentCategoryDeclaringType = null;
+        }
+
+        /// <summary>
         /// Creates property items for all properties in the specified object.
         /// </summary>
         /// <param name="instance">The object instance.</param>
         /// <param name="options">The options.</param>
         /// <returns>Enumeration of PropertyItem.</returns>
-        private IEnumerable<PropertyItem> CreatePropertyItems(object instance, IPropertyControlOptions options)
+        protected virtual IEnumerable<PropertyItem> CreatePropertyItems(object instance, IPropertyControlOptions options)
         {
             var instanceType = instance.GetType();
 
@@ -212,71 +231,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates a property item.
-        /// </summary>
-        /// <param name="pd">The property descriptor.</param>
-        /// <param name="propertyDescriptors">The property descriptors.</param>
-        /// <param name="instance">The instance.</param>
-        /// <returns>A property item.</returns>
-        public virtual PropertyItem CreatePropertyItem(PropertyDescriptor pd, PropertyDescriptorCollection propertyDescriptors, object instance)
-        {
-            var pi = this.CreateCore(pd, propertyDescriptors);
-            this.SetProperties(pi, instance);
-            return pi;
-        }
-
-        /// <summary>
-        /// Resets this factory.
-        /// </summary>
-        public void Reset()
-        {
-            this.CurrentCategory = null;
-            this.CurrentDeclaringType = null;
-            this.CurrentCategoryDeclaringType = null;
-        }
-
-        /// <summary>
-        /// Variables the display name of the name to.
-        /// </summary>
-        /// <param name="variableName">
-        /// Name of the variable.
-        /// </param>
-        /// <returns>
-        /// The nicify string.
-        /// </returns>
-        protected static string NicifyString(string variableName)
-        {
-            var sb = new StringBuilder();
-            for (int i = 0; i < variableName.Length; i++)
-            {
-                if (i > 0 && char.IsUpper(variableName[i]) && !char.IsUpper(variableName[i - 1]))
-                {
-                    sb.Append(" ");
-                    if (i == variableName.Length - 1 || char.IsUpper(variableName[i + 1]))
-                    {
-                        sb.Append(variableName[i]);
-                    }
-                    else
-                    {
-                        sb.Append(variableName[i].ToString(CultureInfo.InvariantCulture).ToLower());
-                    }
-
-                    continue;
-                }
-
-                sb.Append(variableName[i]);
-            }
-
-            return sb.ToString();
-        }
-
-        /// <summary>
         /// Creates the property item instance.
         /// </summary>
-        /// <param name="pd">The pd.</param>
-        /// <param name="propertyDescriptors">The property descriptors.</param>
+        /// <param name="pd">The property descriptor.</param>
+        /// <param name="propertyDescriptors">The collection of property descriptors.</param>
         /// <returns>
-        /// The core.
+        /// A property item.
         /// </returns>
         protected virtual PropertyItem CreateCore(PropertyDescriptor pd, PropertyDescriptorCollection propertyDescriptors)
         {
@@ -315,9 +275,9 @@ namespace PropertyTools.Wpf
         protected virtual string GetDisplayName(PropertyDescriptor pd, Type declaringType)
         {
             var displayName = pd.DisplayName;
-            if (this.NicifyDisplayNames && pd.DisplayName == pd.Name)
+            if (this.ModifyCamelCaseDisplayNames && pd.DisplayName == pd.Name)
             {
-                displayName = NicifyString(displayName);
+                displayName = StringUtilities.FromCamelCase(displayName);
             }
 
             return displayName;
@@ -368,7 +328,7 @@ namespace PropertyTools.Wpf
             var categoryName = this.DefaultCategoryName;
 
             // find the declaring type
-            Type declaringType = pi.Descriptor.ComponentType;
+            var declaringType = pi.Descriptor.ComponentType;
             var propertyInfo = instance.GetType().GetProperty(pi.Descriptor.Name);
             if (propertyInfo != null)
             {
@@ -568,6 +528,11 @@ namespace PropertyTools.Wpf
                 pi.IsComment = true;
             }
 
+            if (attribute is ContentAttribute)
+            {
+                pi.IsContent = true;
+            }
+
             var ea = attribute as EditableAttribute;
             if (ea != null)
             {
@@ -692,29 +657,5 @@ namespace PropertyTools.Wpf
                 pi.AcceptsReturn = true;
             }
         }
-    }
-
-    /// <summary>
-    /// Specifies options for the PropertyControl
-    /// </summary>
-    public interface IPropertyControlOptions
-    {
-        /// <summary>
-        /// Gets or sets the required attribute.
-        /// </summary>
-        /// <value> The required attribute. </value>
-        Type RequiredAttribute { get; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to show declared properties only.
-        /// </summary>
-        /// <value> <c>true</c> if only declared properties should be shown; otherwise, <c>false</c> . </value>
-        bool ShowDeclaredOnly { get; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to show read only properties.
-        /// </summary>
-        /// <value> <c>true</c> if read only properties should be shown; otherwise, <c>false</c> . </value>
-        bool ShowReadOnlyProperties { get; }
     }
 }

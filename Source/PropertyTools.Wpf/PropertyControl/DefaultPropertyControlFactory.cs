@@ -117,14 +117,7 @@ namespace PropertyTools.Wpf
             {
                 if (editor.IsAssignable(property.Descriptor.PropertyType))
                 {
-                    var c = new ContentControl
-                        {
-                            ContentTemplate = editor.EditorTemplate,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            HorizontalAlignment = HorizontalAlignment.Left
-                        };
-                    c.SetBinding(FrameworkElement.DataContextProperty, property.CreateOneWayBinding());
-                    return c;
+                    return this.CreateEditorControl(property, editor);
                 }
             }
 
@@ -203,6 +196,11 @@ namespace PropertyTools.Wpf
                 return this.CreateCommentControl(property);
             }
 
+            if (property.IsContent)
+            {
+                return this.CreateContentControl(property);
+            }
+
             if (property.IsPassword)
             {
                 return this.CreatePasswordControl(property);
@@ -237,6 +235,24 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Converts the horizontal alignment.
+        /// </summary>
+        /// <param name="a">The alignment to convert.</param>
+        /// <returns>A <see cref="HorizontalAlignment"/>.</returns>
+        protected static HorizontalAlignment ConvertHorizontalAlignment(DataAnnotations.HorizontalAlignment a)
+        {
+            switch (a)
+            {
+                case DataAnnotations.HorizontalAlignment.Center:
+                    return HorizontalAlignment.Center;
+                case DataAnnotations.HorizontalAlignment.Right:
+                    return HorizontalAlignment.Right;
+                default:
+                    return HorizontalAlignment.Left;
+            }
+        }
+
+        /// <summary>
         /// Creates the checkbox control.
         /// </summary>
         /// <param name="property">
@@ -265,6 +281,24 @@ namespace PropertyTools.Wpf
                 };
 
             c.SetBinding(ToggleButton.IsCheckedProperty, property.CreateBinding());
+            return c;
+        }
+
+        /// <summary>
+        /// Creates a control based on a template from a a <see cref="TypeEditor"/>.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <param name="editor">The editor.</param>
+        /// <returns>A <see cref="ContentControl"/>.</returns>
+        protected virtual ContentControl CreateEditorControl(PropertyItem property, TypeEditor editor)
+        {
+            var c = new ContentControl
+            {
+                ContentTemplate = editor.EditorTemplate,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+            c.SetBinding(FrameworkElement.DataContextProperty, property.CreateOneWayBinding());
             return c;
         }
 
@@ -323,7 +357,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates the comment control.
+        /// Creates a comment control.
         /// </summary>
         /// <param name="property">
         /// The property.
@@ -334,23 +368,35 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateCommentControl(PropertyItem property)
         {
             var tb = new TextBlock
-                {
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Margin = new Thickness(4),
-                    Focusable = false,
-                    TextWrapping = TextWrapping.Wrap
-                };
+                         {
+                             VerticalAlignment = VerticalAlignment.Center,
+                             Margin = new Thickness(4),
+                             Focusable = false,
+                             TextWrapping = TextWrapping.Wrap
+                         };
             ScrollViewer.SetHorizontalScrollBarVisibility(tb, ScrollBarVisibility.Hidden);
             ScrollViewer.SetVerticalScrollBarVisibility(tb, ScrollBarVisibility.Hidden);
             tb.SetBinding(TextBlock.TextProperty, property.CreateBinding());
             return tb;
+        }
 
-            // var b = new ContentControl
-            // {
-            // VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(4), Focusable = false
-            // };
-            // b.SetBinding(ContentControl.ContentProperty, property.CreateBinding());
-            // return b;
+        /// <summary>
+        /// Creates a content control.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>A <see cref="ContentControl"/>.</returns>
+        protected virtual FrameworkElement CreateContentControl(PropertyItem property)
+        {
+            var b = new ContentControl
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(4),
+                Focusable = false,
+                HorizontalContentAlignment = HorizontalAlignment.Stretch
+            };
+            b.SetBinding(ContentControl.ContentProperty, property.CreateBinding());
+            return b;
         }
 
         /// <summary>
@@ -411,29 +457,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Determines whether the specified type is nullable.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns><c>true</c> if the specified type is nullable; otherwise, <c>false</c>.</returns>
-        private bool IsNullable(Type type)
-        {
-            if (!type.IsValueType)
-            {
-                // Reference types are nullable
-                return true;
-            }
-
-            if (Nullable.GetUnderlyingType(type) != null)
-            {
-                // Nullable value type
-                return true;
-            }
-
-            // Value type
-            return false;
-        }
-        /// <summary>
-        /// Creates the dictionary control.
+        /// Creates a dictionary control.
         /// </summary>
         /// <param name="property">
         /// The property.
@@ -840,7 +864,9 @@ namespace PropertyTools.Wpf
                     LargeChange = property.SpinLargeChange,
                     Content = tb
                 };
-            c.SetBinding(SpinControl.ValueProperty, property.CreateBinding());
+
+            // Note: Do not apply the converter to the SpinControl
+            c.SetBinding(SpinControl.ValueProperty, property.CreateBinding(UpdateSourceTrigger.Default, false));
             return c;
         }
 
@@ -864,24 +890,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Converts the horizontal alignment.
-        /// </summary>
-        /// <param name="a">The alignment to convert.</param>
-        /// <returns>A <see cref="HorizontalAlignment"/>.</returns>
-        protected HorizontalAlignment ConvertHorizontalAlignment(DataAnnotations.HorizontalAlignment a)
-        {
-            switch (a)
-            {
-                case DataAnnotations.HorizontalAlignment.Center:
-                    return HorizontalAlignment.Center;
-                case DataAnnotations.HorizontalAlignment.Right:
-                    return HorizontalAlignment.Right;
-                default:
-                    return HorizontalAlignment.Left;
-            }
-        }
-
-        /// <summary>
         /// Updates the converter from the Converters collection.
         /// </summary>
         /// <param name="property">
@@ -899,6 +907,29 @@ namespace PropertyTools.Wpf
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Determines whether the specified type is a reference type or a <see cref="Nullable"/>.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns><c>true</c> if the specified type can be set to null; otherwise, <c>false</c>.</returns>
+        private static bool IsNullable(Type type)
+        {
+            if (!type.IsValueType)
+            {
+                // Reference types are nullable
+                return true;
+            }
+
+            if (Nullable.GetUnderlyingType(type) != null)
+            {
+                // Nullable value type
+                return true;
+            }
+
+            // Value type
+            return false;
         }
 
         /// <summary>

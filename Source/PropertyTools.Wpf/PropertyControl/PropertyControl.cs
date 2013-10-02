@@ -931,7 +931,7 @@ namespace PropertyTools.Wpf
 
             this.tabControl.DataContext = instance;
 
-            // Set padding to zero - control margin on the tabitems instead
+            // Set padding to zero - control margin on the tab items instead
             this.tabControl.Padding = new Thickness(0);
 
             this.tabControl.Visibility = Visibility.Visible;
@@ -955,7 +955,7 @@ namespace PropertyTools.Wpf
                     Grid.SetIsSharedSizeScope(tabPanel, true);
                 }
 
-                var tabitem = new TabItem { Header = tab, Padding = new Thickness(4) };
+                var tabItem = new TabItem { Header = tab, Padding = new Thickness(4) };
 
                 var dataErrorInfoInstance = instance as IDataErrorInfo;
                 if (dataErrorInfoInstance != null)
@@ -965,26 +965,27 @@ namespace PropertyTools.Wpf
 
                 if (fillTab)
                 {
-                    tabitem.Content = tabPanel;
+                    tabItem.Content = tabPanel;
                 }
                 else
                 {
-                    tabitem.Content = new ScrollViewer
+                    tabItem.Content = new ScrollViewer
                                           {
                                               VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                                              Content = tabPanel
+                                              Content = tabPanel, 
+                                              Focusable = false
                                           };
                 }
 
-                this.tabControl.Items.Add(tabitem);
+                this.tabControl.Items.Add(tabItem);
 
                 // set no margin if 'fill tab' and no tab page header
                 tabPanel.Margin = new Thickness(fillTab && this.TabPageHeaderTemplate == null ? 0 : 4);
 
                 if (this.TabHeaderTemplate != null)
                 {
-                    tabitem.Header = tab;
-                    tabitem.HeaderTemplate = this.TabHeaderTemplate;
+                    tabItem.Header = tab;
+                    tabItem.HeaderTemplate = this.TabHeaderTemplate;
                 }
 
                 this.AddTabPageHeader(tab, tabPanel);

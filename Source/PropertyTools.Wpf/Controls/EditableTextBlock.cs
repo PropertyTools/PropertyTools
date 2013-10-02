@@ -27,6 +27,7 @@
 //   Provides an editable text block.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -41,7 +42,7 @@ namespace PropertyTools.Wpf
     public class EditableTextBlock : TextBlock
     {
         /// <summary>
-        /// The is editing property.
+        /// The IsEditing property.
         /// </summary>
         public static readonly DependencyProperty IsEditingProperty = DependencyProperty.Register(
             "IsEditing",
@@ -53,7 +54,12 @@ namespace PropertyTools.Wpf
                 (s, e) => ((EditableTextBlock)s).IsEditingChanged()));
 
         /// <summary>
-        /// The oldfocus.
+        /// Flags if it is an internal change in the IsEditing property
+        /// </summary>
+        private bool internalIsEditingChange;
+
+        /// <summary>
+        /// The old focus element.
         /// </summary>
         private IInputElement oldfocus;
 
@@ -134,15 +140,25 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            BindingExpression be = this.textBox.GetBindingExpression(TextBox.TextProperty);
+            var textBoxBindingExpression = this.textBox.GetBindingExpression(TextBox.TextProperty);
+            var textBlockBindingExpression = this.GetBindingExpression(TextProperty);
             if (commit)
             {
-                be.UpdateSource();
+                if (textBoxBindingExpression != null)
+                {
+                    textBoxBindingExpression.UpdateSource();
+                }
+
+                if (textBlockBindingExpression != null)
+                {
+                    textBlockBindingExpression.UpdateTarget();
+                }
             }
+
             this.internalIsEditingChange = true;
             this.IsEditing = false;
             this.internalIsEditingChange = false;
-            var p = this.Parent as Panel;
+            var p = (Panel)this.Parent;
             p.Children.Remove(this.textBox);
             this.textBox = null;
             this.Visibility = Visibility.Visible;
@@ -151,8 +167,6 @@ namespace PropertyTools.Wpf
                 this.oldfocus.Focus();
             }
         }
-
-        private bool internalIsEditingChange;
 
         /// <summary>
         /// Handles changes in IsEditing.

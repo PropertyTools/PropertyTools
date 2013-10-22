@@ -43,6 +43,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="DataAnnotations\AutoUpdateTextAttribute.cs" />
     <Compile Include="DataAnnotations\BasePathPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\ColumnAttribute.cs" />

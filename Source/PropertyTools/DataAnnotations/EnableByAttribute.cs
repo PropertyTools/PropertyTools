@@ -49,6 +49,11 @@ namespace PropertyTools.DataAnnotations
             this.PropertyValue = null;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnableByAttribute"/> class.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="propertyValue">The property value that enables the attributed property.</param>
         public EnableByAttribute(string propertyName, object propertyValue)
         {
             this.PropertyName = propertyName;

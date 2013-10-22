@@ -530,9 +530,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a binding.
         /// </summary>
-        /// <param name="trigger">
-        /// The trigger.
-        /// </param>
+        /// <param name="trigger">The trigger.</param>
+        /// <param name="applyConverter">Assign the converter if set to <c>true</c>.</param>
         /// <returns>
         /// The binding.
         /// </returns>

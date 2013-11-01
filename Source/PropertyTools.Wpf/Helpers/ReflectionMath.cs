@@ -96,6 +96,18 @@ namespace PropertyTools.Wpf
                 return true;
             }
 
+            if (o1 is double && o2 is int)
+            {
+                result = (double)o1 + (int)o2;
+                return true;
+            }
+
+            if (o1 is int && o2 is double)
+            {
+                result = (int)o1 + (double)o2;
+                return true;
+            }
+
             if (o1 is int && o2 is int)
             {
                 result = (int)o1 + (int)o2;
@@ -136,7 +148,13 @@ namespace PropertyTools.Wpf
 
             if (o1 is int && o2 is double)
             {
-                result = (int)((int)o1 * (double)o2);
+                result = (int)o1 * (double)o2;
+                return true;
+            }
+
+            if (o1 is double && o2 is int)
+            {
+                result = (double)o1 * (int)o2;
                 return true;
             }
 

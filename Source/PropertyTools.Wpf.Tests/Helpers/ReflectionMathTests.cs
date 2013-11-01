@@ -36,6 +36,33 @@ namespace SpreadsheetDemo.Tests
     public class ReflectionMathTests
     {
         [Test]
+        public void TryAdd_Numbers_ReturnsVector()
+        {
+            object r;
+            Assert.IsTrue(ReflectionMath.TryAdd(1, 1, out r));
+            Assert.AreEqual(2, r);
+            Assert.IsTrue(ReflectionMath.TryAdd(1d, 1d, out r));
+            Assert.AreEqual(2, r);
+            Assert.IsTrue(ReflectionMath.TryAdd(1, 1d, out r));
+            Assert.AreEqual(2, r);
+            Assert.IsTrue(ReflectionMath.TryAdd(1d, 1, out r));
+            Assert.AreEqual(2, r);
+        }
+        
+        [Test]
+        public void TryMultiply_Numbers_ReturnsVector()
+        {
+            object r;
+            Assert.IsTrue(ReflectionMath.TryMultiply(2, 1, out r));
+            Assert.AreEqual(2, r);
+            Assert.IsTrue(ReflectionMath.TryMultiply(2d, 1d, out r));
+            Assert.AreEqual(2, r);
+            Assert.IsTrue(ReflectionMath.TryMultiply(2, 1d, out r));
+            Assert.AreEqual(2, r);
+            Assert.IsTrue(ReflectionMath.TryMultiply(2d, 1, out r));
+            Assert.AreEqual(2, r);
+        }
+        [Test]
         public void TryMultiply_Vector_ReturnsVector()
         {
             var v1 = new Vector(10, 10);

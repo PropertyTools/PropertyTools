@@ -31,8 +31,8 @@ namespace FeaturesDemo
     using System.Globalization;
     using System.Text.RegularExpressions;
 
-    [TypeConverter(typeof(MassConverter))]
-    [Serializable]
+    //[TypeConverter(typeof(MassConverter))]
+    //[Serializable]
     public struct Mass
     {
         public static Mass Kilogram = new Mass(1);
@@ -76,16 +76,15 @@ namespace FeaturesDemo
 
         private static Regex parseExpression = new Regex(@"^\s*(?<value>[\d\.\,]+)*\s*(?<unit>.*)\s*$");
 
-        public static Mass Parse(string s)
+        public static Mass Parse(string s, IFormatProvider formatProvider)
         {
-            s = s.Replace(',', '.').Trim();
             Match m = parseExpression.Match(s);
             if (!m.Success)
             {
                 throw new FormatException();
             }
 
-            double value = double.Parse(m.Groups["value"].Value, CultureInfo.InvariantCulture);
+            double value = double.Parse(m.Groups["value"].Value, formatProvider);
             string unit = m.Groups["unit"].Value;
             switch (unit)
             {

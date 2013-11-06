@@ -35,6 +35,7 @@ namespace PropertyTools.Wpf
     using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Windows;
@@ -388,14 +389,17 @@ namespace PropertyTools.Wpf
             var dataObject = new DataObject();
             dataObject.SetText(text);
 
-            try
+            if (AreAllElementsSerializable(array))
             {
-                dataObject.SetData(typeof(ItemsGrid), array);
-            }
-            catch (Exception e)
-            {
-                // nonserializable values?
-                Debug.WriteLine(e);
+                try
+                {
+                    dataObject.SetData(typeof(ItemsGrid), array);
+                }
+                catch (Exception e)
+                {
+                    // nonserializable values?
+                    Debug.WriteLine(e);
+                }
             }
 
             Clipboard.SetDataObject(dataObject);
@@ -1050,6 +1054,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Shows the text box editor.
         /// </summary>
+        /// <returns><c>true</c> if the text editor was shown, <c>false</c> otherwise.</returns>
         public bool ShowTextBoxEditControl()
         {
             var textEditor = this.currentEditor as TextBox;
@@ -1068,6 +1073,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Opens the combo box control.
         /// </summary>
+        /// <returns><c>true</c> if the combo box was shown, <c>false</c> otherwise.</returns>
         public bool OpenComboBoxControl()
         {
             var comboBox = this.currentEditor as ComboBox;
@@ -1644,6 +1650,35 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Determines whether all elements in the specified array are serializable.
+        /// </summary>
+        /// <param name="array">The array.</param>
+        /// <returns><c>true</c> if all elements of the array are serializable, <c>false</c> otherwise.</returns>
+        private static bool AreAllElementsSerializable(object[,] array)
+        {
+            int m = array.GetLength(0);
+            int n = array.GetLength(1);
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (array[i, j] == null)
+                    {
+                        continue;
+                    }
+
+                    var type = array[i, j].GetType();
+                    if (!type.IsSerializable)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Clamps a value between a minimum and maximum limit.
         /// </summary>
         /// <param name="value">
@@ -1832,6 +1867,16 @@ namespace PropertyTools.Wpf
                 {
                     convertedValue = converter.ConvertFrom(value);
                     return true;
+                }
+
+                if (value != null)
+                {
+                    var parseMethod = targetType.GetMethod("Parse", new Type[] { value.GetType(), typeof(IFormatProvider) });
+                    if (parseMethod != null)
+                    {
+                        convertedValue = parseMethod.Invoke(null, new object[] { value, CultureInfo.CurrentCulture });
+                        return true;
+                    }
                 }
 
                 convertedValue = null;

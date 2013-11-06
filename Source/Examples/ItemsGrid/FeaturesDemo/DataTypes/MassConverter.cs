@@ -46,7 +46,7 @@ namespace FeaturesDemo
             var s = value as string;
             if (s != null)
             {
-                return Mass.Parse(s);
+                return Mass.Parse(s, culture);
             }
 
             return base.ConvertFrom(context, culture, value);

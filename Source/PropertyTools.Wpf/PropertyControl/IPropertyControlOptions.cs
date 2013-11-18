@@ -8,7 +8,7 @@
     public interface IPropertyControlOptions
     {
         /// <summary>
-        /// Gets the required attribute.
+        /// Gets the required (opt-in) attribute.
         /// </summary>
         /// <value> The required attribute. </value>
         Type RequiredAttribute { get; }

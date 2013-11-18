@@ -14,7 +14,7 @@
     </Style>
 
     <DataTemplate x:Key="ValidationErrorTemplate">
-        <TextBlock TextWrapping="Wrap" Foreground="Red" Text="{Binding Converter={StaticResource ValiationErrorsToStringConverter}}" />
+        <TextBlock TextWrapping="Wrap" Foreground="Red" Text="{Binding}" />
     </DataTemplate>
 
     <DataTemplate x:Key="ToolTipTemplate">

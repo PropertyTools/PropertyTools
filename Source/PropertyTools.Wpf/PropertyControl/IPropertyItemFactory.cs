@@ -30,7 +30,6 @@
 namespace PropertyTools.Wpf
 {
     using System.Collections.Generic;
-    using System.ComponentModel;
 
     /// <summary>
     /// Interface for property item factories.
@@ -53,23 +52,5 @@ namespace PropertyTools.Wpf
         /// The tabs.
         /// </returns>
         IEnumerable<Tab> CreateModel(object instance, bool isEnumerable, IPropertyControlOptions options);
-
-        /// <summary>
-        /// Creates a property item.
-        /// </summary>
-        /// <param name="pd">The property descriptor.</param>
-        /// <param name="descriptors">The descriptors.</param>
-        /// <param name="instance">The instance.</param>
-        /// <returns>A property item.</returns>
-        PropertyItem CreatePropertyItem(PropertyDescriptor pd, PropertyDescriptorCollection descriptors, object instance);
-
-        /// <summary>
-        /// Resets this factory.
-        /// </summary>
-        /// <remarks>
-        /// The factory is reset before the CreatePropertyItem methods are called.
-        /// This makes it possible to reset default values.
-        /// </remarks>
-        void Reset();
     }
 }

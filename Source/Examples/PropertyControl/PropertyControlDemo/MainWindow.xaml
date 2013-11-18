@@ -111,7 +111,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Image Source="Images\error.png" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Height="24"/>
-                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding Converter={StaticResource ValiationErrorsToStringConverter}}" Margin="4 0 0 0" Foreground="Red" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding}" Margin="4 0 0 0" Foreground="Red" VerticalAlignment="Center"/>
             </Grid>
         </DataTemplate>
         <local:LocalPropertyControlFactory x:Key="PropertyControlFactory"/>

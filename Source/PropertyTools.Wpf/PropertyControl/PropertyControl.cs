@@ -972,7 +972,7 @@ namespace PropertyTools.Wpf
                     tabItem.Content = new ScrollViewer
                                           {
                                               VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                                              Content = tabPanel, 
+                                              Content = tabPanel,
                                               Focusable = false
                                           };
                 }
@@ -1374,20 +1374,13 @@ namespace PropertyTools.Wpf
                                                ContentTemplate = this.ValidationErrorTemplate,
                                                Focusable = false
                                            };
-
-                    var hasErrorsBinding = new Binding("(Validation.HasError)")
-                                               {
-                                                   Source = propertyControl,
-                                                   Converter = BoolToVisibilityConverter,
-                                                   NotifyOnTargetUpdated = true
-                                               };
-
-                    errorControl.SetBinding(VisibilityProperty, hasErrorsBinding);
+                    var errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
+                    errorControl.SetBinding(VisibilityProperty, new Binding(pi.PropertyName) { Converter = errorConverter, NotifyOnTargetUpdated = true });
 
                     // When the visibility of the error control is changed, updated the HasErrors of the tab
                     errorControl.TargetUpdated += (s, e) => tab.UpdateHasErrors(dataErrorInfoInstance);
 
-                    errorControl.SetBinding(ContentControl.ContentProperty, new Binding("(Validation.Errors)") { Source = propertyControl });
+                    errorControl.SetBinding(ContentControl.ContentProperty, new Binding(pi.PropertyName) { Converter = errorConverter });
 
                     // Add a row to the panel
                     propertyPanel.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });

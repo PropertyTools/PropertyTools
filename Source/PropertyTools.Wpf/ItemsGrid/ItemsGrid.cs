@@ -667,7 +667,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         public void HideEditor()
         {
-            if (this.currentEditor != null)
+            if (this.currentEditor != null && this.currentEditor.Visibility == Visibility.Visible)
             {
                 var textEditor = this.currentEditor as TextBox;
                 if (textEditor != null)

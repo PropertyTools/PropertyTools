@@ -31,6 +31,7 @@ namespace TestLibrary
     public class TestDirectoryPathAttribute : TestBase
     {
         [DirectoryPath]
+        [AutoUpdateText]
         public string DirectoryPath { get; set; }
 
         public override string ToString()

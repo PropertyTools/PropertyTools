@@ -35,6 +35,7 @@ namespace TestLibrary
     {
         [InputFilePath(".txt")]
         [FilterProperty("Filter")]
+        [AutoUpdateText]
         public string OpenFilePath { get; set; }
 
         [OutputFilePath(".txt")]

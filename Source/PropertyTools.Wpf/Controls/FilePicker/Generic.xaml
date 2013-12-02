@@ -11,7 +11,7 @@
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox Text="{Binding FilePath,RelativeSource={RelativeSource TemplatedParent}}" />
+            <TextBox Text="{Binding FilePath, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
             <Button Grid.Column="1" MinWidth="40" Content="..."
                     Command="{Binding BrowseCommand,RelativeSource={RelativeSource TemplatedParent}}" Margin="4 0 0 0" />
           </Grid>
@@ -30,7 +30,7 @@
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox Text="{Binding Directory,RelativeSource={RelativeSource TemplatedParent}}" />
+                        <TextBox Text="{Binding Directory, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
             <Button Grid.Column="1" MinWidth="40" Content="..."
                     Command="{Binding BrowseCommand,RelativeSource={RelativeSource TemplatedParent}}" Margin="4 0 0 0" />
           </Grid>

@@ -485,7 +485,8 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateDirectoryPathControl(PropertyItem property)
         {
             var c = new DirectoryPicker { FolderBrowserDialogService = this.FolderBrowserDialogService };
-            c.SetBinding(DirectoryPicker.DirectoryProperty, property.CreateBinding());
+            var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
+            c.SetBinding(DirectoryPicker.DirectoryProperty, property.CreateBinding(trigger));
             return c;
         }
 
@@ -575,7 +576,8 @@ namespace PropertyTools.Wpf
                 c.SetBinding(FilePicker.DefaultExtensionProperty, new Binding(property.DefaultExtensionDescriptor.Name));
             }
 
-            c.SetBinding(FilePicker.FilePathProperty, property.CreateBinding());
+            var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
+            c.SetBinding(FilePicker.FilePathProperty, property.CreateBinding(trigger));
             return c;
         }
 

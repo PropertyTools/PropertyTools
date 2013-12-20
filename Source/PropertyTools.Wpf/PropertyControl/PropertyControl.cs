@@ -356,14 +356,17 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The boolean to visibility converter.
         /// </summary>
-        private static readonly BooleanToVisibilityConverter BoolToVisibilityConverter =
-            new BooleanToVisibilityConverter();
+        private static readonly BooleanToVisibilityConverter BoolToVisibilityConverter = new BooleanToVisibilityConverter();
 
         /// <summary>
         /// The value to boolean converter.
         /// </summary>
-        private static readonly ValueToBooleanConverter ValueToBooleanConverter =
-            new ValueToBooleanConverter();
+        private static readonly ValueToBooleanConverter ValueToBooleanConverter = new ValueToBooleanConverter();
+
+        /// <summary>
+        /// Converts a list of values to a bool. Returns true if all values equal the converter parameter.
+        /// </summary>
+        private static readonly AllMultiValueConverter AllMultiValueConverter = new AllMultiValueConverter();
 
         /// <summary>
         /// The null to bool converter.
@@ -1492,7 +1495,8 @@ namespace PropertyTools.Wpf
                 propertyPanel.Children.Add(propertyControl);
             }
 
-            if (pi.IsEnabledDescriptor != null)
+            // Set the IsEnabled binding of the label
+            if (pi.IsEnabledDescriptor != null && propertyLabel != null)
             {
                 var isEnabledBinding = new Binding(pi.IsEnabledDescriptor.Name);
                 if (pi.IsEnabledValue != null)
@@ -1501,7 +1505,33 @@ namespace PropertyTools.Wpf
                     isEnabledBinding.Converter = ValueToBooleanConverter;
                 }
 
-                propertyPanel.SetBinding(IsEnabledProperty, isEnabledBinding);
+                propertyLabel.SetBinding(IsEnabledProperty, isEnabledBinding);
+            }
+
+            // Set the IsEnabled binding of the property control
+            if (pi.IsEnabledDescriptor != null && propertyControl != null)
+            {
+                var isEnabledBinding = new Binding(pi.IsEnabledDescriptor.Name);
+                if (pi.IsEnabledValue != null)
+                {
+                    isEnabledBinding.ConverterParameter = pi.IsEnabledValue;
+                    isEnabledBinding.Converter = ValueToBooleanConverter;
+                }
+
+                var currentBindingExpression = propertyControl.GetBindingExpression(IsEnabledProperty);
+                if (currentBindingExpression != null)
+                {
+                    var multiBinding = new MultiBinding();
+                    multiBinding.Bindings.Add(isEnabledBinding);
+                    multiBinding.Bindings.Add(currentBindingExpression.ParentBinding);
+                    multiBinding.Converter = AllMultiValueConverter;
+                    multiBinding.ConverterParameter = true;
+                    propertyControl.SetBinding(IsEnabledProperty, multiBinding);
+                }
+                else
+                {
+                    propertyControl.SetBinding(IsEnabledProperty, isEnabledBinding);
+                }
             }
 
             if (pi.IsVisibleDescriptor != null)

@@ -31,40 +31,48 @@ namespace TestLibrary
     using System.Windows.Media;
 
     using PropertyTools.DataAnnotations;
-    using PropertyTools.Wpf;
 
     public class TestOptionalProperties : TestBase
     {
+        [Category("By convention")]
+        [Description("The UseName property specifies if Name is active or not.")]
         public string Name { get; set; }
 
         [Browsable(false)]
         public bool UseName { get; set; }
 
+        [Description("The UseAge property specifies if Age is active or not.")]
         public int Age { get; set; }
 
         [Browsable(false)]
         public bool UseAge { get; set; }
 
+        [Category("By OptionalAttribute")]
         [Optional("SpecifyWeight")]
+        [Description("The SpecifyWeight property specifies if the Weight is active or not.")]
         public double Weight { get; set; }
 
         [Browsable(false)]
         public bool SpecifyWeight { get; set; }
 
-        [Category("Nullable types")]
         [Optional]
+        [Description("The Nullable property is inactive if set to null.")]
         public int? Number { get; set; }
 
         [Optional]
+        [Description("The property is inactive if set to null.")]
         public string String { get; set; }
 
         [Optional]
+        [Description("The property is inactive if set to NaN.")]
         public double Double { get; set; }
 
         [Optional]
+        [Description("The property is inactive if set to null.")]
         public Color? Color { get; set; }
 
         [Optional]
+        [Description("The property is inactive if set to null.")]
         public DateTime? DateTime { get; set; }
 
         public override string ToString()

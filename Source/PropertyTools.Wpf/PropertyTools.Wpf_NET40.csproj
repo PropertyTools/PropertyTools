@@ -168,6 +168,7 @@
     <Compile Include="Controls\SpinControl\SpinControl.cs" />
     <Compile Include="Controls\StackPanelEx.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
+    <Compile Include="Converters\AllMultiValueConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToComponentConverter.cs" />
     <Compile Include="Converters\ColorToStringConverter.cs" />

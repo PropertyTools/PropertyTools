@@ -1,0 +1,25 @@
+﻿<Window x:Class="DialogDemos.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="DialogDemos (not finished)" Height="300" Width="300" Icon="pt32.png">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Command="Open"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="FileExit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Edit object" Click="EditObject_Click"/>
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Options..." Click="Options_Click"/>
+                <MenuItem Header="Wizard..." Click="Wizard_Click"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About..." Click="About_Click"/>
+            </MenuItem>
+        </Menu>
+        <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+    </DockPanel>
+</Window>

@@ -1,0 +1,27 @@
+﻿<Window x:Class="DirectoryDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:DirectoryDemo="clr-namespace:DirectoryDemo"
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" Title="DirectoryDemo" Height="480" Width="480">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type DirectoryDemo:DirectoryViewModel}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="/folder.png" Margin="0 0 4 0"/>
+                <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <pt:TreeListBox x:Name="tree1" HierarchySource="{Binding RootDirectories}" BorderThickness="0"/>
+        <ListBox Grid.Column="1" ItemsSource="{Binding SelectedItems, ElementName=tree1}" BorderThickness="1 0 0 0"/>
+    </Grid>
+</Window>

@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PropertyTools.Wpf.PropertyEditor">
+    <Position X="0.5" Y="0.5" Width="3.5" />
+    <Members>
+      <Method Name="AppearanceChanged" Hidden="true" />
+      <Field Name="CATEGORY_APPEARANCE" Hidden="true" />
+      <Property Name="CategoryTemplateSelector" Hidden="true" />
+      <Field Name="CategoryTemplateSelectorProperty" Hidden="true" />
+      <Field Name="contentControl" Hidden="true" />
+      <Method Name="CreateTab" Hidden="true" />
+      <Field Name="DeclaredOnlyProperty" Hidden="true" />
+      <Property Name="DefaultCategoryName" Hidden="true" />
+      <Field Name="DefaultCategoryNameProperty" Hidden="true" />
+      <Method Name="GetLocalizedString" Hidden="true" />
+      <Method Name="GetLocalizedTooltip" Hidden="true" />
+      <Method Name="GetOrCreateCategory" Hidden="true" />
+      <Method Name="GetOrCreateTab" Hidden="true" />
+      <Field Name="grid" Hidden="true" />
+      <Field Name="ImageProviderProperty" Hidden="true" />
+      <Field Name="LabelAlignmentProperty" Hidden="true" />
+      <Field Name="LabelWidthProperty" Hidden="true" />
+      <Field Name="LocalizationServiceProperty" Hidden="true" />
+      <Field Name="model" Hidden="true" />
+      <Method Name="OnApplyTemplate" Hidden="true" />
+      <Method Name="OnPropertyChanged" Hidden="true" />
+      <Method Name="ParseTabAndCategory" Hidden="true" />
+      <Field Name="PART_GRID" Hidden="true" />
+      <Field Name="PART_PAGE" Hidden="true" />
+      <Field Name="PART_TABS" Hidden="true" />
+      <Method Name="PropertyEditor" Hidden="true" />
+      <Field Name="propertyMap" Hidden="true" />
+      <Property Name="PropertyTemplateSelector" Hidden="true" />
+      <Field Name="PropertyTemplateSelectorProperty" Hidden="true" />
+      <Field Name="PropertyValueChangedEvent" Hidden="true" />
+      <Method Name="RaisePropertyChangedEvent" Hidden="true" />
+      <Field Name="RequiredAttributeProperty" Hidden="true" />
+      <Property Name="SelectedObject" Hidden="true" />
+      <Method Name="SelectedObjectChanged" Hidden="true" />
+      <Field Name="SelectedObjectProperty" Hidden="true" />
+      <Field Name="ShowBoolHeaderProperty" Hidden="true" />
+      <Field Name="ShowCategoriesAsProperty" Hidden="true" />
+      <Field Name="ShowReadOnlyPropertiesProperty" Hidden="true" />
+      <Field Name="ShowTabsProperty" Hidden="true" />
+      <Method Name="SortPropertyModel" Hidden="true" />
+      <Field Name="tabControl" Hidden="true" />
+      <Method Name="UpdateContent" Hidden="true" />
+      <Method Name="UpdateOptionalProperties" Hidden="true" />
+      <Method Name="UpdatePropertyStates" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gQBgCgEUqCpMIIDxIBACWkEi/JMGDskAAJAAhAAMACE=</HashCode>
+      <FileName>PropertyEditor\PropertyEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.CategoryViewModel">
+    <Position X="6.25" Y="4" Width="2.25" />
+    <Members>
+      <Field Name="isEnabled" Hidden="true" />
+      <Field Name="isVisible" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEQAAABEQAAQAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\CategoryViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.WidePropertyViewModel">
+    <Position X="11.25" Y="12" Width="2.25" />
+    <Members>
+      <Method Name="WidePropertyViewModel" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\WidePropertyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.CheckBoxPropertyViewModel">
+    <Position X="16.25" Y="12" Width="2.25" />
+    <Members>
+      <Method Name="CheckBoxPropertyViewModel" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\CheckBoxPropertyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.DefaultPropertyViewModelFactory">
+    <Position X="15.75" Y="1" Width="3.25" />
+    <Members>
+      <Field Name="owner" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\DefaultPropertyViewModelFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PropertyTools.Wpf.FilePathPropertyViewModel">
+    <Position X="6.25" Y="12" Width="2.25" />
+    <Members>
+      <Method Name="FilePathPropertyViewModel" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\FilePathViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.DirectoryPathPropertyViewModel">
+    <Position X="13.75" Y="12" Width="2.25" />
+    <Members>
+      <Method Name="DirectoryPathPropertyViewModel" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\FilePathViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.OptionalPropertyViewModel">
+    <Position X="18.75" Y="12" Width="2.25" />
+    <Members>
+      <Field Name="enabledButHasNoValue" Hidden="true" />
+      <Field Name="optionalPropertyName" Hidden="true" />
+      <Method Name="OptionalPropertyViewModel" Hidden="true" />
+      <Field Name="previousValue" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAiAAAAAAAAAAAgAAAAAAAAAAgAIAAAAAAAAAAAIA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\OptionalPropertyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.PropertyViewModel">
+    <Position X="12.25" Y="4" Width="2.25" />
+    <Members>
+      <Field Name="isEnabled" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAUAAIJEggAwARQIEAIAQAAAAAAIAAQACiAABACAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\PropertyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.SlidablePropertyViewModel">
+    <Position X="8.75" Y="12" Width="2.25" />
+    <Members>
+      <Method Name="SlidablePropertyViewModel" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAGIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\SlidablePropertyViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.TabViewModel">
+    <Position X="9" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAQAAAAAEQEAAAAAAAEAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\TabViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PropertyTools.Wpf.ViewModelBase">
+    <Position X="10" Y="1" Width="2.25" />
+    <Members>
+      <Method Name="CompareTo" Hidden="true" />
+      <Method Name="NotifyPropertyChanged" Hidden="true" />
+      <Event Name="PropertyChanged" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+      <Method Name="ViewModelBase" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>BAAABACAAAAAAIQEAAAAAAgAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertyEditor\PropertyViewModel\ViewModelBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

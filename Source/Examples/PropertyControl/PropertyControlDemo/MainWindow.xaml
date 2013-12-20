@@ -1,0 +1,165 @@
+﻿<Window x:Class="PropertyControlDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:PropertyControlDemo"
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="PropertyControlDemo" Height="720" Width="960">
+    <Window.Resources>
+        <DataTemplate x:Key="HeaderTemplate1">
+            <StackPanel Orientation="Horizontal">
+                <pt:Bitmap Source="Images\home.png"/>
+                <TextBlock Text="{Binding}" Margin="4 0 0 0"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PageHeaderTemplate1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding}" FontSize="24" FontWeight="Bold" Margin="0 0 8 0"/>
+                <pt:Bitmap Source="Images\home.png" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <Style x:Key="TabHeaderErrorsStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding HasErrors}" Value="True">
+                    <Setter Property="TextBlock.Foreground" Value="Red"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <DataTemplate x:Key="HeaderTemplate2" DataType="pt:Tab">
+            <StackPanel Orientation="Horizontal">
+                <pt:Bitmap Source="Images\chart.png" Margin="0 0 4 0"/>
+                <TextBlock Text="{Binding Header}" Margin="4 0 0 0" Style="{StaticResource TabHeaderErrorsStyle}"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="RotatedHeaderTemplate1">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.LayoutTransform>
+                    <RotateTransform Angle="90"/>
+                </StackPanel.LayoutTransform>
+                <pt:Bitmap Source="Images\chart.png"/>
+                <TextBlock Text="{Binding}" Margin="4 0 0 0"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TabHeaderTemplate1">
+            <StackPanel Orientation="Horizontal">
+                <pt:Bitmap Source="{Binding Icon}"/>
+                <TextBlock Text="{Binding Header}" FontWeight="Bold" Margin="4 0 0 0"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CategoryHeaderTemplate1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <pt:Bitmap Source="{Binding Icon}"/>
+                <TextBlock Grid.Column="1" Text="{Binding Header}" Margin="4 0 0 0" FontWeight="Bold"/>
+            </Grid>
+        </DataTemplate>
+
+        <!-- Header + separator above the properties -->
+        <ControlTemplate x:Key="CategoryControlTemplate1"  TargetType="{x:Type HeaderedContentControl}">
+            <Grid Margin="0 8 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                <Separator Grid.Column="1" Margin="4 3 0 0"/>
+                <ContentPresenter Grid.Row="1" Grid.ColumnSpan="2"/>
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="CategoryControlTemplate2" TargetType="{x:Type HeaderedContentControl}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="80"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Separator Grid.ColumnSpan="2"/>
+                <!--<TextBlock Text="{Binding}" FontWeight="Bold" Grid.Row="1"/>-->
+                <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Grid.Row="1" Margin="0 4 0 0"/>
+                <ContentPresenter Grid.Column="1" Grid.Row="1" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ValidationTemplate1">
+            <Grid>
+                <AdornedElementPlaceholder/>
+                <Ellipse Fill="Red" Width="12" Height="12" HorizontalAlignment="Right" Margin="4"/>
+            </Grid>
+        </ControlTemplate>
+
+        <pt:ValidationErrorsToStringConverter x:Key="ValiationErrorsToStringConverter" />
+
+        <DataTemplate x:Key="ValidationErrorTemplate1">
+            <Grid Margin="0 4 0 4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Source="Images\error.png" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform" Height="24"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding}" Margin="4 0 0 0" Foreground="Red" VerticalAlignment="Center"/>
+            </Grid>
+        </DataTemplate>
+        <local:LocalPropertyControlFactory x:Key="PropertyControlFactory"/>
+        <local:LocalPropertyItemFactory x:Key="PropertyItemFactory"/>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit" Click="FileExitClick"/>
+            </MenuItem>
+            <MenuItem Header="PropertyControl">
+                <MenuItem Header="Show description icons" IsChecked="{Binding ShowDescriptionIcons, ElementName=pc}" IsCheckable="true"/>
+                <MenuItem Header="Show declared only" IsChecked="{Binding ShowDeclaredOnly, ElementName=pc}" IsCheckable="true"/>
+                <MenuItem Header="Show read-only properties" IsChecked="{Binding ShowReadOnlyProperties, ElementName=pc}" IsCheckable="true"/>
+                <MenuItem Header="Use tabs" IsChecked="{Binding UseTabs, ElementName=pc}" IsCheckable="true"/>
+                <MenuItem Header="Enable label width resizing" IsChecked="{Binding EnableLabelWidthResizing, ElementName=pc}" IsCheckable="true"/>
+                <pt:EnumMenuItem Header="CheckBoxLayout" SelectedValue="{Binding CheckBoxLayout, ElementName=pc}"/>
+                <pt:EnumMenuItem Header="LabelWidthSharing" SelectedValue="{Binding LabelWidthSharing, ElementName=pc}"/>
+                <pt:EnumMenuItem Header="CategoryControlType" SelectedValue="{Binding CategoryControlType, ElementName=pc}"/>
+                <pt:EnumMenuItem Header="TabStripPlacement" SelectedValue="{Binding TabStripPlacement, ElementName=pc}"/>
+                <pt:EnumMenuItem Header="DescriptionIconAlignment" SelectedValue="{Binding DescriptionIconAlignment, ElementName=pc}"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox x:Name="ModelsList" ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedItem}" IsSynchronizedWithCurrentItem="True"
+                     BorderThickness="0 0 1 0"/>
+
+            <pt:PropertyControl 
+                Grid.Column="1" 
+                x:Name="pc" ValidationErrorTemplate="{StaticResource ValidationErrorTemplate1}"
+                PropertyControlFactory="{StaticResource PropertyControlFactory}"
+                PropertyItemFactory="{StaticResource PropertyItemFactory}"
+                CategoryControlTemplate="{StaticResource CategoryControlTemplate1}"
+                CategoryHeaderTemplate="{StaticResource HeaderTemplate1}"
+                TabHeaderTemplate="{StaticResource HeaderTemplate2}"
+                TabPageHeaderTemplate="{StaticResource PageHeaderTemplate1}"
+                SelectedObject="{Binding SelectedItem}" Margin="8" DescriptionIcon="Images\lightbulb.png">
+                <!--<Wpf1:PropertyControl.ValidationTemplate Value="{StaticResource ValidationTemplate1}"/>-->
+            </pt:PropertyControl>
+            <TextBox AcceptsReturn="True" IsReadOnly="True" Grid.Column="2" Padding="8" Text="{Binding Output, Mode=OneWay}" BorderThickness="1 0 0 0"/>
+            <GridSplitter ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="8" Margin="-4,0,0,0" Background="Transparent"/>
+            <GridSplitter Grid.Column="2" ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="8" Margin="-4,0,0,0" Background="Transparent"/>
+        </Grid>
+    </DockPanel>
+</Window>

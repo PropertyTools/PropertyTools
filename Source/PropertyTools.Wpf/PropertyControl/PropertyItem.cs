@@ -73,6 +73,7 @@ namespace PropertyTools.Wpf
             this.ListCanRemove = true;
             this.ListMaximumNumberOfItems = int.MaxValue;
             this.InputDirection = InputDirection.Vertical;
+            this.SelectedValuePath = string.Empty;
         }
 
         /// <summary>
@@ -327,9 +328,15 @@ namespace PropertyTools.Wpf
         public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
-        /// Gets or sets the values descriptor.
+        /// Gets or sets the path that is used to get the SelectedValue from the SelectedItem of a Selector.
         /// </summary>
-        /// <value> The values descriptor. </value>
+        /// <value>The path used to get the SelectedValue. The default is an empty string.</value>
+        public string SelectedValuePath { get; set; }
+
+        /// <summary>
+        /// Gets or sets a descriptor that provides the ItemsSource.
+        /// </summary>
+        /// <value> The ItemsSource <see cref="PropertyDescriptor"/>. </value>
         public PropertyDescriptor ItemsSourceDescriptor { get; set; }
 
         /// <summary>

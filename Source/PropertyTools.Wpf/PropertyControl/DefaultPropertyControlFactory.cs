@@ -350,6 +350,8 @@ namespace PropertyTools.Wpf
             {
                 c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
             }
+            
+            c.SelectedValuePath = property.SelectedValuePath;
 
             c.SetBinding(property.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, property.CreateBinding());
 

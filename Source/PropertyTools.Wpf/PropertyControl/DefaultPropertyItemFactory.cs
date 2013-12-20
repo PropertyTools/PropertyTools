@@ -416,6 +416,12 @@ namespace PropertyTools.Wpf
                 pi.SelectorStyle = ssa.SelectorStyle;
             }
 
+            var svpa = attribute as SelectedValuePathAttribute;
+            if (svpa != null)
+            {
+                pi.SelectedValuePath = svpa.Path;
+            }
+
             var fp = attribute as FontPreviewAttribute;
             if (fp != null)
             {

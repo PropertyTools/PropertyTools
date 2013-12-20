@@ -393,7 +393,7 @@ namespace PropertyTools.Wpf
                 this.SetAttribute(attribute, pi, instance);
             }
 
-            pi.IsOptional = pi.OptionalDescriptor != null;
+            pi.IsOptional = pi.IsOptional || pi.OptionalDescriptor != null;
 
             if (pi.Descriptor.PropertyType == typeof(TimeSpan) && pi.Converter == null)
             {

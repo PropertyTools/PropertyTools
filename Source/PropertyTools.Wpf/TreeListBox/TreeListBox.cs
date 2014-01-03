@@ -632,11 +632,6 @@ namespace PropertyTools.Wpf
                         continue;
                     }
 
-                    if (container.IsExpanded)
-                    {
-                        container.IsExpanded = false;
-                    }
-
                     if (container.IsSelected)
                     {
                         this.SelectedItems.Remove(item);

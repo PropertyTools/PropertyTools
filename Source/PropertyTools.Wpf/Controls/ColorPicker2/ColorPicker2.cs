@@ -31,8 +31,8 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Media;
+    using ComboBox = System.Windows.Controls.ComboBox;
 
     /// <summary>
     /// Represents a control that lets the user pick a color.
@@ -103,6 +103,26 @@ namespace PropertyTools.Wpf
         {
             base.OnApplyTemplate();
             this.colorPickerPanel = this.GetTemplateChild(PartColorPickerPanel) as ColorPickerPanel;
+            if (this.colorPickerPanel != null)
+            {
+                this.colorPickerPanel.PredefinedColorPanelSelectedEvent += this.OnPredefinedColorPanelSelected;
+            }
+        }
+
+
+        /// <summary>
+        /// handle the predefined color selected event
+        /// </summary>
+        /// <param name="sender">the sender</param>
+        /// <param name="args">the routed event argument</param>
+        private void OnPredefinedColorPanelSelected(object sender, RoutedEventArgs args)
+        {
+            if (this.IsDropDownOpen && !this.colorPickerPanel.IsPickingColor())
+            {
+                this.IsDropDownOpen = false;
+            }
+
+            args.Handled = true;
         }
 
         /// <summary>

@@ -247,7 +247,7 @@ Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}">
                         </Grid>
                         <Grid
 Visibility="{Binding ShowHsvPanel, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter2}}">
-                            <StackPanel>
+                            <StackPanel x:Name="PART_PredefinedColorPanel">
                                 <ListBox
 ItemsSource="{Binding ThemeColors, RelativeSource={RelativeSource Mode=TemplatedParent}}"
 SelectedValue="{Binding SelectedColor, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"

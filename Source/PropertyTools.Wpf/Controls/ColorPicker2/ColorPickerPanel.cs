@@ -43,12 +43,18 @@ namespace PropertyTools.Wpf
     /// Represents a control that lets the user pick a color.
     /// </summary>
     [TemplatePart(Name = PartHsv, Type = typeof(HsvControl))]
+    [TemplatePart(Name = PartPredefinedColorPanel, Type = typeof(StackPanel))]
     public class ColorPickerPanel : Control, INotifyPropertyChanged
     {
         /// <summary>
         /// The HSV control part name.
         /// </summary>
         private const string PartHsv = "PART_HSV";
+
+        /// <summary>
+        /// The predefined color panel part name
+        /// </summary>
+        private const string PartPredefinedColorPanel = "PART_PredefinedColorPanel";
 
         /// <summary>
         /// The alpha property.
@@ -399,6 +405,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// The predefined colors selected event
+        /// </summary>
+        public event RoutedEventHandler PredefinedColorPanelSelectedEvent;
+
+        /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see
         /// cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
         /// </summary>
@@ -406,6 +417,24 @@ namespace PropertyTools.Wpf
         {
             base.OnApplyTemplate();
             this.hsvControl = this.GetTemplateChild(PartHsv) as HsvControl;
+            var predefinedColorPanel = this.GetTemplateChild(PartPredefinedColorPanel) as StackPanel;
+            if (predefinedColorPanel != null)
+            {
+                predefinedColorPanel.AddHandler(ListBoxItem.SelectedEvent, (RoutedEventHandler)this.OnPredefinedColorPanelSelected,true);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="E:PredefinedColorPanelSelected" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void OnPredefinedColorPanelSelected(object sender, RoutedEventArgs args)
+        {
+            if (this.PredefinedColorPanelSelectedEvent != null)
+            {
+                this.PredefinedColorPanelSelectedEvent(sender,args);
+            }
         }
 
         /// <summary>
@@ -533,7 +562,6 @@ namespace PropertyTools.Wpf
         {
             if (!this.withinColorChange && !this.withinComponentChange && newColor != null)
             {
-                this.AddColorToRecentColorsIfMissing(newColor.Value);
                 this.UpdateRGB(newColor.Value);
                 this.UpdateHSV(newColor.Value);
             }
@@ -721,16 +749,6 @@ namespace PropertyTools.Wpf
         private bool AddColorToRecentColorsIfMissing(Color color)
         {
             // Check if the color exists
-            if (ThemeColors.Contains(color))
-            {
-                return false;
-            }
-
-            if (StandardColors.Contains(color))
-            {
-                return false;
-            }
-
             if (RecentColors.Contains(color))
             {
                 return false;
@@ -768,7 +786,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Pick a color from the current mouse position.
+        /// Picks a color from the current mouse position.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -778,7 +796,7 @@ namespace PropertyTools.Wpf
         /// </param>
         private void Pick(object sender, EventArgs e)
         {
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            if (this.IsPickKeyDown())
             {
                 try
                 {
@@ -789,9 +807,27 @@ namespace PropertyTools.Wpf
                     this.SelectedColor = Color.FromArgb(0xFF, pixels[2], pixels[1], pixels[0]);
                 }
                 catch (Exception)
-                {
+                {   
                 }
             }
+        }
+
+        /// <summary>
+        /// Determines whether the color picking key is pressed.
+        /// </summary>
+        /// <returns><c>true</c> if the key is down; otherwise, <c>false</c>.</returns>
+        private bool IsPickKeyDown()
+        {
+            return Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+        }
+
+        /// <summary>
+        /// Determines whether the user is color picking.
+        /// </summary>
+        /// <returns><c>true</c> if the user is picking a color; otherwise, <c>false</c>.</returns>
+        public bool IsPickingColor()
+        {
+            return this.IsPicking && this.IsPickKeyDown();
         }
 
         /// <summary>

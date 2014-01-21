@@ -27,6 +27,7 @@
 //   Represents a control that lets the user pick a color.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -46,16 +47,6 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartPredefinedColorPanel, Type = typeof(StackPanel))]
     public class ColorPickerPanel : Control, INotifyPropertyChanged
     {
-        /// <summary>
-        /// The HSV control part name.
-        /// </summary>
-        private const string PartHsv = "PART_HSV";
-
-        /// <summary>
-        /// The predefined color panel part name
-        /// </summary>
-        private const string PartPredefinedColorPanel = "PART_PredefinedColorPanel";
-
         /// <summary>
         /// The alpha property.
         /// </summary>
@@ -139,6 +130,16 @@ namespace PropertyTools.Wpf
                 CoerceSelectedColorValue));
 
         /// <summary>
+        /// The HSV control part name.
+        /// </summary>
+        private const string PartHsv = "PART_HSV";
+
+        /// <summary>
+        /// The predefined color panel part name
+        /// </summary>
+        private const string PartPredefinedColorPanel = "PART_PredefinedColorPanel";
+
+        /// <summary>
         /// The max number of recent colors.
         /// </summary>
         private static int maxNumberOfRecentColors = 20;
@@ -191,6 +192,11 @@ namespace PropertyTools.Wpf
         /// The property changed.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// The predefined colors selected event
+        /// </summary>
+        public event RoutedEventHandler PredefinedColorPanelSelectedEvent;
 
         /// <summary>
         /// Gets the recent colors.
@@ -405,9 +411,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The predefined colors selected event
+        /// Determines whether the user is color picking.
         /// </summary>
-        public event RoutedEventHandler PredefinedColorPanelSelectedEvent;
+        /// <returns><c>true</c> if the user is picking a color; otherwise, <c>false</c>.</returns>
+        public bool IsPickingColor()
+        {
+            return this.IsPicking && this.IsPickKeyDown();
+        }
 
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see
@@ -420,20 +430,7 @@ namespace PropertyTools.Wpf
             var predefinedColorPanel = this.GetTemplateChild(PartPredefinedColorPanel) as StackPanel;
             if (predefinedColorPanel != null)
             {
-                predefinedColorPanel.AddHandler(ListBoxItem.SelectedEvent, (RoutedEventHandler)this.OnPredefinedColorPanelSelected,true);
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="E:PredefinedColorPanelSelected" /> event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void OnPredefinedColorPanelSelected(object sender, RoutedEventArgs args)
-        {
-            if (this.PredefinedColorPanelSelectedEvent != null)
-            {
-                this.PredefinedColorPanelSelectedEvent(sender,args);
+                predefinedColorPanel.AddHandler(ListBoxItem.SelectedEvent, (RoutedEventHandler)this.OnPredefinedColorPanelSelected, true);
             }
         }
 
@@ -441,10 +438,10 @@ namespace PropertyTools.Wpf
         /// Coerces the selected color value.
         /// </summary>
         /// <param name="basevalue">
-        /// The basevalue.
+        /// The base value.
         /// </param>
         /// <returns>
-        /// The coerce selected color value.
+        /// The coerced selected color value.
         /// </returns>
         protected virtual object CoerceSelectedColorValue(object basevalue)
         {
@@ -589,7 +586,7 @@ namespace PropertyTools.Wpf
         /// The d.
         /// </param>
         /// <param name="basevalue">
-        /// The basevalue.
+        /// The base value.
         /// </param>
         /// <returns>
         /// The coerce selected color value.
@@ -743,15 +740,12 @@ namespace PropertyTools.Wpf
         /// <param name="color">
         /// The color.
         /// </param>
-        /// <returns>
-        /// True if the color was added.
-        /// </returns>
-        private bool AddColorToRecentColorsIfMissing(Color color)
+        private void AddColorToRecentColorsIfMissing(Color color)
         {
             // Check if the color exists
             if (RecentColors.Contains(color))
             {
-                return false;
+                return;
             }
 
             if (RecentColors.Count >= this.MaxNumberOfRecentColors)
@@ -760,7 +754,19 @@ namespace PropertyTools.Wpf
             }
 
             RecentColors.Insert(0, color);
-            return true;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="E:PredefinedColorPanelSelected" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void OnPredefinedColorPanelSelected(object sender, RoutedEventArgs args)
+        {
+            if (this.PredefinedColorPanelSelectedEvent != null)
+            {
+                this.PredefinedColorPanelSelectedEvent(sender, args);
+            }
         }
 
         /// <summary>
@@ -806,8 +812,9 @@ namespace PropertyTools.Wpf
                     bmp.CopyPixels(pixels, 4, 0);
                     this.SelectedColor = Color.FromArgb(0xFF, pixels[2], pixels[1], pixels[0]);
                 }
-                catch (Exception)
-                {   
+                // ReSharper disable once EmptyGeneralCatchClause
+                catch
+                {
                 }
             }
         }
@@ -822,20 +829,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Determines whether the user is color picking.
-        /// </summary>
-        /// <returns><c>true</c> if the user is picking a color; otherwise, <c>false</c>.</returns>
-        public bool IsPickingColor()
-        {
-            return this.IsPicking && this.IsPickKeyDown();
-        }
-
-        /// <summary>
         /// Updates the hue, saturation and brightness properties.
         /// </summary>
         /// <param name="color">
         /// The color.
         /// </param>
+        // ReSharper disable once InconsistentNaming
         private void UpdateHSV(Color color)
         {
             this.withinColorChange = true;
@@ -861,6 +860,7 @@ namespace PropertyTools.Wpf
         /// <param name="color">
         /// The color.
         /// </param>
+        // ReSharper disable once InconsistentNaming
         private void UpdateRGB(Color color)
         {
             this.withinColorChange = true;

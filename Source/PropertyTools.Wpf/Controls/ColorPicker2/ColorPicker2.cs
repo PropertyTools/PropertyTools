@@ -41,11 +41,6 @@ namespace PropertyTools.Wpf
     public class ColorPicker2 : ComboBox
     {
         /// <summary>
-        /// The color picker panel part constant.
-        /// </summary>
-        private const string PartColorPickerPanel = "PART_ColorPickerPanel";
-
-        /// <summary>
         /// The selected color property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
@@ -57,6 +52,11 @@ namespace PropertyTools.Wpf
                 FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 SelectedColorChanged,
                 CoerceSelectedColorValue));
+
+        /// <summary>
+        /// The color picker panel part constant.
+        /// </summary>
+        private const string PartColorPickerPanel = "PART_ColorPickerPanel";
 
         /// <summary>
         /// The color picker panel.
@@ -109,30 +109,14 @@ namespace PropertyTools.Wpf
             }
         }
 
-
         /// <summary>
-        /// handle the predefined color selected event
-        /// </summary>
-        /// <param name="sender">the sender</param>
-        /// <param name="args">the routed event argument</param>
-        private void OnPredefinedColorPanelSelected(object sender, RoutedEventArgs args)
-        {
-            if (this.IsDropDownOpen && !this.colorPickerPanel.IsPickingColor())
-            {
-                this.IsDropDownOpen = false;
-            }
-
-            args.Handled = true;
-        }
-
-        /// <summary>
-        /// Coerces the selected color value.
+        /// Coerces the value of the <see cref="SelectedColor"/> property.
         /// </summary>
         /// <param name="basevalue">
-        /// The basevalue.
+        /// The base value.
         /// </param>
         /// <returns>
-        /// The coerce selected color value.
+        /// The coerced <see cref="SelectedColor"/> value.
         /// </returns>
         protected virtual object CoerceSelectedColorValue(object basevalue)
         {
@@ -169,15 +153,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Coerces the selected color value.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="basevalue">
-        /// The basevalue.
-        /// </param>
-        /// <returns>
-        /// The coerce selected color value.
-        /// </returns>
+        /// <param name="d">The sender.</param>
+        /// <param name="basevalue">The base value.</param>
+        /// <returns>The coerced value.</returns>
         private static object CoerceSelectedColorValue(DependencyObject d, object basevalue)
         {
             return ((ColorPicker2)d).CoerceSelectedColorValue(basevalue);
@@ -195,6 +173,21 @@ namespace PropertyTools.Wpf
         private static void SelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((ColorPicker2)d).OnSelectedColorChanged(e);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="E:PredefinedColorPanelSelected" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void OnPredefinedColorPanelSelected(object sender, RoutedEventArgs args)
+        {
+            if (this.IsDropDownOpen && !this.colorPickerPanel.IsPickingColor())
+            {
+                this.IsDropDownOpen = false;
+            }
+
+            args.Handled = true;
         }
     }
 }

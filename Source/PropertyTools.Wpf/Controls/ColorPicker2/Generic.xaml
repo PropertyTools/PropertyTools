@@ -250,7 +250,6 @@ Visibility="{Binding ShowHsvPanel, RelativeSource={RelativeSource Mode=Templated
                             <StackPanel x:Name="PART_PredefinedColorPanel">
                                 <ListBox
 ItemsSource="{Binding ThemeColors, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-SelectedValue="{Binding SelectedColor, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
 BorderThickness="0 1 0 1" ItemTemplate="{StaticResource ColorItemTemplate}" ItemContainerStyle="{StaticResource ColorItemContainerStyle}"
 ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
                                 <TextBlock
@@ -258,14 +257,12 @@ Text="{Binding Strings.StandardColors,RelativeSource={RelativeSource Mode=Templa
 Style="{StaticResource HeaderStyle}" />
                                 <ListBox Style="{StaticResource Box}"
                          ItemsSource="{Binding StandardColors, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                         SelectedValue="{Binding SelectedColor, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                          ItemTemplate="{StaticResource ColorItemTemplate}"  ItemContainerStyle="{StaticResource ColorItemContainerStyle}" ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
                                 <TextBlock
 Text="{Binding Strings.RecentColors,RelativeSource={RelativeSource Mode=TemplatedParent}}"
 Style="{StaticResource HeaderStyle}" />
                                 <ListBox Style="{StaticResource BottomBox}"
                          ItemsSource="{Binding RecentColors, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                         SelectedValue="{Binding SelectedColor, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                          ItemTemplate="{StaticResource ColorItemTemplate}" ItemContainerStyle="{StaticResource ColorItemContainerStyle}" ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
                             </StackPanel>
                         </Grid>

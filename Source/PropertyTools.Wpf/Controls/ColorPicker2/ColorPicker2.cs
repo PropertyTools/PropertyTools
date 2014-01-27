@@ -31,6 +31,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Media;
     using ComboBox = System.Windows.Controls.ComboBox;
 
@@ -105,7 +106,7 @@ namespace PropertyTools.Wpf
             this.colorPickerPanel = this.GetTemplateChild(PartColorPickerPanel) as ColorPickerPanel;
             if (this.colorPickerPanel != null)
             {
-                this.colorPickerPanel.PredefinedColorPanelSelectedEvent += this.OnPredefinedColorPanelSelected;
+                this.colorPickerPanel.PredefinedColorPanelSelectionChangedEvent += this.OnPredefinedColorPanelSelectionChanged;
             }
         }
 
@@ -176,11 +177,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles the <see cref="E:PredefinedColorPanelSelected" /> event.
+        /// Handles the <see cref="E:PredefinedColorPanelSelectionChangedEvent" /> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void OnPredefinedColorPanelSelected(object sender, RoutedEventArgs args)
+        /// <param name="args">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
+        private void OnPredefinedColorPanelSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
             if (this.IsDropDownOpen && !this.colorPickerPanel.IsPickingColor())
             {

@@ -41,7 +41,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ControlsDemo
+namespace ControlDemos
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

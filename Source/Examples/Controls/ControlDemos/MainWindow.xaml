@@ -1,4 +1,4 @@
-﻿<Window x:Class="ControlsDemo.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="ControlsDemo" Height="480" Width="640">
+﻿<Window x:Class="ControlDemos.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="ControlDemos" Height="480" Width="640">
     <Window.Resources>
         <XmlDataProvider x:Key="samples" Source="Examples.xml" />
     </Window.Resources>

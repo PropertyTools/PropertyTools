@@ -30,7 +30,7 @@
 using System.ComponentModel;
 using System.Windows.Controls;
 
-namespace ControlsDemo
+namespace ControlDemos
 {
     using System;
 

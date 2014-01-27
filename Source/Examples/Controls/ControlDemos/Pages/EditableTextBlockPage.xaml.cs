@@ -28,7 +28,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ControlsDemo
+namespace ControlDemos
 {
     using System;
     using System.Windows.Controls;

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ColorPicker2.cs" company="PropertyTools">
+// <copyright file="ColorPicker.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -39,7 +39,7 @@ namespace PropertyTools.Wpf
     /// Represents a control that lets the user pick a color.
     /// </summary>
     [TemplatePart(Name = PartColorPickerPanel, Type = typeof(ColorPickerPanel))]
-    public class ColorPicker2 : ComboBox
+    public class ColorPicker : ComboBox
     {
         /// <summary>
         /// The selected color property.
@@ -47,7 +47,7 @@ namespace PropertyTools.Wpf
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
             "SelectedColor",
             typeof(Color?),
-            typeof(ColorPicker2),
+            typeof(ColorPicker),
             new FrameworkPropertyMetadata(
                 Color.FromArgb(0, 0, 0, 0),
                 FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
@@ -65,14 +65,14 @@ namespace PropertyTools.Wpf
         private ColorPickerPanel colorPickerPanel;
 
         /// <summary>
-        /// Initializes static members of the <see cref="ColorPicker2" /> class.
+        /// Initializes static members of the <see cref="ColorPicker" /> class.
         /// </summary>
-        static ColorPicker2()
+        static ColorPicker()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(ColorPicker2), new FrameworkPropertyMetadata(typeof(ColorPicker2)));
+                typeof(ColorPicker), new FrameworkPropertyMetadata(typeof(ColorPicker)));
             SelectedValueProperty.OverrideMetadata(
-                typeof(ColorPicker2),
+                typeof(ColorPicker),
                 new FrameworkPropertyMetadata(
                     Color.FromArgb(0, 0, 0, 0),
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
@@ -159,7 +159,7 @@ namespace PropertyTools.Wpf
         /// <returns>The coerced value.</returns>
         private static object CoerceSelectedColorValue(DependencyObject d, object basevalue)
         {
-            return ((ColorPicker2)d).CoerceSelectedColorValue(basevalue);
+            return ((ColorPicker)d).CoerceSelectedColorValue(basevalue);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace PropertyTools.Wpf
         /// </param>
         private static void SelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((ColorPicker2)d).OnSelectedColorChanged(e);
+            ((ColorPicker)d).OnSelectedColorChanged(e);
         }
 
         /// <summary>

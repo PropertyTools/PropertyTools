@@ -313,8 +313,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateBrushControl(PropertyItem property)
         {
-            var c = new ColorPicker2();
-            c.SetBinding(ColorPicker2.SelectedColorProperty, property.CreateBinding());
+            var c = new ColorPicker();
+            c.SetBinding(ColorPicker.SelectedColorProperty, property.CreateBinding());
             return c;
         }
 
@@ -329,8 +329,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateColorControl(PropertyItem property)
         {
-            var c = new ColorPicker2();
-            c.SetBinding(ColorPicker2.SelectedColorProperty, property.CreateBinding());
+            var c = new ColorPicker();
+            c.SetBinding(ColorPicker.SelectedColorProperty, property.CreateBinding());
             return c;
         }
 

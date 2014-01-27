@@ -151,13 +151,13 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateColorPickerControl(PropertyDefinition d, int index)
         {
-            var c = new ColorPicker2
+            var c = new ColorPicker
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Focusable = false
                 };
-            c.SetBinding(ColorPicker2.SelectedColorProperty, d.CreateBinding(index));
+            c.SetBinding(ColorPicker.SelectedColorProperty, d.CreateBinding(index));
             return c;
         }
 

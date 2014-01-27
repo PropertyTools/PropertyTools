@@ -745,6 +745,8 @@ namespace PropertyTools.Wpf
             // Check if the color exists
             if (RecentColors.Contains(color))
             {
+                var index = RecentColors.IndexOf(color);
+                RecentColors.Move(index, 0);
                 return;
             }
 

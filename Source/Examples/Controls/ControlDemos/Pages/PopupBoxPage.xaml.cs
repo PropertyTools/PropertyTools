@@ -41,7 +41,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ControlsDemo.Pages
+namespace ControlDemos.Pages
 {
     /// <summary>
     /// Interaction logic for PopupBoxPage.xaml

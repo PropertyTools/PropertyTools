@@ -31,7 +31,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Controls;
 
-namespace ControlsDemo.Pages
+namespace ControlDemos.Pages
 {
     /// <summary>
     /// Interaction logic for FormattingTextBoxPage.xaml

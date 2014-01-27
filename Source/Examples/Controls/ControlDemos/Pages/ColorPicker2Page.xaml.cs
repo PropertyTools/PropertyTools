@@ -27,23 +27,12 @@
 //   Interaction logic for ColorPickerPage.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace ControlsDemo
+namespace ControlDemos
 {
     using System.ComponentModel;
+    using System.Windows.Controls;
+    using System.Windows.Media;
 
     using PropertyTools.Wpf;
 
@@ -66,6 +55,7 @@ namespace ControlsDemo
                 RaisePropertyChanged("Color1");
             }
         }
+
         private Color color2;
 
         public Color Color2
@@ -80,6 +70,7 @@ namespace ControlsDemo
                 RaisePropertyChanged("Color2");
             }
         }
+
         private Color color3;
 
         public Color Color3

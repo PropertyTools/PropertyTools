@@ -29,7 +29,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 using System.Windows.Controls;
 
-namespace ControlsDemo
+namespace ControlDemos
 {
     /// <summary>
     /// Interaction logic for DockPanelSplitterPage.xaml

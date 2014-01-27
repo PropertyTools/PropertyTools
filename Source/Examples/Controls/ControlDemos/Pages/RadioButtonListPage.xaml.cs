@@ -31,7 +31,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ControlsDemo
+namespace ControlDemos
 {
     /// <summary>
     /// Interaction logic for RadioButtonListPage.xaml

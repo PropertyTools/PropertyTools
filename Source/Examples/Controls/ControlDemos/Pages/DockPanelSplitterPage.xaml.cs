@@ -27,10 +27,11 @@
 //   Interaction logic for DockPanelSplitterPage.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System.Windows.Controls;
 
 namespace ControlDemos
 {
+    using System.Windows.Controls;
+
     /// <summary>
     /// Interaction logic for DockPanelSplitterPage.xaml
     /// </summary>
@@ -38,7 +39,7 @@ namespace ControlDemos
     {
         public DockPanelSplitterPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

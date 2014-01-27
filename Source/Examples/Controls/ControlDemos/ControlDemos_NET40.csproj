@@ -70,7 +70,6 @@
     <Compile Include="Pages\FormattingTextBoxPage.xaml.cs">
       <DependentUpon>FormattingTextBoxPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Person.cs" />
     <Compile Include="Pages\PopupBoxPage.xaml.cs">
       <DependentUpon>PopupBoxPage.xaml</DependentUpon>
     </Compile>

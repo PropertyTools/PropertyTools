@@ -27,12 +27,12 @@
 //   Interaction logic for FilePickerPage.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System.ComponentModel;
-using System.Windows.Controls;
 
 namespace ControlDemos
 {
     using System;
+    using System.ComponentModel;
+    using System.Windows.Controls;
 
     /// <summary>
     /// Interaction logic for FilePickerPage.xaml
@@ -41,59 +41,71 @@ namespace ControlDemos
     {
         public FilePickerPage()
         {
-            InitializeComponent();
-            DataContext = new FilePickerViewModel();
+            this.InitializeComponent();
+            this.DataContext = new FilePickerViewModel();
         }
     }
 
     public class FilePickerViewModel : INotifyPropertyChanged
     {
-        private string _directory;
-        private string _filePath;
-        private string _basePath;
+        private string directory;
+        private string filePath;
+        private string basePath;
 
         public FilePickerViewModel()
         {
-            FilePath = @"C:\autoexec.bat";
-            BasePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            Directory = @"C:\Windows";
+            this.FilePath = @"C:\autoexec.bat";
+            this.BasePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            this.Directory = @"C:\Windows";
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string FilePath
         {
-            get { return _filePath; }
+            get
+            {
+                return this.filePath;
+            }
+
             set
             {
-                _filePath = value;
-                RaisePropertyChanged("FilePath");
+                this.filePath = value;
+                this.RaisePropertyChanged("FilePath");
             }
         }
         
         public string BasePath
         {
-            get { return _basePath; }
+            get
+            {
+                return this.basePath;
+            }
+
             set
             {
-                _basePath = value;
-                RaisePropertyChanged("BasePath");
+                this.basePath = value;
+                this.RaisePropertyChanged("BasePath");
             }
         }
 
         public string Directory
         {
-            get { return _directory; }
+            get
+            {
+                return this.directory;
+            }
+
             set
             {
-                _directory = value;
-                RaisePropertyChanged("Directory");
+                this.directory = value;
+                this.RaisePropertyChanged("Directory");
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected void RaisePropertyChanged(string property)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));

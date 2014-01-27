@@ -79,10 +79,10 @@
       <DependentUpon>RadioButtonListPage.xaml</DependentUpon>
     </Compile>
     <None Include="app.config" />
-    <None Include="Pages\ColorPicker2Page.xaml.cs">
+    <Compile Include="Pages\ColorPicker2Page.xaml.cs">
       <DependentUpon>ColorPicker2Page.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </None>
+    </Compile>
     <Page Include="Pages\ColorPicker2Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

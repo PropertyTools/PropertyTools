@@ -5,7 +5,7 @@
 
     <!-- 
     Portions are copied from ColorPicker styles by Ury Jamshy, 21 July 2011.
-    See http://www.codeproject.com/KB/WPF/ColorPicker2010.aspx
+    See http://www.codeproject.com/KB/WPF/ColorPicker010.aspx
     The Code Project Open License (CPOL)
     http://www.codeproject.com/info/cpol10.aspx
     -->
@@ -529,7 +529,7 @@ Color="{Binding RightColor,RelativeSource={RelativeSource TemplatedParent}}" Off
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type local:ColorPicker2}">
+    <Style TargetType="{x:Type local:ColorPicker}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource ComboBoxFocusVisual}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
         <Setter Property="Background" Value="{StaticResource ButtonNormalBackground}" />
@@ -541,7 +541,7 @@ Color="{Binding RightColor,RelativeSource={RelativeSource TemplatedParent}}" Off
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:ColorPicker2}">
+                <ControlTemplate TargetType="{x:Type local:ColorPicker}">
                     <Grid Name="MainGrid" SnapsToDevicePixels="true">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />

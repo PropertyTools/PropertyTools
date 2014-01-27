@@ -77,7 +77,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\ColorPicker2\Generic.xaml">
+    <Page Include="Controls\ColorPicker\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -150,13 +150,13 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Controls\ColorPicker2\ColorPicker2.cs" />
     <Compile Include="Controls\Bitmap.cs" />
-    <Compile Include="Controls\ColorPicker2\ColorPickerPanel.cs" />
-    <Compile Include="Controls\ColorPicker2\ColorPickerPanelStrings.cs" />
-    <Compile Include="Controls\ColorPicker2\ColorSlider.cs" />
-    <Compile Include="Controls\ColorPicker2\HsvControl.cs" />
-    <Compile Include="Controls\ColorPicker2\SpectrumSlider.cs" />
+    <Compile Include="Controls\ColorPicker\ColorPicker.cs" />
+    <Compile Include="Controls\ColorPicker\ColorPickerPanel.cs" />
+    <Compile Include="Controls\ColorPicker\ColorPickerPanelStrings.cs" />
+    <Compile Include="Controls\ColorPicker\ColorSlider.cs" />
+    <Compile Include="Controls\ColorPicker\HsvControl.cs" />
+    <Compile Include="Controls\ColorPicker\SpectrumSlider.cs" />
     <Compile Include="Controls\CheckMark\CheckMark.cs" />
     <Compile Include="Controls\DockPanelSplitter\DockPanelSplitter.cs" />
     <Compile Include="Controls\EnumMenuItem.cs" />
@@ -284,10 +284,10 @@
     <Resource Include="ItemsGrid\Cursors\AutoFill.cur" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Controls\ColorPicker2\ColorPicker.png" />
+    <Resource Include="Controls\ColorPicker\ColorPicker.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Controls\ColorPicker2\Hsv.png" />
+    <Resource Include="Controls\ColorPicker\Hsv.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ItemsGrid\Cursors\Cross.cur" />

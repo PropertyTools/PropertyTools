@@ -27,36 +27,39 @@
 //   Interaction logic for FilePickerPage.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System.ComponentModel;
-using System.Windows.Controls;
 
 namespace ControlDemos
 {
     using System;
+    using System.ComponentModel;
 
     /// <summary>
     /// Interaction logic for FilePickerPage.xaml
     /// </summary>
-    public partial class SpinControlPage : Page
+    public partial class SpinControlPage
     {
         public SpinControlPage()
         {
-            InitializeComponent();
-            DataContext = new SpinControlViewModel();
+            this.InitializeComponent();
+            this.DataContext = new SpinControlViewModel();
         }
     }
 
     public class SpinControlViewModel : INotifyPropertyChanged
     {
         private double doubleValue;
+        private int intValue;
+        private DateTime dateValue;
 
         public SpinControlViewModel()
         {
             this.DoubleValue = 10;
-            DateValue = DateTime.Now;
-            MinimumDate = DateTime.Now.AddDays(-1);
-            MaximumDate = DateTime.Now.AddDays(7);
+            this.DateValue = DateTime.Now;
+            this.MinimumDate = DateTime.Now.AddDays(-1);
+            this.MaximumDate = DateTime.Now.AddDays(7);
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public TimeSpan HalfHourInterval { get { return new TimeSpan(0, 30, 0); } }
 
@@ -67,45 +70,52 @@ namespace ControlDemos
                 return new TimeSpan(1, 0, 0);
             }
         }
+
         public DateTime MinimumDate { get; set; }
+        
         public DateTime MaximumDate { get; set; }
+        
         public double DoubleValue
         {
-            get { return this.doubleValue; }
+            get
+            {
+                return this.doubleValue;
+            }
+
             set
             {
                 this.doubleValue = value;
-                RaisePropertyChanged("DoubleValue");
+                this.RaisePropertyChanged("DoubleValue");
             }
         }
 
-        private int intValue;
         public int IntValue
         {
-            get { return this.intValue; }
+            get
+            {
+                return this.intValue;
+            }
+
             set
             {
                 this.intValue = value;
-                RaisePropertyChanged("IntValue");
+                this.RaisePropertyChanged("IntValue");
             }
         }
 
-        private DateTime dateValue;
         public DateTime DateValue
         {
             get { return this.dateValue; }
             set
             {
                 this.dateValue = value;
-                RaisePropertyChanged("DateValue");
+                this.RaisePropertyChanged("DateValue");
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected void RaisePropertyChanged(string property)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = this.PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));

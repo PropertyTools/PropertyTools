@@ -27,12 +27,13 @@
 //   Interaction logic for RadioButtonListPage.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace ControlDemos
 {
+    using System.ComponentModel;
+    using System.Windows;
+    using System.Windows.Controls;
+
     /// <summary>
     /// Interaction logic for RadioButtonListPage.xaml
     /// </summary>
@@ -42,14 +43,14 @@ namespace ControlDemos
 
         public RadioButtonListPage()
         {
-            InitializeComponent();
-            vm.SelectedFruit = Fruits.Orange;
-            DataContext = vm;
+            this.InitializeComponent();
+            this.vm.SelectedFruit = Fruits.Orange;
+            this.DataContext = this.vm;
         }
 
         private void Change_Click(object sender, RoutedEventArgs e)
         {
-            vm.SelectedFruit = Fruits.Pear;
+            this.vm.SelectedFruit = Fruits.Pear;
         }
     }
 
@@ -57,21 +58,25 @@ namespace ControlDemos
     {
         private Fruits selectedFruit;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public Fruits SelectedFruit
         {
-            get { return selectedFruit; }
+            get
+            {
+                return this.selectedFruit;
+            }
+
             set
             {
-                selectedFruit = value;
-                RaisePropertyChanged("SelectedFruit");
+                this.selectedFruit = value;
+                this.RaisePropertyChanged("SelectedFruit");
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected void RaisePropertyChanged(string property)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = this.PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));
@@ -84,5 +89,5 @@ namespace ControlDemos
         Apple,
         Pear,
         Orange
-    } ;
+    }
 }

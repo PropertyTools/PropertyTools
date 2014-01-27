@@ -23,105 +23,144 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Interaction logic for ColorPickerPage.xaml
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace ControlDemos
 {
     using System.ComponentModel;
-    using System.Windows.Controls;
     using System.Windows.Media;
 
     using PropertyTools.Wpf;
 
     /// <summary>
-    /// Interaction logic for ColorPickerPage.xaml
+    ///     Interaction logic for ColorPickerPage
     /// </summary>
-    public partial class ColorPicker2Page : Page, INotifyPropertyChanged
+    public partial class ColorPicker2Page : INotifyPropertyChanged
     {
+        /// <summary>
+        /// The color 1.
+        /// </summary>
         private Color color1;
 
+        /// <summary>
+        /// The color 2.
+        /// </summary>
+        private Color color2;
+
+        /// <summary>
+        /// The color 3.
+        /// </summary>
+        private Color color3;
+
+        /// <summary>
+        /// The color 4.
+        /// </summary>
+        private Color? color4;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorPicker2Page"/> class.
+        /// </summary>
+        public ColorPicker2Page()
+        {
+            this.InitializeComponent();
+            this.Color1 = Color.FromArgb(80, 255, 0, 0);
+            this.Color2 = ColorHelper.UndefinedColor;
+            this.Color3 = ColorHelper.Automatic;
+            this.Color4 = null;
+            this.Brush = Brushes.Blue;
+            this.DataContext = this;
+        }
+
+        /// <summary>
+        /// The property changed event.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Gets or sets the color 1.
+        /// </summary>
         public Color Color1
         {
             get
             {
                 return this.color1;
             }
+
             set
             {
                 this.color1 = value;
-                RaisePropertyChanged("Color1");
+                this.RaisePropertyChanged("Color1");
             }
         }
 
-        private Color color2;
-
+        /// <summary>
+        /// Gets or sets the color 2.
+        /// </summary>
         public Color Color2
         {
             get
             {
                 return this.color2;
             }
+
             set
             {
                 this.color2 = value;
-                RaisePropertyChanged("Color2");
+                this.RaisePropertyChanged("Color2");
             }
         }
 
-        private Color color3;
-
+        /// <summary>
+        /// Gets or sets the color 3.
+        /// </summary>
         public Color Color3
         {
             get
             {
                 return this.color3;
             }
+
             set
             {
                 this.color3 = value;
-                RaisePropertyChanged("Color3");
+                this.RaisePropertyChanged("Color3");
             }
         }
-        private Color? color4;
 
+        /// <summary>
+        /// Gets or sets the color 4.
+        /// </summary>
         public Color? Color4
         {
             get
             {
                 return this.color4;
             }
+
             set
             {
                 this.color4 = value;
-                RaisePropertyChanged("Color4");
+                this.RaisePropertyChanged("Color4");
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// Gets or sets the brush.
+        /// </summary>
+        public SolidColorBrush Brush { get; set; }
 
+        /// <summary>
+        /// Raises the property changed event.
+        /// </summary>
+        /// <param name="property">
+        /// The property.
+        /// </param>
         protected void RaisePropertyChanged(string property)
         {
-            var handler = PropertyChanged;
+            PropertyChangedEventHandler handler = this.PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));
             }
-        }
-
-        public SolidColorBrush Brush { get; set; }
-
-        public ColorPicker2Page()
-        {
-            InitializeComponent();
-            this.Color1 = Color.FromArgb(80, 255, 0, 0);
-            this.Color2 = ColorHelper.UndefinedColor;
-            this.Color3 = ColorHelper.Automatic;
-            this.Color4 = null;
-            this.Brush = Brushes.Blue;
-            DataContext = this;
         }
     }
 }

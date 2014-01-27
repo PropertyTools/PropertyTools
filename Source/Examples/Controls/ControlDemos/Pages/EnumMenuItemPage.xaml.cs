@@ -27,11 +27,12 @@
 //   Interaction logic for EnumMenuItemPage.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System.ComponentModel;
-using System.Windows.Controls;
 
 namespace ControlDemos
 {
+    using System.ComponentModel;
+    using System.Windows.Controls;
+
     /// <summary>
     /// Interaction logic for EnumMenuItemPage.xaml
     /// </summary>
@@ -39,8 +40,8 @@ namespace ControlDemos
     {
         public EnumMenuItemPage()
         {
-            InitializeComponent();
-            DataContext = new EnumMenuItemDemoViewModel();
+            this.InitializeComponent();
+            this.DataContext = new EnumMenuItemDemoViewModel();
         }
     }
 
@@ -57,13 +58,17 @@ namespace ControlDemos
 
         public Fruit FavouriteFruit
         {
-            get { return favouriteFruit; }
+            get
+            {
+                return this.favouriteFruit;
+            }
+
             set
             {
                 if (favouriteFruit != value)
                 {
-                    favouriteFruit = value;
-                    RaisePropertyChanged("FavouriteFruit");
+                    this.favouriteFruit = value;
+                    this.RaisePropertyChanged("FavouriteFruit");
                 }
             }
         }
@@ -72,12 +77,11 @@ namespace ControlDemos
 
         protected void RaisePropertyChanged(string property)
         {
-            var handler = PropertyChanged;
+            var handler = this.PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-
     }
 }

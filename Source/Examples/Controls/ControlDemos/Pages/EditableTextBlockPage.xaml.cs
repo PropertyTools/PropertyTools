@@ -89,12 +89,14 @@ namespace ControlDemos
                 this.SetValue(ref this.isEditing2, value, () => this.IsEditing2);
             }
         }
+
         public string Text1
         {
             get
             {
                 return this.text1;
             }
+
             set
             {
                 this.SetValue(ref this.text1, value, () => this.Text1);

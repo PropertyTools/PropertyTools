@@ -27,77 +27,88 @@
 //   Interaction logic for FormattingTextBoxPage.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.ComponentModel;
-using System.Windows.Controls;
 
 namespace ControlDemos.Pages
 {
+    using System;
+    using System.ComponentModel;
+
     /// <summary>
     /// Interaction logic for FormattingTextBoxPage.xaml
     /// </summary>
-    public partial class FormattingTextBoxPage : Page
+    public partial class FormattingTextBoxPage
     {
         public FormattingTextBoxPage()
         {
-            InitializeComponent();
-            DataContext = new TestObject();
+            this.InitializeComponent();
+            this.DataContext = new TestObject();
         }
     }
 
     public class TestObject : INotifyPropertyChanged
     {
-        private string _s;
-        private DateTime _time;
-        private double _value;
+        private string name;
+        private DateTime time;
+        private double number;
 
         public TestObject()
         {
-            Value = Math.PI;
-            Time = DateTime.Now;
-            String = "John";
+            this.Number = Math.PI;
+            this.Time = DateTime.Now;
+            this.Name = "John";
         }
 
-        public double Value
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public double Number
         {
-            get { return _value; }
+            get
+            {
+                return this.number;
+            }
+
             set
             {
-                _value = value;
-                RaisePropertyChanged("Value");
+                this.number = value;
+                this.RaisePropertyChanged("Number");
             }
         }
 
         public DateTime Time
         {
-            get { return _time; }
+            get
+            {
+                return this.time;
+            }
+
             set
             {
-                _time = value;
-                RaisePropertyChanged("Time");
+                this.time = value;
+                this.RaisePropertyChanged("Time");
             }
         }
 
-        public string String
+        public string Name
         {
-            get { return _s; }
+            get
+            {
+                return this.name;
+            }
+
             set
             {
-                _s = value;
-                RaisePropertyChanged("String");
+                this.name = value;
+                this.RaisePropertyChanged("Name");
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged(string property)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = this.PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-
     }
 }

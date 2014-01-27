@@ -194,9 +194,9 @@ namespace PropertyTools.Wpf
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// The predefined colors selected event
+        /// The predefined colors selection changed event
         /// </summary>
-        public event RoutedEventHandler PredefinedColorPanelSelectedEvent;
+        public event SelectionChangedEventHandler PredefinedColorPanelSelectionChangedEvent;
 
         /// <summary>
         /// Gets the recent colors.
@@ -430,7 +430,7 @@ namespace PropertyTools.Wpf
             var predefinedColorPanel = this.GetTemplateChild(PartPredefinedColorPanel) as StackPanel;
             if (predefinedColorPanel != null)
             {
-                predefinedColorPanel.AddHandler(ListBoxItem.SelectedEvent, (RoutedEventHandler)this.OnPredefinedColorPanelSelected, true);
+                predefinedColorPanel.AddHandler(ListBox.SelectionChangedEvent, (SelectionChangedEventHandler)this.OnPredefinedColorPanelSelectionChanged, true);
             }
         }
 
@@ -757,15 +757,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles the <see cref="E:PredefinedColorPanelSelected" /> event.
+        /// Handles the <see cref="E:PredefinedColorPanelSelectionChangedEvent" /> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void OnPredefinedColorPanelSelected(object sender, RoutedEventArgs args)
+        /// <param name="args">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
+        private void OnPredefinedColorPanelSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (this.PredefinedColorPanelSelectedEvent != null)
+            var listBox = args.OriginalSource as ListBox;
+
+            if (listBox != null && args.AddedItems.Count != 0)
             {
-                this.PredefinedColorPanelSelectedEvent(sender, args);
+                this.SelectedColor = (Color)args.AddedItems[0];
+                listBox.UnselectAll();
+            }
+
+            if (this.PredefinedColorPanelSelectionChangedEvent != null)
+            {
+                this.PredefinedColorPanelSelectionChangedEvent(sender, args);
             }
         }
 

@@ -24,13 +24,13 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   The color picker panel strings.
+//   Provides localized strings for the color picker panel.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// The color picker panel strings.
+    /// Provides localized strings for the color picker panel.
     /// </summary>
     public class ColorPickerPanelStrings
     {
@@ -60,8 +60,9 @@ namespace PropertyTools.Wpf
         public string TogglePanelToolTip { get; set; }
 
         /// <summary>
-        /// Gets or sets HSV.
+        /// Gets or sets the 'HSV' string.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public string HSV { get; set; }
 
         /// <summary>
@@ -75,17 +76,17 @@ namespace PropertyTools.Wpf
         public string OpacityVariations { get; set; }
 
         /// <summary>
-        /// Gets or sets StandardColors.
+        /// Gets or sets the 'Standard colors' string.
         /// </summary>
         public string StandardColors { get; set; }
 
         /// <summary>
-        /// Gets or sets ThemeColors.
+        /// Gets or sets the 'Theme colors' string.
         /// </summary>
         public string ThemeColors { get; set; }
 
         /// <summary>
-        /// Gets or sets Values.
+        /// Gets or sets the 'Values' string.
         /// </summary>
         public string Values { get; set; }
     }

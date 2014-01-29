@@ -35,6 +35,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
@@ -186,6 +187,7 @@ namespace PropertyTools.Wpf
         public ColorPickerPanel()
         {
             this.Unloaded += this.PanelUnloaded;
+            this.OpacityVariations = new ObservableCollection<Color>();
         }
 
         /// <summary>
@@ -211,7 +213,7 @@ namespace PropertyTools.Wpf
         public static ObservableCollection<Color> StandardColors { get; private set; }
 
         /// <summary>
-        /// Gets or sets Strings.
+        /// Gets or sets the localized strings.
         /// </summary>
         public static ColorPickerPanelStrings Strings { get; set; }
 
@@ -220,6 +222,12 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value> The theme colors. </value>
         public static ObservableCollection<Color> ThemeColors { get; private set; }
+
+        /// <summary>
+        /// Gets the opacity colors.
+        /// </summary>
+        /// <value> The opacity colors. </value>
+        public ObservableCollection<Color> OpacityVariations { get; private set; }
 
         /// <summary>
         /// Gets or sets the alpha value.
@@ -430,27 +438,27 @@ namespace PropertyTools.Wpf
             var predefinedColorPanel = this.GetTemplateChild(PartPredefinedColorPanel) as StackPanel;
             if (predefinedColorPanel != null)
             {
-                predefinedColorPanel.AddHandler(ListBox.SelectionChangedEvent, (SelectionChangedEventHandler)this.OnPredefinedColorPanelSelectionChanged, true);
+                predefinedColorPanel.AddHandler(Selector.SelectionChangedEvent, (SelectionChangedEventHandler)this.OnPredefinedColorPanelSelectionChanged, true);
             }
         }
 
         /// <summary>
         /// Coerces the selected color value.
         /// </summary>
-        /// <param name="basevalue">
+        /// <param name="baseValue">
         /// The base value.
         /// </param>
         /// <returns>
         /// The coerced selected color value.
         /// </returns>
-        protected virtual object CoerceSelectedColorValue(object basevalue)
+        protected virtual object CoerceSelectedColorValue(object baseValue)
         {
-            if (basevalue == null)
+            if (baseValue == null)
             {
                 return this.SelectedColor;
             }
 
-            return basevalue;
+            return baseValue;
         }
 
         /// <summary>
@@ -561,6 +569,7 @@ namespace PropertyTools.Wpf
             {
                 this.UpdateRGB(newColor.Value);
                 this.UpdateHSV(newColor.Value);
+                this.UpdateOpacityVariations(newColor.Value);
             }
         }
 
@@ -839,10 +848,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Updates the opacity variation collection.
+        /// </summary>
+        /// <param name="color">The currently selected color.</param>
+        private void UpdateOpacityVariations(Color color)
+        {
+            this.OpacityVariations.Clear();
+            for (int i = 1; i <= 10; i++)
+            {
+                this.OpacityVariations.Add(Color.FromArgb((byte)(255 * (i * 0.1)), color.R, color.G, color.B));
+            }
+        }
+
+        /// <summary>
         /// Updates the hue, saturation and brightness properties.
         /// </summary>
         /// <param name="color">
-        /// The color.
+        /// The currently selected color.
         /// </param>
         // ReSharper disable once InconsistentNaming
         private void UpdateHSV(Color color)

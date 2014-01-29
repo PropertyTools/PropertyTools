@@ -161,7 +161,7 @@ SnapsToDevicePixels="True" />
     </Style>
 
     <ItemsPanelTemplate x:Key="ColorItemsPanelTemplate">
-        <WrapPanel Margin="0 2 0 2" Width="170" />
+        <WrapPanel Margin="0 2 0 2" Width="160" />
     </ItemsPanelTemplate>
 
     <Style x:Key="HeaderBackground" TargetType="{x:Type Grid}">
@@ -238,6 +238,7 @@ SnapsToDevicePixels="True" />
                                 </ToggleButton.Content>
                             </ToggleButton>
                             <ToggleButton
+                            ToolTip="{Binding Strings.TogglePanelToolTip,RelativeSource={RelativeSource Mode=TemplatedParent}}"
 IsChecked="{Binding ShowHsvPanel, RelativeSource={RelativeSource Mode=TemplatedParent}}" Grid.Column="2" Padding="0"
 Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}">
                                 <ToggleButton.Content>
@@ -261,8 +262,14 @@ Style="{StaticResource HeaderStyle}" />
                                 <TextBlock
 Text="{Binding Strings.RecentColors,RelativeSource={RelativeSource Mode=TemplatedParent}}"
 Style="{StaticResource HeaderStyle}" />
-                                <ListBox Style="{StaticResource BottomBox}"
+                                <ListBox Style="{StaticResource Box}"
                          ItemsSource="{Binding RecentColors, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                         ItemTemplate="{StaticResource ColorItemTemplate}" ItemContainerStyle="{StaticResource ColorItemContainerStyle}" ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
+                                <TextBlock
+Text="{Binding Strings.ChangeOpacity,RelativeSource={RelativeSource Mode=TemplatedParent}}"
+Style="{StaticResource HeaderStyle}" />
+                                <ListBox Style="{StaticResource BottomBox}"
+                         ItemsSource="{Binding OpacityVariations, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                          ItemTemplate="{StaticResource ColorItemTemplate}" ItemContainerStyle="{StaticResource ColorItemContainerStyle}" ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
                             </StackPanel>
                         </Grid>

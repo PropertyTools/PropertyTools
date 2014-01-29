@@ -42,7 +42,7 @@ namespace PropertyTools.Wpf
             this.ThemeColors = "Theme colors";
             this.StandardColors = "Standard colors";
             this.RecentColors = "Recent colors";
-            this.ChangeOpacity = "Change opacity";
+            this.OpacityVariations = "Opacity variations";
             this.Values = "Values";
             this.HSV = "HSV";
             this.ColorPickerToolTip = "Toggle this button and pick a color by pressing 'shift'.";
@@ -70,9 +70,9 @@ namespace PropertyTools.Wpf
         public string RecentColors { get; set; }
 
         /// <summary>
-        /// Gets or sets the 'Change opacity' string.
+        /// Gets or sets the 'Opacity variations' string.
         /// </summary>
-        public string ChangeOpacity { get; set; }
+        public string OpacityVariations { get; set; }
 
         /// <summary>
         /// Gets or sets StandardColors.

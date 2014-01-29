@@ -161,7 +161,7 @@ SnapsToDevicePixels="True" />
     </Style>
 
     <ItemsPanelTemplate x:Key="ColorItemsPanelTemplate">
-        <WrapPanel Margin="0 2 0 2" Width="160" />
+        <UniformGrid Margin="0 2 0 2" Columns="10" HorizontalAlignment="Center"/>
     </ItemsPanelTemplate>
 
     <Style x:Key="HeaderBackground" TargetType="{x:Type Grid}">
@@ -260,16 +260,16 @@ Style="{StaticResource HeaderStyle}" />
                          ItemsSource="{Binding StandardColors, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                          ItemTemplate="{StaticResource ColorItemTemplate}"  ItemContainerStyle="{StaticResource ColorItemContainerStyle}" ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
                                 <TextBlock
-Text="{Binding Strings.RecentColors,RelativeSource={RelativeSource Mode=TemplatedParent}}"
+Text="{Binding Strings.OpacityVariations,RelativeSource={RelativeSource Mode=TemplatedParent}}"
 Style="{StaticResource HeaderStyle}" />
                                 <ListBox Style="{StaticResource Box}"
-                         ItemsSource="{Binding RecentColors, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                         ItemsSource="{Binding OpacityVariations, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                          ItemTemplate="{StaticResource ColorItemTemplate}" ItemContainerStyle="{StaticResource ColorItemContainerStyle}" ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
                                 <TextBlock
-Text="{Binding Strings.ChangeOpacity,RelativeSource={RelativeSource Mode=TemplatedParent}}"
+Text="{Binding Strings.RecentColors,RelativeSource={RelativeSource Mode=TemplatedParent}}"
 Style="{StaticResource HeaderStyle}" />
                                 <ListBox Style="{StaticResource BottomBox}"
-                         ItemsSource="{Binding OpacityVariations, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                         ItemsSource="{Binding RecentColors, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                          ItemTemplate="{StaticResource ColorItemTemplate}" ItemContainerStyle="{StaticResource ColorItemContainerStyle}" ItemsPanel="{StaticResource ColorItemsPanelTemplate}" />
                             </StackPanel>
                         </Grid>

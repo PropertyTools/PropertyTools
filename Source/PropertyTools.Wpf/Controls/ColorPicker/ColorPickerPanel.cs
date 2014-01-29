@@ -854,7 +854,7 @@ namespace PropertyTools.Wpf
         private void UpdateOpacityVariations(Color color)
         {
             this.OpacityVariations.Clear();
-            for (int i = 1; i <= 10; i++)
+            for (int i = 1; i <= 9; i++)
             {
                 this.OpacityVariations.Add(Color.FromArgb((byte)(255 * (i * 0.1)), color.R, color.G, color.B));
             }

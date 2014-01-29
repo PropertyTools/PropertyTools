@@ -42,15 +42,22 @@ namespace PropertyTools.Wpf
             this.ThemeColors = "Theme colors";
             this.StandardColors = "Standard colors";
             this.RecentColors = "Recent colors";
+            this.ChangeOpacity = "Change opacity";
             this.Values = "Values";
             this.HSV = "HSV";
             this.ColorPickerToolTip = "Toggle this button and pick a color by pressing 'shift'.";
+            this.TogglePanelToolTip = "Toggle between palette and color value panels.";
         }
 
         /// <summary>
-        /// Gets or sets ColorPickerToolTip.
+        /// Gets or sets the tool tip for the 'color picker' button.
         /// </summary>
         public string ColorPickerToolTip { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tool tip for the 'toggle panel' button.
+        /// </summary>
+        public string TogglePanelToolTip { get; set; }
 
         /// <summary>
         /// Gets or sets HSV.
@@ -58,9 +65,14 @@ namespace PropertyTools.Wpf
         public string HSV { get; set; }
 
         /// <summary>
-        /// Gets or sets RecentColors.
+        /// Gets or sets 'RecentColors' string.
         /// </summary>
         public string RecentColors { get; set; }
+
+        /// <summary>
+        /// Gets or sets the 'Change opacity' string.
+        /// </summary>
+        public string ChangeOpacity { get; set; }
 
         /// <summary>
         /// Gets or sets StandardColors.

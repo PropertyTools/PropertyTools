@@ -9,7 +9,7 @@
         <p:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
         <p:ColorToStringConverter x:Key="ColorToStringConverter"/>
     </Page.Resources>
-    <StackPanel Width="200" VerticalAlignment="Center">
+    <StackPanel Width="250" VerticalAlignment="Center">
         <p:ColorPicker SelectedColor="{Binding Color1}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
         <p:ColorPicker SelectedColor="{Binding Color2}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
         <p:ColorPicker SelectedColor="{Binding Color3}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>

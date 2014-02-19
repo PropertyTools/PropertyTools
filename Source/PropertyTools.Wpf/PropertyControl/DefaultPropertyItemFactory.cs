@@ -422,6 +422,14 @@ namespace PropertyTools.Wpf
                 pi.SelectedValuePath = svpa.Path;
             }
 
+            var f = attribute as FontAttribute;
+            if (f != null)
+            {
+                pi.FontSize = f.FontSize;
+                pi.FontWeight = f.FontWeight;
+                pi.FontFamily = f.FontFamily;
+            }
+
             var fp = attribute as FontPreviewAttribute;
             if (fp != null)
             {

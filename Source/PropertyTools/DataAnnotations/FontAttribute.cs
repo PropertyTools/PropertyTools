@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FontPreviewAttribute.cs" company="PropertyTools">
+// <copyright file="FontAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,69 +24,49 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies the font size, weight and the name of a property that contains the font family.
+//   Specifies the font family, size and weight.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
 
     /// <summary>
-    /// Specifies the font size, weight and the name of a property that contains the font family.
+    /// Specifies the font family, size and weight.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class FontPreviewAttribute : Attribute
+    public class FontAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FontPreviewAttribute"/> class.
+        /// Initializes a new instance of the <see cref="FontAttribute" /> class.
         /// </summary>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        /// <param name="weight">
-        /// The weight.
-        /// </param>
-        public FontPreviewAttribute(double size, int weight = 500)
+        /// <param name="fontFamily">The font family.</param>
+        /// <param name="fontSize">The size.</param>
+        /// <param name="fontWeight">The weight.</param>
+        public FontAttribute(string fontFamily, double fontSize = double.NaN, int fontWeight = 500)
         {
-            this.Size = size;
-            this.Weight = weight;
+            this.FontFamily = fontFamily;
+            this.FontSize = fontSize;
+            this.FontWeight = fontWeight;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FontPreviewAttribute"/> class.
+        /// Gets or sets the font family.
         /// </summary>
-        /// <param name="fontFamilyPropertyName">
-        /// Name of the font family property.
-        /// </param>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        /// <param name="weight">
-        /// The weight.
-        /// </param>
-        public FontPreviewAttribute(string fontFamilyPropertyName, double size, int weight = 500)
-        {
-            this.FontFamilyPropertyName = fontFamilyPropertyName;
-            this.Size = size;
-            this.Weight = weight;
-        }
+        /// <value>The font family.</value>
+        public string FontFamily { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the font family property.
-        /// </summary>
-        /// <value>The name of the font family property.</value>
-        public string FontFamilyPropertyName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size.
+        /// Gets or sets the font size.
         /// </summary>
         /// <value>The size.</value>
-        public double Size { get; set; }
+        public double FontSize { get; set; }
 
         /// <summary>
-        /// Gets or sets the weight.
+        /// Gets or sets the font weight.
         /// </summary>
         /// <value>The weight.</value>
-        public int Weight { get; set; }
+        public int FontWeight { get; set; }
     }
 }

@@ -62,6 +62,7 @@
     <Compile Include="DataAnnotations\EnumDisplayNameAttribute.cs" />
     <Compile Include="DataAnnotations\FillTabAttribute.cs" />
     <Compile Include="DataAnnotations\FilterPropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\FontAttribute.cs" />
     <Compile Include="DataAnnotations\FontFamilySelectorAttribute.cs" />
     <Compile Include="DataAnnotations\FontPreviewAttribute.cs" />
     <Compile Include="DataAnnotations\FormatStringAttribute.cs" />

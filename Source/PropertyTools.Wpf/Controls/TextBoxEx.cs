@@ -52,6 +52,30 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "UpdateBindingOnEnter", typeof(bool), typeof(TextBoxEx), new UIPropertyMetadata(true));
 
+
+        public bool ScrollToHomeOnFocus
+        {
+            get { return (bool)GetValue(ScrollToHomeOnFocusProperty); }
+            set { SetValue(ScrollToHomeOnFocusProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ScrollToHomeOnFocus.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ScrollToHomeOnFocusProperty =
+            DependencyProperty.Register("ScrollToHomeOnFocus", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(true));
+
+
+
+        public bool SelectAllOnFocus
+        {
+            get { return (bool)GetValue(SelectAllOnFocusProperty); }
+            set { SetValue(SelectAllOnFocusProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectAllOnFocus.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectAllOnFocusProperty =
+            DependencyProperty.Register("SelectAllOnFocus", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(true));
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBoxEx" /> class.
         /// </summary>
@@ -170,7 +194,16 @@ namespace PropertyTools.Wpf
         /// </param>
         private void HandleGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            this.SelectAll();
+            if (this.SelectAllOnFocus)
+            {
+                this.SelectAll();
+            }
+
+            if (this.ScrollToHomeOnFocus)
+            {
+                this.ScrollToHome();
+            }
+
             e.Handled = true;
         }
     }

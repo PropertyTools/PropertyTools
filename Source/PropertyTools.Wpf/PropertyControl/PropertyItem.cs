@@ -74,6 +74,8 @@ namespace PropertyTools.Wpf
             this.ListMaximumNumberOfItems = int.MaxValue;
             this.InputDirection = InputDirection.Vertical;
             this.SelectedValuePath = string.Empty;
+
+            this.FontSize = double.NaN;
         }
 
         /// <summary>
@@ -207,6 +209,12 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value> The font family property descriptor. </value>
         public PropertyDescriptor FontFamilyPropertyDescriptor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the font family.
+        /// </summary>
+        /// <value>The font family.</value>
+        public string FontFamily { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the font.

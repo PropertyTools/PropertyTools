@@ -89,6 +89,15 @@ namespace TestLibrary
             }
         }
 
+        [Font("Courier New")]
+        public string CustomFont
+        {
+            get
+            {
+                return "This should be fixed type.";
+            }
+        }
+
         [Category("System.Windows.Media.Media3D")]
         public Point3D Point3D { get; set; }
         public Vector3D Vector3D { get; set; }

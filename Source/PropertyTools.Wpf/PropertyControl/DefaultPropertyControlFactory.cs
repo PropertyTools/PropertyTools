@@ -350,7 +350,7 @@ namespace PropertyTools.Wpf
             {
                 c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
             }
-            
+
             c.SelectedValuePath = property.SelectedValuePath;
 
             c.SetBinding(property.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, property.CreateBinding());
@@ -439,6 +439,16 @@ namespace PropertyTools.Wpf
                     VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                     VerticalContentAlignment = property.AcceptsReturn ? VerticalAlignment.Top : VerticalAlignment.Center
                 };
+
+            if (property.FontFamily != null)
+            {
+                c.FontFamily = new FontFamily(property.FontFamily);
+            }
+            
+            if (!double.IsNaN(property.FontSize))
+            {
+                c.FontSize = property.FontSize;
+            }
 
             if (property.IsReadOnly)
             {

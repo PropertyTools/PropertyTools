@@ -9,7 +9,7 @@
         <GroupBox Header="Normal property" Padding="4" Width="400" >
             <UniformGrid Columns="2">
                 <CheckBox Content="EditableTextBlock" Focusable="False" IsChecked="{Binding IsEditing1}" VerticalAlignment="Center" Margin="4 0 0 0"/>
-                <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsEditing1}" VerticalAlignment="Center" HorizontalContentAlignment="Center" />
+                <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsEditing1}" VerticalAlignment="Center" />
                 <Label Content="TextBox"/>
                 <TextBox Text="{Binding Text1}"/>
                 <Label Content="TextBlock"/>
@@ -19,7 +19,7 @@
         <GroupBox Header="Property that throws exception on spaces" Margin="0 16 0 0" Padding="4" Width="400">
             <UniformGrid Columns="2">
                 <CheckBox Content="EditableTextBlock" Focusable="False" IsChecked="{Binding IsEditing2}" VerticalAlignment="Center" Margin="4 0 0 0"/>
-                <p:EditableTextBlock Text="{Binding Text2}" IsEditing="{Binding IsEditing2}" VerticalAlignment="Center" HorizontalContentAlignment="Center" />
+                <p:EditableTextBlock Text="{Binding Text2}" IsEditing="{Binding IsEditing2}" VerticalAlignment="Center" />
                 <Label Content="TextBox"/>
                 <TextBox Text="{Binding Text2}"/>
                 <Label Content="TextBlock"/>

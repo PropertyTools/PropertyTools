@@ -31,6 +31,7 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -95,6 +96,18 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the horizontal alignment of the content when editing
+        /// </summary>
+        [Bindable(true)]
+        public HorizontalAlignment HorizontalContentAlignment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the vertical alignment of the content when editing
+        /// </summary>
+        [Bindable(true)]
+        public VerticalAlignment VerticalContentAlignment { get; set; }
+
+        /// <summary>
         /// Begins the edit.
         /// </summary>
         private void BeginEdit()
@@ -120,6 +133,10 @@ namespace PropertyTools.Wpf
                 p.Children.Insert(index, this.textBox);
             }
 
+            this.textBox.HorizontalAlignment = this.HorizontalAlignment;
+            this.textBox.VerticalAlignment = this.VerticalAlignment;
+            this.textBox.HorizontalContentAlignment = this.HorizontalContentAlignment;
+            this.textBox.VerticalContentAlignment = this.VerticalContentAlignment;
             this.textBox.LostFocus += this.TextBoxLostFocus;
             this.textBox.KeyDown += this.TextBoxKeyDown;
             this.textBox.CaretIndex = this.textBox.Text.Length;

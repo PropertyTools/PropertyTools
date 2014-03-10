@@ -42,7 +42,7 @@ namespace PropertyTools.Wpf
     /// Drag/drop helper class for the <see cref="TreeListBox" />.
     /// </summary>
     /// <remarks>
-    /// Based on http://bea.stollnitz.com/blog/?p=53
+    /// Based on <a href="http://bea.stollnitz.com/blog/?p=53">blog post</a>.
     /// </remarks>
     public class TreeListBoxDragDropHelper
     {
@@ -298,7 +298,8 @@ namespace PropertyTools.Wpf
             var dragSource = obj as ItemsControl;
             if (dragSource != null)
             {
-                if (Equals(e.NewValue, true))
+                // ReSharper disable once RedundantNameQualifier
+                if (object.Equals(e.NewValue, true))
                 {
                     dragSource.PreviewMouseLeftButtonDown += Instance.DragSourcePreviewMouseLeftButtonDown;
                     dragSource.PreviewMouseLeftButtonUp += Instance.DragSourcePreviewMouseLeftButtonUp;
@@ -331,7 +332,8 @@ namespace PropertyTools.Wpf
             var dropTarget = obj as ItemsControl;
             if (dropTarget != null)
             {
-                if (Equals(e.NewValue, true))
+                // ReSharper disable once RedundantNameQualifier
+                if (object.Equals(e.NewValue, true))
                 {
                     dropTarget.AllowDrop = true;
                     dropTarget.PreviewDrop += Instance.DropTargetPreviewDrop;

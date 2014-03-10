@@ -41,7 +41,7 @@ namespace PropertyTools.Wpf
     public static class ReflectionExtensions
     {
         /// <summary>
-        /// Filters on the browsable attribute.
+        /// Filters on the <see cref="BrowsableAttribute"/>.
         /// </summary>
         /// <typeparam name="T">
         /// The enumeration type.
@@ -61,7 +61,7 @@ namespace PropertyTools.Wpf
             foreach (var o in arr)
             {
                 // Get the field information for the current field
-                FieldInfo field = o.GetType().GetField(
+                var field = o.GetType().GetField(
                     o.ToString(), BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public);
                 if (field != null)
                 {
@@ -93,7 +93,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the custom attributes.
+        /// Gets the attributes of the specified type.
         /// </summary>
         /// <param name="fieldInfo">
         /// The field info.

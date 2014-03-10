@@ -61,6 +61,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value><c>true</c> if [show header]; otherwise, <c>false</c>.</value>
         public bool ShowHeader { get; set; }
-
     }
 }

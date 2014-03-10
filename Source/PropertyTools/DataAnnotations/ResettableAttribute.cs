@@ -68,6 +68,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The button label.</value>
         public object ButtonLabel { get; set; }
-
     }
 }

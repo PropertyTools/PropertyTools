@@ -79,6 +79,5 @@ namespace PropertyTools.DataAnnotations
         /// The maximum number of items.
         /// </value>
         public int MaximumNumberOfItems { get; set; }
-
     }
 }

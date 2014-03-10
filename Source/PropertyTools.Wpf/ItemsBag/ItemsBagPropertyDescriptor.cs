@@ -212,7 +212,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the type of the nullable.
+        /// Gets the type of the <see cref="Nullable"/>.
         /// </summary>
         /// <param name="type">
         /// The type.

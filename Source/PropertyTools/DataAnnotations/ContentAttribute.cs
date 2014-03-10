@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InputFilePathAttribute.cs" company="PropertyTools">
+// <copyright file="ContentAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies that the decorated property is an input file.
+//   Specifies that the value contains content that should be handled by a ContentControl.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,48 +33,10 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    /// Specifies that the decorated property is an input file.
+    /// Specifies that the value contains content that should be handled by a ContentControl.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class InputFilePathAttribute : Attribute
+    public class ContentAttribute : Attribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InputFilePathAttribute" /> class.
-        /// </summary>
-        /// <param name="defaultExtension">The default extension.</param>
-        /// <param name="filter">The filter.</param>
-        public InputFilePathAttribute(string defaultExtension, string filter)
-        {
-            this.DefaultExtension = defaultExtension;
-            this.Filter = filter;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InputFilePathAttribute" /> class.
-        /// </summary>
-        /// <param name="defaultExtension">The default extension.</param>
-        public InputFilePathAttribute(string defaultExtension)
-        {
-            this.DefaultExtension = defaultExtension;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InputFilePathAttribute" /> class.
-        /// </summary>
-        public InputFilePathAttribute()
-        {
-        }
-
-        /// <summary>
-        /// Gets or sets the default extension.
-        /// </summary>
-        /// <value>The default extension.</value>
-        public string DefaultExtension { get; set; }
-
-        /// <summary>
-        /// Gets or sets the filter.
-        /// </summary>
-        /// <value>The filter.</value>
-        public string Filter { get; set; }
     }
 }

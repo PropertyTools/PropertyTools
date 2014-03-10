@@ -51,6 +51,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The width.</value>
         public double Width { get; set; }
-
     }
 }

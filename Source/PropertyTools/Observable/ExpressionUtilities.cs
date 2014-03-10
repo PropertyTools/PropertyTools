@@ -70,6 +70,5 @@ namespace PropertyTools
 
             return string.Empty;
         }
-
     }
 }

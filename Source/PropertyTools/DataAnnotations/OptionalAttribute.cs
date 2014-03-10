@@ -39,7 +39,7 @@ namespace PropertyTools.DataAnnotations
     /// Properties marked with [Optional] will have a checkbox as the label.
     /// The checkbox will enable/disable the property value editor.
     /// Example usage:
-    /// [Optional]                    // requires a nullable property type
+    /// [Optional]                    // requires a <see cref="Nullable"/> property type
     /// [Optional("HasSomething")]    // relates to other property HasSomething
     /// </remarks>
     [AttributeUsage(AttributeTargets.Property)]
@@ -68,6 +68,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The name of the property.</value>
         public string PropertyName { get; set; }
-
     }
 }

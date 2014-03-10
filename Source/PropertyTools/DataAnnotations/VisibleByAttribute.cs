@@ -53,6 +53,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The name of the property.</value>
         public string PropertyName { get; set; }
-
     }
 }

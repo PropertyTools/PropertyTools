@@ -152,6 +152,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The width.</value>
         public string Width { get; set; }
-
     }
 }

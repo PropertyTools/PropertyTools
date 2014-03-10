@@ -30,7 +30,7 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    ///   Specifies that the propertycontrol should fill the entire size of the tab page.
+    ///   Specifies that the control representing the property should fill the entire size of the tab page.
     /// </summary>
     /// <remarks>
     /// This requires only one property on the tab page. 

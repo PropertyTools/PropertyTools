@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifes that the property can be edited by a spin control.
+//   Specifies that the property can be edited by a spin control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.DataAnnotations
@@ -32,10 +32,10 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    /// Specifes that the property can be edited by a spin control.
+    /// Specifies that the property can be edited by a spin control.
     /// </summary>
     /// <remarks>
-    /// See http://msdn.microsoft.com/en-us/library/windows/desktop/aa511491.aspx
+    /// See <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa511491.aspx">MSDN</a>.
     /// </remarks>
     [AttributeUsage(AttributeTargets.All)]
     public class SpinnableAttribute : Attribute
@@ -108,6 +108,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The minimum.</value>
         public object Minimum { get; set; }
-
     }
 }

@@ -53,6 +53,7 @@
     <Compile Include="DataAnnotations\ColumnAttribute.cs" />
     <Compile Include="DataAnnotations\ColumnsPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\CommentAttribute.cs" />
+    <Compile Include="DataAnnotations\ContentAttribute.cs" />
     <Compile Include="DataAnnotations\ConverterAttribute.cs" />
     <Compile Include="DataAnnotations\CheckableItemsAttribute.cs" />
     <Compile Include="DataAnnotations\DefaultExtensionPropertyAttribute.cs" />
@@ -101,6 +102,7 @@
     <None Include="PropertyTools.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(ProjectDir)..\..\Tools\StyleCop\StyleCop.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -38,7 +38,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Represents a datagrid with a spreadsheet style.
+    /// Represents a data grid with a spreadsheet style.
     /// </summary>
     public partial class ItemsGrid
     {

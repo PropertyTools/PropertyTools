@@ -38,12 +38,4 @@ namespace PropertyTools.DataAnnotations
     public class CommentAttribute : Attribute
     {
     }
-
-    /// <summary>
-    /// Specifies that the value contains content that should be handled by a ContentControl.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class ContentAttribute : Attribute
-    {
-    }
 }

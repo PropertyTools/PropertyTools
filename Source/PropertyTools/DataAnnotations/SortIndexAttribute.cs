@@ -43,12 +43,12 @@ namespace PropertyTools.DataAnnotations
         /// <summary>
         /// Initializes a new instance of the <see cref="SortIndexAttribute"/> class.
         /// </summary>
-        /// <param name="SortIndex">
+        /// <param name="sortIndex">
         /// Index of the sort.
         /// </param>
-        public SortIndexAttribute(int SortIndex)
+        public SortIndexAttribute(int sortIndex)
         {
-            this.SortIndex = SortIndex;
+            this.SortIndex = sortIndex;
         }
 
         /// <summary>
@@ -56,6 +56,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The index of the sort.</value>
         public int SortIndex { get; set; }
-
     }
 }

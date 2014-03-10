@@ -73,6 +73,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The minimum height.</value>
         public double MinimumHeight { get; set; }
-
     }
 }

@@ -37,19 +37,19 @@ namespace PropertyTools.Wpf
     /// Provides an insertion bar adorner.
     /// </summary>
     /// <remarks>
-    /// From http://bea.stollnitz.com/blog/?p=53
+    /// See also <a href="http://bea.stollnitz.com/blog/?p=53">blog post</a>.
     /// </remarks>
     public class InsertionAdorner : Adorner
     {
         /// <summary>
         /// The pen.
         /// </summary>
-        private static readonly Pen pen;
+        private static readonly Pen Pen;
 
         /// <summary>
         /// The triangle.
         /// </summary>
-        private static readonly PathGeometry triangle;
+        private static readonly PathGeometry Triangle;
 
         /// <summary>
         /// The adorner layer.
@@ -67,8 +67,8 @@ namespace PropertyTools.Wpf
         static InsertionAdorner()
         {
             // Create the pen and triangle in a static constructor and freeze them to improve performance.
-            pen = new Pen { Brush = Brushes.Gray, Thickness = 2 };
-            pen.Freeze();
+            Pen = new Pen { Brush = Brushes.Gray, Thickness = 2 };
+            Pen.Freeze();
 
             var firstLine = new LineSegment(new Point(0, -5), false);
             firstLine.Freeze();
@@ -80,9 +80,9 @@ namespace PropertyTools.Wpf
             figure.Segments.Add(secondLine);
             figure.Freeze();
 
-            triangle = new PathGeometry();
-            triangle.Figures.Add(figure);
-            triangle.Freeze();
+            Triangle = new PathGeometry();
+            Triangle.Figures.Add(figure);
+            Triangle.Freeze();
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace PropertyTools.Wpf
             Point endPoint;
 
             this.CalculateStartAndEndPoint(out startPoint, out endPoint);
-            drawingContext.DrawLine(pen, startPoint, endPoint);
+            drawingContext.DrawLine(Pen, startPoint, endPoint);
 
             if (this.isSeparatorHorizontal)
             {
@@ -206,7 +206,7 @@ namespace PropertyTools.Wpf
             drawingContext.PushTransform(new TranslateTransform(origin.X, origin.Y));
             drawingContext.PushTransform(new RotateTransform(angle));
 
-            drawingContext.DrawGeometry(pen.Brush, null, triangle);
+            drawingContext.DrawGeometry(Pen.Brush, null, Triangle);
 
             drawingContext.Pop();
             drawingContext.Pop();

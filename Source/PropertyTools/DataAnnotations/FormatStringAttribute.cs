@@ -41,7 +41,7 @@ namespace PropertyTools.DataAnnotations
         /// Initializes a new instance of the <see cref="FormatStringAttribute"/> class.
         /// </summary>
         /// <param name="fs">
-        /// The fs.
+        /// The format string.
         /// </param>
         public FormatStringAttribute(string fs)
         {
@@ -53,6 +53,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The format string.</value>
         public string FormatString { get; set; }
-
     }
 }

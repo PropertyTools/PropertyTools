@@ -53,6 +53,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The name of the base path property.</value>
         public string BasePathPropertyName { get; set; }
-
     }
 }

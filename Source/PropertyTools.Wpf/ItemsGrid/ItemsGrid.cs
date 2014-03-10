@@ -46,6 +46,8 @@ namespace PropertyTools.Wpf
     using System.Windows.Markup;
     using System.Windows.Media;
 
+    using PropertyTools.DataAnnotations;
+
     /// <summary>
     /// Displays enumerable data in a customizable grid.
     /// </summary>
@@ -1871,10 +1873,10 @@ namespace PropertyTools.Wpf
 
                 if (value != null)
                 {
-                    var parseMethod = targetType.GetMethod("Parse", new Type[] { value.GetType(), typeof(IFormatProvider) });
+                    var parseMethod = targetType.GetMethod("Parse", new[] { value.GetType(), typeof(IFormatProvider) });
                     if (parseMethod != null)
                     {
-                        convertedValue = parseMethod.Invoke(null, new object[] { value, CultureInfo.CurrentCulture });
+                        convertedValue = parseMethod.Invoke(null, new[] { value, CultureInfo.CurrentCulture });
                         return true;
                     }
                 }

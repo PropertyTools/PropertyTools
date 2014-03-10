@@ -53,6 +53,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The type of the converter.</value>
         public Type ConverterType { get; set; }
-
     }
 }

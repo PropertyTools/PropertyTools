@@ -35,7 +35,7 @@ namespace PropertyTools
     public interface IDragSource
     {
         /// <summary>
-        /// Gets a value indicating whether this instance is draggable.
+        /// Gets a value indicating whether this instance is possible to drag.
         /// </summary>
         bool IsDraggable { get; }
 
@@ -43,6 +43,5 @@ namespace PropertyTools
         /// Detaches this instance (for move and drop somewhere else).
         /// </summary>
         void Detach();
-
     }
 }

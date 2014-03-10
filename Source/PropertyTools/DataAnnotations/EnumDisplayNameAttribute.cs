@@ -33,7 +33,7 @@ namespace PropertyTools.DataAnnotations
     using System.ComponentModel;
 
     /// <summary>
-    /// Specifies a display name for enum values.
+    /// Specifies a display name for <c>enum</c> properties.
     /// </summary>
     [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field)]
     public class EnumDisplayNameAttribute : DisplayNameAttribute
@@ -48,6 +48,5 @@ namespace PropertyTools.DataAnnotations
             : base(displayName)
         {
         }
-
     }
 }

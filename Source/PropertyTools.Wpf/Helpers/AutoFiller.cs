@@ -39,12 +39,12 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The get cell value function.
         /// </summary>
-        private readonly Func<CellRef, object> GetCellValue;
+        private readonly Func<CellRef, object> getCellValue;
 
         /// <summary>
         /// The set cell value function.
         /// </summary>
-        private readonly Func<CellRef, object, bool> TrySetCellValue;
+        private readonly Func<CellRef, object, bool> trySetCellValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutoFiller"/> class.
@@ -57,8 +57,8 @@ namespace PropertyTools.Wpf
         /// </param>
         public AutoFiller(Func<CellRef, object> getCellValue, Func<CellRef, object, bool> trySetCellValue)
         {
-            this.GetCellValue = getCellValue;
-            this.TrySetCellValue = trySetCellValue;
+            this.getCellValue = getCellValue;
+            this.trySetCellValue = trySetCellValue;
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace PropertyTools.Wpf
                     var cell = new CellRef(i, j);
                     if (this.TryExtrapolate(cell, currentCell, selectionCell, autoFillRef, out value))
                     {
-                        this.TrySetCellValue(cell, value);
+                        this.trySetCellValue(cell, value);
 
                         // UpdateCellContent(cell);
                     }
@@ -158,7 +158,7 @@ namespace PropertyTools.Wpf
             if (value == null)
             {
                 var source = new CellRef(PeriodicClamp(i, selMinRow, selMaxRow), PeriodicClamp(j, selMinCol, selMaxCol));
-                value = this.GetCellValue(source);
+                value = this.getCellValue(source);
             }
 
             if (value != null)
@@ -221,12 +221,13 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// True is extrapolation was successful.
         /// </returns>
+        // ReSharper disable once UnusedMethodReturnValue.Local
         private bool TryExtrapolate(CellRef cell, CellRef p1, CellRef p2, out object result)
         {
             try
             {
-                var v1 = this.GetCellValue(p1);
-                var v2 = this.GetCellValue(p2);
+                var v1 = this.getCellValue(p1);
+                var v2 = this.getCellValue(p2);
 
                 if (v1 == null || v2 == null)
                 {
@@ -253,7 +254,7 @@ namespace PropertyTools.Wpf
                     }
                 }
 
-                if (f == 0)
+                if (f.Equals(0))
                 {
                     result = v1;
                     return true;

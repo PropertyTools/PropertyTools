@@ -33,7 +33,6 @@ namespace PropertyTools.Wpf
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
     /// <summary>
@@ -41,6 +40,9 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class Tab : Observable
     {
+        /// <summary>
+        /// Indicates whether the tab contains errors.
+        /// </summary>
         private bool hasErrors;
 
         /// <summary>

@@ -38,6 +38,10 @@ namespace PropertyTools.Wpf
     using System.Windows.Controls;
     using System.Windows.Media;
 
+    using PropertyTools.DataAnnotations;
+
+    using HorizontalAlignment = System.Windows.HorizontalAlignment;
+
     /// <summary>
     ///     Properties for the ItemsGrid.
     /// </summary>

@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifes that the property can be edited by a slider.
+//   Specifies that the property can be edited by a slider.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.DataAnnotations
@@ -32,7 +32,7 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    /// Specifes that the property can be edited by a slider.
+    /// Specifies that the property can be edited by a slider.
     /// </summary>
     [AttributeUsage(AttributeTargets.All)]
     public class SlidableAttribute : Attribute

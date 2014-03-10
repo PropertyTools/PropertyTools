@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Captures a screenshot using gdi32 functions.
+//   Captures a screen shot using gdi32 functions.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -37,7 +37,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media.Imaging;
 
     /// <summary>
-    /// Captures a screenshot using gdi32 functions.
+    /// Captures a screen shot using gdi32 functions.
     /// </summary>
     /// <remarks>
     /// See http://stackoverflow.com/questions/1736287/capturing-a-window-with-wpf
@@ -126,49 +126,48 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Capture the screenshot.
+        /// Captures the specified rectangle from the screen.
         ///  <returns>
-        /// Bitmap source that can be used e.g. as background.
+        /// A bitmap.
         /// </returns>
         /// </summary>
         /// <param name="area">
-        /// Area of screenshot.
+        /// The area to capture.
         /// </param>
         public static BitmapSource Capture(Rect area)
         {
-            IntPtr screenDC = GetDC(IntPtr.Zero);
-            IntPtr memDC = CreateCompatibleDC(screenDC);
-            IntPtr hBitmap = CreateCompatibleBitmap(screenDC, (int)area.Width, (int)area.Height);
-            SelectObject(memDC, hBitmap); // Select bitmap from compatible bitmap to memDC
+            var screenDeviceContext = GetDC(IntPtr.Zero);
+            var memoryDeviceContext = CreateCompatibleDC(screenDeviceContext);
+            var bitmapHandle = CreateCompatibleBitmap(screenDeviceContext, (int)area.Width, (int)area.Height);
+            SelectObject(memoryDeviceContext, bitmapHandle); // Select bitmap from compatible bitmap to memDC
 
             // TODO: BitBlt may fail horribly
             BitBlt(
-                memDC,
+                memoryDeviceContext,
                 0,
                 0,
                 (int)area.Width,
                 (int)area.Height,
-                screenDC,
+                screenDeviceContext,
                 (int)area.X,
                 (int)area.Y,
                 TernaryRasterOperations.SRCCOPY);
-            BitmapSource bsource = Imaging.CreateBitmapSourceFromHBitmap(
-                hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            var bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(bitmapHandle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-            DeleteObject(hBitmap);
-            ReleaseDC(IntPtr.Zero, screenDC);
-            ReleaseDC(IntPtr.Zero, memDC);
-            return bsource;
+            DeleteObject(bitmapHandle);
+            ReleaseDC(IntPtr.Zero, screenDeviceContext);
+            ReleaseDC(IntPtr.Zero, memoryDeviceContext);
+            return bitmapSource;
         }
 
         /// <summary>
-        /// The correct get position.
+        /// Gets the cursor position relative to the specified visual.
         /// </summary>
         /// <param name="relativeTo">
-        /// The relative to.
+        /// The visual to relate to.
         /// </param>
         /// <returns>
-        /// The <see cref="Point"/>.
+        /// A <see cref="Point"/>.
         /// </returns>
         public static Point CorrectGetPosition(Visual relativeTo)
         {

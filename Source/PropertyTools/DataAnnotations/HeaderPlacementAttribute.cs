@@ -53,6 +53,5 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The header placement.</value>
         public HeaderPlacement HeaderPlacement { get; set; }
-
     }
 }

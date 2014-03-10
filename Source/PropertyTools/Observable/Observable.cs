@@ -34,7 +34,6 @@ namespace PropertyTools
     using System.Diagnostics;
     using System.Globalization;
     using System.Linq.Expressions;
-    using System.Reflection;
 
     /// <summary>
     /// Provides a base class implementing INotifyPropertyChanged.
@@ -119,14 +118,15 @@ namespace PropertyTools
         protected bool SetValue<T>(ref T field, T value, string propertyName)
 #endif
         {
-            if (Equals(field, value))
+            // ReSharper disable once RedundantNameQualifier
+            if (object.Equals(field, value))
             {
                 return false;
             }
 
             this.VerifyProperty(propertyName);
 
-            // this.OnPropertyChanging(propertyName, field, value);
+            //// this.OnPropertyChanging(propertyName, field, value);
             T oldValue = field;
             field = value;
             this.OnPropertyChanged(propertyName, oldValue, value);
@@ -156,6 +156,7 @@ namespace PropertyTools
         /// </remarks>
         protected bool SetValue<T>(ref T field, T value, Expression<Func<T>> propertyExpression)
         {
+            // ReSharper disable once ExplicitCallerInfoArgument
             return this.SetValue(ref field, value, ExpressionUtilities.GetName(propertyExpression));
         }
 
@@ -168,16 +169,14 @@ namespace PropertyTools
         [Conditional("DEBUG")]
         private void VerifyProperty(string propertyName)
         {
-            Type type = this.GetType();
+            var type = this.GetType();
 
             // Look for a public property with the specified name.
-            PropertyInfo propertyInfo = type.GetProperty(propertyName);
+            var propertyInfo = type.GetProperty(propertyName);
 
             if (propertyInfo == null)
             {
-                Debug.Fail(
-                    string.Format(
-                        CultureInfo.InvariantCulture, "{0} is not a property of {1}", propertyName, type.FullName));
+                Debug.Fail(string.Format(CultureInfo.InvariantCulture, "{0} is not a property of {1}", propertyName, type.FullName));
             }
         }
     }

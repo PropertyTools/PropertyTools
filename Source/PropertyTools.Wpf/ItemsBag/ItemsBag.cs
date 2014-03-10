@@ -32,6 +32,7 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.ComponentModel;
+    using System.Linq;
 
     /// <summary>
     /// Represents a bag of items.
@@ -47,8 +48,8 @@ namespace PropertyTools.Wpf
         /// </param>
         public ItemsBag(IEnumerable objects)
         {
-            this.Objects = objects;
-            this.BiggestType = TypeHelper.FindBiggestCommonType(objects);
+            this.Objects = objects as object[] ?? objects.Cast<object>().ToArray();
+            this.BiggestType = TypeHelper.FindBiggestCommonType(this.Objects);
             this.Subscribe();
         }
 
@@ -67,7 +68,7 @@ namespace PropertyTools.Wpf
         /// Gets the objects in the bag.
         /// </summary>
         /// <value> The objects. </value>
-        public IEnumerable Objects { get; private set; }
+        public object[] Objects { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to suspend property changed notifications.
@@ -122,31 +123,31 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Subscribes to property changed notifications.
+        /// Adds subscriptions to property changed notifications.
         /// </summary>
         private void Subscribe()
         {
             foreach (var o in this.Objects)
             {
-                var onpc = o as INotifyPropertyChanged;
-                if (onpc != null)
+                var on = o as INotifyPropertyChanged;
+                if (on != null)
                 {
-                    onpc.PropertyChanged += this.RelayPropertyChanged;
+                    on.PropertyChanged += this.RelayPropertyChanged;
                 }
             }
         }
 
         /// <summary>
-        /// Unsubscribes to property changed notifications.
+        /// Removes the subscriptions to property changed notifications.
         /// </summary>
         private void Unsubscribe()
         {
             foreach (var o in this.Objects)
             {
-                var onpc = o as INotifyPropertyChanged;
-                if (onpc != null)
+                var on = o as INotifyPropertyChanged;
+                if (on != null)
                 {
-                    onpc.PropertyChanged -= this.RelayPropertyChanged;
+                    on.PropertyChanged -= this.RelayPropertyChanged;
                 }
             }
         }

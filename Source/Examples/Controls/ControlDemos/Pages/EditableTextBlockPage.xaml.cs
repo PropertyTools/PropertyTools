@@ -50,6 +50,9 @@ namespace ControlDemos
     public class EditableTextBlockDemoViewModel : Observable
     {
         private bool isEditing1;
+
+        private bool isEditing1c;
+
         private bool isEditing2;
 
         private string text1;
@@ -74,6 +77,19 @@ namespace ControlDemos
             set
             {
                 this.SetValue(ref this.isEditing1, value, () => this.IsEditing1);
+            }
+        }
+
+        public bool IsEditing1c
+        {
+            get
+            {
+                return this.isEditing1c;
+            }
+
+            set
+            {
+                this.SetValue(ref this.isEditing1c, value, () => this.IsEditing1c);
             }
         }
 

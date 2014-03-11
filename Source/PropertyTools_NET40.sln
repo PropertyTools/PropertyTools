@@ -1,8 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools_NET40", "PropertyTools\PropertyTools_NET40.csproj", "{37466829-61F5-47FA-9E3E-9CEDCD9535C0}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf_NET40", "PropertyTools.Wpf\PropertyTools.Wpf_NET40.csproj", "{7168F82F-288A-42C4-9EB1-FBBE5112F211}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf.Tests_NET40", "PropertyTools.Wpf.Tests\PropertyTools.Wpf.Tests_NET40.csproj", "{470CC9A4-F4F4-429E-8F38-A2957F3EBE58}"
@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomFactoryDemo_NET40", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{804AA766-9BA6-452A-A99E-D574662BF35A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools_NET40", "PropertyTools\PropertyTools_NET40.csproj", "{37466829-61F5-47FA-9E3E-9CEDCD9535C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,16 +53,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|x86.ActiveCfg = Release|Any CPU
 		{7168F82F-288A-42C4-9EB1-FBBE5112F211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7168F82F-288A-42C4-9EB1-FBBE5112F211}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7168F82F-288A-42C4-9EB1-FBBE5112F211}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -191,6 +183,16 @@ Global
 		{CDBBC579-4958-42DB-9BD6-F0D0EC441106}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CDBBC579-4958-42DB-9BD6-F0D0EC441106}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CDBBC579-4958-42DB-9BD6-F0D0EC441106}.Release|x86.ActiveCfg = Release|Any CPU
+		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

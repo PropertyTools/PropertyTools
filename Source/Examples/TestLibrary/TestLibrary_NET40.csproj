@@ -100,7 +100,7 @@
       <Name>PropertyTools.Wpf_NET40</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\PropertyTools\PropertyTools_NET40.csproj">
-      <Project>{37466829-61F5-47FA-9E3E-9CEDCD9535C0}</Project>
+      <Project>{37466829-61f5-47fa-9e3e-9cedcd9535c0}</Project>
       <Name>PropertyTools_NET40</Name>
     </ProjectReference>
   </ItemGroup>

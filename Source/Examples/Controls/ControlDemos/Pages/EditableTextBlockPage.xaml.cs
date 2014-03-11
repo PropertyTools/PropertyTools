@@ -49,61 +49,14 @@ namespace ControlDemos
 
     public class EditableTextBlockDemoViewModel : Observable
     {
-        private bool isEditing1;
-
-        private bool isEditing1c;
-
-        private bool isEditing2;
-
         private string text1;
 
         private string text2;
 
         public EditableTextBlockDemoViewModel()
         {
-            this.IsEditing1 = false;
-            this.IsEditing2 = false;
             this.Text1 = "Some text";
             this.Text2 = "TextWithoutSpaces";
-        }
-
-        public bool IsEditing1
-        {
-            get
-            {
-                return this.isEditing1;
-            }
-
-            set
-            {
-                this.SetValue(ref this.isEditing1, value, () => this.IsEditing1);
-            }
-        }
-
-        public bool IsEditing1c
-        {
-            get
-            {
-                return this.isEditing1c;
-            }
-
-            set
-            {
-                this.SetValue(ref this.isEditing1c, value, () => this.IsEditing1c);
-            }
-        }
-
-        public bool IsEditing2
-        {
-            get
-            {
-                return this.isEditing2;
-            }
-
-            set
-            {
-                this.SetValue(ref this.isEditing2, value, () => this.IsEditing2);
-            }
         }
 
         public string Text1

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilePickerPage.xaml.cs" company="PropertyTools">
+// <copyright file="DirectoryPickerPage.xaml.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -36,40 +36,27 @@ namespace ControlDemos
     using PropertyTools;
 
     /// <summary>
-    /// Interaction logic for FilePickerPage.xaml
+    /// Interaction logic for DirectoryPickerPage.xaml
     /// </summary>
-    public partial class FilePickerPage : Page
+    public partial class DirectoryPickerPage : Page
     {
-        public FilePickerPage()
+        public DirectoryPickerPage()
         {
             this.InitializeComponent();
-            this.DataContext = new FilePickerViewModel();
+            this.DataContext = new DirectoryPickerViewModel();
         }
     }
 
-    public class FilePickerViewModel : Observable
+    public class DirectoryPickerViewModel : Observable
     {
-        private string filePath;
+        private string directory;
 
         private string basePath;
 
-        public FilePickerViewModel()
+        public DirectoryPickerViewModel()
         {
-            this.FilePath = @"C:\autoexec.bat";
             this.BasePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        }
-
-        public string FilePath
-        {
-            get
-            {
-                return this.filePath;
-            }
-
-            set
-            {
-                this.SetValue(ref this.filePath, value, () => this.FilePath);
-            }
+            this.Directory = @"C:\Windows";
         }
 
         public string BasePath
@@ -82,6 +69,19 @@ namespace ControlDemos
             set
             {
                 this.SetValue(ref this.basePath, value, () => this.BasePath);
+            }
+        }
+
+        public string Directory
+        {
+            get
+            {
+                return this.directory;
+            }
+
+            set
+            {
+                this.SetValue(ref this.directory, value, () => this.Directory);
             }
         }
     }

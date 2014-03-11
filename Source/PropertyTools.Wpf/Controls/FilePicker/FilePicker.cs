@@ -84,6 +84,42 @@ namespace PropertyTools.Wpf
             "UseOpenDialog", typeof(bool), typeof(FilePicker), new UIPropertyMetadata(true));
 
         /// <summary>
+        /// The browse button content property
+        /// </summary>
+        public static readonly DependencyProperty BrowseButtonContentProperty =
+            DependencyProperty.Register("BrowseButtonContent", typeof(object), typeof(FilePicker), new PropertyMetadata("..."));
+
+        /// <summary>
+        /// The explore button content property
+        /// </summary>
+        public static readonly DependencyProperty ExploreButtonContentProperty =
+            DependencyProperty.Register("ExploreButtonContent", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The open button content property
+        /// </summary>
+        public static readonly DependencyProperty OpenButtonContentProperty =
+            DependencyProperty.Register("OpenButtonContent", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The browse button ToolTip property
+        /// </summary>
+        public static readonly DependencyProperty BrowseButtonToolTipProperty =
+            DependencyProperty.Register("BrowseButtonToolTip", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The explore button ToolTip property
+        /// </summary>
+        public static readonly DependencyProperty ExploreButtonToolTipProperty =
+            DependencyProperty.Register("ExploreButtonToolTip", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The open button ToolTip property
+        /// </summary>
+        public static readonly DependencyProperty OpenButtonToolTipProperty =
+            DependencyProperty.Register("OpenButtonToolTip", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
+
+        /// <summary>
         /// Initializes static members of the <see cref="FilePicker" /> class.
         /// </summary>
         static FilePicker()
@@ -98,23 +134,8 @@ namespace PropertyTools.Wpf
         public FilePicker()
         {
             this.BrowseCommand = new DelegateCommand(this.Browse);
-        }
-
-        /// <summary>
-        /// Gets or sets the base path.
-        /// </summary>
-        /// <value> The base path. </value>
-        public string BasePath
-        {
-            get
-            {
-                return (string)this.GetValue(BasePathProperty);
-            }
-
-            set
-            {
-                this.SetValue(BasePathProperty, value);
-            }
+            this.ExploreCommand = new DelegateCommand(this.Explore, this.CanExplore);
+            this.OpenCommand = new DelegateCommand(this.Open, this.CanOpen);
         }
 
         /// <summary>
@@ -122,6 +143,18 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value> The browse command. </value>
         public ICommand BrowseCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the explore command.
+        /// </summary>
+        /// <value>The explore command.</value>
+        public ICommand ExploreCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the open command.
+        /// </summary>
+        /// <value>The open command.</value>
+        public ICommand OpenCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the default extension.
@@ -154,6 +187,23 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(FileDialogServiceProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the base path.
+        /// </summary>
+        /// <value> The base path. </value>
+        public string BasePath
+        {
+            get
+            {
+                return (string)this.GetValue(BasePathProperty);
+            }
+
+            set
+            {
+                this.SetValue(BasePathProperty, value);
             }
         }
 
@@ -192,9 +242,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [use open dialog].
+        /// Gets or sets a value indicating whether to use the File Open Dialog.
         /// </summary>
-        /// <value> <c>true</c> if [use open dialog]; otherwise, <c>false</c> . </value>
+        /// <value> The "File Open" dialog is used if the property is set to <c>true</c>; otherwise, the File Save dialog is used. </value>
         public bool UseOpenDialog
         {
             get
@@ -209,7 +259,61 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Open the browse dialog.
+        /// Gets or sets the content on the "browse" button.
+        /// </summary>
+        public object BrowseButtonContent
+        {
+            get { return this.GetValue(BrowseButtonContentProperty); }
+            set { this.SetValue(BrowseButtonContentProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the content on the "explore" button.
+        /// </summary>
+        public object ExploreButtonContent
+        {
+            get { return this.GetValue(ExploreButtonContentProperty); }
+            set { this.SetValue(ExploreButtonContentProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the content on the "open" button.
+        /// </summary>
+        public object OpenButtonContent
+        {
+            get { return this.GetValue(OpenButtonContentProperty); }
+            set { this.SetValue(OpenButtonContentProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the ToolTip on the "browse" button.
+        /// </summary>
+        public object BrowseButtonToolTip
+        {
+            get { return this.GetValue(BrowseButtonToolTipProperty); }
+            set { this.SetValue(BrowseButtonToolTipProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the ToolTip on the "explore" button.
+        /// </summary>
+        public object ExploreButtonToolTip
+        {
+            get { return this.GetValue(ExploreButtonToolTipProperty); }
+            set { this.SetValue(ExploreButtonToolTipProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the ToolTip on the "open" button.
+        /// </summary>
+        public object OpenButtonToolTip
+        {
+            get { return this.GetValue(OpenButtonToolTipProperty); }
+            set { this.SetValue(OpenButtonToolTipProperty, value); }
+        }
+        
+        /// <summary>
+        /// Opens the open or save file dialog.
         /// </summary>
         private void Browse()
         {
@@ -239,7 +343,9 @@ namespace PropertyTools.Wpf
                 {
                     var d = new OpenFileDialog
                         {
-                           FileName = this.FilePath, Filter = this.Filter, DefaultExt = this.DefaultExtension
+                            FileName = this.FilePath,
+                            Filter = this.Filter,
+                            DefaultExt = this.DefaultExtension
                         };
                     if (true == d.ShowDialog())
                     {
@@ -251,7 +357,9 @@ namespace PropertyTools.Wpf
                 {
                     var d = new SaveFileDialog
                         {
-                           FileName = this.FilePath, Filter = this.Filter, DefaultExt = this.DefaultExtension
+                            FileName = this.FilePath,
+                            Filter = this.Filter,
+                            DefaultExt = this.DefaultExtension
                         };
                     if (true == d.ShowDialog())
                     {
@@ -265,6 +373,40 @@ namespace PropertyTools.Wpf
             {
                 this.FilePath = this.GetRelativePath(filename);
             }
+        }
+
+        /// <summary>
+        /// Opens Windows Explorer with the current file.
+        /// </summary>
+        private void Explore()
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "/select," + this.FilePath);
+        }
+
+        /// <summary>
+        /// Opens the current file.
+        /// </summary>
+        private void Open()
+        {
+            System.Diagnostics.Process.Start(this.FilePath);
+        }
+
+        /// <summary>
+        /// Determines whether the file can be opened.
+        /// </summary>
+        /// <returns><c>true</c> if the file exists; otherwise, <c>false</c>.</returns>
+        private bool CanOpen()
+        {
+            return File.Exists(this.FilePath);
+        }
+
+        /// <summary>
+        /// Determines whether the file can be explored.
+        /// </summary>
+        /// <returns><c>true</c> if the file exists; otherwise, <c>false</c>.</returns>
+        private bool CanExplore()
+        {
+            return File.Exists(this.FilePath);
         }
 
         /// <summary>

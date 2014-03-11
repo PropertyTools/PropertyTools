@@ -217,34 +217,37 @@ namespace PropertyTools.Wpf
                 var pd = this.GetPropertyDefinition(cellref);
 
                 var border = new Border
-                    {
-                        BorderBrush = this.HeaderBorderBrush,
-                        BorderThickness = new Thickness(0, 1, 1, 1),
-                        Margin = new Thickness(0, 0, j < columns - 1 ? -1 : 0, 0)
-                    };
+                                 {
+                                     BorderBrush = this.HeaderBorderBrush,
+                                     BorderThickness = new Thickness(0, 1, 1, 1),
+                                     Margin = new Thickness(0, 0, j < columns - 1 ? -1 : 0, 0)
+                                 };
                 Grid.SetColumn(border, j);
                 this.columnGrid.Children.Add(border);
 
                 var cell = header as FrameworkElement
-                           ??
-                           new TextBlock
-                               {
-                                   Text = header != null ? header.ToString() : "-",
-                                   VerticalAlignment = VerticalAlignment.Center,
-                                   HorizontalAlignment = pd.HorizontalAlignment,
-                                   Padding = new Thickness(4, 2, 4, 2)
-                               };
+                           ?? new TextBlock
+                                  {
+                                      Text = header != null ? header.ToString() : "-",
+                                      VerticalAlignment = VerticalAlignment.Center,
+                                      HorizontalAlignment = pd.HorizontalAlignment,
+                                      Padding = new Thickness(4, 2, 4, 2)
+                                  };
 
                 Grid.SetColumn(cell, j);
                 this.columnGrid.Children.Add(cell);
+            }
 
+            for (int j = 0; j < columns; j++)
+            {
                 if (this.CanResizeColumns)
                 {
                     var splitter = new GridSplitter
                         {
                             ResizeDirection = GridResizeDirection.Columns,
                             Background = Brushes.Transparent,
-                            Width = 4,
+                            Width = 5,
+                            RenderTransform = new TranslateTransform(3, 0),
                             Focusable = false,
                             VerticalAlignment = VerticalAlignment.Stretch,
                             HorizontalAlignment = HorizontalAlignment.Right

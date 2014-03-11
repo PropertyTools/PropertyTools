@@ -1,17 +1,79 @@
 ﻿<Page x:Class="ControlDemos.FilePickerPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
-	Title="FilePickerPage">
+      xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
+	  Title="FilePicker">
 
-    <StackPanel Width="200" VerticalAlignment="Center">
-        <p:FilePicker FilePath="{Binding FilePath}" Filter="Text files|*.txt" DefaultExtension=".txt" Margin="4"/>
-        <p:FilePicker FilePath="{Binding FilePath}" BasePath="{Binding BasePath}" Filter="Text files|*.txt" DefaultExtension=".txt" Margin="4"/>
-        <p:DirectoryPicker Directory="{Binding Directory}" Margin="4"/>
-        <Label Content="{Binding FilePath}"/>
-        <Label Content="{Binding Directory}"/>
+    <StackPanel Width="400" VerticalAlignment="Center">
+        <GroupBox Header="Open dialog">
+            <StackPanel >
+                <p:FilePicker FilePath="{Binding FilePath}" Filter="Text files|*.txt" DefaultExtension=".txt" Margin="4"/>
+                <Label Content="{Binding FilePath}"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Save As dialog">
+            <StackPanel >
+                <p:FilePicker UseOpenDialog="False" FilePath="{Binding FilePath}" Filter="Text files|*.txt" DefaultExtension=".txt" Margin="4"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Buttons">
+            <StackPanel >
+                <p:FilePicker FilePath="{Binding FilePath}" BrowseButtonContent="Browse..." Margin="4"/>
+                <p:FilePicker FilePath="{Binding FilePath}" ExploreButtonContent="Explore..." Margin="4"/>
+                <p:FilePicker FilePath="{Binding FilePath}" BrowseButtonContent="Browse..." OpenButtonContent="Open..." Margin="4"/>
+                <p:FilePicker FilePath="{Binding FilePath}" BrowseButtonContent="Browse..." ExploreButtonContent="Explore..." OpenButtonContent="Open..." Margin="4"/>
+                <p:FilePicker FilePath="{Binding FilePath}" Margin="4">
+                    <p:FilePicker.BrowseButtonContent>
+                        <Ellipse Width="8" Height="8" Fill="Red"/>
+                    </p:FilePicker.BrowseButtonContent>
+                    <p:FilePicker.ExploreButtonContent>
+                        <Ellipse Width="8" Height="8" Fill="Green"/>
+                    </p:FilePicker.ExploreButtonContent>
+                    <p:FilePicker.OpenButtonContent>
+                        <Ellipse Width="8" Height="8" Fill="Blue"/>
+                    </p:FilePicker.OpenButtonContent>
+                </p:FilePicker>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Tool tips">
+            <StackPanel >
+                <p:FilePicker FilePath="{Binding FilePath}" 
+                              ToolTip="Select a file to open"
+                              BrowseButtonContent="Browse..." 
+                              BrowseButtonToolTip="Open the browse dialog."
+                              ExploreButtonContent="Explore..." 
+                              ExploreButtonToolTip="Open Windows Explorer with the selected file."
+                              OpenButtonContent="Open..." 
+                              OpenButtonToolTip="Open the selected file."
+                              Margin="4"/>
+                <p:FilePicker FilePath="{Binding FilePath}" Margin="4">
+                    <p:FilePicker.BrowseButtonContent>
+                        <Ellipse Width="8" Height="8" Fill="Red"/>
+                    </p:FilePicker.BrowseButtonContent>
+                    <p:FilePicker.ExploreButtonContent>
+                        <Ellipse Width="8" Height="8" Fill="Green"/>
+                    </p:FilePicker.ExploreButtonContent>
+                    <p:FilePicker.OpenButtonContent>
+                        <Ellipse Width="8" Height="8" Fill="Blue"/>
+                    </p:FilePicker.OpenButtonContent>
+                    <p:FilePicker.BrowseButtonToolTip>
+                        <Ellipse Width="32" Height="32" Fill="Red"/>
+                    </p:FilePicker.BrowseButtonToolTip>
+                    <p:FilePicker.ExploreButtonToolTip>
+                        <Ellipse Width="32" Height="32" Fill="Green"/>
+                    </p:FilePicker.ExploreButtonToolTip>
+                    <p:FilePicker.OpenButtonToolTip>
+                        <Ellipse Width="32" Height="32" Fill="Blue"/>
+                    </p:FilePicker.OpenButtonToolTip>
+                </p:FilePicker>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="BasePath">
+            <StackPanel >
+                <p:FilePicker FilePath="{Binding FilePath}" BasePath="{Binding BasePath}" Filter="Text files|*.txt" DefaultExtension=".txt" Margin="4"/>
+                <Label Content="{Binding BasePath}"/>
+            </StackPanel>
+        </GroupBox>
     </StackPanel>
 
 </Page>

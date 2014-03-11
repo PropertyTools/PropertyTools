@@ -60,6 +60,30 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(null));
 
         /// <summary>
+        /// The browse button content property
+        /// </summary>
+        public static readonly DependencyProperty BrowseButtonContentProperty =
+            DependencyProperty.Register("BrowseButtonContent", typeof(object), typeof(DirectoryPicker), new PropertyMetadata("..."));
+
+        /// <summary>
+        /// The explore button content property
+        /// </summary>
+        public static readonly DependencyProperty ExploreButtonContentProperty =
+            DependencyProperty.Register("ExploreButtonContent", typeof(object), typeof(DirectoryPicker), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The browse button ToolTip property
+        /// </summary>
+        public static readonly DependencyProperty BrowseButtonToolTipProperty =
+            DependencyProperty.Register("BrowseButtonToolTip", typeof(object), typeof(DirectoryPicker), new PropertyMetadata(null));
+
+        /// <summary>
+        /// The explore button ToolTip property
+        /// </summary>
+        public static readonly DependencyProperty ExploreButtonToolTipProperty =
+            DependencyProperty.Register("ExploreButtonToolTip", typeof(object), typeof(DirectoryPicker), new PropertyMetadata(null));
+
+        /// <summary>
         /// Initializes static members of the <see cref="DirectoryPicker" /> class.
         /// </summary>
         static DirectoryPicker()
@@ -74,6 +98,7 @@ namespace PropertyTools.Wpf
         public DirectoryPicker()
         {
             this.BrowseCommand = new DelegateCommand(this.Browse);
+            this.ExploreCommand = new DelegateCommand(this.Explore);
         }
 
         /// <summary>
@@ -81,6 +106,12 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value> The browse command. </value>
         public ICommand BrowseCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the explore command.
+        /// </summary>
+        /// <value>The explore command.</value>
+        public ICommand ExploreCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the directory.
@@ -115,6 +146,42 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the content on the "browse" button.
+        /// </summary>
+        public object BrowseButtonContent
+        {
+            get { return this.GetValue(BrowseButtonContentProperty); }
+            set { this.SetValue(BrowseButtonContentProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the content on the "explore" button.
+        /// </summary>
+        public object ExploreButtonContent
+        {
+            get { return this.GetValue(ExploreButtonContentProperty); }
+            set { this.SetValue(ExploreButtonContentProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the ToolTip on the "browse" button.
+        /// </summary>
+        public object BrowseButtonToolTip
+        {
+            get { return this.GetValue(BrowseButtonToolTipProperty); }
+            set { this.SetValue(BrowseButtonToolTipProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the ToolTip on the "explore" button.
+        /// </summary>
+        public object ExploreButtonToolTip
+        {
+            get { return this.GetValue(ExploreButtonToolTipProperty); }
+            set { this.SetValue(ExploreButtonToolTipProperty, value); }
+        }
+
+        /// <summary>
         /// Open the browse dialog.
         /// </summary>
         private void Browse()
@@ -136,6 +203,14 @@ namespace PropertyTools.Wpf
                     this.Directory = d.SelectedFolder;
                 }
             }
+        }
+
+        /// <summary>
+        /// Opens Windows Explorer with the current directory.
+        /// </summary>
+        private void Explore()
+        {
+            System.Diagnostics.Process.Start("explorer.exe", this.Directory);
         }
     }
 }

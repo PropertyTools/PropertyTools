@@ -27,6 +27,7 @@
 //   Provides a CommandBinding based on delegates.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;

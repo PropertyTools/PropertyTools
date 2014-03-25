@@ -147,6 +147,9 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Behaviors\ScreenGrab.cs" />
+    <Compile Include="CommandBindings\DelegateCommandBinding.cs" />
+    <Compile Include="CommandBindings\DelegateCommandBinding{T}.cs" />
     <Compile Include="Controls\Bitmap.cs" />
     <Compile Include="Controls\ColorPicker\ColorPicker.cs" />
     <Compile Include="Controls\ColorPicker\ColorPickerPanel.cs" />
@@ -185,7 +188,6 @@
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Helpers\AutoFiller.cs" />
     <Compile Include="Helpers\CaptureScreenshot.cs" />
-    <Compile Include="Helpers\DelegateCommandBinding.cs" />
     <Compile Include="Helpers\FormattedTimeSpanParser.cs" />
     <Compile Include="ItemsGrid\CellRefConverter.cs" />
     <Compile Include="ItemsGrid\Definitions\ColumnDefinition.cs" />

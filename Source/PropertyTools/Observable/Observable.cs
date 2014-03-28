@@ -174,10 +174,7 @@ namespace PropertyTools
             // Look for a public property with the specified name.
             var propertyInfo = type.GetProperty(propertyName);
 
-            if (propertyInfo == null)
-            {
-                Debug.Fail(string.Format(CultureInfo.InvariantCulture, "{0} is not a property of {1}", propertyName, type.FullName));
-            }
+            Debug.Assert(propertyInfo != null, string.Format(CultureInfo.InvariantCulture, "{0} is not a property of {1}", propertyName, type.FullName));
         }
     }
 }

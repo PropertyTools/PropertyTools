@@ -1,40 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{37466829-61F5-47FA-9E3E-9CEDCD9535C0}</ProjectGuid>
+    <ProjectGuid>{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PropertyTools</RootNamespace>
     <AssemblyName>PropertyTools</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile136</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\NET45\</OutputPath>
-    <IntermediateOutputPath>obj\Debug\NET45\</IntermediateOutputPath>
-    <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
+    <OutputPath>bin\Debug\PCL\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\PCL\</IntermediateOutputPath>
+    <DefineConstants>TRACE;DEBUG;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Output\NET45\</OutputPath>
-    <IntermediateOutputPath>obj\Release\NET45\</IntermediateOutputPath>
-    <DefineConstants>TRACE;NET45</DefineConstants>
+    <OutputPath>..\..\Output\PCL\</OutputPath>
+    <IntermediateOutputPath>obj\Release\PCL\</IntermediateOutputPath>
+    <DefineConstants>TRACE;PCL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Output\NET45\PropertyTools.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>..\..\Output\PCL\PropertyTools.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -43,8 +42,7 @@
     <AssemblyOriginatorKeyFile>PropertyTools.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.cs">
@@ -62,7 +60,6 @@
     <Compile Include="DataAnnotations\DirectoryPathAttribute.cs" />
     <Compile Include="DataAnnotations\EasyInsertAttribute.cs" />
     <Compile Include="DataAnnotations\EnableByAttribute.cs" />
-    <Compile Include="DataAnnotations\EnumDisplayNameAttribute.cs" />
     <Compile Include="DataAnnotations\FillTabAttribute.cs" />
     <Compile Include="DataAnnotations\FilterPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\FontAttribute.cs" />
@@ -103,7 +100,7 @@
   <ItemGroup>
     <None Include="PropertyTools.snk" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(ProjectDir)..\..\Tools\StyleCop\StyleCop.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

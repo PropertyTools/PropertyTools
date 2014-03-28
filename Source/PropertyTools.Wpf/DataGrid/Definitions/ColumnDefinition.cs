@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EasyInsertAttribute.cs" company="PropertyTools">
+// <copyright file="ColumnDefinition.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,33 +24,30 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
+//   Defines column-specific properties that apply to DataGrid elements.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace PropertyTools.DataAnnotations
+namespace PropertyTools.Wpf
 {
-    using System;
+    using System.Windows;
 
     /// <summary>
-    /// Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
+    /// Defines column-specific properties that apply to DataGrid elements.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class EasyInsertAttribute : Attribute
+    public class ColumnDefinition : PropertyDefinition
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EasyInsertAttribute" /> class.
+        /// Initializes a new instance of the <see cref="ColumnDefinition" /> class.
         /// </summary>
-        /// <param name="easyInsert">if set to <c>true</c> [easy insert].</param>
-        public EasyInsertAttribute(bool easyInsert)
+        public ColumnDefinition()
         {
-            this.EasyInsert = easyInsert;
+            this.Width = GridLength.Auto;
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether easy insert is enabled.
+        /// Gets or sets the column width.
         /// </summary>
-        /// <value><c>true</c> if [easy insert]; otherwise, <c>false</c>.</value>
-        public bool EasyInsert { get; set; }
+        /// <value> The width. </value>
+        public GridLength Width { get; set; }
     }
 }

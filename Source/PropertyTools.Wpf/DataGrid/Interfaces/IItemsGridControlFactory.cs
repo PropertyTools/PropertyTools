@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EasyInsertAttribute.cs" company="PropertyTools">
+// <copyright file="IDataGridControlFactory.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,33 +24,44 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
+//   Specifies a control factory for the DataGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace PropertyTools.DataAnnotations
+namespace PropertyTools.Wpf
 {
-    using System;
+    using System.Windows;
 
     /// <summary>
-    /// Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
+    /// Specifies a control factory for the DataGrid.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class EasyInsertAttribute : Attribute
+    public interface IDataGridControlFactory
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EasyInsertAttribute" /> class.
+        /// Creates the display control and sets the binding.
         /// </summary>
-        /// <param name="easyInsert">if set to <c>true</c> [easy insert].</param>
-        public EasyInsertAttribute(bool easyInsert)
-        {
-            this.EasyInsert = easyInsert;
-        }
+        /// <param name="d">
+        /// The property definition.
+        /// </param>
+        /// <param name="index">
+        /// The index (if bound to a list element).
+        /// </param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        FrameworkElement CreateDisplayControl(PropertyDefinition d, int index);
 
         /// <summary>
-        /// Gets or sets a value indicating whether easy insert is enabled.
+        /// Creates the edit control and sets the binding.
         /// </summary>
-        /// <value><c>true</c> if [easy insert]; otherwise, <c>false</c>.</value>
-        public bool EasyInsert { get; set; }
+        /// <param name="d">
+        /// The property definition.
+        /// </param>
+        /// <param name="index">
+        /// The index (if bound to a list element).
+        /// </param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        FrameworkElement CreateEditControl(PropertyDefinition d, int index);
     }
 }

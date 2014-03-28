@@ -107,7 +107,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ItemsGrid\Generic.xaml">
+    <Page Include="DataGrid\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -192,15 +192,15 @@
     <Compile Include="Helpers\AutoFiller.cs" />
     <Compile Include="Helpers\CaptureScreenshot.cs" />
     <Compile Include="Helpers\FormattedTimeSpanParser.cs" />
-    <Compile Include="ItemsGrid\CellRefConverter.cs" />
-    <Compile Include="ItemsGrid\Definitions\ColumnDefinition.cs" />
-    <Compile Include="ItemsGrid\Definitions\RowDefinition.cs" />
-    <Compile Include="ItemsGrid\ItemsGrid.Content.cs" />
-    <Compile Include="ItemsGrid\Interfaces\IItemsGridControlFactory.cs" />
-    <Compile Include="ItemsGrid\Definitions\PropertyDefinition.cs" />
-    <Compile Include="ItemsGrid\ItemsGrid.cs" />
-    <Compile Include="ItemsGrid\ItemsGrid.Properties.cs" />
-    <Compile Include="ItemsGrid\ControlFactory\ItemsGridControlFactory.cs" />
+    <Compile Include="DataGrid\CellRefConverter.cs" />
+    <Compile Include="DataGrid\Definitions\ColumnDefinition.cs" />
+    <Compile Include="DataGrid\Definitions\RowDefinition.cs" />
+    <Compile Include="DataGrid\DataGrid.Content.cs" />
+    <Compile Include="DataGrid\Interfaces\IItemsGridControlFactory.cs" />
+    <Compile Include="DataGrid\Definitions\PropertyDefinition.cs" />
+    <Compile Include="DataGrid\DataGrid.cs" />
+    <Compile Include="DataGrid\DataGrid.Properties.cs" />
+    <Compile Include="DataGrid\ControlFactory\ItemsGridControlFactory.cs" />
     <Compile Include="Dialogs\AboutViewModel.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Converters\ObjectToDoubleConverter.cs" />
@@ -252,7 +252,7 @@
     <Compile Include="PropertyControl\Tab.cs" />
     <Compile Include="PropertyControl\PropertyConverter.cs" />
     <Compile Include="Helpers\AttributeHelper.cs" />
-    <Compile Include="ItemsGrid\CellRef.cs" />
+    <Compile Include="DataGrid\CellRef.cs" />
     <Compile Include="Converters\GridLengthCollectionConverter.cs" />
     <Compile Include="Helpers\ReflectionMath.cs" />
     <Compile Include="Controls\EditableTextBlock.cs" />
@@ -283,22 +283,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ItemsGrid\Cursors\AutoFill.cur" />
+    <Resource Include="DataGrid\Cursors\AutoFill.cur" />
+    <Resource Include="DataGrid\Cursors\Cross.cur" />
+    <Resource Include="DataGrid\Cursors\DownArrow.cur" />
+    <Resource Include="DataGrid\Cursors\RightArrow.cur" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Controls\ColorPicker\ColorPicker.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Controls\ColorPicker\Hsv.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ItemsGrid\Cursors\Cross.cur" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ItemsGrid\Cursors\DownArrow.cur" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ItemsGrid\Cursors\RightArrow.cur" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PropertyTools\PropertyTools_NET45.csproj">

@@ -33,9 +33,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryDemo_NET45", "Exam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeListBoxDemo_NET45", "Examples\TreeListBox\TreeListBoxDemo\TreeListBoxDemo_NET45.csproj", "{14EB6E22-BB3A-4E00-8C62-438F3A5C786C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ItemsGrid", "ItemsGrid", "{9D139AB3-2AC9-46AD-BAE6-6C206724CC1F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataGrid", "DataGrid", "{9D139AB3-2AC9-46AD-BAE6-6C206724CC1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeaturesDemo_NET45", "Examples\ItemsGrid\FeaturesDemo\FeaturesDemo_NET45.csproj", "{348A711C-C4B7-499D-9418-8920FF953B2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridDemo_NET45", "Examples\DataGrid\DataGridDemo\DataGridDemo_NET45.csproj", "{348A711C-C4B7-499D-9418-8920FF953B2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomFactoryDemo_NET45", "Examples\PropertyControl\CustomFactoryDemo\CustomFactoryDemo_NET45.csproj", "{CDBBC579-4958-42DB-9BD6-F0D0EC441106}"
 EndProject

@@ -9,6 +9,6 @@
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/CheckMark/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/PropertyControl/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/TreeListBox/Generic.xaml" />
-        <ResourceDictionary Source="/PropertyTools.Wpf;component/ItemsGrid/Generic.xaml" />
+        <ResourceDictionary Source="/PropertyTools.Wpf;component/DataGrid/Generic.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

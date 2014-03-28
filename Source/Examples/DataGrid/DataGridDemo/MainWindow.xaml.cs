@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EasyInsertAttribute.cs" company="PropertyTools">
+// <copyright file="MainWindow.xaml.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,33 +24,30 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
+//   Interaction logic for MainWindow.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace PropertyTools.DataAnnotations
+namespace DataGridDemo
 {
     using System;
+    using System.Windows;
+    using System.Windows.Controls;
 
     /// <summary>
-    /// Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class EasyInsertAttribute : Attribute
+    public partial class MainWindow
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EasyInsertAttribute" /> class.
+        /// Opens a window.
         /// </summary>
-        /// <param name="easyInsert">if set to <c>true</c> [easy insert].</param>
-        public EasyInsertAttribute(bool easyInsert)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        private void OpenWindowClick(object sender, RoutedEventArgs e)
         {
-            this.EasyInsert = easyInsert;
+            var type = (Type)((Button)sender).Tag;
+            var window = (Window)Activator.CreateInstance(type);
+            window.Show();
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether easy insert is enabled.
-        /// </summary>
-        /// <value><c>true</c> if [easy insert]; otherwise, <c>false</c>.</value>
-        public bool EasyInsert { get; set; }
     }
 }

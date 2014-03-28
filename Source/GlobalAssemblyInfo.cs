@@ -29,7 +29,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("PropertyTools for WPF")]
@@ -37,8 +36,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright (C) Oystein Bjorke 2012.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
-[assembly: ComVisible(false)]
 
 [assembly: AssemblyVersion("2014.1.1.1")]
 [assembly: AssemblyFileVersion("2014.1.1.1")]

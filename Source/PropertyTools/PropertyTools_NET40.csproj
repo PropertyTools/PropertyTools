@@ -20,6 +20,7 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\NET40\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <IntermediateOutputPath>obj\Debug\NET40\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -28,6 +29,7 @@
     <Optimize>true</Optimize>
     <OutputPath>..\..\Output\NET40\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
+    <IntermediateOutputPath>obj\Release\NET40\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Output\NET40\PropertyTools.XML</DocumentationFile>

@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{80
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools_NET40", "PropertyTools\PropertyTools_NET40.csproj", "{37466829-61F5-47FA-9E3E-9CEDCD9535C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools_PCL", "PropertyTools\PropertyTools_PCL.csproj", "{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -193,6 +195,16 @@ Global
 		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|x86.ActiveCfg = Release|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

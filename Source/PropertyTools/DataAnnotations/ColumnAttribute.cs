@@ -134,6 +134,7 @@ namespace PropertyTools.DataAnnotations
         /// <value>The name of the property.</value>
         public string PropertyName { get; set; }
 
+#if !PCL
         /// <summary>
         /// When implemented in a derived class, gets a unique identifier for this <see cref = "T:System.Attribute" />.
         /// </summary>
@@ -146,6 +147,7 @@ namespace PropertyTools.DataAnnotations
                 return this.typeId;
             }
         }
+#endif
 
         /// <summary>
         /// Gets or sets the width ("Auto", "0.5*" etc. are ok).

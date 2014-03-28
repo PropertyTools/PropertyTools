@@ -183,9 +183,9 @@
       <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>
       <Name>PropertyTools.Wpf_NET40</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\PropertyTools\PropertyTools_NET40.csproj">
-      <Project>{37466829-61f5-47fa-9e3e-9cedcd9535c0}</Project>
-      <Name>PropertyTools_NET40</Name>
+    <ProjectReference Include="..\..\..\PropertyTools\PropertyTools_PCL.csproj">
+      <Project>{c365cbc8-fb8c-439d-87a4-fafbb25852ea}</Project>
+      <Name>PropertyTools_PCL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

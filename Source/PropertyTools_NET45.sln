@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools_NET45", "PropertyTools\PropertyTools_NET45.csproj", "{37466829-61F5-47FA-9E3E-9CEDCD9535C0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf_NET45", "PropertyTools.Wpf\PropertyTools.Wpf_NET45.csproj", "{7168F82F-288A-42C4-9EB1-FBBE5112F211}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf.Tests_NET45", "PropertyTools.Wpf.Tests\PropertyTools.Wpf.Tests_NET45.csproj", "{470CC9A4-F4F4-429E-8F38-A2957F3EBE58}"
@@ -55,16 +53,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{37466829-61F5-47FA-9E3E-9CEDCD9535C0}.Release|x86.ActiveCfg = Release|Any CPU
 		{7168F82F-288A-42C4-9EB1-FBBE5112F211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7168F82F-288A-42C4-9EB1-FBBE5112F211}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7168F82F-288A-42C4-9EB1-FBBE5112F211}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

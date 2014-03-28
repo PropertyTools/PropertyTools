@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DockPanelSplitter.cs" company="PropertyTools">
+// <copyright file="CheckMark.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -63,6 +63,7 @@ namespace PropertyTools.Wpf
             {
                 return (bool)this.GetValue(IsCheckedProperty);
             }
+
             set
             {
                 this.SetValue(IsCheckedProperty, value);

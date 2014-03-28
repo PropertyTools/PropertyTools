@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EasyInsertAttribute.cs" company="PropertyTools">
+// <copyright file="MassConverter.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -23,34 +23,33 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace PropertyTools.DataAnnotations
+namespace DataGridDemo
 {
     using System;
+    using System.ComponentModel;
 
-    /// <summary>
-    /// Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class EasyInsertAttribute : Attribute
+    public class MassConverter : TypeConverter
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EasyInsertAttribute" /> class.
-        /// </summary>
-        /// <param name="easyInsert">if set to <c>true</c> [easy insert].</param>
-        public EasyInsertAttribute(bool easyInsert)
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            this.EasyInsert = easyInsert;
+            if (sourceType == typeof(string))
+            {
+                return true;
+            }
+
+            return base.CanConvertFrom(context, sourceType);
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether easy insert is enabled.
-        /// </summary>
-        /// <value><c>true</c> if [easy insert]; otherwise, <c>false</c>.</value>
-        public bool EasyInsert { get; set; }
+        public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+        {
+            var s = value as string;
+            if (s != null)
+            {
+                return Mass.Parse(s, culture);
+            }
+
+            return base.ConvertFrom(context, culture, value);
+        }
     }
 }

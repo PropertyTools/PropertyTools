@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EasyInsertAttribute.cs" company="PropertyTools">
+// <copyright file="Window202.xaml.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -24,33 +24,22 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
+//   Interaction logic for Window202.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace PropertyTools.DataAnnotations
+namespace DataGridDemo
 {
-    using System;
-
     /// <summary>
-    /// Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
+    /// Interaction logic for Window202.xaml
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class EasyInsertAttribute : Attribute
+    public partial class Window202
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EasyInsertAttribute" /> class.
+        /// Initializes a new instance of the <see cref="Window202"/> class.
         /// </summary>
-        /// <param name="easyInsert">if set to <c>true</c> [easy insert].</param>
-        public EasyInsertAttribute(bool easyInsert)
+        public Window202()
         {
-            this.EasyInsert = easyInsert;
+            InitializeComponent();
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether easy insert is enabled.
-        /// </summary>
-        /// <value><c>true</c> if [easy insert]; otherwise, <c>false</c>.</value>
-        public bool EasyInsert { get; set; }
     }
 }

@@ -671,7 +671,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateGridControl(PropertyItem property)
         {
-            var c = new ItemsGrid
+            var c = new DataGrid
             {
                 CanDelete = property.ListCanRemove,
                 CanInsert = property.ListCanAdd,
@@ -713,7 +713,7 @@ namespace PropertyTools.Wpf
                 c.ColumnDefinitions.Add(cd);
             }
 
-            c.SetBinding(ItemsGrid.ItemsSourceProperty, property.CreateBinding());
+            c.SetBinding(DataGrid.ItemsSourceProperty, property.CreateBinding());
             return c;
         }
 

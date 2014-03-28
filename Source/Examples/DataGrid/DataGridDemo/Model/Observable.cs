@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EasyInsertAttribute.cs" company="PropertyTools">
+// <copyright file="Observable.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -23,34 +23,23 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace PropertyTools.DataAnnotations
+namespace DataGridDemo
 {
-    using System;
+    using System.ComponentModel;
 
-    /// <summary>
-    /// Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class EasyInsertAttribute : Attribute
+    public class Observable : INotifyPropertyChanged
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EasyInsertAttribute" /> class.
-        /// </summary>
-        /// <param name="easyInsert">if set to <c>true</c> [easy insert].</param>
-        public EasyInsertAttribute(bool easyInsert)
-        {
-            this.EasyInsert = easyInsert;
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether easy insert is enabled.
-        /// </summary>
-        /// <value><c>true</c> if [easy insert]; otherwise, <c>false</c>.</value>
-        public bool EasyInsert { get; set; }
+        protected void RaisePropertyChanged(string property)
+        {
+            //    Debug.WriteLine(property + " was changed.");
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(property));
+            }
+        }
     }
 }

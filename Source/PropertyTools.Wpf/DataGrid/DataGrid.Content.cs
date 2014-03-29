@@ -230,7 +230,7 @@ namespace PropertyTools.Wpf
                                   {
                                       Text = header != null ? header.ToString() : "-",
                                       VerticalAlignment = VerticalAlignment.Center,
-                                      HorizontalAlignment = pd.HorizontalAlignment,
+                                      HorizontalAlignment = this.ItemsInRows ? pd.HorizontalAlignment : HorizontalAlignment.Center,
                                       Padding = new Thickness(4, 2, 4, 2)
                                   };
 

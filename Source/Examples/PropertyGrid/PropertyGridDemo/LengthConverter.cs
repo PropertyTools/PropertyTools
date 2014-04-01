@@ -1,4 +1,4 @@
-﻿namespace PropertyControlDemo
+﻿namespace PropertyGridDemo
 {
     using System;
     using System.Globalization;

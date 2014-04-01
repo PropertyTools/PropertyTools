@@ -31,7 +31,7 @@
 using System.Reflection;
 using System.Windows;
 
-[assembly: AssemblyTitle("PropertyControl custom factory demo")]
+[assembly: AssemblyTitle("PropertyGrid custom control factory demo")]
 [assembly: AssemblyDescription("")]
 
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]

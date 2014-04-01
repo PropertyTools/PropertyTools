@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="App.xaml.cs" company="PropertyTools">
+// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -23,21 +23,33 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Interaction logic for App.xaml
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Windows;
-
-namespace PropertyControlDemo
+namespace PropertyGridDemo
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    using System.Windows;
+
+    using PropertyTools.Wpf;
+
+    using TestLibrary;
+
+    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
     {
+        public LocalPropertyControlFactory()
+        {
+            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
+        }
+
+        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        {
+            //if (property.Is(typeof(DateTime)))
+            //{
+            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
+            //    dp.SetBinding(DatePicker.SelectedDateProperty,
+            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
+            //    return dp;
+            //}
+
+            return base.CreateControl(pi, options);
+        }
     }
 }

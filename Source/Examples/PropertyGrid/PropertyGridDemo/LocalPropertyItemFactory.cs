@@ -1,4 +1,4 @@
-﻿namespace PropertyControlDemo
+﻿namespace PropertyGridDemo
 {
     using PropertyTools.Wpf;
 

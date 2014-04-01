@@ -17,15 +17,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ItemsBag", "ItemsBag", "{BA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemsBagDemo_NET45", "Examples\ItemsBag\ItemsBagDemo\ItemsBagDemo_NET45.csproj", "{DF4B1E0F-5024-43DD-9D39-94CAE88DBA9E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PropertyControl", "PropertyControl", "{495DE1C6-8AD0-4119-9279-02B5C2499D1F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PropertyGrid", "PropertyGrid", "{495DE1C6-8AD0-4119-9279-02B5C2499D1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyControlDemo_NET45", "Examples\PropertyControl\PropertyControlDemo\PropertyControlDemo_NET45.csproj", "{B9B8A606-963F-414A-9365-24F5BEF21225}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyGridDemo_NET45", "Examples\PropertyGrid\PropertyGridDemo\PropertyGridDemo_NET45.csproj", "{B9B8A606-963F-414A-9365-24F5BEF21225}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLibrary_NET45", "Examples\TestLibrary\TestLibrary_NET45.csproj", "{3A9FED3D-0EC6-412F-B690-5119A9EE2AD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UndoRedoDemo_NET45", "Examples\PropertyControl\UndoRedoDemo\UndoRedoDemo_NET45.csproj", "{34675ACB-11F6-4F0D-8959-80F844CE7F2F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UndoRedoDemo_NET45", "Examples\PropertyGrid\UndoRedoDemo\UndoRedoDemo_NET45.csproj", "{34675ACB-11F6-4F0D-8959-80F844CE7F2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo_NET45", "Examples\PropertyControl\SimpleDemo\SimpleDemo_NET45.csproj", "{E74EA0C8-24AE-450F-80D0-25BAC8CA51B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo_NET45", "Examples\PropertyGrid\SimpleDemo\SimpleDemo_NET45.csproj", "{E74EA0C8-24AE-450F-80D0-25BAC8CA51B1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TreeListBox", "TreeListBox", "{6E342E58-E11E-4C26-819D-4D0328920770}"
 EndProject
@@ -37,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataGrid", "DataGrid", "{9D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridDemo_NET45", "Examples\DataGrid\DataGridDemo\DataGridDemo_NET45.csproj", "{348A711C-C4B7-499D-9418-8920FF953B2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomFactoryDemo_NET45", "Examples\PropertyControl\CustomFactoryDemo\CustomFactoryDemo_NET45.csproj", "{CDBBC579-4958-42DB-9BD6-F0D0EC441106}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomFactoryDemo_NET45", "Examples\PropertyGrid\CustomFactoryDemo\CustomFactoryDemo_NET45.csproj", "{CDBBC579-4958-42DB-9BD6-F0D0EC441106}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{E81E0120-1158-4EFE-B443-CF8B70C4F190}"
 EndProject

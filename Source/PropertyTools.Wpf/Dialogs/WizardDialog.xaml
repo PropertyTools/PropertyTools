@@ -10,6 +10,6 @@
     </StackPanel>
     <Border DockPanel.Dock="Top" Background="White" BorderBrush="Black" BorderThickness="0 0 0 1" Height="80"></Border>
     <Border DockPanel.Dock="Left" Width="140" />
-    <local:PropertyGrid x:Name="propertyControl1" Margin="16" />
+    <local:PropertyGrid x:Name="PropertyGrid1" Margin="16" />
   </DockPanel>
 </Window>

@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pt="clr-namespace:PropertyTools.Wpf" Title="Properties"
         Height="400" Width="700" MinWidth="480" MinHeight="320" MaxWidth="800" MaxHeight="800" ResizeMode="CanResizeWithGrip"
         SizeToContent="WidthAndHeight" WindowStyle="SingleBorderWindow" WindowState="Normal"
-        WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=propertyControl1}"
+        WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=PropertyGrid1}"
         ShowInTaskbar="False">
   <Window.Resources>
     <Style TargetType="Button">
@@ -18,6 +18,6 @@
       <Button Name="CloseButton" Click="CloseButtonClick" Content="Close" />
       <Button Name="HelpButton" Click="HelpButtonClick" Content="Help" />
     </StackPanel>
-    <pt:PropertyGrid x:Name="propertyControl1" SelectedObject="{Binding}" Margin="8" />
+    <pt:PropertyGrid x:Name="PropertyGrid1" SelectedObject="{Binding}" Margin="8" />
   </DockPanel>
 </Window>

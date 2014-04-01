@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="PropertyTools">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainWindow.xaml.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -24,14 +24,27 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   AssemblyInfo.cs
+//   Interaction logic for MainWindow.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System.Reflection;
 using System.Windows;
 
-[assembly: AssemblyTitle("PropertyControl simple demo")]
-[assembly: AssemblyDescription("")]
+namespace PropertyGridDemo
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+            DataContext = new MainViewModel();
+        }
 
-[assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
+        private void FileExitClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+    }
+}

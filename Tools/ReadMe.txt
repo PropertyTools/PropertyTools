@@ -8,7 +8,3 @@ Lynx toolkit
 NuGet
   NuGet command line bootstrapper
   http://nuget.codeplex.com/
-
-Pepita
-  Utilities for creating and retrieving nuget packages as part of a build
-  http://code.google.com/p/pepita/

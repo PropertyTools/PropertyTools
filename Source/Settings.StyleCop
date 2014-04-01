@@ -4,13 +4,22 @@
       <Value>hsv</Value>
     </CollectionProperty>
   </GlobalSettings>
+  <Parsers>
+    <Parser ParserId="StyleCop.CSharp.CsParser">
+      <ParserSettings>
+        <CollectionProperty Name="GeneratedFileFilters">
+          <Value>TemporaryGeneratedFile_.*\.cs$</Value>
+        </CollectionProperty>
+      </ParserSettings>
+    </Parser>
+  </Parsers>
   <Analyzers>
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
       <AnalyzerSettings>
         <StringProperty Name="CompanyName">PropertyTools</StringProperty>
         <StringProperty Name="Copyright">The MIT License (MIT)
 
-Copyright (c) 2012 Oystein Bjorke
+Copyright (c) 2014 PropertyTools contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the
@@ -33,13 +42,4 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</StringProperty>
       </AnalyzerSettings>
     </Analyzer>
   </Analyzers>
-  <Parsers>
-    <Parser ParserId="StyleCop.CSharp.CsParser">
-      <ParserSettings>
-        <CollectionProperty Name="GeneratedFileFilters">
-          <Value>TemporaryGeneratedFile_.*\.cs$</Value>
-        </CollectionProperty>
-      </ParserSettings>
-    </Parser>
-  </Parsers>
 </StyleCopSettings>

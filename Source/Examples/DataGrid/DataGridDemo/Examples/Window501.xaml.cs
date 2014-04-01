@@ -30,6 +30,8 @@
 
 namespace DataGridDemo
 {
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// Interaction logic for Window501.xaml
     /// </summary>
@@ -40,7 +42,39 @@ namespace DataGridDemo
         /// </summary>
         public Window501()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+
+            this.ItemsSource = new ObservableCollection<ObservableCollection<int>>
+                                {
+                                    new ObservableCollection<int>
+                                        {
+                                            0,
+                                            1,
+                                            2,
+                                        },
+                                    new ObservableCollection<int>
+                                        {
+                                            10,
+                                            11,
+                                            12,
+                                        },
+                                    new ObservableCollection<int>
+                                        {
+                                            20,
+                                            21,
+                                            22
+                                        },
+                                    new ObservableCollection<int>
+                                        {
+                                            30,
+                                            31,
+                                            32
+                                        },
+                                };
+
+            this.DataContext = this;
         }
+
+        public ObservableCollection<ObservableCollection<int>> ItemsSource { get; set; }
     }
 }

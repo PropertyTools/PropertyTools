@@ -28,12 +28,8 @@
 namespace DataGridDemo
 {
     using System;
-    using System.ComponentModel;
-    using System.Globalization;
     using System.Text.RegularExpressions;
 
-    //[TypeConverter(typeof(MassConverter))]
-    //[Serializable]
     public struct Mass
     {
         public static Mass Kilogram = new Mass(1);
@@ -62,14 +58,17 @@ namespace DataGridDemo
         {
             return new Mass(x.value - y.value);
         }
+
         public static Mass operator *(double x, Mass y)
         {
             return new Mass(x * y.value);
         }
+
         public static Mass operator *(Mass x, double y)
         {
             return new Mass(x.value * y);
         }
+
         public static Mass operator /(Mass x, double y)
         {
             return new Mass(x.value / y);

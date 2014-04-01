@@ -5,6 +5,6 @@
         Title="ObservableCollection&lt;ExampleObject&gt;" Height="450" Width="900"
         FocusManager.FocusedElement="{Binding ElementName=grid1}">
     <Grid>
-        <p:DataGrid x:Name="grid1" ItemsSource="{Binding Items100}"/>
+        <p:DataGrid x:Name="grid1" ItemsSource="{Binding ItemsSource}"/>
     </Grid>
 </Window>

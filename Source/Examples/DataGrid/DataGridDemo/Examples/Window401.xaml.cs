@@ -40,7 +40,14 @@ namespace DataGridDemo
         /// </summary>
         public Window401()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.ItemsSource = new[] { 3.0, 7, 9 };
+            this.DataContext = this;
         }
+
+        /// <summary>
+        /// Gets or sets the items.
+        /// </summary>
+        public double[] ItemsSource { get; set; }
     }
 }

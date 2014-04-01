@@ -28,7 +28,10 @@
         <Button Content="List&lt;List&lt;Mass&gt;&gt;" Tag="{x:Type local:Window502}"/>
         <Button Content="List&lt;List&lt;Boolean&gt;&gt;" Tag="{x:Type local:Window503}"/>
         <Button Content="List&lt;List&lt;Color&gt;&gt;" Tag="{x:Type local:Window504}"/>
-        <Button Content="List&lt;List&lt;Enum&gt;&gt;" Tag="{x:Type local:Window505}"/>
+        <Button Content="List&lt;List&lt;Fruit&gt;&gt;" Tag="{x:Type local:Window505}"/>
         <Button Content="List&lt;List&lt;ExampleObject(Invalid case)&gt;&gt;" Tag="{x:Type local:Window506}"/>
+
+        <Separator/>
+        <Button Content="ObservableCollection&lt;ExampleObject&gt; (WPF DataGrid)" Tag="{x:Type local:Window1}"/>
     </StackPanel>
 </Window>

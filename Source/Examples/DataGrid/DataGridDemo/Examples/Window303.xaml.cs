@@ -30,6 +30,9 @@
 
 namespace DataGridDemo
 {
+    using System.Collections.Generic;
+    using System.Windows.Media.Media3D;
+
     /// <summary>
     /// Interaction logic for Window303.xaml
     /// </summary>
@@ -40,7 +43,14 @@ namespace DataGridDemo
         /// </summary>
         public Window303()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.ItemsSource = new List<Vector3D> { new Vector3D(1, 0, 0), new Vector3D(0, 1, 0), new Vector3D(0, 0, 1) };
+            this.DataContext = this;
         }
+
+        /// <summary>
+        /// Gets or sets the items.
+        /// </summary>
+        public IList<Vector3D> ItemsSource { get; set; }
     }
 }

@@ -30,6 +30,8 @@
 
 namespace DataGridDemo
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Interaction logic for Window301.xaml
     /// </summary>
@@ -40,7 +42,14 @@ namespace DataGridDemo
         /// </summary>
         public Window301()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.ItemsSource = new List<int> { 3, 7, 9 };
+            this.DataContext = this;
         }
+
+        /// <summary>
+        /// Gets or sets the items.
+        /// </summary>
+        public IList<int> ItemsSource { get; set; }
     }
 }

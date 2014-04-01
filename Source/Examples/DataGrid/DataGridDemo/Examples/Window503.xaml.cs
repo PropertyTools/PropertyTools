@@ -30,6 +30,8 @@
 
 namespace DataGridDemo
 {
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// Interaction logic for Window503.xaml
     /// </summary>
@@ -40,7 +42,42 @@ namespace DataGridDemo
         /// </summary>
         public Window503()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+
+            this.ItemsSource = new ObservableCollection<ObservableCollection<bool>>
+                                {
+                                    new ObservableCollection<bool>
+                                        {
+                                            true,
+                                            false,
+                                            true,
+                                        },
+                                    new ObservableCollection<bool>
+                                        {
+                                            false,
+                                            false,
+                                            true,
+                                        },
+                                    new ObservableCollection<bool>
+                                        {
+                                            true,
+                                            true,
+                                            false
+                                        },
+                                    new ObservableCollection<bool>
+                                        {
+                                            true,
+                                            false,
+                                            false
+                                        },
+                                };
+
+            this.DataContext = this;
         }
+
+        /// <summary>
+        /// Gets or sets the items.
+        /// </summary>
+        public ObservableCollection<ObservableCollection<bool>> ItemsSource { get; set; }
     }
 }

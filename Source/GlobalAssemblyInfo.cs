@@ -33,7 +33,7 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("PropertyTools for WPF")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyCopyright("Copyright (C) Oystein Bjorke 2012.")]
+[assembly: AssemblyCopyright("Copyright (C) PropertyTools contributors 2014.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

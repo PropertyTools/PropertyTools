@@ -83,7 +83,7 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(new Binding("IsSelected")));
 
         /// <summary>
-        /// Identifies the <see cref="TreeSource"/> dependency property.
+        /// Identifies the <see cref="HierarchySource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TreeSourceProperty = DependencyProperty.Register(
             "HierarchySource",

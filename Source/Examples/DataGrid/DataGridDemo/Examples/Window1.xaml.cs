@@ -27,6 +27,7 @@
 //   Interaction logic for Window1.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 using System.Windows;
 
 namespace DataGridDemo

@@ -27,6 +27,7 @@
 //   Specifies the control type for categories.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     /// <summary>

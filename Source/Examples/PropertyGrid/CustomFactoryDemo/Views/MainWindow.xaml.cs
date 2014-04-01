@@ -27,6 +27,7 @@
 //   Interaction logic for MainWindow.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace CustomFactoryDemo
 {
     /// <summary>

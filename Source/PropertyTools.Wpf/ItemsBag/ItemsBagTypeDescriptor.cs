@@ -27,6 +27,7 @@
 //   Provides a custom type descriptor for the <see cref="ItemsBag" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Collections.Generic;
@@ -43,14 +44,10 @@ namespace PropertyTools.Wpf
         private readonly ItemsBag bag;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsBagTypeDescriptor"/> class.
+        /// Initializes a new instance of the <see cref="ItemsBagTypeDescriptor" /> class.
         /// </summary>
-        /// <param name="parent">
-        /// The parent.
-        /// </param>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
+        /// <param name="parent">The parent.</param>
+        /// <param name="instance">The instance.</param>
         public ItemsBagTypeDescriptor(ICustomTypeDescriptor parent, object instance)
             : base(parent)
         {
@@ -60,7 +57,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Get the properties of the items bag.
         /// </summary>
-        /// <returns> The property descriptor collection. </returns>
+        /// <returns>
+        /// The property descriptor collection.
+        /// </returns>
         public override PropertyDescriptorCollection GetProperties()
         {
             var result = new List<PropertyDescriptor>();

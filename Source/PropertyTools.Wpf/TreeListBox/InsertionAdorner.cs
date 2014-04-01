@@ -27,6 +27,7 @@
 //   Provides an insertion bar adorner.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -36,9 +37,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Provides an insertion bar adorner.
     /// </summary>
-    /// <remarks>
-    /// See also <a href="http://bea.stollnitz.com/blog/?p=53">blog post</a>.
-    /// </remarks>
+    /// <remarks>See also <a href="http://bea.stollnitz.com/blog/?p=53">blog post</a>.</remarks>
     public class InsertionAdorner : Adorner
     {
         /// <summary>
@@ -86,20 +85,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InsertionAdorner"/> class.
+        /// Initializes a new instance of the <see cref="InsertionAdorner" /> class.
         /// </summary>
-        /// <param name="isSeparatorHorizontal">
-        /// if set to <c>true</c> [is separator horizontal].
-        /// </param>
-        /// <param name="isInFirstHalf">
-        /// if set to <c>true</c> [is in first half].
-        /// </param>
-        /// <param name="adornedElement">
-        /// The adorned element.
-        /// </param>
-        /// <param name="adornerLayer">
-        /// The adorner layer.
-        /// </param>
+        /// <param name="isSeparatorHorizontal">if set to <c>true</c> [is separator horizontal].</param>
+        /// <param name="isInFirstHalf">if set to <c>true</c> [is in first half].</param>
+        /// <param name="adornedElement">The adorned element.</param>
+        /// <param name="adornerLayer">The adorner layer.</param>
         public InsertionAdorner(
             bool isSeparatorHorizontal, bool isInFirstHalf, UIElement adornedElement, AdornerLayer adornerLayer)
             : base(adornedElement)
@@ -128,9 +119,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// When overridden in a derived class, participates in rendering operations that are directed by the layout system. The rendering instructions for this element are not used directly when this method is invoked, and are instead preserved for later asynchronous use by layout and drawing.
         /// </summary>
-        /// <param name="drawingContext">
-        /// The drawing instructions for a specific element. This context is provided to the layout system.
-        /// </param>
+        /// <param name="drawingContext">The drawing instructions for a specific element. This context is provided to the layout system.</param>
         protected override void OnRender(DrawingContext drawingContext)
         {
             // This draws one line and two triangles at each end of the line.
@@ -155,12 +144,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Calculates the start and end point.
         /// </summary>
-        /// <param name="startPoint">
-        /// The start point.
-        /// </param>
-        /// <param name="endPoint">
-        /// The end point.
-        /// </param>
+        /// <param name="startPoint">The start point.</param>
+        /// <param name="endPoint">The end point.</param>
         private void CalculateStartAndEndPoint(out Point startPoint, out Point endPoint)
         {
             startPoint = new Point();
@@ -192,15 +177,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Draws the triangle.
         /// </summary>
-        /// <param name="drawingContext">
-        /// The drawing context.
-        /// </param>
-        /// <param name="origin">
-        /// The origin.
-        /// </param>
-        /// <param name="angle">
-        /// The angle.
-        /// </param>
+        /// <param name="drawingContext">The drawing context.</param>
+        /// <param name="origin">The origin.</param>
+        /// <param name="angle">The angle.</param>
         private void DrawTriangle(DrawingContext drawingContext, Point origin, double angle)
         {
             drawingContext.PushTransform(new TranslateTransform(origin.X, origin.Y));

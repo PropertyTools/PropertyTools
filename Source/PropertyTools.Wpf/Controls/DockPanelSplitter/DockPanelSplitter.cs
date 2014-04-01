@@ -27,6 +27,7 @@
 //   Represents a control that lets the user change the size of elements in a <see cref="DockPanel" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -40,14 +41,14 @@ namespace PropertyTools.Wpf
     public class DockPanelSplitter : Control
     {
         /// <summary>
-        /// The proportional resize property.
+        /// Identifies the <see cref="ProportionalResize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ProportionalResizeProperty =
             DependencyProperty.Register(
                 "ProportionalResize", typeof(bool), typeof(DockPanelSplitter), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// The thickness property.
+        /// Identifies the <see cref="Thickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
             "Thickness", typeof(double), typeof(DockPanelSplitter), new UIPropertyMetadata(4.0, ThicknessChanged));
@@ -125,9 +126,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether to resize elements proportionally.
         /// </summary>
-        /// <remarks>
-        /// Set to false if you don't want the element to be resized when the parent is resized.
-        /// </remarks>
+        /// <remarks>Set to <c>false</c> if you don't want the element to be resized when the parent is resized.</remarks>
         public bool ProportionalResize
         {
             get
@@ -144,7 +143,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the thickness (height or width, depending on orientation).
         /// </summary>
-        /// <value> The thickness. </value>
+        /// <value>The thickness.</value>
         public double Thickness
         {
             get
@@ -159,11 +158,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseDown" /> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.</param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             if (!this.IsEnabled)
@@ -187,11 +184,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseEnter"/> attached event is raised on this element. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseEnter" /> attached event is raised on this element. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data.</param>
         protected override void OnMouseEnter(MouseEventArgs e)
         {
             base.OnMouseEnter(e);
@@ -204,11 +199,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseMove"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseMove" /> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs" /> that contains the event data.</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             if (this.IsMouseCaptured)
@@ -243,11 +236,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseUp"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseUp" /> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the mouse button was released.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. The event data reports that the mouse button was released.</param>
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             if (this.IsMouseCaptured)
@@ -261,12 +252,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The dock changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         private static void DockChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((DockPanelSplitter)d).UpdateHeightOrWidth();
@@ -275,12 +262,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The thickness changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         private static void ThicknessChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((DockPanelSplitter)d).UpdateHeightOrWidth();
@@ -289,12 +272,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Adjusts the height.
         /// </summary>
-        /// <param name="dy">
-        /// The dy.
-        /// </param>
-        /// <param name="dock">
-        /// The dock.
-        /// </param>
+        /// <param name="dy">The dy.</param>
+        /// <param name="dock">The dock.</param>
         /// <returns>
         /// The adjust height.
         /// </returns>
@@ -314,12 +293,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Adjusts the width.
         /// </summary>
-        /// <param name="dx">
-        /// The dx.
-        /// </param>
-        /// <param name="dock">
-        /// The dock.
-        /// </param>
+        /// <param name="dx">The dx.</param>
+        /// <param name="dock">The dock.</param>
         /// <returns>
         /// The adjust width.
         /// </returns>
@@ -339,12 +314,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when the control is loaded.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void DockPanelSplitterLoaded(object sender, RoutedEventArgs e)
         {
             var dp = this.Parent as Panel;
@@ -367,12 +338,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when the control is unloaded.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void DockPanelSplitterUnloaded(object sender, RoutedEventArgs e)
         {
             var dp = this.Parent as Panel;
@@ -388,12 +355,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when the parent element size is changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.SizeChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.SizeChangedEventArgs" /> instance containing the event data.</param>
         private void ParentSizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (!this.ProportionalResize)
@@ -427,9 +390,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets the height of the target.
         /// </summary>
-        /// <param name="newHeight">
-        /// The new height.
-        /// </param>
+        /// <param name="newHeight">The new height.</param>
         private void SetTargetHeight(double newHeight)
         {
             if (newHeight < this.element.MinHeight)
@@ -457,9 +418,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets the width of the target.
         /// </summary>
-        /// <param name="newWidth">
-        /// The new width.
-        /// </param>
+        /// <param name="newWidth">The new width.</param>
         private void SetTargetWidth(double newWidth)
         {
             if (newWidth < this.element.MinWidth)

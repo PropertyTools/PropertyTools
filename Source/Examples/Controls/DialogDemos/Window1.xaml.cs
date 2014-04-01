@@ -27,6 +27,7 @@
 //   Interaction logic for Window1.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 using System;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -85,7 +86,6 @@ namespace DialogDemos
             dlg.ShowDialog();
         }
     }
-
 
     public enum StartupAction
     {

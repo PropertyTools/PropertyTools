@@ -27,6 +27,7 @@
 //   Defines a data template for the specified type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -45,14 +46,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypeEditor"/> class.
+        /// Initializes a new instance of the <see cref="TypeEditor" /> class.
         /// </summary>
-        /// <param name="editedType">
-        /// Type to edit.
-        /// </param>
-        /// <param name="editorTemplate">
-        /// The data template.
-        /// </param>
+        /// <param name="editedType">Type to edit.</param>
+        /// <param name="editorTemplate">The data template.</param>
         public TypeEditor(Type editedType, DataTemplate editorTemplate)
         {
             this.EditedType = editedType;
@@ -72,9 +69,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether the specified type is assignable to the EditedType.
         /// </summary>
-        /// <param name="type">
-        /// The type.
-        /// </param>
+        /// <param name="type">The type.</param>
         /// <returns>
         /// <c>true</c> if the specified type is assignable; otherwise, <c>false</c> .
         /// </returns>

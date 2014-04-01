@@ -41,7 +41,7 @@ namespace PropertyTools.Wpf
     public class ScreenGrab
     {
         /// <summary>
-        /// Initializes static members of the <see cref="ScreenGrab"/> class.
+        /// Initializes static members of the <see cref="ScreenGrab" /> class.
         /// </summary>
         static ScreenGrab()
         {
@@ -65,7 +65,9 @@ namespace PropertyTools.Wpf
         /// Gets the command property.
         /// </summary>
         /// <param name="element">The element.</param>
-        /// <returns>A KeyCommand.</returns>
+        /// <returns>
+        /// A KeyCommand.
+        /// </returns>
         public static ICommand GetCommand(UIElement element)
         {
             return element != null ? (ICommand)element.GetValue(CommandProperty) : null;
@@ -75,7 +77,9 @@ namespace PropertyTools.Wpf
         /// Gets the gesture property.
         /// </summary>
         /// <param name="element">The element.</param>
-        /// <returns>A KeyGesture.</returns>
+        /// <returns>
+        /// A KeyGesture.
+        /// </returns>
         public static KeyGesture GetGesture(UIElement element)
         {
             return element != null ? (KeyGesture)element.GetValue(GestureProperty) : null;

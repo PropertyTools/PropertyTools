@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a CommandBinding based on delegates.
+//   Provides a command binding that passes to command parameter to delegates.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

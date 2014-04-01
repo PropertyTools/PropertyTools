@@ -27,6 +27,7 @@
 //   Specifies that the property is resettable.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -34,13 +35,11 @@ namespace PropertyTools.DataAnnotations
     /// <summary>
     /// Specifies that the property is resettable.
     /// </summary>
-    /// <remarks>
-    /// Properties marked with [Resettable] will have a reset button.
+    /// <remarks>Properties marked with [Resettable] will have a reset button.
     /// The button will reset the property to the configured reset value.
     /// Example usage:
     /// [Resettable]                  // Button label is "Reset"
-    /// [Resettable("Default")]       // Button label is "Default"
-    /// </remarks>
+    /// [Resettable("Default")]       // Button label is "Default"</remarks>
     [AttributeUsage(AttributeTargets.Property)]
     public class ResettableAttribute : Attribute
     {
@@ -53,11 +52,9 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ResettableAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ResettableAttribute" /> class.
         /// </summary>
-        /// <param name="label">
-        /// The label.
-        /// </param>
+        /// <param name="label">The label.</param>
         public ResettableAttribute(string label)
         {
             this.ButtonLabel = label;

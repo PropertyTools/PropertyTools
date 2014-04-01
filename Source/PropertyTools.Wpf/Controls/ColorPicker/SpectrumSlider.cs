@@ -27,6 +27,7 @@
 //   The spectrum slider.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -36,16 +37,14 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// The spectrum slider.
     /// </summary>
-    /// <remarks>
-    /// Original code by Ury Jamshy, 21 July 2011.
+    /// <remarks>Original code by Ury Jamshy, 21 July 2011.
     /// See http://www.codeproject.com/KB/WPF/ColorPicker010.aspx
     /// The Code Project Open License (CPOL)
-    /// http://www.codeproject.com/info/cpol10.aspx
-    /// </remarks>
+    /// http://www.codeproject.com/info/cpol10.aspx</remarks>
     public class SpectrumSlider : SliderEx
     {
         /// <summary>
-        /// The hue property.
+        /// Identifies the <see cref="Hue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
             "Hue",
@@ -95,12 +94,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on value changed.
         /// </summary>
-        /// <param name="oldValue">
-        /// The old value.
-        /// </param>
-        /// <param name="newValue">
-        /// The new value.
-        /// </param>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
         protected override void OnValueChanged(double oldValue, double newValue)
         {
             base.OnValueChanged(oldValue, newValue);
@@ -116,12 +111,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on hue property changed.
         /// </summary>
-        /// <param name="relatedObject">
-        /// The related object.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="relatedObject">The related object.</param>
+        /// <param name="e">The e.</param>
         private static void OnHuePropertyChanged(DependencyObject relatedObject, DependencyPropertyChangedEventArgs e)
         {
             var spectrumSlider = relatedObject as SpectrumSlider;

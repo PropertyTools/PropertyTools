@@ -27,6 +27,7 @@
 //   Addition, subtraction and multiplication for all kinds of objects (by reflection to invoke the operators).
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -44,7 +45,9 @@ namespace PropertyTools.Wpf
         /// <param name="s">The arguments.</param>
         /// <param name="provider">The format provider.</param>
         /// <param name="result">The result.</param>
-        /// <returns><c>true</c> if parsing successful, <c>false</c> otherwise.</returns>
+        /// <returns>
+        /// <c>true</c> if parsing successful, <c>false</c> otherwise.
+        /// </returns>
         public static bool TryParse(Type type, string s, IFormatProvider provider, out object result)
         {
             try
@@ -76,15 +79,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Performs addition with the op_Addition operator. A return value indicates whether the addition succeeded or failed.
         /// </summary>
-        /// <param name="o1">
-        /// The first object.
-        /// </param>
-        /// <param name="o2">
-        /// The second object.
-        /// </param>
-        /// <param name="result">
-        /// The sum.
-        /// </param>
+        /// <param name="o1">The first object.</param>
+        /// <param name="o2">The second object.</param>
+        /// <param name="result">The sum.</param>
         /// <returns>
         /// True if the addition succeeded.
         /// </returns>
@@ -120,15 +117,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Performs multiplication with the op_Multiplication operator. A return value indicates whether the addition succeeded or failed.
         /// </summary>
-        /// <param name="o1">
-        /// The first object.
-        /// </param>
-        /// <param name="o2">
-        /// The second object.
-        /// </param>
-        /// <param name="result">
-        /// The product.
-        /// </param>
+        /// <param name="o1">The first object.</param>
+        /// <param name="o2">The second object.</param>
+        /// <param name="result">The product.</param>
         /// <returns>
         /// True if the multiplication succeeded.
         /// </returns>
@@ -172,15 +163,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Performs subtraction with the op_Subtraction operator. A return value indicates whether the addition succeeded or failed.
         /// </summary>
-        /// <param name="o1">
-        /// The first object.
-        /// </param>
-        /// <param name="o2">
-        /// The second object.
-        /// </param>
-        /// <param name="result">
-        /// The difference.
-        /// </param>
+        /// <param name="o1">The first object.</param>
+        /// <param name="o2">The second object.</param>
+        /// <param name="result">The difference.</param>
         /// <returns>
         /// True if the subtraction succeeded.
         /// </returns>
@@ -204,18 +189,10 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Tries to invoke invoke the specified method.
         /// </summary>
-        /// <param name="methodName">
-        /// The method name.
-        /// </param>
-        /// <param name="o1">
-        /// The o 1.
-        /// </param>
-        /// <param name="o2">
-        /// The o 2.
-        /// </param>
-        /// <param name="result">
-        /// The result.
-        /// </param>
+        /// <param name="methodName">The method name.</param>
+        /// <param name="o1">The o 1.</param>
+        /// <param name="o2">The o 2.</param>
+        /// <param name="result">The result.</param>
         /// <returns>
         /// The try invoke.
         /// </returns>

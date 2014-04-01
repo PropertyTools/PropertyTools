@@ -27,6 +27,7 @@
 //   Defines functionality to create controls for a <see cref="PropertyGrid" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -39,12 +40,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the control for a property.
         /// </summary>
-        /// <param name="propertyItem">
-        /// The property item.
-        /// </param>
-        /// <param name="options">
-        /// The options.
-        /// </param>
+        /// <param name="propertyItem">The property item.</param>
+        /// <param name="options">The options.</param>
         /// <returns>
         /// A element.
         /// </returns>

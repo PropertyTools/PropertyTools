@@ -27,6 +27,7 @@
 //   Defines row-specific properties that apply to DataGrid elements.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     /// <summary>

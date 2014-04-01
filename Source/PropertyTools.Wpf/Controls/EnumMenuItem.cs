@@ -27,6 +27,7 @@
 //   Represents a menu item with a SelectedValue property that can bind to Enum values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -39,7 +40,7 @@ namespace PropertyTools.Wpf
     public class EnumMenuItem : MenuItem
     {
         /// <summary>
-        /// The selected value property.
+        /// Identifies the <see cref="SelectedValue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedValueProperty = DependencyProperty.Register(
             "SelectedValue",
@@ -51,7 +52,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the selected value.
         /// </summary>
-        /// <value> The selected value. </value>
+        /// <value>The selected value.</value>
         public object SelectedValue
         {
             get
@@ -68,12 +69,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The selected value changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         private static void SelectedValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((EnumMenuItem)d).OnSelectedValueChanged();
@@ -82,12 +79,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when a menu item is clicked.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void ItemClick(object sender, RoutedEventArgs e)
         {
             var newValue = ((MenuItem)sender).Tag as Enum;

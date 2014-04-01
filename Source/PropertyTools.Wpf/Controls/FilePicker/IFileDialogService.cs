@@ -27,6 +27,7 @@
 //   The file dialog interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     /// <summary>
@@ -37,15 +38,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Shows the open file dialog.
         /// </summary>
-        /// <param name="filename">
-        /// The filename.
-        /// </param>
-        /// <param name="filter">
-        /// The filter.
-        /// </param>
-        /// <param name="defaultExtension">
-        /// The default extension.
-        /// </param>
+        /// <param name="filename">The filename.</param>
+        /// <param name="filter">The filter.</param>
+        /// <param name="defaultExtension">The default extension.</param>
         /// <returns>
         /// True if the user pressed ok.
         /// </returns>
@@ -54,15 +49,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Shows the save file dialog.
         /// </summary>
-        /// <param name="filename">
-        /// The filename.
-        /// </param>
-        /// <param name="filter">
-        /// The filter.
-        /// </param>
-        /// <param name="defaultExtension">
-        /// The default extension.
-        /// </param>
+        /// <param name="filename">The filename.</param>
+        /// <param name="filter">The filter.</param>
+        /// <param name="defaultExtension">The default extension.</param>
         /// <returns>
         /// True if the user pressed ok.
         /// </returns>

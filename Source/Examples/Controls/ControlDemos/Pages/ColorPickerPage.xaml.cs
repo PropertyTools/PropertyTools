@@ -23,7 +23,11 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Interaction logic for ColorPickerPage
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace ControlDemos
 {
     using System.ComponentModel;
@@ -32,7 +36,7 @@ namespace ControlDemos
     using PropertyTools.Wpf;
 
     /// <summary>
-    ///     Interaction logic for ColorPickerPage
+    /// Interaction logic for ColorPickerPage
     /// </summary>
     public partial class ColorPickerPage : INotifyPropertyChanged
     {
@@ -57,7 +61,7 @@ namespace ControlDemos
         private Color? color4;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorPickerPage"/> class.
+        /// Initializes a new instance of the <see cref="ColorPickerPage" /> class.
         /// </summary>
         public ColorPickerPage()
         {
@@ -151,9 +155,7 @@ namespace ControlDemos
         /// <summary>
         /// Raises the property changed event.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         protected void RaisePropertyChanged(string property)
         {
             PropertyChangedEventHandler handler = this.PropertyChanged;

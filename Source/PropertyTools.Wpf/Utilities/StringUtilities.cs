@@ -34,16 +34,14 @@ namespace PropertyTools.Wpf
     using System.Text;
 
     /// <summary>
-    /// Provides utilities related to <see cref="string"/>s.
+    /// Provides utilities related to <see cref="string" />s.
     /// </summary>
     public class StringUtilities
     {
         /// <summary>
         /// Converts a string from camel case to a string where space is inserted before each capital letter.
         /// </summary>
-        /// <param name="variableName">
-        /// Name of the variable.
-        /// </param>
+        /// <param name="variableName">Name of the variable.</param>
         /// <returns>
         /// A string.
         /// </returns>

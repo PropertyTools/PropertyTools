@@ -2,7 +2,7 @@
 // <copyright file="ItemsGridControlFactory.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
-//   Copyright (c) 2012 Oystein Bjorke
+//   Copyright (c) 2014 PropertyTools contributors
 //   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
@@ -27,6 +27,7 @@
 //   Creates display and edit controls for the ItemsGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf.ItemsGrid
 {
     using System;
@@ -88,12 +89,13 @@ namespace PropertyTools.Wpf.ItemsGrid
             return CreateTextBox(property);
         }
 
-
         /// <summary>
         /// Creates the text block control.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// 
+        /// </returns>
         protected virtual FrameworkElement CreateTextBlockControl(PropertyDefinition property)
         {
             var tb = new TextBlock
@@ -111,7 +113,9 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Creates the check box control.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// 
+        /// </returns>
         protected virtual FrameworkElement CreateCheckBoxControl(PropertyDefinition property)
         {
             var c = new CheckBox { VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = property.HorizontalAlignment };
@@ -123,7 +127,9 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Creates the color picker control.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// 
+        /// </returns>
         protected virtual FrameworkElement CreateColorPickerControl(PropertyDefinition property)
         {
             var c = new ColorPicker2 { VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Stretch };
@@ -151,7 +157,9 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Creates the combo box.
         /// </summary>
         /// <param name="d">The d.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// 
+        /// </returns>
         protected virtual FrameworkElement CreateComboBox(PropertyDefinition d)
         {
             var c = new ComboBox { IsEditable = d.IsEditable, Focusable = false, Margin = new Thickness(0, 0, -1, -1) };
@@ -170,7 +178,9 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Creates the text box.
         /// </summary>
         /// <param name="d">The d.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// 
+        /// </returns>
         protected virtual FrameworkElement CreateTextBox(PropertyDefinition d)
         {
             var tb = new TextBox

@@ -2,7 +2,7 @@
 // <copyright file="PropertyDefinition.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
-//   Copyright (c) 2012 Oystein Bjorke
+//   Copyright (c) 2014 PropertyTools contributors
 //   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
@@ -27,6 +27,7 @@
 //   Describes a property to be presented in a column (or row).
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf.ItemsGrid
 {
     using System;
@@ -108,7 +109,7 @@ namespace PropertyTools.Wpf.ItemsGrid
         public bool IsEditable { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyDefinition"/> class.
+        /// Initializes a new instance of the <see cref="PropertyDefinition" /> class.
         /// </summary>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         public PropertyDefinition(PropertyDescriptor propertyDescriptor)
@@ -141,11 +142,9 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// <summary>
         /// Gets the first attribute of the specified type.
         /// </summary>
-        /// <typeparam name="T">
-        /// Type of attribute.
-        /// </typeparam>
+        /// <typeparam name="T">Type of attribute.</typeparam>
         /// <returns>
-        /// The attribute, or null.
+        /// The attribute, or <c>null</c>.
         /// </returns>
         public T GetAttribute<T>() where T : Attribute
         {
@@ -165,7 +164,9 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// Creates the binding.
         /// </summary>
         /// <param name="trigger">The trigger.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// 
+        /// </returns>
         public Binding CreateBinding(UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
         {
             var bindingMode = this.Descriptor.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
@@ -196,7 +197,9 @@ namespace PropertyTools.Wpf.ItemsGrid
         /// <summary>
         /// Creates the one way binding.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// 
+        /// </returns>
         public Binding CreateOneWayBinding()
         {
             var b = this.CreateBinding();

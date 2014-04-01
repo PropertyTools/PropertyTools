@@ -27,6 +27,7 @@
 //   Formats the TimeSpan to a string.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -35,9 +36,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Formats the TimeSpan to a string.
     /// </summary>
-    /// <remarks>
-    /// See http://www.java2s.com/Open-Source/CSharp/Sound-Mp3/stamp/Microsoft/Office/PowerPoint/STAMP/Core/TimeSpanFormatter.cs.htm
-    /// </remarks>
+    /// <remarks>See http://www.java2s.com/Open-Source/CSharp/Sound-Mp3/stamp/Microsoft/Office/PowerPoint/STAMP/Core/TimeSpanFormatter.cs.htm</remarks>
     public class TimeSpanFormatter : IFormatProvider, ICustomFormatter
     {
         /// <summary>
@@ -57,17 +56,11 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Converts the value of a specified timespan to an equivalent string representation using specified format and culture-specific formatting information.
         /// </summary>
-        /// <param name="format">
-        /// A format string containing formatting specifications.
-        /// </param>
-        /// <param name="arg">
-        /// An object to format.
-        /// </param>
-        /// <param name="formatProvider">
-        /// An object that supplies format information about the current instance.
-        /// </param>
+        /// <param name="format">A format string containing formatting specifications.</param>
+        /// <param name="arg">An object to format.</param>
+        /// <param name="formatProvider">An object that supplies format information about the current instance.</param>
         /// <returns>
-        /// The string representation of the value of <paramref name="arg"/> , formatted as specified by <paramref name="format"/> and <paramref name="formatProvider"/> .
+        /// The string representation of the value of <paramref name="arg" /> , formatted as specified by <paramref name="format" /> and <paramref name="formatProvider" /> .
         /// </returns>
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {
@@ -89,11 +82,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Returns an object that provides formatting services for the specified type.
         /// </summary>
-        /// <param name="formatType">
-        /// An object that specifies the type of format object to return.
-        /// </param>
+        /// <param name="formatType">An object that specifies the type of format object to return.</param>
         /// <returns>
-        /// An instance of the object specified by <paramref name="formatType"/> , if the <see cref="T:System.IFormatProvider"/> implementation can supply that type of object; otherwise, null.
+        /// An instance of the object specified by <paramref name="formatType" /> , if the <see cref="T:System.IFormatProvider" /> implementation can supply that type of object; otherwise, <c>null</c>.
         /// </returns>
         public object GetFormat(Type formatType)
         {
@@ -108,12 +99,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Evaluates a match.
         /// </summary>
-        /// <param name="match">
-        /// The match.
-        /// </param>
-        /// <param name="timeSpan">
-        /// The time span.
-        /// </param>
+        /// <param name="match">The match.</param>
+        /// <param name="timeSpan">The time span.</param>
         /// <returns>
         /// The evaluate match.
         /// </returns>
@@ -175,9 +162,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the match evaluator for the specified time span.
         /// </summary>
-        /// <param name="timeSpan">
-        /// The time span.
-        /// </param>
+        /// <param name="timeSpan">The time span.</param>
         /// <returns>
         /// The match evaluator.
         /// </returns>

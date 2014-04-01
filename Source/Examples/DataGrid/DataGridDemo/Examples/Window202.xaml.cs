@@ -27,6 +27,7 @@
 //   Interaction logic for Window202.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace DataGridDemo
 {
     /// <summary>
@@ -35,7 +36,7 @@ namespace DataGridDemo
     public partial class Window202
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Window202"/> class.
+        /// Initializes a new instance of the <see cref="Window202" /> class.
         /// </summary>
         public Window202()
         {

@@ -27,6 +27,7 @@
 //   Provides a base class implementing INotifyPropertyChanged.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools
 {
     using System;
@@ -48,15 +49,9 @@ namespace PropertyTools
         /// <summary>
         /// Called when the specified property has been changed.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property.
-        /// </param>
-        /// <param name="oldValue">
-        /// The old value.
-        /// </param>
-        /// <param name="newValue">
-        /// The new value.
-        /// </param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
         protected virtual void OnPropertyChanged(string propertyName, object oldValue, object newValue)
         {
             this.RaisePropertyChanged(propertyName);
@@ -65,9 +60,7 @@ namespace PropertyTools
         /// <summary>
         /// Raises the property changed event.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property.
-        /// </param>
+        /// <param name="propertyName">Name of the property.</param>
         protected void RaisePropertyChanged(string propertyName)
         {
             var handler = this.PropertyChanged;
@@ -80,12 +73,8 @@ namespace PropertyTools
         /// <summary>
         /// Raises the property changed event for the property specified by a property expression.
         /// </summary>
-        /// <typeparam name="TProperty">
-        /// The type of the property.
-        /// </typeparam>
-        /// <param name="propertyExpression">
-        /// The property expression.
-        /// </param>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="propertyExpression">The property expression.</param>
         protected void RaisePropertyChanged<TProperty>(Expression<Func<TProperty>> propertyExpression)
         {
             this.RaisePropertyChanged(ExpressionUtilities.GetName(propertyExpression));
@@ -94,24 +83,14 @@ namespace PropertyTools
         /// <summary>
         /// Sets the property value.
         /// </summary>
-        /// <typeparam name="T">
-        /// The type of the property.
-        /// </typeparam>
-        /// <param name="field">
-        /// The field.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="propertyName">
-        /// Name of the property.
-        /// </param>
+        /// <typeparam name="T">The type of the property.</typeparam>
+        /// <param name="field">The field.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="propertyName">Name of the property.</param>
         /// <returns>
         /// True if the property was set.
         /// </returns>
-        /// <remarks>
-        /// This method uses the CallerMemberNameAttribute to determine the property name.
-        /// </remarks>
+        /// <remarks>This method uses the CallerMemberNameAttribute to determine the property name.</remarks>
 #if NET45
         protected bool SetValue<T>(ref T field, T value, [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
 #else
@@ -136,24 +115,14 @@ namespace PropertyTools
         /// <summary>
         /// Sets the property value.
         /// </summary>
-        /// <typeparam name="T">
-        /// The type of the property.
-        /// </typeparam>
-        /// <param name="field">
-        /// The field.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="propertyExpression">
-        /// The property expression.
-        /// </param>
+        /// <typeparam name="T">The type of the property.</typeparam>
+        /// <param name="field">The field.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="propertyExpression">The property expression.</param>
         /// <returns>
         /// True if the property was set.
         /// </returns>
-        /// <remarks>
-        /// This method uses the CallerMemberNameAttribute to determine the property name.
-        /// </remarks>
+        /// <remarks>This method uses the CallerMemberNameAttribute to determine the property name.</remarks>
         protected bool SetValue<T>(ref T field, T value, Expression<Func<T>> propertyExpression)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
@@ -163,9 +132,7 @@ namespace PropertyTools
         /// <summary>
         /// Verifies the property name.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property.
-        /// </param>
+        /// <param name="propertyName">Name of the property.</param>
         [Conditional("DEBUG")]
         private void VerifyProperty(string propertyName)
         {

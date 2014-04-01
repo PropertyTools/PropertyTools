@@ -27,6 +27,7 @@
 //   Specifies that the property should be edited in wide mode.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -46,11 +47,9 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WidePropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="WidePropertyAttribute" /> class.
         /// </summary>
-        /// <param name="showHeader">
-        /// if set to <c>true</c> [show header].
-        /// </param>
+        /// <param name="showHeader">if set to <c>true</c> [show header].</param>
         public WidePropertyAttribute(bool showHeader)
         {
             this.ShowHeader = showHeader;

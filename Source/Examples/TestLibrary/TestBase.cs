@@ -27,6 +27,7 @@
 //   Base class for test objects.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace TestLibrary
 {
     using System.ComponentModel;
@@ -34,10 +35,8 @@ namespace TestLibrary
     /// <summary>
     /// Base class for test objects.
     /// </summary>
-    /// <remarks>
-    /// This class depends on the NotifyPropertyWeaver task.
-    /// All INotifyPropertyChanged events will be weaved into the code as a post-compile build step.
-    /// </remarks>
+    /// <remarks>This class depends on the NotifyPropertyWeaver task.
+    /// All INotifyPropertyChanged events will be weaved into the code as a post-compile build step.</remarks>
     public class TestBase : INotifyPropertyChanged
     {
 #pragma warning disable 67

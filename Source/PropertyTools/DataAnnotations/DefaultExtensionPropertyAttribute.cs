@@ -39,11 +39,9 @@ namespace PropertyTools.DataAnnotations
     public class DefaultExtensionPropertyAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultExtensionPropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="DefaultExtensionPropertyAttribute" /> class.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property that contains the default extension.
-        /// </param>
+        /// <param name="propertyName">Name of the property that contains the default extension.</param>
         public DefaultExtensionPropertyAttribute(string propertyName)
         {
             this.PropertyName = propertyName;

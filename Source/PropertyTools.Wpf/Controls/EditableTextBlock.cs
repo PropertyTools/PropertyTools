@@ -43,7 +43,7 @@ namespace PropertyTools.Wpf
     public class EditableTextBlock : TextBlock
     {
         /// <summary>
-        /// The IsEditing property.
+        /// Identifies the <see cref="IsEditing"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsEditingProperty = DependencyProperty.Register(
             "IsEditing",
@@ -147,9 +147,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Ends the edit.
         /// </summary>
-        /// <param name="commit">
-        /// if set to <c>true</c> [commit].
-        /// </param>
+        /// <param name="commit">if set to <c>true</c> [commit].</param>
         private void EndEdit(bool commit)
         {
             if (this.textBox == null)
@@ -208,12 +206,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// TextBox key down handler.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.Input.KeyEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.Input.KeyEventArgs" /> instance containing the event data.</param>
         private void TextBoxKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -231,12 +225,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// TextBox lost focus handler.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void TextBoxLostFocus(object sender, RoutedEventArgs e)
         {
             this.EndEdit(true);

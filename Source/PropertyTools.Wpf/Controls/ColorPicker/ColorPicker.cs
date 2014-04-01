@@ -27,6 +27,7 @@
 //   Represents a control that lets the user pick a color.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -42,7 +43,7 @@ namespace PropertyTools.Wpf
     public class ColorPicker : ComboBox
     {
         /// <summary>
-        /// The selected color property.
+        /// Identifies the <see cref="SelectedColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
             "SelectedColor",
@@ -83,7 +84,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the selected color.
         /// </summary>
-        /// <value> The color of the selected. </value>
+        /// <value>The color of the selected.</value>
         public Color? SelectedColor
         {
             get
@@ -111,13 +112,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Coerces the value of the <see cref="SelectedColor"/> property.
+        /// Coerces the value of the <see cref="SelectedColor" /> property.
         /// </summary>
-        /// <param name="basevalue">
-        /// The base value.
-        /// </param>
+        /// <param name="basevalue">The base value.</param>
         /// <returns>
-        /// The coerced <see cref="SelectedColor"/> value.
+        /// The coerced <see cref="SelectedColor" /> value.
         /// </returns>
         protected virtual object CoerceSelectedColorValue(object basevalue)
         {
@@ -132,9 +131,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Reports when a combo box's popup opens.
         /// </summary>
-        /// <param name="e">
-        /// The event data for the <see cref="E:System.Windows.Controls.ComboBox.DropDownOpened"/> event.
-        /// </param>
+        /// <param name="e">The event data for the <see cref="E:System.Windows.Controls.ComboBox.DropDownOpened" /> event.</param>
         protected override void OnDropDownOpened(EventArgs e)
         {
             base.OnDropDownOpened(e);
@@ -144,9 +141,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Handles changes in selected color.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected virtual void OnSelectedColorChanged(DependencyPropertyChangedEventArgs e)
         {
         }
@@ -156,7 +151,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="d">The sender.</param>
         /// <param name="basevalue">The base value.</param>
-        /// <returns>The coerced value.</returns>
+        /// <returns>
+        /// The coerced value.
+        /// </returns>
         private static object CoerceSelectedColorValue(DependencyObject d, object basevalue)
         {
             return ((ColorPicker)d).CoerceSelectedColorValue(basevalue);
@@ -165,12 +162,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Handles changes in selected color.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private static void SelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((ColorPicker)d).OnSelectedColorChanged(e);
@@ -180,7 +173,7 @@ namespace PropertyTools.Wpf
         /// Handles the <see cref="E:PredefinedColorPanelSelectionChangedEvent" /> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="SelectionChangedEventArgs" /> instance containing the event data.</param>
         private void OnPredefinedColorPanelSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
             if (this.IsDropDownOpen && !this.colorPickerPanel.IsPickingColor())

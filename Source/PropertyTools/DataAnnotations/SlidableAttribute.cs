@@ -27,6 +27,7 @@
 //   Specifies that the property can be edited by a slider.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -51,34 +52,22 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SlidableAttribute"/> class.
+        /// Initializes a new instance of the <see cref="SlidableAttribute" /> class.
         /// </summary>
-        /// <param name="minimum">
-        /// The minimum.
-        /// </param>
-        /// <param name="maximum">
-        /// The maximum.
-        /// </param>
+        /// <param name="minimum">The minimum.</param>
+        /// <param name="maximum">The maximum.</param>
         public SlidableAttribute(double minimum, double maximum)
             : this(minimum, maximum, 1, 10)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SlidableAttribute"/> class.
+        /// Initializes a new instance of the <see cref="SlidableAttribute" /> class.
         /// </summary>
-        /// <param name="minimum">
-        /// The minimum.
-        /// </param>
-        /// <param name="maximum">
-        /// The maximum.
-        /// </param>
-        /// <param name="smallChange">
-        /// The small change.
-        /// </param>
-        /// <param name="largeChange">
-        /// The large change.
-        /// </param>
+        /// <param name="minimum">The minimum.</param>
+        /// <param name="maximum">The maximum.</param>
+        /// <param name="smallChange">The small change.</param>
+        /// <param name="largeChange">The large change.</param>
         public SlidableAttribute(double minimum, double maximum, double smallChange, double largeChange)
         {
             this.Minimum = minimum;
@@ -88,26 +77,14 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SlidableAttribute"/> class.
+        /// Initializes a new instance of the <see cref="SlidableAttribute" /> class.
         /// </summary>
-        /// <param name="minimum">
-        /// The minimum.
-        /// </param>
-        /// <param name="maximum">
-        /// The maximum.
-        /// </param>
-        /// <param name="smallChange">
-        /// The small change.
-        /// </param>
-        /// <param name="largeChange">
-        /// The large change.
-        /// </param>
-        /// <param name="snapToTicks">
-        /// if set to <c>true</c> [snap to ticks].
-        /// </param>
-        /// <param name="tickFrequency">
-        /// The tick frequency.
-        /// </param>
+        /// <param name="minimum">The minimum.</param>
+        /// <param name="maximum">The maximum.</param>
+        /// <param name="smallChange">The small change.</param>
+        /// <param name="largeChange">The large change.</param>
+        /// <param name="snapToTicks">if set to <c>true</c> [snap to ticks].</param>
+        /// <param name="tickFrequency">The tick frequency.</param>
         public SlidableAttribute(
             double minimum,
             double maximum,

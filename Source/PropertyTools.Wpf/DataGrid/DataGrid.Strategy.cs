@@ -59,17 +59,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Represents the strategy for operations for <see cref="DataGrid"/>.
+        /// Represents the strategy for operations for <see cref="DataGrid" />.
         /// </summary>
         /// <remarks>A strategy wraps operations for DataGrid based on the different data it's ItemsSource binds to.</remarks>
         private abstract class DataGridOperator
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="DataGridOperator"/> class.
+            /// Initializes a new instance of the <see cref="DataGridOperator" /> class.
             /// </summary>
-            /// <param name="owner">
-            /// The owner or this operator.
-            /// </param>
+            /// <param name="owner">The owner or this operator.</param>
             protected DataGridOperator(DataGrid owner)
             {
                 this.Owner = owner;
@@ -84,7 +82,7 @@ namespace PropertyTools.Wpf
             /// Gets the control factory.
             /// </summary>
             /// <remarks>It's the one in Owner.</remarks>
-            protected IDataGridControlFactory ControlFactory 
+            protected IDataGridControlFactory ControlFactory
             {
                 get
                 {
@@ -107,12 +105,8 @@ namespace PropertyTools.Wpf
             /// <summary>
             /// Creates display control.
             /// </summary>
-            /// <param name="cell">
-            ///     The cell reference.
-            /// </param>
-            /// <param name="pd">
-            ///     The <see cref="PropertyDefinition"/>.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
+            /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
             /// <returns>
             /// The display control.
             /// </returns>
@@ -121,30 +115,25 @@ namespace PropertyTools.Wpf
             /// <summary>
             /// Creates edit control.
             /// </summary>
-            /// <param name="cell">
-            ///     The cell reference.
-            /// </param>
-            /// <param name="pd">
-            ///     The <see cref="PropertyDefinition"/>.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
+            /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
             /// <returns>
             /// The edit control.
             /// </returns>
             public abstract FrameworkElement CreateEditControl(CellRef cell, PropertyDefinition pd);
 
             /// <summary>
-            /// Generate column definitions based on <seealso cref="ItemsSource"/>.
+            /// Generate column definitions based on <seealso cref="ItemsSource" />.
             /// </summary>
+            /// <seealso cref="ItemsSource" />
             public abstract void GenerateColumnDefinitions();
 
             /// <summary>
             /// Gets the item in cell.
             /// </summary>
-            /// <param name="cell">
-            ///     The cell reference.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
             /// <returns>
-            /// The <see cref="object"/>.
+            /// The <see cref="object" />.
             /// </returns>
             public abstract object GetItem(CellRef cell);
 
@@ -157,11 +146,9 @@ namespace PropertyTools.Wpf
             public abstract Type GetItemsType();
 
             /// <summary>
-            /// Inserts item to <see cref="DataGrid"/>.
+            /// Inserts item to <see cref="DataGrid" />.
             /// </summary>
-            /// <param name="index">
-            ///     The index.
-            /// </param>
+            /// <param name="index">The index.</param>
             /// <returns>
             /// <c>true</c> if insertion is successful, <c>false</c> otherwise.
             /// </returns>
@@ -170,26 +157,20 @@ namespace PropertyTools.Wpf
             /// <summary>
             /// Sets value to item in cell.
             /// </summary>
-            /// <param name="cell">
-            /// The cell reference.
-            /// </param>
-            /// <param name="value">
-            /// The value.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
+            /// <param name="value">The value.</param>
             public abstract void SetValue(CellRef cell, object value);
         }
 
         /// <summary>
-        /// Represents an operator for <see cref="DataGrid"/> when its ItemsSource is of type <see cref="IList"/>.
+        /// Represents an operator for <see cref="DataGrid" /> when its ItemsSource is of type <see cref="IList" />.
         /// </summary>
         private class ListOperator : DataGridOperator
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="ListOperator"/> class.
+            /// Initializes a new instance of the <see cref="ListOperator" /> class.
             /// </summary>
-            /// <param name="owner">
-            /// The owner.
-            /// </param>
+            /// <param name="owner">The owner.</param>
             public ListOperator(DataGrid owner)
                 : base(owner)
             {
@@ -198,12 +179,8 @@ namespace PropertyTools.Wpf
             /// <summary>
             /// Creates display control.
             /// </summary>
-            /// <param name="cell">
-            ///     The cell reference.
-            /// </param>
-            /// <param name="pd">
-            ///     The <see cref="PropertyDefinition"/>.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
+            /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
             /// <returns>
             /// The display control.
             /// </returns>
@@ -216,12 +193,8 @@ namespace PropertyTools.Wpf
             /// <summary>
             /// Creates edit control.
             /// </summary>
-            /// <param name="cell">
-            ///     The cell reference.
-            /// </param>
-            /// <param name="pd">
-            ///     The <see cref="PropertyDefinition"/>.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
+            /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
             /// <returns>
             /// The edit control.
             /// </returns>
@@ -232,11 +205,12 @@ namespace PropertyTools.Wpf
             }
 
             /// <summary>
-            /// Generate column definitions based on <seealso cref="DataGridOperator.ItemsSource"/>.
+            /// Generate column definitions based on <seealso cref="DataGridOperator.ItemsSource" />.
             /// </summary>
+            /// <seealso cref="DataGridOperator.ItemsSource" />
             /// <remarks>The constraint is that all the items in the ItemsSource's should be of the same type.
-            /// For non built in type, a 
-            /// <code>public static T Parse(string s, IFormatProvider formatProvider)</code> and 
+            /// For non built in type, a
+            /// <code>public static T Parse(string s, IFormatProvider formatProvider)</code> and
             /// <code>public string ToString(string format, IFormatProvider formatProvider)</code> should be defined.
             /// interface type is not acceptable for no object instance can be created based on it.</remarks>
             [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed. Suppression is OK here.")]
@@ -268,9 +242,9 @@ namespace PropertyTools.Wpf
                     Owner.ColumnDefinitions.Add(
                         new ColumnDefinition
                             {
-                                Descriptor = descriptor, 
-                                Header = descriptor.Name, 
-                                HorizontalAlignment = Owner.DefaultHorizontalAlignment, 
+                                Descriptor = descriptor,
+                                Header = descriptor.Name,
+                                HorizontalAlignment = Owner.DefaultHorizontalAlignment,
                                 Width = Owner.DefaultColumnWidth
                             });
                 }
@@ -281,7 +255,7 @@ namespace PropertyTools.Wpf
                     Owner.ColumnDefinitions.Add(
                         new ColumnDefinition
                             {
-                                PropertyType = itemsType, 
+                                PropertyType = itemsType,
                                 Header = itemsType.Name,
                                 HorizontalAlignment = Owner.DefaultHorizontalAlignment,
                                 Width = Owner.DefaultColumnWidth
@@ -292,11 +266,9 @@ namespace PropertyTools.Wpf
             /// <summary>
             /// Gets the item in cell.
             /// </summary>
-            /// <param name="cell">
-            ///     The cell reference.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
             /// <returns>
-            /// The item <see cref="object"/>.
+            /// The item <see cref="object" />.
             /// </returns>
             public override object GetItem(CellRef cell)
             {
@@ -327,11 +299,9 @@ namespace PropertyTools.Wpf
             }
 
             /// <summary>
-            /// Inserts item to <see cref="DataGrid"/>.
+            /// Inserts item to <see cref="DataGrid" />.
             /// </summary>
-            /// <param name="index">
-            ///     The index.
-            /// </param>
+            /// <param name="index">The index.</param>
             /// <returns>
             /// <c>true</c> if insertion is successful, <c>false</c> otherwise.
             /// </returns>
@@ -388,12 +358,8 @@ namespace PropertyTools.Wpf
             /// <summary>
             /// Sets value to item in cell.
             /// </summary>
-            /// <param name="cell">
-            /// The cell reference.
-            /// </param>
-            /// <param name="value">
-            /// The value.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
+            /// <param name="value">The value.</param>
             public override void SetValue(CellRef cell, object value)
             {
                 var list = this.ItemsSource;
@@ -408,16 +374,14 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Represents an operator for <see cref="DataGrid"/> when its ItemsSource is of type <see cref="IList"/>&gt;<see cref="IList"/>&lt;.
+        /// Represents an operator for <see cref="DataGrid" /> when its ItemsSource is of type <see cref="IList" />&gt;<see cref="IList" />&lt;.
         /// </summary>
         private class ListListOperator : DataGridOperator
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="ListListOperator"/> class.
+            /// Initializes a new instance of the <see cref="ListListOperator" /> class.
             /// </summary>
-            /// <param name="owner">
-            /// The owner.
-            /// </param>
+            /// <param name="owner">The owner.</param>
             public ListListOperator(DataGrid owner)
                 : base(owner)
             {
@@ -426,12 +390,8 @@ namespace PropertyTools.Wpf
             /// <summary>
             /// Creates display control.
             /// </summary>
-            /// <param name="cell">
-            ///     The cell reference.
-            /// </param>
-            /// <param name="pd">
-            ///     The <see cref="PropertyDefinition"/>.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
+            /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
             /// <returns>
             /// The display control.
             /// </returns>
@@ -443,12 +403,8 @@ namespace PropertyTools.Wpf
             /// <summary>
             /// Creates edit control.
             /// </summary>
-            /// <param name="cell">
-            ///     The cell reference.
-            /// </param>
-            /// <param name="pd">
-            ///     The <see cref="PropertyDefinition"/>.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
+            /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
             /// <returns>
             /// The edit control.
             /// </returns>
@@ -458,8 +414,9 @@ namespace PropertyTools.Wpf
             }
 
             /// <summary>
-            /// Generate column definitions based on <seealso cref="DataGridOperator.ItemsSource"/>.
+            /// Generate column definitions based on <seealso cref="DataGridOperator.ItemsSource" />.
             /// </summary>
+            /// <seealso cref="DataGridOperator.ItemsSource" />
             public override void GenerateColumnDefinitions()
             {
                 var list = this.ItemsSource;
@@ -469,9 +426,9 @@ namespace PropertyTools.Wpf
                     Owner.ColumnDefinitions.Add(
                         new ColumnDefinition
                             {
-                                PropertyType = innerType ?? typeof(object), 
-                                Header = innerType != null ? innerType.Name : string.Empty, 
-                                HorizontalAlignment = Owner.DefaultHorizontalAlignment, 
+                                PropertyType = innerType ?? typeof(object),
+                                Header = innerType != null ? innerType.Name : string.Empty,
+                                HorizontalAlignment = Owner.DefaultHorizontalAlignment,
                                 Width = Owner.DefaultColumnWidth
                             });
                 }
@@ -480,11 +437,9 @@ namespace PropertyTools.Wpf
             /// <summary>
             /// Gets the item in cell.
             /// </summary>
-            /// <param name="cell">
-            ///     The cell reference.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
             /// <returns>
-            /// The <see cref="object"/>.
+            /// The <see cref="object" />.
             /// </returns>
             public override object GetItem(CellRef cell)
             {
@@ -522,11 +477,9 @@ namespace PropertyTools.Wpf
             }
 
             /// <summary>
-            /// Inserts item to <see cref="DataGrid"/>.
+            /// Inserts item to <see cref="DataGrid" />.
             /// </summary>
-            /// <param name="index">
-            ///     The index.
-            /// </param>
+            /// <param name="index">The index.</param>
             /// <returns>
             /// Returns <c>true</c> if insertion is successful, <c>false</c> otherwise.
             /// </returns>
@@ -590,12 +543,8 @@ namespace PropertyTools.Wpf
             /// <summary>
             /// Sets value to item in cell.
             /// </summary>
-            /// <param name="cell">
-            /// The cell reference.
-            /// </param>
-            /// <param name="value">
-            /// The value.
-            /// </param>
+            /// <param name="cell">The cell reference.</param>
+            /// <param name="value">The value.</param>
             public override void SetValue(CellRef cell, object value)
             {
                 var list = this.ItemsSource;

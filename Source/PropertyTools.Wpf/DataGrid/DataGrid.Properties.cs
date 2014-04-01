@@ -43,78 +43,78 @@ namespace PropertyTools.Wpf
     using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
     /// <summary>
-    ///     Properties for the DataGrid.
+    /// Properties for the DataGrid.
     /// </summary>
     public partial class DataGrid
     {
         /// <summary>
-        ///     The add item header property.
+        /// Identifies the <see cref="AddItemHeader"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AddItemHeaderProperty = DependencyProperty.Register(
             "AddItemHeader", typeof(string), typeof(DataGrid), new UIPropertyMetadata("*"));
 
         /// <summary>
-        ///     The alternating rows background property.
+        /// Identifies the <see cref="AlternatingRowsBackground"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AlternatingRowsBackgroundProperty =
             DependencyProperty.Register(
                 "AlternatingRowsBackground", typeof(Brush), typeof(DataGrid), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///     The auto generate columns property.
+        /// Identifies the <see cref="AutoGenerateColumns"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AutoGenerateColumnsProperty =
             DependencyProperty.Register(
                 "AutoGenerateColumns", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///     The auto insert property.
+        /// Identifies the <see cref="AutoInsert"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AutoInsertProperty = DependencyProperty.Register(
             "AutoInsert", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///     The auto size columns property.
+        /// Identifies the <see cref="AutoSizeColumns"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AutoSizeColumnsProperty =
             DependencyProperty.Register(
                 "AutoSizeColumns", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///     The can delete property.
+        /// Identifies the <see cref="CanDelete"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanDeleteProperty = DependencyProperty.Register(
             "CanDelete", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///     The can insert property.
+        /// Identifies the <see cref="CanInsert"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanInsertProperty = DependencyProperty.Register(
             "CanInsert", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///     The can resize columns property.
+        /// Identifies the <see cref="CanResizeColumns"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanResizeColumnsProperty =
             DependencyProperty.Register(
                 "CanResizeColumns", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///     The column header height property.
+        /// Identifies the <see cref="ColumnHeaderHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColumnHeaderHeightProperty =
             DependencyProperty.Register(
                 "ColumnHeaderHeight", typeof(GridLength), typeof(DataGrid), new UIPropertyMetadata(new GridLength(20)));
 
         /// <summary>
-        ///     The columns context menu property.
+        /// Identifies the <see cref="ColumnsContextMenu"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColumnsContextMenuProperty =
             DependencyProperty.Register(
                 "ColumnsContextMenu", typeof(ContextMenu), typeof(DataGrid), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///     The control factory property.
+        /// Identifies the <see cref="ControlFactory"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ControlFactoryProperty = DependencyProperty.Register(
             "ControlFactory",
@@ -123,7 +123,7 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(new DataGridControlFactory()));
 
         /// <summary>
-        ///     The current cell property.
+        /// Identifies the <see cref="CurrentCell"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CurrentCellProperty = DependencyProperty.Register(
             "CurrentCell",
@@ -136,7 +136,7 @@ namespace PropertyTools.Wpf
                 CoerceCurrentCell));
 
         /// <summary>
-        ///     The default column width property.
+        /// Identifies the <see cref="DefaultColumnWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultColumnWidthProperty =
             DependencyProperty.Register(
@@ -146,7 +146,7 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(new GridLength(1, GridUnitType.Star)));
 
         /// <summary>
-        ///     The default horizontal alignment property.
+        /// Identifies the <see cref="DefaultHorizontalAlignment"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultHorizontalAlignmentProperty =
             DependencyProperty.Register(
@@ -156,20 +156,20 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(HorizontalAlignment.Center));
 
         /// <summary>
-        ///     The default row height property.
+        /// Identifies the <see cref="DefaultRowHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultRowHeightProperty =
             DependencyProperty.Register(
                 "DefaultRowHeight", typeof(GridLength), typeof(DataGrid), new UIPropertyMetadata(new GridLength(20)));
 
         /// <summary>
-        ///     The easy insert property
+        /// Identifies the <see cref="EasyInsert"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EasyInsertProperty = DependencyProperty.Register(
             "EasyInsert", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///     The grid line brush property.
+        /// Identifies the <see cref="GridLineBrush"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty GridLineBrushProperty = DependencyProperty.Register(
             "GridLineBrush",
@@ -178,7 +178,7 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(new SolidColorBrush(Color.FromRgb(218, 220, 221))));
 
         /// <summary>
-        ///     The header border brush property.
+        /// Identifies the <see cref="HeaderBorderBrush"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeaderBorderBrushProperty =
             DependencyProperty.Register(
@@ -188,26 +188,26 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(new SolidColorBrush(Color.FromRgb(177, 181, 186))));
 
         /// <summary>
-        ///     The input direction property
+        /// Identifies the <see cref="InputDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InputDirectionProperty = DependencyProperty.Register(
             "InputDirection", typeof(InputDirection), typeof(DataGrid), new UIPropertyMetadata(InputDirection.Vertical));
 
         /// <summary>
-        ///     The is virtualizing property.
+        /// Identifies the <see cref="IsVirtualizing"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsVirtualizingProperty = DependencyProperty.Register(
             "IsVirtualizing", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///     The item header property path property.
+        /// Identifies the <see cref="ItemHeader"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemHeaderPropertyPathProperty =
             DependencyProperty.Register(
                 "ItemHeaderPropertyPath", typeof(string), typeof(DataGrid), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///     The items in columns property.
+        /// Identifies the <see cref="ItemsInColumns"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemsInColumnsProperty = DependencyProperty.Register(
             "ItemsInColumns",
@@ -216,7 +216,7 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(false, (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
-        ///     The items source property.
+        /// Identifies the <see cref="ItemsSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
             "ItemsSource",
@@ -225,7 +225,7 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
-        ///     The row header source property.
+        /// Identifies the <see cref="RowHeadersSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RowHeadersSourceProperty = DependencyProperty.Register(
             "RowHeadersSource",
@@ -234,7 +234,7 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
-        ///     The column header source property.
+        /// Identifies the <see cref="ColumnHeadersSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColumnHeadersSourceProperty = DependencyProperty.Register(
             "ColumnHeadersSource",
@@ -243,26 +243,26 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
-        ///     The row header width property.
+        /// Identifies the <see cref="RowHeaderWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RowHeaderWidthProperty = DependencyProperty.Register(
             "RowHeaderWidth", typeof(GridLength), typeof(DataGrid), new UIPropertyMetadata(new GridLength(40)));
 
         /// <summary>
-        ///     The rows context menu property.
+        /// Identifies the <see cref="RowsContextMenu"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RowsContextMenuProperty =
             DependencyProperty.Register(
                 "RowsContextMenu", typeof(ContextMenu), typeof(DataGrid), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///     The selected items property.
+        /// Identifies the <see cref="SelectedItems"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.Register(
             "SelectedItems", typeof(IEnumerable), typeof(DataGrid), new UIPropertyMetadata(null));
 
         /// <summary>
-        ///     The selection cell property.
+        /// Identifies the <see cref="SelectionCell"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectionCellProperty = DependencyProperty.Register(
             "SelectionCell",
@@ -272,20 +272,20 @@ namespace PropertyTools.Wpf
                 new CellRef(0, 0), (d, e) => ((DataGrid)d).SelectionCellChanged(), CoerceSelectionCell));
 
         /// <summary>
-        ///     The wrap items property.
+        /// Identifies the <see cref="WrapItems"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty WrapItemsProperty = DependencyProperty.Register(
             "WrapItems", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(false));
 
         /// <summary>
-        ///     The column definitions.
+        /// The column definitions.
         /// </summary>
         private readonly Collection<PropertyDefinition> propertyDefinitions = new Collection<PropertyDefinition>();
 
         /// <summary>
-        ///     Gets or sets the header used for the add item row/column. Default is "*".
+        /// Gets or sets the header used for the add item row/column. Default is "*".
         /// </summary>
-        /// <value> The add item header. </value>
+        /// <value>The add item header.</value>
         public string AddItemHeader
         {
             get
@@ -300,9 +300,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the alternating rows background brush.
+        /// Gets or sets the alternating rows background brush.
         /// </summary>
-        /// <value> The alternating rows background. </value>
+        /// <value>The alternating rows background.</value>
         public Brush AlternatingRowsBackground
         {
             get
@@ -317,9 +317,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the auto fill cell.
+        /// Gets or sets the auto fill cell.
         /// </summary>
-        /// <value> The auto fill cell. </value>
+        /// <value>The auto fill cell.</value>
         public CellRef AutoFillCell
         {
             get
@@ -335,7 +335,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether to auto generate columns.
+        /// Gets or sets a value indicating whether to auto generate columns.
         /// </summary>
         public bool AutoGenerateColumns
         {
@@ -351,7 +351,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether to allow automatic insert mode.
+        /// Gets or sets a value indicating whether to allow automatic insert mode.
         /// </summary>
         public bool AutoInsert
         {
@@ -367,11 +367,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether auto size columns is enabled.
+        /// Gets or sets a value indicating whether auto size columns is enabled.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if [auto size columns]; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if [auto size columns]; otherwise, <c>false</c> .</value>
         public bool AutoSizeColumns
         {
             get
@@ -386,11 +384,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether this instance can delete.
+        /// Gets or sets a value indicating whether this instance can delete.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if this instance can delete; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if this instance can delete; otherwise, <c>false</c> .</value>
         public bool CanDelete
         {
             get
@@ -405,11 +401,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether this instance can insert.
+        /// Gets or sets a value indicating whether this instance can insert.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if this instance can insert; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if this instance can insert; otherwise, <c>false</c> .</value>
         public bool CanInsert
         {
             get
@@ -424,11 +418,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether this instance can resize columns.
+        /// Gets or sets a value indicating whether this instance can resize columns.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if this instance can resize columns; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if this instance can resize columns; otherwise, <c>false</c> .</value>
         public bool CanResizeColumns
         {
             get
@@ -443,9 +435,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets the column definitions.
+        /// Gets the column definitions.
         /// </summary>
-        /// <value> The column definitions. </value>
+        /// <value>The column definitions.</value>
         public Collection<PropertyDefinition> ColumnDefinitions
         {
             get
@@ -455,9 +447,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the height of the column headers.
+        /// Gets or sets the height of the column headers.
         /// </summary>
-        /// <value> The height of the column header. </value>
+        /// <value>The height of the column header.</value>
         public GridLength ColumnHeaderHeight
         {
             get
@@ -472,9 +464,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the columns context menu.
+        /// Gets or sets the columns context menu.
         /// </summary>
-        /// <value> The columns context menu. </value>
+        /// <value>The columns context menu.</value>
         public ContextMenu ColumnsContextMenu
         {
             get
@@ -489,7 +481,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets ControlFactory.
+        /// Gets or sets ControlFactory.
         /// </summary>
         public IDataGridControlFactory ControlFactory
         {
@@ -505,7 +497,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the current cell.
+        /// Gets or sets the current cell.
         /// </summary>
         public CellRef CurrentCell
         {
@@ -521,9 +513,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the default column width.
+        /// Gets or sets the default column width.
         /// </summary>
-        /// <value> The default width of the column. </value>
+        /// <value>The default width of the column.</value>
         public GridLength DefaultColumnWidth
         {
             get
@@ -538,9 +530,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the default horizontal alignment.
+        /// Gets or sets the default horizontal alignment.
         /// </summary>
-        /// <value> The default horizontal alignment. </value>
+        /// <value>The default horizontal alignment.</value>
         public HorizontalAlignment DefaultHorizontalAlignment
         {
             get
@@ -555,9 +547,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the default height of the row.
+        /// Gets or sets the default height of the row.
         /// </summary>
-        /// <value> The default height of the row. </value>
+        /// <value>The default height of the row.</value>
         public GridLength DefaultRowHeight
         {
             get
@@ -572,11 +564,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether easy insert (press enter/down/right to add new rows/columns) is enabled.
+        /// Gets or sets a value indicating whether easy insert (press enter/down/right to add new rows/columns) is enabled.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if [easy insert]; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if [easy insert]; otherwise, <c>false</c>.</value>
         public bool EasyInsert
         {
             get
@@ -591,9 +581,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the grid line brush.
+        /// Gets or sets the grid line brush.
         /// </summary>
-        /// <value> The grid line brush. </value>
+        /// <value>The grid line brush.</value>
         public Brush GridLineBrush
         {
             get
@@ -608,9 +598,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the header border brush.
+        /// Gets or sets the header border brush.
         /// </summary>
-        /// <value> The header border brush. </value>
+        /// <value>The header border brush.</value>
         public Brush HeaderBorderBrush
         {
             get
@@ -625,7 +615,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the input direction (the moving direction of the current cell when Enter is pressed).
+        /// Gets or sets the input direction (the moving direction of the current cell when Enter is pressed).
         /// </summary>
         /// <value>The input direction.</value>
         public InputDirection InputDirection
@@ -642,7 +632,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets ItemHeaderPropertyPath.
+        /// Gets or sets ItemHeaderPropertyPath.
         /// </summary>
         public string ItemHeaderPropertyPath
         {
@@ -658,9 +648,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the items source.
+        /// Gets or sets the items source.
         /// </summary>
-        /// <value> The items source. </value>
+        /// <value>The items source.</value>
         public IList ItemsSource
         {
             get
@@ -675,9 +665,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the row headers source.
+        /// Gets or sets the row headers source.
         /// </summary>
-        /// <value> The row headers source. </value>
+        /// <value>The row headers source.</value>
         public IList RowHeadersSource
         {
             get
@@ -692,9 +682,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the row headers source.
+        /// Gets or sets the row headers source.
         /// </summary>
-        /// <value> The column headers source. </value>
+        /// <value>The column headers source.</value>
         public IList ColumnHeadersSource
         {
             get
@@ -709,9 +699,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets the row definitions.
+        /// Gets the row definitions.
         /// </summary>
-        /// <value> The row definitions. </value>
+        /// <value>The row definitions.</value>
         public Collection<PropertyDefinition> RowDefinitions
         {
             get
@@ -721,9 +711,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the width of the row headers.
+        /// Gets or sets the width of the row headers.
         /// </summary>
-        /// <value> The width of the row header. </value>
+        /// <value>The width of the row header.</value>
         public GridLength RowHeaderWidth
         {
             get
@@ -738,9 +728,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the rows context menu.
+        /// Gets or sets the rows context menu.
         /// </summary>
-        /// <value> The rows context menu. </value>
+        /// <value>The rows context menu.</value>
         public ContextMenu RowsContextMenu
         {
             get
@@ -755,9 +745,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets the selected cells.
+        /// Gets the selected cells.
         /// </summary>
-        /// <value> The selected cells. </value>
+        /// <value>The selected cells.</value>
         public IEnumerable<CellRef> SelectedCells
         {
             get
@@ -778,9 +768,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the selected items.
+        /// Gets or sets the selected items.
         /// </summary>
-        /// <value> The selected items. </value>
+        /// <value>The selected items.</value>
         public IEnumerable SelectedItems
         {
             get
@@ -795,7 +785,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the cell defining the selection area. The selection area is defined by the CurrentCell and SelectionCell.
+        /// Gets or sets the cell defining the selection area. The selection area is defined by the CurrentCell and SelectionCell.
         /// </summary>
         public CellRef SelectionCell
         {
@@ -811,11 +801,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether to wrap items in the defined columns.
+        /// Gets or sets a value indicating whether to wrap items in the defined columns.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if [wrap items]; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if [wrap items]; otherwise, <c>false</c> .</value>
         public bool WrapItems
         {
             get
@@ -830,11 +818,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets a value indicating whether this instance can delete columns.
+        /// Gets a value indicating whether this instance can delete columns.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if this instance can delete columns; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if this instance can delete columns; otherwise, <c>false</c> .</value>
         protected virtual bool CanDeleteColumns
         {
             get
@@ -845,11 +831,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets a value indicating whether this instance can delete rows.
+        /// Gets a value indicating whether this instance can delete rows.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if this instance can delete rows; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if this instance can delete rows; otherwise, <c>false</c> .</value>
         protected virtual bool CanDeleteRows
         {
             get
@@ -860,11 +844,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets a value indicating whether this instance can insert columns.
+        /// Gets a value indicating whether this instance can insert columns.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if this instance can insert columns; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if this instance can insert columns; otherwise, <c>false</c> .</value>
         protected virtual bool CanInsertColumns
         {
             get
@@ -875,11 +857,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets a value indicating whether this instance can insert rows.
+        /// Gets a value indicating whether this instance can insert rows.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if this instance can insert rows; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if this instance can insert rows; otherwise, <c>false</c> .</value>
         private bool CanInsertRows
         {
             get
@@ -890,22 +870,20 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the number of columns.
+        /// Gets or sets the number of columns.
         /// </summary>
-        /// <value> The columns. </value>
+        /// <value>The columns.</value>
         private int Columns { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether to use columns for the items.
+        /// Gets or sets a value indicating whether to use columns for the items.
         /// </summary>
         private bool ItemsInColumns { get; set; }
 
         /// <summary>
-        ///     Gets a value indicating whether to use rows for the items.
+        /// Gets a value indicating whether to use rows for the items.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if the items are in rows; otherwise, <c>false</c> .
-        /// </value>
+        /// <value><c>true</c> if the items are in rows; otherwise, <c>false</c> .</value>
         private bool ItemsInRows
         {
             get
@@ -915,9 +893,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets the column definitions.
+        /// Gets the column definitions.
         /// </summary>
-        /// <value> The column definitions. </value>
+        /// <value>The column definitions.</value>
         private Collection<PropertyDefinition> PropertyDefinitions
         {
             get
@@ -927,22 +905,18 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Gets or sets the number of rows.
+        /// Gets or sets the number of rows.
         /// </summary>
-        /// <value> The rows. </value>
+        /// <value>The rows.</value>
         private int Rows { get; set; }
 
         /// <summary>
-        ///     Coerces the current cell.
+        /// Coerces the current cell.
         /// </summary>
-        /// <param name="d">
-        ///     The <see cref="DependencyObject"/>.
-        /// </param>
-        /// <param name="basevalue">
-        ///     The base value.
-        /// </param>
+        /// <param name="d">The <see cref="DependencyObject" />.</param>
+        /// <param name="basevalue">The base value.</param>
         /// <returns>
-        ///     The coerced current cell.
+        /// The coerced current cell.
         /// </returns>
         private static object CoerceCurrentCell(DependencyObject d, object basevalue)
         {
@@ -965,16 +939,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Coerces the selection cell.
+        /// Coerces the selection cell.
         /// </summary>
-        /// <param name="sender">
-        ///     The sender.
-        /// </param>
-        /// <param name="basevalue">
-        ///     The base value.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="basevalue">The base value.</param>
         /// <returns>
-        ///     The coerced selection cell.
+        /// The coerced selection cell.
         /// </returns>
         private static object CoerceSelectionCell(DependencyObject sender, object basevalue)
         {
@@ -988,7 +958,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Handles change in current cell.
+        /// Handles change in current cell.
         /// </summary>
         private void CurrentCellChanged()
         {
@@ -1003,7 +973,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///    Handles change in selected cells.
+        /// Handles change in selected cells.
         /// </summary>
         private void SelectedCellsChanged()
         {
@@ -1088,7 +1058,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     Handles change in selection cell. 
+        /// Handles change in selection cell.
         /// </summary>
         private void SelectionCellChanged()
         {

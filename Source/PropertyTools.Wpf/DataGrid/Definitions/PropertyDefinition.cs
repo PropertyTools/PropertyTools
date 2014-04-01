@@ -27,6 +27,7 @@
 //   Describes properties that applies to columns or rows in an DataGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -65,25 +66,25 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the converter.
         /// </summary>
-        /// <value> The converter. </value>
+        /// <value>The converter.</value>
         public IValueConverter Converter { get; set; }
 
         /// <summary>
         /// Gets or sets the converter culture.
         /// </summary>
-        /// <value> The converter culture. </value>
+        /// <value>The converter culture.</value>
         public CultureInfo ConverterCulture { get; set; }
 
         /// <summary>
         /// Gets or sets the converter parameter.
         /// </summary>
-        /// <value> The converter parameter. </value>
+        /// <value>The converter parameter.</value>
         public object ConverterParameter { get; set; }
 
         /// <summary>
         /// Gets or sets the property descriptor.
         /// </summary>
-        /// <value> The descriptor. </value>
+        /// <value>The descriptor.</value>
         public PropertyDescriptor Descriptor
         {
             get
@@ -112,19 +113,19 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the format string.
         /// </summary>
-        /// <value> The format string. </value>
+        /// <value>The format string.</value>
         public string FormatString { get; set; }
 
         /// <summary>
         /// Gets or sets the header.
         /// </summary>
-        /// <value> The header. </value>
+        /// <value>The header.</value>
         public string Header { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal alignment.
         /// </summary>
-        /// <value> The horizontal alignment. </value>
+        /// <value>The horizontal alignment.</value>
         public HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
@@ -140,13 +141,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the items source (for ComboBox).
         /// </summary>
-        /// <value> The items source. </value>
+        /// <value>The items source.</value>
         public IEnumerable ItemsSource { get; set; }
 
         /// <summary>
         /// Gets or sets the property name of an items source (for ComboBox).
         /// </summary>
-        /// <value> The items source property. </value>
+        /// <value>The items source property.</value>
         public string ItemsSourceProperty { get; set; }
 
         /// <summary>
@@ -157,13 +158,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the name of the property.
         /// </summary>
-        /// <value> The name of the property. </value>
+        /// <value>The name of the property.</value>
         public string PropertyName { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the property.
         /// </summary>
-        /// <value> The type of the property. </value>
+        /// <value>The type of the property.</value>
         public Type PropertyType
         {
             get
@@ -190,12 +191,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a binding.
         /// </summary>
-        /// <param name="bindingPath">
-        /// The binding path.
-        /// </param>
-        /// <param name="trigger">
-        /// The trigger.
-        /// </param>
+        /// <param name="bindingPath">The binding path.</param>
+        /// <param name="trigger">The trigger.</param>
         /// <returns>
         /// A binding.
         /// </returns>
@@ -230,9 +227,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the one way binding.
         /// </summary>
-        /// <param name="bindingPath">
-        /// The binding path.
-        /// </param>
+        /// <param name="bindingPath">The binding path.</param>
         /// <returns>
         /// A binding.
         /// </returns>
@@ -246,9 +241,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the binding path.
         /// </summary>
-        /// <param name="index">
-        /// The index.
-        /// </param>
+        /// <param name="index">The index.</param>
         /// <returns>
         /// The binding path.
         /// </returns>
@@ -260,9 +253,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the binding path.
         /// </summary>
-        /// <param name="cell">
-        /// The cell.
-        /// </param>
+        /// <param name="cell">The cell.</param>
         /// <returns>
         /// The binding path.
         /// </returns>
@@ -274,8 +265,10 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the first attribute of the specified type.
         /// </summary>
-        /// <typeparam name="T"> Type of attribute. </typeparam>
-        /// <returns> The attribute, or null. </returns>
+        /// <typeparam name="T">Type of attribute.</typeparam>
+        /// <returns>
+        /// The attribute, or <c>null</c>.
+        /// </returns>
         protected T GetFirstAttribute<T>() where T : Attribute
         {
             if (this.Descriptor == null)

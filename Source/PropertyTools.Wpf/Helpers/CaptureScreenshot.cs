@@ -27,6 +27,7 @@
 //   Captures a screen shot using gdi32 functions.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -39,9 +40,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Captures a screen shot using gdi32 functions.
     /// </summary>
-    /// <remarks>
-    /// See http://stackoverflow.com/questions/1736287/capturing-a-window-with-wpf
-    /// </remarks>
+    /// <remarks>See http://stackoverflow.com/questions/1736287/capturing-a-window-with-wpf</remarks>
     public static class CaptureScreenshot
     {
         /// <summary>
@@ -127,13 +126,14 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// Captures the specified rectangle from the screen.
-        ///  <returns>
+        /// <returns>
         /// A bitmap.
         /// </returns>
         /// </summary>
-        /// <param name="area">
-        /// The area to capture.
-        /// </param>
+        /// <param name="area">The area to capture.</param>
+        /// <returns>
+        /// A bitmap.
+        /// </returns>
         public static BitmapSource Capture(Rect area)
         {
             var screenDeviceContext = GetDC(IntPtr.Zero);
@@ -163,11 +163,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the cursor position relative to the specified visual.
         /// </summary>
-        /// <param name="relativeTo">
-        /// The visual to relate to.
-        /// </param>
+        /// <param name="relativeTo">The visual to relate to.</param>
         /// <returns>
-        /// A <see cref="Point"/>.
+        /// A <see cref="Point" />.
         /// </returns>
         public static Point CorrectGetPosition(Visual relativeTo)
         {
@@ -180,7 +178,7 @@ namespace PropertyTools.Wpf
         /// The get mouse screen position.
         /// </summary>
         /// <returns>
-        /// The <see cref="Point"/>.
+        /// The <see cref="Point" />.
         /// </returns>
         public static Point GetMouseScreenPosition()
         {
@@ -192,9 +190,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The get cursor pos.
         /// </summary>
-        /// <param name="pt">
-        /// The pt.
-        /// </param>
+        /// <param name="pt">The pt.</param>
         /// <returns>
         /// The get cursor pos.
         /// </returns>
@@ -205,33 +201,15 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The bit blt.
         /// </summary>
-        /// <param name="hdc">
-        /// The hdc.
-        /// </param>
-        /// <param name="nXDest">
-        /// The n x dest.
-        /// </param>
-        /// <param name="nYDest">
-        /// The n y dest.
-        /// </param>
-        /// <param name="nWidth">
-        /// The n width.
-        /// </param>
-        /// <param name="nHeight">
-        /// The n height.
-        /// </param>
-        /// <param name="hdcSrc">
-        /// The hdc src.
-        /// </param>
-        /// <param name="nXSrc">
-        /// The n x src.
-        /// </param>
-        /// <param name="nYSrc">
-        /// The n y src.
-        /// </param>
-        /// <param name="dwRop">
-        /// The dw rop.
-        /// </param>
+        /// <param name="hdc">The hdc.</param>
+        /// <param name="nXDest">The n x dest.</param>
+        /// <param name="nYDest">The n y dest.</param>
+        /// <param name="nWidth">The n width.</param>
+        /// <param name="nHeight">The n height.</param>
+        /// <param name="hdcSrc">The hdc src.</param>
+        /// <param name="nXSrc">The n x src.</param>
+        /// <param name="nYSrc">The n y src.</param>
+        /// <param name="dwRop">The dw rop.</param>
         /// <returns>
         /// The bit blt.
         /// </returns>
@@ -250,23 +228,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The create bitmap.
         /// </summary>
-        /// <param name="nWidth">
-        /// The n width.
-        /// </param>
-        /// <param name="nHeight">
-        /// The n height.
-        /// </param>
-        /// <param name="cPlanes">
-        /// The c planes.
-        /// </param>
-        /// <param name="cBitsPerPel">
-        /// The c bits per pel.
-        /// </param>
-        /// <param name="lpvBits">
-        /// The lpv bits.
-        /// </param>
+        /// <param name="nWidth">The n width.</param>
+        /// <param name="nHeight">The n height.</param>
+        /// <param name="cPlanes">The c planes.</param>
+        /// <param name="cBitsPerPel">The c bits per pel.</param>
+        /// <param name="lpvBits">The lpv bits.</param>
         /// <returns>
-        /// The <see cref="IntPtr"/>.
+        /// The <see cref="IntPtr" />.
         /// </returns>
         [DllImport("gdi32.dll")]
         private static extern IntPtr CreateBitmap(
@@ -275,17 +243,11 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The create compatible bitmap.
         /// </summary>
-        /// <param name="hdc">
-        /// The hdc.
-        /// </param>
-        /// <param name="nWidth">
-        /// The n width.
-        /// </param>
-        /// <param name="nHeight">
-        /// The n height.
-        /// </param>
+        /// <param name="hdc">The hdc.</param>
+        /// <param name="nWidth">The n width.</param>
+        /// <param name="nHeight">The n height.</param>
         /// <returns>
-        /// The <see cref="IntPtr"/>.
+        /// The <see cref="IntPtr" />.
         /// </returns>
         [DllImport("gdi32.dll")]
         private static extern IntPtr CreateCompatibleBitmap(IntPtr hdc, int nWidth, int nHeight);
@@ -293,11 +255,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The create compatible dc.
         /// </summary>
-        /// <param name="hdc">
-        /// The hdc.
-        /// </param>
+        /// <param name="hdc">The hdc.</param>
         /// <returns>
-        /// The <see cref="IntPtr"/>.
+        /// The <see cref="IntPtr" />.
         /// </returns>
         [DllImport("gdi32.dll", SetLastError = true)]
         private static extern IntPtr CreateCompatibleDC(IntPtr hdc);
@@ -305,9 +265,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The delete object.
         /// </summary>
-        /// <param name="hObject">
-        /// The h object.
-        /// </param>
+        /// <param name="hObject">The h object.</param>
         /// <returns>
         /// The delete object.
         /// </returns>
@@ -317,11 +275,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The get dc.
         /// </summary>
-        /// <param name="hWnd">
-        /// The h wnd.
-        /// </param>
+        /// <param name="hWnd">The h wnd.</param>
         /// <returns>
-        /// The <see cref="IntPtr"/>.
+        /// The <see cref="IntPtr" />.
         /// </returns>
         [DllImport("user32.dll")]
         private static extern IntPtr GetDC(IntPtr hWnd);
@@ -329,12 +285,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The release dc.
         /// </summary>
-        /// <param name="hWnd">
-        /// The h wnd.
-        /// </param>
-        /// <param name="hDC">
-        /// The h dc.
-        /// </param>
+        /// <param name="hWnd">The h wnd.</param>
+        /// <param name="hDC">The h dc.</param>
         /// <returns>
         /// The release dc.
         /// </returns>
@@ -344,14 +296,10 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The select object.
         /// </summary>
-        /// <param name="hdc">
-        /// The hdc.
-        /// </param>
-        /// <param name="hgdiobj">
-        /// The hgdiobj.
-        /// </param>
+        /// <param name="hdc">The hdc.</param>
+        /// <param name="hgdiobj">The hgdiobj.</param>
         /// <returns>
-        /// The <see cref="IntPtr"/>.
+        /// The <see cref="IntPtr" />.
         /// </returns>
         [DllImport("gdi32.dll", ExactSpelling = true, PreserveSig = true, SetLastError = true)]
         private static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);

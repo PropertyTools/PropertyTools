@@ -27,6 +27,7 @@
 //   Specifies the name of property that controls the visibility state of the attributed property.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -38,11 +39,9 @@ namespace PropertyTools.DataAnnotations
     public class VisibleByAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="VisibleByAttribute"/> class.
+        /// Initializes a new instance of the <see cref="VisibleByAttribute" /> class.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property.
-        /// </param>
+        /// <param name="propertyName">Name of the property.</param>
         public VisibleByAttribute(string propertyName)
         {
             this.PropertyName = propertyName;

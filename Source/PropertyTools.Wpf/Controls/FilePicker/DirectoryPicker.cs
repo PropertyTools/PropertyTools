@@ -27,6 +27,7 @@
 //   Represents a control that allows the user to pick a directory.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -41,7 +42,7 @@ namespace PropertyTools.Wpf
     public class DirectoryPicker : Control
     {
         /// <summary>
-        /// The directory property.
+        /// Identifies the <see cref="Directory"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DirectoryProperty = DependencyProperty.Register(
             "Directory",
@@ -50,7 +51,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// The folder browser dialog service property.
+        /// Identifies the <see cref="FolderBrowserDialogService"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FolderBrowserDialogServiceProperty =
             DependencyProperty.Register(
@@ -60,25 +61,25 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The browse button content property
+        /// Identifies the <see cref="BrowseButtonContent"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BrowseButtonContentProperty =
             DependencyProperty.Register("BrowseButtonContent", typeof(object), typeof(DirectoryPicker), new PropertyMetadata("..."));
 
         /// <summary>
-        /// The explore button content property
+        /// Identifies the <see cref="ExploreButtonContent"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ExploreButtonContentProperty =
             DependencyProperty.Register("ExploreButtonContent", typeof(object), typeof(DirectoryPicker), new PropertyMetadata(null));
 
         /// <summary>
-        /// The browse button ToolTip property
+        /// Identifies the <see cref="BrowseButtonToolTip"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BrowseButtonToolTipProperty =
             DependencyProperty.Register("BrowseButtonToolTip", typeof(object), typeof(DirectoryPicker), new PropertyMetadata(null));
 
         /// <summary>
-        /// The explore button ToolTip property
+        /// Identifies the <see cref="ExploreButtonToolTip"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ExploreButtonToolTipProperty =
             DependencyProperty.Register("ExploreButtonToolTip", typeof(object), typeof(DirectoryPicker), new PropertyMetadata(null));
@@ -104,7 +105,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the browse command.
         /// </summary>
-        /// <value> The browse command. </value>
+        /// <value>The browse command.</value>
         public ICommand BrowseCommand { get; set; }
 
         /// <summary>

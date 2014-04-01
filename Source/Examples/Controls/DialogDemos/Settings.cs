@@ -24,6 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace DialogDemos.Properties {
 
     // This class allows you to handle specific events on the settings class:

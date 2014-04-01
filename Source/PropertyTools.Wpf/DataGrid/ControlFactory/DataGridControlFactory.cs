@@ -27,6 +27,7 @@
 //   Creates display and edit controls for the DataGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -44,12 +45,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the display control with data binding.
         /// </summary>
-        /// <param name="propertyDefinition">
-        /// The property definition.
-        /// </param>
-        /// <param name="bindingPath">
-        /// The binding path.
-        /// </param>
+        /// <param name="propertyDefinition">The property definition.</param>
+        /// <param name="bindingPath">The binding path.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -72,12 +69,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the edit control with data binding.
         /// </summary>
-        /// <param name="propertyDefinition">
-        /// The property definition.
-        /// </param>
-        /// <param name="bindingPath">
-        /// The binding path.
-        /// </param>
+        /// <param name="propertyDefinition">The property definition.</param>
+        /// <param name="bindingPath">The binding path.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -105,12 +98,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a check box control with data binding.
         /// </summary>
-        /// <param name="propertyDefinition">
-        /// The property definition.
-        /// </param>
-        /// <param name="bindingPath">
-        /// The binding path.
-        /// </param>
+        /// <param name="propertyDefinition">The property definition.</param>
+        /// <param name="bindingPath">The binding path.</param>
         /// <returns>
         /// A CheckBox.
         /// </returns>
@@ -140,12 +129,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a color picker control with data binding.
         /// </summary>
-        /// <param name="propertyDefinition">
-        /// The property definition.
-        /// </param>
-        /// <param name="bindingPath">
-        /// The binding path.
-        /// </param>
+        /// <param name="propertyDefinition">The property definition.</param>
+        /// <param name="bindingPath">The binding path.</param>
         /// <returns>
         /// A color picker.
         /// </returns>
@@ -164,12 +149,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a color preview control with data binding.
         /// </summary>
-        /// <param name="propertyDefinition">
-        /// The property definition.
-        /// </param>
-        /// <param name="bindingPath">
-        /// The binding path.
-        /// </param>
+        /// <param name="propertyDefinition">The property definition.</param>
+        /// <param name="bindingPath">The binding path.</param>
         /// <returns>
         /// A preview control.
         /// </returns>
@@ -196,7 +177,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="propertyDefinition">The property definition.</param>
         /// <param name="bindingPath">The binding path.</param>
-        /// <returns>A ComboBox.</returns>
+        /// <returns>
+        /// A ComboBox.
+        /// </returns>
         protected virtual FrameworkElement CreateComboBox(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var c = new ComboBox { IsEditable = propertyDefinition.IsEditable, Focusable = false, Margin = new Thickness(0, 0, -1, -1) };
@@ -226,7 +209,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="propertyDefinition">The property definition.</param>
         /// <param name="bindingPath">The binding path.</param>
-        /// <returns>A TextBlock.</returns>
+        /// <returns>
+        /// A TextBlock.
+        /// </returns>
         protected virtual FrameworkElement CreateTextBlockControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var tb = new TextBlock
@@ -243,9 +228,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a text box with data binding.
         /// </summary>
-        /// <param name="propertyDefinition">
-        /// The property definition.
-        /// </param>
+        /// <param name="propertyDefinition">The property definition.</param>
         /// <returns>
         /// A TextBox.
         /// </returns>
@@ -265,9 +248,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Focuses on the parent data grid.
         /// </summary>
-        /// <param name="obj">
-        /// The <see cref="DependencyObject"/>.
-        /// </param>
+        /// <param name="obj">The <see cref="DependencyObject" />.</param>
         private static void FocusParentDataGrid(DependencyObject obj)
         {
             var parent = VisualTreeHelper.GetParent(obj);

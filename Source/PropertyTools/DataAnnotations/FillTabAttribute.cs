@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FillTabAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
@@ -23,6 +23,9 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Specifies that the control representing the property should fill the entire size of the tab page.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.DataAnnotations
@@ -30,11 +33,9 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    ///   Specifies that the control representing the property should fill the entire size of the tab page.
+    /// Specifies that the control representing the property should fill the entire size of the tab page.
     /// </summary>
-    /// <remarks>
-    /// This requires only one property on the tab page. 
-    /// </remarks>
+    /// <remarks>This requires only one property on the tab page.</remarks>
     [AttributeUsage(AttributeTargets.Property)]
     public class FillTabAttribute : Attribute
     {

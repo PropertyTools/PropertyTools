@@ -27,6 +27,7 @@
 //   Provides a custom property item factory.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace CustomFactoryDemo
 {
     using System;

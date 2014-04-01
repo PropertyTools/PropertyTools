@@ -27,6 +27,7 @@
 //   Interaction logic for Window504.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace DataGridDemo
 {
     /// <summary>
@@ -35,7 +36,7 @@ namespace DataGridDemo
     public partial class Window504
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Window504"/> class.
+        /// Initializes a new instance of the <see cref="Window504" /> class.
         /// </summary>
         public Window504()
         {

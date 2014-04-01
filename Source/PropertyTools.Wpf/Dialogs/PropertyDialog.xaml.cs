@@ -27,6 +27,7 @@
 //   Represents a property editing dialog.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -59,7 +60,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether the apply button is visible.
         /// </summary>
-        /// <value> <c>true</c> if this instance can apply; otherwise, <c>false</c> . </value>
+        /// <value><c>true</c> if this instance can apply; otherwise, <c>false</c> .</value>
         public bool CanApply
         {
             get
@@ -76,7 +77,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the property control.
         /// </summary>
-        /// <value> The property control. </value>
+        /// <value>The property control.</value>
         public PropertyGrid PropertyControl
         {
             get
@@ -87,18 +88,10 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// This stores the current "copy" of the object.
-        /// If it is non-null, then we are in the middle of an
+        /// If it is non-<c>null</c>, then we are in the middle of an
         /// editable operation.
         /// </summary>
-        /// <param name="obj">
-        /// The object.
-        /// </param>
-        /// <summary>
-        /// This is used to clone the object.
-        /// Override the method to provide a more efficient clone.
-        /// The default implementation simply reflects across
-        /// the object copying every field.
-        /// </summary>
+        /// <param name="obj">The object.</param>
         /// <returns>
         /// Clone of current object
         /// </returns>
@@ -114,11 +107,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// This restores the state of the current object from the passed clone object.
         /// </summary>
-        /// <param name="fieldValues">
-        /// Object to restore state from
-        /// </param>
-        /// <param name="obj">
-        /// </param>
+        /// <param name="fieldValues">Object to restore state from</param>
+        /// <param name="obj"></param>
         protected virtual void RestoreFieldValues(Dictionary<string, object> fieldValues, object obj)
         {
             foreach (var pi in
@@ -142,9 +132,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Clones the object memberwise.
         /// </summary>
-        /// <param name="src">
-        /// The SRC.
-        /// </param>
+        /// <param name="src">The SRC.</param>
         /// <returns>
         /// The memberwise clone.
         /// </returns>
@@ -165,12 +153,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The apply button click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void ApplyButtonClick(object sender, RoutedEventArgs e)
         {
             this.CommitChanges();
@@ -196,12 +180,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The cancel button click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
             // RestoreFieldValues(_savedState, DataContext);
@@ -227,12 +207,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The close button click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -290,12 +266,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The help button click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void HelpButtonClick(object sender, RoutedEventArgs e)
         {
         }
@@ -303,12 +275,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The ok button click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void OkButtonClick(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
@@ -319,12 +287,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The property dialog data context changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void PropertyDialogDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             this.BeginEdit();

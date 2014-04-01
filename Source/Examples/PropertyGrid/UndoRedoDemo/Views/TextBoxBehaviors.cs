@@ -27,6 +27,7 @@
 //   TextBox behaviors.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace UndoRedoDemo.Views
 {
     using System;
@@ -45,7 +46,9 @@ namespace UndoRedoDemo.Views
         /// Gets the scroll to bottom when changed.
         /// </summary>
         /// <param name="obj">The object.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// 
+        /// </returns>
         public static bool GetScrollToBottomWhenChanged(DependencyObject obj)
         {
             return (bool)obj.GetValue(ScrollToBottomWhenChangedProperty);
@@ -62,7 +65,7 @@ namespace UndoRedoDemo.Views
         }
 
         /// <summary>
-        /// Scroll textbox to bottom when changed.
+        /// Identifies the <see cref="ScrollToBottomWhenChanged"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ScrollToBottomWhenChangedProperty =
             DependencyProperty.RegisterAttached("ScrollToBottomWhenChanged", typeof(bool), typeof(TextBoxBehaviors), new UIPropertyMetadata(false, ScrollToBottomWhenChangedCallback));
@@ -71,7 +74,7 @@ namespace UndoRedoDemo.Views
         /// Called when the attached dependency property is changed.
         /// </summary>
         /// <param name="d">The d.</param>
-        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private static void ScrollToBottomWhenChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var textBox = (TextBox)d;

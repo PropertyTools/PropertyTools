@@ -27,6 +27,7 @@
 //   Specifies the property header placement.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -38,11 +39,9 @@ namespace PropertyTools.DataAnnotations
     public class HeaderPlacementAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HeaderPlacementAttribute"/> class.
+        /// Initializes a new instance of the <see cref="HeaderPlacementAttribute" /> class.
         /// </summary>
-        /// <param name="placement">
-        /// The placement.
-        /// </param>
+        /// <param name="placement">The placement.</param>
         public HeaderPlacementAttribute(HeaderPlacement placement)
         {
             this.HeaderPlacement = placement;

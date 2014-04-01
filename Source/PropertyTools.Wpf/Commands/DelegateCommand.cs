@@ -27,6 +27,7 @@
 //   Represents a delegate command.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -48,25 +49,19 @@ namespace PropertyTools.Wpf
         private readonly Action execute;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DelegateCommand"/> class.
+        /// Initializes a new instance of the <see cref="DelegateCommand" /> class.
         /// </summary>
-        /// <param name="execute">
-        /// The execute.
-        /// </param>
+        /// <param name="execute">The execute.</param>
         public DelegateCommand(Action execute)
             : this(execute, null)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DelegateCommand"/> class.
+        /// Initializes a new instance of the <see cref="DelegateCommand" /> class.
         /// </summary>
-        /// <param name="execute">
-        /// The execute.
-        /// </param>
-        /// <param name="canExecute">
-        /// The can execute.
-        /// </param>
+        /// <param name="execute">The execute.</param>
+        /// <param name="canExecute">The can execute.</param>
         public DelegateCommand(Action execute, Func<bool> canExecute)
         {
             if (execute == null)
@@ -103,11 +98,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Defines the method that determines whether the command can execute in its current state.
         /// </summary>
-        /// <param name="parameter">
-        /// Data used by the command. If the command does not require data to be passed, this object can be set to null.
-        /// </param>
+        /// <param name="parameter">Data used by the command. If the command does not require data to be passed, this object can be set to <c>null</c>.</param>
         /// <returns>
-        /// true if this command can be executed; otherwise, false.
+        /// <c>true</c> if this command can be executed; otherwise, <c>false</c>.
         /// </returns>
         public bool CanExecute(object parameter)
         {
@@ -117,9 +110,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Defines the method to be called when the command is invoked.
         /// </summary>
-        /// <param name="parameter">
-        /// Data used by the command. If the command does not require data to be passed, this object can be set to null.
-        /// </param>
+        /// <param name="parameter">Data used by the command. If the command does not require data to be passed, this object can be set to <c>null</c>.</param>
         public void Execute(object parameter)
         {
             this.execute();

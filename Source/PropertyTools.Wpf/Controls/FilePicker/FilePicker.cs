@@ -27,6 +27,7 @@
 //   Represents a control that allows the user to pick a file.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -43,27 +44,27 @@ namespace PropertyTools.Wpf
     public class FilePicker : Control
     {
         /// <summary>
-        /// The base path property.
+        /// Identifies the <see cref="BasePath"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BasePathProperty = DependencyProperty.Register(
             "BasePath", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The default extension property.
+        /// Identifies the <see cref="DefaultExtension"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultExtensionProperty =
             DependencyProperty.Register(
                 "DefaultExtension", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The file dialog service property.
+        /// Identifies the <see cref="FileDialogService"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FileDialogServiceProperty =
             DependencyProperty.Register(
                 "FileDialogService", typeof(IFileDialogService), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The file path property.
+        /// Identifies the <see cref="FilePath"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FilePathProperty = DependencyProperty.Register(
             "FilePath",
@@ -72,49 +73,49 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// The filter property.
+        /// Identifies the <see cref="Filter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(
             "Filter", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The use open dialog property.
+        /// Identifies the <see cref="UseOpenDialog"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UseOpenDialogProperty = DependencyProperty.Register(
             "UseOpenDialog", typeof(bool), typeof(FilePicker), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// The browse button content property
+        /// Identifies the <see cref="BrowseButtonContent"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BrowseButtonContentProperty =
             DependencyProperty.Register("BrowseButtonContent", typeof(object), typeof(FilePicker), new PropertyMetadata("..."));
 
         /// <summary>
-        /// The explore button content property
+        /// Identifies the <see cref="ExploreButtonContent"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ExploreButtonContentProperty =
             DependencyProperty.Register("ExploreButtonContent", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
 
         /// <summary>
-        /// The open button content property
+        /// Identifies the <see cref="OpenButtonContent"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OpenButtonContentProperty =
             DependencyProperty.Register("OpenButtonContent", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
 
         /// <summary>
-        /// The browse button ToolTip property
+        /// Identifies the <see cref="BrowseButtonToolTip"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BrowseButtonToolTipProperty =
             DependencyProperty.Register("BrowseButtonToolTip", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
 
         /// <summary>
-        /// The explore button ToolTip property
+        /// Identifies the <see cref="ExploreButtonToolTip"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ExploreButtonToolTipProperty =
             DependencyProperty.Register("ExploreButtonToolTip", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
 
         /// <summary>
-        /// The open button ToolTip property
+        /// Identifies the <see cref="OpenButtonToolTip"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OpenButtonToolTipProperty =
             DependencyProperty.Register("OpenButtonToolTip", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
@@ -141,7 +142,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the browse command.
         /// </summary>
-        /// <value> The browse command. </value>
+        /// <value>The browse command.</value>
         public ICommand BrowseCommand { get; set; }
 
         /// <summary>
@@ -159,7 +160,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the default extension.
         /// </summary>
-        /// <value> The default extension. </value>
+        /// <value>The default extension.</value>
         public string DefaultExtension
         {
             get
@@ -176,7 +177,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the file dialog service.
         /// </summary>
-        /// <value> The file dialog service. </value>
+        /// <value>The file dialog service.</value>
         public IFileDialogService FileDialogService
         {
             get
@@ -193,7 +194,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the base path.
         /// </summary>
-        /// <value> The base path. </value>
+        /// <value>The base path.</value>
         public string BasePath
         {
             get
@@ -210,7 +211,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the file path.
         /// </summary>
-        /// <value> The file path. </value>
+        /// <value>The file path.</value>
         public string FilePath
         {
             get
@@ -227,7 +228,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the filter.
         /// </summary>
-        /// <value> The filter. </value>
+        /// <value>The filter.</value>
         public string Filter
         {
             get
@@ -244,7 +245,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether to use the File Open Dialog.
         /// </summary>
-        /// <value> The "File Open" dialog is used if the property is set to <c>true</c>; otherwise, the File Save dialog is used. </value>
+        /// <value>The "File Open" dialog is used if the property is set to <c>true</c>; otherwise, the File Save dialog is used.</value>
         public bool UseOpenDialog
         {
             get
@@ -311,7 +312,7 @@ namespace PropertyTools.Wpf
             get { return this.GetValue(OpenButtonToolTipProperty); }
             set { this.SetValue(OpenButtonToolTipProperty, value); }
         }
-        
+
         /// <summary>
         /// Opens the open or save file dialog.
         /// </summary>
@@ -394,7 +395,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether the file can be opened.
         /// </summary>
-        /// <returns><c>true</c> if the file exists; otherwise, <c>false</c>.</returns>
+        /// <returns>
+        /// <c>true</c> if the file exists; otherwise, <c>false</c>.
+        /// </returns>
         private bool CanOpen()
         {
             return File.Exists(this.FilePath);
@@ -403,7 +406,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether the file can be explored.
         /// </summary>
-        /// <returns><c>true</c> if the file exists; otherwise, <c>false</c>.</returns>
+        /// <returns>
+        /// <c>true</c> if the file exists; otherwise, <c>false</c>.
+        /// </returns>
         private bool CanExplore()
         {
             return File.Exists(this.FilePath);
@@ -412,9 +417,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the absolute path.
         /// </summary>
-        /// <param name="filePath">
-        /// The file path.
-        /// </param>
+        /// <param name="filePath">The file path.</param>
         /// <returns>
         /// The get absolute path.
         /// </returns>
@@ -436,9 +439,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the relative path.
         /// </summary>
-        /// <param name="filePath">
-        /// The file path.
-        /// </param>
+        /// <param name="filePath">The file path.</param>
         /// <returns>
         /// The get relative path.
         /// </returns>

@@ -27,6 +27,7 @@
 //   Represents a viewmodel for the shell.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace UndoRedoDemo
 {
     using System;
@@ -48,7 +49,7 @@ namespace UndoRedoDemo
         private readonly StringBuilder outputBuilder = new StringBuilder();
 
         /// <summary>
-        /// Initializes static members of the <see cref="ShellViewModel"/> class.
+        /// Initializes static members of the <see cref="ShellViewModel" /> class.
         /// </summary>
         static ShellViewModel()
         {
@@ -244,12 +245,8 @@ namespace UndoRedoDemo
         /// <summary>
         /// Appends the trace message.
         /// </summary>
-        /// <param name="text">
-        /// The text.
-        /// </param>
-        /// <param name="newLine">
-        /// Add a new line if set to <c>true</c>.
-        /// </param>
+        /// <param name="text">The text.</param>
+        /// <param name="newLine">Add a new line if set to <c>true</c>.</param>
         private void AppendTraceMessage(string text, bool newLine)
         {
             this.outputBuilder.Append(text);

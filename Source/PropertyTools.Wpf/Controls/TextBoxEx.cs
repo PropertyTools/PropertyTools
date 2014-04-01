@@ -27,6 +27,7 @@
 //   Represents a TextBox that can update the binding on enter.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -39,19 +40,18 @@ namespace PropertyTools.Wpf
     public class TextBoxEx : TextBox
     {
         /// <summary>
-        /// The move focus on enter property.
+        /// Identifies the <see cref="MoveFocusOnEnter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MoveFocusOnEnterProperty =
             DependencyProperty.Register(
                 "MoveFocusOnEnter", typeof(bool), typeof(TextBoxEx), new UIPropertyMetadata(true));
 
         /// <summary>
-        ///   The update binding on enter property.
+        /// Identifies the <see cref="UpdateBindingOnEnter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpdateBindingOnEnterProperty =
             DependencyProperty.Register(
                 "UpdateBindingOnEnter", typeof(bool), typeof(TextBoxEx), new UIPropertyMetadata(true));
-
 
         public bool ScrollToHomeOnFocus
         {
@@ -63,8 +63,6 @@ namespace PropertyTools.Wpf
         public static readonly DependencyProperty ScrollToHomeOnFocusProperty =
             DependencyProperty.Register("ScrollToHomeOnFocus", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(true));
 
-
-
         public bool SelectAllOnFocus
         {
             get { return (bool)GetValue(SelectAllOnFocusProperty); }
@@ -75,7 +73,6 @@ namespace PropertyTools.Wpf
         public static readonly DependencyProperty SelectAllOnFocusProperty =
             DependencyProperty.Register("SelectAllOnFocus", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(true));
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TextBoxEx" /> class.
         /// </summary>
@@ -85,7 +82,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether MoveFocusOnEnter.
+        /// Gets or sets a value indicating whether MoveFocusOnEnter.
         /// </summary>
         public bool MoveFocusOnEnter
         {
@@ -101,7 +98,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether UpdateBindingOnEnter.
+        /// Gets or sets a value indicating whether UpdateBindingOnEnter.
         /// </summary>
         public bool UpdateBindingOnEnter
         {
@@ -119,9 +116,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on preview key down.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="e">The e.</param>
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -166,11 +161,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.UIElement.PreviewMouseLeftButtonDown"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.UIElement.PreviewMouseLeftButtonDown" /> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. The event data reports that the left mouse button was pressed.</param>
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnPreviewMouseLeftButtonDown(e);
@@ -186,12 +179,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Handles the got keyboard focus event.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="KeyboardFocusChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="KeyboardFocusChangedEventArgs" /> instance containing the event data.</param>
         private void HandleGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (this.SelectAllOnFocus)

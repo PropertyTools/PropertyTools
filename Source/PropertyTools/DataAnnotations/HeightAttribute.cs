@@ -27,6 +27,7 @@
 //   Specifies the heights of the property control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -38,17 +39,11 @@ namespace PropertyTools.DataAnnotations
     public class HeightAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HeightAttribute"/> class.
+        /// Initializes a new instance of the <see cref="HeightAttribute" /> class.
         /// </summary>
-        /// <param name="height">
-        /// The height.
-        /// </param>
-        /// <param name="minHeight">
-        /// Height of the min.
-        /// </param>
-        /// <param name="maxHeight">
-        /// Height of the max.
-        /// </param>
+        /// <param name="height">The height.</param>
+        /// <param name="minHeight">Height of the min.</param>
+        /// <param name="maxHeight">Height of the max.</param>
         public HeightAttribute(double height, double minHeight = double.NaN, double maxHeight = double.NaN)
         {
             this.Height = height;

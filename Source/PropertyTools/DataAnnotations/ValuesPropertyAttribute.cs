@@ -2,7 +2,7 @@
 // <copyright file="ValuesPropertyAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
-//   Copyright (c) 2012 Oystein Bjorke
+//   Copyright (c) 2014 PropertyTools contributors
 //   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
@@ -27,6 +27,7 @@
 //   Specifies the name of a property that contains values for the attributed property.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -37,11 +38,9 @@ namespace PropertyTools.DataAnnotations
     public class ValuesPropertyAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValuesPropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ValuesPropertyAttribute" /> class.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property.
-        /// </param>
+        /// <param name="propertyName">Name of the property.</param>
         public ValuesPropertyAttribute(string propertyName)
         {
             this.PropertyName = propertyName;

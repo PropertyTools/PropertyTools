@@ -27,6 +27,7 @@
 //   The view model.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace DataGridDemo
 {
     using System;
@@ -41,7 +42,7 @@ namespace DataGridDemo
     public class ViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ViewModel"/> class.
+        /// Initializes a new instance of the <see cref="ViewModel" /> class.
         /// </summary>
         public ViewModel()
         {
@@ -334,6 +335,6 @@ namespace DataGridDemo
         /// <summary>
         /// Gets or sets the items.
         /// </summary>
-        public ObservableCollection<ObservableCollection<ExampleObject>> Items506 { get; set; } 
+        public ObservableCollection<ObservableCollection<ExampleObject>> Items506 { get; set; }
     }
 }

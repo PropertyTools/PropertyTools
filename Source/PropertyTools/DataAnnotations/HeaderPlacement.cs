@@ -27,6 +27,7 @@
 //   Header placement values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     /// <summary>

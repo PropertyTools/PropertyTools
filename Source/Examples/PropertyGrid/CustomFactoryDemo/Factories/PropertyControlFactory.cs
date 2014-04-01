@@ -27,6 +27,7 @@
 //   Provides a custom property control factory.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace CustomFactoryDemo
 {
     using System.Windows;

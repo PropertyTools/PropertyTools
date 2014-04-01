@@ -27,6 +27,7 @@
 //   Represents a mass.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -49,7 +50,9 @@ namespace SimpleDemo
         /// Parses the specified string.
         /// </summary>
         /// <param name="s">The s.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// 
+        /// </returns>
         public static Mass Parse(string s)
         {
             s = s.Replace(',', '.').Trim();
@@ -62,10 +65,10 @@ namespace SimpleDemo
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {

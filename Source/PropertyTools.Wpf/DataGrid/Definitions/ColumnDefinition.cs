@@ -27,6 +27,7 @@
 //   Defines column-specific properties that apply to DataGrid elements.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -47,7 +48,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the column width.
         /// </summary>
-        /// <value> The width. </value>
+        /// <value>The width.</value>
         public GridLength Width { get; set; }
     }
 }

@@ -24,6 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace TestLibrary
 {
     public class TestAutomaticDisplayNames : TestBase

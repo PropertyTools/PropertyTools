@@ -23,7 +23,11 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Provides an example using <see cref="ItemsSourcePropertyAttribute" />.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace TestLibrary
 {
     using System.Collections.Generic;
@@ -34,13 +38,13 @@ namespace TestLibrary
     using PropertyTools.DataAnnotations;
 
     /// <summary>
-    /// Provides an example using <see cref="ItemsSourcePropertyAttribute"/>.
+    /// Provides an example using <see cref="ItemsSourcePropertyAttribute" />.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class TestItemsSourcePropertyAttribute : TestBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestItemsSourcePropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="TestItemsSourcePropertyAttribute" /> class.
         /// </summary>
         public TestItemsSourcePropertyAttribute()
         {

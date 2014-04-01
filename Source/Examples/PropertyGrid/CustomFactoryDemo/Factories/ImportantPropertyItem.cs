@@ -27,6 +27,7 @@
 //   Provides a custom PropertyItem class for properties decorated by the ImportantAttribute.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace CustomFactoryDemo
 {
     using System.ComponentModel;
@@ -36,9 +37,7 @@ namespace CustomFactoryDemo
     /// <summary>
     /// Provides a custom PropertyItem class for properties decorated by the ImportantAttribute.
     /// </summary>
-    /// <remarks>
-    /// You need to sub-class the PropertyItemFactory to get this to work.
-    /// </remarks>
+    /// <remarks>You need to sub-class the PropertyItemFactory to get this to work.</remarks>
     public class ImportantPropertyItem : PropertyItem
     {
         /// <summary>

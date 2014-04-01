@@ -27,6 +27,7 @@
 //   Provides a property descriptor for an object in the <see cref="ItemsBag" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -48,14 +49,10 @@ namespace PropertyTools.Wpf
         private readonly PropertyDescriptor defaultDescriptor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsBagPropertyDescriptor"/> class.
+        /// Initializes a new instance of the <see cref="ItemsBagPropertyDescriptor" /> class.
         /// </summary>
-        /// <param name="defaultDescriptor">
-        /// The default descriptor.
-        /// </param>
-        /// <param name="componentType">
-        /// Type of the component.
-        /// </param>
+        /// <param name="defaultDescriptor">The default descriptor.</param>
+        /// <param name="componentType">Type of the component.</param>
         public ItemsBagPropertyDescriptor(PropertyDescriptor defaultDescriptor, Type componentType)
             : base(defaultDescriptor)
         {
@@ -66,10 +63,12 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// When overridden in a derived class, gets the type of the component this property is bound to.
         /// </summary>
-        /// <value> </value>
-        /// <returns> A <see cref="T:System.Type" /> that represents the type of component this property is bound to. When the <see
+        /// <value></value>
+        /// <returns>
+        /// A <see cref="T:System.Type" /> that represents the type of component this property is bound to. When the <see
         /// cref="M:System.ComponentModel.PropertyDescriptor.GetValue(System.Object)" /> or <see
-        /// cref="M:System.ComponentModel.PropertyDescriptor.SetValue(System.Object,System.Object)" /> methods are invoked, the object specified might be an instance of this type. </returns>
+        /// cref="M:System.ComponentModel.PropertyDescriptor.SetValue(System.Object,System.Object)" /> methods are invoked, the object specified might be an instance of this type.
+        /// </returns>
         public override Type ComponentType
         {
             get
@@ -81,8 +80,10 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// When overridden in a derived class, gets a value indicating whether this property is read-only.
         /// </summary>
-        /// <value> </value>
-        /// <returns> true if the property is read-only; otherwise, false. </returns>
+        /// <value></value>
+        /// <returns>
+        /// <c>true</c> if the property is read-only; otherwise, <c>false</c>.
+        /// </returns>
         public override bool IsReadOnly
         {
             get
@@ -94,8 +95,10 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// When overridden in a derived class, gets the type of the property.
         /// </summary>
-        /// <value> </value>
-        /// <returns> A <see cref="T:System.Type" /> that represents the type of the property. </returns>
+        /// <value></value>
+        /// <returns>
+        /// A <see cref="T:System.Type" /> that represents the type of the property.
+        /// </returns>
         public override Type PropertyType
         {
             get
@@ -113,11 +116,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// When overridden in a derived class, returns whether resetting an object changes its value.
         /// </summary>
-        /// <param name="component">
-        /// The component to test for reset capability.
-        /// </param>
+        /// <param name="component">The component to test for reset capability.</param>
         /// <returns>
-        /// true if resetting the component changes its value; otherwise, false.
+        /// <c>true</c> if resetting the component changes its value; otherwise, <c>false</c>.
         /// </returns>
         public override bool CanResetValue(object component)
         {
@@ -127,9 +128,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// When overridden in a derived class, gets the current value of the property on a component.
         /// </summary>
-        /// <param name="component">
-        /// The component with the property for which to retrieve the value.
-        /// </param>
+        /// <param name="component">The component with the property for which to retrieve the value.</param>
         /// <returns>
         /// The value of a property for a given component.
         /// </returns>
@@ -166,9 +165,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// When overridden in a derived class, resets the value for this property of the component to the default value.
         /// </summary>
-        /// <param name="component">
-        /// The component with the property value that is to be reset to the default value.
-        /// </param>
+        /// <param name="component">The component with the property value that is to be reset to the default value.</param>
         public override void ResetValue(object component)
         {
         }
@@ -176,12 +173,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// When overridden in a derived class, sets the value of the component to a different value.
         /// </summary>
-        /// <param name="component">
-        /// The component with the property value that is to be set.
-        /// </param>
-        /// <param name="value">
-        /// The new value.
-        /// </param>
+        /// <param name="component">The component with the property value that is to be set.</param>
+        /// <param name="value">The new value.</param>
         public override void SetValue(object component, object value)
         {
             var bag = (ItemsBag)component;
@@ -200,11 +193,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// When overridden in a derived class, determines a value indicating whether the value of this property needs to be persisted.
         /// </summary>
-        /// <param name="component">
-        /// The component with the property to be examined for persistence.
-        /// </param>
+        /// <param name="component">The component with the property to be examined for persistence.</param>
         /// <returns>
-        /// true if the property should be persisted; otherwise, false.
+        /// <c>true</c> if the property should be persisted; otherwise, <c>false</c>.
         /// </returns>
         public override bool ShouldSerializeValue(object component)
         {
@@ -212,13 +203,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the type of the <see cref="Nullable"/>.
+        /// Gets the type of the <see cref="Nullable" />.
         /// </summary>
-        /// <param name="type">
-        /// The type.
-        /// </param>
+        /// <param name="type">The type.</param>
         /// <returns>
-        /// The <see cref="Type"/>.
+        /// The <see cref="Type" />.
         /// </returns>
         private Type GetNullableType(Type type)
         {

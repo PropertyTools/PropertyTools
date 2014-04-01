@@ -27,6 +27,7 @@
 //   Represents a bag of items.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -41,11 +42,9 @@ namespace PropertyTools.Wpf
     public class ItemsBag : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsBag"/> class.
+        /// Initializes a new instance of the <see cref="ItemsBag" /> class.
         /// </summary>
-        /// <param name="objects">
-        /// The objects.
-        /// </param>
+        /// <param name="objects">The objects.</param>
         public ItemsBag(IEnumerable objects)
         {
             this.Objects = objects as object[] ?? objects.Cast<object>().ToArray();
@@ -61,19 +60,19 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the biggest common type of the objects.
         /// </summary>
-        /// <value> The type of the biggest. </value>
+        /// <value>The type of the biggest.</value>
         public Type BiggestType { get; private set; }
 
         /// <summary>
         /// Gets the objects in the bag.
         /// </summary>
-        /// <value> The objects. </value>
+        /// <value>The objects.</value>
         public object[] Objects { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to suspend property changed notifications.
         /// </summary>
-        /// <value> <c>true</c> if notifications are suspended; otherwise, <c>false</c> . </value>
+        /// <value><c>true</c> if notifications are suspended; otherwise, <c>false</c> .</value>
         public bool SuspendNotifications { get; set; }
 
         /// <summary>
@@ -87,9 +86,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Raises the property changed event.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         internal void RaisePropertyChanged(string property)
         {
             var handler = this.PropertyChanged;
@@ -102,12 +99,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The relay property changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void RelayPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (this.SuspendNotifications)

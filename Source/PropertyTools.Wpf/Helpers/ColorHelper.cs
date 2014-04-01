@@ -27,6 +27,7 @@
 //   Static <see cref="Color" /> helper methods.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -60,12 +61,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Change the alpha value of a color.
         /// </summary>
-        /// <param name="c">
-        /// The source color.
-        /// </param>
-        /// <param name="alpha">
-        /// The new alpha value.
-        /// </param>
+        /// <param name="c">The source color.</param>
+        /// <param name="alpha">The new alpha value.</param>
         /// <returns>
         /// The new color.
         /// </returns>
@@ -75,20 +72,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Converts CMYK values to a <see cref="Color"/>.
+        /// Converts CMYK values to a <see cref="Color" />.
         /// </summary>
-        /// <param name="c">
-        /// The cyan value.
-        /// </param>
-        /// <param name="m">
-        /// The magenta value.
-        /// </param>
-        /// <param name="y">
-        /// The yellow value.
-        /// </param>
-        /// <param name="k">
-        /// The black value.
-        /// </param>
+        /// <param name="c">The cyan value.</param>
+        /// <param name="m">The magenta value.</param>
+        /// <param name="y">The yellow value.</param>
+        /// <param name="k">The black value.</param>
         /// <returns>
         /// The color.
         /// </returns>
@@ -101,14 +90,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Calculates the difference between two <see cref="Color"/>s.
+        /// Calculates the difference between two <see cref="Color" />s.
         /// </summary>
-        /// <param name="c1">
-        /// The first color.
-        /// </param>
-        /// <param name="c2">
-        /// The second color.
-        /// </param>
+        /// <param name="c1">The first color.</param>
+        /// <param name="c2">The second color.</param>
         /// <returns>
         /// L2-norm in RGBA space.
         /// </returns>
@@ -127,15 +112,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Converts RGB values to CMYK.
         /// </summary>
-        /// <param name="r">
-        /// The r.
-        /// </param>
-        /// <param name="g">
-        /// The g.
-        /// </param>
-        /// <param name="b">
-        /// The b.
-        /// </param>
+        /// <param name="r">The r.</param>
+        /// <param name="g">The g.</param>
+        /// <param name="b">The b.</param>
         /// <returns>
         /// The CMYK values.
         /// </returns>
@@ -160,11 +139,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Convert a <see cref="Color"/> to a hexadecimal string.
+        /// Convert a <see cref="Color" /> to a hexadecimal string.
         /// </summary>
-        /// <param name="color">
-        /// The source color.
-        /// </param>
+        /// <param name="color">The source color.</param>
         /// <returns>
         /// The color to hex.
         /// </returns>
@@ -174,11 +151,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Converts from a <see cref="Color"/> to HSV values (double)
+        /// Converts from a <see cref="Color" /> to HSV values (double)
         /// </summary>
-        /// <param name="color">
-        /// The source color.
-        /// </param>
+        /// <param name="color">The source color.</param>
         /// <returns>
         /// Array of [Hue,Saturation,Value] in the range [0,1]
         /// </returns>
@@ -238,11 +213,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Converts from a <see cref="Color"/> to HSV values (byte)
+        /// Converts from a <see cref="Color" /> to HSV values (byte)
         /// </summary>
-        /// <param name="color">
-        /// The source color.
-        /// </param>
+        /// <param name="color">The source color.</param>
         /// <returns>
         /// Array of [Hue,Saturation,Value] in the range [0,255]
         /// </returns>
@@ -257,11 +230,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Convert a <see cref="Color"/> to unsigned int
+        /// Convert a <see cref="Color" /> to unsigned int
         /// </summary>
-        /// <param name="c">
-        /// The source color.
-        /// </param>
+        /// <param name="c">The source color.</param>
         /// <returns>
         /// The color to uint.
         /// </returns>
@@ -279,9 +250,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Calculates the complementary color.
         /// </summary>
-        /// <param name="c">
-        /// The source color.
-        /// </param>
+        /// <param name="c">The source color.</param>
         /// <returns>
         /// The complementary color.
         /// </returns>
@@ -303,9 +272,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the hue spectrum colors.
         /// </summary>
-        /// <param name="colorCount">
-        /// The number of colors.
-        /// </param>
+        /// <param name="colorCount">The number of colors.</param>
         /// <returns>
         /// The spectrum.
         /// </returns>
@@ -322,11 +289,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Convert a hexadecimal string to <see cref="Color"/>.
+        /// Convert a hexadecimal string to <see cref="Color" />.
         /// </summary>
-        /// <param name="value">
-        /// The hex input string.
-        /// </param>
+        /// <param name="value">The hex input string.</param>
         /// <returns>
         /// The color.
         /// </returns>
@@ -353,20 +318,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Converts from HSV to a RGB <see cref="Color"/>.
+        /// Converts from HSV to a RGB <see cref="Color" />.
         /// </summary>
-        /// <param name="hue">
-        /// The hue.
-        /// </param>
-        /// <param name="saturation">
-        /// The saturation.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="alpha">
-        /// The alpha.
-        /// </param>
+        /// <param name="hue">The hue.</param>
+        /// <param name="saturation">The saturation.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="alpha">The alpha.</param>
         /// <returns>
         /// The color.
         /// </returns>
@@ -445,21 +402,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Convert from HSV to <see cref="Color"/>.
+        /// Convert from HSV to <see cref="Color" />.
         /// http://en.wikipedia.org/wiki/HSL_color_space
         /// </summary>
-        /// <param name="hue">
-        /// The Hue value [0,1].
-        /// </param>
-        /// <param name="sat">
-        /// The saturation value [0,1].
-        /// </param>
-        /// <param name="val">
-        /// The brightness value [0,1].
-        /// </param>
-        /// <param name="alpha">
-        /// The alpha value [0.1].
-        /// </param>
+        /// <param name="hue">The Hue value [0,1].</param>
+        /// <param name="sat">The saturation value [0,1].</param>
+        /// <param name="val">The brightness value [0,1].</param>
+        /// <param name="alpha">The alpha value [0.1].</param>
         /// <returns>
         /// The color.
         /// </returns>
@@ -526,14 +475,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Calculate the difference in hue between two <see cref="Color"/>s.
+        /// Calculate the difference in hue between two <see cref="Color" />s.
         /// </summary>
-        /// <param name="c1">
-        /// The first color.
-        /// </param>
-        /// <param name="c2">
-        /// The second color.
-        /// </param>
+        /// <param name="c1">The first color.</param>
+        /// <param name="c2">The second color.</param>
         /// <returns>
         /// The hue difference.
         /// </returns>
@@ -559,17 +504,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Linear interpolation between two <see cref="Color"/>s.
+        /// Linear interpolation between two <see cref="Color" />s.
         /// </summary>
-        /// <param name="c0">
-        /// The first color.
-        /// </param>
-        /// <param name="c1">
-        /// The second color.
-        /// </param>
-        /// <param name="x">
-        /// The interpolation factor.
-        /// </param>
+        /// <param name="c0">The first color.</param>
+        /// <param name="c1">The second color.</param>
+        /// <param name="x">The interpolation factor.</param>
         /// <returns>
         /// The interpolated color.
         /// </returns>
@@ -583,11 +522,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Convert an unsigned int (32bit) to <see cref="Color"/>.
+        /// Convert an unsigned int (32bit) to <see cref="Color" />.
         /// </summary>
-        /// <param name="color">
-        /// The unsigned integer.
-        /// </param>
+        /// <param name="color">The unsigned integer.</param>
         /// <returns>
         /// The color.
         /// </returns>

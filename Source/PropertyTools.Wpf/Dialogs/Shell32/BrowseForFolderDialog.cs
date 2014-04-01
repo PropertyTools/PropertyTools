@@ -27,6 +27,7 @@
 //   Represents a common dialog box (Win32::SHBrowseForFolder()) that allows a user to select a folder.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf.Shell32
 {
     using System;
@@ -65,10 +66,10 @@ namespace PropertyTools.Wpf.Shell32
         /// <summary>
         /// The browse callback proc.
         /// </summary>
-        /// <param name="hwnd"> The hwnd. </param>
-        /// <param name="uMsg"> The u msg. </param>
-        /// <param name="lParam"> The l param. </param>
-        /// <param name="lpData"> The lp data. </param>
+        /// <param name="hwnd">The hwnd.</param>
+        /// <param name="uMsg">The u msg.</param>
+        /// <param name="lParam">The l param.</param>
+        /// <param name="lpData">The lp data.</param>
         public delegate int BrowseCallbackProc(IntPtr hwnd, MessageFromBrowser uMsg, IntPtr lParam, IntPtr lpData);
 
         /// <summary>
@@ -204,7 +205,7 @@ namespace PropertyTools.Wpf.Shell32
             WM_USER = 0x0400,
 
             /// <summary>
-            /// (ANSI) Sets the status text. Set lpData to point to a null-terminated string with the desired text.
+            /// (ANSI) Sets the status text. Set lpData to point to a <c>null</c>-terminated string with the desired text.
             /// </summary>
             BFFM_SETSTATUSTEXTA = WM_USER + 100,
 
@@ -224,7 +225,7 @@ namespace PropertyTools.Wpf.Shell32
             BFFM_SETSELECTIONW = WM_USER + 103,
 
             /// <summary>
-            /// (Unicode) Sets the status text. Set lpData to point to a null-terminated string with the desired text.
+            /// (Unicode) Sets the status text. Set lpData to point to a <c>null</c>-terminated string with the desired text.
             /// </summary>
             BFFM_SETSTATUSTEXTW = WM_USER + 104,
 
@@ -309,20 +310,12 @@ namespace PropertyTools.Wpf.Shell32
         /// <summary>
         /// The send message w.
         /// </summary>
-        /// <param name="hWnd">
-        /// The h wnd.
-        /// </param>
-        /// <param name="Msg">
-        /// The msg.
-        /// </param>
-        /// <param name="wParam">
-        /// The w param.
-        /// </param>
-        /// <param name="lParam">
-        /// The l param.
-        /// </param>
+        /// <param name="hWnd">The h wnd.</param>
+        /// <param name="Msg">The msg.</param>
+        /// <param name="wParam">The w param.</param>
+        /// <param name="lParam">The l param.</param>
         /// <returns>
-        /// The <see cref="IntPtr"/>.
+        /// The <see cref="IntPtr" />.
         /// </returns>
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessageW(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
@@ -330,20 +323,12 @@ namespace PropertyTools.Wpf.Shell32
         /// <summary>
         /// The send message w.
         /// </summary>
-        /// <param name="hWnd">
-        /// The h wnd.
-        /// </param>
-        /// <param name="msg">
-        /// The msg.
-        /// </param>
-        /// <param name="wParam">
-        /// The w param.
-        /// </param>
-        /// <param name="str">
-        /// The str.
-        /// </param>
+        /// <param name="hWnd">The h wnd.</param>
+        /// <param name="msg">The msg.</param>
+        /// <param name="wParam">The w param.</param>
+        /// <param name="str">The str.</param>
         /// <returns>
-        /// The <see cref="IntPtr"/>.
+        /// The <see cref="IntPtr" />.
         /// </returns>
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessageW(
@@ -363,9 +348,7 @@ namespace PropertyTools.Wpf.Shell32
         /// <summary>
         /// Shows the dialog (Win32::SHBrowseForFolder()) with its hwndOwner set to the handle of 'owner'.
         /// </summary>
-        /// <param name="owner">
-        /// The owner.
-        /// </param>
+        /// <param name="owner">The owner.</param>
         /// <returns>
         /// True if OK was pressed.
         /// </returns>
@@ -377,11 +360,9 @@ namespace PropertyTools.Wpf.Shell32
         /// <summary>
         /// The sh browse for folder w.
         /// </summary>
-        /// <param name="bi">
-        /// The bi.
-        /// </param>
+        /// <param name="bi">The bi.</param>
         /// <returns>
-        /// The <see cref="IntPtr"/>.
+        /// The <see cref="IntPtr" />.
         /// </returns>
         [DllImport("shell32.dll")]
         private static extern IntPtr SHBrowseForFolderW([MarshalAs(UnmanagedType.LPStruct)] [In] [Out] BROWSEINFOW bi);
@@ -389,12 +370,8 @@ namespace PropertyTools.Wpf.Shell32
         /// <summary>
         /// The sh get path from id list.
         /// </summary>
-        /// <param name="pidl">
-        /// The pidl.
-        /// </param>
-        /// <param name="path">
-        /// The path.
-        /// </param>
+        /// <param name="pidl">The pidl.</param>
+        /// <param name="path">The path.</param>
         /// <returns>
         /// The sh get path from id list.
         /// </returns>
@@ -404,18 +381,10 @@ namespace PropertyTools.Wpf.Shell32
         /// <summary>
         /// The browse event handler.
         /// </summary>
-        /// <param name="hwnd">
-        /// The hwnd.
-        /// </param>
-        /// <param name="uMsg">
-        /// The u msg.
-        /// </param>
-        /// <param name="lParam">
-        /// The l param.
-        /// </param>
-        /// <param name="lpData">
-        /// The lp data.
-        /// </param>
+        /// <param name="hwnd">The hwnd.</param>
+        /// <param name="uMsg">The u msg.</param>
+        /// <param name="lParam">The l param.</param>
+        /// <param name="lpData">The lp data.</param>
         /// <returns>
         /// The browse event handler.
         /// </returns>
@@ -490,9 +459,7 @@ namespace PropertyTools.Wpf.Shell32
         /// <summary>
         /// The p invoke sh browse for folder.
         /// </summary>
-        /// <param name="owner">
-        /// The owner.
-        /// </param>
+        /// <param name="owner">The owner.</param>
         /// <returns>
         /// True if OK was pressed.
         /// </returns>
@@ -543,7 +510,7 @@ namespace PropertyTools.Wpf.Shell32
             public string pszDisplayName; // Output parameter! (length must be >= MAX_PATH)
 
             /// <summary>
-            /// The address of a null-terminated string that is displayed above the tree view control in the dialog box.
+            /// The address of a <c>null</c>-terminated string that is displayed above the tree view control in the dialog box.
             /// </summary>
             public string lpszTitle;
 

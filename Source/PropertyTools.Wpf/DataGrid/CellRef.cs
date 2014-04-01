@@ -27,6 +27,7 @@
 //   Represents a cell reference.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.ComponentModel;
@@ -49,14 +50,10 @@ namespace PropertyTools.Wpf
         private readonly int row;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CellRef"/> struct.
+        /// Initializes a new instance of the <see cref="CellRef" /> struct.
         /// </summary>
-        /// <param name="row">
-        /// The row.
-        /// </param>
-        /// <param name="column">
-        /// The column.
-        /// </param>
+        /// <param name="row">The row.</param>
+        /// <param name="column">The column.</param>
         public CellRef(int row, int column)
         {
             this.row = row;
@@ -88,9 +85,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Converts a column number to a column name.
         /// </summary>
-        /// <param name="column">
-        /// The column.
-        /// </param>
+        /// <param name="column">The column.</param>
         /// <returns>
         /// The to column name.
         /// </returns>
@@ -111,9 +106,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Converts a row number to a row name.
         /// </summary>
-        /// <param name="row">
-        /// The row.
-        /// </param>
+        /// <param name="row">The row.</param>
         /// <returns>
         /// The to row name.
         /// </returns>
@@ -125,7 +118,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
-        /// <returns> A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. </returns>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+        /// </returns>
         public override int GetHashCode()
         {
             long hash = this.column;
@@ -136,7 +131,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns> A <see cref="System.String" /> that represents this instance. </returns>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return string.Format("{0}{1}", ToColumnName(this.Column), this.Row + 1);

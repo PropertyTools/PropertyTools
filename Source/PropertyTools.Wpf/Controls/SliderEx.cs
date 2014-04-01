@@ -27,6 +27,7 @@
 //   Represents a slider that calls IEditableObject.BeginEdit/EndEdit when thumb dragging.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.ComponentModel;
@@ -41,9 +42,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on thumb drag completed.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="e">The e.</param>
         protected override void OnThumbDragCompleted(DragCompletedEventArgs e)
         {
             base.OnThumbDragCompleted(e);
@@ -57,9 +56,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on thumb drag started.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="e">The e.</param>
         protected override void OnThumbDragStarted(DragStartedEventArgs e)
         {
             base.OnThumbDragStarted(e);

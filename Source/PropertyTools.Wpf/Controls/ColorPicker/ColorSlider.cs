@@ -27,6 +27,7 @@
 //   Represents a color slider.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -35,22 +36,20 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Represents a color slider.
     /// </summary>
-    /// <remarks>
-    /// Original code by Ury Jamshy, 21 July 2011.
+    /// <remarks>Original code by Ury Jamshy, 21 July 2011.
     /// See http://www.codeproject.com/KB/WPF/ColorPicker010.aspx
     /// The Code Project Open License (CPOL)
-    /// http://www.codeproject.com/info/cpol10.aspx
-    /// </remarks>
+    /// http://www.codeproject.com/info/cpol10.aspx</remarks>
     public class ColorSlider : SliderEx
     {
         /// <summary>
-        /// The left color property.
+        /// Identifies the <see cref="LeftColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LeftColorProperty = DependencyProperty.Register(
             "LeftColor", typeof(Color?), typeof(ColorSlider), new UIPropertyMetadata(Colors.Black));
 
         /// <summary>
-        /// The right color property.
+        /// Identifies the <see cref="RightColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RightColorProperty = DependencyProperty.Register(
             "RightColor", typeof(Color?), typeof(ColorSlider), new UIPropertyMetadata(Colors.White));

@@ -27,6 +27,7 @@
 //   Represents a stack panel that counts the number of visible children.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -38,7 +39,7 @@ namespace PropertyTools.Wpf
     public class StackPanelEx : StackPanel
     {
         /// <summary>
-        /// The visible children count property.
+        /// Identifies the <see cref="VisibleChildrenCount"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty VisibleChildrenCountProperty =
             DependencyProperty.Register(
@@ -47,7 +48,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the number of visible children.
         /// </summary>
-        /// <value> The visible children count. </value>
+        /// <value>The visible children count.</value>
         public int VisibleChildrenCount
         {
             get
@@ -62,13 +63,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Arranges the content of a <see cref="T:System.Windows.Controls.StackPanel"/> element.
+        /// Arranges the content of a <see cref="T:System.Windows.Controls.StackPanel" /> element.
         /// </summary>
-        /// <param name="arrangeSize">
-        /// The <see cref="T:System.Windows.Size"/> that this element should use to arrange its child elements.
-        /// </param>
+        /// <param name="arrangeSize">The <see cref="T:System.Windows.Size" /> that this element should use to arrange its child elements.</param>
         /// <returns>
-        /// The <see cref="T:System.Windows.Size"/> that represents the arranged size of this <see cref="T:System.Windows.Controls.StackPanel"/> element and its child elements.
+        /// The <see cref="T:System.Windows.Size" /> that represents the arranged size of this <see cref="T:System.Windows.Controls.StackPanel" /> element and its child elements.
         /// </returns>
         protected override Size ArrangeOverride(Size arrangeSize)
         {

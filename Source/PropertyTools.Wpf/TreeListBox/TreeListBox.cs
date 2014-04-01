@@ -27,6 +27,7 @@
 //   Represents a hierarchical list box.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -47,7 +48,7 @@ namespace PropertyTools.Wpf
     public class TreeListBox : ListBox
     {
         /// <summary>
-        /// The hierarchy items binding property.
+        /// Identifies the <see cref="ChildrenBinding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ChildrenBindingProperty =
             DependencyProperty.Register(
@@ -57,7 +58,7 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(new Binding("Children")));
 
         /// <summary>
-        /// The indentation property.
+        /// Identifies the <see cref="Indentation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IndentationProperty = DependencyProperty.Register(
             "Indentation",
@@ -66,13 +67,13 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(10.0, (s, e) => ((TreeListBox)s).IndentationChanged()));
 
         /// <summary>
-        /// The is expanded binding property.
+        /// Identifies the <see cref="IsExpandedPath"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsExpandedPathProperty = DependencyProperty.Register(
             "IsExpandedPath", typeof(string), typeof(TreeListBox), new UIPropertyMetadata("IsExpanded"));
 
         /// <summary>
-        /// The is selected binding property.
+        /// Identifies the <see cref="IsSelectedBinding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsSelectedBindingProperty =
             DependencyProperty.Register(
@@ -82,7 +83,7 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(new Binding("IsSelected")));
 
         /// <summary>
-        /// The tree source property.
+        /// Identifies the <see cref="TreeSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TreeSourceProperty = DependencyProperty.Register(
             "HierarchySource",
@@ -93,9 +94,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Queue of items to expand.
         /// </summary>
-        /// <remarks>
-        /// Cannot expand the items when preparing the container, so we use a queue to expand later.
-        /// </remarks>
+        /// <remarks>Cannot expand the items when preparing the container, so we use a queue to expand later.</remarks>
         private readonly Queue<TreeListBoxItem> expandItems = new Queue<TreeListBoxItem>();
 
         /// <summary>
@@ -126,7 +125,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the hierarchal items binding.
         /// </summary>
-        /// <value> The hierarchy items binding. </value>
+        /// <value>The hierarchy items binding.</value>
         public BindingBase ChildrenBinding
         {
             get
@@ -143,7 +142,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the hierarchy source.
         /// </summary>
-        /// <value> The hierarchy source. </value>
+        /// <value>The hierarchy source.</value>
         public IEnumerable HierarchySource
         {
             get
@@ -160,7 +159,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the indentation.
         /// </summary>
-        /// <value> The indentation. </value>
+        /// <value>The indentation.</value>
         public double Indentation
         {
             get
@@ -177,7 +176,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the IsExpanded binding.
         /// </summary>
-        /// <value> The is expanded binding. </value>
+        /// <value>The is expanded binding.</value>
         public string IsExpandedPath
         {
             get
@@ -194,7 +193,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the IsSelected binding.
         /// </summary>
-        /// <value> The is selected binding. </value>
+        /// <value>The is selected binding.</value>
         public BindingBase IsSelectedBinding
         {
             get
@@ -211,9 +210,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Expands the ancestors of the specified item.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
+        /// <param name="item">The item.</param>
         public void ExpandParents(object item)
         {
             var container = this.ContainerFromItem(item);
@@ -233,12 +230,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Handles child collection changes.
         /// </summary>
-        /// <param name="parent">
-        /// The parent.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="parent">The parent.</param>
+        /// <param name="e">The <see cref="System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
         internal void ChildCollectionChanged(TreeListBoxItem parent, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -357,9 +350,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Collapses the specified item.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
+        /// <param name="item">The item.</param>
         internal void Collapse(TreeListBoxItem item)
         {
             if (item.Children == null)
@@ -390,9 +381,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the container from the specified index.
         /// </summary>
-        /// <param name="index">
-        /// The index.
-        /// </param>
+        /// <param name="index">The index.</param>
         /// <returns>
         /// The container.
         /// </returns>
@@ -404,9 +393,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Expands the specified item.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
+        /// <param name="item">The item.</param>
         internal void Expand(TreeListBoxItem item)
         {
             if (this.isPreparingContainer)
@@ -448,7 +435,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates or identifies the element used to display a specified item.
         /// </summary>
-        /// <returns> A <see cref="TreeListBoxItem" /> . </returns>
+        /// <returns>
+        /// A <see cref="TreeListBoxItem" /> .
+        /// </returns>
         protected override DependencyObject GetContainerForItemOverride()
         {
             return new TreeListBoxItem(this);
@@ -457,11 +446,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines if the specified item is (or is eligible to be) its own ItemContainer.
         /// </summary>
-        /// <param name="item">
-        /// Specified item.
-        /// </param>
+        /// <param name="item">Specified item.</param>
         /// <returns>
-        /// true if the item is its own ItemContainer; otherwise, false.
+        /// <c>true</c> if the item is its own ItemContainer; otherwise, <c>false</c>.
         /// </returns>
         protected override bool IsItemItsOwnContainerOverride(object item)
         {
@@ -469,11 +456,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Responds to the <see cref="E:System.Windows.UIElement.KeyDown"/> event.
+        /// Responds to the <see cref="E:System.Windows.UIElement.KeyDown" /> event.
         /// </summary>
-        /// <param name="e">
-        /// Provides data for <see cref="T:System.Windows.Input.KeyEventArgs"/> .
-        /// </param>
+        /// <param name="e">Provides data for <see cref="T:System.Windows.Input.KeyEventArgs" /> .</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -516,11 +501,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Controls.Control.MouseDoubleClick"/> routed event.
+        /// Raises the <see cref="E:System.Windows.Controls.Control.MouseDoubleClick" /> routed event.
         /// </summary>
-        /// <param name="e">
-        /// The event data.
-        /// </param>
+        /// <param name="e">The event data.</param>
         protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
         {
             base.OnMouseDoubleClick(e);
@@ -535,12 +518,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Prepares the specified element to display the specified item.
         /// </summary>
-        /// <param name="element">
-        /// Element used to display the specified item.
-        /// </param>
-        /// <param name="item">
-        /// Specified item.
-        /// </param>
+        /// <param name="element">Element used to display the specified item.</param>
+        /// <param name="item">Specified item.</param>
         protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
         {
             base.PrepareContainerForItemOverride(element, item);
@@ -579,12 +558,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Handles the Rendering event.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.EventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
             // expand the items in the queue
@@ -602,9 +577,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the container from an item.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
+        /// <param name="item">The item.</param>
         /// <returns>
         /// The container.
         /// </returns>
@@ -616,9 +589,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Handles changes in the HierarchySource.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private void HierarchySourceChanged(DependencyPropertyChangedEventArgs e)
         {
             var oldTreeSource = e.OldValue as IEnumerable;

@@ -27,6 +27,7 @@
 //   Represents a popup control that provides a data template for the popup.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -38,7 +39,7 @@ namespace PropertyTools.Wpf
     public class PopupBox : ComboBox
     {
         /// <summary>
-        /// The popup template property.
+        /// Identifies the <see cref="PopupTemplate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PopupTemplateProperty = DependencyProperty.Register(
             "PopupTemplate", typeof(DataTemplate), typeof(PopupBox), new UIPropertyMetadata(null));
@@ -54,7 +55,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the popup template.
         /// </summary>
-        /// <value> The popup template. </value>
+        /// <value>The popup template.</value>
         public DataTemplate PopupTemplate
         {
             get

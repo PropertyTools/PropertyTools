@@ -27,6 +27,7 @@
 //   Specifies the name of property that controls the enabled/disabled state of the attributed property.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -38,11 +39,9 @@ namespace PropertyTools.DataAnnotations
     public class EnableByAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnableByAttribute"/> class.
+        /// Initializes a new instance of the <see cref="EnableByAttribute" /> class.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property.
-        /// </param>
+        /// <param name="propertyName">Name of the property.</param>
         public EnableByAttribute(string propertyName)
         {
             this.PropertyName = propertyName;
@@ -50,7 +49,7 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnableByAttribute"/> class.
+        /// Initializes a new instance of the <see cref="EnableByAttribute" /> class.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="propertyValue">The property value that enables the attributed property.</param>

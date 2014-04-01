@@ -39,9 +39,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Gets the error message for the bound data.
     /// </summary>
-    /// <remarks>
-    /// Note that the instance and column(property) name must be provided in the constructor. There is probably a better way to do this....
-    /// </remarks>
+    /// <remarks>Note that the instance and column(property) name must be provided in the constructor. There is probably a better way to do this....</remarks>
     public class DataErrorInfoConverter : IValueConverter
     {
         /// <summary>
@@ -55,7 +53,7 @@ namespace PropertyTools.Wpf
         private readonly string columnName;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataErrorInfoConverter"/> class.
+        /// Initializes a new instance of the <see cref="DataErrorInfoConverter" /> class.
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <param name="columnName">Name of the column.</param>
@@ -72,7 +70,9 @@ namespace PropertyTools.Wpf
         /// <param name="targetType">The type of the binding target property.</param>
         /// <param name="parameter">The converter parameter to use.</param>
         /// <param name="culture">The culture to use in the converter.</param>
-        /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
+        /// <returns>
+        /// A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.
+        /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var errorMessage = this.instance[this.columnName];
@@ -97,7 +97,9 @@ namespace PropertyTools.Wpf
         /// <param name="targetType">The type to convert to.</param>
         /// <param name="parameter">The converter parameter to use.</param>
         /// <param name="culture">The culture to use in the converter.</param>
-        /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
+        /// <returns>
+        /// A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.
+        /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

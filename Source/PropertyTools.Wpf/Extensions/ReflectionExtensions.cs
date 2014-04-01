@@ -27,6 +27,7 @@
 //   Provides reflection extensions.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Collections;
@@ -41,14 +42,10 @@ namespace PropertyTools.Wpf
     public static class ReflectionExtensions
     {
         /// <summary>
-        /// Filters on the <see cref="BrowsableAttribute"/>.
+        /// Filters on the <see cref="BrowsableAttribute" />.
         /// </summary>
-        /// <typeparam name="T">
-        /// The enumeration type.
-        /// </typeparam>
-        /// <param name="arr">
-        /// The array.
-        /// </param>
+        /// <typeparam name="T">The enumeration type.</typeparam>
+        /// <param name="arr">The array.</param>
         /// <returns>
         /// The filtered values.
         /// </returns>
@@ -95,15 +92,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the attributes of the specified type.
         /// </summary>
-        /// <param name="fieldInfo">
-        /// The field info.
-        /// </param>
-        /// <param name="inherit">
-        /// The inherit flag.
-        /// </param>
-        /// <typeparam name="T">
-        /// The type of attribute to get.
-        /// </typeparam>
+        /// <typeparam name="T">The type of attribute to get.</typeparam>
+        /// <param name="fieldInfo">The field info.</param>
+        /// <param name="inherit">The inherit flag.</param>
         /// <returns>
         /// The attributes enumeration.
         /// </returns>

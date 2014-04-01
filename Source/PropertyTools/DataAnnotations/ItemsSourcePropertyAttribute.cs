@@ -27,6 +27,7 @@
 //   Specifies the name of a property that contains values for the attributed property.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -37,11 +38,9 @@ namespace PropertyTools.DataAnnotations
     public class ItemsSourcePropertyAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsSourcePropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ItemsSourcePropertyAttribute" /> class.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property.
-        /// </param>
+        /// <param name="propertyName">Name of the property.</param>
         public ItemsSourcePropertyAttribute(string propertyName)
         {
             this.PropertyName = propertyName;

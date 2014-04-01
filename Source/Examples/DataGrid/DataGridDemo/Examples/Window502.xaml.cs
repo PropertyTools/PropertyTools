@@ -30,6 +30,8 @@
 
 namespace DataGridDemo
 {
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// Interaction logic for Window502.xaml
     /// </summary>
@@ -40,7 +42,54 @@ namespace DataGridDemo
         /// </summary>
         public Window502()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+
+            this.ItemsSource = new ObservableCollection<ObservableCollection<Mass>>
+                                {
+                                    new ObservableCollection<Mass>
+                                        {
+                                            100
+                                            * Mass
+                                                  .Kilogram,
+                                            101
+                                            * Mass
+                                                  .Kilogram,
+                                            102
+                                            * Mass
+                                                  .Kilogram
+                                        },
+                                    new ObservableCollection<Mass>
+                                        {
+                                            110
+                                            * Mass
+                                                  .Kilogram,
+                                            111
+                                            * Mass
+                                                  .Kilogram,
+                                            112
+                                            * Mass
+                                                  .Kilogram
+                                        },
+                                    new ObservableCollection<Mass>
+                                        {
+                                            120
+                                            * Mass
+                                                  .Kilogram,
+                                            121
+                                            * Mass
+                                                  .Kilogram,
+                                            122
+                                            * Mass
+                                                  .Kilogram
+                                        }
+                                };
+            this.DataContext = this;
         }
+
+        /// <summary>
+        /// Gets or sets the items.
+        /// </summary>
+        public ObservableCollection<ObservableCollection<Mass>> ItemsSource { get; set; }
+
     }
 }

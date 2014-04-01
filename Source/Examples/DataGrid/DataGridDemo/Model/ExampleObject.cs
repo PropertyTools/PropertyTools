@@ -32,78 +32,125 @@ namespace DataGridDemo
     using System.ComponentModel;
     using System.Windows.Media;
 
+    using PropertyTools;
     using PropertyTools.DataAnnotations;
-
-    public enum Fruit { Apple, Pear, Banana, Orange }
 
     public class ExampleObject : Observable
     {
         private bool boolean;
+        private Fruit fruit;
+        private double number;
+        private string selector;
+        private int integer;
+        private int readOnlyInteger;
+        private DateTime dateTime;
+        private string s;
+        private Color color;
+        private Mass mass;
+
         public bool Boolean
         {
             get
             {
-                return boolean;
+                return this.boolean;
             }
 
             set
             {
-                boolean = value;
-                RaisePropertyChanged("Boolean");
-                RaisePropertyChanged("ReadOnlyBoolean");
+                if (this.SetValue(ref this.boolean, value, () => this.Boolean))
+                {
+                    this.RaisePropertyChanged("ReadOnlyBoolean");
+                }
             }
         }
 
         public bool ReadOnlyBoolean
         {
-            get { return boolean; }
+            get
+            {
+                return this.boolean;
+            }
         }
 
-        private Fruit _enum;
-        public Fruit Enum
+        public Fruit Fruit
         {
-            get { return _enum; }
-            set { _enum = value; RaisePropertyChanged("Enum"); }
+            get
+            {
+                return this.fruit;
+            }
+
+            set
+            {
+                this.SetValue(ref this.fruit, value, () => this.Fruit);
+            }
         }
 
-        private double d;
-        public double Double
+        public double Number
         {
-            get { return d; }
-            set { d = value; RaisePropertyChanged("Double"); }
+            get
+            {
+                return this.number;
+            }
+
+            set
+            {
+                this.SetValue(ref this.number, value, () => this.Number);
+            }
         }
 
-        private int integer;
         public int Integer
         {
-            get { return integer; }
-            set { integer = value; RaisePropertyChanged("Integer"); }
+            get
+            {
+                return this.integer;
+            }
+
+            set
+            {
+                this.SetValue(ref this.integer, value, () => this.Integer);
+            }
         }
 
-        private int readOnlyInteger;
         [ReadOnly(true)]
         public int ReadOnlyInteger
         {
-            get { return readOnlyInteger; }
-            set { readOnlyInteger = value; RaisePropertyChanged("ReadOnlyInteger"); }
-        }
+            get
+            {
+                return this.readOnlyInteger;
+            }
 
-        private DateTime dateTime;
-        public DateTime DateTime
-        {
-            get { return dateTime; }
-            set { dateTime = value; RaisePropertyChanged("DateTime"); }
-        }
-
-        private string s;
-        public string String
-        {
-            get { return s; }
             set
             {
-                s = value;
-                RaisePropertyChanged("String");
-                RaisePropertyChanged("ReadOnlyString");
+                this.SetValue(ref this.readOnlyInteger, value, () => this.ReadOnlyInteger);
+            }
+        }
+
+        public DateTime DateTime
+        {
+            get
+            {
+                return this.dateTime;
+            }
+
+            set
+            {
+                this.SetValue(ref this.dateTime, value, () => this.DateTime);
+            }
+        }
+
+        public string String
+        {
+            get
+            {
+                return this.s;
+            }
+
+            set
+            {
+                if (this.SetValue(ref this.s, value, () => this.String))
+                {
+                    this.RaisePropertyChanged(() => this.ReadOnlyString);
+                }
             }
         }
 
@@ -111,25 +158,35 @@ namespace DataGridDemo
         {
             get
             {
-                return s != null ? "L=" + s.Length.ToString() : null;
+                return s != null ? "L=" + this.s.Length : null;
             }
         }
 
-        private Color color;
         public Color Color
         {
-            get { return color; }
-            set { color = value; RaisePropertyChanged("Color"); }
+            get
+            {
+                return this.color;
+            }
+
+            set
+            {
+                this.SetValue(ref this.color, value, () => this.Color);
+            }
         }
 
-        private Mass mass;
         public Mass Mass
         {
-            get { return mass; }
-            set { mass = value; RaisePropertyChanged("Mass"); }
-        }
+            get
+            {
+                return this.mass;
+            }
 
-        private string selector;
+            set
+            {
+                this.SetValue(ref this.mass, value, () => this.Mass);
+            }
+        }
 
         [ItemsSourceProperty("Items")]
         public string Selector
@@ -138,9 +195,10 @@ namespace DataGridDemo
             {
                 return this.selector;
             }
+
             set
             {
-                this.selector = value; RaisePropertyChanged("Selector");
+                this.SetValue(ref this.selector, value, () => this.Selector);
             }
         }
 

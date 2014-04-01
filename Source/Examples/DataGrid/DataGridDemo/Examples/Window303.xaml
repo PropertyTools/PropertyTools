@@ -2,14 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
-        xmlns:local="clr-namespace:DataGridDemo" 
         Title="List&lt;Vector3D&gt;" Height="450" Width="400"
         FocusManager.FocusedElement="{Binding ElementName=grid1}">
-    <Window.Resources>
-        <local:ViewModel x:Key="ViewModel"/>
-    </Window.Resources>
-    <Grid DataContext="{StaticResource ViewModel}">
-        <p:DataGrid x:Name="grid1" ItemsSource="{Binding Items303}">
+    <Grid>
+        <p:DataGrid x:Name="grid1" ItemsSource="{Binding ItemsSource}">
             <p:DataGrid.ColumnDefinitions>
                 <p:ColumnDefinition PropertyType="{x:Type Vector3D}" Header="Vector" FormatString="0.000" HorizontalAlignment="Center" Width="1*"/>
             </p:DataGrid.ColumnDefinitions>

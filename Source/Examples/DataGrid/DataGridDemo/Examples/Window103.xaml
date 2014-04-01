@@ -2,18 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
-        xmlns:local="clr-namespace:DataGridDemo" 
         Title="ObservableCollection&lt;ExampleObject&gt; custom Rows" Height="450" Width="900"
         FocusManager.FocusedElement="{Binding ElementName=grid1}">
-    <Window.Resources>
-        <local:ViewModel x:Key="ViewModel"/>
-    </Window.Resources>
-    <Grid DataContext="{StaticResource ViewModel}">
-        <p:DataGrid x:Name="grid1" ItemsSource="{Binding Items100}" RowHeaderWidth="120">
+    <Grid>
+        <p:DataGrid x:Name="grid1" ItemsSource="{Binding ItemsSource}" RowHeaderWidth="120">
             <p:DataGrid.RowDefinitions>
                 <p:RowDefinition PropertyName="Integer" Header="integer"/>
                 <p:RowDefinition PropertyName="String" Header="string"/>
-                <p:RowDefinition PropertyName="Enum" Header="enum"/>
+                <p:RowDefinition PropertyName="Fruit" Header="enum"/>
                 <p:RowDefinition PropertyName="Selector" Header="selector"/>
             </p:DataGrid.RowDefinitions>
         </p:DataGrid>

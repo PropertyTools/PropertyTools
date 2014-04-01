@@ -30,6 +30,8 @@
 
 namespace DataGridDemo
 {
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// Interaction logic for Window505.xaml
     /// </summary>
@@ -40,7 +42,39 @@ namespace DataGridDemo
         /// </summary>
         public Window505()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+
+            this.ItemsSource = new ObservableCollection<ObservableCollection<Fruit>>
+                                {
+                                    new ObservableCollection<Fruit> { Fruit.Apple, Fruit.Banana, Fruit.Orange },
+                                    new ObservableCollection<Fruit> { Fruit.Orange, Fruit.Banana, Fruit.Apple },
+                                };
+
+            this.RowHeadersItemsSource = new ObservableCollection<string> { "Row I", "Row II" };
+            this.ColumnHeadersItemsSource = new ObservableCollection<string> { "Fruit 1", "Fruit 2", "Fruit 3" };
+
+            this.DataContext = this;
         }
+
+        /// <summary>
+        /// Gets or sets the items.
+        /// </summary>
+        public ObservableCollection<ObservableCollection<Fruit>> ItemsSource { get; set; }
+
+        /// <summary>
+        /// Gets or sets the row headers items source.
+        /// </summary>
+        /// <value>
+        /// The row headers source.
+        /// </value>
+        public ObservableCollection<string> RowHeadersItemsSource { get; set; }
+
+        /// <summary>
+        /// Gets or sets the column headers items source.
+        /// </summary>
+        /// <value>
+        /// The column headers source.
+        /// </value>
+        public ObservableCollection<string> ColumnHeadersItemsSource { get; set; }
     }
 }

@@ -30,6 +30,8 @@
 
 namespace DataGridDemo
 {
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// Interaction logic for Window103.xaml
     /// </summary>
@@ -40,7 +42,19 @@ namespace DataGridDemo
         /// </summary>
         public Window103()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.DataContext = this;
+        }
+
+        /// <summary>
+        /// Gets the items source.
+        /// </summary>
+        public ObservableCollection<ExampleObject> ItemsSource
+        {
+            get
+            {
+                return Window1.StaticItemsSource;
+            }
         }
     }
 }

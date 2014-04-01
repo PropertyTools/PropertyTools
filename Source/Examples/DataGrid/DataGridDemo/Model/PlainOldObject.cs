@@ -30,15 +30,22 @@ namespace DataGridDemo
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Windows.Media;
 
     using PropertyTools.DataAnnotations;
 
     public class PlainOldObject
     {
+        public PlainOldObject()
+        {
+            this.DateTime = DateTime.Now;
+            this.Selector = this.Items.First();
+        }
+
         public bool Boolean { get; set; }
 
-        public Fruit Enum { get; set; }
+        public Fruit Fruit { get; set; }
 
         public double Double { get; set; }
 
@@ -62,11 +69,6 @@ namespace DataGridDemo
             {
                 return new[] { "Oslo", "Stockholm", "Copenhagen" };
             }
-        }
-
-        public PlainOldObject()
-        {
-            DateTime = DateTime.Now;
         }
     }
 }

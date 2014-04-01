@@ -30,6 +30,9 @@
 
 namespace DataGridDemo
 {
+    using System.Collections.ObjectModel;
+    using System.Windows.Media;
+
     /// <summary>
     /// Interaction logic for Window504.xaml
     /// </summary>
@@ -40,7 +43,45 @@ namespace DataGridDemo
         /// </summary>
         public Window504()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+
+            this.ItemsSource = new ObservableCollection<ObservableCollection<Color>>
+                                {
+                                    new ObservableCollection<Color>
+                                        {
+                                            Colors
+                                                .Blue,
+                                            Colors
+                                                .Red,
+                                            Colors
+                                                .Green
+                                        },
+                                    new ObservableCollection<Color>
+                                        {
+                                            Colors
+                                                .Honeydew,
+                                            Colors
+                                                .Red,
+                                            Colors
+                                                .AliceBlue
+                                        },
+                                    new ObservableCollection<Color>
+                                        {
+                                            Colors
+                                                .Blue,
+                                            Colors
+                                                .Red,
+                                            Colors
+                                                .LightBlue
+                                        }
+                                };
+
+            this.DataContext = this;
         }
+
+        /// <summary>
+        /// Gets or sets the items.
+        /// </summary>
+        public ObservableCollection<ObservableCollection<Color>> ItemsSource { get; set; }
     }
 }

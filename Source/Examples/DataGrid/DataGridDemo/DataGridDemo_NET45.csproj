@@ -55,7 +55,6 @@
     <Compile Include="Examples\Window403.xaml.cs">
       <DependentUpon>Window403.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\ViewModel.cs" />
     <Compile Include="Examples\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -109,6 +108,7 @@
     <Compile Include="Examples\Window505.xaml.cs">
       <DependentUpon>Window505.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
     <Page Include="Examples\Window403.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -197,7 +197,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Observable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

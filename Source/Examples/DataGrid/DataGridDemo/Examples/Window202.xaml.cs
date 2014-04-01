@@ -30,6 +30,8 @@
 
 namespace DataGridDemo
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Interaction logic for Window202.xaml
     /// </summary>
@@ -40,7 +42,14 @@ namespace DataGridDemo
         /// </summary>
         public Window202()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.ItemsSource = new List<PlainOldObject>();
+            this.DataContext = this;
         }
+
+        /// <summary>
+        /// Gets or sets the items.
+        /// </summary>
+        public IList<PlainOldObject> ItemsSource { get; set; }
     }
 }

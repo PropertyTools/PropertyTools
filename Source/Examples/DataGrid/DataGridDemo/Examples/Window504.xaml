@@ -2,14 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
-        xmlns:local="clr-namespace:DataGridDemo" 
         Title="List&lt;List&lt;Color&gt;&gt;" Height="450" Width="400"
         FocusManager.FocusedElement="{Binding ElementName=Grid1}">
-    <Window.Resources>
-        <local:ViewModel x:Key="ViewModel"/>
-    </Window.Resources>
-    <Grid DataContext="{StaticResource ViewModel}">
-        <p:DataGrid x:Name="Grid1" ItemsSource="{Binding Items504}" > 
+    <Grid>
+        <p:DataGrid x:Name="Grid1" ItemsSource="{Binding ItemsSource}" > 
         </p:DataGrid>
     </Grid>
 </Window>

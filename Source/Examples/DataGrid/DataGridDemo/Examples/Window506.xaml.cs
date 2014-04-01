@@ -30,6 +30,8 @@
 
 namespace DataGridDemo
 {
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// Interaction logic for Window506.xaml
     /// </summary>
@@ -40,7 +42,21 @@ namespace DataGridDemo
         /// </summary>
         public Window506()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+
+            this.ItemsSource = new ObservableCollection<ObservableCollection<ExampleObject>>
+                                {
+                                    new ObservableCollection<ExampleObject>(){ new ExampleObject(), new ExampleObject(), new ExampleObject()},
+                                    new ObservableCollection<ExampleObject>(){ new ExampleObject(), new ExampleObject(), new ExampleObject()},
+                                    new ObservableCollection<ExampleObject>(){ new ExampleObject(), new ExampleObject(), new ExampleObject()},
+                                };
+
+            this.DataContext = this;
         }
+
+        /// <summary>
+        /// Gets or sets the items.
+        /// </summary>
+        public ObservableCollection<ObservableCollection<ExampleObject>> ItemsSource { get; set; }
     }
 }

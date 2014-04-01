@@ -169,7 +169,7 @@ namespace PropertyTools.Wpf
         /// The type of the second type.
         /// </param>
         /// <returns>
-        /// True if ok.
+        /// True if it is assignable.
         /// </returns>
         public static bool Is(this Type firstType, Type secondType)
         {
@@ -210,6 +210,51 @@ namespace PropertyTools.Wpf
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets inner generic type of an IList&gt;IList&lt;
+        /// </summary>
+        /// <param name="list">
+        /// The list.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Type"/>.
+        /// </returns>
+        public static Type GetInnerMostGenericType(IList list)
+        {
+            var genericArguments = list.GetType().GetGenericArguments();
+            var innerType = genericArguments.Length > 0 ? genericArguments[0] : null;
+
+            if (innerType != null && innerType.IsGenericType)
+            {
+                var innerGenericArguments = innerType.GetGenericArguments();
+                var innerMostType = genericArguments.Length > 0 ? innerGenericArguments[0] : null;
+                return innerMostType;
+            }
+
+            return innerType;
+        }
+
+        /// <summary>
+        /// Determines whether the type is IList&gt;IList&lt;
+        /// </summary>
+        /// <param name="type">
+        /// The type.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the type is IList&gt;IList&lt;; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsIListIList(Type type)
+        {
+            if (!typeof(IList).IsAssignableFrom(type))
+            {
+                return false;
+            }
+
+            var genericArguments = type.GetGenericArguments();
+            var innerType = genericArguments.Length > 0 ? genericArguments[0] : null;
+            return typeof(IList).IsAssignableFrom(innerType);
         }
     }
 }

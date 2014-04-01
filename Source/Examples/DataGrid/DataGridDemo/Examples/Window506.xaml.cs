@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataGridControlFactory.cs" company="PropertyTools">
+// <copyright file="Window506.xaml.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2012 Oystein Bjorke
@@ -12,7 +12,7 @@
 //   permit persons to whom the Software is furnished to do so, subject to
 //   the following conditions:
 //   
-//   The above copyright notice and this permission notice shall be included
+//   The above copyright notice and this pe5mission notice shall be included
 //   in all copies or substantial portions of the Software.
 //   
 //   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
@@ -24,44 +24,22 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies a control factory for the DataGrid.
+//   Interaction logic for Window506.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace PropertyTools.Wpf
+namespace DataGridDemo
 {
-    using System.Windows;
-
     /// <summary>
-    /// Specifies a control factory for the DataGrid.
+    /// Interaction logic for Window506.xaml
     /// </summary>
-    public interface IDataGridControlFactory
+    public partial class Window506
     {
         /// <summary>
-        /// Creates the display control and sets the binding.
+        /// Initializes a new instance of the <see cref="Window506"/> class.
         /// </summary>
-        /// <param name="d">
-        /// The property definition.
-        /// </param>
-        /// <param name="index">
-        /// The index (if bound to a list element).
-        /// </param>
-        /// <returns>
-        /// The control.
-        /// </returns>
-        FrameworkElement CreateDisplayControl(PropertyDefinition d, int index);
-
-        /// <summary>
-        /// Creates the edit control and sets the binding.
-        /// </summary>
-        /// <param name="d">
-        /// The property definition.
-        /// </param>
-        /// <param name="index">
-        /// The index (if bound to a list element).
-        /// </param>
-        /// <returns>
-        /// The control.
-        /// </returns>
-        FrameworkElement CreateEditControl(PropertyDefinition d, int index);
+        public Window506()
+        {
+            InitializeComponent();
+        }
     }
 }

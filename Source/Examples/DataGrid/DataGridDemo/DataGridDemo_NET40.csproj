@@ -90,6 +90,24 @@
     </Compile>
     <Compile Include="DataTypes\Mass.cs" />
     <Compile Include="DataTypes\MassConverter.cs" />
+    <Compile Include="Examples\Window501.xaml.cs">
+      <DependentUpon>Window501.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window502.xaml.cs">
+      <DependentUpon>Window502.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window503.xaml.cs">
+      <DependentUpon>Window503.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window504.xaml.cs">
+      <DependentUpon>Window504.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window506.xaml.cs">
+      <DependentUpon>Window506.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window505.xaml.cs">
+      <DependentUpon>Window505.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\PlainOldObject.cs" />
     <Page Include="Examples\Window403.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -130,6 +148,30 @@
     <Page Include="Examples\Window302.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window501.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window502.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\Window503.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\Window504.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\Window506.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window505.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

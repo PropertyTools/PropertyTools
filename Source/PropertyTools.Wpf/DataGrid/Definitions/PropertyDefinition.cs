@@ -190,8 +190,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a binding.
         /// </summary>
-        /// <param name="index">
-        /// The index.
+        /// <param name="bindingPath">
+        /// The binding path.
         /// </param>
         /// <param name="trigger">
         /// The trigger.
@@ -199,7 +199,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A binding.
         /// </returns>
-        public Binding CreateBinding(int index, UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
+        public Binding CreateBinding(string bindingPath, UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
         {
             var bindingMode = this.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
             var formatString = this.FormatString;
@@ -208,7 +208,7 @@ namespace PropertyTools.Wpf
                 formatString = "{0:" + formatString + "}";
             }
 
-            var binding = new Binding(this.GetBindingPath(index))
+            var binding = new Binding(bindingPath)
                 {
                     Mode = bindingMode,
                     Converter = this.Converter,
@@ -230,15 +230,15 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the one way binding.
         /// </summary>
-        /// <param name="index">
-        /// The index.
+        /// <param name="bindingPath">
+        /// The binding path.
         /// </param>
         /// <returns>
         /// A binding.
         /// </returns>
-        public Binding CreateOneWayBinding(int index)
+        public Binding CreateOneWayBinding(string bindingPath)
         {
-            var b = this.CreateBinding(index);
+            var b = this.CreateBinding(bindingPath);
             b.Mode = BindingMode.OneWay;
             return b;
         }
@@ -252,9 +252,23 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The binding path.
         /// </returns>
-        protected virtual string GetBindingPath(int index)
+        public virtual string GetBindingPath(int index)
         {
-            return this.Descriptor != null ? this.Descriptor.Name : "[" + index + "]";
+            return this.Descriptor != null ? this.Descriptor.Name : string.Format("[{0}]", index);
+        }
+
+        /// <summary>
+        /// Gets the binding path.
+        /// </summary>
+        /// <param name="cell">
+        /// The cell.
+        /// </param>
+        /// <returns>
+        /// The binding path.
+        /// </returns>
+        public virtual string GetBindingPath(CellRef cell)
+        {
+            return this.Descriptor != null ? this.Descriptor.Name : string.Format("[{0}][{1}]", cell.Row, cell.Column);
         }
 
         /// <summary>

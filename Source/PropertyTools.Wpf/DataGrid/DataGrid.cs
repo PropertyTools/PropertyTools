@@ -189,6 +189,16 @@ namespace PropertyTools.Wpf
         private Grid columnGrid;
 
         /// <summary>
+        /// The is selecting rows.
+        /// </summary>
+        private bool isSelectingRows;
+
+        /// <summary>
+        /// The row grid control.
+        /// </summary>
+        private Grid rowGrid;
+
+        /// <summary>
         /// The column scroll view control.
         /// </summary>
         private ScrollViewer columnScroller;
@@ -229,14 +239,9 @@ namespace PropertyTools.Wpf
         private bool isSelectingColumns;
 
         /// <summary>
-        /// The is selecting rows.
+        /// The sheet grid control.
         /// </summary>
-        private bool isSelectingRows;
-
-        /// <summary>
-        /// The row grid control.
-        /// </summary>
-        private Grid rowGrid;
+        private Grid sheetGrid;
 
         /// <summary>
         /// The row scroll viewer control.
@@ -259,11 +264,6 @@ namespace PropertyTools.Wpf
         private Border selectionBackground;
 
         /// <summary>
-        /// The sheet grid control.
-        /// </summary>
-        private Grid sheetGrid;
-
-        /// <summary>
         /// The sheet scroll viewer control.
         /// </summary>
         private ScrollViewer sheetScroller;
@@ -284,7 +284,8 @@ namespace PropertyTools.Wpf
         static DataGrid()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(DataGrid), new FrameworkPropertyMetadata(typeof(DataGrid)));
+                typeof(DataGrid), 
+                new FrameworkPropertyMetadata(typeof(DataGrid)));
 
             InsertRowsCommand = new RoutedCommand("InsertRows", typeof(DataGrid));
             DeleteRowsCommand = new RoutedCommand("DeleteRows", typeof(DataGrid));
@@ -299,16 +300,24 @@ namespace PropertyTools.Wpf
         {
             this.CommandBindings.Add(
                 new CommandBinding(
-                    InsertRowsCommand, (s, e) => this.InsertRows(), (s, e) => e.CanExecute = this.CanInsertRows));
+                    InsertRowsCommand, 
+                    (s, e) => this.InsertRows(), 
+                    (s, e) => e.CanExecute = this.CanInsertRows));
             this.CommandBindings.Add(
                 new CommandBinding(
-                    DeleteRowsCommand, (s, e) => this.DeleteRows(), (s, e) => e.CanExecute = this.CanDeleteRows));
+                    DeleteRowsCommand, 
+                    (s, e) => this.DeleteRows(), 
+                    (s, e) => e.CanExecute = this.CanDeleteRows));
             this.CommandBindings.Add(
                 new CommandBinding(
-                    InsertColumnsCommand, (s, e) => this.InsertColumns(), (s, e) => e.CanExecute = this.CanInsertColumns));
+                    InsertColumnsCommand, 
+                    (s, e) => this.InsertColumns(), 
+                    (s, e) => e.CanExecute = this.CanInsertColumns));
             this.CommandBindings.Add(
                 new CommandBinding(
-                    DeleteColumnsCommand, (s, e) => this.DeleteColumns(), (s, e) => e.CanExecute = this.CanDeleteColumns));
+                    DeleteColumnsCommand, 
+                    (s, e) => this.DeleteColumns(), 
+                    (s, e) => e.CanExecute = this.CanDeleteColumns));
         }
 
         /// <summary>
@@ -432,8 +441,29 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            list.RemoveAt(index);
+            if (this.ItemsInRows && this.RowHeadersSource != null && index < this.RowHeadersSource.Count)
+            {
+                this.RowHeadersSource.RemoveAt(index);
+            }
 
+            if (this.ItemsInColumns && this.ColumnHeadersSource != null
+                && index < this.ColumnHeadersSource.Count)
+            {
+                this.ColumnHeadersSource.RemoveAt(index);
+            }
+
+            if (this.IsIListIList() && this.ItemsInColumns)
+            {
+                foreach (var row in this.ItemsSource.OfType<IList>().Where(row => index < row.Count))
+                {
+                    row.RemoveAt(index);
+                }
+            }
+            else
+            {
+                list.RemoveAt(index);
+            }
+                
             if (updateGrid)
             {
                 this.UpdateGridContent();
@@ -695,61 +725,34 @@ namespace PropertyTools.Wpf
         /// Determines whether the grid should be updated.
         /// </param>
         /// <returns>
-        /// True if an item was inserted.
+        /// <c>true</c> if an item was inserted, <c>false</c> otherwise.
         /// </returns>
         public bool InsertItem(int index, bool updateGrid = true)
         {
-            var list = this.ItemsSource;
-            if (list == null)
+            if (this.ItemsInRows && this.RowHeadersSource != null && this.RowHeadersSource.Count < this.Rows + 1)
             {
-                return false;
+                this.InsertRowHeader(index);
             }
 
-            var itemType = TypeHelper.GetItemType(list);
-
-            object newItem = null;
-            if (itemType == typeof(string))
+            if (this.ItemsInColumns && this.ColumnHeadersSource != null
+                && this.ColumnHeadersSource.Count < this.Rows + 1)
             {
-                newItem = string.Empty;
+                this.InsertColumnHeader(index);
             }
 
-            if (itemType == typeof(double))
+            // return this.IsIListIList() ? this.InsertItem2(this.ItemsSource, index, updateGrid) : this.InsertItem1(this.ItemsSource, index, updateGrid);
+            var success = this.Operator.InsertItem(index);
+            if (success)
             {
-                newItem = 0.0;
-            }
-
-            if (itemType == typeof(int))
-            {
-                newItem = 0;
-            }
-
-            try
-            {
-                if (newItem == null)
+                if (updateGrid)
                 {
-                    newItem = this.CreateInstance(itemType);
+                    this.UpdateGridContent();
                 }
-            }
-            catch
-            {
-                return false;
+
+                return true;
             }
 
-            if (index < 0)
-            {
-                list.Add(newItem);
-            }
-            else
-            {
-                list.Insert(index, newItem);
-            }
-
-            if (updateGrid)
-            {
-                this.UpdateGridContent();
-            }
-
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -892,10 +895,10 @@ namespace PropertyTools.Wpf
             this.autoFiller = new AutoFiller(this.GetCellValue, this.TrySetCellValue);
 
             this.autoFillToolTip = new ToolTip
-                {
-                    Placement = PlacementMode.Bottom,
-                    PlacementTarget = this.autoFillSelection
-                };
+                                       {
+                                           Placement = PlacementMode.Bottom, 
+                                           PlacementTarget = this.autoFillSelection
+                                       };
 
             this.UpdateGridContent();
             this.SelectedCellsChanged();
@@ -958,7 +961,8 @@ namespace PropertyTools.Wpf
 
             this.CurrentCell = new CellRef(rowMin, columnMin);
             this.SelectionCell = new CellRef(
-                Math.Max(rowMax, rowMin + rows - 1), Math.Max(columnMax, columnMin + columns - 1));
+                Math.Max(rowMax, rowMin + rows - 1), 
+                Math.Max(columnMax, columnMin + columns - 1));
         }
 
         /// <summary>
@@ -1017,9 +1021,9 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            int index = this.GetItemIndex(this.CurrentCell);
-            var item = this.GetItem(index);
-            this.currentEditor = this.ControlFactory.CreateEditControl(pd, index);
+            var item = this.GetItem(this.CurrentCell);
+            this.currentEditor = this.CreateEditControl(this.CurrentCell, pd);
+
             if (this.currentEditor == null)
             {
                 return false;
@@ -1134,8 +1138,7 @@ namespace PropertyTools.Wpf
         {
             if (this.ItemsSource != null)
             {
-                int index = this.GetItemIndex(cell);
-                var current = this.GetItem(index);
+                var current = this.GetItem(cell);
 
                 var pd = this.GetPropertyDefinition(cell);
                 if (pd == null)
@@ -1152,13 +1155,9 @@ namespace PropertyTools.Wpf
                     }
                     else
                     {
-                        var list = this.ItemsSource;
-                        if (list != null)
-                        {
-                            list[index] = convertedValue;
-                        }
+                        this.SetValue(cell, convertedValue);
 
-                        if (!(list is INotifyCollectionChanged))
+                        if (!(this.ItemsSource is INotifyCollectionChanged))
                         {
                             this.UpdateCellContent(cell);
                         }
@@ -1183,21 +1182,16 @@ namespace PropertyTools.Wpf
         /// <param name="item">
         /// The item.
         /// </param>
-        /// <param name="index">
-        /// The index.
-        /// </param>
         /// <returns>
         /// The display control.
         /// </returns>
-        protected virtual UIElement CreateDisplayControl(
-            CellRef cell, PropertyDefinition pd = null, object item = null, int index = -1)
+        protected virtual UIElement CreateDisplayControl(CellRef cell, PropertyDefinition pd, object item)
         {
             FrameworkElement element = null;
 
             if (item == null)
             {
-                index = this.GetItemIndex(cell);
-                item = this.GetItem(index);
+                item = this.GetItem(cell);
             }
 
             if (pd == null)
@@ -1207,7 +1201,8 @@ namespace PropertyTools.Wpf
 
             if (pd != null && item != null)
             {
-                element = this.ControlFactory.CreateDisplayControl(pd, index);
+                element = this.CreateDisplayControl(cell, pd);
+
                 this.SetElementDataContext(element, pd, item);
 
                 element.SourceUpdated += this.CurrentCellSourceUpdated;
@@ -1234,64 +1229,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Auto-generates the column definitions.
+        /// Generates column definitions based on ItemsSource
         /// </summary>
-        /// <param name="items">
-        /// The items.
-        /// </param>
-        protected virtual void GenerateColumnDefinitions(IList items)
+        protected virtual void GenerateColumnDefinitions()
         {
-            if (items == null)
-            {
-                return;
-            }
-
-            var itemType = TypeHelper.FindBiggestCommonType(items);
-
-            var properties = TypeDescriptor.GetProperties(itemType);
-
-            if (properties.Count == 0)
-            {
-                // Otherwise try to get the property descriptors from an instance
-                foreach (var item in items)
-                {
-                    if (item != null && item.GetType() == itemType)
-                    {
-                        properties = TypeDescriptor.GetProperties(item);
-                        break;
-                    }
-                }
-            }
-
-            foreach (PropertyDescriptor descriptor in properties)
-            {
-                if (!descriptor.IsBrowsable)
-                {
-                    continue;
-                }
-
-                this.ColumnDefinitions.Add(
-                    new ColumnDefinition
-                        {
-                            Descriptor = descriptor,
-                            Header = descriptor.Name,
-                            HorizontalAlignment = this.DefaultHorizontalAlignment,
-                            Width = this.DefaultColumnWidth
-                        });
-            }
-
-            var itemsType = TypeHelper.GetItemType(items);
-            if (properties.Count == 0)
-            {
-                this.ColumnDefinitions.Add(
-                    new ColumnDefinition
-                        {
-                            PropertyType = itemsType,
-                            Header = itemsType.Name,
-                            HorizontalAlignment = this.DefaultHorizontalAlignment,
-                            Width = this.DefaultColumnWidth
-                        });
-            }
+            this.Operator.GenerateColumnDefinitions();
         }
 
         /// <summary>
@@ -1545,7 +1487,11 @@ namespace PropertyTools.Wpf
                 this.AutoFillCell = cellRef;
                 object result;
                 if (this.autoFiller.TryExtrapolate(
-                    cellRef, this.CurrentCell, this.SelectionCell, this.AutoFillCell, out result))
+                    cellRef, 
+                    this.CurrentCell, 
+                    this.SelectionCell, 
+                    this.AutoFillCell, 
+                    out result))
                 {
                     var formatString = this.GetFormatString(cellRef);
                     this.autoFillToolTip.Content = FormatValue(result, formatString);
@@ -1652,10 +1598,42 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the inner type for IList&gt;IList&lt;
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <returns>A concert type. <c>null</c> is only interface type can be retrieved.</returns>
+        private static Type GetConcertInnerType(IList list)
+        {
+            var innerType = TypeHelper.GetInnerMostGenericType(list);
+            if (innerType.IsInterface)
+            {
+                if (list.Count > 0)
+                {
+                    var row = list[0] as IList;
+                    if (row != null && row.Count > 0)
+                    {
+                        // Get the type from the [0][0]. The assumption is all the elements in the ItemsSource are of the same type.
+                        innerType = row[0].GetType();
+                    }
+                }
+                else
+                {
+                    innerType = null;
+                }
+            }
+
+            return innerType;
+        }
+
+        /// <summary>
         /// Determines whether all elements in the specified array are serializable.
         /// </summary>
-        /// <param name="array">The array.</param>
-        /// <returns><c>true</c> if all elements of the array are serializable, <c>false</c> otherwise.</returns>
+        /// <param name="array">
+        /// The array.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if all elements of the array are serializable, <c>false</c> otherwise.
+        /// </returns>
         private static bool AreAllElementsSerializable(object[,] array)
         {
             int m = array.GetLength(0);
@@ -1756,6 +1734,31 @@ namespace PropertyTools.Wpf
             }
 
             return string.Format(formatString, value);
+        }
+
+        /// <summary>
+        /// Gets property descriptors from one instance.
+        /// </summary>
+        /// <param name="items">
+        /// The items.
+        /// </param>
+        /// <param name="itemType">
+        /// The target item type.
+        /// </param>
+        /// <returns>
+        /// The <see cref="PropertyDescriptorCollection"/>.
+        /// </returns>
+        private static PropertyDescriptorCollection GetPropertiesFromInstance(IList items, Type itemType)
+        {
+            foreach (var item in items)
+            {
+                if (item != null && item.GetType() == itemType)
+                {
+                    return TypeDescriptor.GetProperties(item);
+                }
+            }
+
+            return new PropertyDescriptorCollection(new PropertyDescriptor[0]);
         }
 
         /// <summary>
@@ -1918,8 +1921,7 @@ namespace PropertyTools.Wpf
         /// </param>
         private void AddDisplayControl(CellRef cellRef)
         {
-            int index = this.GetItemIndex(cellRef);
-            var e = this.CreateDisplayControl(cellRef, null, null, index);
+            var e = this.CreateDisplayControl(cellRef, null, null);
             if (e == null)
             {
                 return;
@@ -2386,23 +2388,22 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the column header for the specified column.
         /// </summary>
-        /// <param name="j">
-        /// The j.
-        /// </param>
+        /// <param name="column">
+        /// The column.</param>
         /// <returns>
-        /// The get column header.
+        /// The column header at <seealso cref="column"/>.
         /// </returns>
-        private object GetColumnHeader(int j)
+        private object GetColumnHeader(int column)
         {
             if (this.ItemsInRows)
             {
-                if (j < this.PropertyDefinitions.Count)
+                if (column < this.PropertyDefinitions.Count)
                 {
-                    return this.PropertyDefinitions[j].Header ?? CellRef.ToColumnName(j);
+                    return this.PropertyDefinitions[column].Header ?? CellRef.ToColumnName(column);
                 }
             }
 
-            return CellRef.ToColumnName(j);
+            return CellRef.ToColumnName(column);
         }
 
         /// <summary>
@@ -2437,7 +2438,7 @@ namespace PropertyTools.Wpf
         /// Gets the format string for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell.
+        /// The cell reference.
         /// </param>
         /// <returns>
         /// The format string.
@@ -2452,39 +2453,14 @@ namespace PropertyTools.Wpf
         /// Gets the item for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell.
+        /// The cell reference.
         /// </param>
         /// <returns>
         /// The item.
         /// </returns>
         private object GetItem(CellRef cell)
         {
-            return this.GetItem(this.GetItemIndex(cell));
-        }
-
-        /// <summary>
-        /// Gets the item for the specified index in the ItemsSource collection.
-        /// </summary>
-        /// <param name="index">
-        /// The item index.
-        /// </param>
-        /// <returns>
-        /// The item.
-        /// </returns>
-        private object GetItem(int index)
-        {
-            var list = this.ItemsSource;
-            if (list == null)
-            {
-                return null;
-            }
-
-            if (index >= 0 && index < list.Count)
-            {
-                return list[index];
-            }
-
-            return null;
+            return this.Operator.GetItem(cell);
         }
 
         /// <summary>
@@ -2510,7 +2486,7 @@ namespace PropertyTools.Wpf
         /// Gets the column/row definition for the specified cell.
         /// </summary>
         /// <param name="cell">
-        /// The cell.
+        /// The cell reference.
         /// </param>
         /// <returns>
         /// The column/row definition.
@@ -2612,6 +2588,24 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Insert column header to ColumnHeadersSource.
+        /// </summary>
+        /// <param name="index">The position.</param>
+        private void InsertColumnHeader(int index)
+        {
+            var itemType = TypeHelper.GetListElementType(this.ColumnHeadersSource.GetType());
+            var newItem = this.CreateInstance(itemType);
+            if (index >= 0 && index < this.RowHeadersSource.Count)
+            {
+                this.ColumnHeadersSource.Insert(index, newItem);
+            }
+            else
+            {
+                this.ColumnHeadersSource.Add(newItem);
+            }
+        }
+
+        /// <summary>
         /// Inserts the display control for the specified cell.
         /// </summary>
         /// <param name="cellRef">
@@ -2619,8 +2613,7 @@ namespace PropertyTools.Wpf
         /// </param>
         private void InsertDisplayControl(CellRef cellRef)
         {
-            int index = this.GetItemIndex(cellRef);
-            var e = this.CreateDisplayControl(cellRef, null, null, index);
+            var e = this.CreateDisplayControl(cellRef, null, null);
             SetElementPosition(e, cellRef);
             this.sheetGrid.Children.Insert(this.cellInsertionIndex, e);
             this.cellInsertionIndex++;
@@ -2635,11 +2628,113 @@ namespace PropertyTools.Wpf
             int from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
             int to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
             for (int i = 0; i < to - from + 1; i++)
-            {
+            {                   
                 this.InsertItem(from, false);
             }
 
             this.UpdateGridContent();
+        }
+
+        /// <summary>
+        /// Insert one row header item.
+        /// </summary>
+        /// <param name="index">
+        /// The position.
+        /// </param>
+        private void InsertRowHeader(int index)
+        {
+            var itemType = TypeHelper.GetListElementType(this.RowHeadersSource.GetType());
+            var newItem = this.CreateInstance(itemType);
+            if (index >= 0 && index < this.RowHeadersSource.Count)
+            {
+                this.RowHeadersSource.Insert(index, newItem);
+            }
+            else
+            {
+                this.RowHeadersSource.Add(newItem);
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the item source is <see cref="IList"/>&gt;<see cref="IList"/>&lt;.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the item source is <see cref="IList"/>&gt;<see cref="IList"/>&lt;; otherwise, <c>false</c>.
+        /// </returns>
+        private bool IsIListIList()
+        {
+            var list = this.ItemsSource;
+            if (list == null)
+            {
+                return false;
+            }
+
+            var type = list.GetType();
+            return TypeHelper.IsIListIList(type);
+        }
+
+        /// <summary>
+        /// Creates a display control and bind it to the item source's cell element.
+        /// </summary>
+        /// <param name="cell">
+        /// The cell reference.
+        /// </param>
+        /// <param name="pd">
+        /// The <see cref="PropertyDefinition"/>.
+        /// </param>
+        /// <returns>
+        /// The <see cref="FrameworkElement"/>.
+        /// </returns>
+        private FrameworkElement CreateDisplayControl(CellRef cell, PropertyDefinition pd)
+        {
+            return this.Operator.CreateDisplayControl(cell, pd);
+        }
+
+        /// <summary>
+        /// Creates a edit control and bind it to the current cell element.
+        /// </summary>
+        /// <param name="cell">
+        /// The cell reference.
+        /// </param>
+        /// <param name="pd">
+        /// The <see cref="PropertyDefinition"/>.
+        /// </param>
+        /// <returns>
+        /// The <see cref="FrameworkElement"/>.
+        /// </returns>
+        private FrameworkElement CreateEditControl(CellRef cell, PropertyDefinition pd)
+        {
+            return this.Operator.CreateEditControl(cell, pd);
+        }
+
+        /// <summary>
+        /// Sets value to items in cell.
+        /// </summary>
+        /// <param name="cell">
+        /// The cell reference.
+        /// </param>
+        /// <param name="value">
+        /// The value to be set.
+        /// </param>
+        private void SetValue(CellRef cell, object value)
+        {
+            if (this.ItemsSource == null)
+            {
+                return;
+            }
+
+            this.Operator.SetValue(cell, value);
+        }
+
+        /// <summary>
+        /// Gets type of the element in ItemsSource.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="Type"/>.
+        /// </returns>
+        private Type GetItemsType()
+        {
+            return this.Operator.GetItemsType();
         }
 
         /// <summary>
@@ -2653,7 +2748,7 @@ namespace PropertyTools.Wpf
         /// </param>
         private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            // todo: update only changed rows/columns
+            // TODO: update only changed rows/columns
             this.UpdateGridContent();
         }
 

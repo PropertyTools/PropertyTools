@@ -230,9 +230,17 @@ namespace PropertyTools.Wpf
                                   {
                                       Text = header != null ? header.ToString() : "-",
                                       VerticalAlignment = VerticalAlignment.Center,
-                                      HorizontalAlignment = pd.HorizontalAlignment,
+                                      HorizontalAlignment = this.ItemsInRows ? pd.HorizontalAlignment : HorizontalAlignment.Center,
                                       Padding = new Thickness(4, 2, 4, 2)
                                   };
+
+                if (this.ColumnHeadersSource != null && this.ItemsInRows)
+                {
+                    cell.DataContext = this.ColumnHeadersSource;
+                    cell.SetBinding(
+                        TextBlock.TextProperty,
+                        new Binding(string.Format("[{0}]", j)));
+                }
 
                 Grid.SetColumn(cell, j);
                 this.columnGrid.Children.Add(cell);
@@ -284,12 +292,11 @@ namespace PropertyTools.Wpf
 
             if (this.AutoGenerateColumns && this.PropertyDefinitions.Count == 0)
             {
-                // Auto-generate the columns
-                this.GenerateColumnDefinitions(this.ItemsSource);
+                this.GenerateColumnDefinitions();
             }
 
             // If PropertyType is undefined, use the type of the items in the ItemsSource
-            var itemsType = TypeHelper.GetItemType(this.ItemsSource);
+            var itemsType = this.GetItemsType();
             foreach (var pd in this.PropertyDefinitions)
             {
                 if (pd.PropertyType == null)
@@ -356,7 +363,7 @@ namespace PropertyTools.Wpf
 
             this.Rows = rows;
 
-            for (int i = 0; i < rows; i++)
+            for (var i = 0; i < rows; i++)
             {
                 this.sheetGrid.RowDefinitions.Add(
                     new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
@@ -364,9 +371,9 @@ namespace PropertyTools.Wpf
                     new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
             }
 
-            for (int i = 0; i < rows; i++)
+            for (var i = 0; i < rows; i++)
             {
-                object header = this.GetRowHeader(i);
+                var header = this.GetRowHeader(i);
 
                 var border = new Border
                     {
@@ -394,31 +401,57 @@ namespace PropertyTools.Wpf
                     cell.SetBinding(TextBlock.TextProperty, new Binding(this.ItemHeaderPropertyPath));
                 }
 
+                if (this.RowHeadersSource != null && this.ItemsInRows)
+                {
+                    cell.DataContext = this.RowHeadersSource;
+                    cell.SetBinding(
+                        TextBlock.TextProperty,
+                        new Binding(string.Format("[{0}]", i)));
+                }
+
                 Grid.SetRow(cell, i);
                 this.rowGrid.Children.Add(cell);
             }
 
             // Add "Insert" row header
+            this.AddInserterRow(rows);
+
+            // set the context menu
+            this.rowGrid.ContextMenu = this.RowsContextMenu;
+
+            // to cover a possible scrollbar
+            this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = new GridLength(20) });
+        }
+
+        /// <summary>
+        /// Adds a "insert" row.
+        /// </summary>
+        /// <param name="rows">
+        /// The rows.
+        /// </param>
+        /// <remarks>
+        /// This row is below/to the right of the data rows/columns.
+        /// </remarks>
+        private void AddInserterRow(int rows)
+        {
             if (this.CanInsertRows && this.AddItemHeader != null)
             {
-                this.sheetGrid.RowDefinitions.Add(
-                    new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
-                this.rowGrid.RowDefinitions.Add(
-                    new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
+                this.sheetGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
+                this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
 
                 var cell = new TextBlock
-                    {
-                        Text = this.AddItemHeader,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center
-                    };
+                               {
+                                   Text = this.AddItemHeader,
+                                   VerticalAlignment = VerticalAlignment.Center,
+                                   HorizontalAlignment = HorizontalAlignment.Center
+                               };
                 var border = new Border
-                    {
-                        Background = Brushes.Transparent,
-                        BorderBrush = this.HeaderBorderBrush,
-                        BorderThickness = new Thickness(1, 0, 1, 1),
-                        Margin = new Thickness(0, 0, 0, 0)
-                    };
+                                 {
+                                     Background = Brushes.Transparent,
+                                     BorderBrush = this.HeaderBorderBrush,
+                                     BorderThickness = new Thickness(1, 0, 1, 1),
+                                     Margin = new Thickness(0, 0, 0, 0)
+                                 };
 
                 border.MouseLeftButtonDown += this.AddItemCellMouseLeftButtonDown;
                 Grid.SetRow(border, rows);
@@ -430,16 +463,9 @@ namespace PropertyTools.Wpf
             }
             else
             {
-                this.sheetGrid.RowDefinitions.Add(
-                    new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
+                this.sheetGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
                 this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
             }
-
-            // set the context menu
-            this.rowGrid.ContextMenu = this.RowsContextMenu;
-
-            // to cover a posisble scrollbar
-            this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = new GridLength(20) });
         }
     }
 }

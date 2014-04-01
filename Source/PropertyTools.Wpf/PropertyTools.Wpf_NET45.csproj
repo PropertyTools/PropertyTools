@@ -189,6 +189,7 @@
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="DataGrid\DataGrid.Strategy.cs" />
     <Compile Include="Helpers\AutoFiller.cs" />
     <Compile Include="Helpers\CaptureScreenshot.cs" />
     <Compile Include="Helpers\FormattedTimeSpanParser.cs" />
@@ -196,11 +197,11 @@
     <Compile Include="DataGrid\Definitions\ColumnDefinition.cs" />
     <Compile Include="DataGrid\Definitions\RowDefinition.cs" />
     <Compile Include="DataGrid\DataGrid.Content.cs" />
-    <Compile Include="DataGrid\Interfaces\IItemsGridControlFactory.cs" />
+    <Compile Include="DataGrid\Interfaces\IDataGridControlFactory.cs" />
     <Compile Include="DataGrid\Definitions\PropertyDefinition.cs" />
     <Compile Include="DataGrid\DataGrid.cs" />
     <Compile Include="DataGrid\DataGrid.Properties.cs" />
-    <Compile Include="DataGrid\ControlFactory\ItemsGridControlFactory.cs" />
+    <Compile Include="DataGrid\ControlFactory\DataGridControlFactory.cs" />
     <Compile Include="Dialogs\AboutViewModel.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Converters\ObjectToDoubleConverter.cs" />

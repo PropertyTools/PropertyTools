@@ -225,6 +225,24 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
+        ///     The row header source property.
+        /// </summary>
+        public static readonly DependencyProperty RowHeadersSourceProperty = DependencyProperty.Register(
+            "RowHeadersSource",
+            typeof(IList),
+            typeof(DataGrid),
+            new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
+
+        /// <summary>
+        ///     The column header source property.
+        /// </summary>
+        public static readonly DependencyProperty ColumnHeadersSourceProperty = DependencyProperty.Register(
+            "ColumnHeadersSource",
+            typeof(IList),
+            typeof(DataGrid),
+            new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
+
+        /// <summary>
         ///     The row header width property.
         /// </summary>
         public static readonly DependencyProperty RowHeaderWidthProperty = DependencyProperty.Register(
@@ -657,6 +675,40 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        ///     Gets or sets the row headers source.
+        /// </summary>
+        /// <value> The row headers source. </value>
+        public IList RowHeadersSource
+        {
+            get
+            {
+                return (IList)this.GetValue(RowHeadersSourceProperty);
+            }
+
+            set
+            {
+                this.SetValue(RowHeadersSourceProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the row headers source.
+        /// </summary>
+        /// <value> The column headers source. </value>
+        public IList ColumnHeadersSource
+        {
+            get
+            {
+                return (IList)this.GetValue(ColumnHeadersSourceProperty);
+            }
+
+            set
+            {
+                this.SetValue(ColumnHeadersSourceProperty, value);
+            }
+        }
+
+        /// <summary>
         ///     Gets the row definitions.
         /// </summary>
         /// <value> The row definitions. </value>
@@ -884,7 +936,7 @@ namespace PropertyTools.Wpf
         ///     Coerces the current cell.
         /// </summary>
         /// <param name="d">
-        ///     The d.
+        ///     The <see cref="DependencyObject"/>.
         /// </param>
         /// <param name="basevalue">
         ///     The base value.
@@ -936,7 +988,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     The current cell changed.
+        ///   Handles change in current cell.
         /// </summary>
         private void CurrentCellChanged()
         {
@@ -951,7 +1003,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     The selected cells changed, update the UI elements showing the selection.
+        ///    Handles change in selected cells.
         /// </summary>
         private void SelectedCellsChanged()
         {
@@ -1036,7 +1088,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        ///     The selection cell changed.
+        ///     Handles change in selection cell. 
         /// </summary>
         private void SelectionCellChanged()
         {

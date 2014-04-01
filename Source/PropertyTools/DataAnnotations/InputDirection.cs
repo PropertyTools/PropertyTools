@@ -31,7 +31,7 @@
 namespace PropertyTools.DataAnnotations
 {
     /// <summary>
-    ///     Defines the InputDirection of a grid (the direction the current cell is moved when Enter is pressed)
+    /// Defines the InputDirection of a grid (the direction the current cell is moved when Enter is pressed)
     /// </summary>
     public enum InputDirection
     {

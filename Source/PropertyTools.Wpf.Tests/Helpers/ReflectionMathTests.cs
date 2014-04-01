@@ -24,6 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace SpreadsheetDemo.Tests
 {
     using System;
@@ -48,7 +49,7 @@ namespace SpreadsheetDemo.Tests
             Assert.IsTrue(ReflectionMath.TryAdd(1d, 1, out r));
             Assert.AreEqual(2, r);
         }
-        
+
         [Test]
         public void TryMultiply_Numbers_ReturnsVector()
         {

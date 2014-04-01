@@ -27,6 +27,7 @@
 //   Provides localized strings for the color picker panel.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     /// <summary>

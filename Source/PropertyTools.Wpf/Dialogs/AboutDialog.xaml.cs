@@ -27,6 +27,7 @@
 //   Represents an about dialog.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Diagnostics;
@@ -45,11 +46,9 @@ namespace PropertyTools.Wpf
         private readonly AboutViewModel vm;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AboutDialog"/> class.
+        /// Initializes a new instance of the <see cref="AboutDialog" /> class.
         /// </summary>
-        /// <param name="owner">
-        /// The owner.
-        /// </param>
+        /// <param name="owner">The owner.</param>
         public AboutDialog(Window owner)
         {
             this.Owner = owner;
@@ -65,7 +64,7 @@ namespace PropertyTools.Wpf
         /// Example:
         /// d.Image = new BitmapImage(new Uri(@"pack://application:,,,/AssemblyName;component/Images/about.png"));
         /// </summary>
-        /// <value> The image. </value>
+        /// <value>The image.</value>
         public ImageSource Image
         {
             set
@@ -77,7 +76,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets the update status.
         /// </summary>
-        /// <value> The update status. </value>
+        /// <value>The update status.</value>
         public string UpdateStatus
         {
             set
@@ -89,12 +88,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The copy click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void CopyClick(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(this.vm.GetReport());
@@ -103,12 +98,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The ok click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void OkClick(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -117,12 +108,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The system info click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void SystemInfoClick(object sender, RoutedEventArgs e)
         {
             Process.Start("MsInfo32.exe");

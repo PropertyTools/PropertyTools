@@ -27,6 +27,7 @@
 //   Specifies that the property can be edited by a spin control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -34,14 +35,12 @@ namespace PropertyTools.DataAnnotations
     /// <summary>
     /// Specifies that the property can be edited by a spin control.
     /// </summary>
-    /// <remarks>
-    /// See <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa511491.aspx">MSDN</a>.
-    /// </remarks>
+    /// <remarks>See <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa511491.aspx">MSDN</a>.</remarks>
     [AttributeUsage(AttributeTargets.All)]
     public class SpinnableAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpinnableAttribute"/> class.
+        /// Initializes a new instance of the <see cref="SpinnableAttribute" /> class.
         /// </summary>
         public SpinnableAttribute()
         {
@@ -51,7 +50,7 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpinnableAttribute"/> class.
+        /// Initializes a new instance of the <see cref="SpinnableAttribute" /> class.
         /// </summary>
         /// <param name="smallChange">The small change.</param>
         public SpinnableAttribute(object smallChange)
@@ -60,7 +59,7 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpinnableAttribute"/> class.
+        /// Initializes a new instance of the <see cref="SpinnableAttribute" /> class.
         /// </summary>
         /// <param name="smallChange">The small change.</param>
         /// <param name="largeChange">The large change.</param>
@@ -71,7 +70,7 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpinnableAttribute"/> class.
+        /// Initializes a new instance of the <see cref="SpinnableAttribute" /> class.
         /// </summary>
         /// <param name="smallChange">The small change.</param>
         /// <param name="largeChange">The large change.</param>

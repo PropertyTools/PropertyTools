@@ -39,7 +39,7 @@ namespace PropertyTools.Wpf
     public class CheckMark : Control
     {
         /// <summary>
-        /// The is checked property
+        /// Identifies the <see cref="IsChecked"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
             "IsChecked", typeof(bool), typeof(CheckMark), new PropertyMetadata(false));

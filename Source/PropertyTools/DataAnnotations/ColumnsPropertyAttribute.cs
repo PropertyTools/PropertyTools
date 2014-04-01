@@ -27,6 +27,7 @@
 //   Specifies the name of a property that provides columns for a data grid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -38,11 +39,9 @@ namespace PropertyTools.DataAnnotations
     public class ColumnsPropertyAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnsPropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ColumnsPropertyAttribute" /> class.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property.
-        /// </param>
+        /// <param name="propertyName">Name of the property.</param>
         public ColumnsPropertyAttribute(string propertyName)
         {
             this.PropertyName = propertyName;

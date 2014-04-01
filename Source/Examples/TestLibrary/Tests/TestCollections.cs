@@ -24,6 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace TestLibrary
 {
     using System.Collections.Generic;
@@ -64,7 +65,6 @@ namespace TestLibrary
         [Category("Lists|Collection")]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         public Collection<Item> Collection { get; set; }
-
 
         [Category("Custom|Specified columns")]
         [Column(0, "Name", "Name", null, "2*", 'L')]

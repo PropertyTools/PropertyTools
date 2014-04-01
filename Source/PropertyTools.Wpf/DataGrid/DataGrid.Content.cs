@@ -24,9 +24,10 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a datagrid with a spreadsheet style.
+//   Represents a data grid with a spreadsheet style.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Collections.Specialized;
@@ -77,12 +78,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Updates the cells of the grid.
         /// </summary>
-        /// <param name="rows">
-        /// The number of rows.
-        /// </param>
-        /// <param name="columns">
-        /// The number of columns.
-        /// </param>
+        /// <param name="rows">The number of rows.</param>
+        /// <param name="columns">The number of columns.</param>
         private void UpdateCells(int rows, int columns)
         {
             this.sheetGrid.Children.Add(this.selectionBackground);
@@ -183,9 +180,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Updates the specified columns.
         /// </summary>
-        /// <param name="columns">
-        /// The column index.
-        /// </param>
+        /// <param name="columns">The column index.</param>
         private void UpdateColumns(int columns)
         {
             this.Columns = columns;
@@ -354,9 +349,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Updates the rows.
         /// </summary>
-        /// <param name="rows">
-        /// The number rows.
-        /// </param>
+        /// <param name="rows">The number rows.</param>
         private void UpdateRows(int rows)
         {
             this.rowGrid.Children.Add(this.rowSelectionBackground);
@@ -426,12 +419,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Adds a "insert" row.
         /// </summary>
-        /// <param name="rows">
-        /// The rows.
-        /// </param>
-        /// <remarks>
-        /// This row is below/to the right of the data rows/columns.
-        /// </remarks>
+        /// <param name="rows">The rows.</param>
+        /// <remarks>This row is below/to the right of the data rows/columns.</remarks>
         private void AddInserterRow(int rows)
         {
             if (this.CanInsertRows && this.AddItemHeader != null)

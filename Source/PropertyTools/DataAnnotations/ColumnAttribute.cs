@@ -27,6 +27,7 @@
 //   Specifies a grid column.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -105,9 +106,7 @@ namespace PropertyTools.DataAnnotations
         /// Gets or sets a value indicating whether the column values are read only (overriding default binding mode).
         /// </summary>
         /// <value><c>true</c> if the column is read only; otherwise, <c>false</c>.</value>
-        /// <remarks>
-        /// If this property is set to true, the binding mode will be one-way also for properties with setters.
-        /// </remarks>
+        /// <remarks>If this property is set to <c>true</c>, the binding mode will be one-way also for properties with setters.</remarks>
         public bool IsReadOnly { get; set; }
 
         /// <summary>
@@ -139,7 +138,9 @@ namespace PropertyTools.DataAnnotations
         /// When implemented in a derived class, gets a unique identifier for this <see cref = "T:System.Attribute" />.
         /// </summary>
         /// <value></value>
-        /// <returns>An <see cref = "T:System.Object" /> that is a unique identifier for the attribute.</returns>
+        /// <returns>
+        /// An <see cref = "T:System.Object" /> that is a unique identifier for the attribute.
+        /// </returns>
         public override object TypeId
         {
             get

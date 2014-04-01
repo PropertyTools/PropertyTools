@@ -27,6 +27,7 @@
 //   Specifies the item header property.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -38,7 +39,7 @@ namespace PropertyTools.DataAnnotations
     public class ItemHeaderPropertyAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemHeaderPropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ItemHeaderPropertyAttribute" /> class.
         /// </summary>
         /// <param name="itemHeaderProperty">The item header property.</param>
         public ItemHeaderPropertyAttribute(string itemHeaderProperty)

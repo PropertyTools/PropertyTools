@@ -27,6 +27,7 @@
 //   Specifies what control style a selector property should use.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -49,9 +50,7 @@ namespace PropertyTools.DataAnnotations
         /// <summary>
         /// Gets the selector style.
         /// </summary>
-        /// <value>
-        /// The selector style.
-        /// </value>
+        /// <value>The selector style.</value>
         public SelectorStyle SelectorStyle { get; private set; }
     }
 }

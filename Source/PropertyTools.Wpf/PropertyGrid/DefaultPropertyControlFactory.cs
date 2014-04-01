@@ -27,6 +27,7 @@
 //   Provides a control factory for the <see cref="PropertyGrid" /> control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -71,25 +72,25 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the list of converters.
         /// </summary>
-        /// <value> The converters. </value>
+        /// <value>The converters.</value>
         public List<PropertyConverter> Converters { get; set; }
 
         /// <summary>
         /// Gets or sets the list of type editors.
         /// </summary>
-        /// <value> The editors. </value>
+        /// <value>The editors.</value>
         public List<TypeEditor> Editors { get; set; }
 
         /// <summary>
         /// Gets or sets the file dialog service.
         /// </summary>
-        /// <value> The file dialog service. </value>
+        /// <value>The file dialog service.</value>
         public IFileDialogService FileDialogService { get; set; }
 
         /// <summary>
         /// Gets or sets the folder browser dialog service.
         /// </summary>
-        /// <value> The folder browser dialog service. </value>
+        /// <value>The folder browser dialog service.</value>
         public IFolderBrowserDialogService FolderBrowserDialogService { get; set; }
 
         /// <summary>
@@ -100,12 +101,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the control for a property.
         /// </summary>
-        /// <param name="property">
-        /// The property item.
-        /// </param>
-        /// <param name="options">
-        /// The options.
-        /// </param>
+        /// <param name="property">The property item.</param>
+        /// <param name="options">The options.</param>
         /// <returns>
         /// A element.
         /// </returns>
@@ -238,7 +235,9 @@ namespace PropertyTools.Wpf
         /// Converts the horizontal alignment.
         /// </summary>
         /// <param name="a">The alignment to convert.</param>
-        /// <returns>A <see cref="HorizontalAlignment"/>.</returns>
+        /// <returns>
+        /// A <see cref="HorizontalAlignment" />.
+        /// </returns>
         protected static HorizontalAlignment ConvertHorizontalAlignment(DataAnnotations.HorizontalAlignment a)
         {
             switch (a)
@@ -255,9 +254,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the checkbox control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -285,11 +282,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates a control based on a template from a a <see cref="TypeEditor"/>.
+        /// Creates a control based on a template from a a <see cref="TypeEditor" />.
         /// </summary>
         /// <param name="property">The property.</param>
         /// <param name="editor">The editor.</param>
-        /// <returns>A <see cref="ContentControl"/>.</returns>
+        /// <returns>
+        /// A <see cref="ContentControl" />.
+        /// </returns>
         protected virtual ContentControl CreateEditorControl(PropertyItem property, TypeEditor editor)
         {
             var c = new ContentControl
@@ -305,9 +304,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the brush control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -321,9 +318,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the color control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -337,9 +332,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the combo box control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -361,9 +354,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a comment control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -386,7 +377,9 @@ namespace PropertyTools.Wpf
         /// Creates a content control.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <returns>A <see cref="ContentControl"/>.</returns>
+        /// <returns>
+        /// A <see cref="ContentControl" />.
+        /// </returns>
         protected virtual FrameworkElement CreateContentControl(PropertyItem property)
         {
             var b = new ContentControl
@@ -404,9 +397,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the date time control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -420,9 +411,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the default control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -444,7 +433,7 @@ namespace PropertyTools.Wpf
             {
                 c.FontFamily = new FontFamily(property.FontFamily);
             }
-            
+
             if (!double.IsNaN(property.FontSize))
             {
                 c.FontSize = property.FontSize;
@@ -471,9 +460,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a dictionary control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -488,9 +475,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the directory path control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -505,12 +490,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the select control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
-        /// <param name="options">
-        /// The options.
-        /// </param>
+        /// <param name="property">The property.</param>
+        /// <param name="options">The options.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -558,9 +539,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the file path control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -596,9 +575,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the font family control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -631,9 +608,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the font preview.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -663,9 +638,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the grid control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -720,9 +693,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the HTML control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -736,9 +707,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the image control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -752,9 +721,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the link control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -769,9 +736,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the password control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -786,9 +751,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the secure password control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -805,9 +768,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the slider control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -854,9 +815,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the spin control.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         /// <returns>
         /// The control.
         /// </returns>
@@ -888,7 +847,9 @@ namespace PropertyTools.Wpf
         /// Creates a sequence of checkboxes.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <returns>A FrameworkElement.</returns>
+        /// <returns>
+        /// A FrameworkElement.
+        /// </returns>
         protected virtual FrameworkElement CreateCheckableItems(PropertyItem property)
         {
             var lb = new ItemsControl();
@@ -906,9 +867,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Updates the converter from the Converters collection.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         protected void UpdateConverter(PropertyItem property)
         {
             if (property.Converter == null)
@@ -924,10 +883,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Determines whether the specified type is a reference type or a <see cref="Nullable"/>.
+        /// Determines whether the specified type is a reference type or a <see cref="Nullable" />.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns><c>true</c> if the specified type can be set to null; otherwise, <c>false</c>.</returns>
+        /// <returns>
+        /// <c>true</c> if the specified type can be set to <c>null</c>; otherwise, <c>false</c>.
+        /// </returns>
         private static bool IsNullable(Type type)
         {
             if (!type.IsValueType)
@@ -949,7 +910,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the font families.
         /// </summary>
-        /// <returns> List of font families. </returns>
+        /// <returns>
+        /// List of font families.
+        /// </returns>
         private static IEnumerable<FontFamily> GetFontFamilies()
         {
             if (cachedFontFamilies == null)

@@ -27,6 +27,7 @@
 //   Specifies that the value is a comment.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;

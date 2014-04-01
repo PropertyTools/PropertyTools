@@ -27,6 +27,7 @@
 //   The hsv control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.ComponentModel;
@@ -39,17 +40,15 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// The hsv control.
     /// </summary>
-    /// <remarks>
-    /// Original code by Ury Jamshy, 21 July 2011.
+    /// <remarks>Original code by Ury Jamshy, 21 July 2011.
     /// See http://www.codeproject.com/KB/WPF/ColorPicker010.aspx
     /// The Code Project Open License (CPOL)
-    /// http://www.codeproject.com/info/cpol10.aspx
-    /// </remarks>
+    /// http://www.codeproject.com/info/cpol10.aspx</remarks>
     [TemplatePart(Name = PartThumb, Type = typeof(Thumb))]
     public class HsvControl : Control
     {
         /// <summary>
-        /// The hue property.
+        /// Identifies the <see cref="Hue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
             "Hue",
@@ -59,7 +58,7 @@ namespace PropertyTools.Wpf
                 (double)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnHueChanged));
 
         /// <summary>
-        /// The saturation property.
+        /// Identifies the <see cref="Saturation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SaturationProperty = DependencyProperty.Register(
             "Saturation",
@@ -69,7 +68,7 @@ namespace PropertyTools.Wpf
                 (double)0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSaturationChanged));
 
         /// <summary>
-        /// The selected color property.
+        /// Identifies the <see cref="SelectedColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
             "SelectedColor",
@@ -78,7 +77,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(Colors.Transparent, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// The value property.
+        /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value",
@@ -128,12 +127,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on thumb drag completed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private static void OnThumbDragCompleted(object sender, DragCompletedEventArgs e)
         {
             ((HsvControl)sender).OnThumbDragCompleted(e);
@@ -142,9 +137,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on thumb drag completed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
+        /// <param name="sender">The sender.</param>
         private void OnThumbDragCompleted(DragCompletedEventArgs sender)
         {
             var editableObject = this.DataContext as IEditableObject;
@@ -234,11 +227,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/>�routed event is raised on this element. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonDown" />�routed event is raised on this element. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs" /> that contains the event data. The event data reports that the left mouse button was pressed.</param>
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             var editableObject = this.DataContext as IEditableObject;
@@ -263,9 +254,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on render size changed.
         /// </summary>
-        /// <param name="sizeInfo">
-        /// The size info.
-        /// </param>
+        /// <param name="sizeInfo">The size info.</param>
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             this.UpdateThumbPosition();
@@ -276,12 +265,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on hue changed.
         /// </summary>
-        /// <param name="relatedObject">
-        /// The related object.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="relatedObject">The related object.</param>
+        /// <param name="e">The e.</param>
         private static void OnHueChanged(DependencyObject relatedObject, DependencyPropertyChangedEventArgs e)
         {
             var hsvControl = relatedObject as HsvControl;
@@ -294,12 +279,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on saturation changed.
         /// </summary>
-        /// <param name="relatedObject">
-        /// The related object.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="relatedObject">The related object.</param>
+        /// <param name="e">The e.</param>
         private static void OnSaturationChanged(DependencyObject relatedObject, DependencyPropertyChangedEventArgs e)
         {
             var hsvControl = relatedObject as HsvControl;
@@ -312,12 +293,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on thumb drag delta.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private static void OnThumbDragDelta(object sender, DragDeltaEventArgs e)
         {
             var hsvControl = sender as HsvControl;
@@ -330,12 +307,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on value changed.
         /// </summary>
-        /// <param name="relatedObject">
-        /// The related object.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="relatedObject">The related object.</param>
+        /// <param name="e">The e.</param>
         private static void OnValueChanged(DependencyObject relatedObject, DependencyPropertyChangedEventArgs e)
         {
             var hsvControl = relatedObject as HsvControl;
@@ -348,12 +321,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Limit value to range (0 , max]
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="max">
-        /// The max.
-        /// </param>
+        /// <param name="value">The value.</param>
+        /// <param name="max">The max.</param>
         /// <returns>
         /// The limit value.
         /// </returns>
@@ -375,9 +344,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on thumb drag delta.
         /// </summary>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="e">The e.</param>
         private void OnThumbDragDelta(DragDeltaEventArgs e)
         {
             double offsetX = this.thumbTransform.X + e.HorizontalChange;
@@ -389,12 +356,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The update position and saturation and value.
         /// </summary>
-        /// <param name="positionX">
-        /// The position x.
-        /// </param>
-        /// <param name="positionY">
-        /// The position y.
-        /// </param>
+        /// <param name="positionX">The position x.</param>
+        /// <param name="positionY">The position y.</param>
         private void UpdatePositionAndSaturationAndValue(double positionX, double positionY)
         {
             positionX = this.LimitValue(positionX, this.ActualWidth);

@@ -27,6 +27,7 @@
 //   Specifies the width of the editing control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -38,7 +39,7 @@ namespace PropertyTools.DataAnnotations
     public class WidthAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WidthAttribute"/> class.
+        /// Initializes a new instance of the <see cref="WidthAttribute" /> class.
         /// </summary>
         /// <param name="width">The width.</param>
         public WidthAttribute(double width)

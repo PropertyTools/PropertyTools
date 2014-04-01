@@ -24,6 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 using System.ComponentModel;
 using DialogDemos.Properties;
 
@@ -91,7 +92,6 @@ namespace DialogDemos
             }
         }
 
-
         [Category("Startup|News channel")]
         public string NewsChannel
         {
@@ -102,7 +102,6 @@ namespace DialogDemos
                 OnPropertyChanged("NewsChannel");
             }
         }
-
 
         [Category("Startup|Actions")]
         public StartupAction StartupAction

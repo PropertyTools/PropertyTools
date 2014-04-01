@@ -27,6 +27,7 @@
 //   TimeSpan parser that use a format string to evaluate the input string.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -36,9 +37,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// TimeSpan parser that use a format string to evaluate the input string.
     /// </summary>
-    /// <remarks>
-    /// Supports the following format codes: D, DD, H, HH, M, MM, S, SS, d, dd, h, hh, m, mm, s, ss, f, ff, fff
-    /// </remarks>
+    /// <remarks>Supports the following format codes: D, DD, H, HH, M, MM, S, SS, d, dd, h, hh, m, mm, s, ss, f, ff, fff</remarks>
     public class FormattedTimeSpanParser
     {
         /// <summary>
@@ -53,11 +52,9 @@ namespace PropertyTools.Wpf
             new Regex("D{1,2}|H{1,2}|M{1,2}|S{1,2}|d{1,2}|h{1,2}|m{1,2}|s{1,2}|f{1,7}", RegexOptions.Compiled);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FormattedTimeSpanParser"/> class.
+        /// Initializes a new instance of the <see cref="FormattedTimeSpanParser" /> class.
         /// </summary>
-        /// <param name="formatString">
-        /// The format string.
-        /// </param>
+        /// <param name="formatString">The format string.</param>
         public FormattedTimeSpanParser(string formatString)
         {
             // escape special characters
@@ -98,9 +95,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Parses the specified time span string.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="value">The value.</param>
         /// <returns>
         /// A time span.
         /// </returns>

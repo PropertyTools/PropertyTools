@@ -2,7 +2,7 @@
 // <copyright file="EnumDisplayNameAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
-//   Copyright (c) 2012 Oystein Bjorke
+//   Copyright (c) 2014 PropertyTools contributors
 //   
 //   Permission is hereby granted, free of charge, to any person obtaining a
 //   copy of this software and associated documentation files (the
@@ -24,9 +24,10 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Specifies a display name for enum values.
+//   Specifies a display name for <c>enum</c> properties.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -39,11 +40,9 @@ namespace PropertyTools.DataAnnotations
     public class EnumDisplayNameAttribute : DisplayNameAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnumDisplayNameAttribute"/> class.
+        /// Initializes a new instance of the <see cref="EnumDisplayNameAttribute" /> class.
         /// </summary>
-        /// <param name="displayName">
-        /// The display name.
-        /// </param>
+        /// <param name="displayName">The display name.</param>
         public EnumDisplayNameAttribute(string displayName)
             : base(displayName)
         {

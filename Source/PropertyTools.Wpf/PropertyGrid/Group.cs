@@ -27,6 +27,7 @@
 //   Represents a group in a <see cref="PropertyGrid" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Collections.Generic;
@@ -48,19 +49,19 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the description.
         /// </summary>
-        /// <value> The description. </value>
+        /// <value>The description.</value>
         public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the header.
         /// </summary>
-        /// <value> The header. </value>
+        /// <value>The header.</value>
         public string Header { get; set; }
 
         /// <summary>
         /// Gets or sets the icon.
         /// </summary>
-        /// <value> The icon. </value>
+        /// <value>The icon.</value>
         public ImageSource Icon { get; set; }
 
         /// <summary>
@@ -71,7 +72,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The to string.
         /// </summary>
-        /// <returns> The to string. </returns>
+        /// <returns>
+        /// The to string.
+        /// </returns>
         public override string ToString()
         {
             return this.Header;

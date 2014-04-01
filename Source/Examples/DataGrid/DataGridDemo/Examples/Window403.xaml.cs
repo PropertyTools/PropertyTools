@@ -27,6 +27,7 @@
 //   Interaction logic for Window403.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace DataGridDemo
 {
     /// <summary>
@@ -35,7 +36,7 @@ namespace DataGridDemo
     public partial class Window403
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Window402"/> class.
+        /// Initializes a new instance of the <see cref="Window402" /> class.
         /// </summary>
         public Window403()
         {

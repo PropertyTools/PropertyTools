@@ -27,6 +27,7 @@
 //   Contains behaviors for the <see cref="WebBrowser" /> control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Windows;
@@ -38,7 +39,7 @@ namespace PropertyTools.Wpf
     public class WebBrowserBehavior
     {
         /// <summary>
-        /// The navigate to string property.
+        /// Identifies the <see cref="NavigateToString"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty NavigateToStringProperty =
             DependencyProperty.RegisterAttached(
@@ -50,9 +51,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The get navigate to string.
         /// </summary>
-        /// <param name="obj">
-        /// The object.
-        /// </param>
+        /// <param name="obj">The object.</param>
         /// <returns>
         /// The get navigate to string.
         /// </returns>
@@ -64,12 +63,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The set navigate to string.
         /// </summary>
-        /// <param name="obj">
-        /// The object.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="obj">The object.</param>
+        /// <param name="value">The value.</param>
         public static void SetNavigateToString(DependencyObject obj, string value)
         {
             obj.SetValue(NavigateToStringProperty, value);
@@ -79,12 +74,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The navigate to string changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         private static void NavigateToStringChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var wb = d as WebBrowser;

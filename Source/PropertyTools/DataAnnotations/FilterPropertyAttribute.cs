@@ -27,6 +27,7 @@
 //   Specifies the name of a property that contains a file path filter.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -38,11 +39,9 @@ namespace PropertyTools.DataAnnotations
     public class FilterPropertyAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FilterPropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="FilterPropertyAttribute" /> class.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property that contains the filter.
-        /// </param>
+        /// <param name="propertyName">Name of the property that contains the filter.</param>
         public FilterPropertyAttribute(string propertyName)
         {
             this.PropertyName = propertyName;

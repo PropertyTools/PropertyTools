@@ -27,6 +27,7 @@
 //   Represents an image that avoids blurring over pixel boundaries.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -37,15 +38,13 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Represents an image that avoids blurring over pixel boundaries.
     /// </summary>
-    /// <remarks>
-    /// The Bitmap element is using the ActualWidth/Height of the image for the control size.
+    /// <remarks>The Bitmap element is using the ActualWidth/Height of the image for the control size.
     /// It also offsets the image to avoid blurring over pixel boundaries.
-    /// http://blogs.msdn.com/b/dwayneneed/archive/2007/10/05/blurry-bitmaps.aspx
-    /// </remarks>
+    /// http://blogs.msdn.com/b/dwayneneed/archive/2007/10/05/blurry-bitmaps.aspx</remarks>
     public class Bitmap : FrameworkElement
     {
         /// <summary>
-        /// The source property.
+        /// Identifies the <see cref="Source"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
             "Source",
@@ -90,7 +89,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the source.
         /// </summary>
-        /// <value> The source. </value>
+        /// <value>The source.</value>
         public BitmapSource Source
         {
             get
@@ -105,11 +104,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// When overridden in a derived class, measures the size in layout required for child elements and determines a size for the <see cref="T:System.Windows.FrameworkElement"/>-derived class.
+        /// When overridden in a derived class, measures the size in layout required for child elements and determines a size for the <see cref="T:System.Windows.FrameworkElement" />-derived class.
         /// </summary>
-        /// <param name="availableSize">
-        /// The available size that this element can give to child elements. Infinity can be specified as a value to indicate that the element will size to whatever content is available.
-        /// </param>
+        /// <param name="availableSize">The available size that this element can give to child elements. Infinity can be specified as a value to indicate that the element will size to whatever content is available.</param>
         /// <returns>
         /// The size that this element determines it needs during layout, based on its calculations of child element sizes.
         /// </returns>
@@ -137,9 +134,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when rendering.
         /// </summary>
-        /// <param name="dc">
-        /// The dc.
-        /// </param>
+        /// <param name="dc">The dc.</param>
         protected override void OnRender(DrawingContext dc)
         {
             BitmapSource bitmapSource = this.Source;
@@ -155,12 +150,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when the source changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var bitmap = (Bitmap)d;
@@ -189,15 +180,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Applies the visual transform.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="v">
-        /// The v.
-        /// </param>
-        /// <param name="inverse">
-        /// if set to <c>true</c> [inverse].
-        /// </param>
+        /// <param name="point">The point.</param>
+        /// <param name="v">The v.</param>
+        /// <param name="inverse">if set to <c>true</c> [inverse].</param>
         /// <returns>
         /// The transformed point.
         /// </returns>
@@ -210,12 +195,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines if two points are close.
         /// </summary>
-        /// <param name="point1">
-        /// The point1.
-        /// </param>
-        /// <param name="point2">
-        /// The point2.
-        /// </param>
+        /// <param name="point1">The point1.</param>
+        /// <param name="point2">The point2.</param>
         /// <returns>
         /// True if close.
         /// </returns>
@@ -227,12 +208,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines of two values are close.
         /// </summary>
-        /// <param name="value1">
-        /// The value1.
-        /// </param>
-        /// <param name="value2">
-        /// The value2.
-        /// </param>
+        /// <param name="value1">The value1.</param>
+        /// <param name="value2">The value2.</param>
         /// <returns>
         /// True if close.
         /// </returns>
@@ -250,7 +227,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the pixel offset.
         /// </summary>
-        /// <returns> The pixel offset. </returns>
+        /// <returns>
+        /// The pixel offset.
+        /// </returns>
         private Point GetPixelOffset()
         {
             var pixelOffset = new Point();
@@ -281,17 +260,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the visual transform.
         /// </summary>
-        /// <remarks>
-        /// Gets the matrix that will convert a point from "above" the
-        /// coordinate space of a visual into the the coordinate space
-        /// "below" the visual.
-        /// </remarks>
-        /// <param name="v">
-        /// The v.
-        /// </param>
+        /// <param name="v">The v.</param>
         /// <returns>
-        /// The <see cref="Matrix"/>.
+        /// The <see cref="Matrix" />.
         /// </returns>
+        /// <remarks>Gets the matrix that will convert a point from "above" the
+        /// coordinate space of a visual into the the coordinate space
+        /// "below" the visual.</remarks>
         private Matrix GetVisualTransform(Visual v)
         {
             if (v != null)
@@ -317,12 +292,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when layout is updated.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.EventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void OnLayoutUpdated(object sender, EventArgs e)
         {
             // This event just means that layout happened somewhere.  However, this is
@@ -337,12 +308,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when the source has downloaded.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.EventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void OnSourceDownloaded(object sender, EventArgs e)
         {
             this.InvalidateMeasure();
@@ -352,12 +319,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when source failed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.Media.ExceptionEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.Media.ExceptionEventArgs" /> instance containing the event data.</param>
         private void OnSourceFailed(object sender, ExceptionEventArgs e)
         {
             this.Source = null; // setting a local value seems scetchy...
@@ -368,23 +331,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Tries to apply the visual transform.
         /// </summary>
-        /// <param name="point">
-        /// The point.
-        /// </param>
-        /// <param name="v">
-        /// The v.
-        /// </param>
-        /// <param name="inverse">
-        /// if set to <c>true</c> [inverse].
-        /// </param>
-        /// <param name="throwOnError">
-        /// if set to <c>true</c> [throw on error].
-        /// </param>
-        /// <param name="success">
-        /// if set to <c>true</c> [success].
-        /// </param>
+        /// <param name="point">The point.</param>
+        /// <param name="v">The v.</param>
+        /// <param name="inverse">if set to <c>true</c> [inverse].</param>
+        /// <param name="throwOnError">if set to <c>true</c> [throw on error].</param>
+        /// <param name="success">if set to <c>true</c> [success].</param>
         /// <returns>
-        /// The <see cref="Point"/>.
+        /// The <see cref="Point" />.
         /// </returns>
         private Point TryApplyVisualTransform(Point point, Visual v, bool inverse, bool throwOnError, out bool success)
         {

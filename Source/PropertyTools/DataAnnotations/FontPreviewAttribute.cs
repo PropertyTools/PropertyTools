@@ -27,6 +27,7 @@
 //   Specifies the font size, weight and the name of a property that contains the font family.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -38,14 +39,10 @@ namespace PropertyTools.DataAnnotations
     public class FontPreviewAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FontPreviewAttribute"/> class.
+        /// Initializes a new instance of the <see cref="FontPreviewAttribute" /> class.
         /// </summary>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        /// <param name="weight">
-        /// The weight.
-        /// </param>
+        /// <param name="size">The size.</param>
+        /// <param name="weight">The weight.</param>
         public FontPreviewAttribute(double size, int weight = 500)
         {
             this.Size = size;
@@ -53,17 +50,11 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FontPreviewAttribute"/> class.
+        /// Initializes a new instance of the <see cref="FontPreviewAttribute" /> class.
         /// </summary>
-        /// <param name="fontFamilyPropertyName">
-        /// Name of the font family property.
-        /// </param>
-        /// <param name="size">
-        /// The size.
-        /// </param>
-        /// <param name="weight">
-        /// The weight.
-        /// </param>
+        /// <param name="fontFamilyPropertyName">Name of the font family property.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="weight">The weight.</param>
         public FontPreviewAttribute(string fontFamilyPropertyName, double size, int weight = 500)
         {
             this.FontFamilyPropertyName = fontFamilyPropertyName;

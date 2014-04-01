@@ -27,6 +27,7 @@
 //   Indicates where an item should be dropped.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools
 {
     /// <summary>

@@ -27,6 +27,7 @@
 //   Specifies that the property is a directory path.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;

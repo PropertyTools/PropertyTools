@@ -27,6 +27,7 @@
 //   The type helper.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -42,9 +43,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Finds the biggest common type of items in the list.
         /// </summary>
-        /// <param name="items">
-        /// The list.
-        /// </param>
+        /// <param name="items">The list.</param>
         /// <returns>
         /// The biggest common type.
         /// </returns>
@@ -87,9 +86,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the underlying enum type of the specified type, if the specified type is a nullable type.
         /// </summary>
-        /// <param name="propertyType">
-        /// The type.
-        /// </param>
+        /// <param name="propertyType">The type.</param>
         /// <returns>
         /// The type of the underlying enum.
         /// </returns>
@@ -117,9 +114,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the type of the items in the specified enumeration.
         /// </summary>
-        /// <param name="enumerable">
-        /// The enumerable.
-        /// </param>
+        /// <param name="enumerable">The enumerable.</param>
         /// <returns>
         /// The type of the items.
         /// </returns>
@@ -131,11 +126,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the item type from a list type.
         /// </summary>
-        /// <param name="listType">
-        /// The list type.
-        /// </param>
+        /// <param name="listType">The list type.</param>
         /// <returns>
-        /// The <see cref="Type"/> of the elements.
+        /// The <see cref="Type" /> of the elements.
         /// </returns>
         public static Type GetListElementType(Type listType)
         {
@@ -162,12 +155,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether the first type is assignable from the specified second type.
         /// </summary>
-        /// <param name="firstType">
-        /// Type of the first type.
-        /// </param>
-        /// <param name="secondType">
-        /// The type of the second type.
-        /// </param>
+        /// <param name="firstType">Type of the first type.</param>
+        /// <param name="secondType">The type of the second type.</param>
         /// <returns>
         /// True if it is assignable.
         /// </returns>
@@ -215,11 +204,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets inner generic type of an IList&gt;IList&lt;
         /// </summary>
-        /// <param name="list">
-        /// The list.
-        /// </param>
+        /// <param name="list">The list.</param>
         /// <returns>
-        /// The <see cref="Type"/>.
+        /// The <see cref="Type" />.
         /// </returns>
         public static Type GetInnerMostGenericType(IList list)
         {
@@ -239,9 +226,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether the type is IList&gt;IList&lt;
         /// </summary>
-        /// <param name="type">
-        /// The type.
-        /// </param>
+        /// <param name="type">The type.</param>
         /// <returns>
         /// <c>true</c> if the type is IList&gt;IList&lt;; otherwise, <c>false</c>.
         /// </returns>

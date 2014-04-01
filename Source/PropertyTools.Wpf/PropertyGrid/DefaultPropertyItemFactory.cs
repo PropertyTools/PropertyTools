@@ -27,6 +27,7 @@
 //   Provides a property item factory for the <see cref="PropertyGrid" /> control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -59,19 +60,19 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the default name of the category.
         /// </summary>
-        /// <value> The default name of the category. </value>
+        /// <value>The default name of the category.</value>
         public string DefaultCategoryName { get; set; }
 
         /// <summary>
         /// Gets or sets the default name of the tab.
         /// </summary>
-        /// <value> The default name of the tab. </value>
+        /// <value>The default name of the tab.</value>
         public string DefaultTabName { get; set; }
 
         /// <summary>
         /// Gets or sets the enabled pattern.
         /// </summary>
-        /// <value> The enabled pattern. </value>
+        /// <value>The enabled pattern.</value>
         public string EnabledPattern { get; set; }
 
         /// <summary>
@@ -82,56 +83,48 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether to add spaces at the camel bumps of the display names.
         /// </summary>
-        /// <value> <c>true</c> if display names should be modified; otherwise, <c>false</c> . </value>
+        /// <value><c>true</c> if display names should be modified; otherwise, <c>false</c> .</value>
         public bool ModifyCamelCaseDisplayNames { get; set; }
 
         /// <summary>
         /// Gets or sets the optional pattern.
         /// </summary>
-        /// <value> The optional pattern. </value>
+        /// <value>The optional pattern.</value>
         public string OptionalPattern { get; set; }
 
         /// <summary>
         /// Gets or sets the visible pattern.
         /// </summary>
-        /// <value> The visible pattern. </value>
+        /// <value>The visible pattern.</value>
         public string VisiblePattern { get; set; }
 
         /// <summary>
         /// Gets or sets the current category.
         /// </summary>
-        /// <value> The current category. </value>
+        /// <value>The current category.</value>
         protected string CurrentCategory { get; set; }
 
         /// <summary>
         /// Gets or sets the declaring type of the current category.
         /// </summary>
-        /// <value> The type of the current category. </value>
+        /// <value>The type of the current category.</value>
         protected Type CurrentCategoryDeclaringType { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the current component.
         /// </summary>
-        /// <remarks>
-        /// This is used to avoid that Category attributes are inherited from superclass to subclass.
-        /// </remarks>
-        /// <value> The type of the current component. </value>
+        /// <value>The type of the current component.</value>
+        /// <remarks>This is used to avoid that Category attributes are inherited from superclass to subclass.</remarks>
         protected Type CurrentDeclaringType { get; set; }
 
         /// <summary>
         /// Creates the property model.
         /// </summary>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
-        /// <param name="isEnumerable">
-        /// if set to <c>true</c> [is enumerable].
-        /// </param>
-        /// <param name="options">
-        /// The options.
-        /// </param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="isEnumerable">if set to <c>true</c> [is enumerable].</param>
+        /// <param name="options">The options.</param>
         /// <returns>
-        /// A list of <see cref="Tab"/> .
+        /// A list of <see cref="Tab" /> .
         /// </returns>
         public virtual IEnumerable<Tab> CreateModel(object instance, bool isEnumerable, IPropertyGridOptions options)
         {
@@ -171,7 +164,9 @@ namespace PropertyTools.Wpf
         /// <param name="pd">The property descriptor.</param>
         /// <param name="propertyDescriptors">The property descriptors.</param>
         /// <param name="instance">The instance.</param>
-        /// <returns>A property item.</returns>
+        /// <returns>
+        /// A property item.
+        /// </returns>
         public virtual PropertyItem CreatePropertyItem(PropertyDescriptor pd, PropertyDescriptorCollection propertyDescriptors, object instance)
         {
             var pi = this.CreateCore(pd, propertyDescriptors);
@@ -194,7 +189,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="instance">The object instance.</param>
         /// <param name="options">The options.</param>
-        /// <returns>Enumeration of PropertyItem.</returns>
+        /// <returns>
+        /// Enumeration of PropertyItem.
+        /// </returns>
         protected virtual IEnumerable<PropertyItem> CreatePropertyItems(object instance, IPropertyGridOptions options)
         {
             var instanceType = instance.GetType();
@@ -246,12 +243,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the tool tip for the specified property.
         /// </summary>
-        /// <param name="pd">
-        /// The property descriptor.
-        /// </param>
-        /// <param name="declaringType">
-        /// The declaring type.
-        /// </param>
+        /// <param name="pd">The property descriptor.</param>
+        /// <param name="declaringType">The declaring type.</param>
         /// <returns>
         /// A tool tip.
         /// </returns>
@@ -263,12 +256,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the display name for the specified property.
         /// </summary>
-        /// <param name="pd">
-        /// The property descriptor.
-        /// </param>
-        /// <param name="declaringType">
-        /// The declaring type.
-        /// </param>
+        /// <param name="pd">The property descriptor.</param>
+        /// <param name="declaringType">The declaring type.</param>
         /// <returns>
         /// A display name string.
         /// </returns>
@@ -286,12 +275,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the localized description.
         /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="declaringType">
-        /// Type of the declaring.
-        /// </param>
+        /// <param name="key">The key.</param>
+        /// <param name="declaringType">Type of the declaring.</param>
         /// <returns>
         /// The localized description.
         /// </returns>
@@ -303,12 +288,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the localized string.
         /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="declaringType">
-        /// The declaring type.
-        /// </param>
+        /// <param name="key">The key.</param>
+        /// <param name="declaringType">The declaring type.</param>
         /// <returns>
         /// The localized string.
         /// </returns>

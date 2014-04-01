@@ -27,6 +27,7 @@
 //   Represents a viewmodel for the about dialog.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -42,11 +43,9 @@ namespace PropertyTools.Wpf
     public class AboutViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AboutViewModel"/> class.
+        /// Initializes a new instance of the <see cref="AboutViewModel" /> class.
         /// </summary>
-        /// <param name="a">
-        /// An assembly.
-        /// </param>
+        /// <param name="a">An assembly.</param>
         public AboutViewModel(Assembly a)
         {
             this.SystemInfoText = "System Info...";
@@ -124,7 +123,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the copy report text.
         /// </summary>
-        /// <value> The copy report text. </value>
+        /// <value>The copy report text.</value>
         public string CopyReportText { get; set; }
 
         /// <summary>
@@ -152,7 +151,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the file info.
         /// </summary>
-        /// <value> The file info. </value>
+        /// <value>The file info.</value>
         public FileInfo FileInfo { get; set; }
 
         /// <summary>
@@ -180,7 +179,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the file version info.
         /// </summary>
-        /// <value> The file version info. </value>
+        /// <value>The file version info.</value>
         public FileVersionInfo FileVersionInfo { get; set; }
 
         /// <summary>
@@ -257,7 +256,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the system info text.
         /// </summary>
-        /// <value> The system info text. </value>
+        /// <value>The system info text.</value>
         public string SystemInfoText { get; set; }
 
         /// <summary>
@@ -290,7 +289,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the report.
         /// </summary>
-        /// <returns> The get report. </returns>
+        /// <returns>
+        /// The get report.
+        /// </returns>
         public string GetReport()
         {
             var sb = new StringBuilder();

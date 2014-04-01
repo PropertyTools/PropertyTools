@@ -27,6 +27,7 @@
 //   Represents a wizard dialog.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Collections.Generic;
@@ -38,13 +39,13 @@ namespace PropertyTools.Wpf
     public partial class WizardDialog : Window
     {
         /// <summary>
-        /// The current page property.
+        /// Identifies the <see cref="CurrentPage"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CurrentPageProperty = DependencyProperty.Register(
             "CurrentPage", typeof(int), typeof(WizardDialog), new UIPropertyMetadata(-1, CurrentPage_Changed));
 
         /// <summary>
-        /// The pages property.
+        /// Identifies the <see cref="Pages"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PagesProperty = DependencyProperty.Register(
             "Pages", typeof(List<object>), typeof(WizardDialog), new UIPropertyMetadata(null));
@@ -101,12 +102,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The current page_ changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private static void CurrentPage_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             var d = sender as WizardDialog;
@@ -116,12 +113,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The back button_ click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             this.CurrentPage--;
@@ -149,12 +142,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The cancel button_ click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
         }
@@ -162,12 +151,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The finish button_ click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void FinishButton_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
@@ -177,12 +162,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The next button_ click.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
             this.CurrentPage++;
@@ -191,12 +172,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The wizard dialog_ loaded.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void WizardDialog_Loaded(object sender, RoutedEventArgs e)
         {
             this.CurrentPage = 0;

@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Interaction logic for FilePickerPage.xaml
+//   Interaction logic for DirectoryPickerPage.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

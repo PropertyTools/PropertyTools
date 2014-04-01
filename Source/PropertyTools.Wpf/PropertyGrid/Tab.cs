@@ -56,7 +56,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the description.
         /// </summary>
-        /// <value> The description. </value>
+        /// <value>The description.</value>
         public string Description { get; set; }
 
         /// <summary>
@@ -67,9 +67,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether this tab contains properties with errors.
         /// </summary>
-        /// <value>
-        ///     <c>true</c> if this tab has errors; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if this tab has errors; otherwise, <c>false</c>.</value>
         public bool HasErrors
         {
             get
@@ -86,20 +84,22 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the header.
         /// </summary>
-        /// <value> The header. </value>
+        /// <value>The header.</value>
         public string Header { get; set; }
 
         /// <summary>
         /// Gets or sets the icon.
         /// </summary>
-        /// <value> The icon. </value>
+        /// <value>The icon.</value>
         public BitmapSource Icon { get; set; }
 
         /// <summary>
         /// Determines whether the tab contains the specified property.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        /// <returns><c>true</c> if the tab contains the specified property; otherwise, <c>false</c>.</returns>
+        /// <returns>
+        /// <c>true</c> if the tab contains the specified property; otherwise, <c>false</c>.
+        /// </returns>
         public bool Contains(string propertyName)
         {
             return this.Groups.Any(g => g.Properties.Any(p => p.PropertyName == propertyName));
@@ -108,7 +108,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        /// <returns> A <see cref="System.String" /> that represents this instance. </returns>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return this.Header;

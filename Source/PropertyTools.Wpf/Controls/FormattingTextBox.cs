@@ -27,6 +27,7 @@
 //   Represents a TextBox with a bindable StringFormat property.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -41,7 +42,7 @@ namespace PropertyTools.Wpf
     public class FormattingTextBox : TextBox
     {
         /// <summary>
-        /// The format provider property.
+        /// Identifies the <see cref="FormatProvider"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FormatProviderProperty = DependencyProperty.Register(
             "FormatProvider",
@@ -50,13 +51,13 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(CultureInfo.InvariantCulture));
 
         /// <summary>
-        /// The string format property.
+        /// Identifies the <see cref="StringFormat"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register(
             "StringFormat", typeof(string), typeof(FormattingTextBox), new UIPropertyMetadata(null, StringFormatChanged));
 
         /// <summary>
-        /// The value property.
+        /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value",
@@ -82,7 +83,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the format provider.
         /// </summary>
-        /// <value> The format provider. </value>
+        /// <value>The format provider.</value>
         public IFormatProvider FormatProvider
         {
             get
@@ -99,7 +100,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the string format.
         /// </summary>
-        /// <value> The string format. </value>
+        /// <value>The string format.</value>
         public string StringFormat
         {
             get
@@ -116,7 +117,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
-        /// <value> The value. </value>
+        /// <value>The value.</value>
         public object Value
         {
             get
@@ -133,12 +134,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The string format changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         private static void StringFormatChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((FormattingTextBox)d).UpdateText();
@@ -147,12 +144,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The text changed callback.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         private static void TextChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ftb = (FormattingTextBox)d;
@@ -164,12 +157,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The value changed callback.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         private static void ValueChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ftb = (FormattingTextBox)d;
@@ -182,9 +171,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Unformats the text.
         /// </summary>
-        /// <param name="s">
-        /// The s.
-        /// </param>
+        /// <param name="s">The s.</param>
         /// <returns>
         /// The un format.
         /// </returns>

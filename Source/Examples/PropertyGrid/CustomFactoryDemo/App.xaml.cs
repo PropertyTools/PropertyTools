@@ -27,6 +27,7 @@
 //   Interaction logic for App.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 using System.Windows;
 
 namespace CustomFactoryDemo

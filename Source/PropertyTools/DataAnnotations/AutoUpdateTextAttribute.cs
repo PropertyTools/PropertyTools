@@ -27,6 +27,7 @@
 //   Specifies that the text binding should be triggered at every change.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;

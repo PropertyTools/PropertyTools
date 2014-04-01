@@ -27,6 +27,7 @@
 //   Specifies a format string.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -38,11 +39,9 @@ namespace PropertyTools.DataAnnotations
     public class FormatStringAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FormatStringAttribute"/> class.
+        /// Initializes a new instance of the <see cref="FormatStringAttribute" /> class.
         /// </summary>
-        /// <param name="fs">
-        /// The format string.
-        /// </param>
+        /// <param name="fs">The format string.</param>
         public FormatStringAttribute(string fs)
         {
             this.FormatString = fs;

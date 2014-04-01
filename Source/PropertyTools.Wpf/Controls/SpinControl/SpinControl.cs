@@ -27,6 +27,7 @@
 //   Represents a spinner control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -66,65 +67,64 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The culture property
+        /// Identifies the <see cref="Culture"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CultureProperty =
             DependencyProperty.Register("Culture", typeof(CultureInfo), typeof(SpinControl), new UIPropertyMetadata(null));
 
-
         /// <summary>
-        /// The down button geometry property.
+        /// Identifies the <see cref="DownButtonGeometry"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DownButtonGeometryProperty =
             DependencyProperty.Register(
                 "DownButtonGeometry", typeof(Geometry), typeof(SpinControl), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The large change property.
+        /// Identifies the <see cref="LargeChange"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register(
             "LargeChange", typeof(object), typeof(SpinControl), new UIPropertyMetadata(10.0));
 
         /// <summary>
-        /// The maximum property.
+        /// Identifies the <see cref="Maximum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
             "Maximum", typeof(object), typeof(SpinControl), new UIPropertyMetadata(100.0));
 
         /// <summary>
-        /// The minimum property.
+        /// Identifies the <see cref="Minimum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
             "Minimum", typeof(object), typeof(SpinControl), new UIPropertyMetadata(0.0));
 
         /// <summary>
-        /// The repeat SmallChange property.
+        /// Identifies the <see cref="RepeatInterval"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RepeatIntervalProperty = DependencyProperty.Register(
             "RepeatInterval", typeof(int), typeof(SpinControl), new UIPropertyMetadata(50));
 
         /// <summary>
-        /// The SmallChange property.
+        /// Identifies the <see cref="SmallChange"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register(
             "SmallChange", typeof(object), typeof(SpinControl), new UIPropertyMetadata(1.0));
 
         /// <summary>
-        /// The spin button width property.
+        /// Identifies the <see cref="SpinButtonWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SpinButtonWidthProperty =
             DependencyProperty.Register(
                 "SpinButtonWidth", typeof(GridLength), typeof(SpinControl), new UIPropertyMetadata(new GridLength(14)));
 
         /// <summary>
-        /// The up button geometry property.
+        /// Identifies the <see cref="UpButtonGeometry"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpButtonGeometryProperty =
             DependencyProperty.Register(
                 "UpButtonGeometry", typeof(Geometry), typeof(SpinControl), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The value property.
+        /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value",
@@ -155,7 +155,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets down button geometry.
         /// </summary>
-        /// <value> Down button geometry. </value>
+        /// <value>Down button geometry.</value>
         public Geometry DownButtonGeometry
         {
             get
@@ -172,7 +172,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the large change.
         /// </summary>
-        /// <value> The large change. </value>
+        /// <value>The large change.</value>
         public object LargeChange
         {
             get
@@ -189,7 +189,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the maximum.
         /// </summary>
-        /// <value> The maximum. </value>
+        /// <value>The maximum.</value>
         public object Maximum
         {
             get
@@ -206,7 +206,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the minimum.
         /// </summary>
-        /// <value> The minimum. </value>
+        /// <value>The minimum.</value>
         public object Minimum
         {
             get
@@ -223,7 +223,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the repeat SmallChange (milliseconds).
         /// </summary>
-        /// <value> The repeat SmallChange. </value>
+        /// <value>The repeat SmallChange.</value>
         public int RepeatInterval
         {
             get
@@ -240,7 +240,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the SmallChange.
         /// </summary>
-        /// <value> The SmallChange. </value>
+        /// <value>The SmallChange.</value>
         public object SmallChange
         {
             get
@@ -257,7 +257,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the width of the spin buttons.
         /// </summary>
-        /// <value> The width of the spin button. </value>
+        /// <value>The width of the spin button.</value>
         public GridLength SpinButtonWidth
         {
             get
@@ -274,7 +274,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets up button geometry.
         /// </summary>
-        /// <value> Up button geometry. </value>
+        /// <value>Up button geometry.</value>
         public Geometry UpButtonGeometry
         {
             get
@@ -291,7 +291,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
-        /// <value> The value. </value>
+        /// <value>The value.</value>
         public object Value
         {
             get
@@ -348,11 +348,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Keyboard.PreviewKeyDown"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Keyboard.PreviewKeyDown" /> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="T:System.Windows.Input.KeyEventArgs"/> that contains the event data.
-        /// </param>
+        /// <param name="e">The <see cref="T:System.Windows.Input.KeyEventArgs" /> that contains the event data.</param>
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -380,12 +378,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Coerces the spinner value.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="basevalue">
-        /// The basevalue.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="basevalue">The basevalue.</param>
         /// <returns>
         /// The coerce spinner value.
         /// </returns>
@@ -397,12 +391,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The spinner value changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         private static void SpinnerValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
         }
@@ -410,12 +400,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Changes the value.
         /// </summary>
-        /// <param name="sign">
-        /// The sign of the change.
-        /// </param>
-        /// <param name="isLargeChange">
-        /// The is Large Change.
-        /// </param>
+        /// <param name="sign">The sign of the change.</param>
+        /// <param name="isLargeChange">The is Large Change.</param>
         private void ChangeValue(int sign, bool isLargeChange)
         {
             var change = isLargeChange ? this.LargeChange : this.SmallChange;
@@ -741,9 +727,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Coerces the spinner value.
         /// </summary>
-        /// <param name="basevalue">
-        /// The basevalue.
-        /// </param>
+        /// <param name="basevalue">The basevalue.</param>
         /// <returns>
         /// The coerced value.
         /// </returns>
@@ -777,7 +761,6 @@ namespace PropertyTools.Wpf
                     }
                 }
             }
-
 
             if (this.Value != null)
             {
@@ -925,12 +908,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Handles down button clicks.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void DownbuttonClick(object sender, RoutedEventArgs e)
         {
             bool ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
@@ -940,9 +919,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Check if an object is of a numeric type.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="value">The value.</param>
         /// <returns>
         /// True if the value is of a numeric type.
         /// </returns>
@@ -960,12 +937,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Handles up button clicks.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void UpbuttonClick(object sender, RoutedEventArgs e)
         {
             bool ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);

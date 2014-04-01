@@ -27,6 +27,7 @@
 //   The attribute helper.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -41,12 +42,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Check if an attribute collection contains an attribute of the given type
         /// </summary>
-        /// <param name="attributes">
-        /// The attributes.
-        /// </param>
-        /// <param name="attributeType">
-        /// The type to check for.
-        /// </param>
+        /// <param name="attributes">The attributes.</param>
+        /// <param name="attributeType">The type to check for.</param>
         /// <returns>
         /// The contains attribute of type.
         /// </returns>
@@ -67,12 +64,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Return the first attribute of a given type for the specified property descriptor.
         /// </summary>
-        /// <typeparam name="T">
-        /// An attribute type.
-        /// </typeparam>
-        /// <param name="descriptor">
-        /// The property descriptor.
-        /// </param>
+        /// <typeparam name="T">An attribute type.</typeparam>
+        /// <param name="descriptor">The property descriptor.</param>
         /// <returns>
         /// The first attribute of the specified type.
         /// </returns>

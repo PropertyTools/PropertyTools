@@ -27,6 +27,7 @@
 //   Specifies that a font family selector should be used.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;

@@ -27,6 +27,7 @@
 //   Specifies that the property is optional.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -34,14 +35,12 @@ namespace PropertyTools.DataAnnotations
     /// <summary>
     /// Specifies that the property is optional.
     /// </summary>
-    /// <remarks>
-    /// The name of a property that controls the state of the property can also be specified.
+    /// <remarks>The name of a property that controls the state of the property can also be specified.
     /// Properties marked with [Optional] will have a checkbox as the label.
     /// The checkbox will enable/disable the property value editor.
     /// Example usage:
-    /// [Optional]                    // requires a <see cref="Nullable"/> property type
-    /// [Optional("HasSomething")]    // relates to other property HasSomething
-    /// </remarks>
+    /// [Optional]                    // requires a <see cref="Nullable" /> property type
+    /// [Optional("HasSomething")]    // relates to other property HasSomething</remarks>
     [AttributeUsage(AttributeTargets.Property)]
     public class OptionalAttribute : Attribute
     {
@@ -53,11 +52,9 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OptionalAttribute"/> class.
+        /// Initializes a new instance of the <see cref="OptionalAttribute" /> class.
         /// </summary>
-        /// <param name="propertyName">
-        /// Name of the property.
-        /// </param>
+        /// <param name="propertyName">Name of the property.</param>
         public OptionalAttribute(string propertyName)
         {
             this.PropertyName = propertyName;

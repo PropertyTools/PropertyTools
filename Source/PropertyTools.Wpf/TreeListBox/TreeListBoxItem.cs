@@ -27,6 +27,7 @@
 //   Represents a container for items in the <see cref="TreeListBox" /> .
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Collections;
@@ -41,7 +42,7 @@ namespace PropertyTools.Wpf
     public class TreeListBoxItem : ListBoxItem
     {
         /// <summary>
-        /// The children property.
+        /// Identifies the <see cref="Children"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Register(
             "Children",
@@ -50,19 +51,19 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, (s, e) => ((TreeListBoxItem)s).ChildrenChanged(e)));
 
         /// <summary>
-        /// The has items property.
+        /// Identifies the <see cref="HasItems"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HasItemsProperty = DependencyProperty.Register(
             "HasItems", typeof(bool), typeof(TreeListBoxItem), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// The is drop target property.
+        /// Identifies the <see cref="IsDropTarget"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsDropTargetProperty = DependencyProperty.Register(
             "IsDropTarget", typeof(bool), typeof(TreeListBoxItem), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// The is expanded property.
+        /// Identifies the <see cref="IsExpanded"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register(
             "IsExpanded",
@@ -74,13 +75,13 @@ namespace PropertyTools.Wpf
                 (s, e) => ((TreeListBoxItem)s).IsExpandedChanged()));
 
         /// <summary>
-        /// The level padding property.
+        /// Identifies the <see cref="LevelPadding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LevelPaddingProperty = DependencyProperty.Register(
             "LevelPadding", typeof(Thickness), typeof(TreeListBoxItem));
 
         /// <summary>
-        /// The level property.
+        /// Identifies the <see cref="Level"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LevelProperty = DependencyProperty.Register(
             "Level",
@@ -94,11 +95,9 @@ namespace PropertyTools.Wpf
         private NotifyCollectionChangedEventHandler collectionChangedHandler;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TreeListBoxItem"/> class.
+        /// Initializes a new instance of the <see cref="TreeListBoxItem" /> class.
         /// </summary>
-        /// <param name="parent">
-        /// The parent.
-        /// </param>
+        /// <param name="parent">The parent.</param>
         public TreeListBoxItem(TreeListBox parent)
         {
             // The following is not working when TreeListBoxItems are disconnected...
@@ -111,7 +110,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the child items.
         /// </summary>
-        /// <value> The children. </value>
+        /// <value>The children.</value>
         public IList Children
         {
             get
@@ -176,7 +175,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the hierarchy level of the item.
         /// </summary>
-        /// <value> The level. </value>
+        /// <value>The level.</value>
         public int Level
         {
             get
@@ -193,7 +192,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the padding due to hierarchy level and the parent control Indentation.
         /// </summary>
-        /// <value> The level padding. </value>
+        /// <value>The level padding.</value>
         public Thickness LevelPadding
         {
             get
@@ -210,7 +209,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the child items.
         /// </summary>
-        /// <value> The child items. </value>
+        /// <value>The child items.</value>
         internal IList<TreeListBoxItem> ChildItems { get; set; }
 
         /// <summary>
@@ -238,7 +237,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the next sibling.
         /// </summary>
-        /// <returns> The next sibling. </returns>
+        /// <returns>
+        /// The next sibling.
+        /// </returns>
         public TreeListBoxItem GetNextSibling()
         {
             if (this.ParentItem == null)
@@ -266,9 +267,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Handles changes in the Children property.
         /// </summary>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
+        /// <param name="e">The event arguments.</param>
         private void ChildrenChanged(DependencyPropertyChangedEventArgs e)
         {
             if (e.OldValue != null)
@@ -308,12 +307,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Subscribes for collection changes.
         /// </summary>
-        /// <param name="parent">
-        /// The parent.
-        /// </param>
-        /// <param name="collection">
-        /// The collection.
-        /// </param>
+        /// <param name="parent">The parent.</param>
+        /// <param name="collection">The collection.</param>
         private void SubscribeForCollectionChanges(TreeListBoxItem parent, IEnumerable collection)
         {
             var cc = collection as INotifyCollectionChanged;
@@ -327,9 +322,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Unsubscribes collection changes.
         /// </summary>
-        /// <param name="collection">
-        /// The collection.
-        /// </param>
+        /// <param name="collection">The collection.</param>
         private void UnsubscribeCollectionChanges(IEnumerable collection)
         {
             var cc = collection as INotifyCollectionChanged;

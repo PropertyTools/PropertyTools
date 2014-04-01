@@ -38,12 +38,12 @@ namespace PropertyTools.DataAnnotations
         /// <summary>
         /// The object or text is aligned on the left of the control element.
         /// </summary>
-        Left = 0, 
+        Left = 0,
 
         /// <summary>
         /// The object or text is aligned in the center of the control element.
         /// </summary>
-        Center = 1, 
+        Center = 1,
 
         /// <summary>
         /// The object or text is aligned on the right of the control element.

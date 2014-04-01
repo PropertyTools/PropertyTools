@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestCheckableList.cs" company="PropertyTools">
+// <copyright file="TestCheckableItems.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -24,6 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace TestLibrary
 {
     using System.Collections.Generic;

@@ -27,6 +27,7 @@
 //   Specifies that the decorated property is important.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace CustomFactoryDemo
 {
     using System;

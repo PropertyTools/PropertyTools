@@ -27,6 +27,7 @@
 //   Specifies the name of the properties that controls the IsChecked and Content of checkable items.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;

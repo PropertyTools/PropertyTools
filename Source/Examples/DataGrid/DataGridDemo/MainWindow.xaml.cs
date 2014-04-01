@@ -27,6 +27,7 @@
 //   Interaction logic for MainWindow.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace DataGridDemo
 {
     using System;
@@ -42,7 +43,7 @@ namespace DataGridDemo
         /// Opens a window.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void OpenWindowClick(object sender, RoutedEventArgs e)
         {
             var type = (Type)((Button)sender).Tag;

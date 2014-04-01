@@ -27,6 +27,7 @@
 //   Provides a collection of all test objects in the assembly.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace TestLibrary
 {
     using System.Collections.Generic;
@@ -39,7 +40,9 @@ namespace TestLibrary
         /// <summary>
         /// Gets a collection of all test objects in the assembly.
         /// </summary>
-        /// <returns>A list of objects.</returns>
+        /// <returns>
+        /// A list of objects.
+        /// </returns>
         public static List<object> Get()
         {
             return new List<object>

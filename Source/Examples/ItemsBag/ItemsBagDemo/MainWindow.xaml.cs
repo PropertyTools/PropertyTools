@@ -27,6 +27,7 @@
 //   Interaction logic for MainWindow.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 using System.Windows;
 
 namespace ItemsBagDemo

@@ -24,6 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace TestLibrary
 {
     using System.ComponentModel;
@@ -34,7 +35,7 @@ namespace TestLibrary
 
         [ReadOnly(true)]
         public string Title { get; set; }
-        
+
         public bool IsChecked { get; private set; }
 
         public TestReadOnlyProperties()

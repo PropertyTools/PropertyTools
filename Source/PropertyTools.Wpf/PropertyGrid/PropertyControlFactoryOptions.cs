@@ -27,6 +27,7 @@
 //   Represents options for the property control factory.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     /// <summary>
@@ -37,7 +38,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the limiting number of values for <c>enum</c> properties that can shown with radio buttons.
         /// </summary>
-        /// <value> The limit. If the number of values exceeds the limit, a selector control will be used. </value>
+        /// <value>The limit. If the number of values exceeds the limit, a selector control will be used.</value>
         public int EnumAsRadioButtonsLimit { get; set; }
     }
 }

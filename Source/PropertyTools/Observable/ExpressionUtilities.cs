@@ -27,6 +27,7 @@
 //   Provides utility methods for lambda expressions.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools
 {
     using System;
@@ -40,12 +41,8 @@ namespace PropertyTools
         /// <summary>
         /// Gets the name of the property specified by an expression.
         /// </summary>
-        /// <typeparam name="T">
-        /// The type of the property.
-        /// </typeparam>
-        /// <param name="memberAccessExpression">
-        /// The member access expression.
-        /// </param>
+        /// <typeparam name="T">The type of the property.</typeparam>
+        /// <param name="memberAccessExpression">The member access expression.</param>
         /// <returns>
         /// The name of the property.
         /// </returns>

@@ -27,6 +27,7 @@
 //   The self provider.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -41,9 +42,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The provide value.
         /// </summary>
-        /// <param name="serviceProvider">
-        /// The service provider.
-        /// </param>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <returns>
         /// The provide value.
         /// </returns>

@@ -27,6 +27,7 @@
 //   The property info helper.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     /// <summary>
@@ -37,12 +38,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the value of the specified property of the specified instance.
         /// </summary>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
-        /// <param name="propertyName">
-        /// The property name.
-        /// </param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="propertyName">The property name.</param>
         /// <returns>
         /// The get property.
         /// </returns>
@@ -55,15 +52,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The set property.
         /// </summary>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
-        /// <param name="propertyName">
-        /// The property name.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="propertyName">The property name.</param>
+        /// <param name="value">The value.</param>
         public static void SetPropertyValue(object instance, string propertyName, object value)
         {
             var pi = instance.GetType().GetProperty(propertyName);

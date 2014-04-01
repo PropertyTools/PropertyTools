@@ -49,7 +49,7 @@ namespace PropertyTools.Wpf
     public class ColorPickerPanel : Control, INotifyPropertyChanged
     {
         /// <summary>
-        /// The alpha property.
+        /// Identifies the <see cref="Alpha"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register(
             "Alpha",
@@ -58,7 +58,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        /// The blue property.
+        /// Identifies the <see cref="Blue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BlueProperty = DependencyProperty.Register(
             "Blue",
@@ -67,7 +67,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        /// The brightness property.
+        /// Identifies the <see cref="Brightness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register(
             "Brightness",
@@ -76,7 +76,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        /// The green property.
+        /// Identifies the <see cref="Green"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty GreenProperty = DependencyProperty.Register(
             "Green",
@@ -85,7 +85,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        /// The hue property.
+        /// Identifies the <see cref="Hue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
             "Hue",
@@ -94,13 +94,13 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        /// The is picking property.
+        /// Identifies the <see cref="IsPicking"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsPickingProperty = DependencyProperty.Register(
             "IsPicking", typeof(bool), typeof(ColorPickerPanel), new UIPropertyMetadata(false, IsPickingChanged));
 
         /// <summary>
-        /// The red property.
+        /// Identifies the <see cref="Red"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RedProperty = DependencyProperty.Register(
             "Red",
@@ -109,7 +109,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        /// The saturation property.
+        /// Identifies the <see cref="Saturation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SaturationProperty = DependencyProperty.Register(
             "Saturation",
@@ -118,7 +118,7 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
 
         /// <summary>
-        /// The selected color property.
+        /// Identifies the <see cref="SelectedColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
             "SelectedColor",
@@ -203,13 +203,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the recent colors.
         /// </summary>
-        /// <value> The recent colors. </value>
+        /// <value>The recent colors.</value>
         public static ObservableCollection<Color> RecentColors { get; private set; }
 
         /// <summary>
         /// Gets the standard colors.
         /// </summary>
-        /// <value> The standard colors. </value>
+        /// <value>The standard colors.</value>
         public static ObservableCollection<Color> StandardColors { get; private set; }
 
         /// <summary>
@@ -220,19 +220,19 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the theme colors.
         /// </summary>
-        /// <value> The theme colors. </value>
+        /// <value>The theme colors.</value>
         public static ObservableCollection<Color> ThemeColors { get; private set; }
 
         /// <summary>
         /// Gets the opacity colors.
         /// </summary>
-        /// <value> The opacity colors. </value>
+        /// <value>The opacity colors.</value>
         public ObservableCollection<Color> OpacityVariations { get; private set; }
 
         /// <summary>
         /// Gets or sets the alpha value.
         /// </summary>
-        /// <value> The alpha. </value>
+        /// <value>The alpha.</value>
         public int Alpha
         {
             get
@@ -249,7 +249,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the blue.
         /// </summary>
-        /// <value> The blue. </value>
+        /// <value>The blue.</value>
         public int Blue
         {
             get
@@ -266,7 +266,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the brightness.
         /// </summary>
-        /// <value> The brightness. </value>
+        /// <value>The brightness.</value>
         public int Brightness
         {
             get
@@ -283,7 +283,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the green.
         /// </summary>
-        /// <value> The green. </value>
+        /// <value>The green.</value>
         public int Green
         {
             get
@@ -300,7 +300,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the hue.
         /// </summary>
-        /// <value> The hue. </value>
+        /// <value>The hue.</value>
         public int Hue
         {
             get
@@ -333,7 +333,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the max number of recent colors.
         /// </summary>
-        /// <value> The max number of recent colors. </value>
+        /// <value>The max number of recent colors.</value>
         public int MaxNumberOfRecentColors
         {
             get
@@ -350,7 +350,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the red value.
         /// </summary>
-        /// <value> The red. </value>
+        /// <value>The red.</value>
         public int Red
         {
             get
@@ -367,7 +367,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the saturation.
         /// </summary>
-        /// <value> The saturation. </value>
+        /// <value>The saturation.</value>
         public int Saturation
         {
             get
@@ -384,7 +384,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the selected color.
         /// </summary>
-        /// <value> The color of the selected. </value>
+        /// <value>The color of the selected.</value>
         public Color? SelectedColor
         {
             get
@@ -401,9 +401,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether to show the HSV panel.
         /// </summary>
-        /// <remarks>
-        /// The backing field is static.
-        /// </remarks>
+        /// <remarks>The backing field is static.</remarks>
         public bool ShowHsvPanel
         {
             get
@@ -421,7 +419,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether the user is color picking.
         /// </summary>
-        /// <returns><c>true</c> if the user is picking a color; otherwise, <c>false</c>.</returns>
+        /// <returns>
+        /// <c>true</c> if the user is picking a color; otherwise, <c>false</c>.
+        /// </returns>
         public bool IsPickingColor()
         {
             return this.IsPicking && this.IsPickKeyDown();
@@ -445,9 +445,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Coerces the selected color value.
         /// </summary>
-        /// <param name="baseValue">
-        /// The base value.
-        /// </param>
+        /// <param name="baseValue">The base value.</param>
         /// <returns>
         /// The coerced selected color value.
         /// </returns>
@@ -464,9 +462,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when a color component is changed.
         /// </summary>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         protected virtual void OnComponentChanged(DependencyPropertyChangedEventArgs e)
         {
             if (this.withinColorChange)
@@ -557,12 +553,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when the selected color changed.
         /// </summary>
-        /// <param name="newColor">
-        /// The new color.
-        /// </param>
-        /// <param name="oldColor">
-        /// The old color.
-        /// </param>
+        /// <param name="newColor">The new color.</param>
+        /// <param name="oldColor">The old color.</param>
         protected virtual void OnSelectedColorChanged(Color? newColor, Color? oldColor)
         {
             if (!this.withinColorChange && !this.withinComponentChange && newColor != null)
@@ -576,9 +568,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The raise property changed.
         /// </summary>
-        /// <param name="property">
-        /// The property.
-        /// </param>
+        /// <param name="property">The property.</param>
         protected void RaisePropertyChanged(string property)
         {
             var handler = this.PropertyChanged;
@@ -591,12 +581,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Coerces the selected color value.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="basevalue">
-        /// The base value.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="basevalue">The base value.</param>
         /// <returns>
         /// The coerce selected color value.
         /// </returns>
@@ -608,12 +594,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when a color component is changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private static void ComponentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((ColorPickerPanel)d).OnComponentChanged(e);
@@ -718,12 +700,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The is picking changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         private static void IsPickingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((ColorPickerPanel)d).OnIsPickingChanged();
@@ -732,12 +710,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The selected color changed.
         /// </summary>
-        /// <param name="d">
-        /// The d.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="d">The d.</param>
+        /// <param name="e">The e.</param>
         private static void SelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((ColorPickerPanel)d).OnSelectedColorChanged((Color?)e.NewValue, (Color?)e.OldValue);
@@ -746,9 +720,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The add color to recent colors if missing.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
+        /// <param name="color">The color.</param>
         private void AddColorToRecentColorsIfMissing(Color color)
         {
             // Check if the color exists
@@ -771,7 +743,7 @@ namespace PropertyTools.Wpf
         /// Handles the <see cref="E:PredefinedColorPanelSelectionChangedEvent" /> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="SelectionChangedEventArgs" /> instance containing the event data.</param>
         private void OnPredefinedColorPanelSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
             var listBox = args.OriginalSource as ListBox;
@@ -791,12 +763,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when the panel is unloaded.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void PanelUnloaded(object sender, RoutedEventArgs e)
         {
             if (this.IsPicking)
@@ -813,12 +781,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Picks a color from the current mouse position.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="System.EventArgs"/> instance containing the event data.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void Pick(object sender, EventArgs e)
         {
             if (this.IsPickKeyDown())
@@ -841,7 +805,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether the color picking key is pressed.
         /// </summary>
-        /// <returns><c>true</c> if the key is down; otherwise, <c>false</c>.</returns>
+        /// <returns>
+        /// <c>true</c> if the key is down; otherwise, <c>false</c>.
+        /// </returns>
         private bool IsPickKeyDown()
         {
             return Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
@@ -863,9 +829,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Updates the hue, saturation and brightness properties.
         /// </summary>
-        /// <param name="color">
-        /// The currently selected color.
-        /// </param>
+        /// <param name="color">The currently selected color.</param>
         // ReSharper disable once InconsistentNaming
         private void UpdateHSV(Color color)
         {
@@ -889,9 +853,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Updates the red, green, blue and alpha properties.
         /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
+        /// <param name="color">The color.</param>
         // ReSharper disable once InconsistentNaming
         private void UpdateRGB(Color color)
         {

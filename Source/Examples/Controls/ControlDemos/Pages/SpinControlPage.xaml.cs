@@ -72,9 +72,9 @@ namespace ControlDemos
         }
 
         public DateTime MinimumDate { get; set; }
-        
+
         public DateTime MaximumDate { get; set; }
-        
+
         public double DoubleValue
         {
             get

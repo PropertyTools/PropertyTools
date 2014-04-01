@@ -27,6 +27,7 @@
 //   Specifies a base path property for relative path names.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.DataAnnotations
 {
     using System;
@@ -38,11 +39,9 @@ namespace PropertyTools.DataAnnotations
     public class BasePathPropertyAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BasePathPropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="BasePathPropertyAttribute" /> class.
         /// </summary>
-        /// <param name="basePathPropertyName">
-        /// Name of the base path property.
-        /// </param>
+        /// <param name="basePathPropertyName">Name of the base path property.</param>
         public BasePathPropertyAttribute(string basePathPropertyName)
         {
             this.BasePathPropertyName = basePathPropertyName;

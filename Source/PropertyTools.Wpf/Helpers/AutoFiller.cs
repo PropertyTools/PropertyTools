@@ -27,6 +27,7 @@
 //   Provides extrapolation functionality for the auto filler.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -47,14 +48,10 @@ namespace PropertyTools.Wpf
         private readonly Func<CellRef, object, bool> trySetCellValue;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutoFiller"/> class.
+        /// Initializes a new instance of the <see cref="AutoFiller" /> class.
         /// </summary>
-        /// <param name="getCellValue">
-        /// The get cell value.
-        /// </param>
-        /// <param name="trySetCellValue">
-        /// The try set cell value.
-        /// </param>
+        /// <param name="getCellValue">The get cell value.</param>
+        /// <param name="trySetCellValue">The try set cell value.</param>
         public AutoFiller(Func<CellRef, object> getCellValue, Func<CellRef, object, bool> trySetCellValue)
         {
             this.getCellValue = getCellValue;
@@ -64,15 +61,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The auto fill.
         /// </summary>
-        /// <param name="currentCell">
-        /// The current cell.
-        /// </param>
-        /// <param name="selectionCell">
-        /// The selection cell.
-        /// </param>
-        /// <param name="autoFillRef">
-        /// The auto fill ref.
-        /// </param>
+        /// <param name="currentCell">The current cell.</param>
+        /// <param name="selectionCell">The selection cell.</param>
+        /// <param name="autoFillRef">The auto fill ref.</param>
         public void AutoFill(CellRef currentCell, CellRef selectionCell, CellRef autoFillRef)
         {
             for (int i = Math.Min(currentCell.Row, autoFillRef.Row);
@@ -98,21 +89,11 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Tries to extrapolate the specified cells.
         /// </summary>
-        /// <param name="cell">
-        /// The cell to extrapolate.
-        /// </param>
-        /// <param name="currentCell">
-        /// The current cell.
-        /// </param>
-        /// <param name="selectionCell">
-        /// The selection cell.
-        /// </param>
-        /// <param name="autoFillRef">
-        /// The auto fill cell reference.
-        /// </param>
-        /// <param name="result">
-        /// The result.
-        /// </param>
+        /// <param name="cell">The cell to extrapolate.</param>
+        /// <param name="currentCell">The current cell.</param>
+        /// <param name="selectionCell">The selection cell.</param>
+        /// <param name="autoFillRef">The auto fill cell reference.</param>
+        /// <param name="result">The result.</param>
         /// <returns>
         /// True if extrapolation was successful.
         /// </returns>
@@ -174,15 +155,9 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Clamps the specified value between i0 and i1.
         /// </summary>
-        /// <param name="i">
-        /// The input.
-        /// </param>
-        /// <param name="i0">
-        /// The minimum value.
-        /// </param>
-        /// <param name="i1">
-        /// The maximum value.
-        /// </param>
+        /// <param name="i">The input.</param>
+        /// <param name="i0">The minimum value.</param>
+        /// <param name="i1">The maximum value.</param>
         /// <returns>
         /// The periodic clamp.
         /// </returns>
@@ -206,18 +181,10 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Tries to extrapolate.
         /// </summary>
-        /// <param name="cell">
-        /// The cell.
-        /// </param>
-        /// <param name="p1">
-        /// The first source cell.
-        /// </param>
-        /// <param name="p2">
-        /// The second source cell.
-        /// </param>
-        /// <param name="result">
-        /// The result.
-        /// </param>
+        /// <param name="cell">The cell.</param>
+        /// <param name="p1">The first source cell.</param>
+        /// <param name="p2">The second source cell.</param>
+        /// <param name="result">The result.</param>
         /// <returns>
         /// True is extrapolation was successful.
         /// </returns>

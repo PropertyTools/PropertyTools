@@ -27,6 +27,7 @@
 //   Represents a control that shows a list of radiobuttons.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -39,9 +40,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Represents a control that shows a list of radiobuttons.
     /// </summary>
-    /// <remarks>
-    /// See http://bea.stollnitz.com/blog/?p=28 and http://code.msdn.microsoft.com/wpfradiobuttonlist
-    /// </remarks>
+    /// <remarks>See http://bea.stollnitz.com/blog/?p=28 and http://code.msdn.microsoft.com/wpfradiobuttonlist</remarks>
     [TemplatePart(Name = PartPanel, Type = typeof(StackPanel))]
     public class RadioButtonList : Control
     {
@@ -51,7 +50,7 @@ namespace PropertyTools.Wpf
         private const string PartPanel = "PART_Panel";
 
         /// <summary>
-        /// The description converter property.
+        /// Identifies the <see cref="DescriptionConverter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DescriptionConverterProperty =
             DependencyProperty.Register(
@@ -61,31 +60,31 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(new EnumDescriptionConverter()));
 
         /// <summary>
-        /// The enum type property.
+        /// Identifies the <see cref="EnumType"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(
             "EnumType", typeof(Type), typeof(RadioButtonList), new UIPropertyMetadata(null, ValueChanged));
 
         /// <summary>
-        /// The item margin property.
+        /// Identifies the <see cref="ItemMargin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemMarginProperty = DependencyProperty.Register(
             "ItemMargin", typeof(Thickness), typeof(RadioButtonList), new UIPropertyMetadata(new Thickness(0, 4, 0, 4)));
 
         /// <summary>
-        /// The item padding property.
+        /// Identifies the <see cref="ItemPadding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemPaddingProperty = DependencyProperty.Register(
             "ItemPadding", typeof(Thickness), typeof(RadioButtonList), new UIPropertyMetadata(new Thickness(4, 0, 0, 0)));
 
         /// <summary>
-        /// The orientation property.
+        /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
             "Orientation", typeof(Orientation), typeof(RadioButtonList), new UIPropertyMetadata(Orientation.Vertical));
 
         /// <summary>
-        /// The value property.
+        /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
             "Value",
@@ -118,7 +117,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the description converter.
         /// </summary>
-        /// <value> The description converter. </value>
+        /// <value>The description converter.</value>
         public IValueConverter DescriptionConverter
         {
             get
@@ -135,7 +134,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the type of the enum.
         /// </summary>
-        /// <value> The type of the enum. </value>
+        /// <value>The type of the enum.</value>
         public Type EnumType
         {
             get
@@ -152,7 +151,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the item margin.
         /// </summary>
-        /// <value> The item margin. </value>
+        /// <value>The item margin.</value>
         public Thickness ItemMargin
         {
             get
@@ -169,7 +168,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the item padding.
         /// </summary>
-        /// <value> The item padding. </value>
+        /// <value>The item padding.</value>
         public Thickness ItemPadding
         {
             get
@@ -186,7 +185,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the orientation.
         /// </summary>
-        /// <value> The orientation. </value>
+        /// <value>The orientation.</value>
         public Orientation Orientation
         {
             get
@@ -203,7 +202,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
-        /// <value> The value. </value>
+        /// <value>The value.</value>
         public object Value
         {
             get
@@ -234,12 +233,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when the Value changed or the EnumType changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event args.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
         private static void ValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             ((RadioButtonList)sender).UpdateContent();
@@ -248,12 +243,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The radio button list data context changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event args.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
         private void RadioButtonListDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             this.UpdateContent();

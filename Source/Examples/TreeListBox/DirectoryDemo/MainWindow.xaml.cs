@@ -27,6 +27,7 @@
 //   Interaction logic for MainWindow.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace DirectoryDemo
 {
     using System.Collections.Generic;

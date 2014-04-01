@@ -27,6 +27,7 @@
 //   Parses a string to a TimeSpan.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -47,12 +48,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Parses the specified value.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="formatString">
-        /// The format string.
-        /// </param>
+        /// <param name="value">The value.</param>
+        /// <param name="formatString">The format string.</param>
         /// <returns>
         /// A TimeSpan.
         /// </returns>

@@ -27,6 +27,7 @@
 //   The password helper.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
     using System.Security;
@@ -41,13 +42,13 @@ namespace PropertyTools.Wpf
     public static class PasswordHelper
     {
         /// <summary>
-        /// The attach property.
+        /// Identifies the <see cref="Attach"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AttachProperty = DependencyProperty.RegisterAttached(
             "Attach", typeof(bool), typeof(PasswordHelper), new PropertyMetadata(false, Attach));
 
         /// <summary>
-        /// The password property.
+        /// Identifies the <see cref="Password"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PasswordProperty = DependencyProperty.RegisterAttached(
             "Password",
@@ -64,9 +65,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The get attach.
         /// </summary>
-        /// <param name="dp">
-        /// The dp.
-        /// </param>
+        /// <param name="dp">The dp.</param>
         /// <returns>
         /// The get attach.
         /// </returns>
@@ -78,9 +77,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The get password.
         /// </summary>
-        /// <param name="dp">
-        /// The dp.
-        /// </param>
+        /// <param name="dp">The dp.</param>
         /// <returns>
         /// The get password.
         /// </returns>
@@ -92,12 +89,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The set attach.
         /// </summary>
-        /// <param name="dp">
-        /// The dp.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="dp">The dp.</param>
+        /// <param name="value">The value.</param>
         public static void SetAttach(DependencyObject dp, bool value)
         {
             dp.SetValue(AttachProperty, value);
@@ -106,12 +99,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The set password.
         /// </summary>
-        /// <param name="dp">
-        /// The dp.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="dp">The dp.</param>
+        /// <param name="value">The value.</param>
         public static void SetPassword(DependencyObject dp, string value)
         {
             dp.SetValue(PasswordProperty, value);
@@ -120,12 +109,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The attach.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private static void Attach(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             var passwordBox = sender as PasswordBox;
@@ -149,9 +134,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The get is updating.
         /// </summary>
-        /// <param name="dp">
-        /// The dp.
-        /// </param>
+        /// <param name="dp">The dp.</param>
         /// <returns>
         /// The get is updating.
         /// </returns>
@@ -163,12 +146,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The on password property changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private static void OnPasswordPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             var passwordBox = sender as PasswordBox;
@@ -192,12 +171,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The password changed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private static void PasswordChanged(object sender, RoutedEventArgs e)
         {
             var passwordBox = sender as PasswordBox;
@@ -209,12 +184,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The set is updating.
         /// </summary>
-        /// <param name="dp">
-        /// The dp.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
+        /// <param name="dp">The dp.</param>
+        /// <param name="value">The value.</param>
         private static void SetIsUpdating(DependencyObject dp, bool value)
         {
             dp.SetValue(IsUpdatingProperty, value);

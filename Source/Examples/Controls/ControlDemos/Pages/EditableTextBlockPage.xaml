@@ -1,0 +1,101 @@
+﻿<Page x:Class="ControlDemos.EditableTextBlockPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300" Title="EditableTextBlock Demo">
+
+    <ScrollViewer>
+        <StackPanel VerticalAlignment="Center">
+            <GroupBox Header="Normal property" Padding="4" Width="500" >
+                <UniformGrid Columns="2">
+                    <CheckBox Name="IsEditing" Content="IsEditing" Focusable="False" IsChecked="{Binding IsEditing1}" VerticalAlignment="Center" Margin="4 0 0 0"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing}"/>
+
+                    <Label Content="TextBox"/>
+                    <TextBox Text="{Binding Text1}"/>
+
+                    <Label Content="TextBlock"/>
+                    <TextBlock Text="{Binding Text1}" VerticalAlignment="Center" />
+                </UniformGrid>
+            </GroupBox>
+
+            <GroupBox Header="HorizontalAlignment" Margin="0 8 0 0" Padding="4" Width="500" >
+                <UniformGrid Columns="2">
+                    <CheckBox Name="IsEditing11" Content="Left" Focusable="False" Margin="4 0 0 0"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing11}" HorizontalAlignment="Left" Background="Bisque" />
+
+                    <CheckBox Name="IsEditing12" Content="Center" Focusable="False" Margin="4 0 0 0"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing12}" HorizontalAlignment="Center" Background="SkyBlue" />
+
+                    <CheckBox Name="IsEditing13" Content="Right" Focusable="False" Margin="4 0 0 0"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing13}" HorizontalAlignment="Right" Background="Bisque" />
+
+                    <CheckBox Name="IsEditing14" Content="Stretch" Focusable="False" Margin="4 0 0 0"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing14}" HorizontalAlignment="Stretch" Background="SkyBlue" />
+                </UniformGrid>
+            </GroupBox>
+
+            <GroupBox Header="HorizontalContentAlignment" Margin="0 8 0 0" Padding="4" Width="500" >
+                <UniformGrid Columns="2">
+                    <CheckBox Name="IsEditing21" Content="Left" Focusable="False" Margin="4 0 0 0"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing21}" HorizontalContentAlignment="Left" Background="Bisque" />
+
+                    <CheckBox Name="IsEditing22" Content="Center" Focusable="False" Margin="4 0 0 0"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing22}" HorizontalContentAlignment="Center" Background="SkyBlue" />
+
+                    <CheckBox Name="IsEditing23" Content="Right" Focusable="False" Margin="4 0 0 0"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing23}" HorizontalContentAlignment="Right" Background="Bisque" />
+
+                    <CheckBox Name="IsEditing24" Content="Stretch" Focusable="False" Margin="4 0 0 0"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing24}" HorizontalAlignment="Stretch" Background="SkyBlue" />
+                </UniformGrid>
+            </GroupBox>
+
+            <GroupBox Header="VerticalAlignment" Margin="0 8 0 0" Padding="4" Width="500" >
+                <UniformGrid Columns="2">
+                    <CheckBox Name="IsEditing31" Content="Top" Focusable="False" Margin="4 0 0 0" Height="40"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing31}" VerticalAlignment="Top" Background="Bisque" />
+
+                    <CheckBox Name="IsEditing32" Content="Center" Focusable="False" Margin="4 0 0 0" Height="40"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing32}" VerticalAlignment="Center" Background="SkyBlue" />
+
+                    <CheckBox Name="IsEditing33" Content="Bottom" Focusable="False" Margin="4 0 0 0" Height="40"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing33}" VerticalAlignment="Bottom" Background="Bisque" />
+
+                    <CheckBox Name="IsEditing34" Content="Stretch" Focusable="False" Margin="4 0 0 0" Height="40"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing34}" VerticalAlignment="Stretch" Background="SkyBlue" />
+                </UniformGrid>
+            </GroupBox>
+
+            <GroupBox Header="VerticalContentAlignment" Margin="0 8 0 0" Padding="4" Width="500" >
+                <UniformGrid Columns="2">
+                    <CheckBox Name="IsEditing41" Content="Top" Focusable="False" Margin="4 0 0 0" Height="40"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing41}" VerticalContentAlignment="Top" Background="Bisque" />
+
+                    <CheckBox Name="IsEditing42" Content="Center" Focusable="False" Margin="4 0 0 0" Height="40"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing42}" VerticalContentAlignment="Center" Background="SkyBlue" />
+
+                    <CheckBox Name="IsEditing43" Content="Bottom" Focusable="False" Margin="4 0 0 0" Height="40"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing43}" VerticalContentAlignment="Bottom" Background="Bisque" />
+
+                    <CheckBox Name="IsEditing44" Content="Stretch" Focusable="False" Margin="4 0 0 0" Height="40"/>
+                    <p:EditableTextBlock Text="{Binding Text1}" IsEditing="{Binding IsChecked, ElementName=IsEditing44}" VerticalContentAlignment="Stretch" Background="SkyBlue" />
+                </UniformGrid>
+            </GroupBox>
+
+            <GroupBox Header="Property that throws exception on spaces" Margin="0 8 0 0" Padding="4" Width="500">
+                <UniformGrid Columns="2">
+                    <CheckBox Name="IsEditing5" Content="EditableTextBlock" Focusable="False" IsChecked="{Binding IsEditing2}" VerticalAlignment="Center" Margin="4 0 0 0"/>
+                    <p:EditableTextBlock Text="{Binding Text2}" IsEditing="{Binding IsChecked, ElementName=IsEditing5}" VerticalAlignment="Center" />
+
+                    <Label Content="TextBox"/>
+                    <TextBox Text="{Binding Text2}"/>
+                    
+                    <Label Content="TextBlock"/>
+                    <TextBlock Text="{Binding Text2}" VerticalAlignment="Center" />
+                </UniformGrid>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

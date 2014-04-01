@@ -1,0 +1,34 @@
+﻿<Page x:Class="ControlDemos.Pages.FormattingTextBoxPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" Title="FormattingTextBoxPage">
+    <StackPanel Width="300" VerticalAlignment="Center">
+		<GroupBox Header="double" Margin="4" Padding="4">
+			<UniformGrid Columns="2">
+				<Label Content="StringFormat" />
+				<TextBox Name="Format" Text="0.000" />
+				<Label Content="FormattingTextBox" />
+                <local:FormattingTextBox Value="{Binding Number}" StringFormat="{Binding Text, ElementName=Format}" />
+				<Label Content="TextBox" />
+				<TextBox Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}" />
+			</UniformGrid>
+		</GroupBox>
+		<GroupBox Header="DateTime" Margin="4" Padding="4">
+			<UniformGrid Columns="2">
+				<Label Content="StringFormat" />
+				<TextBox Name="Format2" Text="yyyy-MM-dd" />
+				<Label Content="FormattingTextBox" />
+				<local:FormattingTextBox Value="{Binding Time}" StringFormat="{Binding Text, ElementName=Format2}" />
+				<Label Content="TextBox" />
+				<TextBox Text="{Binding Time, UpdateSourceTrigger=PropertyChanged}" />
+			</UniformGrid>
+		</GroupBox>
+		<GroupBox Header="String" Margin="4" Padding="4">
+			<UniformGrid Columns="2">
+				<Label Content="StringFormat" />
+				<TextBox Name="Format3" Text="Dr. {0}!" />
+				<Label Content="FormattingTextBox" />
+                <local:FormattingTextBox Value="{Binding Name}" StringFormat="{Binding Text, ElementName=Format3}" />
+				<Label Content="TextBox" />
+				<TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+			</UniformGrid>
+		</GroupBox>
+	</StackPanel>
+</Page>

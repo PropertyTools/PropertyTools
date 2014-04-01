@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PropertyControl.cs" company="PropertyTools">
+// <copyright file="PropertyGrid.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -95,7 +95,7 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartTabs, Type = typeof(TabControl))]
     [TemplatePart(Name = PartPanel, Type = typeof(StackPanel))]
     [TemplatePart(Name = PartScroller, Type = typeof(ScrollViewer))]
-    public class PropertyControl : Control, IPropertyControlOptions
+    public class PropertyGrid : Control, IPropertyGridOptions
     {
         /// <summary>
         /// The category control template property.
@@ -104,7 +104,7 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "CategoryControlTemplate",
                 typeof(ControlTemplate),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new UIPropertyMetadata(null));
 
         /// <summary>
@@ -114,14 +114,14 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "CategoryControlType",
                 typeof(CategoryControlType),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new UIPropertyMetadata(CategoryControlType.GroupBox, AppearanceChanged));
 
         /// <summary>
         /// The category header template property.
         /// </summary>
         public static readonly DependencyProperty CategoryHeaderTemplateProperty =
-            DependencyProperty.Register("CategoryHeaderTemplate", typeof(DataTemplate), typeof(PropertyControl));
+            DependencyProperty.Register("CategoryHeaderTemplate", typeof(DataTemplate), typeof(PropertyGrid));
 
         /// <summary>
         /// The description icon alignment property.
@@ -130,14 +130,14 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "DescriptionIconAlignment",
                 typeof(HorizontalAlignment),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new UIPropertyMetadata(HorizontalAlignment.Right, AppearanceChanged));
 
         /// <summary>
         /// The description icon property.
         /// </summary>
         public static readonly DependencyProperty DescriptionIconProperty =
-            DependencyProperty.Register("DescriptionIcon", typeof(ImageSource), typeof(PropertyControl));
+            DependencyProperty.Register("DescriptionIcon", typeof(ImageSource), typeof(PropertyGrid));
 
         /// <summary>
         /// The enable label column resizing property.
@@ -146,7 +146,7 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "EnableLabelWidthResizing",
                 typeof(bool),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "EnumAsRadioButtonsLimit",
                 typeof(int),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new UIPropertyMetadata(4, AppearanceChanged));
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "LabelWidthSharing",
                 typeof(LabelWidthSharing),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new UIPropertyMetadata(LabelWidthSharing.SharedInTab, AppearanceChanged));
 
         /// <summary>
@@ -174,21 +174,21 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty MaximumLabelWidthProperty =
             DependencyProperty.Register(
-                "MaximumLabelWidth", typeof(double), typeof(PropertyControl), new UIPropertyMetadata(double.MaxValue));
+                "MaximumLabelWidth", typeof(double), typeof(PropertyGrid), new UIPropertyMetadata(double.MaxValue));
 
         /// <summary>
         /// The minimum label width property.
         /// </summary>
         public static readonly DependencyProperty MinimumLabelWidthProperty =
             DependencyProperty.Register(
-                "MinimumLabelWidth", typeof(double), typeof(PropertyControl), new UIPropertyMetadata(70.0));
+                "MinimumLabelWidth", typeof(double), typeof(PropertyGrid), new UIPropertyMetadata(70.0));
 
         /// <summary>
         /// The move focus on enter property.
         /// </summary>
         public static readonly DependencyProperty MoveFocusOnEnterProperty =
             DependencyProperty.Register(
-                "MoveFocusOnEnter", typeof(bool), typeof(PropertyControl), new UIPropertyMetadata(false));
+                "MoveFocusOnEnter", typeof(bool), typeof(PropertyGrid), new UIPropertyMetadata(false));
 
         /// <summary>
         /// The property control factory property.
@@ -197,14 +197,14 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "PropertyControlFactory",
                 typeof(IPropertyControlFactory),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new UIPropertyMetadata(null));
 
         /// <summary>
         /// The property item factory property.
         /// </summary>
         public static readonly DependencyProperty PropertyItemFactoryProperty =
-            DependencyProperty.Register("PropertyItemFactory", typeof(IPropertyItemFactory), typeof(PropertyControl));
+            DependencyProperty.Register("PropertyItemFactory", typeof(IPropertyItemFactory), typeof(PropertyGrid));
 
         /// <summary>
         /// The required attribute property.
@@ -213,7 +213,7 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "RequiredAttribute",
                 typeof(Type),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new UIPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
@@ -222,8 +222,8 @@ namespace PropertyTools.Wpf
         public static readonly DependencyProperty SelectedObjectProperty = DependencyProperty.Register(
             "SelectedObject",
             typeof(object),
-            typeof(PropertyControl),
-            new UIPropertyMetadata(null, (s, e) => ((PropertyControl)s).OnSelectedObjectChanged(e)));
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).OnSelectedObjectChanged(e)));
 
         /// <summary>
         /// The selected objects property.
@@ -232,8 +232,8 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "SelectedObjects",
                 typeof(IEnumerable),
-                typeof(PropertyControl),
-                new UIPropertyMetadata(null, (s, e) => ((PropertyControl)s).SelectedObjectsChanged(e)));
+                typeof(PropertyGrid),
+                new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).SelectedObjectsChanged(e)));
 
         /// <summary>
         /// The selected tab index property.
@@ -242,7 +242,7 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "SelectedTabIndex",
                 typeof(int),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace PropertyTools.Wpf
         public static readonly DependencyProperty CheckBoxLayoutProperty = DependencyProperty.Register(
             "CheckBoxLayout",
             typeof(CheckBoxLayout),
-            typeof(PropertyControl),
+            typeof(PropertyGrid),
             new UIPropertyMetadata(CheckBoxLayout.Header, AppearanceChanged));
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "ShowDeclaredOnly",
                 typeof(bool),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new UIPropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "ShowDescriptionIcons",
                 typeof(bool),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
@@ -281,62 +281,62 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "ShowReadOnlyProperties",
                 typeof(bool),
-                typeof(PropertyControl),
+                typeof(PropertyGrid),
                 new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
         /// The tab header template property.
         /// </summary>
         public static readonly DependencyProperty TabHeaderTemplateProperty =
-            DependencyProperty.Register("TabHeaderTemplate", typeof(DataTemplate), typeof(PropertyControl));
+            DependencyProperty.Register("TabHeaderTemplate", typeof(DataTemplate), typeof(PropertyGrid));
 
         /// <summary>
         /// The tab page header template property.
         /// </summary>
         public static readonly DependencyProperty TabPageHeaderTemplateProperty =
             DependencyProperty.Register(
-                "TabPageHeaderTemplate", typeof(DataTemplate), typeof(PropertyControl), new UIPropertyMetadata(null));
+                "TabPageHeaderTemplate", typeof(DataTemplate), typeof(PropertyGrid), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The tab strip placement property.
         /// </summary>
         public static readonly DependencyProperty TabStripPlacementProperty =
             DependencyProperty.Register(
-                "TabStripPlacement", typeof(Dock), typeof(PropertyControl), new UIPropertyMetadata(Dock.Top));
+                "TabStripPlacement", typeof(Dock), typeof(PropertyGrid), new UIPropertyMetadata(Dock.Top));
 
         /// <summary>
         /// The tool tip template property.
         /// </summary>
         public static readonly DependencyProperty ToolTipTemplateProperty =
             DependencyProperty.Register(
-                "ToolTipTemplate", typeof(DataTemplate), typeof(PropertyControl), new UIPropertyMetadata(null));
+                "ToolTipTemplate", typeof(DataTemplate), typeof(PropertyGrid), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The use tabs property.
         /// </summary>
         public static readonly DependencyProperty UseTabsProperty = DependencyProperty.Register(
-            "UseTabs", typeof(bool), typeof(PropertyControl), new UIPropertyMetadata(true, AppearanceChanged));
+            "UseTabs", typeof(bool), typeof(PropertyGrid), new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
         /// The validation error style property.
         /// </summary>
         public static readonly DependencyProperty ValidationErrorStyleProperty =
             DependencyProperty.Register(
-                "ValidationErrorStyle", typeof(Style), typeof(PropertyControl), new UIPropertyMetadata(null));
+                "ValidationErrorStyle", typeof(Style), typeof(PropertyGrid), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The validation error template property.
         /// </summary>
         public static readonly DependencyProperty ValidationErrorTemplateProperty =
             DependencyProperty.Register(
-                "ValidationErrorTemplate", typeof(DataTemplate), typeof(PropertyControl), new UIPropertyMetadata(null));
+                "ValidationErrorTemplate", typeof(DataTemplate), typeof(PropertyGrid), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The validation template property.
         /// </summary>
         public static readonly DependencyProperty ValidationTemplateProperty =
             DependencyProperty.Register(
-                "ValidationTemplate", typeof(ControlTemplate), typeof(PropertyControl), new UIPropertyMetadata(null));
+                "ValidationTemplate", typeof(ControlTemplate), typeof(PropertyGrid), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The panel part name.
@@ -399,18 +399,18 @@ namespace PropertyTools.Wpf
         private TabControl tabControl;
 
         /// <summary>
-        /// Initializes static members of the <see cref="PropertyControl" /> class.
+        /// Initializes static members of the <see cref="PropertyGrid" /> class.
         /// </summary>
-        static PropertyControl()
+        static PropertyGrid()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(PropertyControl), new FrameworkPropertyMetadata(typeof(PropertyControl)));
+                typeof(PropertyGrid), new FrameworkPropertyMetadata(typeof(PropertyGrid)));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyControl" /> class.
+        /// Initializes a new instance of the <see cref="PropertyGrid" /> class.
         /// </summary>
-        public PropertyControl()
+        public PropertyGrid()
         {
             this.PropertyControlFactory = new DefaultPropertyControlFactory();
             this.PropertyItemFactory = new DefaultPropertyItemFactory();
@@ -1172,7 +1172,7 @@ namespace PropertyTools.Wpf
         /// </param>
         private static void AppearanceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((PropertyControl)d).UpdateControls();
+            ((PropertyGrid)d).UpdateControls();
         }
 
         /// <summary>

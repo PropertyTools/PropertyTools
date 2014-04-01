@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
-        Title="PropertyControl" Height="400" Width="300">
+        Title="PropertyGrid" Height="400" Width="300">
     <Grid>
-        <pt:PropertyControl Margin="8" SelectedObject="{Binding SelectedPerson}"/>
+        <pt:PropertyGrid Margin="8" SelectedObject="{Binding SelectedPerson}"/>
     </Grid>
 </Window>

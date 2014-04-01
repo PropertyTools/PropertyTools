@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Interface for control factories.
+//   Defines functionality to create controls for a <see cref="PropertyGrid" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -32,14 +32,14 @@ namespace PropertyTools.Wpf
     using System.Windows;
 
     /// <summary>
-    /// Interface for control factories.
+    /// Defines functionality to create controls for a <see cref="PropertyGrid" />.
     /// </summary>
     public interface IPropertyControlFactory
     {
         /// <summary>
         /// Creates the control for a property.
         /// </summary>
-        /// <param name="pi">
+        /// <param name="propertyItem">
         /// The property item.
         /// </param>
         /// <param name="options">
@@ -48,6 +48,6 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A element.
         /// </returns>
-        FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options);
+        FrameworkElement CreateControl(PropertyItem propertyItem, PropertyControlFactoryOptions options);
     }
 }

@@ -67,8 +67,8 @@
                 <pt:RadioButtonList Value="{Binding Color, Mode=TwoWay}" EnumType="local:Colors" Margin="4"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox Grid.Column="2" Header="PropertyControl (all  items in the list)" Margin="4" Padding="4">
-            <pt:PropertyControl SelectedObject="{Binding Bag}"/>
+        <GroupBox Grid.Column="2" Header="PropertyGrid (all  items in the list)" Margin="4" Padding="4">
+            <pt:PropertyGrid SelectedObject="{Binding Bag}"/>
         </GroupBox>
     </Grid>
 </Window>

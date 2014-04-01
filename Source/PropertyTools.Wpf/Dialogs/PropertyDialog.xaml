@@ -18,6 +18,6 @@
       <Button Name="CloseButton" Click="CloseButtonClick" Content="Close" />
       <Button Name="HelpButton" Click="HelpButtonClick" Content="Help" />
     </StackPanel>
-    <pt:PropertyControl x:Name="propertyControl1" SelectedObject="{Binding}" Margin="8" />
+    <pt:PropertyGrid x:Name="propertyControl1" SelectedObject="{Binding}" Margin="8" />
   </DockPanel>
 </Window>

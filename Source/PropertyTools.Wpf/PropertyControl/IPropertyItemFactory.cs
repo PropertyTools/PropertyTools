@@ -51,6 +51,6 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The tabs.
         /// </returns>
-        IEnumerable<Tab> CreateModel(object instance, bool isEnumerable, IPropertyControlOptions options);
+        IEnumerable<Tab> CreateModel(object instance, bool isEnumerable, IPropertyGridOptions options);
     }
 }

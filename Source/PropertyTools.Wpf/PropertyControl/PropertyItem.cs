@@ -45,7 +45,7 @@ namespace PropertyTools.Wpf
     using HorizontalAlignment = PropertyTools.DataAnnotations.HorizontalAlignment;
 
     /// <summary>
-    /// Represents a property.
+    /// Represents a property in a <see cref="PropertyGrid" />.
     /// </summary>
     public class PropertyItem : Observable
     {

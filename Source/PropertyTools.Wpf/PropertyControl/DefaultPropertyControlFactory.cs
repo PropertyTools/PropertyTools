@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a default property control factory.
+//   Provides a control factory for the <see cref="PropertyGrid" /> control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -45,7 +45,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Provides a default property control factory.
+    /// Provides a control factory for the <see cref="PropertyGrid" /> control.
     /// </summary>
     public class DefaultPropertyControlFactory : IPropertyControlFactory
     {

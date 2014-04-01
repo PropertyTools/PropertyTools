@@ -7,7 +7,7 @@
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/DockPanelSplitter/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/SpinControl/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/CheckMark/Generic.xaml" />
-        <ResourceDictionary Source="/PropertyTools.Wpf;component/PropertyControl/Generic.xaml" />
+        <ResourceDictionary Source="/PropertyTools.Wpf;component/PropertyGrid/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/TreeListBox/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/DataGrid/Generic.xaml" />
     </ResourceDictionary.MergedDictionaries>

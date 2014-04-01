@@ -134,11 +134,11 @@ namespace PropertyTools.Wpf
         {
             if (this.CurrentPage < 0 || this.CurrentPage >= this.Pages.Count)
             {
-                this.propertyControl1.DataContext = null;
+                this.PropertyGrid1.DataContext = null;
             }
             else
             {
-                this.propertyControl1.DataContext = this.Pages[this.CurrentPage];
+                this.PropertyGrid1.DataContext = this.Pages[this.CurrentPage];
             }
 
             this.BackButton.IsEnabled = this.CurrentPage > 0;

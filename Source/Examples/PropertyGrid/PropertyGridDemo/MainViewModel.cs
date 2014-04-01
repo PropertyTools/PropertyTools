@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace PropertyControlDemo
+namespace PropertyGridDemo
 {
     using System.Collections;
     using System.Collections.Generic;

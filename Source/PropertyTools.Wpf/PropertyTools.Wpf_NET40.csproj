@@ -120,7 +120,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PropertyControl\Generic.xaml">
+    <Page Include="PropertyGrid\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -236,27 +236,27 @@
     <Compile Include="ItemsBag\ItemsBagPropertyDescriptor.cs" />
     <Compile Include="ItemsBag\ItemsBagTypeDescriptionProvider.cs" />
     <Compile Include="ItemsBag\ItemsBagTypeDescriptor.cs" />
-    <Compile Include="PropertyControl\CategoryControlType.cs" />
-    <Compile Include="PropertyControl\DefaultPropertyControlFactory.cs" />
-    <Compile Include="PropertyControl\DefaultPropertyItemFactory.cs" />
-    <Compile Include="PropertyControl\Group.cs" />
-    <Compile Include="PropertyControl\IPropertyControlFactory.cs" />
-    <Compile Include="PropertyControl\IPropertyGridOptions.cs" />
-    <Compile Include="PropertyControl\IPropertyItemFactory.cs" />
-    <Compile Include="PropertyControl\PropertyGrid.cs" />
-    <Compile Include="PropertyControl\PropertyControlFactoryOptions.cs" />
-    <Compile Include="PropertyControl\PropertyItem.cs" />
+    <Compile Include="PropertyGrid\CategoryControlType.cs" />
+    <Compile Include="PropertyGrid\DefaultPropertyControlFactory.cs" />
+    <Compile Include="PropertyGrid\DefaultPropertyItemFactory.cs" />
+    <Compile Include="PropertyGrid\Group.cs" />
+    <Compile Include="PropertyGrid\IPropertyControlFactory.cs" />
+    <Compile Include="PropertyGrid\IPropertyGridOptions.cs" />
+    <Compile Include="PropertyGrid\IPropertyItemFactory.cs" />
+    <Compile Include="PropertyGrid\PropertyGrid.cs" />
+    <Compile Include="PropertyGrid\PropertyControlFactoryOptions.cs" />
+    <Compile Include="PropertyGrid\PropertyItem.cs" />
     <Compile Include="Converters\ValidationErrorsToStringConverter.cs" />
     <Compile Include="Behaviors\WebBrowserBehavior.cs" />
     <Compile Include="Utilities\StringUtilities.cs" />
-    <Compile Include="PropertyControl\Tab.cs" />
-    <Compile Include="PropertyControl\PropertyConverter.cs" />
+    <Compile Include="PropertyGrid\Tab.cs" />
+    <Compile Include="PropertyGrid\PropertyConverter.cs" />
     <Compile Include="Helpers\AttributeHelper.cs" />
     <Compile Include="DataGrid\CellRef.cs" />
     <Compile Include="Converters\GridLengthCollectionConverter.cs" />
     <Compile Include="Helpers\ReflectionMath.cs" />
     <Compile Include="Controls\EditableTextBlock.cs" />
-    <Compile Include="PropertyControl\TypeEditor.cs" />
+    <Compile Include="PropertyGrid\TypeEditor.cs" />
     <Compile Include="TreeListBox\InsertionAdorner.cs" />
     <Compile Include="TreeListBox\TreeListBox.cs" />
     <Compile Include="TreeListBox\TreeListBoxDragDropHelper.cs" />

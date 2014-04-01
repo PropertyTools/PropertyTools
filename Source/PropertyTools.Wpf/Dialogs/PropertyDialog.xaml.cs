@@ -81,7 +81,7 @@ namespace PropertyTools.Wpf
         {
             get
             {
-                return this.propertyControl1;
+                return this.PropertyGrid1;
             }
         }
 

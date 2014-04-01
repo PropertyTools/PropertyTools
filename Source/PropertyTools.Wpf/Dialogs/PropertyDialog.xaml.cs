@@ -77,7 +77,7 @@ namespace PropertyTools.Wpf
         /// Gets the property control.
         /// </summary>
         /// <value> The property control. </value>
-        public PropertyControl PropertyControl
+        public PropertyGrid PropertyControl
         {
             get
             {

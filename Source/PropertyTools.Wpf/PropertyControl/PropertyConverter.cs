@@ -37,7 +37,7 @@ namespace PropertyTools.Wpf
     /// Provides an <see cref="IValueConverter"/> for a specified type.
     /// </summary>
     /// <remarks>
-    /// PropertyConverters can be registered in the <see cref="PropertyControl"/>.Converters collection.
+    /// PropertyConverters can be registered in the <see cref="PropertyGrid"/>.Converters collection.
     /// </remarks>
     public class PropertyConverter
     {

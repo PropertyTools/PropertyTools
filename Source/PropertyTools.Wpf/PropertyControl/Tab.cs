@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a tab in a <see cref="PropertyControl" />.
+//   Represents a tab in a <see cref="PropertyGrid" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media.Imaging;
 
     /// <summary>
-    /// Represents a tab in a <see cref="PropertyControl" />.
+    /// Represents a tab in a <see cref="PropertyGrid" />.
     /// </summary>
     public class Tab : Observable
     {

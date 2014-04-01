@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Provides a default property item factory.
+//   Provides a property item factory for the <see cref="PropertyGrid" /> control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -40,7 +40,7 @@ namespace PropertyTools.Wpf
     using PropertyTools.DataAnnotations;
 
     /// <summary>
-    /// Provides a default property item factory.
+    /// Provides a property item factory for the <see cref="PropertyGrid" /> control.
     /// </summary>
     public class DefaultPropertyItemFactory : IPropertyItemFactory
     {
@@ -133,7 +133,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A list of <see cref="Tab"/> .
         /// </returns>
-        public virtual IEnumerable<Tab> CreateModel(object instance, bool isEnumerable, IPropertyControlOptions options)
+        public virtual IEnumerable<Tab> CreateModel(object instance, bool isEnumerable, IPropertyGridOptions options)
         {
             if (instance == null)
             {
@@ -195,7 +195,7 @@ namespace PropertyTools.Wpf
         /// <param name="instance">The object instance.</param>
         /// <param name="options">The options.</param>
         /// <returns>Enumeration of PropertyItem.</returns>
-        protected virtual IEnumerable<PropertyItem> CreatePropertyItems(object instance, IPropertyControlOptions options)
+        protected virtual IEnumerable<PropertyItem> CreatePropertyItems(object instance, IPropertyGridOptions options)
         {
             var instanceType = instance.GetType();
 

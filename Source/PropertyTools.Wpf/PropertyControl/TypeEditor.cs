@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Define a data template for the specified type.
+//   Defines a data template for the specified type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -33,7 +33,7 @@ namespace PropertyTools.Wpf
     using System.Windows;
 
     /// <summary>
-    /// Define a data template for the specified type.
+    /// Defines a data template for the specified type.
     /// </summary>
     public class TypeEditor
     {

@@ -28,7 +28,7 @@
         <DockPanel>
             <ListBox Name="list1" ItemsSource="{Binding Measurements}" SelectedIndex="{Binding SelectedIndex}" DockPanel.Dock="Left" Width="200" ItemTemplate="{StaticResource ItemTemplate}"/>
             <TextBox Text="{Binding Output}" local:TextBoxBehaviors.ScrollToBottomWhenChanged="True" AcceptsReturn="True" Height="120" DockPanel.Dock="Bottom"/>
-        	<pt:PropertyControl SelectedObject="{Binding SelectedItem, ElementName=list1}"/>
+        	<pt:PropertyGrid SelectedObject="{Binding SelectedItem, ElementName=list1}"/>
         </DockPanel>
     </DockPanel>
 

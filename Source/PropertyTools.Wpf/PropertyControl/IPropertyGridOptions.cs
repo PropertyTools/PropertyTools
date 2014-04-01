@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestSubClass.cs" company="PropertyTools">
+// <copyright file="IPropertyGridOptions.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -23,25 +23,36 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Specifies options for the PropertyGrid
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace TestLibrary
+
+namespace PropertyTools.Wpf
 {
-    using System.ComponentModel;
+    using System;
 
-    public class TestSubClass : SuperClass
+    /// <summary>
+    /// Specifies options for the PropertyGrid
+    /// </summary>
+    public interface IPropertyGridOptions
     {
-        public string Name2 { get; set; }
+        /// <summary>
+        /// Gets the required (opt-in) attribute.
+        /// </summary>
+        /// <value> The required attribute. </value>
+        Type RequiredAttribute { get; }
 
-        public override string ToString()
-        {
-            return "Sub-class";
-        }
-    }
+        /// <summary>
+        /// Gets a value indicating whether to show declared properties only.
+        /// </summary>
+        /// <value> <c>true</c> if only declared properties should be shown; otherwise, <c>false</c> . </value>
+        bool ShowDeclaredOnly { get; }
 
-    public class SuperClass : TestBase
-    {
-        [Description("Check 'Show declared only' on the 'PropertyGrid' menu.")]
-        [Category("SuperClass")]
-        public string Name1 { get; set; }
+        /// <summary>
+        /// Gets a value indicating whether to show read only properties.
+        /// </summary>
+        /// <value> <c>true</c> if read only properties should be shown; otherwise, <c>false</c> . </value>
+        bool ShowReadOnlyProperties { get; }
     }
 }

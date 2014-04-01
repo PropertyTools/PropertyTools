@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Represents a group in a <see cref="PropertyControl" />.
+//   Represents a group in a <see cref="PropertyGrid" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace PropertyTools.Wpf
@@ -33,7 +33,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Represents a group in a <see cref="PropertyControl" />.
+    /// Represents a group in a <see cref="PropertyGrid" />.
     /// </summary>
     public class Group
     {

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" Title="CustomFactoryDemo" Height="350" Width="300">
     <Grid Margin="4">
-        <p:PropertyControl 
+        <p:PropertyGrid 
             PropertyItemFactory="{Binding PropertyItemFactory}" 
             PropertyControlFactory="{Binding PropertyControlFactory}" 
             SelectedObject="{Binding TestObject}"/>

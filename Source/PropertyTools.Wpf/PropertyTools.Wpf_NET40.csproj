@@ -241,9 +241,9 @@
     <Compile Include="PropertyControl\DefaultPropertyItemFactory.cs" />
     <Compile Include="PropertyControl\Group.cs" />
     <Compile Include="PropertyControl\IPropertyControlFactory.cs" />
-    <Compile Include="PropertyControl\IPropertyControlOptions.cs" />
+    <Compile Include="PropertyControl\IPropertyGridOptions.cs" />
     <Compile Include="PropertyControl\IPropertyItemFactory.cs" />
-    <Compile Include="PropertyControl\PropertyControl.cs" />
+    <Compile Include="PropertyControl\PropertyGrid.cs" />
     <Compile Include="PropertyControl\PropertyControlFactoryOptions.cs" />
     <Compile Include="PropertyControl\PropertyItem.cs" />
     <Compile Include="Converters\ValidationErrorsToStringConverter.cs" />

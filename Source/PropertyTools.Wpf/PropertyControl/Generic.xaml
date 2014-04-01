@@ -53,7 +53,7 @@
         </StackPanel>
     </DataTemplate>
 
-    <Style TargetType="{x:Type local:PropertyControl}">
+    <Style TargetType="{x:Type local:PropertyGrid}">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="ValidationErrorStyle" Value="{StaticResource ErrorInToolTipStyle}" />
         <Setter Property="ValidationErrorTemplate" Value="{StaticResource ValidationErrorTemplate}" />
@@ -62,7 +62,7 @@
         <Setter Property="ToolTipTemplate" Value="{StaticResource ToolTipTemplate}" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:PropertyControl}">
+                <ControlTemplate TargetType="{x:Type local:PropertyGrid}">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid>

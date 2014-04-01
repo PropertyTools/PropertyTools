@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PropertyControlDemo"
         xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
-        Title="PropertyControlDemo" Height="720" Width="960">
+        Title="PropertyGridDemo" Height="720" Width="960">
     <Window.Resources>
         <DataTemplate x:Key="HeaderTemplate1">
             <StackPanel Orientation="Horizontal">
@@ -122,7 +122,7 @@
             <MenuItem Header="File">
                 <MenuItem Header="Exit" Click="FileExitClick"/>
             </MenuItem>
-            <MenuItem Header="PropertyControl">
+            <MenuItem Header="PropertyGrid">
                 <MenuItem Header="Show description icons" IsChecked="{Binding ShowDescriptionIcons, ElementName=pc}" IsCheckable="true"/>
                 <MenuItem Header="Show declared only" IsChecked="{Binding ShowDeclaredOnly, ElementName=pc}" IsCheckable="true"/>
                 <MenuItem Header="Show read-only properties" IsChecked="{Binding ShowReadOnlyProperties, ElementName=pc}" IsCheckable="true"/>
@@ -145,7 +145,7 @@
             <ListBox x:Name="ModelsList" ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedItem}" IsSynchronizedWithCurrentItem="True"
                      BorderThickness="0 0 1 0"/>
 
-            <pt:PropertyControl 
+            <pt:PropertyGrid 
                 Grid.Column="1" 
                 x:Name="pc" ValidationErrorTemplate="{StaticResource ValidationErrorTemplate1}"
                 PropertyControlFactory="{StaticResource PropertyControlFactory}"
@@ -156,7 +156,7 @@
                 TabPageHeaderTemplate="{StaticResource PageHeaderTemplate1}"
                 SelectedObject="{Binding SelectedItem}" Margin="8" DescriptionIcon="Images\lightbulb.png">
                 <!--<Wpf1:PropertyControl.ValidationTemplate Value="{StaticResource ValidationTemplate1}"/>-->
-            </pt:PropertyControl>
+            </pt:PropertyGrid>
             <TextBox AcceptsReturn="True" IsReadOnly="True" Grid.Column="2" Padding="8" Text="{Binding Output, Mode=OneWay}" BorderThickness="1 0 0 0"/>
             <GridSplitter ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="8" Margin="-4,0,0,0" Background="Transparent"/>
             <GridSplitter Grid.Column="2" ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="8" Margin="-4,0,0,0" Background="Transparent"/>

@@ -44,35 +44,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the display control with data binding.
         /// </summary>
-        /// <param name="pd">
-        /// The pd.
-        /// </param>
-        /// <param name="bindingPath">
-        /// The binding path.
-        /// </param>
-        /// <returns>
-        /// The control.
-        /// </returns>
-        public virtual FrameworkElement CreateDisplayControl(PropertyDefinition pd, string bindingPath)
-        {
-            var propertyType = pd.PropertyType;
-            if (propertyType.Is(typeof(bool)))
-            {
-                return this.CreateCheckBoxControl(pd, bindingPath);
-            }
-
-            if (propertyType.Is(typeof(Color)))
-            {
-                return this.CreateColorPreviewControl(pd, bindingPath);
-            }
-
-            return this.CreateTextBlockControl(pd, bindingPath);
-        }
-
-        /// <summary>
-        /// Creates the edit control with data binding.
-        /// </summary>
-        /// <param name="pd">
+        /// <param name="propertyDefinition">
         /// The property definition.
         /// </param>
         /// <param name="bindingPath">
@@ -81,12 +53,40 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        public virtual FrameworkElement CreateEditControl(PropertyDefinition pd, string bindingPath)
+        public virtual FrameworkElement CreateDisplayControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
-            var propertyType = pd.PropertyType;
-            if (pd.ItemsSourceProperty != null || pd.ItemsSource != null)
+            var propertyType = propertyDefinition.PropertyType;
+            if (propertyType.Is(typeof(bool)))
             {
-                return this.CreateComboBox(pd, bindingPath);
+                return this.CreateCheckBoxControl(propertyDefinition, bindingPath);
+            }
+
+            if (propertyType.Is(typeof(Color)))
+            {
+                return this.CreateColorPreviewControl(propertyDefinition, bindingPath);
+            }
+
+            return this.CreateTextBlockControl(propertyDefinition, bindingPath);
+        }
+
+        /// <summary>
+        /// Creates the edit control with data binding.
+        /// </summary>
+        /// <param name="propertyDefinition">
+        /// The property definition.
+        /// </param>
+        /// <param name="bindingPath">
+        /// The binding path.
+        /// </param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        public virtual FrameworkElement CreateEditControl(PropertyDefinition propertyDefinition, string bindingPath)
+        {
+            var propertyType = propertyDefinition.PropertyType;
+            if (propertyDefinition.ItemsSourceProperty != null || propertyDefinition.ItemsSource != null)
+            {
+                return this.CreateComboBox(propertyDefinition, bindingPath);
             }
 
             if (propertyType == typeof(bool))
@@ -96,17 +96,17 @@ namespace PropertyTools.Wpf
 
             if (propertyType != null && propertyType.Is(typeof(Color)))
             {
-                return this.CreateColorPickerControl(pd, bindingPath);
+                return this.CreateColorPickerControl(propertyDefinition, bindingPath);
             }
 
-            return this.CreateTextBox(pd);
+            return this.CreateTextBox(propertyDefinition);
         }
 
         /// <summary>
         /// Creates a check box control with data binding.
         /// </summary>
-        /// <param name="pd">
-        /// The definition.
+        /// <param name="propertyDefinition">
+        /// The property definition.
         /// </param>
         /// <param name="bindingPath">
         /// The binding path.
@@ -114,34 +114,34 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A CheckBox.
         /// </returns>
-        protected virtual FrameworkElement CreateCheckBoxControl(PropertyDefinition pd, string bindingPath)
+        protected virtual FrameworkElement CreateCheckBoxControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
-            if (pd.IsReadOnly)
+            if (propertyDefinition.IsReadOnly)
             {
                 var cm = new CheckMark
                              {
-                                 VerticalAlignment = VerticalAlignment.Center, 
-                                 HorizontalAlignment = pd.HorizontalAlignment
+                                 VerticalAlignment = VerticalAlignment.Center,
+                                 HorizontalAlignment = propertyDefinition.HorizontalAlignment
                              };
-                cm.SetBinding(CheckMark.IsCheckedProperty, pd.CreateBinding(bindingPath));
+                cm.SetBinding(CheckMark.IsCheckedProperty, propertyDefinition.CreateBinding(bindingPath));
                 return cm;
             }
 
             var c = new CheckBox
                         {
-                            VerticalAlignment = VerticalAlignment.Center, 
-                            HorizontalAlignment = pd.HorizontalAlignment, 
-                            IsEnabled = !pd.IsReadOnly
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = propertyDefinition.HorizontalAlignment,
+                            IsEnabled = !propertyDefinition.IsReadOnly
                         };
-            c.SetBinding(ToggleButton.IsCheckedProperty, pd.CreateBinding(bindingPath));
+            c.SetBinding(ToggleButton.IsCheckedProperty, propertyDefinition.CreateBinding(bindingPath));
             return c;
         }
 
         /// <summary>
         /// Creates a color picker control with data binding.
         /// </summary>
-        /// <param name="pd">
-        /// The definition.
+        /// <param name="propertyDefinition">
+        /// The property definition.
         /// </param>
         /// <param name="bindingPath">
         /// The binding path.
@@ -149,7 +149,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A color picker.
         /// </returns>
-        protected virtual FrameworkElement CreateColorPickerControl(PropertyDefinition pd, string bindingPath)
+        protected virtual FrameworkElement CreateColorPickerControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var c = new ColorPicker
                 {
@@ -157,15 +157,15 @@ namespace PropertyTools.Wpf
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Focusable = false
                 };
-            c.SetBinding(ColorPicker.SelectedColorProperty, pd.CreateBinding(bindingPath));
+            c.SetBinding(ColorPicker.SelectedColorProperty, propertyDefinition.CreateBinding(bindingPath));
             return c;
         }
 
         /// <summary>
         /// Creates a color preview control with data binding.
         /// </summary>
-        /// <param name="pd">
-        /// The definition.
+        /// <param name="propertyDefinition">
+        /// The property definition.
         /// </param>
         /// <param name="bindingPath">
         /// The binding path.
@@ -173,19 +173,19 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A preview control.
         /// </returns>
-        protected virtual FrameworkElement CreateColorPreviewControl(PropertyDefinition pd, string bindingPath)
+        protected virtual FrameworkElement CreateColorPreviewControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var c = new Rectangle
                         {
-                            Stroke = Brushes.Black, 
-                            StrokeThickness = 1, 
-                            Width = 12, 
-                            Height = 12, 
-                            VerticalAlignment = VerticalAlignment.Center, 
+                            Stroke = Brushes.Black,
+                            StrokeThickness = 1,
+                            Width = 12,
+                            Height = 12,
+                            VerticalAlignment = VerticalAlignment.Center,
                             HorizontalAlignment = HorizontalAlignment.Center
                         };
 
-            var binding = pd.CreateBinding(bindingPath);
+            var binding = propertyDefinition.CreateBinding(bindingPath);
             binding.Converter = new ColorToBrushConverter();
             c.SetBinding(Shape.FillProperty, binding);
             return c;
@@ -194,33 +194,29 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a combo box with data binding.
         /// </summary>
-        /// <param name="pd">
-        ///     The definition.
-        /// </param>
+        /// <param name="propertyDefinition">The property definition.</param>
         /// <param name="bindingPath">The binding path.</param>
-        /// <returns>
-        /// A ComboBox.
-        /// </returns>
-        protected virtual FrameworkElement CreateComboBox(PropertyDefinition pd, string bindingPath)
+        /// <returns>A ComboBox.</returns>
+        protected virtual FrameworkElement CreateComboBox(PropertyDefinition propertyDefinition, string bindingPath)
         {
-            var c = new ComboBox { IsEditable = pd.IsEditable, Focusable = false, Margin = new Thickness(0, 0, -1, -1) };
-            if (pd.ItemsSource != null)
+            var c = new ComboBox { IsEditable = propertyDefinition.IsEditable, Focusable = false, Margin = new Thickness(0, 0, -1, -1) };
+            if (propertyDefinition.ItemsSource != null)
             {
-                c.ItemsSource = pd.ItemsSource;
+                c.ItemsSource = propertyDefinition.ItemsSource;
             }
             else
             {
-                if (pd.ItemsSourceProperty != null)
+                if (propertyDefinition.ItemsSourceProperty != null)
                 {
-                    var itemsSourceBinding = new Binding(pd.ItemsSourceProperty);
+                    var itemsSourceBinding = new Binding(propertyDefinition.ItemsSourceProperty);
                     c.SetBinding(ItemsControl.ItemsSourceProperty, itemsSourceBinding);
                 }
             }
 
             c.DropDownClosed += (s, e) => FocusParentDataGrid(c);
-            var binding = pd.CreateBinding(bindingPath);
+            var binding = propertyDefinition.CreateBinding(bindingPath);
             binding.NotifyOnSourceUpdated = true;
-            c.SetBinding(pd.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);
+            c.SetBinding(propertyDefinition.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);
 
             return c;
         }
@@ -228,44 +224,38 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a text block control with data binding.
         /// </summary>
-        /// <param name="pd">
-        /// The definition.
-        /// </param>
-        /// <param name="bindingPath">
-        /// The binding path.
-        /// </param>
-        /// <returns>
-        /// A TextBlock.
-        /// </returns>
-        protected virtual FrameworkElement CreateTextBlockControl(PropertyDefinition pd, string bindingPath)
+        /// <param name="propertyDefinition">The property definition.</param>
+        /// <param name="bindingPath">The binding path.</param>
+        /// <returns>A TextBlock.</returns>
+        protected virtual FrameworkElement CreateTextBlockControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var tb = new TextBlock
             {
-                HorizontalAlignment = pd.HorizontalAlignment,
+                HorizontalAlignment = propertyDefinition.HorizontalAlignment,
                 VerticalAlignment = VerticalAlignment.Center,
                 Padding = new Thickness(4, 0, 4, 0)
             };
 
-            tb.SetBinding(TextBlock.TextProperty, pd.CreateOneWayBinding(bindingPath));
+            tb.SetBinding(TextBlock.TextProperty, propertyDefinition.CreateOneWayBinding(bindingPath));
             return tb;
         }
 
         /// <summary>
         /// Creates a text box with data binding.
         /// </summary>
-        /// <param name="pd">
-        /// The definition.
+        /// <param name="propertyDefinition">
+        /// The property definition.
         /// </param>
         /// <returns>
         /// A TextBox.
         /// </returns>
-        protected virtual FrameworkElement CreateTextBox(PropertyDefinition pd)
+        protected virtual FrameworkElement CreateTextBox(PropertyDefinition propertyDefinition)
         {
             var tb = new TextBox
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                HorizontalContentAlignment = pd.HorizontalAlignment,
-                MaxLength = pd.MaxLength,
+                HorizontalContentAlignment = propertyDefinition.HorizontalAlignment,
+                MaxLength = propertyDefinition.MaxLength,
                 BorderThickness = new Thickness(0),
                 Margin = new Thickness(1, 1, 0, 0)
             };

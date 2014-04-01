@@ -39,21 +39,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the display control with data binding.
         /// </summary>
-        /// <param name="pd">
-        /// The pd.
-        /// </param>
-        /// <param name="bindingPath">
-        /// The binding path.
-        /// </param>
-        /// <returns>
-        /// The control.
-        /// </returns>
-        FrameworkElement CreateDisplayControl(PropertyDefinition pd, string bindingPath);
-
-        /// <summary>
-        /// Creates the edit control with data binding.
-        /// </summary>
-        /// <param name="pd">
+        /// <param name="propertyDefinition">
         /// The property definition.
         /// </param>
         /// <param name="bindingPath">
@@ -62,6 +48,20 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        FrameworkElement CreateEditControl(PropertyDefinition pd, string bindingPath);
+        FrameworkElement CreateDisplayControl(PropertyDefinition propertyDefinition, string bindingPath);
+
+        /// <summary>
+        /// Creates the edit control with data binding.
+        /// </summary>
+        /// <param name="propertyDefinition">
+        /// The property definition.
+        /// </param>
+        /// <param name="bindingPath">
+        /// The binding path.
+        /// </param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        FrameworkElement CreateEditControl(PropertyDefinition propertyDefinition, string bindingPath);
     }
 }

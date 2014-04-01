@@ -40,9 +40,9 @@ Clean all files before build
 
 Build steps
 
-Update version number
+Update version numbers
 Tools\Lynx
-VersionUpdater.exe
+UpdateVersionNumbers.exe
 /Version=%build.number% /Directory=..\..
 
 Create changeset ID file

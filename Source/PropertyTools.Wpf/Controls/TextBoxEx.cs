@@ -53,23 +53,15 @@ namespace PropertyTools.Wpf
             DependencyProperty.Register(
                 "UpdateBindingOnEnter", typeof(bool), typeof(TextBoxEx), new UIPropertyMetadata(true));
 
-        public bool ScrollToHomeOnFocus
-        {
-            get { return (bool)GetValue(ScrollToHomeOnFocusProperty); }
-            set { SetValue(ScrollToHomeOnFocusProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ScrollToHomeOnFocus.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Identifies the <see cref="ScrollToHomeOnFocus"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty ScrollToHomeOnFocusProperty =
             DependencyProperty.Register("ScrollToHomeOnFocus", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(true));
 
-        public bool SelectAllOnFocus
-        {
-            get { return (bool)GetValue(SelectAllOnFocusProperty); }
-            set { SetValue(SelectAllOnFocusProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for SelectAllOnFocus.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Identifies the <see cref="SelectAllOnFocus"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty SelectAllOnFocusProperty =
             DependencyProperty.Register("SelectAllOnFocus", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(true));
 
@@ -79,6 +71,30 @@ namespace PropertyTools.Wpf
         public TextBoxEx()
         {
             this.GotKeyboardFocus += this.HandleGotKeyboardFocus;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to select all on focus.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if all should be selected; otherwise, <c>false</c>.
+        /// </value>
+        public bool SelectAllOnFocus
+        {
+            get { return (bool)this.GetValue(SelectAllOnFocusProperty); }
+            set { this.SetValue(SelectAllOnFocusProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to scroll to home on focus.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if scroll is enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool ScrollToHomeOnFocus
+        {
+            get { return (bool)this.GetValue(ScrollToHomeOnFocusProperty); }
+            set { this.SetValue(ScrollToHomeOnFocusProperty, value); }
         }
 
         /// <summary>

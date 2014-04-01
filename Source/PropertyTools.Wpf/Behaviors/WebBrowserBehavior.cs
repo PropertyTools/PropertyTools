@@ -39,7 +39,7 @@ namespace PropertyTools.Wpf
     public class WebBrowserBehavior
     {
         /// <summary>
-        /// Identifies the <see cref="NavigateToString"/> dependency property.
+        /// Identifies the NavigateToString dependency property.
         /// </summary>
         public static readonly DependencyProperty NavigateToStringProperty =
             DependencyProperty.RegisterAttached(
@@ -49,19 +49,17 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(null, NavigateToStringChanged));
 
         /// <summary>
-        /// The get navigate to string.
+        /// Gets the value of the NavigateToString property.
         /// </summary>
         /// <param name="obj">The object.</param>
-        /// <returns>
-        /// The get navigate to string.
-        /// </returns>
+        /// <returns>The string.</returns>
         public static string GetNavigateToString(DependencyObject obj)
         {
             return (string)obj.GetValue(NavigateToStringProperty);
         }
 
         /// <summary>
-        /// The set navigate to string.
+        /// Sets the value of the NavigateToString property.
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
@@ -70,7 +68,6 @@ namespace PropertyTools.Wpf
             obj.SetValue(NavigateToStringProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for NavigateToString.  This enables animation, styling, binding, etc...
         /// <summary>
         /// The navigate to string changed.
         /// </summary>

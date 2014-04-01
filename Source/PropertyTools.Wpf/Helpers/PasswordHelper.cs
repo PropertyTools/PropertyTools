@@ -48,7 +48,7 @@ namespace PropertyTools.Wpf
             "Attach", typeof(bool), typeof(PasswordHelper), new PropertyMetadata(false, Attach));
 
         /// <summary>
-        /// Identifies the <see cref="Password"/> dependency property.
+        /// Identifies the Password attached dependency property.
         /// </summary>
         public static readonly DependencyProperty PasswordProperty = DependencyProperty.RegisterAttached(
             "Password",
@@ -57,17 +57,17 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(string.Empty, OnPasswordPropertyChanged));
 
         /// <summary>
-        /// The is updating property.
+        /// Identifies the IsUpdating attached dependency property.
         /// </summary>
         private static readonly DependencyProperty IsUpdatingProperty = DependencyProperty.RegisterAttached(
             "IsUpdating", typeof(bool), typeof(PasswordHelper));
 
         /// <summary>
-        /// The get attach.
+        /// Gets the attach state.
         /// </summary>
         /// <param name="dp">The dp.</param>
         /// <returns>
-        /// The get attach.
+        /// <c>true</c> if the control is attached.
         /// </returns>
         public static bool GetAttach(DependencyObject dp)
         {
@@ -75,22 +75,20 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The get password.
+        /// Gets the password.
         /// </summary>
         /// <param name="dp">The dp.</param>
-        /// <returns>
-        /// The get password.
-        /// </returns>
+        /// <returns>The password.</returns>
         public static string GetPassword(DependencyObject dp)
         {
             return (string)dp.GetValue(PasswordProperty);
         }
 
         /// <summary>
-        /// The set attach.
+        /// Attaches the behaviour.
         /// </summary>
         /// <param name="dp">The dp.</param>
-        /// <param name="value">The value.</param>
+        /// <param name="value">if set to <c>true</c> [value].</param>
         public static void SetAttach(DependencyObject dp, bool value)
         {
             dp.SetValue(AttachProperty, value);
@@ -107,10 +105,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The attach.
+        /// Attaches the password changed event handler.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The e.</param>
+        /// <param name="e">The event arguments.</param>
         private static void Attach(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             var passwordBox = sender as PasswordBox;

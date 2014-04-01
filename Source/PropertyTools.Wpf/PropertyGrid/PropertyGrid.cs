@@ -192,7 +192,7 @@ namespace PropertyTools.Wpf
                 "MoveFocusOnEnter", typeof(bool), typeof(PropertyGrid), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// Identifies the <see cref=""/> dependency property.
+        /// Identifies the <see cref="PropertyControlFactory"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PropertyControlFactoryProperty =
             DependencyProperty.Register(
@@ -202,7 +202,7 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(null));
 
         /// <summary>
-        /// Identifies the <see cref=""/> dependency property.
+        /// Identifies the <see cref="PropertyItem"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PropertyItemFactoryProperty =
             DependencyProperty.Register("PropertyItemFactory", typeof(IPropertyItemFactory), typeof(PropertyGrid));
@@ -365,12 +365,12 @@ namespace PropertyTools.Wpf
         private static readonly ValueToBooleanConverter ValueToBooleanConverter = new ValueToBooleanConverter();
 
         /// <summary>
-        /// Converts a list of values to a bool. Returns <c>true</c> if all values equal the converter parameter.
+        /// Converts a list of values to a boolean value. Returns <c>true</c> if all values equal the converter parameter.
         /// </summary>
         private static readonly AllMultiValueConverter AllMultiValueConverter = new AllMultiValueConverter();
 
         /// <summary>
-        /// The <c>null</c> to bool converter.
+        /// The <c>null</c> to boolean converter.
         /// </summary>
         private static readonly NullToBoolConverter NullToBoolConverter = new NullToBoolConverter { NullValue = false };
 

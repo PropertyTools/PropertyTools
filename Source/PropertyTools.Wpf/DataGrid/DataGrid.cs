@@ -2219,9 +2219,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="column">The column.</param>
         /// <returns>
-        /// The column header at <seealso cref="column" />.
+        /// The column header.
         /// </returns>
-        /// <seealso cref="column" />
         private object GetColumnHeader(int column)
         {
             if (this.ItemsInRows)

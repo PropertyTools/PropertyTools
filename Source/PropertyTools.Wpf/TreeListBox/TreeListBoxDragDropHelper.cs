@@ -46,7 +46,7 @@ namespace PropertyTools.Wpf
     public class TreeListBoxDragDropHelper
     {
         /// <summary>
-        /// Identifies the <see cref="DragDropTemplate"/> dependency property.
+        /// Identifies the DragDropTemplate attached dependency property.
         /// </summary>
         public static readonly DependencyProperty DragDropTemplateProperty =
             DependencyProperty.RegisterAttached(
@@ -56,7 +56,7 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(null));
 
         /// <summary>
-        /// Identifies the <see cref="IsDragSource"/> dependency property.
+        /// Identifies the IsDragSource attached dependency property.
         /// </summary>
         public static readonly DependencyProperty IsDragSourceProperty =
             DependencyProperty.RegisterAttached(
@@ -66,7 +66,7 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(false, IsDragSourceChanged));
 
         /// <summary>
-        /// Identifies the <see cref="IsDropTarget"/> dependency property.
+        /// Identifies the IsDropTarget attached dependency property.
         /// </summary>
         public static readonly DependencyProperty IsDropTargetProperty =
             DependencyProperty.RegisterAttached(

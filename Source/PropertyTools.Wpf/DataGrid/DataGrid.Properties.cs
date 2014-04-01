@@ -194,13 +194,7 @@ namespace PropertyTools.Wpf
             "InputDirection", typeof(InputDirection), typeof(DataGrid), new UIPropertyMetadata(InputDirection.Vertical));
 
         /// <summary>
-        /// Identifies the <see cref="IsVirtualizing"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsVirtualizingProperty = DependencyProperty.Register(
-            "IsVirtualizing", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(false));
-
-        /// <summary>
-        /// Identifies the <see cref="ItemHeader"/> dependency property.
+        /// Identifies the <see cref="ItemHeaderPropertyPath"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemHeaderPropertyPathProperty =
             DependencyProperty.Register(
@@ -632,7 +626,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets ItemHeaderPropertyPath.
+        /// Gets or sets the binding path to the item headers (row or column headers, depending on the <see cref="ItemsInRows" /> property.
         /// </summary>
         public string ItemHeaderPropertyPath
         {
@@ -682,7 +676,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the row headers source.
+        /// Gets or sets the column headers source.
         /// </summary>
         /// <value>The column headers source.</value>
         public IList ColumnHeadersSource

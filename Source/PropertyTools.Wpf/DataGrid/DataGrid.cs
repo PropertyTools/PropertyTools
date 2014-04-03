@@ -432,17 +432,6 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            if (this.ItemsInRows && this.RowHeadersSource != null && index < this.RowHeadersSource.Count)
-            {
-                this.RowHeadersSource.RemoveAt(index);
-            }
-
-            if (this.ItemsInColumns && this.ColumnHeadersSource != null
-                && index < this.ColumnHeadersSource.Count)
-            {
-                this.ColumnHeadersSource.RemoveAt(index);
-            }
-
             if (this.IsIListIList() && this.ItemsInColumns)
             {
                 foreach (var row in this.ItemsSource.OfType<IList>().Where(row => index < row.Count))
@@ -696,18 +685,6 @@ namespace PropertyTools.Wpf
         /// </returns>
         public bool InsertItem(int index, bool updateGrid = true)
         {
-            if (this.ItemsInRows && this.RowHeadersSource != null && this.RowHeadersSource.Count < this.Rows + 1)
-            {
-                this.InsertRowHeader(index);
-            }
-
-            if (this.ItemsInColumns && this.ColumnHeadersSource != null
-                && this.ColumnHeadersSource.Count < this.Rows + 1)
-            {
-                this.InsertColumnHeader(index);
-            }
-
-            // return this.IsIListIList() ? this.InsertItem2(this.ItemsSource, index, updateGrid) : this.InsertItem1(this.ItemsSource, index, updateGrid);
             var success = this.Operator.InsertItem(index);
             if (success)
             {
@@ -1178,6 +1155,12 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual object CreateInstance(Type itemType)
         {
+            if (this.CreateItem != null)
+            {
+                return this.CreateItem();
+            }
+
+            // TODO: the item type may not have a parameterless constructor!
             return Activator.CreateInstance(itemType);
         }
 
@@ -1534,36 +1517,6 @@ namespace PropertyTools.Wpf
             }
 
             this.InsertDisplayControl(cellRef);
-        }
-
-        /// <summary>
-        /// Gets the inner type for IList&gt;IList&lt;
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <returns>
-        /// A concert type. <c>null</c> is only interface type can be retrieved.
-        /// </returns>
-        private static Type GetConcertInnerType(IList list)
-        {
-            var innerType = TypeHelper.GetInnerMostGenericType(list);
-            if (innerType.IsInterface)
-            {
-                if (list.Count > 0)
-                {
-                    var row = list[0] as IList;
-                    if (row != null && row.Count > 0)
-                    {
-                        // Get the type from the [0][0]. The assumption is all the elements in the ItemsSource are of the same type.
-                        innerType = row[0].GetType();
-                    }
-                }
-                else
-                {
-                    innerType = null;
-                }
-            }
-
-            return innerType;
         }
 
         /// <summary>
@@ -2049,11 +2002,24 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void DeleteColumns()
         {
-            int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-            int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-            for (int i = to; i >= from; i--)
+            if (this.IsIListIList() && this.ColumnHeadersSource != null)
             {
-                this.DeleteItem(i, false);
+                int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+                int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+                for (int i = to; i >= from; i--)
+                {
+                    this.ColumnHeadersSource.RemoveAt(i);
+                }
+            }
+
+            if (this.ItemsInColumns)
+            {
+                int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+                int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+                for (int i = to; i >= from; i--)
+                {
+                    this.DeleteItem(i, false);
+                }
             }
 
             this.UpdateGridContent();
@@ -2391,11 +2357,24 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void InsertColumns()
         {
-            int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-            int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-            for (int i = 0; i < to - from + 1; i++)
+            if (this.IsIListIList())
             {
-                this.InsertItem(from, false);
+                int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+                int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+                for (int i = from; i <= to; i++)
+                {
+                    this.InsertColumnHeader(i);
+                }
+            }
+
+            if (this.ItemsInColumns)
+            {
+                int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+                int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+                for (int i = 0; i < to - from + 1; i++)
+                {
+                    this.InsertItem(from, false);
+                }
             }
 
             this.UpdateGridContent();
@@ -2407,9 +2386,13 @@ namespace PropertyTools.Wpf
         /// <param name="index">The position.</param>
         private void InsertColumnHeader(int index)
         {
-            var itemType = TypeHelper.GetListElementType(this.ColumnHeadersSource.GetType());
-            var newItem = this.CreateInstance(itemType);
-            if (index >= 0 && index < this.RowHeadersSource.Count)
+            if (this.ColumnHeadersSource == null)
+            {
+                return;
+            }
+
+            var newItem = this.CreateColumnHeader(index);
+            if (index >= 0 && index < this.ColumnHeadersSource.Count)
             {
                 this.ColumnHeadersSource.Insert(index, newItem);
             }
@@ -2445,24 +2428,6 @@ namespace PropertyTools.Wpf
             }
 
             this.UpdateGridContent();
-        }
-
-        /// <summary>
-        /// Insert one row header item.
-        /// </summary>
-        /// <param name="index">The position.</param>
-        private void InsertRowHeader(int index)
-        {
-            var itemType = TypeHelper.GetListElementType(this.RowHeadersSource.GetType());
-            var newItem = this.CreateInstance(itemType);
-            if (index >= 0 && index < this.RowHeadersSource.Count)
-            {
-                this.RowHeadersSource.Insert(index, newItem);
-            }
-            else
-            {
-                this.RowHeadersSource.Add(newItem);
-            }
         }
 
         /// <summary>

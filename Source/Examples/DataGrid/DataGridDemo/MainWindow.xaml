@@ -9,29 +9,33 @@
             <EventSetter Event="Click" Handler="OpenWindowClick"/>
         </Style>
     </Window.Resources>
-    <StackPanel>
-        <Button Content="ObservableCollection&lt;ExampleObject&gt;" Tag="{x:Type local:Window101}"/>
-        <Button Content="ObservableCollection&lt;ExampleObject&gt; (custom columns)" Tag="{x:Type local:Window102}"/>
-        <Button Content="ObservableCollection&lt;ExampleObject&gt; (items in columns)" Tag="{x:Type local:Window103}"/>
-        <Button Content="List&lt;PlainObject&gt;" Tag="{x:Type local:Window201}"/>
-        <Button Content="List&lt;PlainObject&gt; (custom columns)" Tag="{x:Type local:Window202}"/>
+    <StackPanel Orientation="Horizontal">
+        <StackPanel>
+            <Button Content="ObservableCollection&lt;ExampleObject&gt;" Tag="{x:Type local:Window101}"/>
+            <Button Content="ObservableCollection&lt;ExampleObject&gt; (custom columns)" Tag="{x:Type local:Window102}"/>
+            <Button Content="ObservableCollection&lt;ExampleObject&gt; (items in columns)" Tag="{x:Type local:Window103}"/>
+            <Button Content="List&lt;PlainObject&gt;" Tag="{x:Type local:Window201}"/>
+            <Button Content="List&lt;PlainObject&gt; (custom columns)" Tag="{x:Type local:Window202}"/>
 
-        <Button Content="List&lt;int&gt;" Tag="{x:Type local:Window301}"/>
-        <Button Content="ObservableCollection&lt;double&gt;" Tag="{x:Type local:Window302}"/>
-        <Button Content="List&lt;Vector3D&gt;" Tag="{x:Type local:Window303}"/>
+            <Button Content="List&lt;int&gt;" Tag="{x:Type local:Window301}"/>
+            <Button Content="ObservableCollection&lt;double&gt;" Tag="{x:Type local:Window302}"/>
+            <Button Content="List&lt;Vector3D&gt;" Tag="{x:Type local:Window303}"/>
 
-        <Button Content="double[]" Tag="{x:Type local:Window401}"/>
-        <Button Content="double[] (WrapItems=True)" Tag="{x:Type local:Window402}"/>
-        <Button Content="Mass[] (WrapItems=True)" Tag="{x:Type local:Window403}"/>
-
-        <Button Content="List&lt;List&lt;int&gt;&gt;" Tag="{x:Type local:Window501}"/>
-        <Button Content="List&lt;List&lt;Mass&gt;&gt;" Tag="{x:Type local:Window502}"/>
-        <Button Content="List&lt;List&lt;Boolean&gt;&gt;" Tag="{x:Type local:Window503}"/>
-        <Button Content="List&lt;List&lt;Color&gt;&gt;" Tag="{x:Type local:Window504}"/>
-        <Button Content="List&lt;List&lt;Fruit&gt;&gt;" Tag="{x:Type local:Window505}"/>
-        <Button Content="List&lt;List&lt;ExampleObject(Invalid case)&gt;&gt;" Tag="{x:Type local:Window506}"/>
-
-        <Separator/>
-        <Button Content="ObservableCollection&lt;ExampleObject&gt; (WPF DataGrid)" Tag="{x:Type local:Window1}"/>
+            <Button Content="double[]" Tag="{x:Type local:Window401}"/>
+            <Button Content="double[] (WrapItems=True)" Tag="{x:Type local:Window402}"/>
+            <Button Content="Mass[] (WrapItems=True)" Tag="{x:Type local:Window403}"/>
+        </StackPanel>
+        <StackPanel>
+            <Button Content="List&lt;List&lt;int&gt;&gt;" Tag="{x:Type local:Window501}"/>
+            <Button Content="List&lt;List&lt;Mass&gt;&gt;" Tag="{x:Type local:Window502}"/>
+            <Button Content="List&lt;List&lt;Boolean&gt;&gt;" Tag="{x:Type local:Window503}"/>
+            <Button Content="List&lt;List&lt;Color&gt;&gt;" Tag="{x:Type local:Window504}"/>
+            <Button Content="List&lt;List&lt;Fruit&gt;&gt;" Tag="{x:Type local:Window505}"/>
+            <Button Content="List&lt;List&lt;ExampleObject(Invalid case)&gt;&gt;" Tag="{x:Type local:Window506}"/>
+            <Button Content="Table" Tag="{x:Type local:Window507}"/>
+        </StackPanel>
+        <StackPanel>
+            <Button Content="ObservableCollection&lt;ExampleObject&gt; (WPF DataGrid)" Tag="{x:Type local:Window1}"/>
+        </StackPanel>
     </StackPanel>
 </Window>

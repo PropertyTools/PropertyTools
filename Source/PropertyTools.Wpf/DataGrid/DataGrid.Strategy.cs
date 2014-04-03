@@ -420,7 +420,7 @@ namespace PropertyTools.Wpf
             public override void GenerateColumnDefinitions()
             {
                 var list = this.ItemsSource;
-                var innerType = GetConcertInnerType(list);
+                var innerType = TypeHelper.GetInnerTypeOfList(list);
                 for (var ii = 0; ii < list.Count; ii++)
                 {
                     Owner.ColumnDefinitions.Add(
@@ -495,7 +495,7 @@ namespace PropertyTools.Wpf
 
                 var newList = Owner.CreateInstance(itemType) as IList;
 
-                var innerType = GetConcertInnerType(list);
+                var innerType = TypeHelper.GetInnerTypeOfList(list);
                 if (innerType == null)
                 {
                     return false;

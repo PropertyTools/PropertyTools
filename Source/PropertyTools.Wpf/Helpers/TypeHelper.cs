@@ -224,6 +224,36 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the type of the inner list of a IList&gt;IList&lt;
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <returns>
+        /// The type of the inner list. Return <c>null</c> if only interface type can be retrieved.
+        /// </returns>
+        public static Type GetInnerTypeOfList(IList list)
+        {
+            var innerType = TypeHelper.GetInnerMostGenericType(list);
+            if (innerType.IsInterface)
+            {
+                if (list.Count > 0)
+                {
+                    var row = list[0] as IList;
+                    if (row != null && row.Count > 0)
+                    {
+                        // Get the type from the [0][0]. The assumption is all the elements in the ItemsSource are of the same type.
+                        innerType = row[0].GetType();
+                    }
+                }
+                else
+                {
+                    innerType = null;
+                }
+            }
+
+            return innerType;
+        }
+
+        /// <summary>
         /// Determines whether the type is IList&gt;IList&lt;
         /// </summary>
         /// <param name="type">The type.</param>

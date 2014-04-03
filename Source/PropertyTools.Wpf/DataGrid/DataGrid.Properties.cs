@@ -48,6 +48,18 @@ namespace PropertyTools.Wpf
     public partial class DataGrid
     {
         /// <summary>
+        /// Identifies the <see cref="CreateColumnHeader"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CreateColumnHeaderProperty =
+            DependencyProperty.Register("CreateColumnHeader", typeof(Func<int, object>), typeof(DataGrid), new PropertyMetadata(null));
+
+        /// <summary>
+        /// Identifies the <see cref="CreateItem"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CreateItemProperty =
+            DependencyProperty.Register("CreateItem", typeof(Func<object>), typeof(DataGrid), new PropertyMetadata(null));
+
+        /// <summary>
         /// Identifies the <see cref="AddItemHeader"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AddItemHeaderProperty = DependencyProperty.Register(
@@ -491,6 +503,26 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the create item function.
+        /// </summary>
+        /// <value>The create item.</value>
+        public Func<object> CreateItem
+        {
+            get { return (Func<object>)GetValue(CreateItemProperty); }
+            set { SetValue(CreateItemProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the create column header function.
+        /// </summary>
+        /// <value>The create column header.</value>
+        public Func<int, object> CreateColumnHeader
+        {
+            get { return (Func<int, object>)GetValue(CreateColumnHeaderProperty); }
+            set { SetValue(CreateColumnHeaderProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the current cell.
         /// </summary>
         public CellRef CurrentCell
@@ -819,6 +851,11 @@ namespace PropertyTools.Wpf
         {
             get
             {
+                if (this.IsIListIList())
+                {
+                    return true;
+                }
+
                 var list = this.ItemsSource;
                 return this.CanDelete && this.ItemsInColumns && list != null && !list.IsFixedSize;
             }
@@ -845,6 +882,11 @@ namespace PropertyTools.Wpf
         {
             get
             {
+                if (this.IsIListIList())
+                {
+                    return true;
+                }
+
                 var list = this.ItemsSource;
                 return this.ItemsInColumns && this.CanInsert && list != null && !list.IsFixedSize;
             }

@@ -1,0 +1,23 @@
+﻿<Window x:Class="DataGridDemo.Window508"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="Synchronized tables" Height="450" Width="400"
+        FocusManager.FocusedElement="{Binding ElementName=Grid1}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <p:DataGrid 
+                    ItemsSource="{Binding Table1.Cells}" 
+                    RowHeadersSource="{Binding RowHeaders}" 
+                    ColumnHeadersSource="{Binding ColumnHeaders}"
+                    CreateColumnHeader="{Binding CreateColumnHeader}"/>
+        <p:DataGrid Grid.Column="1" 
+                    ItemsSource="{Binding Table2.Cells}" 
+                    RowHeadersSource="{Binding RowHeaders}" 
+                    ColumnHeadersSource="{Binding ColumnHeaders}"
+                    CreateColumnHeader="{Binding CreateColumnHeader}"/>
+    </Grid>
+</Window>

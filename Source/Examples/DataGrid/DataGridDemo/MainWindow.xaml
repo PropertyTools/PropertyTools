@@ -33,6 +33,7 @@
             <Button Content="List&lt;List&lt;Fruit&gt;&gt;" Tag="{x:Type local:Window505}"/>
             <Button Content="List&lt;List&lt;ExampleObject(Invalid case)&gt;&gt;" Tag="{x:Type local:Window506}"/>
             <Button Content="Table" Tag="{x:Type local:Window507}"/>
+            <Button Content="Synchronized tables" Tag="{x:Type local:Window508}"/>
         </StackPanel>
         <StackPanel>
             <Button Content="ObservableCollection&lt;ExampleObject&gt; (WPF DataGrid)" Tag="{x:Type local:Window1}"/>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Window506.xaml.cs" company="PropertyTools">
+// <copyright file="Window507.xaml.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Interaction logic for Window506.xaml
+//   Interaction logic for Window507.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,12 +36,12 @@ namespace DataGridDemo
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Interaction logic for Window506.xaml
+    /// Interaction logic for Window507.xaml
     /// </summary>
     public partial class Window507
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Window506" /> class.
+        /// Initializes a new instance of the <see cref="Window507" /> class.
         /// </summary>
         public Window507()
         {
@@ -89,6 +89,18 @@ namespace DataGridDemo
             this.cells = new ObservableCollection<ObservableCollection<T>>();
             this.rowHeaders = new ObservableCollection<TR>();
             this.columnHeaders = new ObservableCollection<TC>();
+            this.cells.CollectionChanged += this.CellsCollectionChanged;
+            this.rowHeaders.CollectionChanged += this.RowHeadersCollectionChanged;
+            this.columnHeaders.CollectionChanged += this.ColumnHeadersCollectionChanged;
+        }
+
+        public Table(ObservableCollection<TR> rowHeaders, ObservableCollection<TC> columnHeaders, Func<int, int, T> newCell, Func<int, TR> newRowHeader)
+        {
+            this.newCell = newCell;
+            this.newRowHeader = newRowHeader;
+            this.cells = new ObservableCollection<ObservableCollection<T>>();
+            this.rowHeaders = rowHeaders;
+            this.columnHeaders = columnHeaders;
             this.cells.CollectionChanged += this.CellsCollectionChanged;
             this.rowHeaders.CollectionChanged += this.RowHeadersCollectionChanged;
             this.columnHeaders.CollectionChanged += this.ColumnHeadersCollectionChanged;

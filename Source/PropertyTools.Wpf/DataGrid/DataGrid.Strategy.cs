@@ -421,7 +421,9 @@ namespace PropertyTools.Wpf
             {
                 var list = this.ItemsSource;
                 var innerType = TypeHelper.GetInnerTypeOfList(list);
-                for (var ii = 0; ii < list.Count; ii++)
+                var firstRow = list.Cast<IList>().FirstOrDefault();
+                var columns = firstRow != null ? firstRow.Count : 0;
+                for (var ii = 0; ii < columns; ii++)
                 {
                     Owner.ColumnDefinitions.Add(
                         new ColumnDefinition

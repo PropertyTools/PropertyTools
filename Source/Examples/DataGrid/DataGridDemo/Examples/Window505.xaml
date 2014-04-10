@@ -5,7 +5,11 @@
         Title="List&lt;List&lt;Fruit&gt;&gt;" Height="450" Width="400"
         FocusManager.FocusedElement="{Binding ElementName=Grid1}">
     <Grid>
-        <p:DataGrid x:Name="Grid1" ItemsSource="{Binding ItemsSource}" RowHeadersSource="{Binding RowHeadersItemsSource}" ColumnHeadersSource="{Binding ColumnHeadersItemsSource}">
+        <p:DataGrid
+            ItemsSource="{Binding ItemsSource}"
+            RowHeadersSource="{Binding RowHeadersItemsSource}"
+            ColumnHeadersSource="{Binding ColumnHeadersItemsSource}"
+            CreateColumnHeader="{Binding CreateColumnHeader}">
         </p:DataGrid>
     </Grid>
 </Window>

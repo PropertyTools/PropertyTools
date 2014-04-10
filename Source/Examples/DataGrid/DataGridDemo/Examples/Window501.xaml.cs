@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Interaction logic for Window501.xaml
+//   Interaction logic for Window501.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,10 +33,30 @@ namespace DataGridDemo
     using System.Collections.ObjectModel;
 
     /// <summary>
-    /// Interaction logic for Window501.xaml
+    /// Interaction logic for Window501.
     /// </summary>
     public partial class Window501
     {
+        /// <summary>
+        /// The shared items source. This makes it possible to open two windows and verify that property changes are working!
+        /// </summary>
+        private static readonly ObservableCollection<ObservableCollection<int>> StaticItemsSource;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="Window501"/> class.
+        /// </summary>
+        static Window501()
+        {
+            StaticItemsSource = new ObservableCollection<ObservableCollection<int>>
+                                {
+                                    new ObservableCollection<int> { 10, 11, 12 },
+                                    new ObservableCollection<int> { 20, 21, 22 },
+                                    new ObservableCollection<int> { 30, 31, 32 },
+                                    new ObservableCollection<int> { 40, 41, 42 },
+                                    new ObservableCollection<int> { 50, 51, 52 },
+                                };
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Window501" /> class.
         /// </summary>
@@ -44,37 +64,19 @@ namespace DataGridDemo
         {
             this.InitializeComponent();
 
-            this.ItemsSource = new ObservableCollection<ObservableCollection<int>>
-                                {
-                                    new ObservableCollection<int>
-                                        {
-                                            0,
-                                            1,
-                                            2,
-                                        },
-                                    new ObservableCollection<int>
-                                        {
-                                            10,
-                                            11,
-                                            12,
-                                        },
-                                    new ObservableCollection<int>
-                                        {
-                                            20,
-                                            21,
-                                            22
-                                        },
-                                    new ObservableCollection<int>
-                                        {
-                                            30,
-                                            31,
-                                            32
-                                        },
-                                };
-
             this.DataContext = this;
         }
 
-        public ObservableCollection<ObservableCollection<int>> ItemsSource { get; set; }
+        /// <summary>
+        /// Gets the items source.
+        /// </summary>
+        /// <value>The items source.</value>
+        public ObservableCollection<ObservableCollection<int>> ItemsSource
+        {
+            get
+            {
+                return StaticItemsSource;
+            }
+        }
     }
 }

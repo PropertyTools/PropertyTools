@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Interaction logic for Window508.xaml
+//   Interaction logic for Window508.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,43 +34,113 @@ namespace DataGridDemo
     using System.Collections.ObjectModel;
 
     /// <summary>
-    /// Interaction logic for Window508.xaml
+    /// Interaction logic for Window508.
     /// </summary>
     public partial class Window508
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Window506" /> class.
+        /// The shared row headers. This makes it possible to open two windows and verify that property changes are working!
+        /// </summary>
+        private static readonly ObservableCollection<string> StaticRowHeaders;
+
+        /// <summary>
+        /// The shared column headers. 
+        /// </summary>
+        private static readonly ObservableCollection<string> StaticColumnHeaders;
+
+        /// <summary>
+        /// The first shared table. 
+        /// </summary>
+        private static readonly Table<int, string, string> StaticTable1;
+
+        /// <summary>
+        /// The second shared table. 
+        /// </summary>
+        private static readonly Table<int, string, string> StaticTable2;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="Window508"/> class.
+        /// </summary>
+        static Window508()
+        {
+            StaticRowHeaders = new ObservableCollection<string>();
+            StaticColumnHeaders = new ObservableCollection<string>();
+            StaticTable1 = new Table<int, string, string>(StaticRowHeaders, StaticColumnHeaders, (i, j) => 0, i => "NR" + (i + 1));
+            StaticTable2 = new Table<int, string, string>(StaticRowHeaders, StaticColumnHeaders, (i, j) => 0, i => "NR" + (i + 1));
+
+            StaticRowHeaders.Add("R1");
+            StaticRowHeaders.Add("R2");
+            StaticColumnHeaders.Add("C1");
+            StaticColumnHeaders.Add("C2");
+
+            StaticTable1[0, 0] = 11;
+            StaticTable1[0, 1] = 12;
+            StaticTable2[1, 1] = 22;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Window508" /> class.
         /// </summary>
         public Window508()
         {
             this.InitializeComponent();
-            this.RowHeaders = new ObservableCollection<string>();
-            this.ColumnHeaders = new ObservableCollection<string>();
-            this.Table1 = new Table<int, string, string>(this.RowHeaders, this.ColumnHeaders, (i, j) => 0, i => "NR" + (i + 1));
-            this.Table2 = new Table<int, string, string>(this.RowHeaders, this.ColumnHeaders, (i, j) => 0, i => "NR" + (i + 1));
-
-            this.RowHeaders.Add("R1");
-            this.RowHeaders.Add("R2");
-            this.ColumnHeaders.Add("C1");
-            this.ColumnHeaders.Add("C2");
-
-            this.Table1[0, 0] = 11;
-            this.Table1[0, 1] = 12;
-            this.Table2[1, 1] = 22;
-
             this.DataContext = this;
 
             this.CreateColumnHeader = i => "NC" + (i + 1);
         }
 
-        public ObservableCollection<string> RowHeaders { get; set; }
+        /// <summary>
+        /// Gets the row headers.
+        /// </summary>
+        /// <value>The row headers.</value>
+        public ObservableCollection<string> RowHeaders
+        {
+            get
+            {
+                return StaticRowHeaders;
+            }
+        }
 
-        public ObservableCollection<string> ColumnHeaders { get; set; }
+        /// <summary>
+        /// Gets the column headers.
+        /// </summary>
+        /// <value>The column headers.</value>
+        public ObservableCollection<string> ColumnHeaders
+        {
+            get
+            {
+                return StaticColumnHeaders;
+            }
+        }
 
-        public Table<int, string, string> Table1 { get; set; }
-        
-        public Table<int, string, string> Table2 { get; set; }
+        /// <summary>
+        /// Gets the first table.
+        /// </summary>
+        /// <value>The table.</value>
+        public Table<int, string, string> Table1
+        {
+            get
+            {
+                return StaticTable1;
+            }
+        }
 
+        /// <summary>
+        /// Gets the second table.
+        /// </summary>
+        /// <value>The table.</value>
+        public Table<int, string, string> Table2
+        {
+            get
+            {
+                return StaticTable2;
+            }
+        }
+
+        /// <summary>
+        /// Gets the create column header function.
+        /// </summary>
+        /// <value>The create column header.</value>
         public Func<int, object> CreateColumnHeader { get; private set; }
     }
 }

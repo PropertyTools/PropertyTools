@@ -24,7 +24,7 @@
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Interaction logic for Window507.xaml
+//   Interaction logic for Window507.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,34 +36,60 @@ namespace DataGridDemo
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// Interaction logic for Window507.xaml
+    /// Interaction logic for Window507.
     /// </summary>
     public partial class Window507
     {
+        /// <summary>
+        /// The shared table. This makes it possible to open two windows and verify that property changes are working!
+        /// </summary>
+        private static readonly Table<int, string, string> StaticTable;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="Window507" /> class.
+        /// </summary>
+        static Window507()
+        {
+            StaticTable = new Table<int, string, string>(
+               (i, j) => 0,
+               i => "NR" + (i + 1));
+
+            StaticTable.RowHeaders.Add("R1");
+            StaticTable.RowHeaders.Add("R2");
+            StaticTable.ColumnHeaders.Add("C1");
+            StaticTable.ColumnHeaders.Add("C2");
+            StaticTable[0, 0] = 11;
+            StaticTable[0, 1] = 12;
+            StaticTable[1, 1] = 22;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Window507" /> class.
         /// </summary>
         public Window507()
         {
             this.InitializeComponent();
-            this.Table = new Table<int, string, string>(
-                (i, j) => 0,
-                i => "NR" + (i + 1));
-
-            this.Table.RowHeaders.Add("R1");
-            this.Table.RowHeaders.Add("R2");
-            this.Table.ColumnHeaders.Add("C1");
-            this.Table.ColumnHeaders.Add("C2");
-            this.Table[0, 0] = 11;
-            this.Table[0, 1] = 12;
-            this.Table[1, 1] = 22;
             this.DataContext = this;
 
             this.CreateColumnHeader = i => "NC" + (i + 1);
         }
 
-        public Table<int, string, string> Table { get; set; }
+        /// <summary>
+        /// Gets the table.
+        /// </summary>
+        /// <value>The table.</value>
+        public Table<int, string, string> Table
+        {
+            get
+            {
+                return StaticTable;
+            }
+        }
 
+        /// <summary>
+        /// Gets the create column header function.
+        /// </summary>
+        /// <value>The create column header.</value>
         public Func<int, object> CreateColumnHeader { get; private set; }
     }
 

@@ -92,7 +92,7 @@ namespace PropertyTools.Wpf
                 return this.CreateColorPickerControl(propertyDefinition, bindingPath);
             }
 
-            return this.CreateTextBox(propertyDefinition);
+            return this.CreateTextBox(propertyDefinition, bindingPath);
         }
 
         /// <summary>
@@ -229,10 +229,9 @@ namespace PropertyTools.Wpf
         /// Creates a text box with data binding.
         /// </summary>
         /// <param name="propertyDefinition">The property definition.</param>
-        /// <returns>
-        /// A TextBox.
-        /// </returns>
-        protected virtual FrameworkElement CreateTextBox(PropertyDefinition propertyDefinition)
+        /// <param name="bindingPath">The binding path.</param>
+        /// <returns>A TextBox.</returns>
+        protected virtual FrameworkElement CreateTextBox(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var tb = new TextBox
             {
@@ -242,6 +241,8 @@ namespace PropertyTools.Wpf
                 BorderThickness = new Thickness(0),
                 Margin = new Thickness(1, 1, 0, 0)
             };
+
+            tb.SetBinding(TextBox.TextProperty, propertyDefinition.CreateBinding(bindingPath));
             return tb;
         }
 

@@ -135,16 +135,12 @@ namespace PropertyTools.Wpf
             // http://stackoverflow.com/questions/1043755/c-generic-list-t-how-to-get-the-type-of-t
             foreach (var interfaceType in listType.GetInterfaces())
             {
-                if (interfaceType.IsGenericType)
+                if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IList<>))
                 {
-                    var gtd = interfaceType.GetGenericTypeDefinition();
-                    if (gtd == typeof(ICollection<>) || gtd == typeof(IList<>))
+                    var args = interfaceType.GetGenericArguments();
+                    if (args.Length > 0)
                     {
-                        var args = interfaceType.GetGenericArguments();
-                        if (args.Length > 0)
-                        {
-                            return args[0];
-                        }
+                        return args[0];
                     }
                 }
             }
@@ -254,11 +250,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Determines whether the type is IList&gt;IList&lt;
+        /// Determines whether the type is IList{IList}.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>
-        /// <c>true</c> if the type is IList&gt;IList&lt;; otherwise, <c>false</c>.
+        /// <c>true</c> if the type is IList{IList}; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsIListIList(Type type)
         {
@@ -267,9 +263,13 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            var genericArguments = type.GetGenericArguments();
-            var innerType = genericArguments.Length > 0 ? genericArguments[0] : null;
-            return typeof(IList).IsAssignableFrom(innerType);
+            var listElementType = GetListElementType(type);
+            if (listElementType.IsGenericType && listElementType.GetGenericTypeDefinition() == typeof(IList<>))
+            {
+                return true;
+            }
+
+            return GetListElementType(listElementType) != null;
         }
     }
 }

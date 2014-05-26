@@ -36,6 +36,7 @@ syntax: glob
 Output/
 ClientBin/
 lib/
+*.sln.ide/
 
 Tools/    # Add manually
 

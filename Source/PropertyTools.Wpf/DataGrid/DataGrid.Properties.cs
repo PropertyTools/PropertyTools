@@ -249,6 +249,24 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
+        /// Identifies the <see cref="RowHeadersFormatString"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty RowHeadersFormatStringProperty = DependencyProperty.Register(
+            "RowHeadersFormatString",
+            typeof(string),
+            typeof(DataGrid),
+            new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
+
+        /// <summary>
+        /// Identifies the <see cref="ColumnHeadersFormatString"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ColumnHeadersFormatStringProperty = DependencyProperty.Register(
+            "ColumnHeadersFormatString",
+            typeof(string),
+            typeof(DataGrid),
+            new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
+
+        /// <summary>
         /// Identifies the <see cref="RowHeaderWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RowHeaderWidthProperty = DependencyProperty.Register(
@@ -724,6 +742,39 @@ namespace PropertyTools.Wpf
             }
         }
 
+        /// <summary>
+        /// Gets or sets the row headers format string.
+        /// </summary>
+        /// <value>The row headers format string.</value>
+        public string RowHeadersFormatString
+        {
+            get
+            {
+                return (string)this.GetValue(RowHeadersFormatStringProperty);
+            }
+
+            set
+            {
+                this.SetValue(RowHeadersFormatStringProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the column headers format string.
+        /// </summary>
+        /// <value>The column headers format string.</value>
+        public string ColumnHeadersFormatString
+        {
+            get
+            {
+                return (string)this.GetValue(ColumnHeadersFormatStringProperty);
+            }
+
+            set
+            {
+                this.SetValue(ColumnHeadersFormatStringProperty, value);
+            }
+        }
         /// <summary>
         /// Gets the row definitions.
         /// </summary>

@@ -101,6 +101,9 @@
     <Compile Include="Examples\Window504.xaml.cs">
       <DependentUpon>Window504.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\Window509.xaml.cs">
+      <DependentUpon>Window509.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\Window508.xaml.cs">
       <DependentUpon>Window508.xaml</DependentUpon>
     </Compile>
@@ -170,6 +173,10 @@
     <Page Include="Examples\Window504.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Examples\Window509.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\Window508.xaml">
       <Generator>MSBuild:Compile</Generator>

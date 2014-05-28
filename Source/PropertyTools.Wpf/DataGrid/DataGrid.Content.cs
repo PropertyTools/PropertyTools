@@ -232,9 +232,7 @@ namespace PropertyTools.Wpf
                 if (this.ColumnHeadersSource != null && this.ItemsInRows)
                 {
                     cell.DataContext = this.ColumnHeadersSource;
-                    cell.SetBinding(
-                        TextBlock.TextProperty,
-                        new Binding(string.Format("[{0}]", j)));
+                    cell.SetBinding(TextBlock.TextProperty, new Binding(string.Format("[{0}]", j)) { StringFormat = this.ColumnHeadersFormatString });
                 }
 
                 Grid.SetColumn(cell, j);
@@ -399,7 +397,7 @@ namespace PropertyTools.Wpf
                     cell.DataContext = this.RowHeadersSource;
                     cell.SetBinding(
                         TextBlock.TextProperty,
-                        new Binding(string.Format("[{0}]", i)));
+                        new Binding(string.Format("[{0}]", i)) { StringFormat = this.RowHeadersFormatString });
                 }
 
                 Grid.SetRow(cell, i);

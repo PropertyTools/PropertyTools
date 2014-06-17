@@ -30,6 +30,7 @@
 
 namespace PropertyTools.Wpf
 {
+    using System;
     using System.ComponentModel;
     using System.Globalization;
 
@@ -37,7 +38,7 @@ namespace PropertyTools.Wpf
     /// Represents a cell reference.
     /// </summary>
     [TypeConverter(typeof(CellRefConverter))]
-    public struct CellRef
+    public struct CellRef : IEquatable<CellRef>
     {
         /// <summary>
         /// The column.
@@ -126,6 +127,26 @@ namespace PropertyTools.Wpf
             long hash = this.column;
             hash = (hash << 16) + this.row;
             return (int)hash;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">Another object to compare to.</param>
+        /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is CellRef && this.Equals((CellRef)obj);
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
+        public bool Equals(CellRef other)
+        {
+            return this.column == other.column && this.row == other.row;
         }
 
         /// <summary>

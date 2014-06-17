@@ -1773,6 +1773,12 @@ namespace PropertyTools.Wpf
             // Set the same value in all selected cells.
             foreach (var cell in this.SelectedCells)
             {
+                if (this.CurrentCell.Equals(cell))
+                {
+                    // this value should already be set by the binding
+                    continue;
+                }
+
                 this.TrySetCellValue(cell, value);
             }
         }

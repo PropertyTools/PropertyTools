@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="TestPassword.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -25,32 +25,24 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System.Windows;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Security;
 
-    using ExampleLibrary;
-
-    using PropertyTools.Wpf;
-
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
+    [PropertyGridExample]
+    public class TestPassword : TestBase
     {
-        public LocalPropertyControlFactory()
-        {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
-        }
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
 
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
-        {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
+        [Description("This is not yet working.")]
+        public SecureString SecureString { get; set; }
 
-            return base.CreateControl(pi, options);
+        public override string ToString()
+        {
+            return "Password";
         }
     }
 }

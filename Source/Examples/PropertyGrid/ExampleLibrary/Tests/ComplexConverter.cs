@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LengthConverter.cs" company="PropertyTools">
+// <copyright file="ComplexConverter.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -23,55 +23,69 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Converts <see cref="Complex" /> instances to <see cref="string" /> instances.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
     using System;
     using System.Globalization;
+    using System.Numerics;
     using System.Windows;
     using System.Windows.Data;
 
-    using ExampleLibrary;
-
-    [ValueConversion(typeof(Length), typeof(string))]
-    public class LengthConverter : IValueConverter
+    /// <summary>
+    /// Converts <see cref="Complex" /> instances to <see cref="string" /> instances.
+    /// </summary>
+    [ValueConversion(typeof(Complex), typeof(string))]
+    public class ComplexConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value is Complex)
             {
-                return null;
+                var c = (Complex)value;
+                if (targetType == typeof(string))
+                {
+                    return c.ToString(culture);
+                }
             }
 
-            try
-            {
-                var length = (Length)value;
-                return length.ToString(string.Empty, culture);
-            }
-
-            catch
-            {
-                return DependencyProperty.UnsetValue;
-            }
+            return DependencyProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value is string)
             {
-                return null;
+                var c = (string)value;
+                if (targetType == typeof(Complex))
+                {
+                    try
+                    {
+                        c = c.Trim("()".ToCharArray());
+                        int i = c.IndexOf(", ", StringComparison.InvariantCultureIgnoreCase);
+                        if (i > 0)
+                        {
+                            var realPart = c.Substring(0, i);
+                            var imagPart = c.Substring(i + 2);
+                            var real = double.Parse(realPart, culture);
+                            var imag = double.Parse(imagPart, culture);
+                            return new Complex(real, imag);
+                        }
+
+                        return new Complex(double.Parse(c, culture), 0);
+                    }
+                    catch
+                    {
+                        return DependencyProperty.UnsetValue;
+                    }
+                }
             }
 
-            try
-            {
-                var s = (string)value;
-                return Length.Parse(s, culture);
-            }
-            catch
-            {
-                return DependencyProperty.UnsetValue;
-            }
+            return DependencyProperty.UnsetValue;
         }
     }
 }

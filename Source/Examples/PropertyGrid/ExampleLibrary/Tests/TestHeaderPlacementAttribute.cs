@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="TestHeaderPlacementAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -25,32 +25,30 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System.Windows;
+    using System.ComponentModel;
 
-    using ExampleLibrary;
+    using PropertyTools.DataAnnotations;
 
-    using PropertyTools.Wpf;
-
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
+    [PropertyGridExample]
+    public class TestHeaderPlacementAttribute : TestBase
     {
-        public LocalPropertyControlFactory()
-        {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
-        }
+        [Category("HeaderPlacement.Above")]
+        [HeaderPlacement(HeaderPlacement.Above), Height(100)]
+        public string HeaderAbove { get; set; }
 
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
-        {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
+        [Category("HeaderPlacement.Collapsed")]
+        [HeaderPlacement(HeaderPlacement.Collapsed), Height(100)]
+        public string HeaderCollapsed { get; set; }
 
-            return base.CreateControl(pi, options);
+        [Category("HeaderPlacement.Left")]
+        [HeaderPlacement(HeaderPlacement.Left), Height(100)]
+        public string HeaderLeft { get; set; }
+
+        public override string ToString()
+        {
+            return "HeaderPlacement and Height";
         }
     }
 }

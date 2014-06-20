@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="TestEnumeration.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -25,32 +25,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System.Windows;
-
-    using ExampleLibrary;
-
-    using PropertyTools.Wpf;
-
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
-    {
-        public LocalPropertyControlFactory()
-        {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
-        }
-
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
-        {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
-
-            return base.CreateControl(pi, options);
-        }
-    }
+    public enum TestEnumeration { Red, Green, Blue }
 }

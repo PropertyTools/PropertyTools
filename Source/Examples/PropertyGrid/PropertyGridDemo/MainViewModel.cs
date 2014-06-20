@@ -34,9 +34,9 @@ namespace PropertyGridDemo
     using System.Linq;
     using System.Text;
 
-    using PropertyTools;
+    using ExampleLibrary;
 
-    using TestLibrary;
+    using PropertyTools;
 
     public class MainViewModel : Observable
     {

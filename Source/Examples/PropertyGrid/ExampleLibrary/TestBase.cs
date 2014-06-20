@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="TestBase.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -23,34 +23,24 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Base class for test objects.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System.Windows;
+    using System.ComponentModel;
 
-    using ExampleLibrary;
-
-    using PropertyTools.Wpf;
-
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
+    /// <summary>
+    /// Base class for test objects.
+    /// </summary>
+    /// <remarks>This class depends on the NotifyPropertyWeaver task.
+    /// All INotifyPropertyChanged events will be weaved into the code as a post-compile build step.</remarks>
+    public class TestBase : INotifyPropertyChanged
     {
-        public LocalPropertyControlFactory()
-        {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
-        }
-
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
-        {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
-
-            return base.CreateControl(pi, options);
-        }
+#pragma warning disable 67
+        public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore 67
     }
 }

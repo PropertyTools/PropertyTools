@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="TestExceptions.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -25,32 +25,40 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System.Windows;
+    using System;
 
-    using ExampleLibrary;
-
-    using PropertyTools.Wpf;
-
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
+    [PropertyGridExample]
+    public class TestExceptions : TestBase
     {
-        public LocalPropertyControlFactory()
+        public string Impossibilium
         {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
+            get
+            {
+                return "Corrrect me!";
+            }
+            set
+            {
+                throw new InvalidOperationException("No way!");
+            }
         }
 
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        public bool IsOK
         {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
+            get
+            {
+                return false;
+            }
+            set
+            {
+                throw new InvalidOperationException("No!");
+            }
+        }
 
-            return base.CreateControl(pi, options);
+        public override string ToString()
+        {
+            return "Exceptions";
         }
     }
 }

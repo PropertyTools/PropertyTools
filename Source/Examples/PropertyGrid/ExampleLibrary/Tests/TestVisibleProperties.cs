@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="TestVisibleProperties.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -25,32 +25,43 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System.Windows;
+    using System.ComponentModel;
 
-    using ExampleLibrary;
+    using PropertyTools.DataAnnotations;
 
-    using PropertyTools.Wpf;
-
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
+    [PropertyGridExample]
+    public class TestVisibleProperties : TestBase
     {
-        public LocalPropertyControlFactory()
+        [Category("Visibility by convention")]
+        public double Weight { get; set; }
+
+        public bool IsWeightVisible { get; set; }
+
+        [Category("Visibility by attribute")]
+        [Description("Select green or blue to make the string visible")]
+        public TestEnumeration Color2 { get; set; }
+
+        [Browsable(false)]
+        public bool IsColor2Ok { get { return this.Color2 == TestEnumeration.Green || this.Color2 == TestEnumeration.Blue; } }
+
+        [VisibleBy("IsColor2Ok")]
+        public string String2 { get; set; }
+
+        [Category("Collapsing group")]
+        [Description("This group is collapsing when String3 is not visible.")]
+        [VisibleBy("IsColor2Ok")]
+        public string String3 { get; set; }
+
+        public TestVisibleProperties()
         {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
+            this.IsWeightVisible = true;
         }
 
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        public override string ToString()
         {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
-
-            return base.CreateControl(pi, options);
+            return "Visibility";
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LengthConverter.cs" company="PropertyTools">
+// <copyright file="TestEnabledProperties.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -25,53 +25,51 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System;
-    using System.Globalization;
-    using System.Windows;
-    using System.Windows.Data;
+    using System.ComponentModel;
 
-    using ExampleLibrary;
+    using PropertyTools.DataAnnotations;
 
-    [ValueConversion(typeof(Length), typeof(string))]
-    public class LengthConverter : IValueConverter
+    [PropertyGridExample]
+    public class TestEnabledProperties : TestBase
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        [Category("Enable by convention")]
+        [Description("The IsAgeEnabled property controls the enable state.")]
+        public int Age { get; set; }
+
+        public bool IsAgeEnabled { get; set; }
+
+        [Description("The IsNameEnabled property controls the enable state. This property is also optional.")]
+        [Optional]
+        public string Name { get; set; }
+
+        public bool IsNameEnabled { get; set; }
+
+        [Category("Enable by attribute")]
+        [Description("Select green or blue to enable the string")]
+        public TestEnumeration Color { get; set; }
+
+        [EnableBy("IsColorOk")]
+        [Description("The IsColorOk property controls the enable state. The property should be enabled when the color is green or blue.")]
+        public string EnableByIsColorOkProperty { get; set; }
+
+        [EnableBy("Color", TestEnumeration.Blue)]
+        [Description("The control is enabled when Color = Blue.")]
+        public string EnableByBlueColor { get; set; }
+
+        [Browsable(false)]
+        public bool IsColorOk
         {
-            if (value == null)
+            get
             {
-                return null;
-            }
-
-            try
-            {
-                var length = (Length)value;
-                return length.ToString(string.Empty, culture);
-            }
-
-            catch
-            {
-                return DependencyProperty.UnsetValue;
+                return this.Color == TestEnumeration.Green || this.Color == TestEnumeration.Blue;
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public override string ToString()
         {
-            if (value == null)
-            {
-                return null;
-            }
-
-            try
-            {
-                var s = (string)value;
-                return Length.Parse(s, culture);
-            }
-            catch
-            {
-                return DependencyProperty.UnsetValue;
-            }
+            return "Enabled properties";
         }
     }
 }

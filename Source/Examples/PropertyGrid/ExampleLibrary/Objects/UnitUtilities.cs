@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="UnitUtilities.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -25,32 +25,29 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System.Windows;
+    using System;
+    using System.Text.RegularExpressions;
 
-    using ExampleLibrary;
-
-    using PropertyTools.Wpf;
-
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
+    public static class UnitUtilities
     {
-        public LocalPropertyControlFactory()
-        {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
-        }
+        private static Regex unitAndValueExpression = new Regex(@"^\s*(?<value>[\d\.\,]+)*\s*(?<unit>.*)\s*$");
 
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        public static bool TrySplitValueAndUnit(string s, IFormatProvider provider, out double value, out string unit)
         {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
+            s = s.Trim();
+            Match m = unitAndValueExpression.Match(s);
+            if (!m.Success)
+            {
+                value = 0;
+                unit = null;
+                return false;
+            }
 
-            return base.CreateControl(pi, options);
+            value = double.Parse(m.Groups["value"].Value, provider);
+            unit = m.Groups["unit"].Value;
+            return true;
         }
     }
 }

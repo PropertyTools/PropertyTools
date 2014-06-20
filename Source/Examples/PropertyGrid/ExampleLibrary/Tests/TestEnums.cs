@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="TestEnums.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -25,32 +25,48 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System.Windows;
+    using System;
+    using System.ComponentModel;
 
-    using ExampleLibrary;
+    public enum Fruits1 { Apple, Pears, Bananas }
 
-    using PropertyTools.Wpf;
+    public enum Fruits2 { }
 
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
+    public enum Fruits3 { [Browsable(false)] Apple, Pears, Bananas }
+
+    public enum Fruits4 { [Browsable(false)] Apple, [Browsable(false)] Pears, [Browsable(false)] Bananas }
+
+    public enum Fruits5 { [Description("Epler")] Apple, [Description("Pærer")] Pears, [Description("Bananer")] Bananas }
+
+    [Flags]
+    public enum Fruits6 { Apple=1, Pears=2, Bananas=4 }
+
+    [PropertyGridExample]
+    public class TestEnums : TestBase
     {
-        public LocalPropertyControlFactory()
-        {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
-        }
+        [Description("Normal enum.")]
+        public Fruits1 Fruits1 { get; set; }
 
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
-        {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
+        [Description("Empty enum.")]
+        public Fruits2 Fruits2 { get; set; }
 
-            return base.CreateControl(pi, options);
+        [Description("First item is not browsable.")]
+        public Fruits3 Fruits3 { get; set; }
+
+        [Description("No items are browsable.")]
+        public Fruits4 Fruits4 { get; set; }
+
+        [Description("With descriptions.")]
+        public Fruits5 Fruits5 { get; set; }
+
+        [Description("Flags.")]
+        public Fruits6 Fruits6 { get; set; }
+
+        public override string ToString()
+        {
+            return "Enumerations";
         }
     }
 }

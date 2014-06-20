@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="TestReadOnlyProperties.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -25,32 +25,30 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System.Windows;
+    using System.ComponentModel;
 
-    using ExampleLibrary;
-
-    using PropertyTools.Wpf;
-
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
+    [PropertyGridExample]
+    public class TestReadOnlyProperties : TestBase
     {
-        public LocalPropertyControlFactory()
+        public string Name { get; private set; }
+
+        [ReadOnly(true)]
+        public string Title { get; set; }
+
+        public bool IsChecked { get; private set; }
+
+        public TestReadOnlyProperties()
         {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
+            this.Name = "John";
+            this.Title = "President";
+            this.IsChecked = true;
         }
 
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        public override string ToString()
         {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
-
-            return base.CreateControl(pi, options);
+            return "Read-only properties";
         }
     }
 }

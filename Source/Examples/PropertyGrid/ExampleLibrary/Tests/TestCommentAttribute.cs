@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="TestCommentAttribute.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -25,32 +25,42 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System.Windows;
+    using PropertyTools.DataAnnotations;
 
-    using ExampleLibrary;
-
-    using PropertyTools.Wpf;
-
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
+    [PropertyGridExample]
+    public class TestCommentAttribute : TestBase
     {
-        public LocalPropertyControlFactory()
+        [Comment]
+        public string Comment1 { get; private set; }
+
+        [Comment]
+        public string Comment2 { get; private set; }
+
+        [Comment]
+        public string Comment3 { get; private set; }
+
+        [Comment]
+        [HeaderPlacement(HeaderPlacement.Hidden)]
+        public string Comment4 { get; private set; }
+
+        [Comment]
+        [HeaderPlacement(HeaderPlacement.Collapsed)]
+        public string Comment5 { get; private set; }
+
+        public TestCommentAttribute()
         {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
+            this.Comment1 = "This is a comment.";
+            this.Comment2 = "This is a multiline\ncomment.";
+            this.Comment3 = "This is a wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping wrapping comment.";
+            this.Comment4 = "Comment with hidden header";
+            this.Comment5 = "Comment with collapsed header";
         }
 
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        public override string ToString()
         {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
-
-            return base.CreateControl(pi, options);
+            return "Comment attribute";
         }
     }
 }

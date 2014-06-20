@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="BigIntegerConverter.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -23,34 +23,58 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Converts <see cref="Complex" /> instances to <see cref="string" /> instances.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
+    using System;
+    using System.Globalization;
+    using System.Numerics;
     using System.Windows;
+    using System.Windows.Data;
 
-    using ExampleLibrary;
-
-    using PropertyTools.Wpf;
-
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
+    /// <summary>
+    /// Converts <see cref="Complex" /> instances to <see cref="string" /> instances.
+    /// </summary>
+    [ValueConversion(typeof(Complex), typeof(string))]
+    public class BigIntegerConverter : IValueConverter
     {
-        public LocalPropertyControlFactory()
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
+            if (value is BigInteger)
+            {
+                var c = (BigInteger)value;
+                if (targetType == typeof(string))
+                {
+                    return c.ToString(culture);
+                }
+            }
+
+            return DependencyProperty.UnsetValue;
         }
 
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
+            var s = value as string;
+            if (s != null)
+            {
+                if (targetType == typeof(BigInteger))
+                {
+                    try
+                    {
+                        return BigInteger.Parse(s, culture);
+                    }
+                    catch
+                    {
+                        return DependencyProperty.UnsetValue;
+                    }
+                }
+            }
 
-            return base.CreateControl(pi, options);
+            return DependencyProperty.UnsetValue;
         }
     }
 }

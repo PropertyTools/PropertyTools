@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalPropertyControlFactory.cs" company="PropertyTools">
+// <copyright file="TestSimpleTypes.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -25,32 +25,34 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyGridDemo
+namespace ExampleLibrary
 {
-    using System.Windows;
+    using System;
 
-    using ExampleLibrary;
-
-    using PropertyTools.Wpf;
-
-    public class LocalPropertyControlFactory : DefaultPropertyControlFactory
+    [PropertyGridExample]
+    public class TestSimpleTypes : TestBase
     {
-        public LocalPropertyControlFactory()
-        {
-            this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
-        }
+        public bool Boolean { get; set; }
+        public sbyte SignedByte { get; set; }
+        public byte Byte { get; set; }
+        public short Short { get; set; }
+        public int Integer { get; set; }
+        public long Long { get; set; }
+        public ushort UnsignedShort { get; set; }
+        public uint UnsignedInteger { get; set; }
+        public ulong UnsignedLong { get; set; }
+        public double Double { get; set; }
+        public float Float { get; set; }
+        public decimal Decimal { get; set; }
+        public TestEnumeration Enum { get; set; }
+        public string String { get; set; }
+        public char Char { get; set; }
+        public DateTime DateTime { get; set; }
+        public TimeSpan TimeSpan { get; set; }
 
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        public override string ToString()
         {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}
-
-            return base.CreateControl(pi, options);
+            return "Simple types";
         }
     }
 }

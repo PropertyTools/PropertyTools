@@ -33,14 +33,13 @@ namespace TestLibrary
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Diagnostics.CodeAnalysis;
 
     using PropertyTools.DataAnnotations;
 
     /// <summary>
     /// Provides an example using <see cref="ItemsSourcePropertyAttribute" />.
     /// </summary>
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    [PropertyGridExample]
     public class TestItemsSourcePropertyAttribute : TestBase
     {
         /// <summary>

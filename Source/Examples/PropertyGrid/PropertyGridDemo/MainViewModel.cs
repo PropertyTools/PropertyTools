@@ -31,15 +31,28 @@ namespace PropertyGridDemo
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Linq;
     using System.Text;
+
+    using PropertyTools;
 
     using TestLibrary;
 
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : Observable
     {
-        public List<object> Models { get; set; }
-
         private object selectedItem;
+
+        public MainViewModel()
+        {
+            this.Models = Examples.GetPropertyGridExamples().ToList();
+            this.SelectedItem = this.Models.FirstOrDefault(o => o.GetType() == typeof(TestSimpleTypes));
+            foreach (TestBase m in this.Models)
+            {
+                m.PropertyChanged += this.TestChanged;
+            }
+        }
+
+        public List<object> Models { get; private set; }
 
         public object SelectedItem
         {
@@ -47,11 +60,13 @@ namespace PropertyGridDemo
             {
                 return this.selectedItem;
             }
+
             set
             {
-                this.selectedItem = value;
-                RaisePropertyChanged("SelectedItem");
-                RaisePropertyChanged("Output");
+                if (this.SetValue(ref this.selectedItem, value, () => this.SelectedItem))
+                {
+                    this.RaisePropertyChanged(() => this.Output);
+                }
             }
         }
 
@@ -59,56 +74,57 @@ namespace PropertyGridDemo
         {
             get
             {
-                return CreateOutput(SelectedItem);
+                return this.CreateOutput(this.SelectedItem);
             }
         }
 
         private string CreateOutput(object item)
         {
             if (item == null)
+            {
                 return null;
+            }
+
             var sb = new StringBuilder();
             foreach (PropertyDescriptor pd in TypeDescriptor.GetProperties(item))
             {
                 var value = pd.GetValue(item);
-                sb.AppendLine(pd.Name + " = " + ValueToString(value));
+                sb.AppendLine(pd.Name + " = " + this.ValueToString(value));
             }
+
             return sb.ToString();
         }
 
-        string ValueToString(object o)
+        private string ValueToString(object o)
         {
-            if (o is IList) return "[" + ((IList)o).Count.ToString() + "]";
-            if (o == null) return "null";
-            if (o is string) return string.Format("\"{0}\"", o);
-            if (o is char) return string.Format("'{0}'", o);
-            return string.Format("({0}) {1}", o.GetType().Name, o.ToString());
-        }
-
-        public MainViewModel()
-        {
-            Models = Tests.Get();
-            foreach (TestBase m in Models)
+            var list = o as IList;
+            if (list != null)
             {
-                m.PropertyChanged += TestChanged;
+                return string.Format("[{0}]", list.Count);
             }
+
+            if (o == null)
+            {
+                return "null";
+            }
+
+            if (o is string)
+            {
+                return string.Format("\"{0}\"", o);
+            }
+
+            if (o is char)
+            {
+                return string.Format("'{0}'", o);
+            }
+
+            return string.Format("({0}) {1}", o.GetType().Name, o);
         }
 
         private void TestChanged(object sender, PropertyChangedEventArgs e)
         {
             Debug.WriteLine("Changed " + e.PropertyName);
-            RaisePropertyChanged("Output");
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string property)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(property));
-            }
+            this.RaisePropertyChanged(() => this.Output);
         }
     }
 }

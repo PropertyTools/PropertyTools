@@ -35,6 +35,7 @@ namespace TestLibrary
 
     using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
 
+    [PropertyGridExample]
     public class TestDataAnnotations : TestBase, IDataErrorInfo
     {
         //// http://msdn.microsoft.com/en-us/library/dd901590(v=vs.95).aspx

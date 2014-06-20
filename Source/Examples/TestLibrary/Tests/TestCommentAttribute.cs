@@ -29,6 +29,7 @@ namespace TestLibrary
 {
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestCommentAttribute : TestBase
     {
         [Comment]

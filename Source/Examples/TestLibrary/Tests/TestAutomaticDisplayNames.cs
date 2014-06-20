@@ -27,6 +27,7 @@
 
 namespace TestLibrary
 {
+    [PropertyGridExample]
     public class TestAutomaticDisplayNames : TestBase
     {
         public string FirstName { get; set; }

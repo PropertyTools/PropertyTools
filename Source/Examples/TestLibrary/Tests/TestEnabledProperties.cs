@@ -31,6 +31,7 @@ namespace TestLibrary
 
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestEnabledProperties : TestBase
     {
         [Category("Enable by convention")]

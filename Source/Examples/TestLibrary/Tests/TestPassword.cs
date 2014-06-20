@@ -31,6 +31,7 @@ namespace TestLibrary
     using System.ComponentModel.DataAnnotations;
     using System.Security;
 
+    [PropertyGridExample]
     public class TestPassword : TestBase
     {
         [DataType(DataType.Password)]

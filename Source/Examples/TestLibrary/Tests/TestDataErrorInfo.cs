@@ -33,6 +33,7 @@ namespace TestLibrary
 
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestDataErrorInfo : TestBase, IDataErrorInfo
     {
         [AutoUpdateText]
@@ -106,7 +107,7 @@ namespace TestLibrary
 
         public override string ToString()
         {
-            return "IDataErrorInfo";
+            return "Validation with IDataErrorInfo";
         }
     }
 }

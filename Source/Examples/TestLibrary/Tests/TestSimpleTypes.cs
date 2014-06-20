@@ -29,6 +29,7 @@ namespace TestLibrary
 {
     using System;
 
+    [PropertyGridExample]
     public class TestSimpleTypes : TestBase
     {
         public bool Boolean { get; set; }

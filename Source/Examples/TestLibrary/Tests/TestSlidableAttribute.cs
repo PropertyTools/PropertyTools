@@ -29,6 +29,7 @@ namespace TestLibrary
 {
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestSlidableAttribute : TestBase
     {
         [Slidable(0, 360, 45, 1)]

@@ -30,6 +30,7 @@ namespace TestLibrary
     using System.ComponentModel;
     using System.Windows.Media;
 
+    [PropertyGridExample]
     public class TestPerformance : TestBase
     {
         [Category("Boolean|Properties")]

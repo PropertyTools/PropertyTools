@@ -147,7 +147,7 @@
 
             <pt:PropertyGrid 
                 Grid.Column="1" 
-                x:Name="PropertyGrid1" ValidationErrorTemplate="{StaticResource ValidationErrorTemplate1}"
+                x:Name="PropertyGrid1"
                 PropertyControlFactory="{StaticResource PropertyControlFactory}"
                 PropertyItemFactory="{StaticResource PropertyItemFactory}"
                 CategoryControlTemplate="{StaticResource CategoryControlTemplate1}"

@@ -29,6 +29,7 @@ namespace TestLibrary
 {
     using System.ComponentModel;
 
+    [PropertyGridExample]
     public class TestDisplayName : TestBase
     {
         [DisplayName("Display name"), Description("Property description.")]
@@ -36,7 +37,7 @@ namespace TestLibrary
 
         public override string ToString()
         {
-            return "Display name and description";
+            return "DisplayName and Description";
         }
     }
 }

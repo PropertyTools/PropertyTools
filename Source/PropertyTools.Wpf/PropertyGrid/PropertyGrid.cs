@@ -1212,7 +1212,7 @@ namespace PropertyTools.Wpf
 
                 // Hide the group control if all child properties are invisible.
                 groupContentControl.SetBinding(
-                    VisibilityProperty,
+                    UIElement.VisibilityProperty,
                     new Binding("VisibleChildrenCount")
                     {
                         Source = propertyPanel,
@@ -1347,12 +1347,31 @@ namespace PropertyTools.Wpf
                                                Focusable = false
                                            };
                     var errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
-                    errorControl.SetBinding(VisibilityProperty, new Binding(pi.PropertyName) { Converter = errorConverter, NotifyOnTargetUpdated = true });
+                    var visibilityBinding = new Binding(pi.PropertyName)
+                                      {
+                                          Converter = errorConverter,
+                                          NotifyOnTargetUpdated = true,
+                                          //                                          ValidatesOnDataErrors = false,
+#if !NET40
+                        ValidatesOnNotifyDataErrors = false, 
+#endif
+                                          //                                          ValidatesOnExceptions = false
+                                      };
+                    errorControl.SetBinding(VisibilityProperty, visibilityBinding);
 
                     // When the visibility of the error control is changed, updated the HasErrors of the tab
                     errorControl.TargetUpdated += (s, e) => tab.UpdateHasErrors(dataErrorInfoInstance);
 
-                    errorControl.SetBinding(ContentControl.ContentProperty, new Binding(pi.PropertyName) { Converter = errorConverter });
+                    var contentBinding = new Binding(pi.PropertyName)
+                                             {
+                                                 Converter = errorConverter,
+                                                 //                                                 ValidatesOnDataErrors = false,
+#if !NET40
+                                                 ValidatesOnNotifyDataErrors = false,
+#endif
+                                                 //                                                 ValidatesOnExceptions = false
+                                             };
+                    errorControl.SetBinding(ContentControl.ContentProperty, contentBinding);
 
                     // Add a row to the panel
                     propertyPanel.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });

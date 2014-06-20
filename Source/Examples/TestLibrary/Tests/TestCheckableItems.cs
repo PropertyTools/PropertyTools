@@ -33,6 +33,7 @@ namespace TestLibrary
     using PropertyTools;
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestCheckableItems : TestBase
     {
         [Category("Checkable items")]

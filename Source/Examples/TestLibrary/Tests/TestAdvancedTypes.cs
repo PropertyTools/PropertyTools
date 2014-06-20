@@ -39,6 +39,7 @@ namespace TestLibrary
 
     using FontFamilyConverter = PropertyTools.Wpf.FontFamilyConverter;
 
+    [PropertyGridExample]
     public class TestAdvancedTypes : TestBase
     {
         public TestAdvancedTypes()

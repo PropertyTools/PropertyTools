@@ -51,6 +51,7 @@
     <Compile Include="Objects\Mass.cs" />
     <Compile Include="Objects\MassConverter.cs" />
     <Compile Include="Objects\UnitUtilities.cs" />
+    <Compile Include="PropertyGridExampleAttribute.cs" />
     <Compile Include="Tests\BigIntegerConverter.cs" />
     <Compile Include="Tests\ComplexConverter.cs" />
     <Compile Include="Tests\TestCheckableItems.cs" />
@@ -76,7 +77,7 @@
     <Compile Include="Tests\TestDirectoryPathAttribute.cs" />
     <Compile Include="Tests\TestAutomaticDisplayNames.cs" />
     <Compile Include="Tests\TestCategory.cs" />
-    <Compile Include="Tests.cs" />
+    <Compile Include="Examples.cs" />
     <Compile Include="Tests\TestDataErrorInfo.cs" />
     <Compile Include="Tests\TestDisplayName.cs" />
     <Compile Include="Tests\TestEnabledProperties.cs" />

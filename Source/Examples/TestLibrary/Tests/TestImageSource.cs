@@ -34,6 +34,7 @@ namespace TestLibrary
 
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestImageSource : TestBase
     {
         [Height(double.NaN, 0, 160)]

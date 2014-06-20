@@ -34,6 +34,7 @@ namespace TestLibrary
 
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestContentAttribute : TestBase
     {
         [Content]

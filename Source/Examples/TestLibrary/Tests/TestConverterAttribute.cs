@@ -35,6 +35,7 @@ namespace TestLibrary
 
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestConverterAttribute : TestBase
     {
         [Category("IValueConverter")]

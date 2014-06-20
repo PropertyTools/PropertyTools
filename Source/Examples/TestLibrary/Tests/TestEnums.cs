@@ -43,6 +43,7 @@ namespace TestLibrary
     [Flags]
     public enum Fruits6 { Apple=1, Pears=2, Bananas=4 }
 
+    [PropertyGridExample]
     public class TestEnums : TestBase
     {
         [Description("Normal enum.")]

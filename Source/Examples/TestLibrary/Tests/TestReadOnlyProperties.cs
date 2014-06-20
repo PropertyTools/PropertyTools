@@ -29,6 +29,7 @@ namespace TestLibrary
 {
     using System.ComponentModel;
 
+    [PropertyGridExample]
     public class TestReadOnlyProperties : TestBase
     {
         public string Name { get; private set; }

@@ -29,6 +29,7 @@ namespace TestLibrary
 {
     using System;
 
+    [PropertyGridExample]
     public class TestExceptions : TestBase
     {
         public string Impossibilium

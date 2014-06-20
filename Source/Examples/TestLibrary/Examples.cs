@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestDictionary.cs" company="PropertyTools">
+// <copyright file="Examples.cs" company="PropertyTools">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 PropertyTools contributors
@@ -23,27 +23,31 @@
 //   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 //   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
+// <summary>
+//   Provides examples defined in the assembly.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace TestLibrary
 {
+    using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
+    using System.Linq;
 
-    [PropertyGridExample]
-    public class TestDictionary : TestBase
+    /// <summary>
+    /// Provides examples defined in the assembly.
+    /// </summary>
+    public static class Examples
     {
-        [Description("This is not yet working.")]
-        public Dictionary<int, Item> Dictionary { get; set; }
-
-        public TestDictionary()
+        /// <summary>
+        /// Gets a collection of all PropertyGrid examples in the assembly.
+        /// </summary>
+        /// <returns>
+        /// A list of object instances.
+        /// </returns>
+        public static IEnumerable<object> GetPropertyGridExamples()
         {
-            Dictionary = new Dictionary<int, Item>();
-        }
-
-        public override string ToString()
-        {
-            return "Dictionary";
+            return typeof(Examples).Assembly.GetTypes().Where(type => type.GetCustomAttributes(typeof(PropertyGridExampleAttribute), false).Any()).OrderBy(type => type.Name).Select(Activator.CreateInstance);
         }
     }
 }

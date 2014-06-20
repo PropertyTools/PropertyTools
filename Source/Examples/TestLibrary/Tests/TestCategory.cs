@@ -29,6 +29,7 @@ namespace TestLibrary
 {
     using System.ComponentModel;
 
+    [PropertyGridExample]
     public class TestCategory : TestBase
     {
         [Category("Tab1|Category1")]

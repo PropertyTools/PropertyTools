@@ -34,6 +34,7 @@ namespace TestLibrary
     using PropertyTools;
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestCollections : TestBase
     {
         [Category("Arrays|Array")]

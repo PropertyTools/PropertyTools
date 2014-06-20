@@ -31,6 +31,7 @@ namespace TestLibrary
 
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestFillTabAttribute : TestBase
     {
         [Category("Header|Group category is not shown!")]

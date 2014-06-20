@@ -1767,7 +1767,7 @@ namespace PropertyTools.Wpf
         private void CurrentCellSourceUpdated(object sender, DataTransferEventArgs e)
         {
             // The source of the binding for the current cell was updated
-            // (e.g. checkbox (display control) was changed or a combobox (edit control) was changed
+            // (e.g. check box (display control) was changed or a combo box (edit control) was changed
             var value = this.GetCellValue(this.CurrentCell);
 
             // Set the same value in all selected cells.

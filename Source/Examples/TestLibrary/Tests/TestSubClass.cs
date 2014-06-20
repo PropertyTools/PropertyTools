@@ -29,6 +29,7 @@ namespace TestLibrary
 {
     using System.ComponentModel;
 
+    [PropertyGridExample]
     public class TestSubClass : SuperClass
     {
         public string Name2 { get; set; }

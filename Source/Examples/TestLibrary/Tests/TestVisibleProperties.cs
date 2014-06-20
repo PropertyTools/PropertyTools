@@ -31,6 +31,7 @@ namespace TestLibrary
 
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestVisibleProperties : TestBase
     {
         [Category("Visibility by convention")]
@@ -43,7 +44,7 @@ namespace TestLibrary
         public TestEnumeration Color2 { get; set; }
 
         [Browsable(false)]
-        public bool IsColor2Ok { get { return Color2 == TestEnumeration.Green || Color2 == TestEnumeration.Blue; } }
+        public bool IsColor2Ok { get { return this.Color2 == TestEnumeration.Green || this.Color2 == TestEnumeration.Blue; } }
 
         [VisibleBy("IsColor2Ok")]
         public string String2 { get; set; }
@@ -55,12 +56,12 @@ namespace TestLibrary
 
         public TestVisibleProperties()
         {
-            IsWeightVisible = true;
+            this.IsWeightVisible = true;
         }
 
         public override string ToString()
         {
-            return "Visible properties";
+            return "Visibility";
         }
     }
 }

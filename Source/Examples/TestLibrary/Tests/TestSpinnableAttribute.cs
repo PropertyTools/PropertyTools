@@ -31,6 +31,7 @@ namespace TestLibrary
 
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestSpinnableAttribute : TestBase
     {
         [Spinnable(10, 90, 0, 360)]

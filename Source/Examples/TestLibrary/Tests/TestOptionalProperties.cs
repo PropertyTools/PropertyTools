@@ -33,6 +33,7 @@ namespace TestLibrary
 
     using PropertyTools.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestOptionalProperties : TestBase
     {
         [Category("By convention")]

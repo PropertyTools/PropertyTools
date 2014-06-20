@@ -30,6 +30,7 @@ namespace TestLibrary
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    [PropertyGridExample]
     public class TestDataTypes : TestBase
     {
         //// http://msdn.microsoft.com/en-us/library/dd901590(v=vs.95).aspx

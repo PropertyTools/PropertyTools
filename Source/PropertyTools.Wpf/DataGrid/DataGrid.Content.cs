@@ -158,6 +158,7 @@ namespace PropertyTools.Wpf
                 return;
             }
 
+            // TODO: this call may cause infinite recursion
             this.sheetGrid.UpdateLayout();
 
             for (int i = 0; i < this.Columns; i++)
@@ -325,8 +326,8 @@ namespace PropertyTools.Wpf
             var visibility = rows >= 0 ? Visibility.Visible : Visibility.Hidden;
 
             // Hide the row/column headers if the content is empty
-            this.rowScroller.Visibility =
-                this.columnScroller.Visibility = this.sheetScroller.Visibility = this.topleft.Visibility = visibility;
+            this.rowScrollViewer.Visibility =
+                this.columnScrollViewer.Visibility = this.sheetScrollViewer.Visibility = this.topLeft.Visibility = visibility;
 
             if (rows < 0)
             {

@@ -49,7 +49,7 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <!-- The grid cell area (sheet) -->
-                            <ScrollViewer x:Name="PART_SheetScroller" Focusable="False" Grid.Row="1" Grid.Column="1"
+                            <ScrollViewer x:Name="PART_SheetScrollViewer" Focusable="False" Grid.Row="1" Grid.Column="1"
                             HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                                 <Grid x:Name="PART_SheetGrid" Background="Transparent" Cursor="/PropertyTools.Wpf;component/DataGrid/Cursors/Cross.cur">
                                     <Border x:Name="PART_SelectionBackground" Background="#b7dbff" />
@@ -60,7 +60,7 @@
                                 </Grid>
                             </ScrollViewer>
                             <!-- Column headers -->
-                            <ScrollViewer x:Name="PART_ColumnScroller" Grid.Column="1" VerticalScrollBarVisibility="Hidden"
+                            <ScrollViewer x:Name="PART_ColumnScrollViewer" Grid.Row="0" Grid.Column="1" VerticalScrollBarVisibility="Hidden"
                             HorizontalScrollBarVisibility="Hidden">
                                 <Grid x:Name="PART_ColumnGrid" Cursor="/PropertyTools.Wpf;component/DataGrid/Cursors/DownArrow.cur"
                       Background="{StaticResource HeaderBackgroundBrush}">
@@ -68,7 +68,7 @@
                                 </Grid>
                             </ScrollViewer>
                             <!-- Row headers -->
-                            <ScrollViewer x:Name="PART_RowScroller" Grid.Row="1" VerticalScrollBarVisibility="Hidden"
+                            <ScrollViewer x:Name="PART_RowScrollViewer" Grid.Row="1" Grid.Column="0" VerticalScrollBarVisibility="Hidden"
                             HorizontalScrollBarVisibility="Hidden">
                                 <Grid x:Name="PART_RowGrid" Cursor="/PropertyTools.Wpf;component/DataGrid/Cursors/RightArrow.cur"
                       Background="{StaticResource HeaderBackgroundBrush}">
@@ -76,7 +76,7 @@
                                 </Grid>
                             </ScrollViewer>
                             <!-- The top-left cell -->
-                            <Grid>
+                            <Grid Grid.Row="0" Grid.Column="0">
                                 <Border x:Name="PART_TopLeft" Cursor="/PropertyTools.Wpf;component/DataGrid/Cursors/Cross.cur"
                         Background="{StaticResource HeaderBackgroundBrush}" BorderBrush="#b1b5ba" BorderThickness="1,1,1,1" Margin="0,0,0,0">
                                     <Path Data="F1 M0,11 L11,11 L11,0 z" Fill="#30000000" HorizontalAlignment="Right"

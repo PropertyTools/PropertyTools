@@ -95,7 +95,7 @@ namespace PropertyTools.Wpf
     /// </summary>
     [TemplatePart(Name = PartTabs, Type = typeof(TabControl))]
     [TemplatePart(Name = PartPanel, Type = typeof(StackPanel))]
-    [TemplatePart(Name = PartScroller, Type = typeof(ScrollViewer))]
+    [TemplatePart(Name = PartScrollViewer, Type = typeof(ScrollViewer))]
     public class PropertyGrid : Control, IPropertyGridOptions
     {
         /// <summary>
@@ -347,7 +347,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The scroll control part name.
         /// </summary>
-        private const string PartScroller = "PART_Scroller";
+        private const string PartScrollViewer = "PART_ScrollViewer";
 
         /// <summary>
         /// The tab control part name.
@@ -1073,7 +1073,7 @@ namespace PropertyTools.Wpf
             base.OnApplyTemplate();
             this.tabControl = this.Template.FindName(PartTabs, this) as TabControl;
             this.panelControl = this.Template.FindName(PartPanel, this) as StackPanel;
-            this.scrollViewer = this.Template.FindName(PartScroller, this) as ScrollViewer;
+            this.scrollViewer = this.Template.FindName(PartScrollViewer, this) as ScrollViewer;
             this.UpdateControls();
         }
 

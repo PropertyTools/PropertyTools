@@ -55,11 +55,11 @@ namespace PropertyTools.Wpf
     [ContentProperty("ItemsSource")]
     [DefaultProperty("ItemsSource")]
     [TemplatePart(Name = PartGrid, Type = typeof(Grid))]
-    [TemplatePart(Name = PartSheetScroller, Type = typeof(ScrollViewer))]
+    [TemplatePart(Name = PartSheetScrollViewer, Type = typeof(ScrollViewer))]
     [TemplatePart(Name = PartSheetGrid, Type = typeof(Grid))]
-    [TemplatePart(Name = PartColumnScroller, Type = typeof(ScrollViewer))]
+    [TemplatePart(Name = PartColumnScrollViewer, Type = typeof(ScrollViewer))]
     [TemplatePart(Name = PartColumnGrid, Type = typeof(Grid))]
-    [TemplatePart(Name = PartRowScroller, Type = typeof(ScrollViewer))]
+    [TemplatePart(Name = PartRowScrollViewer, Type = typeof(ScrollViewer))]
     [TemplatePart(Name = PartRowGrid, Type = typeof(Grid))]
     [TemplatePart(Name = PartSelectionBackground, Type = typeof(Border))]
     [TemplatePart(Name = PartRowSelectionBackground, Type = typeof(Border))]
@@ -89,7 +89,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The column scroll viewer.
         /// </summary>
-        private const string PartColumnScroller = "PART_ColumnScroller";
+        private const string PartColumnScrollViewer = "PART_ColumnScrollViewer";
 
         /// <summary>
         /// The column selection background.
@@ -114,7 +114,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The row scroll viewer.
         /// </summary>
-        private const string PartRowScroller = "PART_RowScroller";
+        private const string PartRowScrollViewer = "PART_RowScrollViewer";
 
         /// <summary>
         /// The row selection background.
@@ -139,7 +139,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The sheet scroll viewer.
         /// </summary>
-        private const string PartSheetScroller = "PART_SheetScroller";
+        private const string PartSheetScrollViewer = "PART_SheetScrollViewer";
 
         /// <summary>
         /// The top left cell.
@@ -200,7 +200,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The column scroll view control.
         /// </summary>
-        private ScrollViewer columnScroller;
+        private ScrollViewer columnScrollViewer;
 
         /// <summary>
         /// The column selection background control.
@@ -245,7 +245,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The row scroll viewer control.
         /// </summary>
-        private ScrollViewer rowScroller;
+        private ScrollViewer rowScrollViewer;
 
         /// <summary>
         /// The row selection background control.
@@ -265,7 +265,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The sheet scroll viewer control.
         /// </summary>
-        private ScrollViewer sheetScroller;
+        private ScrollViewer sheetScrollViewer;
 
         /// <summary>
         /// Reference to the collection that has subscribed to the INotifyCollectionChanged event.
@@ -275,7 +275,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The top/left control.
         /// </summary>
-        private Border topleft;
+        private Border topLeft;
 
         /// <summary>
         /// Initializes static members of the <see cref="DataGrid" /> class.
@@ -381,6 +381,15 @@ namespace PropertyTools.Wpf
         public void Copy()
         {
             this.Copy("\t");
+        }
+
+        /// <summary>
+        /// Cuts the selected items.
+        /// </summary>
+        public void Cut()
+        {
+            this.Copy();
+            this.Delete();
         }
 
         /// <summary>
@@ -641,17 +650,17 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the visible cells.
         /// </summary>
-        /// <param name="topLeft">The top left.</param>
-        /// <param name="bottomRight">The bottom right.</param>
-        public void GetVisibleCells(out CellRef topLeft, out CellRef bottomRight)
+        /// <param name="topLeftCell">The top left cell.</param>
+        /// <param name="bottomRightCell">The bottom right cell.</param>
+        public void GetVisibleCells(out CellRef topLeftCell, out CellRef bottomRightCell)
         {
-            double left = this.sheetScroller.HorizontalOffset;
-            double right = left + this.sheetScroller.ActualWidth;
-            double top = this.sheetScroller.VerticalOffset;
-            double bottom = top + this.sheetScroller.ActualHeight;
+            double left = this.sheetScrollViewer.HorizontalOffset;
+            double right = left + this.sheetScrollViewer.ActualWidth;
+            double top = this.sheetScrollViewer.VerticalOffset;
+            double bottom = top + this.sheetScrollViewer.ActualHeight;
 
-            topLeft = this.GetCell(new Point(left, top));
-            bottomRight = this.GetCell(new Point(right, bottom));
+            topLeftCell = this.GetCell(new Point(left, top));
+            bottomRightCell = this.GetCell(new Point(right, bottom));
         }
 
         /// <summary>
@@ -700,7 +709,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Changes current cell with the specified delta.
+        /// Changes the current cell with the specified delta.
         /// </summary>
         /// <param name="deltaRows">The change in rows.</param>
         /// <param name="deltaColumns">The change in columns.</param>
@@ -759,11 +768,11 @@ namespace PropertyTools.Wpf
         {
             base.OnApplyTemplate();
 
-            this.sheetScroller = this.Template.FindName(PartSheetScroller, this) as ScrollViewer;
+            this.sheetScrollViewer = this.Template.FindName(PartSheetScrollViewer, this) as ScrollViewer;
             this.sheetGrid = this.Template.FindName(PartSheetGrid, this) as Grid;
-            this.columnScroller = this.Template.FindName(PartColumnScroller, this) as ScrollViewer;
+            this.columnScrollViewer = this.Template.FindName(PartColumnScrollViewer, this) as ScrollViewer;
             this.columnGrid = this.Template.FindName(PartColumnGrid, this) as Grid;
-            this.rowScroller = this.Template.FindName(PartRowScroller, this) as ScrollViewer;
+            this.rowScrollViewer = this.Template.FindName(PartRowScrollViewer, this) as ScrollViewer;
             this.rowGrid = this.Template.FindName(PartRowGrid, this) as Grid;
             this.rowSelectionBackground = this.Template.FindName(PartRowSelectionBackground, this) as Border;
             this.columnSelectionBackground = this.Template.FindName(PartColumnSelectionBackground, this) as Border;
@@ -772,24 +781,24 @@ namespace PropertyTools.Wpf
             this.selection = this.Template.FindName(PartSelection, this) as Border;
             this.autoFillSelection = this.Template.FindName(PartAutoFillSelection, this) as Border;
             this.autoFillBox = this.Template.FindName(PartAutoFillBox, this) as Border;
-            this.topleft = this.Template.FindName(PartTopLeft, this) as Border;
+            this.topLeft = this.Template.FindName(PartTopLeft, this) as Border;
 
-            if (this.sheetScroller == null)
+            if (this.sheetScrollViewer == null)
             {
-                throw new Exception(PartSheetScroller + " not found.");
+                throw new Exception(PartSheetScrollViewer + " not found.");
             }
 
-            if (this.rowScroller == null)
+            if (this.rowScrollViewer == null)
             {
-                throw new Exception(PartRowScroller + " not found.");
+                throw new Exception(PartRowScrollViewer + " not found.");
             }
 
-            if (this.columnScroller == null)
+            if (this.columnScrollViewer == null)
             {
-                throw new Exception(PartColumnScroller + " not found.");
+                throw new Exception(PartColumnScrollViewer + " not found.");
             }
 
-            if (this.topleft == null)
+            if (this.topLeft == null)
             {
                 throw new Exception(PartTopLeft + " not found.");
             }
@@ -814,11 +823,11 @@ namespace PropertyTools.Wpf
                 throw new Exception(PartSheetGrid + " not found.");
             }
 
-            this.sheetScroller.ScrollChanged += this.ScrollViewerScrollChanged;
-            this.rowScroller.ScrollChanged += this.RowScrollerChanged;
-            this.columnScroller.ScrollChanged += this.ColumnScrollerChanged;
+            this.sheetScrollViewer.ScrollChanged += this.ScrollViewerScrollChanged;
+            this.rowScrollViewer.ScrollChanged += this.RowScrollViewerScrollChanged;
+            this.columnScrollViewer.ScrollChanged += this.ColumnScrollViewerScrollChanged;
 
-            this.topleft.MouseLeftButtonDown += this.TopleftMouseLeftButtonDown;
+            this.topLeft.MouseLeftButtonDown += this.TopLeftMouseLeftButtonDown;
             this.autoFillBox.MouseLeftButtonDown += this.AutoFillBoxMouseLeftButtonDown;
             this.columnGrid.MouseLeftButtonDown += this.ColumnGridMouseLeftButtonDown;
             this.columnGrid.MouseMove += this.ColumnGridMouseMove;
@@ -830,7 +839,7 @@ namespace PropertyTools.Wpf
             this.columnGrid.Loaded += this.ColumnGridLoaded;
 
             this.sheetGrid.SizeChanged += this.ColumnGridSizeChanged;
-            this.sheetGrid.MouseLeftButtonDown += this.SheetMouseLeftButtonDown;
+            this.sheetGrid.MouseLeftButtonDown += this.SheetGridMouseLeftButtonDown;
 
             this.autoFiller = new AutoFiller(this.GetCellValue, this.TrySetCellValue);
 
@@ -843,10 +852,10 @@ namespace PropertyTools.Wpf
             this.UpdateGridContent();
             this.SelectedCellsChanged();
 
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, this.CopyExecute));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, this.CutExecute));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, this.PasteExecute));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, this.DeleteExecute));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, (s, e) => this.Copy()));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, (s, e) => this.Cut()));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, (s, e) => this.Paste()));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, (s, e) => this.Delete()));
         }
 
         /// <summary>
@@ -918,26 +927,26 @@ namespace PropertyTools.Wpf
             const double ScrollBarWidth = 20;
             const double ScrollBarHeight = 20;
 
-            if (pos0.X < this.sheetScroller.HorizontalOffset)
+            if (pos0.X < this.sheetScrollViewer.HorizontalOffset)
             {
-                this.sheetScroller.ScrollToHorizontalOffset(pos0.X);
+                this.sheetScrollViewer.ScrollToHorizontalOffset(pos0.X);
             }
 
-            if (pos1.X > this.sheetScroller.HorizontalOffset + this.sheetScroller.ActualWidth - ScrollBarWidth)
+            if (pos1.X > this.sheetScrollViewer.HorizontalOffset + this.sheetScrollViewer.ActualWidth - ScrollBarWidth)
             {
-                this.sheetScroller.ScrollToHorizontalOffset(
-                    Math.Max(pos1.X - this.sheetScroller.ActualWidth + ScrollBarWidth, 0));
+                this.sheetScrollViewer.ScrollToHorizontalOffset(
+                    Math.Max(pos1.X - this.sheetScrollViewer.ActualWidth + ScrollBarWidth, 0));
             }
 
-            if (pos0.Y < this.sheetScroller.VerticalOffset)
+            if (pos0.Y < this.sheetScrollViewer.VerticalOffset)
             {
-                this.sheetScroller.ScrollToVerticalOffset(pos0.Y);
+                this.sheetScrollViewer.ScrollToVerticalOffset(pos0.Y);
             }
 
-            if (pos1.Y > this.sheetScroller.VerticalOffset + this.sheetScroller.ActualHeight - ScrollBarHeight)
+            if (pos1.Y > this.sheetScrollViewer.VerticalOffset + this.sheetScrollViewer.ActualHeight - ScrollBarHeight)
             {
-                this.sheetScroller.ScrollToVerticalOffset(
-                    Math.Max(pos1.Y - this.sheetScroller.ActualHeight + ScrollBarHeight, 0));
+                this.sheetScrollViewer.ScrollToVerticalOffset(
+                    Math.Max(pos1.Y - this.sheetScrollViewer.ActualHeight + ScrollBarHeight, 0));
             }
         }
 
@@ -1819,7 +1828,7 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         private void AutoFillBoxMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Show the autofill selection border
+            // Show the auto-fill selection border
             this.autoFillSelection.Visibility = Visibility.Visible;
         }
 
@@ -1901,9 +1910,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void ColumnScrollerChanged(object sender, ScrollChangedEventArgs e)
+        private void ColumnScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            this.sheetScroller.ScrollToHorizontalOffset(e.HorizontalOffset);
+            this.sheetScrollViewer.ScrollToHorizontalOffset(e.HorizontalOffset);
         }
 
         /// <summary>
@@ -1972,28 +1981,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The copy execute.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void CopyExecute(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.Copy();
-        }
-
-        /// <summary>
-        /// The cut execute.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void CutExecute(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.Copy();
-            this.Delete();
-        }
-
-        /// <summary>
-        /// The delete.
+        /// Handles the delete command.
         /// </summary>
         private void Delete()
         {
@@ -2040,16 +2028,6 @@ namespace PropertyTools.Wpf
             {
                 this.SelectionCell = new CellRef(maxColumn, this.SelectionCell.Column);
             }
-        }
-
-        /// <summary>
-        /// The delete execute.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void DeleteExecute(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.Delete();
         }
 
         /// <summary>
@@ -2518,16 +2496,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The paste execute.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void PasteExecute(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.Paste();
-        }
-
-        /// <summary>
         /// The row grid mouse left button down.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -2586,9 +2554,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void RowScrollerChanged(object sender, ScrollChangedEventArgs e)
+        private void RowScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            this.sheetScroller.ScrollToVerticalOffset(e.VerticalOffset);
+            this.sheetScrollViewer.ScrollToVerticalOffset(e.VerticalOffset);
         }
 
         /// <summary>
@@ -2598,8 +2566,8 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         private void ScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            this.columnScroller.ScrollToHorizontalOffset(this.sheetScroller.HorizontalOffset);
-            this.rowScroller.ScrollToVerticalOffset(this.sheetScroller.VerticalOffset);
+            this.columnScrollViewer.ScrollToHorizontalOffset(this.sheetScrollViewer.HorizontalOffset);
+            this.rowScrollViewer.ScrollToVerticalOffset(this.sheetScrollViewer.VerticalOffset);
         }
 
         /// <summary>
@@ -2677,7 +2645,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void SheetMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void SheetGridMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
             {
@@ -2700,7 +2668,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The text editor was loaded.
+        /// Handles the loaded event for the text editor.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
@@ -2712,7 +2680,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The text editor lost focus.
+        /// Handles lost focus events for the text editor.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -2869,10 +2837,10 @@ namespace PropertyTools.Wpf
         private bool ToggleCheck()
         {
             bool value = true;
-            var cvalue = this.GetCellValue(this.CurrentCell);
-            if (cvalue is bool)
+            var cellValue = this.GetCellValue(this.CurrentCell);
+            if (cellValue is bool)
             {
-                value = (bool)cvalue;
+                value = (bool)cellValue;
                 value = !value;
             }
 
@@ -2884,7 +2852,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void TopleftMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TopLeftMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Focus();
             this.CurrentCell = new CellRef(0, 0);

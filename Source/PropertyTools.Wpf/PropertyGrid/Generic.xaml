@@ -68,7 +68,7 @@
                         <Grid>
                             <TabControl x:Name="PART_Tabs" SelectedIndex="{TemplateBinding SelectedTabIndex}" 
                           TabStripPlacement="{TemplateBinding TabStripPlacement}" Focusable="false" AutomationProperties.AutomationId="Tabs"/>
-                            <ScrollViewer x:Name="PART_Scroller" VerticalScrollBarVisibility="Auto" Focusable="false" AutomationProperties.AutomationId="Scroller">
+                            <ScrollViewer x:Name="PART_ScrollViewer" VerticalScrollBarVisibility="Auto" Focusable="false" AutomationProperties.AutomationId="ScrollViewer">
                                 <StackPanel x:Name="PART_Panel" />
                             </ScrollViewer>
                         </Grid>

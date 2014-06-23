@@ -1098,7 +1098,7 @@ namespace PropertyTools.Wpf
             Grid.SetRow(this.autoFillBox, row + rowspan - 1);
 
             bool allSelected = rowspan == this.Rows && columnspan == this.Columns;
-            this.topleft.Background = allSelected ? this.rowSelectionBackground.Background : this.rowGrid.Background;
+            this.topLeft.Background = allSelected ? this.rowSelectionBackground.Background : this.rowGrid.Background;
 
             int r = Math.Min(this.CurrentCell.Row, this.AutoFillCell.Row);
             int c = Math.Min(this.CurrentCell.Column, this.AutoFillCell.Column);

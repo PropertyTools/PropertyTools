@@ -1283,14 +1283,17 @@ namespace PropertyTools.Wpf
 
                     // Flag that the next key should be handled differently
                     this.endPressed = true;
-                    break;
+                    e.Handled = true;
+                    return;
                 case Key.Home:
                     column = 0;
                     row = 0;
                     break;
+                case Key.Back:
                 case Key.Delete:
                     this.Delete();
-                    break;
+                    e.Handled = true;
+                    return;
                 case Key.F2:
                     if (this.ShowTextBoxEditControl())
                     {
@@ -1478,7 +1481,10 @@ namespace PropertyTools.Wpf
         protected override void OnTextInput(TextCompositionEventArgs e)
         {
             base.OnTextInput(e);
-            if (e.Text == "\r")
+
+            // do not allow special characters (including backspace, tab, enter)
+            // it is particularly bad to add backspace characters to the cell, since this may not be XML serialized...
+            if (e.Text.Length == 0 || e.Text[0] < 32)
             {
                 return;
             }

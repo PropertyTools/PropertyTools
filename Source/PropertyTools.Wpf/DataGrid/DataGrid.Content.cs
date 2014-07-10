@@ -54,6 +54,7 @@ namespace PropertyTools.Wpf
             this.columnGrid.RowDefinitions.Clear();
             this.columnGrid.ColumnDefinitions.Clear();
             this.columnGrid.Children.Clear();
+            this.columnHeaderMap.Clear();
 
             this.sheetGrid.RowDefinitions.Clear();
             this.sheetGrid.ColumnDefinitions.Clear();
@@ -160,6 +161,7 @@ namespace PropertyTools.Wpf
 
             // TODO: this call may cause infinite recursion
             this.sheetGrid.UpdateLayout();
+            this.columnGrid.UpdateLayout();
 
             for (int i = 0; i < this.Columns; i++)
             {
@@ -238,6 +240,7 @@ namespace PropertyTools.Wpf
 
                 Grid.SetColumn(cell, j);
                 this.columnGrid.Children.Add(cell);
+                this.columnHeaderMap[j] = cell;
             }
 
             for (int j = 0; j < columns; j++)

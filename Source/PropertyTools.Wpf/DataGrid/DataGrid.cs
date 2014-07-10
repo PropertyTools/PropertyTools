@@ -152,6 +152,11 @@ namespace PropertyTools.Wpf
         private readonly Dictionary<int, UIElement> cellMap = new Dictionary<int, UIElement>();
 
         /// <summary>
+        /// The column header map.
+        /// </summary>
+        private readonly Dictionary<int, FrameworkElement> columnHeaderMap = new Dictionary<int, FrameworkElement>();
+
+        /// <summary>
         /// The auto fill box.
         /// </summary>
         private Border autoFillBox;
@@ -349,6 +354,7 @@ namespace PropertyTools.Wpf
         public void AutoSizeAllColumns()
         {
             this.sheetGrid.UpdateLayout();
+            this.columnGrid.UpdateLayout();
             for (int i = 0; i < this.Columns; i++)
             {
                 this.AutoSizeColumn(i);
@@ -361,18 +367,21 @@ namespace PropertyTools.Wpf
         /// <param name="column">The column.</param>
         public void AutoSizeColumn(int column)
         {
-            var h = this.GetColumnElement(column);
-            double maxwidth = h.ActualWidth;
+            // Initialize with the width of the header element
+            var headerElement = this.GetColumnElement(column);
+            double maximumWidth = headerElement.ActualWidth + headerElement.Margin.Left + headerElement.Margin.Right;
+
+            // Compare with the widths of the cell elements
             for (int i = 0; i < this.sheetGrid.RowDefinitions.Count; i++)
             {
                 var c = this.GetCellElement(new CellRef(i, column)) as FrameworkElement;
                 if (c != null)
                 {
-                    maxwidth = Math.Max(maxwidth, c.ActualWidth + c.Margin.Left + c.Margin.Right);
+                    maximumWidth = Math.Max(maximumWidth, c.ActualWidth + c.Margin.Left + c.Margin.Right);
                 }
             }
 
-            this.sheetGrid.ColumnDefinitions[column].Width = new GridLength((int)maxwidth + 2);
+            this.sheetGrid.ColumnDefinitions[column].Width = new GridLength((int)maximumWidth + 2);
         }
 
         /// <summary>
@@ -2167,7 +2176,13 @@ namespace PropertyTools.Wpf
         /// </returns>
         private FrameworkElement GetColumnElement(int column)
         {
-            return this.columnGrid.Children[1 + (3 * column) + 1] as FrameworkElement;
+            FrameworkElement headerElement;
+            if (this.columnHeaderMap.TryGetValue(column, out headerElement))
+            {
+                return headerElement;
+            }
+
+            throw new InvalidOperationException("Invalid header column: " + column);
         }
 
         /// <summary>

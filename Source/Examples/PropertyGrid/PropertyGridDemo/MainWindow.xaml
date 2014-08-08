@@ -126,8 +126,8 @@
                 <MenuItem Header="Show description icons" IsChecked="{Binding ShowDescriptionIcons, ElementName=PropertyGrid1}" IsCheckable="true"/>
                 <MenuItem Header="Show declared only" IsChecked="{Binding ShowDeclaredOnly, ElementName=PropertyGrid1}" IsCheckable="true"/>
                 <MenuItem Header="Show read-only properties" IsChecked="{Binding ShowReadOnlyProperties, ElementName=PropertyGrid1}" IsCheckable="true"/>
-                <MenuItem Header="Use tabs" IsChecked="{Binding UseTabs, ElementName=PropertyGrid1}" IsCheckable="true"/>
                 <MenuItem Header="Enable label width resizing" IsChecked="{Binding EnableLabelWidthResizing, ElementName=PropertyGrid1}" IsCheckable="true"/>
+                <pt:EnumMenuItem Header="TabVisibility" SelectedValue="{Binding TabVisibility, ElementName=PropertyGrid1}"/>
                 <pt:EnumMenuItem Header="CheckBoxLayout" SelectedValue="{Binding CheckBoxLayout, ElementName=PropertyGrid1}"/>
                 <pt:EnumMenuItem Header="LabelWidthSharing" SelectedValue="{Binding LabelWidthSharing, ElementName=PropertyGrid1}"/>
                 <pt:EnumMenuItem Header="CategoryControlType" SelectedValue="{Binding CategoryControlType, ElementName=PropertyGrid1}"/>

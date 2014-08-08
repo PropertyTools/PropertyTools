@@ -49,7 +49,7 @@ namespace PropertyTools.Wpf
     using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
     /// <summary>
-    /// The label width sharing.
+    /// Specifies how the label widths are shared.
     /// </summary>
     public enum LabelWidthSharing
     {
@@ -88,6 +88,27 @@ namespace PropertyTools.Wpf
         /// Collapse the header, show the check box with the display name as content
         /// </summary>
         CollapseHeader
+    }
+
+    /// <summary>
+    /// Specifies the visibility of the tab strip.
+    /// </summary>
+    public enum TabVisibility
+    {
+        /// <summary>
+        /// The tabs are visible.
+        /// </summary>
+        Visible,
+
+        /// <summary>
+        /// The tabs are visible if there is more than one tab.
+        /// </summary>
+        VisibleIfMoreThanOne,
+
+        /// <summary>
+        /// The tab strip is collapsed. The contents of the tab pages will be stacked vertically in the control. 
+        /// </summary>
+        Collapsed
     }
 
     /// <summary>
@@ -313,10 +334,10 @@ namespace PropertyTools.Wpf
                 "ToolTipTemplate", typeof(DataTemplate), typeof(PropertyGrid), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// Identifies the <see cref="UseTabs"/> dependency property.
+        /// Identifies the <see cref="TabVisibility"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty UseTabsProperty = DependencyProperty.Register(
-            "UseTabs", typeof(bool), typeof(PropertyGrid), new UIPropertyMetadata(true, AppearanceChanged));
+        public static readonly DependencyProperty TabVisibilityProperty = DependencyProperty.Register(
+            "TabVisibility", typeof(TabVisibility), typeof(PropertyGrid), new UIPropertyMetadata(TabVisibility.Visible, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ValidationErrorStyle"/> dependency property.
@@ -794,19 +815,19 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use tabs.
+        /// Gets or sets a value indicating the tab visibility state.
         /// </summary>
-        /// <value><c>true</c> if tabs should be used; otherwise, <c>false</c> .</value>
-        public bool UseTabs
+        /// <value>The tab visibility state.</value>
+        public TabVisibility TabVisibility
         {
             get
             {
-                return (bool)this.GetValue(UseTabsProperty);
+                return (TabVisibility)this.GetValue(TabVisibilityProperty);
             }
 
             set
             {
-                this.SetValue(UseTabsProperty, value);
+                this.SetValue(TabVisibilityProperty, value);
             }
         }
 
@@ -1655,13 +1676,16 @@ namespace PropertyTools.Wpf
             var oldIndex = this.tabControl != null ? this.tabControl.SelectedIndex : -1;
 
             var tabs = this.PropertyItemFactory.CreateModel(this.CurrentObject, false, this);
-            if (this.UseTabs)
+            var tabsArray = tabs != null ? tabs.ToArray() : null;
+            var areTabsVisible = this.TabVisibility == TabVisibility.Visible
+                                 || (this.TabVisibility == TabVisibility.VisibleIfMoreThanOne && tabsArray != null && tabsArray.Length > 1);
+            if (areTabsVisible)
             {
-                this.CreateControls(this.CurrentObject, tabs);
+                this.CreateControls(this.CurrentObject, tabsArray);
             }
             else
             {
-                this.CreateControlsTabless(this.CurrentObject, tabs);
+                this.CreateControlsTabless(this.CurrentObject, tabsArray);
             }
 
             var newSelectedObjectType = this.CurrentObject != null ? this.CurrentObject.GetType() : null;

@@ -24,6 +24,7 @@
             <Button Content="double[]" Tag="{x:Type local:Window401}"/>
             <Button Content="double[] (WrapItems=True)" Tag="{x:Type local:Window402}"/>
             <Button Content="Mass[] (WrapItems=True)" Tag="{x:Type local:Window403}"/>
+            <Button Content="Validation with INotifyDataErrorInfo" Tag="{x:Type local:ValidationExampleWindow}"/>
         </StackPanel>
         <StackPanel>
             <Button Content="List&lt;List&lt;int&gt;&gt;" Tag="{x:Type local:Window501}"/>

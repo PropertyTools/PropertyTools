@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
@@ -50,6 +51,12 @@
     </ApplicationDefinition>
     <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="NET40\DataErrorsChangedEventArgs.cs" />
+    <Compile Include="NET40\MaxLengthAttribute.cs" />
+    <Compile Include="NET40\ValidatableObject.cs" />
+    <Compile Include="Examples\ValidationExampleWindow.xaml.cs">
+      <DependentUpon>ValidationExampleWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\Window403.xaml.cs">
       <DependentUpon>Window403.xaml</DependentUpon>
@@ -118,6 +125,10 @@
     </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
+    <Page Include="Examples\ValidationExampleWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\Window403.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

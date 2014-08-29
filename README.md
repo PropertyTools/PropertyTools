@@ -7,8 +7,6 @@ License:       The MIT License (MIT)
 Project page:  https://github.com/objorke/PropertyTools
 ```
 
-## Controls
-
 | Control           | Description                                                                              | Status |
 |-------------------|------------------------------------------------------------------------------------------|--------|
 | PropertyGrid      | A control that shows properties of an object or a collection of objects.                 | Stable |
@@ -27,22 +25,22 @@ Project page:  https://github.com/objorke/PropertyTools
 | PopupBox          | A restyled {{ComboBox}} where you can put anything in the Popup                          | Stable |
 | FormattingTextBox |  A {{TextBox}} where you can bind the StringFormat                                       | Stable |
 
-## PropertyGrid
+### PropertyGrid
 
 ![PropertyGrid](/Images/PropertyGrid.png)
 
-## DataGrid
+### DataGrid
 
 ![DataGrid](/Images/DataGrid.png)
 
-## TreeListBox
+### TreeListBox
 
 ![TreeListBox](/Images/TreeListBox.png)
 
-## ColorPicker
+### ColorPicker
 ![ColorPicker](/Images/ColorPicker.png) ![ColorPicker](/Images/ColorPicker2.png)
 
-## AboutDialog
+### AboutDialog
 
 Generic "About" dialog
 
@@ -52,7 +50,7 @@ Generic "About" dialog
 
 ![AboutDialog](/Images/AboutDialog.png)
 
-## PropertyDialog
+### PropertyDialog
 
 Below is an example `PropertyDialog` bound to `Settings.Default`:
 

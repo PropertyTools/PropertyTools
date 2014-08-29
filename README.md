@@ -22,8 +22,8 @@ Project page:  https://github.com/objorke/PropertyTools
 | SpinControl       | A numeric up/down spinner control                                                        | Stable |
 | LinkBlock         | A hyperlink on a TextBlock                                                               | Stable |
 | SliderEx          | A Slider that calls IEditableObject.BeginEdit/EndEdit when thumb dragging                | Stable |
-| PopupBox          | A restyled {{ComboBox}} where you can put anything in the Popup                          | Stable |
-| FormattingTextBox |  A {{TextBox}} where you can bind the StringFormat                                       | Stable |
+| PopupBox          | A restyled `ComboBox` where you can put anything in the Popup                            | Stable |
+| FormattingTextBox | A `TextBox` where you can bind the StringFormat                                          | Stable |
 
 ### PropertyGrid
 
@@ -38,6 +38,7 @@ Project page:  https://github.com/objorke/PropertyTools
 ![TreeListBox](/Images/TreeListBox.png)
 
 ### ColorPicker
+
 ![ColorPicker](/Images/ColorPicker.png) ![ColorPicker](/Images/ColorPicker2.png)
 
 ### AboutDialog

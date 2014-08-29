@@ -1,0 +1,27 @@
+version: 2014.2.{build}
+
+environment:
+  nuget_api_key:
+    secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
+      
+install:
+  - cinst stylecop
+
+platform: Any CPU
+
+configuration: Release
+
+build:
+  project: Source/PropertyTools.AppVeyor.sln
+  verbosity: minimal
+
+before_build:
+  - cmd: Tools\LynxToolkit\UpdateVersionNumbers.exe /Version=%APPVEYOR_BUILD_VERSION% /Directory=Source /Dependency=PropertyTools /ReleaseNotesFile=release-notes.txt
+  
+deploy_script:
+  - cmd: mkdir Packages
+  - cmd: NuGet.exe pack Source\PropertyTools.Wpf\PropertyTools.Wpf.nuspec -OutputDirectory Packages
+  - cmd: for %%G in (Packages\*.nupkg) do NuGet.exe push %%G %nuget_api_key%  
+artifacts:
+  - path: Output
+  - path: Packages\*.nupkg

@@ -3,6 +3,7 @@
 ```
 License:       The MIT License (MIT)
 Project page:  https://github.com/objorke/PropertyTools
+NuGet:         https://www.nuget.org/packages/PropertyTools.Wpf/
 ```
 
 | Control           | Description                                                                              | Status |

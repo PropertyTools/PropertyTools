@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf_NET45", "PropertyTools.Wpf\PropertyTools.Wpf_NET45.csproj", "{7168F82F-288A-42C4-9EB1-FBBE5112F211}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf.Tests_NET45", "PropertyTools.Wpf.Tests\PropertyTools.Wpf.Tests_NET45.csproj", "{470CC9A4-F4F4-429E-8F38-A2957F3EBE58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools_PCL", "PropertyTools\PropertyTools_PCL.csproj", "{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BCB41853-F28F-4DCF-9C5A-B2B254632096}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf_NET40", "PropertyTools.Wpf\PropertyTools.Wpf_NET40.csproj", "{F05D6590-542B-4150-AD2F-3B1612A5D4CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET40", "NET40", "{63B1E394-657C-4F02-995B-41AA8824B0B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET45", "NET45", "{B7370E18-73F2-4C5E-8569-168D1A54D994}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7168F82F-288A-42C4-9EB1-FBBE5112F211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7168F82F-288A-42C4-9EB1-FBBE5112F211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7168F82F-288A-42C4-9EB1-FBBE5112F211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7168F82F-288A-42C4-9EB1-FBBE5112F211}.Release|Any CPU.Build.0 = Release|Any CPU
+		{470CC9A4-F4F4-429E-8F38-A2957F3EBE58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{470CC9A4-F4F4-429E-8F38-A2957F3EBE58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{470CC9A4-F4F4-429E-8F38-A2957F3EBE58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{470CC9A4-F4F4-429E-8F38-A2957F3EBE58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F05D6590-542B-4150-AD2F-3B1612A5D4CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F05D6590-542B-4150-AD2F-3B1612A5D4CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F05D6590-542B-4150-AD2F-3B1612A5D4CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F05D6590-542B-4150-AD2F-3B1612A5D4CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7168F82F-288A-42C4-9EB1-FBBE5112F211} = {B7370E18-73F2-4C5E-8569-168D1A54D994}
+		{470CC9A4-F4F4-429E-8F38-A2957F3EBE58} = {B7370E18-73F2-4C5E-8569-168D1A54D994}
+		{F05D6590-542B-4150-AD2F-3B1612A5D4CB} = {63B1E394-657C-4F02-995B-41AA8824B0B8}
+	EndGlobalSection
+EndGlobal

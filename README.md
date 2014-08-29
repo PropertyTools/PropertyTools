@@ -29,18 +29,18 @@ Project page:  https://github.com/objorke/PropertyTools
 
 ## PropertyGrid
 
-![PropertyGrid](http://raw.githubusercontent.com/objorke/PropertyTools/master/Images/PropertyGrid.png)
+![PropertyGrid](/Images/PropertyGrid.png)
 
 ## DataGrid
 
-![DataGrid](http://raw.githubusercontent.com/objorke/PropertyTools/master/Images/DataGrid.png)
+![DataGrid](/Images/DataGrid.png)
 
 ## TreeListBox
 
-![TreeListBox](http://raw.githubusercontent.com/objorke/PropertyTools/master/Images/TreeListBox.png)
+![TreeListBox](/Images/TreeListBox.png)
 
 ## ColorPicker
-![ColorPicker](http://raw.githubusercontent.com/objorke/PropertyTools/master/Images/ColorPicker.png) ![ColorPicker](http://raw.githubusercontent.com/objorke/PropertyTools/master/Images/ColorPicker2.png)
+![ColorPicker](/Images/ColorPicker.png) ![ColorPicker](/Images/ColorPicker2.png)
 
 ## AboutDialog
 
@@ -50,13 +50,13 @@ Generic "About" dialog
 - Open System Info...
 - Copy report
 
-![AboutDialog](http://raw.githubusercontent.com/objorke/PropertyTools/master/Images/AboutDialog.png)
+![AboutDialog](/Images/AboutDialog.png)
 
 ## PropertyDialog
 
 Below is an example `PropertyDialog` bound to `Settings.Default`:
 
-![OptionsDialog](http://raw.githubusercontent.com/objorke/PropertyTools/master/Images/OptionsDialog.png)
+![OptionsDialog](/Images/PropertyDialog.png)
 
 ### Build requirements
 

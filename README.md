@@ -1,6 +1,4 @@
-Library of property/reflection based custom controls for WPF. The 
-controls includes PropertyGrid, DataGrid, ColorPicker and many 
-other reusable controls. 
+[![Build status](https://ci.appveyor.com/api/projects/status/b3579d3lja65kt6m)](https://ci.appveyor.com/project/objorke/propertytools)
 
 ```
 License:       The MIT License (MIT)

@@ -6,22 +6,24 @@ environment:
       
 install:
   - cinst stylecop
+  - cinst LynxToolkit
 
 platform: Any CPU
 
 configuration: Release
 
+before_build:
+  - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Directory=Source /Dependency=PropertyTools /ReleaseNotesFile=release-notes.txt
+  
 build:
   project: Source/PropertyTools.AppVeyor.sln
   verbosity: minimal
 
-before_build:
-  - cmd: Tools\LynxToolkit\UpdateVersionNumbers.exe /Version=%APPVEYOR_BUILD_VERSION% /Directory=Source /Dependency=PropertyTools /ReleaseNotesFile=release-notes.txt
-  
 deploy_script:
   - cmd: mkdir Packages
-  - cmd: NuGet.exe pack Source\PropertyTools.Wpf\PropertyTools.Wpf.nuspec -OutputDirectory Packages
-  - cmd: for %%G in (Packages\*.nupkg) do NuGet.exe push %%G %nuget_api_key%  
+  - cmd: NuGet pack Source\PropertyTools.Wpf\PropertyTools.Wpf.nuspec -OutputDirectory Packages
+  - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%  
 artifacts:
   - path: Output
-  - path: Packages\*.nupkg
+    name: PropertyTools-$(APPVEYOR_BUILD_VERSION)
+    type: zip

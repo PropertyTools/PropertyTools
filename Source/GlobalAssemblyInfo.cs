@@ -34,5 +34,7 @@ using System.Reflection;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("2014.1.1.1")]
-[assembly: AssemblyFileVersion("2014.1.1.1")]
+// The version numbers are updated in the build (see ~/appveyor.yml)
+[assembly: AssemblyVersion("0.0.0.0")]
+[assembly: AssemblyInformationalVersion("0.0.0.0")]
+[assembly: AssemblyFileVersion("0.0.0.0")]

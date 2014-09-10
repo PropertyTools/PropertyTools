@@ -30,6 +30,7 @@
 
 namespace PropertyTools.Wpf
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
@@ -87,24 +88,21 @@ namespace PropertyTools.Wpf
             "Level",
             typeof(int),
             typeof(TreeListBoxItem),
-            new UIPropertyMetadata(0, (s, e) => ((TreeListBoxItem)s).LevelChanged()));
+            new UIPropertyMetadata(0, (s, e) => ((TreeListBoxItem)s).LevelOrIndentationChanged()));
 
         /// <summary>
-        /// The handler.
+        /// The collection changed handler.
         /// </summary>
         private NotifyCollectionChangedEventHandler collectionChangedHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TreeListBoxItem" /> class.
         /// </summary>
-        /// <param name="parent">The parent.</param>
-        public TreeListBoxItem(TreeListBox parent)
+        public TreeListBoxItem()
         {
             // The following is not working when TreeListBoxItems are disconnected...
             // ItemsControl.ItemsControlFromItemContainer(this) as TreeListBox;
-            this.ParentTreeListBox = parent;
-
-            this.ChildItems = new List<TreeListBoxItem>();
+            this.ChildContainers = new List<TreeListBoxItem>();
         }
 
         /// <summary>
@@ -207,30 +205,36 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the child items.
+        /// Gets or sets the child containers.
         /// </summary>
         /// <value>The child items.</value>
-        internal IList<TreeListBoxItem> ChildItems { get; set; }
+        internal IList<TreeListBoxItem> ChildContainers { get; set; }
 
         /// <summary>
-        /// Gets or sets the parent item.
+        /// Gets or sets the parent container.
         /// </summary>
-        internal TreeListBoxItem ParentItem { get; set; }
+        internal TreeListBoxItem ParentContainer { get; set; }
 
         /// <summary>
-        /// Gets the parent TreeListBox.
+        /// Gets the parent <see cref="TreeListBox" />.
         /// </summary>
-        protected TreeListBox ParentTreeListBox { get; private set; }
+        internal TreeListBox ParentTreeListBox
+        {
+            get
+            {
+                return ItemsControl.ItemsControlFromItemContainer(this) as TreeListBox;
+            }
+        }
 
         /// <summary>
         /// Expands the parents of this item.
         /// </summary>
         public void ExpandParents()
         {
-            while (this.ParentItem != null)
+            while (this.ParentContainer != null)
             {
-                this.ParentItem.ExpandParents();
-                this.ParentItem.IsExpanded = true;
+                this.ParentContainer.ExpandParents();
+                this.ParentContainer.IsExpanded = true;
             }
         }
 
@@ -242,22 +246,69 @@ namespace PropertyTools.Wpf
         /// </returns>
         public TreeListBoxItem GetNextSibling()
         {
-            if (this.ParentItem == null)
+            var parentItem = this.ParentContainer;
+            if (parentItem == null)
             {
                 return null;
             }
 
-            int index = this.ParentItem.ChildItems.IndexOf(this);
-            if (index + 1 < this.ParentItem.ChildItems.Count)
+            int index = parentItem.Children.IndexOf(this.Content);
+            if (index + 1 < parentItem.Children.Count)
             {
-                return this.ParentItem.ChildItems[index + 1];
+                var item = this.ParentTreeListBox.ContainerFromItem(parentItem.Children[index + 1]);
+                return item;
             }
 
-            return this.ParentItem.GetNextSibling();
+            return parentItem.GetNextSibling();
         }
 
         /// <summary>
-        /// Handles changes in Level and Indentation (in the parent control).
+        /// Gets the ancestors of the current container.
+        /// </summary>
+        /// <param name="includeCurrent">Include the current container if set to <c>true</c>.</param>
+        /// <returns>A sequence of containers.</returns>
+        public IEnumerable<TreeListBoxItem> GetAncestors(bool includeCurrent)
+        {
+            if (includeCurrent)
+            {
+                yield return this;
+            }
+
+            var parent = this.ParentContainer;
+            while (parent != null)
+            {
+                yield return parent;
+                parent = parent.ParentContainer;
+            }
+        }
+
+        /// <summary>
+        /// Gets the descendants of the current container.
+        /// </summary>
+        /// <param name="includeCurrent">Include the current container if set to <c>true</c>.</param>
+        /// <returns>A sequence of containers.</returns>
+        public IEnumerable<TreeListBoxItem> GetDescendants(bool includeCurrent)
+        {
+            var queue = new Queue<TreeListBoxItem>();
+            queue.Enqueue(this);
+            if (includeCurrent)
+            {
+                yield return this;
+            }
+
+            while (queue.Count > 0)
+            {
+                var c = queue.Dequeue();
+                foreach (var childContainer in c.ChildContainers)
+                {
+                    yield return childContainer;
+                    queue.Enqueue(childContainer);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles changes in Level or Indentation (in the parent control).
         /// </summary>
         internal void LevelOrIndentationChanged()
         {
@@ -297,32 +348,30 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles changes in Level.
-        /// </summary>
-        private void LevelChanged()
-        {
-            this.LevelOrIndentationChanged();
-        }
-
-        /// <summary>
-        /// Subscribes for collection changes.
+        /// Subscribes for changes on the specified collection.
         /// </summary>
         /// <param name="parent">The parent.</param>
-        /// <param name="collection">The collection.</param>
+        /// <param name="collection">The collection to observe.</param>
         private void SubscribeForCollectionChanges(TreeListBoxItem parent, IEnumerable collection)
         {
+            if (this.ParentTreeListBox == null)
+            {
+                throw new InvalidOperationException("Parent not set.");
+            }
+
             var cc = collection as INotifyCollectionChanged;
             if (cc != null)
             {
-                this.collectionChangedHandler = (s, e) => this.ParentTreeListBox.ChildCollectionChanged(parent, e);
+                var parentTreeListBox = this.ParentTreeListBox;
+                this.collectionChangedHandler = (s, e) => parentTreeListBox.ChildCollectionChanged(parent, e);
                 cc.CollectionChanged += this.collectionChangedHandler;
             }
         }
 
         /// <summary>
-        /// Unsubscribes collection changes.
+        /// Removes the change subscription for the specified collection.
         /// </summary>
-        /// <param name="collection">The collection.</param>
+        /// <param name="collection">The collection to stop observing.</param>
         private void UnsubscribeCollectionChanges(IEnumerable collection)
         {
             var cc = collection as INotifyCollectionChanged;

@@ -28,13 +28,12 @@
 namespace ExampleLibrary
 {
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Windows.Markup;
 
     using PropertyTools.DataAnnotations;
 
     [PropertyGridExample]
-    public class TestDataErrorInfo : TestBase, IDataErrorInfo
+    public class TestDataErrorInfo : TestBase, System.ComponentModel.IDataErrorInfo
     {
         [AutoUpdateText]
         [Description("Should not be empty.")]
@@ -90,7 +89,7 @@ namespace ExampleLibrary
         }
 
         [Browsable(false)]
-        string IDataErrorInfo.Error
+        string System.ComponentModel.IDataErrorInfo.Error
         {
             get
             {

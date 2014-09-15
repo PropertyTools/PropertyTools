@@ -50,6 +50,8 @@
     </Compile>
     <Compile Include="DataAnnotations\AutoUpdateTextAttribute.cs" />
     <Compile Include="DataAnnotations\BasePathPropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\BrowsableAttribute.cs" />
+    <Compile Include="DataAnnotations\CategoryAttribute.cs" />
     <Compile Include="DataAnnotations\ColumnAttribute.cs" />
     <Compile Include="DataAnnotations\ColumnsPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\CommentAttribute.cs" />
@@ -57,7 +59,9 @@
     <Compile Include="DataAnnotations\ConverterAttribute.cs" />
     <Compile Include="DataAnnotations\CheckableItemsAttribute.cs" />
     <Compile Include="DataAnnotations\DefaultExtensionPropertyAttribute.cs" />
+    <Compile Include="DataAnnotations\DescriptionAttribute.cs" />
     <Compile Include="DataAnnotations\DirectoryPathAttribute.cs" />
+    <Compile Include="DataAnnotations\DisplayNameAttribute.cs" />
     <Compile Include="DataAnnotations\EasyInsertAttribute.cs" />
     <Compile Include="DataAnnotations\EnableByAttribute.cs" />
     <Compile Include="DataAnnotations\FillTabAttribute.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="DataAnnotations\ListItemItemsSourcePropertyAttribute.cs" />
     <Compile Include="DataAnnotations\OptionalAttribute.cs" />
     <Compile Include="DataAnnotations\OutputFilePathAttribute.cs" />
+    <Compile Include="DataAnnotations\ReadOnlyAttribute.cs" />
     <Compile Include="DataAnnotations\ResettableAttribute.cs" />
     <Compile Include="DataAnnotations\ItemHeaderPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\SelectedValuePathAttribute.cs" />

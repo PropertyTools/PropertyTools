@@ -28,7 +28,8 @@
 namespace ExampleLibrary
 {
     using System;
-    using System.ComponentModel;
+
+    using PropertyTools.DataAnnotations;
 
     public enum Fruits1 { Apple, Pears, Bananas }
 

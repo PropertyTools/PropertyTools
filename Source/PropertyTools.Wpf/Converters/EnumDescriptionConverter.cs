@@ -31,7 +31,6 @@
 namespace PropertyTools.Wpf
 {
     using System;
-    using System.ComponentModel;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
@@ -63,17 +62,22 @@ namespace PropertyTools.Wpf
             // Default, non-converted result.
             string result = value.ToString();
 
-            var field =
-                value.GetType().GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public).
-                    FirstOrDefault(f => f.GetValue(null).Equals(value));
+            var field = value.GetType().GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public).FirstOrDefault(f => f.GetValue(null).Equals(value));
 
             if (field != null)
             {
-                var descriptionAttribute = field.GetCustomAttributes<DescriptionAttribute>(true).FirstOrDefault();
+                var descriptionAttribute = field.GetCustomAttributes<System.ComponentModel.DescriptionAttribute>(true).FirstOrDefault();
                 if (descriptionAttribute != null)
                 {
                     // Found the attribute, assign description
                     result = descriptionAttribute.Description;
+                }
+
+                var descriptionAttribute2 = field.GetCustomAttributes<PropertyTools.DataAnnotations.DescriptionAttribute>(true).FirstOrDefault();
+                if (descriptionAttribute2 != null)
+                {
+                    // Found the attribute, assign description
+                    result = descriptionAttribute2.Description;
                 }
             }
 

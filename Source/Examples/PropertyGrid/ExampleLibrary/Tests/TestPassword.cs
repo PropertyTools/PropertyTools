@@ -27,9 +27,10 @@
 
 namespace ExampleLibrary
 {
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Security;
+
+    using PropertyTools.DataAnnotations;
 
     [PropertyGridExample]
     public class TestPassword : TestBase

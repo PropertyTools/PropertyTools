@@ -260,7 +260,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateBoolControl(PropertyItem property)
         {
-            if (property.Descriptor.IsReadOnly)
+            if (property.Descriptor.IsReadOnly())
             {
                 var cm = new CheckMark
                 {

@@ -31,9 +31,7 @@
 namespace ExampleLibrary
 {
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-
+    
     using PropertyTools.DataAnnotations;
 
     /// <summary>
@@ -69,7 +67,7 @@ namespace ExampleLibrary
         public string SelectedItem { get; set; }
 
         [ItemsSourceProperty("Items")]
-        [Editable(true)]
+        [System.ComponentModel.DataAnnotations.Editable(true)]
         public string EditableItem { get; set; }
 
         [Browsable(false)]

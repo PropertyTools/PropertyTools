@@ -56,14 +56,13 @@ namespace PropertyTools.Wpf
             {
                 return Enum.GetValues(value.GetType()).FilterOnBrowsableAttribute();
             }
-            else if (targetType == typeof(Enum))
+
+            if (targetType == typeof(Enum))
             {
                 return Enum.GetValues(targetType).FilterOnBrowsableAttribute();
             }
-            else
-            {
-                return value;
-            }
+
+            return value;
         }
 
         /// <summary>

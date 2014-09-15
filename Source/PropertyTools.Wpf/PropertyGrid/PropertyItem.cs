@@ -162,16 +162,10 @@ namespace PropertyTools.Wpf
         public PropertyDescriptor Descriptor { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether this property is read only.
+        /// Gets or sets a value indicating whether this property is read only.
         /// </summary>
         /// <value><c>true</c> if this property is read only; otherwise, <c>false</c>.</value>
-        public bool IsReadOnly
-        {
-            get
-            {
-                return this.Descriptor.IsReadOnly;
-            }
-        }
+        public bool IsReadOnly { get; set; }
 
         /// <summary>
         /// Gets or sets the display name.

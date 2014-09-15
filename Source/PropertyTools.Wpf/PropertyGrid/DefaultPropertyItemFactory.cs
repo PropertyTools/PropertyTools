@@ -40,6 +40,8 @@ namespace PropertyTools.Wpf
 
     using PropertyTools.DataAnnotations;
 
+    using BrowsableAttribute = PropertyTools.DataAnnotations.BrowsableAttribute;
+
     /// <summary>
     /// Provides a property item factory for the <see cref="PropertyGrid" /> control.
     /// </summary>
@@ -204,21 +206,20 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                // Skip properties marked with [Browsable(false)]
-                if (!pd.IsBrowsable)
+                // Skip properties marked with [System.ComponentModel.Browsable(false)] or [PropertyTools.DataAnnotations.Browsable(false)]
+                if (!pd.IsBrowsable())
                 {
                     continue;
                 }
 
                 // Read-only properties
-                if (!options.ShowReadOnlyProperties && pd.IsReadOnly)
+                if (!options.ShowReadOnlyProperties && pd.IsReadOnly())
                 {
                     continue;
                 }
 
                 // If RequiredAttribute is set, skip properties that don't have the given attribute
-                if (options.RequiredAttribute != null
-                    && !AttributeHelper.ContainsAttributeOfType(pd.Attributes, options.RequiredAttribute))
+                if (options.RequiredAttribute != null && pd.GetFirstAttributeOrDefault(options.RequiredAttribute) == null)
                 {
                     continue;
                 }
@@ -241,16 +242,29 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the tool tip for the specified property.
+        /// Gets the category for the specified property.
         /// </summary>
         /// <param name="pd">The property descriptor.</param>
         /// <param name="declaringType">The declaring type.</param>
         /// <returns>
-        /// A tool tip.
+        /// A category string.
+        /// </returns>
+        protected virtual string GetCategory(PropertyDescriptor pd, Type declaringType)
+        {
+            return pd.GetCategory();
+        }
+
+        /// <summary>
+        /// Gets the description for the specified property.
+        /// </summary>
+        /// <param name="pd">The property descriptor.</param>
+        /// <param name="declaringType">The declaring type.</param>
+        /// <returns>
+        /// A description string.
         /// </returns>
         protected virtual string GetDescription(PropertyDescriptor pd, Type declaringType)
         {
-            return pd.Description;
+            return pd.GetDescription();
         }
 
         /// <summary>
@@ -263,8 +277,9 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual string GetDisplayName(PropertyDescriptor pd, Type declaringType)
         {
-            var displayName = pd.DisplayName;
-            if (this.ModifyCamelCaseDisplayNames && pd.DisplayName == pd.Name)
+            var displayName = pd.GetDisplayName();
+
+            if (this.ModifyCamelCaseDisplayNames && displayName == pd.Name)
             {
                 displayName = StringUtilities.FromCamelCase(displayName);
             }
@@ -328,14 +343,21 @@ namespace PropertyTools.Wpf
                 this.CurrentCategory = null;
             }
 
-            var ca = pi.GetAttribute<CategoryAttribute>();
+            var ca = pi.GetAttribute<System.ComponentModel.CategoryAttribute>();
             if (ca != null)
             {
                 this.CurrentCategory = ca.Category;
                 this.CurrentCategoryDeclaringType = declaringType;
             }
 
-            var category = this.CurrentCategory ?? (this.DefaultCategoryName ?? pi.Descriptor.Category);
+            var ca2 = pi.GetAttribute<DataAnnotations.CategoryAttribute>();
+            if (ca2 != null)
+            {
+                this.CurrentCategory = ca2.Category;
+                this.CurrentCategoryDeclaringType = declaringType;
+            }
+
+            var category = this.CurrentCategory ?? (this.DefaultCategoryName ?? this.GetCategory(pi.Descriptor, declaringType));
 
             if (category != null)
             {
@@ -355,14 +377,13 @@ namespace PropertyTools.Wpf
             var displayName = this.GetDisplayName(pi.Descriptor, declaringType);
             var description = this.GetDescription(pi.Descriptor, declaringType);
 
+            // Localize the strings
             pi.DisplayName = this.GetLocalizedString(displayName, declaringType);
             pi.Description = this.GetLocalizedDescription(description, declaringType);
-
             pi.Category = this.GetLocalizedString(categoryName, this.CurrentCategoryDeclaringType);
             pi.Tab = this.GetLocalizedString(tabName, this.CurrentCategoryDeclaringType);
 
-            // pi.CategoryDescription = this.GetLocalizedDescription(categoryName, this.CurrentCategoryDeclaringType);
-            // pi.TabDescription = this.GetLocalizedDescription(tabName, this.CurrentCategoryDeclaringType);
+            pi.IsReadOnly = pi.Descriptor.IsReadOnly();
 
             // Find descriptors by convention
             pi.IsEnabledDescriptor = pi.GetDescriptor(string.Format(this.EnabledPattern, pi.PropertyName));

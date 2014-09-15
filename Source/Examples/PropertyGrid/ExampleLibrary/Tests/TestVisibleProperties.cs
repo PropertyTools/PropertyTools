@@ -27,8 +27,6 @@
 
 namespace ExampleLibrary
 {
-    using System.ComponentModel;
-
     using PropertyTools.DataAnnotations;
 
     [PropertyGridExample]

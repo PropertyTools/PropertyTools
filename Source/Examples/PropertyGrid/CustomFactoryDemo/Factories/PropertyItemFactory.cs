@@ -43,7 +43,7 @@ namespace CustomFactoryDemo
         protected override PropertyItem CreateCore(PropertyDescriptor pd, PropertyDescriptorCollection properties)
         {
             // Check if the property is decorated with an "ImportantAttribute"
-            var ia = AttributeHelper.GetFirstAttribute<ImportantAttribute>(pd);
+            var ia = pd.GetFirstAttributeOrDefault<ImportantAttribute>();
             if (ia != null)
             {
                 // Create a custom PropertyItem instance

@@ -28,7 +28,6 @@
 namespace ExampleLibrary
 {
     using System;
-    using System.ComponentModel;
 
     using PropertyTools.DataAnnotations;
 

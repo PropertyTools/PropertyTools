@@ -27,8 +27,9 @@
 
 namespace ExampleLibrary
 {
-    using System.ComponentModel;
     using System.Windows.Media;
+
+    using PropertyTools.DataAnnotations;
 
     [PropertyGridExample]
     public class TestPerformance : TestBase

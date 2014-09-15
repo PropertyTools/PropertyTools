@@ -233,7 +233,6 @@
     <Compile Include="Utilities\StringUtilities.cs" />
     <Compile Include="PropertyGrid\Tab.cs" />
     <Compile Include="PropertyGrid\PropertyConverter.cs" />
-    <Compile Include="Helpers\AttributeHelper.cs" />
     <Compile Include="DataGrid\CellRef.cs" />
     <Compile Include="Converters\GridLengthCollectionConverter.cs" />
     <Compile Include="Helpers\ReflectionMath.cs" />

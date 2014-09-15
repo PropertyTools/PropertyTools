@@ -3,13 +3,12 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     using PropertyTools.DataAnnotations;
 
     [PropertyGridExample]
-    public class TestNotifyDataErrorInfo : TestBase, INotifyDataErrorInfo
+    public class TestNotifyDataErrorInfo : TestBase, System.ComponentModel.INotifyDataErrorInfo
     {
         private Dictionary<string, ValidationResult> errors = new Dictionary<string, ValidationResult>();
 
@@ -57,10 +56,10 @@
                 this.errors.Remove(propertyName);
             }
 
-            this.ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
+            this.ErrorsChanged(this, new System.ComponentModel.DataErrorsChangedEventArgs(propertyName));
         }
 
-        IEnumerable INotifyDataErrorInfo.GetErrors(string propertyName)
+        IEnumerable System.ComponentModel.INotifyDataErrorInfo.GetErrors(string propertyName)
         {
             if (this.errors.ContainsKey(propertyName))
             {
@@ -68,7 +67,7 @@
             }
         }
 
-        bool INotifyDataErrorInfo.HasErrors
+        bool System.ComponentModel.INotifyDataErrorInfo.HasErrors
         {
             get
             {
@@ -76,7 +75,7 @@
             }
         }
 
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        public event EventHandler<System.ComponentModel.DataErrorsChangedEventArgs> ErrorsChanged;
 
         //string IDataErrorInfo.this[string columnName]
         //{

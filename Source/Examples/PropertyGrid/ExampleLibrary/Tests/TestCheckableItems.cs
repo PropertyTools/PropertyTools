@@ -28,9 +28,7 @@
 namespace ExampleLibrary
 {
     using System.Collections.Generic;
-    using System.ComponentModel;
 
-    using PropertyTools;
     using PropertyTools.DataAnnotations;
 
     [PropertyGridExample]
@@ -45,11 +43,12 @@ namespace ExampleLibrary
         {
             get
             {
-                return Languages[0].IsChecked;
+                return this.Languages[0].IsChecked;
             }
+
             set
             {
-                Languages[0].IsChecked = value;
+                this.Languages[0].IsChecked = value;
             }
         }
 
@@ -57,11 +56,12 @@ namespace ExampleLibrary
         {
             get
             {
-                return Languages[1].IsChecked;
+                return this.Languages[1].IsChecked;
             }
+
             set
             {
-                Languages[1].IsChecked = value;
+                this.Languages[1].IsChecked = value;
             }
         }
 
@@ -80,25 +80,25 @@ namespace ExampleLibrary
         {
             return "Checkable items";
         }
-    }
 
-    public class CheckableItem : Observable
-    {
-        private bool isChecked;
-
-        public bool IsChecked
+        public class CheckableItem : PropertyTools.Observable
         {
-            get
+            private bool isChecked;
+
+            public bool IsChecked
             {
-                return this.isChecked;
+                get
+                {
+                    return this.isChecked;
+                }
+
+                set
+                {
+                    this.SetValue(ref this.isChecked, value, () => this.IsChecked);
+                }
             }
 
-            set
-            {
-                this.SetValue(ref this.isChecked, value, () => this.IsChecked);
-            }
+            public string Name { get; set; }
         }
-
-        public string Name { get; set; }
     }
 }

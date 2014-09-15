@@ -36,6 +36,7 @@ namespace PropertyTools.Wpf
     using System.Collections.Specialized;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
 
     /// <summary>
     /// Represents a container for items in the <see cref="TreeListBox" /> .
@@ -103,6 +104,18 @@ namespace PropertyTools.Wpf
             // The following is not working when TreeListBoxItems are disconnected...
             // ItemsControl.ItemsControlFromItemContainer(this) as TreeListBox;
             this.ChildContainers = new List<TreeListBoxItem>();
+        }
+
+        /// <summary>
+        /// Gets the expand toggle command.
+        /// </summary>
+        /// <value>The command.</value>
+        public ICommand ToggleExpandCommand
+        {
+            get
+            {
+                return new DelegateCommand(() => this.IsExpanded = !this.IsExpanded);
+            }
         }
 
         /// <summary>
@@ -222,7 +235,7 @@ namespace PropertyTools.Wpf
         {
             get
             {
-                return ItemsControl.ItemsControlFromItemContainer(this) as TreeListBox;
+                return (TreeListBox)ItemsControl.ItemsControlFromItemContainer(this);
             }
         }
 
@@ -255,7 +268,7 @@ namespace PropertyTools.Wpf
             int index = parentItem.Children.IndexOf(this.Content);
             if (index + 1 < parentItem.Children.Count)
             {
-                var item = this.ParentTreeListBox.ContainerFromItem(parentItem.Children[index + 1]);
+                var item = this.ParentTreeListBox.GetContainerFromItem(parentItem.Children[index + 1]);
                 return item;
             }
 
@@ -308,7 +321,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles changes in Level or Indentation (in the parent control).
+        /// Handles changes in <see cref="Level" /> or <see cref="TreeListBox.Indentation" /> (in the parent control).
         /// </summary>
         internal void LevelOrIndentationChanged()
         {
@@ -316,7 +329,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles changes in the Children property.
+        /// Handles changes in the <see cref="Children" /> property.
         /// </summary>
         /// <param name="e">The event arguments.</param>
         private void ChildrenChanged(DependencyPropertyChangedEventArgs e)
@@ -333,7 +346,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles changes in the IsExpanded property.
+        /// Handles changes in the <see cref="IsExpanded" /> property.
         /// </summary>
         private void IsExpandedChanged()
         {

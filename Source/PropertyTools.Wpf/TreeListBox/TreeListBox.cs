@@ -121,8 +121,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         static TreeListBox()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(TreeListBox), new FrameworkPropertyMetadata(typeof(TreeListBox)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(TreeListBox), new FrameworkPropertyMetadata(typeof(TreeListBox)));
         }
 
         /// <summary>
@@ -216,7 +215,7 @@ namespace PropertyTools.Wpf
         /// <param name="item">The item.</param>
         public void ExpandParents(object item)
         {
-            var container = this.ContainerFromItem(item);
+            var container = this.GetContainerFromItem(item);
             container.ExpandParents();
         }
 
@@ -281,7 +280,7 @@ namespace PropertyTools.Wpf
 
             foreach (var child in container.Children)
             {
-                var childContainer = this.ContainerFromItem(child);
+                var childContainer = this.GetContainerFromItem(child);
                 if (childContainer != null)
                 {
                     if (childContainer.IsExpanded)
@@ -324,8 +323,8 @@ namespace PropertyTools.Wpf
                 this.expandItemQueue.Enqueue(container);
                 if (!this.isSubscribedToRenderingEvent)
                 {
-                    CompositionTarget.Rendering += this.CompositionTargetRendering;
                     this.isSubscribedToRenderingEvent = true;
+                    CompositionTarget.Rendering += this.CompositionTargetRendering;
                 }
 
                 return;
@@ -354,9 +353,9 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The container.
         /// </returns>
-        internal TreeListBoxItem ContainerFromItem(object item)
+        internal TreeListBoxItem GetContainerFromItem(object item)
         {
-            return this.ItemContainerGenerator.ContainerFromItem(item) as TreeListBoxItem;
+            return (TreeListBoxItem)this.ItemContainerGenerator.ContainerFromItem(item);
         }
 
         /// <summary>
@@ -399,7 +398,7 @@ namespace PropertyTools.Wpf
                     {
                         foreach (var topLevelItem in this.HierarchySource)
                         {
-                            var topLevelContainer = this.ContainerFromItem(topLevelItem);
+                            var topLevelContainer = this.GetContainerFromItem(topLevelItem);
                             if (topLevelContainer != null)
                             {
                                 topLevelContainer.IsExpanded = false;
@@ -435,25 +434,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Controls.Control.MouseDoubleClick" /> routed event.
-        /// </summary>
-        /// <param name="e">The event data.</param>
-        protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
-        {
-            base.OnMouseDoubleClick(e);
-            var container = this.SelectedIndex >= 0 ? this.ContainerFromIndex(this.SelectedIndex) : null;
-            if (container != null && container.HasItems)
-            {
-                container.IsExpanded = !container.IsExpanded;
-                e.Handled = true;
-            }
-        }
-
-        /// <summary>
         /// Prepares the specified element to display the specified item.
         /// </summary>
-        /// <param name="element">Element used to display the specified item.</param>
-        /// <param name="item">Specified item.</param>
+        /// <param name="element">Container used to display the specified item.</param>
+        /// <param name="item">The item to display.</param>
         protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
         {
             base.PrepareContainerForItemOverride(element, item);
@@ -479,7 +463,7 @@ namespace PropertyTools.Wpf
             var parent = this.parentMap[item];
             if (parent != null)
             {
-                var parentContainer = this.ContainerFromItem(parent);
+                var parentContainer = this.GetContainerFromItem(parent);
 #if DEBUG
                 if (parentContainer == null)
                 {
@@ -546,7 +530,7 @@ namespace PropertyTools.Wpf
             {
                 foreach (var item in oldTreeSource)
                 {
-                    var container = this.ContainerFromItem(item);
+                    var container = this.GetContainerFromItem(item);
                     if (container == null)
                     {
                         continue;
@@ -578,7 +562,7 @@ namespace PropertyTools.Wpf
         {
             foreach (var item in this.Items)
             {
-                var container = this.ContainerFromItem(item);
+                var container = this.GetContainerFromItem(item);
                 if (container == null)
                 {
                     continue;
@@ -642,7 +626,7 @@ namespace PropertyTools.Wpf
         private void RemoveItems(IList itemsToRemove)
         {
             // collapse expanded containers
-            foreach (var container in itemsToRemove.Cast<object>().Select(this.ContainerFromItem).Where(container => container != null))
+            foreach (var container in itemsToRemove.Cast<object>().Select(this.GetContainerFromItem).Where(container => container != null))
             {
                 container.IsExpanded = false;
             }

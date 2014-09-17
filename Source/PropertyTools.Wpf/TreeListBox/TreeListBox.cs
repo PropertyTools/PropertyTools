@@ -768,7 +768,7 @@ namespace PropertyTools.Wpf
         private IList GetChildrenCollectionByReflection(object item)
         {
             var pi = item.GetType().GetProperty(this.ChildrenPath);
-            var children = (IList)pi.GetValue(item);
+            var children = (IList)pi.GetValue(item, null);
             return children;
         }
     }

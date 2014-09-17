@@ -9,6 +9,8 @@
     {
         private bool showChildren;
 
+        private bool isChecked;
+
         public Node(Node parent = null)
         {
             this.Parent = parent;
@@ -31,6 +33,19 @@
             set
             {
                 this.SetValue(ref this.showChildren, value, () => this.ShowChildren);
+            }
+        }
+
+        public bool IsChecked
+        {
+            get
+            {
+                return this.isChecked;
+            }
+
+            set
+            {
+                this.SetValue(ref this.isChecked, value, () => this.IsChecked);
             }
         }
 

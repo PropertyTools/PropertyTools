@@ -53,6 +53,7 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -230,6 +231,7 @@
     <Compile Include="PropertyGrid\PropertyItem.cs" />
     <Compile Include="Converters\ValidationErrorsToStringConverter.cs" />
     <Compile Include="Behaviors\WebBrowserBehavior.cs" />
+    <Compile Include="TreeListBox\TreeListBoxAutomationPeer.cs" />
     <Compile Include="Utilities\StringUtilities.cs" />
     <Compile Include="PropertyGrid\Tab.cs" />
     <Compile Include="PropertyGrid\PropertyConverter.cs" />

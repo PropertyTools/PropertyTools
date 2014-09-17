@@ -30,10 +30,6 @@
 
 namespace PropertyTools.Wpf
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -43,15 +39,6 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class TreeListBoxItem : ListBoxItem
     {
-        /// <summary>
-        /// Identifies the <see cref="Children"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Register(
-            "Children",
-            typeof(IList),
-            typeof(TreeListBoxItem),
-            new UIPropertyMetadata(null, (s, e) => ((TreeListBoxItem)s).ChildrenChanged(e)));
-
         /// <summary>
         /// Identifies the <see cref="HasItems"/> dependency property.
         /// </summary>
@@ -92,21 +79,6 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(0, (s, e) => ((TreeListBoxItem)s).LevelOrIndentationChanged()));
 
         /// <summary>
-        /// The collection changed handler.
-        /// </summary>
-        private NotifyCollectionChangedEventHandler collectionChangedHandler;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TreeListBoxItem" /> class.
-        /// </summary>
-        public TreeListBoxItem()
-        {
-            // The following is not working when TreeListBoxItems are disconnected...
-            // ItemsControl.ItemsControlFromItemContainer(this) as TreeListBox;
-            this.ChildContainers = new List<TreeListBoxItem>();
-        }
-
-        /// <summary>
         /// Gets the expand toggle command.
         /// </summary>
         /// <value>The command.</value>
@@ -115,23 +87,6 @@ namespace PropertyTools.Wpf
             get
             {
                 return new DelegateCommand(() => this.IsExpanded = !this.IsExpanded);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the child items.
-        /// </summary>
-        /// <value>The children.</value>
-        public IList Children
-        {
-            get
-            {
-                return (IList)this.GetValue(ChildrenProperty);
-            }
-
-            set
-            {
-                this.SetValue(ChildrenProperty, value);
             }
         }
 
@@ -218,17 +173,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the child containers.
-        /// </summary>
-        /// <value>The child items.</value>
-        internal IList<TreeListBoxItem> ChildContainers { get; set; }
-
-        /// <summary>
-        /// Gets or sets the parent container.
-        /// </summary>
-        internal TreeListBoxItem ParentContainer { get; set; }
-
-        /// <summary>
         /// Gets the parent <see cref="TreeListBox" />.
         /// </summary>
         internal TreeListBox ParentTreeListBox
@@ -236,87 +180,6 @@ namespace PropertyTools.Wpf
             get
             {
                 return (TreeListBox)ItemsControl.ItemsControlFromItemContainer(this);
-            }
-        }
-
-        /// <summary>
-        /// Expands the parents of this item.
-        /// </summary>
-        public void ExpandParents()
-        {
-            while (this.ParentContainer != null)
-            {
-                this.ParentContainer.ExpandParents();
-                this.ParentContainer.IsExpanded = true;
-            }
-        }
-
-        /// <summary>
-        /// Gets the next sibling.
-        /// </summary>
-        /// <returns>
-        /// The next sibling.
-        /// </returns>
-        public TreeListBoxItem GetNextSibling()
-        {
-            var parentItem = this.ParentContainer;
-            if (parentItem == null)
-            {
-                return null;
-            }
-
-            int index = parentItem.Children.IndexOf(this.Content);
-            if (index + 1 < parentItem.Children.Count)
-            {
-                var item = this.ParentTreeListBox.GetContainerFromItem(parentItem.Children[index + 1]);
-                return item;
-            }
-
-            return parentItem.GetNextSibling();
-        }
-
-        /// <summary>
-        /// Gets the ancestors of the current container.
-        /// </summary>
-        /// <param name="includeCurrent">Include the current container if set to <c>true</c>.</param>
-        /// <returns>A sequence of containers.</returns>
-        public IEnumerable<TreeListBoxItem> GetAncestors(bool includeCurrent)
-        {
-            if (includeCurrent)
-            {
-                yield return this;
-            }
-
-            var parent = this.ParentContainer;
-            while (parent != null)
-            {
-                yield return parent;
-                parent = parent.ParentContainer;
-            }
-        }
-
-        /// <summary>
-        /// Gets the descendants of the current container.
-        /// </summary>
-        /// <param name="includeCurrent">Include the current container if set to <c>true</c>.</param>
-        /// <returns>A sequence of containers.</returns>
-        public IEnumerable<TreeListBoxItem> GetDescendants(bool includeCurrent)
-        {
-            var queue = new Queue<TreeListBoxItem>();
-            queue.Enqueue(this);
-            if (includeCurrent)
-            {
-                yield return this;
-            }
-
-            while (queue.Count > 0)
-            {
-                var c = queue.Dequeue();
-                foreach (var childContainer in c.ChildContainers)
-                {
-                    yield return childContainer;
-                    queue.Enqueue(childContainer);
-                }
             }
         }
 
@@ -329,68 +192,17 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles changes in the <see cref="Children" /> property.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        private void ChildrenChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (e.OldValue != null)
-            {
-                this.UnsubscribeCollectionChanges(e.OldValue as IEnumerable);
-            }
-
-            if (e.NewValue != null)
-            {
-                this.SubscribeForCollectionChanges(this, e.NewValue as IEnumerable);
-            }
-        }
-
-        /// <summary>
         /// Handles changes in the <see cref="IsExpanded" /> property.
         /// </summary>
         private void IsExpandedChanged()
         {
             if (this.IsExpanded)
             {
-                this.ParentTreeListBox.Expand(this);
+                this.ParentTreeListBox.Expand(this.Content);
             }
             else
             {
-                this.ParentTreeListBox.Collapse(this);
-            }
-        }
-
-        /// <summary>
-        /// Subscribes for changes on the specified collection.
-        /// </summary>
-        /// <param name="parent">The parent.</param>
-        /// <param name="collection">The collection to observe.</param>
-        private void SubscribeForCollectionChanges(TreeListBoxItem parent, IEnumerable collection)
-        {
-            if (this.ParentTreeListBox == null)
-            {
-                throw new InvalidOperationException("Parent not set.");
-            }
-
-            var cc = collection as INotifyCollectionChanged;
-            if (cc != null)
-            {
-                var parentTreeListBox = this.ParentTreeListBox;
-                this.collectionChangedHandler = (s, e) => parentTreeListBox.ChildCollectionChanged(parent, e);
-                cc.CollectionChanged += this.collectionChangedHandler;
-            }
-        }
-
-        /// <summary>
-        /// Removes the change subscription for the specified collection.
-        /// </summary>
-        /// <param name="collection">The collection to stop observing.</param>
-        private void UnsubscribeCollectionChanges(IEnumerable collection)
-        {
-            var cc = collection as INotifyCollectionChanged;
-            if (cc != null)
-            {
-                cc.CollectionChanged -= this.collectionChangedHandler;
+                this.ParentTreeListBox.Collapse(this.Content);
             }
         }
     }

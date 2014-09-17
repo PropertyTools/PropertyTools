@@ -3,6 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:pt="http://propertytools.codeplex.com"
         Title="TreeListBox add/remove demo" Height="350" Width="525">
+    <Window.Resources>
+        <HierarchicalDataTemplate x:Key="TreeTemplate" ItemsSource="{Binding SubNodes}">
+            <TextBlock Text="{Binding}"/>
+        </HierarchicalDataTemplate>
+        <Style x:Key="ItemContainerStyle" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="IsExpanded" Value="{Binding ShowChildren, Mode=TwoWay}" />
+            <Setter Property="IsSelected" Value="{Binding IsChecked, Mode=OneWay}" />
+
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="BorderBrush" Value="#FF7DA2CE" />
+                    <Setter Property="Background" Value="#FFCCE2FC" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Add" Command="{Binding AddCommand}"/>
@@ -11,6 +27,27 @@
             <MenuItem Header="Clear" Command="{Binding ClearCommand}"/>
             <MenuItem Header="Toggle Expand" Command="{Binding ToggleExpandCommand}"/>
         </Menu>
-        <pt:TreeListBox HierarchySource="{Binding HierarchySource}" SelectedItem="{Binding SelectedItem}" ChildrenPath="SubNodes" IsSelectedPath="" IsExpandedPath="ShowChildren"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TabControl>
+                <TabItem Header="TreeListBox">
+                    <pt:TreeListBox HierarchySource="{Binding HierarchySource}" SelectedItem="{Binding SelectedItem}" ChildrenPath="SubNodes" IsSelectedPath="IsChecked" IsExpandedPath="ShowChildren"/>
+                </TabItem>
+                <TabItem Header="TreeView">
+                    <TreeView ItemsSource="{Binding HierarchySource}" ItemTemplate="{StaticResource TreeTemplate}" ItemContainerStyle="{StaticResource ItemContainerStyle}"/>
+                </TabItem>
+            </TabControl>
+            <TabControl Grid.Column="1">
+                <TabItem Header="TreeListBox">
+                    <pt:TreeListBox HierarchySource="{Binding HierarchySource}" SelectedItem="{Binding SelectedItem}" ChildrenPath="SubNodes" IsSelectedPath="IsChecked" IsExpandedPath="ShowChildren"/>
+                </TabItem>
+                <TabItem Header="TreeView">
+                    <TreeView ItemsSource="{Binding HierarchySource}" ItemTemplate="{StaticResource TreeTemplate}" ItemContainerStyle="{StaticResource ItemContainerStyle}"/>
+                </TabItem>
+            </TabControl>
+        </Grid>
     </DockPanel>
 </Window>

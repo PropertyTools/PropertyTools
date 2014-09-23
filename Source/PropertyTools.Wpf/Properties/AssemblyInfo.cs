@@ -34,5 +34,5 @@ using System.Windows.Markup;
 
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
-[assembly: XmlnsPrefix("http://propertytools.codeplex.com", "pt")]
-[assembly: XmlnsDefinition("http://propertytools.codeplex.com", "PropertyTools.Wpf")]
+[assembly: XmlnsPrefix("http://propertytools.org/wpf", "pt")]
+[assembly: XmlnsDefinition("http://propertytools.org/wpf", "PropertyTools.Wpf")]

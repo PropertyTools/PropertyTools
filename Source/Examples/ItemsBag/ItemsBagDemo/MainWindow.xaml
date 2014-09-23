@@ -1,8 +1,8 @@
 ﻿<Window x:Class="ItemsBagDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         xmlns:local="clr-namespace:ItemsBagDemo"
+        xmlns:pt="http://propertytools.org/wpf"
         Title="ItemsBagDemo" Height="350" Width="960">
     <Window.Resources>
         <pt:NullToVisibilityConverter x:Key="NullToVisibilityConverter" NullVisibility="Visible" NotNullVisibility="Hidden"/>

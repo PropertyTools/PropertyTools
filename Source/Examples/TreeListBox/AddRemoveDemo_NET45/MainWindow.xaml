@@ -1,7 +1,7 @@
 ﻿<Window x:Class="AddRemoveDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:pt="http://propertytools.codeplex.com"
+        xmlns:pt="http://propertytools.org/wpf"
         Title="TreeListBox add/remove demo" Height="350" Width="525">
     <Window.Resources>
         <HierarchicalDataTemplate x:Key="TreeTemplate" ItemsSource="{Binding SubNodes}">

@@ -1,4 +1,10 @@
-﻿namespace ExampleLibrary
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TestBrowsableAttribute.cs" company="PropertyTools">
+//   Copyright (c) 2014 PropertyTools contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace ExampleLibrary
 {
     using PropertyTools.DataAnnotations;
 

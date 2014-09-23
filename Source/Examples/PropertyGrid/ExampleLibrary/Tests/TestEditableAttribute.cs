@@ -1,4 +1,10 @@
-﻿namespace ExampleLibrary
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TestEditableAttribute.cs" company="PropertyTools">
+//   Copyright (c) 2014 PropertyTools contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace ExampleLibrary
 {
     [PropertyGridExample]
     public class TestEditableAttribute : TestBase

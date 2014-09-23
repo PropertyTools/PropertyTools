@@ -1,4 +1,10 @@
-﻿namespace AddRemoveDemo
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainWindowViewModel.cs" company="PropertyTools">
+//   Copyright (c) 2014 PropertyTools contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace AddRemoveDemo
 {
     using System;
     using System.Collections;

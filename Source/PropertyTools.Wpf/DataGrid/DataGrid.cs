@@ -2703,10 +2703,12 @@ namespace PropertyTools.Wpf
                 return;
             }
 
+            var isEverythingSelected = textEditor.SelectionLength == textEditor.Text.Length && textEditor.SelectionLength > 0;
+
             switch (e.Key)
             {
                 case Key.Left:
-                    if (textEditor.CaretIndex == 0)
+                    if (textEditor.CaretIndex == 0 && !isEverythingSelected)
                     {
                         this.EndTextEdit();
                         this.OnKeyDown(e);
@@ -2715,7 +2717,7 @@ namespace PropertyTools.Wpf
 
                     break;
                 case Key.Right:
-                    if (textEditor.CaretIndex == textEditor.Text.Length)
+                    if (textEditor.CaretIndex == textEditor.Text.Length && !isEverythingSelected)
                     {
                         this.EndTextEdit();
                         this.OnKeyDown(e);

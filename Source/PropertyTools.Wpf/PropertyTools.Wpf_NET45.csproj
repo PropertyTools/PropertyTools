@@ -85,6 +85,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\HeaderedEntrySlider\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\SpinControl\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -153,6 +157,7 @@
     <Compile Include="Controls\LinkBlock.cs" />
     <Compile Include="Controls\PopupBox\PopupBox.cs" />
     <Compile Include="Controls\SliderEx.cs" />
+    <Compile Include="Controls\HeaderedEntrySlider\HeaderedEntrySlider.cs" />
     <Compile Include="Controls\SpinControl\SpinControl.cs" />
     <Compile Include="Controls\StackPanelEx.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />

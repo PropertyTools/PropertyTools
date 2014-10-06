@@ -64,6 +64,9 @@
     <Compile Include="Pages\FilePickerPage.xaml.cs">
       <DependentUpon>FilePickerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\HeaderedEntrySliderPage.xaml.cs">
+      <DependentUpon>HeaderedEntrySliderPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SpinControlPage.xaml.cs">
       <DependentUpon>SpinControlPage.xaml</DependentUpon>
     </Compile>
@@ -100,6 +103,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\FilePickerPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\HeaderedEntrySliderPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

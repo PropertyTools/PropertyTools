@@ -8,6 +8,7 @@
   <Example Page="Pages\FormattingTextBoxPage.xaml" Title="FormattingTextBox" Description=""/>
   <Example Page="Pages\DockPanelSplitterPage.xaml" Title="DockPanelSplitter" Description=""/>
   <Example Page="Pages\EnumMenuItemPage.xaml" Title="EnumMenuItem" Description=""/>
-  <Example Page="Pages\SpinControlPage.xaml" Title="SpinControl" Description=""/>
-  <Example Page="Pages\EditableTextBlockPage.xaml" Title="EditableTextBlock" Description=""/>
+  <Example Page="Pages\SpinControlPage.xaml" Title="SpinControl" Description="An up/down spin control."/>
+  <Example Page="Pages\HeaderedEntrySliderPage.xaml" Title="HeaderedEntrySlider" Description="A slider with header and value entry."/>
+  <Example Page="Pages\EditableTextBlockPage.xaml" Title="EditableTextBlock" Description="An editable text block."/>
 </Examples>

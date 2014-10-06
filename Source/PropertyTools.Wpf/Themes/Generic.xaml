@@ -6,6 +6,7 @@
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/RadioButtonList/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/DockPanelSplitter/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/SpinControl/Generic.xaml" />
+        <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/HeaderedEntrySlider/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/CheckMark/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/PropertyGrid/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/TreeListBox/Generic.xaml" />

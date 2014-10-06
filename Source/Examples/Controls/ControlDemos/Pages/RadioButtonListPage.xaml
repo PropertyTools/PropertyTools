@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-	Title="RadioButtonListPage">
+	Title="RadioButtonList Demo">
     <StackPanel Width="200" VerticalAlignment="Center">
         <p:RadioButtonList Value="{Binding SelectedFruit}" Margin="10"/>
         <TextBox Text="{Binding SelectedFruit}" Margin="10"/>

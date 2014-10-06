@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for FilePickerPage.xaml
+//   Interaction logic for FilePickerPageSpinControlPage.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace ControlDemos
     using System.ComponentModel;
 
     /// <summary>
-    /// Interaction logic for FilePickerPage.xaml
+    /// Interaction logic for SpinControlPage.xaml
     /// </summary>
     public partial class SpinControlPage
     {

@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:pel="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" xmlns:local="clr-namespace:ControlDemos" mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-	Title="PopupBoxPage">
+	Title="PopupBox Demo">
     <Page.Resources>
         <x:Array x:Key="people" Type="{x:Type local:Person}">
             <local:Person Name="John" Address="Oslo"/>

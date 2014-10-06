@@ -4,11 +4,12 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-	Title="ColorPickerPage">
+	Title="ColorPicker Demo">
     <Page.Resources>
         <p:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
         <p:ColorToStringConverter x:Key="ColorToStringConverter"/>
     </Page.Resources>
+    
     <StackPanel Width="250" VerticalAlignment="Center">
         <p:ColorPicker SelectedColor="{Binding Color1}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
         <p:ColorPicker SelectedColor="{Binding Color2}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
@@ -23,4 +24,5 @@
         <TextBox Text="{Binding Color4}" Width="160"/>
         <TextBox Text="{Binding Brush}" Width="160"/>
     </StackPanel>
+    
 </Page>

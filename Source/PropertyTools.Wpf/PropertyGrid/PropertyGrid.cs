@@ -245,6 +245,16 @@ namespace PropertyTools.Wpf
                 typeof(int),
                 typeof(PropertyGrid),
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+                
+        /// <summary>
+        /// The selected tab id property.
+        /// </summary>
+        public static readonly DependencyProperty SelectedTabIdProperty =
+            DependencyProperty.Register(
+                "SelectedTabId",
+                typeof(string),
+                typeof(PropertyGrid),
+                new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).SelectedTabChanged(e)));        
 
         /// <summary>
         /// Identifies the <see cref="CheckBoxLayout"/> dependency property.
@@ -693,6 +703,22 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the selected tab id.
+        /// </summary>
+        public string SelectedTabId
+        {
+            get
+            {
+                return (string)this.GetValue(SelectedTabIdProperty);
+            }
+
+            set
+            {
+                this.SetValue(SelectedTabIdProperty, value);
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets the check box layout.
         /// </summary>
         /// <value>The check box layout.</value>
@@ -953,7 +979,7 @@ namespace PropertyTools.Wpf
                     Grid.SetIsSharedSizeScope(tabPanel, true);
                 }
 
-                var tabItem = new TabItem { Header = tab, Padding = new Thickness(4) };
+                var tabItem = new TabItem { Header = tab, Padding = new Thickness(4), Name = tab.Id };
 
                 var dataErrorInfoInstance = instance as IDataErrorInfo;
                 if (dataErrorInfoInstance != null)
@@ -1678,8 +1704,40 @@ namespace PropertyTools.Wpf
             {
                 this.tabControl.SelectedIndex = oldIndex;
             }
+            
+            if (this.tabControl != null && this.tabControl.SelectedItem is TabItem)
+            {
+                this.SelectedTabId = (this.tabControl.SelectedItem as TabItem).Name;
+            }
 
             this.currentSelectedObjectType = newSelectedObjectType;
+        }
+        
+        /// <summary>
+        /// Handles changes of the selected tab.
+        /// </summary>
+        /// <param name="e">
+        /// The event arguments.
+        /// </param>
+        private void SelectedTabChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (this.tabControl == null)
+            {
+                return;
+            }
+
+            var tabId = e.NewValue as string;
+            if (tabId == null)
+            {
+                this.tabControl.SelectedIndex = 0;
+                return;
+            }
+
+            var tab = this.tabControl.Items.Cast<TabItem>().FirstOrDefault(t => t.Name == tabId);
+            if (tab != null)
+            {
+                this.tabControl.SelectedItem = tab;
+            }
         }
     }
 }

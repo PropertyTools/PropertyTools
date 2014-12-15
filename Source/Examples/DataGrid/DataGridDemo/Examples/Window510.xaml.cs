@@ -43,7 +43,7 @@ namespace DataGridDemo
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The e.
+        /// The event.
         /// </param>
         private void BtnUpdate_OnClick(object sender, RoutedEventArgs e)
         {

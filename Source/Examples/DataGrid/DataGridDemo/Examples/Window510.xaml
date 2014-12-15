@@ -1,0 +1,23 @@
+<Window x:Class="DataGridDemo.Window510"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="ObservableCollection&lt;ExampleObject&gt; custom columns" Height="450" Width="900"
+        FocusManager.FocusedElement="{Binding ElementName=Grid1}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Content="Update" Click="BtnUpdate_OnClick" HorizontalAlignment="Left" Margin="3"></Button>
+        <p:DataGrid Grid.Row="1" x:Name="Grid1" ItemsSource="{Binding ItemsSource}">
+            <p:DataGrid.ColumnDefinitions>
+                <p:ColumnDefinition PropertyName="String" Header="string"/>
+                <p:ColumnDefinition PropertyName="Integer" Header="integer"/>
+                <p:ColumnDefinition PropertyName="Integer" Header="ReadOnly" IsReadOnly="True"/>
+                <p:ColumnDefinition PropertyName="Fruit" Header="enum"/>
+                <p:ColumnDefinition PropertyName="Selector" Header="selector"/>
+            </p:DataGrid.ColumnDefinitions>
+        </p:DataGrid>
+    </Grid>
+</Window>

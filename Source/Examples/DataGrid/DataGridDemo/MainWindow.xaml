@@ -36,6 +36,7 @@
             <Button Content="Table" Tag="{x:Type local:Window507}"/>
             <Button Content="Synchronized tables" Tag="{x:Type local:Window508}"/>
             <Button Content="Table with header format strings" Tag="{x:Type local:Window509}"/>
+            <Button Content="Table updated in another thread" Tag="{x:Type local:Window510}"/>
         </StackPanel>
         <StackPanel>
             <Button Content="ObservableCollection&lt;ExampleObject&gt; (WPF DataGrid)" Tag="{x:Type local:Window1}"/>

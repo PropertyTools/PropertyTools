@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DataGrid.Content.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
@@ -9,6 +9,7 @@
 
 namespace PropertyTools.Wpf
 {
+    using System;
     using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Linq;
@@ -16,6 +17,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Controls;
     using System.Windows.Data;
     using System.Windows.Media;
+    using System.Windows.Threading;
 
     /// <summary>
     /// Represents a data grid with a spreadsheet style.
@@ -320,11 +322,13 @@ namespace PropertyTools.Wpf
             this.UpdateColumns(columns);
             this.UpdateCells(rows, columns);
 
-            this.UpdateColumnWidths();
             this.UpdateSelectionVisibility();
             this.ShowEditControl();
 
             this.SubscribeToNotifications();
+            
+            // Update column width when all the controls are loaded.
+            Dispatcher.BeginInvoke(new Action(this.UpdateColumnWidths), DispatcherPriority.Loaded);
         }
 
         /// <summary>

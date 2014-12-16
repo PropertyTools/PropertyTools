@@ -122,6 +122,9 @@
     <Compile Include="Examples\Window505.xaml.cs">
       <DependentUpon>Window505.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\Window510.xaml.cs">
+      <DependentUpon>Window510.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
     <Page Include="Examples\ValidationExampleWindow.xaml">
@@ -185,6 +188,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Examples\Window509.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window510.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -213,6 +213,11 @@ namespace PropertyTools.Wpf
                                       Padding = new Thickness(4, 2, 4, 2)
                                   };
 
+                if (pd != null && pd.Tooltip != null)
+                {
+                    ToolTipService.SetToolTip(cell, pd.Tooltip);
+                }
+
                 if (this.ColumnHeadersSource != null && this.ItemsInRows)
                 {
                     cell.DataContext = this.ColumnHeadersSource;

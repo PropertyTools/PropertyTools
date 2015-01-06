@@ -280,7 +280,9 @@ namespace PropertyTools.Wpf
                 if (pd.PropertyType == null)
                 {
                     if (itemsType == null)
+                    {
                         itemsType = this.GetItemsType();
+                    }
                     pd.PropertyType = itemsType;
                 }
             }

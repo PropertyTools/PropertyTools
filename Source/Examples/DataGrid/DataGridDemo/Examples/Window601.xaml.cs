@@ -1,24 +1,17 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Window510.xaml.cs" company="PropertyTools">
+// <copyright file="Window601.xaml.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for Window510.xaml
+//   Interaction logic for Window601.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Data;
-using System.Security.Cryptography.X509Certificates;
-using System.Windows.Media.Effects;
 
 namespace DataGridDemo
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Threading.Tasks;
-    using System.Windows;
-    using System.Windows.Media;
+    using System.Collections.Generic;
+    using System.Data;
 
     /// <summary>
     /// Interaction logic for Window601
@@ -43,15 +36,7 @@ namespace DataGridDemo
             table.Rows.Add(true, "test3", 30);
             table.Rows.Add(false, "test4", 40);
 
-
-            var lst = new List<aa>() {new aa() {bb = "haalo"}};
             Grid1.ItemsSource = table.DefaultView;
-            //Grid1.ItemsSource = lst;
-        }
-
-        public class aa
-        {
-            public string bb { get; set; }
         }
     }
 }

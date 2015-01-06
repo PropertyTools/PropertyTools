@@ -205,7 +205,7 @@ namespace PropertyTools.Wpf
 
                 var view = CollectionViewSource.GetDefaultView(this.ItemsSource);
                 var iitemProperties = view as IItemProperties;
-                if (iitemProperties != null)
+                if (iitemProperties != null && iitemProperties.ItemProperties.Count > 0)
                 {
                     foreach (var info in iitemProperties.ItemProperties)
                     {

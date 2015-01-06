@@ -39,6 +39,8 @@ namespace DataGridDemo
                     UInt = 44,
                     Guid = Guid.NewGuid(),
                     Char = 'h',
+                    Decimal = 9,
+                    Double = 3.6
                 }
             };
             Grid1.ItemsSource = lst;
@@ -53,6 +55,9 @@ namespace DataGridDemo
             public uint UInt { get; set; }
             public Guid Guid { get; set; }
             public char Char { get; set; }
+            public decimal Decimal { get; set; }
+            public Single Single { get; set; }
+            public Double Double { get; set; }
         }
     }
 }

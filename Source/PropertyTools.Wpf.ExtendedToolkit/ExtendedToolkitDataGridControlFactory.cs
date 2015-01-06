@@ -60,7 +60,7 @@ namespace PropertyTools.Wpf.ExtendedToolkit
 
             if (propertyType.Is(typeof(int)) || propertyType.Is(typeof(int?)))
             {
-                var c = new IntegerUpDown()
+                var c = new CalculatorUpDown()
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -68,13 +68,13 @@ namespace PropertyTools.Wpf.ExtendedToolkit
                     Maximum = int.MaxValue,
                     IsReadOnly = propertyDefinition.IsReadOnly
                 };
-                c.SetBinding(IntegerUpDown.ValueProperty, propertyDefinition.CreateBinding(bindingPath));
+                c.SetBinding(CalculatorUpDown.ValueProperty, propertyDefinition.CreateBinding(bindingPath));
                 return c;
             }
 
             if (propertyType.Is(typeof(uint)) || propertyType.Is(typeof(uint?)))
             {
-                var c = new LongUpDown()
+                var c = new CalculatorUpDown()
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -82,7 +82,49 @@ namespace PropertyTools.Wpf.ExtendedToolkit
                     Maximum = uint.MaxValue,
                     IsReadOnly = propertyDefinition.IsReadOnly
                 };
-                c.SetBinding(LongUpDown.ValueProperty, propertyDefinition.CreateBinding(bindingPath));
+                c.SetBinding(CalculatorUpDown.ValueProperty, propertyDefinition.CreateBinding(bindingPath));
+                return c;
+            }
+
+            if (propertyType.Is(typeof(decimal)) || propertyType.Is(typeof(decimal?)))
+            {
+                var c = new CalculatorUpDown()
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Minimum = decimal.MinValue,
+                    Maximum = decimal.MaxValue,
+                    IsReadOnly = propertyDefinition.IsReadOnly
+                };
+                c.SetBinding(CalculatorUpDown.ValueProperty, propertyDefinition.CreateBinding(bindingPath));
+                return c;
+            }
+
+            if (propertyType.Is(typeof(Single)) || propertyType.Is(typeof(Single?)))
+            {
+                var c = new CalculatorUpDown()
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Minimum = decimal.MinValue,
+                    Maximum = decimal.MaxValue,
+                    IsReadOnly = propertyDefinition.IsReadOnly
+                };
+                c.SetBinding(CalculatorUpDown.ValueProperty, propertyDefinition.CreateBinding(bindingPath));
+                return c;
+            }
+
+            if (propertyType.Is(typeof(double)) || propertyType.Is(typeof(double?)))
+            {
+                var c = new CalculatorUpDown()
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Minimum = decimal.MinValue,
+                    Maximum = decimal.MaxValue,
+                    IsReadOnly = propertyDefinition.IsReadOnly
+                };
+                c.SetBinding(CalculatorUpDown.ValueProperty, propertyDefinition.CreateBinding(bindingPath));
                 return c;
             }
 

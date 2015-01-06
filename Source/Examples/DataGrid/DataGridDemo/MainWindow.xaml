@@ -41,6 +41,7 @@
         <StackPanel>
             <Button Content="ObservableCollection&lt;ExampleObject&gt; (WPF DataGrid)" Tag="{x:Type local:Window1}"/>
             <Button Content="Datatable" Tag="{x:Type local:Window601}"/>
+            <Button Content="Extended Toolkit Controls" Tag="{x:Type local:Window602}"/>
         </StackPanel>
     </StackPanel>
 </Window>

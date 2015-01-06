@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf_NET40", "PropertyTools.Wpf\PropertyTools.Wpf_NET40.csproj", "{F05D6590-542B-4150-AD2F-3B1612A5D4CB}"
 EndProject
@@ -49,6 +49,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BCB418
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf.ExtendedToolkit_NET40", "PropertyTools.Wpf.ExtendedToolkit\PropertyTools.Wpf.ExtendedToolkit_NET40.csproj", "{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,6 +114,10 @@ Global
 		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

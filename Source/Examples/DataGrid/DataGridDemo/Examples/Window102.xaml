@@ -16,10 +16,10 @@
                 <p:ColumnDefinition PropertyName="Integer" Header="ReadOnly" IsReadOnly="True"/>
                 <p:ColumnDefinition PropertyName="Fruit" Header="enum"/>
                 <p:ColumnDefinition PropertyName="Selector" Header="selector"/>
-                <p:TemplateColumnDefinition Header="enum">
+                <p:TemplateColumnDefinition PropertyName="Fruit" Header="Templated">
                     <p:TemplateColumnDefinition.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Fruit}" />
+                            <TextBlock FontSize="6" FontWeight="ExtraBold" Text="{Binding}" />
                         </DataTemplate>
                     </p:TemplateColumnDefinition.CellTemplate>
                     </p:TemplateColumnDefinition>

@@ -244,7 +244,9 @@ namespace PropertyTools.Wpf
 
             var listElementType = GetListElementType(type);
             if (listElementType == null)
+            {
                 return false;
+            }
 
             if (listElementType.IsGenericType && listElementType.GetGenericTypeDefinition() == typeof(IList<>))
             {

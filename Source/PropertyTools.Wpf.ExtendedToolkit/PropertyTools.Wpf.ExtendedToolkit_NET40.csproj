@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}</ProjectGuid>
+    <ProjectGuid>{424B4EF3-18C0-4A8D-B87A-5DF8F0E9D82F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PropertyTools.Wpf.ExtendedToolkit</RootNamespace>

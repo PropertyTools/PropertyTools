@@ -31,20 +31,9 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual FrameworkElement CreateDisplayControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
-            if (propertyDefinition is TemplateColumnDefinition)
-            {
-                var template = ((TemplateColumnDefinition) propertyDefinition).CellTemplate;
-                var element = template.LoadContent() as FrameworkElement;
-                var binding = propertyDefinition.CreateBinding(bindingPath);
-                var contentControl = new ContentControl()
-                {
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    Content = element,
-                };
-                element.SetBinding(FrameworkElement.DataContextProperty, binding);
-                return contentControl;
-            }
+            var control = propertyDefinition.CreateDisplayControl(bindingPath);
+            if (control != null)
+                return control;
 
             var propertyType = propertyDefinition.PropertyType;
             if (propertyType.Is(typeof(bool)))
@@ -70,22 +59,9 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual FrameworkElement CreateEditControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
-            if (propertyDefinition is TemplateColumnDefinition)
-            {
-                var template = ((TemplateColumnDefinition)propertyDefinition).CellEditingTemplate;
-                if (template == null)
-                    template = ((TemplateColumnDefinition) propertyDefinition).CellTemplate;
-                var element = template.LoadContent() as FrameworkElement;
-                var binding = propertyDefinition.CreateBinding(bindingPath);
-                var contentControl = new ContentControl()
-                {
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    Content = element,
-                };
-                element.SetBinding(FrameworkElement.DataContextProperty, binding);
-                return contentControl;
-            }
+            var control = propertyDefinition.CreateEditControl(bindingPath);
+            if (control != null)
+                return control;
 
             var propertyType = propertyDefinition.PropertyType;
             if (propertyDefinition.ItemsSourceProperty != null || propertyDefinition.ItemsSource != null)

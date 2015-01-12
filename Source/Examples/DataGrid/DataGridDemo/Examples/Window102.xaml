@@ -19,7 +19,7 @@
                 <p:TemplateColumnDefinition PropertyName="Fruit" Header="Templated">
                     <p:TemplateColumnDefinition.CellTemplate>
                         <DataTemplate>
-                            <TextBlock FontSize="6" FontWeight="ExtraBold" Text="{Binding}" />
+                            <TextBlock FontSize="6" FontWeight="ExtraBold" Text="{Binding Fruit}" />
                         </DataTemplate>
                     </p:TemplateColumnDefinition.CellTemplate>
                     </p:TemplateColumnDefinition>

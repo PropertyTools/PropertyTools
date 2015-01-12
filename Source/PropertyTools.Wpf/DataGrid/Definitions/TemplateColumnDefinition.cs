@@ -45,7 +45,8 @@ namespace PropertyTools.Wpf
         {
             var template = this.CellTemplate;
             var element = template.LoadContent() as FrameworkElement;
-            var binding = this.CreateBinding(bindingPath);
+            var binding = this.CreateBinding("");
+            binding.Mode = System.Windows.Data.BindingMode.OneWay;
             var contentControl = new ContentControl()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -67,7 +68,8 @@ namespace PropertyTools.Wpf
             if (template == null)
                 return this.CreateDisplayControl(bindingPath);
             var element = template.LoadContent() as FrameworkElement;
-            var binding = this.CreateBinding(bindingPath);
+            var binding = this.CreateBinding("");
+            binding.Mode = System.Windows.Data.BindingMode.OneWay;
             var contentControl = new ContentControl()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,

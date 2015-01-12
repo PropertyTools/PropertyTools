@@ -13,6 +13,9 @@ namespace PropertyTools.Wpf.ExtendedToolkit
 {
     public class ExtendedToolkitDataGridControlFactory : DataGridControlFactory
     {
+        private static Lazy<ExtendedToolkitDataGridControlFactory> _instance = new Lazy<ExtendedToolkitDataGridControlFactory>();
+        public static ExtendedToolkitDataGridControlFactory Instance {get { return _instance.Value; }}
+
         public override FrameworkElement CreateDisplayControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var ctl = CreateExtendedToolkitControl(propertyDefinition, bindingPath);

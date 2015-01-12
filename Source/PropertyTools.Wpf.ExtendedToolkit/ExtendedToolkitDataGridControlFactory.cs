@@ -18,6 +18,10 @@ namespace PropertyTools.Wpf.ExtendedToolkit
 
         public override FrameworkElement CreateDisplayControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
+            var control = propertyDefinition.CreateDisplayControl(bindingPath);
+            if (control != null)
+                return control;
+
             var ctl = CreateExtendedToolkitControl(propertyDefinition, bindingPath);
             if (ctl != null)
                 return ctl;
@@ -27,6 +31,10 @@ namespace PropertyTools.Wpf.ExtendedToolkit
 
         public override FrameworkElement CreateEditControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
+            var control = propertyDefinition.CreateEditControl(bindingPath);
+            if (control != null)
+                return control;
+
             var ctl = CreateExtendedToolkitControl(propertyDefinition, bindingPath);
             if (ctl != null)
                 return ctl;

@@ -7,8 +7,12 @@
     <Grid>
         <p:DataGrid x:Name="grid1" ItemsSource="{Binding ItemsSource}">
             <p:DataGrid.ColumnDefinitions>
-                <p:ColumnDefinition PropertyName="String" Header="string"/>
-                <p:ColumnDefinition PropertyName="Integer" Header="integer"/>
+                <p:ColumnDefinition PropertyName="String" Header="string" Tooltip="contains a string"/>
+                <p:ColumnDefinition PropertyName="Integer">
+                    <p:ColumnDefinition.Header>
+                        <TextBlock FontSize="6" FontWeight="ExtraBold">integer</TextBlock>
+                    </p:ColumnDefinition.Header>
+                </p:ColumnDefinition>
                 <p:ColumnDefinition PropertyName="Integer" Header="ReadOnly" IsReadOnly="True"/>
                 <p:ColumnDefinition PropertyName="Fruit" Header="enum"/>
                 <p:ColumnDefinition PropertyName="Selector" Header="selector"/>

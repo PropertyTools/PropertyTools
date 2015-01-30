@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows.Data;
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -201,6 +203,31 @@ namespace PropertyTools.Wpf
                     return;
                 }
 
+                var view = CollectionViewSource.GetDefaultView(this.ItemsSource);
+                var iitemProperties = view as IItemProperties;
+                if (iitemProperties != null && iitemProperties.ItemProperties.Count > 0)
+                {
+                    foreach (var info in iitemProperties.ItemProperties)
+                    {
+                        var descriptor = info.Descriptor as PropertyDescriptor;
+                        if (!descriptor.IsBrowsable)
+                        {
+                            continue;
+                        }
+
+                        Owner.ColumnDefinitions.Add(
+                            new ColumnDefinition
+                            {
+                                Descriptor = descriptor,
+                                Header = info.Name,
+                                HorizontalAlignment = Owner.DefaultHorizontalAlignment,
+                                Width = Owner.DefaultColumnWidth
+                            });
+                    }
+
+                    return;
+                }
+
                 var itemType = TypeHelper.FindBiggestCommonType(list);
 
                 var properties = TypeDescriptor.GetProperties(itemType);
@@ -228,7 +255,7 @@ namespace PropertyTools.Wpf
                             });
                 }
 
-                if (properties.Count == 0)
+                if (Owner.ColumnDefinitions.Count == 0)
                 {
                     var itemsType = TypeHelper.GetItemType(list);
                     Owner.ColumnDefinitions.Add(

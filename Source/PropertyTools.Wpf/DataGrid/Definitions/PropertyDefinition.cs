@@ -99,7 +99,13 @@ namespace PropertyTools.Wpf
         /// Gets or sets the header.
         /// </summary>
         /// <value>The header.</value>
-        public string Header { get; set; }
+        public object Header { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tooltip.
+        /// </summary>
+        /// <value>The tooltip.</value>
+        public object Tooltip { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal alignment.

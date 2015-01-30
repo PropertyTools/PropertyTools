@@ -12,7 +12,7 @@ namespace PropertyTools.Wpf.Tests
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Deployment.Internal;
+    using System.Data;
     using System.Windows.Media;
 
     using NUnit.Framework;
@@ -96,6 +96,13 @@ namespace PropertyTools.Wpf.Tests
         public void IsIListIList_SubclassOfIListIList_ReturnTrue()
         {
             Assert.IsTrue(TypeHelper.IsIListIList(typeof(Testclass<double>)));
+        }
+
+        [Test]
+        public void IsIListIList_DataTable_ReturnFalse()
+        {
+            var dt = new DataTable();
+            Assert.IsFalse(TypeHelper.IsIListIList(dt.DefaultView.GetType()));
         }
 
         /// <summary>

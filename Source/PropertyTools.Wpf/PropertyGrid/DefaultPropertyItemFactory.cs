@@ -518,6 +518,13 @@ namespace PropertyTools.Wpf
                 }
             }
 
+            var ra = attribute as EnableByRadioButtonAttribute;
+            if (ra != null)
+            {
+                pi.RadioDescriptor = pi.GetDescriptor(ra.PropertyName);
+                pi.RadioValue = ra.Value;
+            }
+
             if (attribute is CommentAttribute)
             {
                 pi.IsComment = true;

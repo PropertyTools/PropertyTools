@@ -281,6 +281,17 @@ namespace PropertyTools.Wpf
         public bool IsOptional { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this property is enabled by a radio button.
+        /// </summary>
+        public bool IsEnabledByRadioButton
+        {
+            get
+            {
+                return this.RadioDescriptor != null;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the property is a password.
         /// </summary>
         public bool IsPassword { get; set; }
@@ -368,6 +379,18 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The optional descriptor.</value>
         public PropertyDescriptor OptionalDescriptor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the descriptor for the property that enables/disables by a radio button.
+        /// </summary>
+        /// <value>The descriptor.</value>
+        public PropertyDescriptor RadioDescriptor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value used by the radio button to enable/disable.
+        /// </summary>
+        /// <value>The value that enables.</value>
+        public object RadioValue { get; set; }
 
         /// <summary>
         /// Gets or sets the optional value.

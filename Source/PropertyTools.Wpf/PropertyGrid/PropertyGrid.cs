@@ -245,7 +245,7 @@ namespace PropertyTools.Wpf
                 typeof(int),
                 typeof(PropertyGrid),
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-                
+
         /// <summary>
         /// The selected tab id property.
         /// </summary>
@@ -254,7 +254,7 @@ namespace PropertyTools.Wpf
                 "SelectedTabId",
                 typeof(string),
                 typeof(PropertyGrid),
-                new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).SelectedTabChanged(e)));        
+                new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).SelectedTabChanged(e)));
 
         /// <summary>
         /// Identifies the <see cref="CheckBoxLayout"/> dependency property.
@@ -717,7 +717,7 @@ namespace PropertyTools.Wpf
                 this.SetValue(SelectedTabIdProperty, value);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the check box layout.
         /// </summary>
@@ -1354,6 +1354,13 @@ namespace PropertyTools.Wpf
                         pi.OptionalDescriptor != null ? new Binding(pi.OptionalDescriptor.Name) : new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
                 }
 
+                if (pi.IsEnabledByRadioButton)
+                {
+                    propertyControl.SetBinding(
+                        IsEnabledProperty,
+                        new Binding(pi.RadioDescriptor.Name) { Converter = new EnumToBooleanConverter() { EnumType = pi.RadioDescriptor.PropertyType }, ConverterParameter = pi.RadioValue });
+                }
+
                 var dataErrorInfoInstance = instance as IDataErrorInfo;
                 if (dataErrorInfoInstance != null)
                 {
@@ -1379,7 +1386,7 @@ namespace PropertyTools.Wpf
                                           NotifyOnTargetUpdated = true,
                                           //                                          ValidatesOnDataErrors = false,
 #if !NET40
-                        ValidatesOnNotifyDataErrors = false, 
+                                          ValidatesOnNotifyDataErrors = false,
 #endif
                                           //                                          ValidatesOnExceptions = false
                                       };
@@ -1579,17 +1586,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         private FrameworkElement CreateLabel(PropertyItem pi)
         {
-            FrameworkElement propertyLabel;
-            if (!pi.IsOptional)
-            {
-                propertyLabel = new Label
-                                    {
-                                        Content = pi.DisplayName,
-                                        VerticalAlignment = VerticalAlignment.Top,
-                                        Margin = new Thickness(0, 4, 0, 0)
-                                    };
-            }
-            else
+            FrameworkElement propertyLabel = null;
+            if (pi.IsOptional)
             {
                 var cb = new CheckBox
                              {
@@ -1605,6 +1603,37 @@ namespace PropertyTools.Wpf
                 var g = new Grid();
                 g.Children.Add(cb);
                 propertyLabel = g;
+            }
+
+            if (pi.IsEnabledByRadioButton)
+            {
+                var rb = new RadioButton
+                {
+                    Content = pi.DisplayName,
+                    GroupName = pi.RadioDescriptor.Name,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(5, 0, 0, 0)
+                };
+
+                var converter = new EnumToBooleanConverter();
+                converter.EnumType = pi.RadioDescriptor.PropertyType;
+                rb.SetBinding(
+                    RadioButton.IsCheckedProperty,
+                    new Binding(pi.RadioDescriptor.Name) { Converter = converter, ConverterParameter = pi.RadioValue });
+
+                var g = new Grid();
+                g.Children.Add(rb);
+                propertyLabel = g;
+            }
+
+            if (propertyLabel == null)
+            {
+                propertyLabel = new Label
+                {
+                    Content = pi.DisplayName,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Margin = new Thickness(0, 4, 0, 0)
+                };
             }
 
             propertyLabel.Margin = new Thickness(0, 0, 4, 0);
@@ -1704,7 +1733,7 @@ namespace PropertyTools.Wpf
             {
                 this.tabControl.SelectedIndex = oldIndex;
             }
-            
+
             if (this.tabControl != null && this.tabControl.SelectedItem is TabItem)
             {
                 this.SelectedTabId = (this.tabControl.SelectedItem as TabItem).Name;
@@ -1712,7 +1741,7 @@ namespace PropertyTools.Wpf
 
             this.currentSelectedObjectType = newSelectedObjectType;
         }
-        
+
         /// <summary>
         /// Handles changes of the selected tab.
         /// </summary>

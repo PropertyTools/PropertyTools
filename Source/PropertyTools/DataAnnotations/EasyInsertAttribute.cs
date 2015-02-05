@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
+//   Specifies that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    /// Specify that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
+    /// Specifies that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class EasyInsertAttribute : Attribute

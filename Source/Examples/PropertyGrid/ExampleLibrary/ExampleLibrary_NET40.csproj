@@ -60,6 +60,7 @@
     <Compile Include="Tests\TestDescriptionAttribute.cs" />
     <Compile Include="Tests\TestEditableAttribute.cs" />
     <Compile Include="Tests\TestFillTabAttribute.cs" />
+    <Compile Include="Tests\TestEnableByRadioButtonAttribute.cs" />
     <Compile Include="Tests\TestSpinnableAttribute.cs" />
     <Compile Include="Tests\TestAutoUpdateTextAttribute.cs" />
     <Compile Include="Tests\TestConverterAttribute.cs" />

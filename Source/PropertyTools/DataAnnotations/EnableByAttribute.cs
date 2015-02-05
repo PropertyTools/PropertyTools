@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Specifies the name of property that controls the enabled/disabled state of the attributed property.
+//   Specifies the name of a property that controls the enabled/disabled state of the attributed property.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    /// Specifies the name of property that controls the enabled/disabled state of the attributed property.
+    /// Specifies the name of a property that controls the enabled/disabled state of the attributed property.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class EnableByAttribute : Attribute

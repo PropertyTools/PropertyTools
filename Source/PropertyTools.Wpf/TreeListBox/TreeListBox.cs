@@ -636,19 +636,22 @@ namespace PropertyTools.Wpf
             while (queue.Count > 0)
             {
                 var item = queue.Dequeue();
-                if (this.isExpanded[item])
+                if (this.Items.Contains(item))
                 {
-                    IList children;
-                    if (this.itemToChildrenMap.TryGetValue(item, out children) && children != null)
+                    if (this.isExpanded[item])
                     {
-                        foreach (var child in children)
+                        IList children;
+                        if (this.itemToChildrenMap.TryGetValue(item, out children) && children != null)
                         {
-                            queue.Enqueue(child);
+                            foreach (var child in children)
+                            {
+                                queue.Enqueue(child);
+                            }
                         }
                     }
-                }
 
-                this.RemoveItem(item);
+                    this.RemoveItem(item);
+                }
             }
         }
 

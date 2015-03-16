@@ -74,6 +74,12 @@
                 <Label Content="{Binding BasePath}"/>
             </StackPanel>
         </GroupBox>
+        <GroupBox Header="Multiselect">
+            <StackPanel >
+                <p:FilePicker FilePaths="{Binding FilePaths}" Multiselect="True" BasePath="{Binding BasePath}" Filter="Text files|*.txt" DefaultExtension=".txt" Margin="4"/>
+                <Label Content="{Binding BasePath}"/>
+            </StackPanel>
+        </GroupBox>
     </StackPanel>
 
 </Page>

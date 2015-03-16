@@ -11,6 +11,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -36,6 +37,13 @@ namespace PropertyTools.Wpf
                 "DefaultExtension", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
+        /// Identifies the <see cref="Multiselect"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MultiselectProperty = 
+            DependencyProperty.Register(
+                 "Multiselect", typeof(bool), typeof(FilePicker), new UIPropertyMetadata(false));
+
+        /// <summary>
         /// Identifies the <see cref="FileDialogService"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FileDialogServiceProperty =
@@ -50,6 +58,15 @@ namespace PropertyTools.Wpf
             typeof(string),
             typeof(FilePicker),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        /// <summary>
+        /// Identifies the <see cref="FilePaths"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty FilePathsProperty = DependencyProperty.Register(
+            "FilePaths",
+            typeof(string[]),
+            typeof(FilePicker),
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnFilePathsChanged));
 
         /// <summary>
         /// Identifies the <see cref="Filter"/> dependency property.
@@ -119,6 +136,21 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Ensures synchronization between FilePaths and FilePath properties when Multiselect is enabled
+        /// </summary>
+        /// <param name="dependencyObject">FilePicker</param>
+        /// <param name="ea">Property Changed Event Arguments</param>
+        private static void OnFilePathsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs ea)
+        {
+            FilePicker instance = dependencyObject as FilePicker;
+
+            if (instance.Multiselect && instance.FilePaths != null && instance.FilePaths.Length > 0)
+            {
+                instance.FilePath = string.Join(", ", instance.FilePaths);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the browse command.
         /// </summary>
         /// <value>The browse command.</value>
@@ -150,6 +182,34 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(DefaultExtensionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets Multiselect option.
+        /// </summary>
+        /// <value>Whether or not file picker is a multiselect.</value>
+        public bool Multiselect
+        {
+            get
+            {
+                return (bool)this.GetValue(MultiselectProperty);
+            }
+
+            set
+            {
+                this.SetValue(MultiselectProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// If FilePicker is in MultiSelect mode, disable free form text input
+        /// </summary>
+        public bool IsInputEnabled
+        {
+            get
+            {
+                return !Multiselect;
             }
         }
 
@@ -201,6 +261,23 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(FilePathProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the file paths.
+        /// </summary>
+        /// <value>The file paths.</value>
+        public string[] FilePaths
+        {
+            get
+            {
+                return (string[])this.GetValue(FilePathsProperty);
+            }
+
+            set
+            {
+                this.SetValue(FilePathsProperty, value);
             }
         }
 
@@ -297,13 +374,31 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void Browse()
         {
-            string filename = this.GetAbsolutePath(this.FilePath);
+            string filename = null;
+            string[] filenames = null;
+
+            if (!this.Multiselect)
+            {
+                filename = this.GetAbsolutePath(this.FilePath);
+            }
+            else
+            {
+                filenames = this.GetAbsolutePaths(this.FilePaths);
+            }
+
             bool ok = false;
             if (this.FileDialogService != null)
             {
-                if (this.UseOpenDialog)
+                if (this.UseOpenDialog && !this.Multiselect)
                 {
                     if (this.FileDialogService.ShowOpenFileDialog(ref filename, this.Filter, this.DefaultExtension))
+                    {
+                        ok = true;
+                    }
+                }
+                else if (this.UseOpenDialog && this.Multiselect)
+                {
+                    if (this.FileDialogService.ShowOpenFilesDialog(ref filenames, this.Filter, this.DefaultExtension))
                     {
                         ok = true;
                     }
@@ -325,11 +420,19 @@ namespace PropertyTools.Wpf
                         {
                             FileName = this.FilePath,
                             Filter = this.Filter,
-                            DefaultExt = this.DefaultExtension
+                            DefaultExt = this.DefaultExtension,
+                            Multiselect = this.Multiselect
                         };
                     if (true == d.ShowDialog())
                     {
-                        filename = d.FileName;
+                        if (this.Multiselect)
+                        {
+                            filenames = d.FileNames;
+                        }
+                        else
+                        {
+                            filename = d.FileName;
+                        }
                         ok = true;
                     }
                 }
@@ -351,7 +454,14 @@ namespace PropertyTools.Wpf
 
             if (ok)
             {
-                this.FilePath = this.GetRelativePath(filename);
+                if (this.Multiselect)
+                {
+                    this.FilePaths = this.GetRelativePaths(filenames);
+                }
+                else
+                {
+                    this.FilePath = this.GetRelativePath(filename);
+                }
             }
         }
 
@@ -407,12 +517,31 @@ namespace PropertyTools.Wpf
                 return null;
             }
 
-            if (this.BasePath != null && !Path.IsPathRooted(this.FilePath))
+            if (this.BasePath != null && !Path.IsPathRooted(filePath))
             {
-                return Path.Combine(this.BasePath, this.FilePath);
+                return Path.Combine(this.BasePath, filePath);
             }
 
-            return this.FilePath;
+            return filePath;
+        }
+
+        /// <summary>
+        /// Gets the absolute paths.
+        /// </summary>
+        /// <param name="filePaths">The file paths.</param>
+        /// <returns>
+        /// The get absolute paths.
+        /// </returns>
+        private string[] GetAbsolutePaths(string[] filePaths)
+        {
+            if (filePaths == null || filePaths.Length == 0)
+            {
+                return filePaths;
+            }
+
+            return filePaths
+                .Select(path => GetAbsolutePath(path))
+                .ToArray();
         }
 
         /// <summary>
@@ -445,6 +574,30 @@ namespace PropertyTools.Wpf
             var relativeUri = uri2.MakeRelativeUri(uri1);
             var relativePath = Uri.UnescapeDataString(relativeUri.OriginalString);
             return relativePath.Replace('/', '\\');
+        }
+
+        /// <summary>
+        /// Gets the relative paths.
+        /// </summary>
+        /// <param name="filePaths">The file paths.</param>
+        /// <returns>
+        /// The get relative paths.
+        /// </returns>
+        private string[] GetRelativePaths(string[] filePaths)
+        {
+            if (this.BasePath == null)
+            {
+                return filePaths;
+            }
+
+            if (filePaths == null || filePaths.Length == 0)
+            {
+                return filePaths;
+            }
+
+            return filePaths
+                .Select(path => GetRelativePath(path))
+                .ToArray();
         }
     }
 }

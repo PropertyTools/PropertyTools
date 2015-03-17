@@ -137,21 +137,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Ensures synchronization between FilePaths and FilePath properties when Multiselect is enabled
-        /// </summary>
-        /// <param name="dependencyObject">FilePicker</param>
-        /// <param name="ea">Property Changed Event Arguments</param>
-        private static void OnFilePathsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs ea)
-        {
-            FilePicker instance = dependencyObject as FilePicker;
-
-            if (instance.Multiselect && instance.FilePaths != null && instance.FilePaths.Length > 0)
-            {
-                instance.FilePath = string.Join(", ", instance.FilePaths);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the browse command.
         /// </summary>
         /// <value>The browse command.</value>
@@ -187,9 +172,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets Multiselect option.
+        /// Gets or sets a value indicating whether the <see cref="FilePicker" /> allows users to select multiple files.
         /// </summary>
-        /// <value>Whether or not file picker is a multiselect.</value>
+        /// <value><c>true</c> if multiple selections are allowed; otherwise, false. The default is <c>false</c>.</value>
+        /// <remarks>When this feature is enabled, use the <see cref="FilePaths" /> property to get/set the filenames.</remarks>
         public bool Multiselect
         {
             get
@@ -204,13 +190,14 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// If FilePicker is in MultiSelect mode, disable free form text input
+        /// Gets a value indicating whether input is enabled.
         /// </summary>
+        /// <remarks>If the <see cref="FilePicker" /> is in multi-select mode, disable free form text input.</remarks>
         public bool IsInputEnabled
         {
             get
             {
-                return !Multiselect;
+                return !this.Multiselect;
             }
         }
 
@@ -385,12 +372,26 @@ namespace PropertyTools.Wpf
                     return this.FilePaths ?? new string[0];
                 }
 
-                return new[] { this.FilePath };
+                return this.FilePath != null ? new[] { this.FilePath } : new string[0];
             }
         }
 
         /// <summary>
-        /// Opens the open or save file dialog.
+        /// Ensures synchronization between <see cref="FilePaths" /> and <see cref="FilePath" /> properties when <see cref="Multiselect" /> is enabled
+        /// </summary>
+        /// <param name="dependencyObject">The <see cref="FilePicker" />.</param>
+        /// <param name="ea">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+        private static void OnFilePathsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs ea)
+        {
+            var instance = (FilePicker)dependencyObject;
+            if (instance.Multiselect && instance.FilePaths != null && instance.FilePaths.Length > 0)
+            {
+                instance.FilePath = string.Join(", ", instance.FilePaths);
+            }
+        }
+
+        /// <summary>
+        /// Shows the open or save file dialog.
         /// </summary>
         private void Browse()
         {
@@ -406,21 +407,24 @@ namespace PropertyTools.Wpf
                 filenames = this.GetAbsolutePaths(this.FilePaths);
             }
 
-            bool ok = false;
+            var ok = false;
             if (this.FileDialogService != null)
             {
-                if (this.UseOpenDialog && !this.Multiselect)
+                if (this.UseOpenDialog)
                 {
-                    if (this.FileDialogService.ShowOpenFileDialog(ref filename, this.Filter, this.DefaultExtension))
+                    if (!this.Multiselect)
                     {
-                        ok = true;
+                        if (this.FileDialogService.ShowOpenFileDialog(ref filename, this.Filter, this.DefaultExtension))
+                        {
+                            ok = true;
+                        }
                     }
-                }
-                else if (this.UseOpenDialog && this.Multiselect)
-                {
-                    if (this.FileDialogService.ShowOpenFilesDialog(ref filenames, this.Filter, this.DefaultExtension))
+                    else
                     {
-                        ok = true;
+                        if (this.FileDialogService.ShowOpenFilesDialog(ref filenames, this.Filter, this.DefaultExtension))
+                        {
+                            ok = true;
+                        }
                     }
                 }
                 else
@@ -453,6 +457,7 @@ namespace PropertyTools.Wpf
                         {
                             filename = d.FileName;
                         }
+
                         ok = true;
                     }
                 }
@@ -486,7 +491,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Opens Windows Explorer with the current file.
+        /// Starts Windows Explorer with the current file.
         /// </summary>
         private void Explore()
         {
@@ -565,9 +570,7 @@ namespace PropertyTools.Wpf
                 return filePaths;
             }
 
-            return filePaths
-                .Select(path => GetAbsolutePath(path))
-                .ToArray();
+            return filePaths.Select(this.GetAbsolutePath).ToArray();
         }
 
         /// <summary>
@@ -621,9 +624,7 @@ namespace PropertyTools.Wpf
                 return filePaths;
             }
 
-            return filePaths
-                .Select(path => GetRelativePath(path))
-                .ToArray();
+            return filePaths.Select(this.GetRelativePath).ToArray();
         }
     }
 }

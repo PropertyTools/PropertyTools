@@ -10,6 +10,7 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Windows;
@@ -39,7 +40,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="Multiselect"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MultiselectProperty = 
+        public static readonly DependencyProperty MultiselectProperty =
             DependencyProperty.Register(
                  "Multiselect", typeof(bool), typeof(FilePicker), new UIPropertyMetadata(false));
 
@@ -370,6 +371,25 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the selected file paths.
+        /// </summary>
+        /// <value>
+        /// A sequence of file paths.
+        /// </value>
+        private IEnumerable<string> SelectedFilePaths
+        {
+            get
+            {
+                if (this.Multiselect)
+                {
+                    return this.FilePaths ?? new string[0];
+                }
+
+                return new[] { this.FilePath };
+            }
+        }
+
+        /// <summary>
         /// Opens the open or save file dialog.
         /// </summary>
         private void Browse()
@@ -478,7 +498,11 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void Open()
         {
-            System.Diagnostics.Process.Start(this.FilePath);
+            var filePath = this.SelectedFilePaths.FirstOrDefault();
+            if (filePath != null)
+            {
+                System.Diagnostics.Process.Start(filePath);
+            }
         }
 
         /// <summary>
@@ -489,7 +513,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         private bool CanOpen()
         {
-            return File.Exists(this.FilePath);
+            var filePath = this.SelectedFilePaths.FirstOrDefault();
+            return filePath != null && File.Exists(filePath);
         }
 
         /// <summary>
@@ -500,7 +525,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         private bool CanExplore()
         {
-            return File.Exists(this.FilePath);
+            // same logic as for open file
+            return this.CanOpen();
         }
 
         /// <summary>

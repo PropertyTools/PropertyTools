@@ -667,6 +667,7 @@ namespace PropertyTools.Wpf
             this.itemToChildrenMap.Clear();
             this.childrenToItemMap.Clear();
             this.itemLevelMap.Clear();
+            this.isExpanded.Clear();
         }
 
         /// <summary>

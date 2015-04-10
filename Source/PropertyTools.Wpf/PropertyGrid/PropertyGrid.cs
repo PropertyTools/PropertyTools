@@ -979,7 +979,7 @@ namespace PropertyTools.Wpf
                     Grid.SetIsSharedSizeScope(tabPanel, true);
                 }
 
-                var tabItem = new TabItem { Header = tab, Padding = new Thickness(4), Name = tab.Id };
+                var tabItem = new TabItem { Header = tab, Padding = new Thickness(4), Name = (tab.Id ?? String.Empty) };
 
                 var dataErrorInfoInstance = instance as IDataErrorInfo;
                 if (dataErrorInfoInstance != null)

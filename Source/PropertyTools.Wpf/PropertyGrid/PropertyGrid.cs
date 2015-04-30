@@ -244,7 +244,7 @@ namespace PropertyTools.Wpf
                 "SelectedTabIndex",
                 typeof(int),
                 typeof(PropertyGrid),
-                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+                new FrameworkPropertyMetadata(0, (s, e) => ((PropertyGrid)s).SelectedTabIndexChanged(e)));
 
         /// <summary>
         /// The selected tab id property.
@@ -1766,6 +1766,27 @@ namespace PropertyTools.Wpf
             if (tab != null)
             {
                 this.tabControl.SelectedItem = tab;
+            }
+        }
+        
+        /// <summary>
+        /// Handles changes of the selected tab index.
+        /// </summary>
+        /// <param name="e">
+        /// The event arguments.
+        /// </param>
+        private void SelectedTabIndexChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (this.tabControl == null)
+            {
+                return;
+            }
+
+            int tabIndex; 
+            int.TryParse(e.NewValue.ToString(), out tabIndex);
+            if (tabIndex >= 0)
+            {
+                this.SelectedTabId = this.tabControl.Items.Cast<TabItem>().ToArray()[tabIndex].Name;
             }
         }
     }

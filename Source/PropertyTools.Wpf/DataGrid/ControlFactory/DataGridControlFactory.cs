@@ -180,6 +180,12 @@ namespace PropertyTools.Wpf
             binding.NotifyOnSourceUpdated = true;
             c.SetBinding(propertyDefinition.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);
 
+            var selectedValuePathAttribute = propertyDefinition.Descriptor.Attributes.OfType<SelectedValuePathAttribute>().FirstOrDefault();
+            if (selectedValuePathAttribute != null)
+            {
+                c.SelectedValuePath = selectedValuePathAttribute.Path;
+            }
+            
             return c;
         }
 

@@ -19,6 +19,8 @@ namespace PropertyTools.Wpf
     
     using PropertyTools.DataAnnotations;
 
+    using HorizontalAlignment = System.Windows.HorizontalAlignment;
+
     /// <summary>
     /// Creates display and edit controls for the DataGrid.
     /// </summary>

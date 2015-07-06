@@ -37,6 +37,8 @@ namespace PropertyTools.Wpf
             this.columnGrid.Children.Clear();
             this.columnHeaderMap.Clear();
 
+            this.propertyDefinitions.Clear();
+
             this.sheetGrid.RowDefinitions.Clear();
             this.sheetGrid.ColumnDefinitions.Clear();
             this.sheetGrid.Children.Clear();

@@ -36,6 +36,10 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual FrameworkElement CreateDisplayControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
+            var control = propertyDefinition.CreateDisplayControl(bindingPath);
+            if (control != null)
+                return control;
+
             var propertyType = propertyDefinition.PropertyType;
             if (propertyType.Is(typeof(bool)))
             {
@@ -60,6 +64,10 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual FrameworkElement CreateEditControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
+            var control = propertyDefinition.CreateEditControl(bindingPath);
+            if (control != null)
+                return control;
+
             var propertyType = propertyDefinition.PropertyType;
             if (propertyDefinition.ItemsSourceProperty != null || propertyDefinition.ItemsSource != null)
             {

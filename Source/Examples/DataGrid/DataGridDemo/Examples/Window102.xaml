@@ -16,6 +16,13 @@
                 <p:ColumnDefinition PropertyName="Integer" Header="ReadOnly" IsReadOnly="True"/>
                 <p:ColumnDefinition PropertyName="Fruit" Header="enum"/>
                 <p:ColumnDefinition PropertyName="Selector" Header="selector"/>
+                <p:TemplateColumnDefinition PropertyName="Fruit" Header="Templated">
+                    <p:TemplateColumnDefinition.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock FontSize="6" FontWeight="ExtraBold" Text="{Binding Fruit}" />
+                        </DataTemplate>
+                    </p:TemplateColumnDefinition.CellTemplate>
+                    </p:TemplateColumnDefinition>
             </p:DataGrid.ColumnDefinitions>
         </p:DataGrid>
     </Grid>

@@ -177,6 +177,7 @@
     <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="DataGrid\DataGrid.Strategy.cs" />
+    <Compile Include="DataGrid\Definitions\TemplateColumnDefinition.cs" />
     <Compile Include="Helpers\AutoFiller.cs" />
     <Compile Include="Helpers\CaptureScreenshot.cs" />
     <Compile Include="Helpers\FormattedTimeSpanParser.cs" />

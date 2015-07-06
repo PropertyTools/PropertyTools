@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows;
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -279,6 +281,27 @@ namespace PropertyTools.Wpf
         protected void SetEnumItemsSource()
         {
             this.ItemsSource = Enum.GetValues(this.PropertyType);
+        }
+
+        /// <summary>
+        /// The Default DataGridControlFactory uses this Method to Create the Control
+        /// </summary>
+        /// <param name="bindingPath"></param>
+        /// <returns></returns>
+        public virtual FrameworkElement CreateDisplayControl(string bindingPath)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// The Default DataGridControlFactory uses this Method to Create the Edit Control
+        /// </summary>
+        /// <param name="bindingPath"></param>
+        /// <returns></returns>
+        
+        public virtual FrameworkElement CreateEditControl(string bindingPath)
+        {
+            return null;
         }
     }
 }

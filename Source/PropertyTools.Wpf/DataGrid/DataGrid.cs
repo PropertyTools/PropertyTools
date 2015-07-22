@@ -1186,6 +1186,13 @@ namespace PropertyTools.Wpf
 
             switch (e.Key)
             {
+                case Key.Tab:
+                    if(column < this.ColumnDefinitions.Count)
+                    {
+                        this.ChangeCurrentCell(0, shift ? -1 : 1);
+                    }
+                    e.Handled = true;
+                    return;
                 case Key.Enter:
                     if (this.InputDirection == InputDirection.Vertical)
                     {
@@ -1603,6 +1610,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         private static string CsvEncodeString(string input)
         {
+            if (input == null)
+                input = "";
             input = input.Replace("\"", "\"\"");
             if (input.Contains(";") || input.Contains("\""))
             {

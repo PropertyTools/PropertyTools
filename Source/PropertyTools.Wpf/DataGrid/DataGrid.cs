@@ -1463,6 +1463,22 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Handles text preview input events.
+        /// </summary>
+        /// <param name="e">The event arguements.</param>
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+
+            if (e.Key == Key.ImeProcessed)
+            {
+                var textEditor = this.currentEditor as TextBox;
+                if (textEditor != null && !textEditor.IsFocused)
+                    this.ShowTextBoxEditControl();
+            }
+        }
+
+        /// <summary>
         /// Handles text input events.
         /// </summary>
         /// <param name="e">The event arguments.</param>

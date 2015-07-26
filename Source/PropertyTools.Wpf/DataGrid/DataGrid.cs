@@ -1189,6 +1189,7 @@ namespace PropertyTools.Wpf
                 case Key.Tab:
                     if(column < this.ColumnDefinitions.Count)
                     {
+                        this.HideEditor();
                         this.ChangeCurrentCell(0, shift ? -1 : 1);
                     }
                     e.Handled = true;

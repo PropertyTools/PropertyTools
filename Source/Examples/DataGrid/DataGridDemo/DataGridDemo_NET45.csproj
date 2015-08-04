@@ -57,6 +57,7 @@
     <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DataTypes\MassValueConverter.cs" />
     <Compile Include="Examples\Window601.xaml.cs">
       <DependentUpon>Window601.xaml</DependentUpon>
     </Compile>

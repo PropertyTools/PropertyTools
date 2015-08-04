@@ -47,7 +47,7 @@ namespace PropertyTools.Wpf
             this.HeaderPlacement = HeaderPlacement.Left;
             this.HorizontalAlignment = HorizontalAlignment.Left;
             this.DataTypes = new List<DataType>();
-            this.Columns = new List<ColumnAttribute>();
+            this.Columns = new List<ColumnDefinition>();
 
             this.ListCanAdd = true;
             this.ListCanRemove = true;
@@ -102,7 +102,7 @@ namespace PropertyTools.Wpf
         /// Gets the columns.
         /// </summary>
         /// <value>The columns.</value>
-        public List<ColumnAttribute> Columns { get; private set; }
+        public List<ColumnDefinition> Columns { get; private set; }
 
         /// <summary>
         /// Gets or sets the converter.
@@ -281,7 +281,7 @@ namespace PropertyTools.Wpf
         public bool IsOptional { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this property is enabled by a radio button.
+        /// Gets a value indicating whether this property is enabled by a radio button.
         /// </summary>
         public bool IsEnabledByRadioButton
         {

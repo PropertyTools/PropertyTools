@@ -126,7 +126,8 @@ namespace PropertyTools.Wpf
                 }
 
                 var tab = tabs[tabHeader];
-                var group = tab.Groups.FirstOrDefault(g => g.Header == pi.Category);
+                var category = pi.Category;
+                var group = tab.Groups.FirstOrDefault(g => g.Header == category);
                 if (group == null)
                 {
                     group = new Group { Header = pi.Category };

@@ -17,11 +17,12 @@ namespace PropertyTools.DataAnnotations
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class ColumnAttribute : Attribute
     {
+#if !PCL
         /// <summary>
         /// The type id.
         /// </summary>
         private readonly object typeId;
-
+#endif
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnAttribute" /> class.
         /// </summary>
@@ -31,7 +32,9 @@ namespace PropertyTools.DataAnnotations
         {
             this.ColumnIndex = columnIndex;
             this.PropertyName = propertyName;
+#if !PCL
             this.typeId = Guid.NewGuid();
+#endif
             this.Width = "Auto";
             this.Alignment = 'C';
             this.IsReadOnly = false;

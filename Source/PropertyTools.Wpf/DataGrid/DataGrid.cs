@@ -1597,7 +1597,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Formats value.
+        /// Formats the specified value with the specified format string.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="formatString">The format string.</param>
@@ -1763,7 +1763,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles changes in the currents cell.
+        /// Handles changes in the current cell.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="DataTransferEventArgs" /> instance containing the event data.</param>
@@ -1804,7 +1804,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The add item cell mouse left button down.
+        /// Handles mouse left button down events on the add item cell.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1816,7 +1816,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The auto fill box mouse left button down.
+        /// Handles mouse left button down events on the auto fill box.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1827,7 +1827,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column grid loaded.
+        /// Handles column grid loaded events.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1837,7 +1837,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column grid mouse left button down.
+        /// Handles mouse left button down events on the column grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1858,7 +1858,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column grid mouse left button up.
+        /// Handles mouse left button up events on the column grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1869,7 +1869,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column grid mouse move.
+        /// Handles mouse move events on the column grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1890,7 +1890,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column grid size changed.
+        /// Handles size changed events on the column grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>

@@ -14,7 +14,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBox Text="{Binding FilePath, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsInputEnabled, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <TextBox Text="{Binding FilePath, RelativeSource={RelativeSource TemplatedParent}}" IsEnabled="{Binding IsInputEnabled, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Button Grid.Column="1" MinWidth="40" Margin="4 0 0 0" 
                                 Visibility="{TemplateBinding BrowseButtonContent, Converter={StaticResource NullToVisibilityConverter}}" 
                                 Content="{TemplateBinding BrowseButtonContent}" 
@@ -51,7 +51,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBox 
-                            Text="{Binding Directory, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding Directory, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Button Grid.Column="1" MinWidth="40" Margin="4 0 0 0" 
                                 Visibility="{TemplateBinding BrowseButtonContent, Converter={StaticResource NullToVisibilityConverter}}" 
                                 Content="{TemplateBinding BrowseButtonContent}" 

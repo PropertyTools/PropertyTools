@@ -1345,6 +1345,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Keyboard.PreviewKeyDown" /> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// </summary>
+        /// <param name="e">The <see cref="T:System.Windows.Input.KeyEventArgs" /> that contains the event data.</param>
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+            if (e.Key == Key.ImeProcessed)
+            {
+                var textEditor = this.currentEditor as TextBox;
+                if (textEditor != null && !textEditor.IsFocused)
+                {
+                    this.ShowTextBoxEditControl();
+                }
+            }
+        }
+
+        /// <summary>
         /// Handles mouse left button down events.
         /// </summary>
         /// <param name="e">The event arguments.</param>

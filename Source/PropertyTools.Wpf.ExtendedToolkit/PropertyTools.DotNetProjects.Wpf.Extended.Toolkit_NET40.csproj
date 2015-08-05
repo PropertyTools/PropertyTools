@@ -32,8 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetProjects.Wpf.Extended.Toolkit, Version=2.5.5695.12212, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\DotNetProjects.Extended.Wpf.Toolkit.2.5.5695\lib\net40\DotNetProjects.Wpf.Extended.Toolkit.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -56,6 +56,9 @@
       <Project>{f05d6590-542b-4150-ad2f-3b1612a5d4cb}</Project>
       <Name>PropertyTools.Wpf_NET40</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

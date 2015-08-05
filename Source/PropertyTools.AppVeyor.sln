@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf_NET45", "PropertyTools.Wpf\PropertyTools.Wpf_NET45.csproj", "{7168F82F-288A-42C4-9EB1-FBBE5112F211}"
 EndProject
@@ -21,6 +21,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET40", "NET40", "{63B1E394-657C-4F02-995B-41AA8824B0B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET45", "NET45", "{B7370E18-73F2-4C5E-8569-168D1A54D994}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET40", "PropertyTools.Wpf.ExtendedToolkit\PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET40.csproj", "{424B4EF3-18C0-4A8D-B87A-5DF8F0E9D82F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET45", "PropertyTools.Wpf.ExtendedToolkit\PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET45.csproj", "{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +48,14 @@ Global
 		{F05D6590-542B-4150-AD2F-3B1612A5D4CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F05D6590-542B-4150-AD2F-3B1612A5D4CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F05D6590-542B-4150-AD2F-3B1612A5D4CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{424B4EF3-18C0-4A8D-B87A-5DF8F0E9D82F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{424B4EF3-18C0-4A8D-B87A-5DF8F0E9D82F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{424B4EF3-18C0-4A8D-B87A-5DF8F0E9D82F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{424B4EF3-18C0-4A8D-B87A-5DF8F0E9D82F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,5 +64,7 @@ Global
 		{7168F82F-288A-42C4-9EB1-FBBE5112F211} = {B7370E18-73F2-4C5E-8569-168D1A54D994}
 		{470CC9A4-F4F4-429E-8F38-A2957F3EBE58} = {B7370E18-73F2-4C5E-8569-168D1A54D994}
 		{F05D6590-542B-4150-AD2F-3B1612A5D4CB} = {63B1E394-657C-4F02-995B-41AA8824B0B8}
+		{424B4EF3-18C0-4A8D-B87A-5DF8F0E9D82F} = {63B1E394-657C-4F02-995B-41AA8824B0B8}
+		{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7} = {B7370E18-73F2-4C5E-8569-168D1A54D994}
 	EndGlobalSection
 EndGlobal

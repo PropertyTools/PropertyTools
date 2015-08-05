@@ -57,6 +57,9 @@
     <Compile Include="Examples\Window601.xaml.cs">
       <DependentUpon>Window601.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\Window602.xaml.cs">
+      <DependentUpon>Window602.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NET40\DataErrorsChangedEventArgs.cs" />
     <Compile Include="NET40\MaxLengthAttribute.cs" />
     <Compile Include="NET40\ValidatableObject.cs" />
@@ -221,6 +224,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Examples\Window602.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -269,6 +276,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\PropertyTools.Wpf.ExtendedToolkit\PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET40.csproj">
+      <Project>{424b4ef3-18c0-4a8d-b87a-5df8f0e9d82f}</Project>
+      <Name>PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET40</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf_NET40.csproj">
       <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>
       <Name>PropertyTools.Wpf_NET40</Name>

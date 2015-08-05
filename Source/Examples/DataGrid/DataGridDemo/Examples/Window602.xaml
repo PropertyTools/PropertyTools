@@ -1,0 +1,15 @@
+<Window x:Class="DataGridDemo.Window602"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:extendedToolkit="clr-namespace:PropertyTools.Wpf.ExtendedToolkit;assembly=PropertyTools.Wpf.ExtendedToolkit"
+        Title="DataTable demo" Height="450" Width="900"
+        FocusManager.FocusedElement="{Binding ElementName=Grid1}">
+    <Grid>
+        <p:DataGrid x:Name="Grid1">            
+            <p:DataGrid.ControlFactory>
+                <extendedToolkit:ExtendedToolkitDataGridControlFactory />
+            </p:DataGrid.ControlFactory>
+        </p:DataGrid>
+    </Grid>
+</Window>

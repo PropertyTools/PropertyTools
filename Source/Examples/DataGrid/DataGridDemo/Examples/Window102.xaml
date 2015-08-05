@@ -21,6 +21,13 @@
                 <p:ColumnDefinition PropertyName="Fruit" Header="enum"/>
                 <p:ColumnDefinition PropertyName="Selector" Header="selector"/>
                 <p:ColumnDefinition PropertyName="Mass" Header="Mass" Converter="{StaticResource MassValueConverter}"/>
+                <p:TemplateColumnDefinition PropertyName="Fruit" Header="Templated">
+                    <p:TemplateColumnDefinition.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock FontSize="6" FontWeight="ExtraBold" Text="{Binding Fruit}" />
+                        </DataTemplate>
+                    </p:TemplateColumnDefinition.CellTemplate>
+                    </p:TemplateColumnDefinition>
             </p:DataGrid.ColumnDefinitions>
         </p:DataGrid>
     </Grid>

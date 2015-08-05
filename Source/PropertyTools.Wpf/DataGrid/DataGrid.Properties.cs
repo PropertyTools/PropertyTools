@@ -98,6 +98,13 @@ namespace PropertyTools.Wpf
                 "ColumnHeaderHeight", typeof(GridLength), typeof(DataGrid), new UIPropertyMetadata(new GridLength(20)));
 
         /// <summary>
+        /// Identifies the <see cref="SheetContextMenu"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SheetContextMenuProperty =
+            DependencyProperty.Register(
+                "SheetContextMenu", typeof(ContextMenu), typeof(DataGrid), new UIPropertyMetadata(null));
+
+        /// <summary>
         /// Identifies the <see cref="ColumnsContextMenu"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColumnsContextMenuProperty =
@@ -480,6 +487,23 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(ColumnsContextMenuProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the columns context menu.
+        /// </summary>
+        /// <value>The columns context menu.</value>
+        public ContextMenu SheetContextMenu
+        {
+            get
+            {
+                return (ContextMenu)this.GetValue(SheetContextMenuProperty);
+            }
+
+            set
+            {
+                this.SetValue(SheetContextMenuProperty, value);
             }
         }
 

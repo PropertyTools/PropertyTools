@@ -34,6 +34,14 @@
                 </ContextMenu>
             </Setter.Value>
         </Setter>
+        <Setter Property="SheetContextMenu">
+            <Setter.Value>
+                <ContextMenu>
+                    <MenuItem Command="ApplicationCommands.Copy"/>
+                    <MenuItem Command="ApplicationCommands.Paste"/>
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:DataGrid}">

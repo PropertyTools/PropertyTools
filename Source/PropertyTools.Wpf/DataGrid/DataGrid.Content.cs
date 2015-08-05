@@ -66,6 +66,9 @@ namespace PropertyTools.Wpf
         /// <param name="columns">The number of columns.</param>
         private void UpdateCells(int rows, int columns)
         {
+            // set the context menu
+            this.sheetGrid.ContextMenu = this.SheetContextMenu;
+
             this.sheetGrid.Children.Add(this.selectionBackground);
             this.sheetGrid.Children.Add(this.currentBackground);
 

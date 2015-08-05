@@ -48,9 +48,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.Toolkit">
-      <HintPath>..\..\..\PropertyTools.Wpf.ExtendedToolkit\libs\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -281,9 +278,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\PropertyTools.Wpf.ExtendedToolkit\PropertyTools.Wpf.ExtendedToolkit_NET45.csproj">
+    <ProjectReference Include="..\..\..\PropertyTools.Wpf.ExtendedToolkit\PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET45.csproj">
       <Project>{ea2d98d9-0c0b-46c6-a657-5c4308b9e0a7}</Project>
-      <Name>PropertyTools.Wpf.ExtendedToolkit_NET45</Name>
+      <Name>PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET45</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf_NET45.csproj">
       <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>

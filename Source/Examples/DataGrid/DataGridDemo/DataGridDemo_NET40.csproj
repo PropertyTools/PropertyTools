@@ -276,9 +276,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\PropertyTools.Wpf.ExtendedToolkit\PropertyTools.Wpf.ExtendedToolkit_NET40.csproj">
-      <Project>{ea2d98d9-0c0b-46c6-a657-5c4308b9e0a7}</Project>
-      <Name>PropertyTools.Wpf.ExtendedToolkit_NET40</Name>
+    <ProjectReference Include="..\..\..\PropertyTools.Wpf.ExtendedToolkit\PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET40.csproj">
+      <Project>{424b4ef3-18c0-4a8d-b87a-5df8f0e9d82f}</Project>
+      <Name>PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET40</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf_NET40.csproj">
       <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>

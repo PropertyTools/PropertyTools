@@ -30,11 +30,18 @@ namespace ControlDemos
     {
         private string filePath;
 
+        private string[] filePaths;
+
         private string basePath;
 
         public FilePickerViewModel()
         {
             this.FilePath = @"C:\autoexec.bat";
+            this.filePaths = new string[]
+            {
+                @"C:\autoexec.bat",
+                @"C:\autorun.bat"
+            };
             this.BasePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         }
 
@@ -48,6 +55,19 @@ namespace ControlDemos
             set
             {
                 this.SetValue(ref this.filePath, value, () => this.FilePath);
+            }
+        }
+
+        public string[] FilePaths
+        {
+            get
+            {
+                return this.filePaths;
+            }
+
+            set
+            {
+                this.SetValue(ref this.filePaths, value, () => this.FilePaths);
             }
         }
 

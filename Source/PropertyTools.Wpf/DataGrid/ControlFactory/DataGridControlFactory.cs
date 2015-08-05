@@ -9,12 +9,17 @@
 
 namespace PropertyTools.Wpf
 {
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
     using System.Windows.Media;
     using System.Windows.Shapes;
+    
+    using PropertyTools.DataAnnotations;
+
+    using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
     /// <summary>
     /// Creates display and edit controls for the DataGrid.
@@ -188,6 +193,12 @@ namespace PropertyTools.Wpf
             binding.NotifyOnSourceUpdated = true;
             c.SetBinding(propertyDefinition.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);
 
+            var selectedValuePathAttribute = propertyDefinition.Descriptor.Attributes.OfType<SelectedValuePathAttribute>().FirstOrDefault();
+            if (selectedValuePathAttribute != null)
+            {
+                c.SelectedValuePath = selectedValuePathAttribute.Path;
+            }
+            
             return c;
         }
 

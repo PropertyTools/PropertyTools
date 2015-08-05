@@ -63,6 +63,7 @@
     <Compile Include="Examples\Window602.xaml.cs">
       <DependentUpon>Window602.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataTypes\MassValueConverter.cs" />
     <Compile Include="Examples\Window601.xaml.cs">
       <DependentUpon>Window601.xaml</DependentUpon>
     </Compile>

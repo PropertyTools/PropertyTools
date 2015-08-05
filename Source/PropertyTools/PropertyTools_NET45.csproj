@@ -84,6 +84,7 @@
     <Compile Include="DataAnnotations\ListItemItemsSourcePropertyAttribute.cs" />
     <Compile Include="DataAnnotations\OptionalAttribute.cs" />
     <Compile Include="DataAnnotations\OutputFilePathAttribute.cs" />
+    <Compile Include="DataAnnotations\EnableByRadioButtonAttribute.cs" />
     <Compile Include="DataAnnotations\ReadOnlyAttribute.cs" />
     <Compile Include="DataAnnotations\ResettableAttribute.cs" />
     <Compile Include="DataAnnotations\ItemHeaderPropertyAttribute.cs" />

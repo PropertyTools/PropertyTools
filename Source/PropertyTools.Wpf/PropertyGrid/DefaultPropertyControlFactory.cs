@@ -632,34 +632,11 @@ namespace PropertyTools.Wpf
                 AutoGenerateColumns = property.Columns.Count == 0
             };
 
-            var glc = new GridLengthConverter();
-            foreach (var ca in property.Columns.OrderBy(cd => cd.ColumnIndex))
+            foreach (var cd in property.Columns)
             {
-                var cd = new ColumnDefinition
-                    {
-                        PropertyName = ca.PropertyName,
-                        Header = ca.Header,
-                        FormatString = ca.FormatString,
-                        Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto),
-                        IsReadOnly = ca.IsReadOnly
-                    };
-
-                if (ca.PropertyName == string.Empty && property.ListItemItemsSource != null)
+                if (cd.PropertyName == string.Empty && property.ListItemItemsSource != null)
                 {
                     cd.ItemsSource = property.ListItemItemsSource;
-                }
-
-                switch (ca.Alignment.ToString(CultureInfo.InvariantCulture).ToUpper())
-                {
-                    case "L":
-                        cd.HorizontalAlignment = HorizontalAlignment.Left;
-                        break;
-                    case "R":
-                        cd.HorizontalAlignment = HorizontalAlignment.Right;
-                        break;
-                    default:
-                        cd.HorizontalAlignment = HorizontalAlignment.Center;
-                        break;
                 }
 
                 c.ColumnDefinitions.Add(cd);

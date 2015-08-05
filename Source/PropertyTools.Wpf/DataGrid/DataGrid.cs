@@ -668,6 +668,7 @@ namespace PropertyTools.Wpf
 
                 this.sheetGrid.Children.Remove(this.currentEditor);
                 this.currentEditor = null;
+                this.Focus();
             }
         }
 
@@ -965,7 +966,8 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            this.currentEditor.SourceUpdated += this.CurrentCellSourceUpdated;
+            var currentCell = this.CurrentCell;
+            this.currentEditor.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(s, e, currentCell);
 
             this.SetElementDataContext(this.currentEditor, pd, item);
 
@@ -1133,7 +1135,7 @@ namespace PropertyTools.Wpf
 
                 this.SetElementDataContext(element, pd, item);
 
-                element.SourceUpdated += this.CurrentCellSourceUpdated;
+                element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(s, e, cell);
 
                 element.VerticalAlignment = VerticalAlignment.Center;
                 element.HorizontalAlignment = pd.HorizontalAlignment;
@@ -1341,6 +1343,23 @@ namespace PropertyTools.Wpf
             this.ScrollIntoView(new CellRef(row, column));
 
             e.Handled = true;
+        }
+
+        /// <summary>
+        /// Invoked when an unhandled <see cref="E:System.Windows.Input.Keyboard.PreviewKeyDown" /> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+        /// </summary>
+        /// <param name="e">The <see cref="T:System.Windows.Input.KeyEventArgs" /> that contains the event data.</param>
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+            if (e.Key == Key.ImeProcessed)
+            {
+                var textEditor = this.currentEditor as TextBox;
+                if (textEditor != null && !textEditor.IsFocused)
+                {
+                    this.ShowTextBoxEditControl();
+                }
+            }
         }
 
         /// <summary>
@@ -1596,7 +1615,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Formats value.
+        /// Formats the specified value with the specified format string.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="formatString">The format string.</param>
@@ -1762,20 +1781,21 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles changes in the currents cell.
+        /// Handles changes in the current cell.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="DataTransferEventArgs" /> instance containing the event data.</param>
-        private void CurrentCellSourceUpdated(object sender, DataTransferEventArgs e)
+        /// <param name="changedCell">The cell that was changed.</param>
+        private void CurrentCellSourceUpdated(object sender, DataTransferEventArgs e, CellRef changedCell)
         {
             // The source of the binding for the current cell was updated
             // (e.g. check box (display control) was changed or a combo box (edit control) was changed
-            var value = this.GetCellValue(this.CurrentCell);
+            var value = this.GetCellValue(changedCell);
 
             // Set the same value in all selected cells.
             foreach (var cell in this.SelectedCells)
             {
-                if (this.CurrentCell.Equals(cell))
+                if (changedCell.Equals(cell))
                 {
                     // this value should already be set by the binding
                     continue;
@@ -1803,7 +1823,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The add item cell mouse left button down.
+        /// Handles mouse left button down events on the add item cell.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1815,7 +1835,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The auto fill box mouse left button down.
+        /// Handles mouse left button down events on the auto fill box.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1826,7 +1846,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column grid loaded.
+        /// Handles column grid loaded events.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1836,7 +1856,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column grid mouse left button down.
+        /// Handles mouse left button down events on the column grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1857,7 +1877,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column grid mouse left button up.
+        /// Handles mouse left button up events on the column grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1868,7 +1888,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column grid mouse move.
+        /// Handles mouse move events on the column grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -1889,7 +1909,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The column grid size changed.
+        /// Handles size changed events on the column grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>

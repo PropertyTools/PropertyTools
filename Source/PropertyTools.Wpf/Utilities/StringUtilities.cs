@@ -49,5 +49,23 @@ namespace PropertyTools.Wpf
 
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Converts the specified string to horizontal alignment.
+        /// </summary>
+        /// <param name="a">The string to convert.</param>
+        /// <returns>A <see cref="System.Windows.HorizontalAlignment" /> value.</returns>
+        public static System.Windows.HorizontalAlignment ToHorizontalAlignment(string a)
+        {
+            switch ((a ?? string.Empty).ToUpper())
+            {
+                case "L":
+                    return System.Windows.HorizontalAlignment.Left;
+                case "R":
+                    return System.Windows.HorizontalAlignment.Right;
+                default:
+                    return System.Windows.HorizontalAlignment.Center;
+            }
+        }
     }
 }

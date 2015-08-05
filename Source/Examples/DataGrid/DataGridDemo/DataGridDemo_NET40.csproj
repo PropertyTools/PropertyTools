@@ -53,9 +53,7 @@
     <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Examples\Window510.xaml.cs">
-      <DependentUpon>Window510.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="DataTypes\MassValueConverter.cs" />
     <Compile Include="Examples\Window601.xaml.cs">
       <DependentUpon>Window601.xaml</DependentUpon>
     </Compile>
@@ -133,6 +131,9 @@
     <Compile Include="Examples\Window505.xaml.cs">
       <DependentUpon>Window505.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\Window510.xaml.cs">
+      <DependentUpon>Window510.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
     <Page Include="Examples\ValidationExampleWindow.xaml">
@@ -199,6 +200,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\Window601.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window510.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\Window508.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -214,14 +223,6 @@
     <Page Include="Examples\Window505.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Examples\Window510.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\Window601.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\Window602.xaml">
       <Generator>MSBuild:Compile</Generator>

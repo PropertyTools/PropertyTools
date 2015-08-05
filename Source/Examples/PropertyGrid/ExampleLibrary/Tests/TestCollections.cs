@@ -70,7 +70,12 @@ namespace ExampleLibrary
             StringArray2 = new string[9];
             IntArray1 = new int[5];
             IntArray2 = new int[4];
-            ItemArray1 = new Item[10];
+            
+            this.ItemArray1 = new Item[10];
+            for (int i = 0; i < this.ItemArray1.Length; i++)
+            {
+                this.ItemArray1[i] = new Item();
+            }
 
             List = new List<Item>();
             StringList = new List<string>();

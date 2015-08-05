@@ -14,12 +14,12 @@ namespace PropertyTools.Wpf
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
     using System.Linq;
+    using System.Windows;
     using System.Windows.Data;
 
     using PropertyTools.DataAnnotations;
-
-    using BrowsableAttribute = PropertyTools.DataAnnotations.BrowsableAttribute;
 
     /// <summary>
     /// Provides a property item factory for the <see cref="PropertyGrid" /> control.
@@ -126,7 +126,8 @@ namespace PropertyTools.Wpf
                 }
 
                 var tab = tabs[tabHeader];
-                var group = tab.Groups.FirstOrDefault(g => g.Header == pi.Category);
+                var category = pi.Category;
+                var group = tab.Groups.FirstOrDefault(g => g.Header == category);
                 if (group == null)
                 {
                     group = new Group { Header = pi.Category };
@@ -466,7 +467,19 @@ namespace PropertyTools.Wpf
             var ca = attribute as ColumnAttribute;
             if (ca != null)
             {
-                pi.Columns.Add(ca);
+                var glc = new GridLengthConverter();
+                var cd = new ColumnDefinition
+                             {
+                                 PropertyName = ca.PropertyName,
+                                 Header = ca.Header,
+                                 FormatString = ca.FormatString,
+                                 Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto),
+                                 IsReadOnly = ca.IsReadOnly,
+                                 HorizontalAlignment = StringUtilities.ToHorizontalAlignment(ca.Alignment.ToString(CultureInfo.InvariantCulture))
+                             };
+
+                // TODO: sort by index
+                pi.Columns.Add(cd);
             }
 
             var la = attribute as ListAttribute;
@@ -516,6 +529,13 @@ namespace PropertyTools.Wpf
                 {
                     pi.OptionalDescriptor = pi.GetDescriptor(oa.PropertyName);
                 }
+            }
+
+            var ra = attribute as EnableByRadioButtonAttribute;
+            if (ra != null)
+            {
+                pi.RadioDescriptor = pi.GetDescriptor(ra.PropertyName);
+                pi.RadioValue = ra.Value;
             }
 
             if (attribute is CommentAttribute)

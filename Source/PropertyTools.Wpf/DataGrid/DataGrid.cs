@@ -1791,9 +1791,16 @@ namespace PropertyTools.Wpf
             // The source of the binding for the current cell was updated
             // (e.g. check box (display control) was changed or a combo box (edit control) was changed
             var value = this.GetCellValue(changedCell);
+            
+            var selectedCells = this.SelectedCells.ToArray();
+            if (!selectedCells.Contains(changedCell))
+            {
+                // do not set other cells when changed cell is outside selection
+                return;
+            }
 
             // Set the same value in all selected cells.
-            foreach (var cell in this.SelectedCells)
+            foreach (var cell in selectedCells)
             {
                 if (changedCell.Equals(cell))
                 {

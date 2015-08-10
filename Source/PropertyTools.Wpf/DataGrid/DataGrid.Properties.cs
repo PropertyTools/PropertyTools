@@ -91,6 +91,13 @@ namespace PropertyTools.Wpf
                 "CanResizeColumns", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="MultiChangeInChangedColumnOnly"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MultiChangeInChangedColumnOnlyProperty =
+            DependencyProperty.Register(
+                "MultiChangeInChangedColumnOnly", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(false));
+
+        /// <summary>
         /// Identifies the <see cref="ColumnHeaderHeight"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ColumnHeaderHeightProperty =
@@ -441,6 +448,23 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(CanResizeColumnsProperty, value);
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether only cells in the changed column should be changed when changing value for a selection.
+        /// </summary>
+        /// <value><c>true</c> if only cells in the current column should be changed; otherwise, <c>false</c> .</value>
+        public bool MultiChangeInChangedColumnOnly
+        {
+            get
+            {
+                return (bool)this.GetValue(MultiChangeInChangedColumnOnlyProperty);
+            }
+
+            set
+            {
+                this.SetValue(MultiChangeInChangedColumnOnlyProperty, value);
             }
         }
 

@@ -1808,6 +1808,12 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
+                if (this.MultiChangeInChangedColumnOnly && cell.Column != changedCell.Column)
+                {
+                    // do not change value in other columns when this property is set to true
+                    continue;
+                }
+
                 this.TrySetCellValue(cell, value);
             }
         }

@@ -6,6 +6,7 @@
 
 namespace TreeListBoxDemo
 {
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
 
@@ -19,17 +20,25 @@ namespace TreeListBoxDemo
         {
             get
             {
-                LoadChildren();
+                this.LoadChildren();
                 return this.children.Count > 0;
             }
         }
 
-        public bool CanDrop(object node, DropPosition mode, bool copy)
+        public bool CanDrop(IDragSource node, DropPosition mode, DragDropEffect effect)
         {
             return node is NodeViewModel && (mode == DropPosition.Add || this.Parent != null);
         }
 
-        public void Drop(object node, DropPosition mode, bool copy)
+        public void Drop(IEnumerable<IDragSource> nodes, DropPosition mode, DragDropEffect effect, DragDropKeyStates initialKeyStates)
+        {
+            foreach (var node in nodes)
+            {
+                this.Drop(node, mode, effect == DragDropEffect.Copy);
+            }
+        }
+
+        public void Drop(IDragSource node, DropPosition mode, bool copy)
         {
             var cvm = node as NodeViewModel;
             if (copy) cvm = new NodeViewModel(cvm.Node, cvm.Parent);

@@ -19,7 +19,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Drag/drop helper class for the <see cref="TreeListBox" />.
+    /// Drag/drop helper class for the <see cref="TreeListBox"/>.
     /// </summary>
     /// <remarks>Based on <a href="http://bea.stollnitz.com/blog/?p=53">blog post</a>.</remarks>
     public class TreeListBoxDragDropHelper
@@ -120,6 +120,11 @@ namespace PropertyTools.Wpf
         /// The top window.
         /// </summary>
         private Window topWindow;
+
+        /// <summary>
+        /// Keeps track of the initial drag/drop key states.
+        /// </summary>
+        private DragDropKeyStates initialKeyStates;
 
         /// <summary>
         /// Gets the instance singleton.
@@ -374,13 +379,11 @@ namespace PropertyTools.Wpf
             if (this.targetItemContainer != null && draggedItems != null)
             {
                 var dropTarget = this.targetItemContainer.DataContext as IDropTarget;
-                bool copy = (e.Effects & DragDropEffects.Copy) != 0;
-
                 foreach (var draggedItem in draggedItems)
                 {
                     var dragSource = draggedItem as IDragSource;
                     if ((dragSource == null || !dragSource.IsDraggable)
-                        || (dropTarget == null || !dropTarget.CanDrop(dragSource, this.dropPosition, copy)))
+                        || (dropTarget == null || !dropTarget.CanDrop(dragSource, this.dropPosition, (DragDropEffect)e.Effects)))
                     {
                         this.targetItemContainer = null;
                         e.Effects = DragDropEffects.None;
@@ -464,6 +467,8 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event args.</param>
         private void DropTargetPreviewDragEnter(object sender, DragEventArgs e)
         {
+            this.initialKeyStates = e.KeyStates;
+
             this.targetItemsControl = (TreeListBox)sender;
             object draggedItems = e.Data.GetData(this.format.Name);
 
@@ -529,6 +534,11 @@ namespace PropertyTools.Wpf
                 }
 
                 var dropTarget = this.targetItemContainer.DataContext as IDropTarget;
+                if (dropTarget == null)
+                {
+                    return;
+                }
+
                 foreach (var draggedItem in draggedItems)
                 {
                     if (dropTarget == draggedItem)
@@ -537,7 +547,8 @@ namespace PropertyTools.Wpf
                     }
                 }
 
-                bool copy = (e.Effects & DragDropEffects.Copy) != 0;
+                bool move = (e.Effects & DragDropEffects.Move) != 0;
+                var itemsToDrop = new List<IDragSource>();
                 foreach (var draggedItem in draggedItems)
                 {
                     var dragSource = draggedItem as IDragSource;
@@ -546,18 +557,20 @@ namespace PropertyTools.Wpf
                         continue;
                     }
 
-                    if (dropTarget == null || !dropTarget.CanDrop(dragSource, this.dropPosition, copy))
+                    if (!dropTarget.CanDrop(dragSource, this.dropPosition, (DragDropEffect)e.Effects))
                     {
                         continue;
                     }
 
-                    if (!copy)
+                    if (move)
                     {
                         dragSource.Detach();
                     }
 
-                    dropTarget.Drop(dragSource, this.dropPosition, copy);
+                    itemsToDrop.Add(dragSource);
                 }
+
+                dropTarget.Drop(itemsToDrop, this.dropPosition, (DragDropEffect)e.Effects, (PropertyTools.DragDropKeyStates)this.initialKeyStates);
 
                 e.Handled = true;
             }

@@ -13,7 +13,8 @@ configuration: Release
 
 before_build:
   - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Directory=Source /Dependency=PropertyTools /ReleaseNotesFile=release-notes.txt
-  
+  - nuget restore Source/PropertyTools.AppVeyor.sln
+
 build:
   project: Source/PropertyTools.AppVeyor.sln
   verbosity: minimal

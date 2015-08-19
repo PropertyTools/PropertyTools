@@ -5,7 +5,6 @@ environment:
     secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
       
 install:
-  - cinst stylecop
   - cinst LynxToolkit
 
 platform: Any CPU

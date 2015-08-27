@@ -2527,7 +2527,7 @@ namespace PropertyTools.Wpf
         private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // TODO: update only changed rows/columns
-            this.Dispatcher.Invoke(this.UpdateGridContent);
+            this.Dispatcher.Invoke(new Action(this.UpdateGridContent));
         }
 
         /// <summary>

@@ -10,7 +10,6 @@
 namespace PropertyTools.Wpf
 {
     using System;
-    using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Linq;
     using System.Windows;
@@ -40,20 +39,6 @@ namespace PropertyTools.Wpf
             this.sheetGrid.ColumnDefinitions.Clear();
             this.sheetGrid.Children.Clear();
             this.cellMap.Clear();
-        }
-
-        /// <summary>
-        /// The subscribe notifications.
-        /// </summary>
-        private void SubscribeToNotifications()
-        {
-            var collection = this.ItemsSource as INotifyCollectionChanged;
-            if (collection != null)
-            {
-                collection.CollectionChanged += this.OnItemsCollectionChanged;
-            }
-
-            this.subcribedCollection = this.ItemsSource;
         }
 
         /// <summary>
@@ -146,11 +131,32 @@ namespace PropertyTools.Wpf
             this.sheetGrid.UpdateLayout();
             this.columnGrid.UpdateLayout();
 
+            double starsToDistribute = 0;
+            double usedWidth = 0;
             for (int i = 0; i < this.Columns; i++)
             {
-                if (this.GetColumnWidth(i) == GridLength.Auto || this.AutoSizeColumns)
+                var columnWidth = this.GetColumnWidth(i);
+                if (columnWidth == GridLength.Auto || this.AutoSizeColumns)
                 {
-                    this.AutoSizeColumn(i);
+                    usedWidth += this.AutoSizeColumn(i);
+                }
+                else if (columnWidth.IsAbsolute)
+                {
+                    usedWidth += columnWidth.Value;
+                }
+                else if (columnWidth.IsStar)
+                {
+                    starsToDistribute += columnWidth.Value;
+                }
+            }
+
+            var widthPerStar = Math.Max((this.sheetScrollViewer.ActualWidth - usedWidth) / starsToDistribute, 0);
+            for (int i = 0; i < this.Columns; i++)
+            {
+                var columnWidth = this.GetColumnWidth(i);
+                if (columnWidth.IsStar && !this.AutoSizeColumns)
+                {
+                    this.SetColumnWidth(i, new GridLength(widthPerStar * columnWidth.Value));
                 }
             }
 
@@ -290,6 +296,7 @@ namespace PropertyTools.Wpf
                     {
                         itemsType = this.GetItemsType();
                     }
+
                     pd.PropertyType = itemsType;
                 }
             }
@@ -304,7 +311,10 @@ namespace PropertyTools.Wpf
                 if (pd.Descriptor == null && !string.IsNullOrEmpty(pd.PropertyName))
                 {
                     if (itemType == null)
+                    {
                         itemType = TypeHelper.GetItemType(this.ItemsSource);
+                    }
+
                     pd.Descriptor = TypeDescriptor.GetProperties(itemType)[pd.PropertyName];
                 }
             }
@@ -339,7 +349,7 @@ namespace PropertyTools.Wpf
             this.ShowEditControl();
 
             this.SubscribeToNotifications();
-            
+
             // Update column width when all the controls are loaded.
             Dispatcher.BeginInvoke(new Action(this.UpdateColumnWidths), DispatcherPriority.Loaded);
         }

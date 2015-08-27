@@ -1768,7 +1768,7 @@ namespace PropertyTools.Wpf
                 this.tabControl.SelectedItem = tab;
             }
         }
-        
+
         /// <summary>
         /// Handles changes of the selected tab index.
         /// </summary>
@@ -1782,11 +1782,15 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            int tabIndex; 
+            int tabIndex;
             int.TryParse(e.NewValue.ToString(), out tabIndex);
             if (tabIndex >= 0)
             {
-                this.SelectedTabId = this.tabControl.Items.Cast<TabItem>().ToArray()[tabIndex].Name;
+                var tabItems = this.tabControl.Items.Cast<TabItem>().ToArray();
+                if (tabIndex < tabItems.Length)
+                {
+                    this.SelectedTabId = tabItems[tabIndex].Name;
+                }
             }
         }
     }

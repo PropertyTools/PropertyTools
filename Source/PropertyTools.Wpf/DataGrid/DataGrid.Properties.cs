@@ -42,7 +42,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="AddItemHeader"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AddItemHeaderProperty = DependencyProperty.Register(
-            "AddItemHeader", typeof(string), typeof(DataGrid), new UIPropertyMetadata("*"));
+            "AddItemHeader", typeof(string), typeof(DataGrid), new UIPropertyMetadata("+"));
 
         /// <summary>
         /// Identifies the <see cref="AlternatingRowsBackground"/> dependency property.

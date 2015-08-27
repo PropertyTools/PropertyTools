@@ -13,7 +13,7 @@
     <tags>wpf controls propertygrid dataform datagrid</tags>
   </metadata>
   <files>
-    <file src="..\..\Output\PCL\PropertyTools.???" target="lib\portable-net40+net45+sl5+wp8+win8" />
+    <file src="..\..\Output\PCL\PropertyTools.???" target="lib\portable-net40+sl5+wp8+win8" />
     <file src="..\..\Output\NET40\PropertyTools.???" target="lib\net40" />
     <file src="..\..\Output\NET40\PropertyTools.Wpf.???" target="lib\net40" />
     <file src="..\..\Output\NET45\PropertyTools.???" target="lib\net45" />

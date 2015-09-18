@@ -15,7 +15,14 @@ namespace UndoRedoDemo
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropertyChanged(string propertyName, object before, object after)
+        protected void SetValue<T>(ref T field, T value, string propertyName)
+        {
+            var oldValue = field;
+            field = value;
+            this.OnPropertyChanged(propertyName, oldValue, value);
+        }
+
+        private void OnPropertyChanged(string propertyName, object before, object after)
         {
             if (!isInitializing)
             {

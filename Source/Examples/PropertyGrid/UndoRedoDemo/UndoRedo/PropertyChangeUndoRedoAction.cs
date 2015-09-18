@@ -23,7 +23,7 @@ namespace UndoRedoDemo
 
         public override string ToString()
         {
-            return Property;
+            return "Change " + this.Property;
         }
 
         public IUndoRedoAction Execute()

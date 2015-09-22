@@ -665,7 +665,6 @@ namespace PropertyTools.Wpf
                 if (textEditor != null)
                 {
                     textEditor.PreviewKeyDown -= this.TextEditorPreviewKeyDown;
-                    textEditor.LostFocus -= this.TextEditorLostFocus;
                     textEditor.Loaded -= this.TextEditorLoaded;
                 }
 
@@ -835,10 +834,10 @@ namespace PropertyTools.Wpf
             this.autoFiller = new AutoFiller(this.GetCellValue, this.TrySetCellValue);
 
             this.autoFillToolTip = new ToolTip
-                                       {
-                                           Placement = PlacementMode.Bottom,
-                                           PlacementTarget = this.autoFillSelection
-                                       };
+            {
+                Placement = PlacementMode.Bottom,
+                PlacementTarget = this.autoFillSelection
+            };
 
             this.UpdateGridContent();
             this.SelectedCellsChanged();
@@ -979,7 +978,6 @@ namespace PropertyTools.Wpf
             {
                 this.currentEditor.Visibility = Visibility.Hidden;
                 textEditor.PreviewKeyDown += this.TextEditorPreviewKeyDown;
-                textEditor.LostFocus += this.TextEditorLostFocus;
                 textEditor.Loaded += this.TextEditorLoaded;
             }
 
@@ -2712,16 +2710,6 @@ namespace PropertyTools.Wpf
             var tb = (TextBox)sender;
             tb.CaretIndex = tb.Text.Length;
             tb.SelectAll();
-        }
-
-        /// <summary>
-        /// Handles lost focus events for the text editor.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void TextEditorLostFocus(object sender, RoutedEventArgs e)
-        {
-            this.EndTextEdit();
         }
 
         /// <summary>

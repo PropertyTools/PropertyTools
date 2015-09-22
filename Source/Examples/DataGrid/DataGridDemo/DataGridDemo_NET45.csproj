@@ -57,6 +57,9 @@
     <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Examples\Window511.xaml.cs">
+      <DependentUpon>Window511.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\Window602.xaml.cs">
       <DependentUpon>Window602.xaml</DependentUpon>
     </Compile>
@@ -201,6 +204,10 @@
     <Page Include="Examples\Window509.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\Window511.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Examples\Window602.xaml">
       <Generator>MSBuild:Compile</Generator>

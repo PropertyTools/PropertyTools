@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetProjects.Wpf.Extended.Toolkit, Version=2.5.5695.12212, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetProjects.Extended.Wpf.Toolkit.2.5.5695\lib\net40\DotNetProjects.Wpf.Extended.Toolkit.dll</HintPath>
+    <Reference Include="DotNetProjects.Wpf.Extended.Toolkit, Version=2.5.5704.26052, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetProjects.Extended.Wpf.Toolkit.2.5.5704\lib\net40\DotNetProjects.Wpf.Extended.Toolkit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -72,4 +72,3 @@
   </Target>
   -->
 </Project>
-

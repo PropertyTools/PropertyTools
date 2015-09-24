@@ -10,7 +10,6 @@
 namespace UndoRedoDemo
 {
     using System;
-    using System.ComponentModel.Composition;
     using System.Diagnostics;
     using System.Text;
 
@@ -19,8 +18,7 @@ namespace UndoRedoDemo
     /// <summary>
     /// Represents a view model for the shell.
     /// </summary>
-    [Export(typeof(IShell))]
-    public class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShell
+    public class ShellViewModel : Screen
     {
         private bool isModified;
         private string output;
@@ -137,8 +135,8 @@ namespace UndoRedoDemo
             set
             {
                 this.isModified = value;
-                this.RaisePropertyChangedEventImmediately("IsModified");
-                this.RaisePropertyChangedEventImmediately("ActualTitle");
+                this.NotifyOfPropertyChange(() => this.IsModified);
+                this.NotifyOfPropertyChange(() => this.ActualTitle);
             }
         }
 
@@ -162,7 +160,7 @@ namespace UndoRedoDemo
             set
             {
                 this.output = value;
-                this.RaisePropertyChangedEventImmediately("Output");
+                this.NotifyOfPropertyChange(() => this.Output);
             }
         }
 
@@ -187,8 +185,8 @@ namespace UndoRedoDemo
             this.IsModified = true;
             Trace.WriteLine("Added item.");
             this.SelectedIndex = this.Measurements.Count - 1;
-            this.RaisePropertyChangedEventImmediately("CanDeleteItem");
-            this.RaisePropertyChangedEventImmediately("CanModifyItem");
+            this.NotifyOfPropertyChange(() => this.CanDeleteItem);
+            this.NotifyOfPropertyChange(() => this.CanModifyItem);
         }
 
         /// <summary>
@@ -210,8 +208,8 @@ namespace UndoRedoDemo
                 this.SelectedIndex = index;
             }
 
-            this.RaisePropertyChangedEventImmediately("CanDeleteItem");
-            this.RaisePropertyChangedEventImmediately("CanModifyItem");
+            this.NotifyOfPropertyChange(() => this.CanDeleteItem);
+            this.NotifyOfPropertyChange(() => this.CanModifyItem);
         }
 
         /// <summary>

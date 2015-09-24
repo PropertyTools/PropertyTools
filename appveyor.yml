@@ -1,29 +1,36 @@
-version: 2015.1.{build}
-
-environment:
-  nuget_api_key:
-    secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
-      
 install:
-  - cinst LynxToolkit
+  - cinst gitversion.portable -pre -y
 
 platform: Any CPU
 
 configuration: Release
 
-before_build:
-  - cmd: UpdateVersionNumbers /Version=%APPVEYOR_BUILD_VERSION% /Directory=Source /Dependency=PropertyTools /ReleaseNotesFile=release-notes.txt
-  - nuget restore Source/PropertyTools.AppVeyor.sln
+assembly_info:
+  patch: false
 
+before_build:
+  - nuget restore Source/PropertyTools.AppVeyor.sln
+  - ps: gitversion /l console /output buildserver /updateAssemblyInfo
+  
 build:
   project: Source/PropertyTools.AppVeyor.sln
   verbosity: minimal
 
-deploy_script:
-  - cmd: mkdir Packages
-  - cmd: NuGet pack Source\PropertyTools.Wpf\PropertyTools.Wpf.nuspec -OutputDirectory Packages
-  - cmd: for %%G in (Packages\*.nupkg) do NuGet push %%G %nuget_api_key%  
+after_build:
+  - cmd: NuGet pack Source\PropertyTools.Wpf\PropertyTools.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
+
 artifacts:
   - path: Output
-    name: PropertyTools-$(APPVEYOR_BUILD_VERSION)
+    name: PropertyTools-$(GitVersion_SemVer)
     type: zip
+  - path: '*.nupkg'
+
+deploy:
+  provider: NuGet
+  server:                  # remove to push to NuGet.org
+  api_key:
+    secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
+  skip_symbols: false
+  symbol_server:           # remove to push symbols to SymbolSource.org
+  artifact: /.*\.nupkg/
+

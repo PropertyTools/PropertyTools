@@ -1,2 +1,0 @@
-Move to GitHub
-Build at AppVeyor

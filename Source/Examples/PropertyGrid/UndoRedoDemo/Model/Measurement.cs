@@ -13,13 +13,27 @@ namespace UndoRedoDemo
 
     public class Measurement : UndoableObject
     {
-        public DateTime Time { get; set; }
+        private DateTime time;
+        private double value;
+        private string comments;
 
-        public double Value { get; set; }
+        public DateTime Time
+        {
+            get { return this.time; }
+            set { this.SetValue(ref this.time, value, "Time"); }
+        }
+        public double Value
+        {
+            get { return this.value; }
+            set { this.SetValue(ref this.value, value, "Value"); }
+        }
 
         [Height(60)]
-        public string Comments { get; set; }
-
+        public string Comments
+        {
+            get { return this.comments; }
+            set { this.SetValue(ref this.comments, value, "Comments"); }
+        }
         public Measurement()
         {
             BeginInit();

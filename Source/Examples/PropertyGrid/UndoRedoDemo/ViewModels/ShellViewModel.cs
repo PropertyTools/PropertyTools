@@ -10,18 +10,19 @@
 namespace UndoRedoDemo
 {
     using System;
-    using System.ComponentModel.Composition;
     using System.Diagnostics;
     using System.Text;
 
     using Caliburn.Micro;
 
     /// <summary>
-    /// Represents a viewmodel for the shell.
+    /// Represents a view model for the shell.
     /// </summary>
-    [Export(typeof(IShell))]
-    public class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShell
+    public class ShellViewModel : Screen
     {
+        private bool isModified;
+        private string output;
+
         /// <summary>
         /// The output string builder.
         /// </summary>
@@ -82,7 +83,7 @@ namespace UndoRedoDemo
         {
             get
             {
-                return this.SelectedIndex >= 0;
+                return this.SelectedIndex >= 0 && this.SelectedIndex < this.Measurements.Count;
             }
         }
 
@@ -93,7 +94,7 @@ namespace UndoRedoDemo
         {
             get
             {
-                return this.SelectedIndex >= 0;
+                return this.SelectedIndex >= 0 && this.SelectedIndex < this.Measurements.Count;
             }
         }
 
@@ -124,7 +125,20 @@ namespace UndoRedoDemo
         /// <summary>
         /// Gets or sets a value indicating whether this instance is modified.
         /// </summary>
-        public bool IsModified { get; set; }
+        public bool IsModified
+        {
+            get
+            {
+                return this.isModified;
+            }
+
+            set
+            {
+                this.isModified = value;
+                this.NotifyOfPropertyChange(() => this.IsModified);
+                this.NotifyOfPropertyChange(() => this.ActualTitle);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the measurements.
@@ -136,7 +150,19 @@ namespace UndoRedoDemo
         /// Gets or sets the output.
         /// </summary>
         /// <value>The output.</value>
-        public string Output { get; set; }
+        public string Output
+        {
+            get
+            {
+                return this.output;
+            }
+
+            set
+            {
+                this.output = value;
+                this.NotifyOfPropertyChange(() => this.Output);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the index of the selected.
@@ -159,6 +185,8 @@ namespace UndoRedoDemo
             this.IsModified = true;
             Trace.WriteLine("Added item.");
             this.SelectedIndex = this.Measurements.Count - 1;
+            this.NotifyOfPropertyChange(() => this.CanDeleteItem);
+            this.NotifyOfPropertyChange(() => this.CanModifyItem);
         }
 
         /// <summary>
@@ -179,6 +207,9 @@ namespace UndoRedoDemo
             {
                 this.SelectedIndex = index;
             }
+
+            this.NotifyOfPropertyChange(() => this.CanDeleteItem);
+            this.NotifyOfPropertyChange(() => this.CanModifyItem);
         }
 
         /// <summary>

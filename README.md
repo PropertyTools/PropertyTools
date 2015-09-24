@@ -61,3 +61,9 @@ Below is an example `PropertyDialog` bound to `Settings.Default`:
 - Microsoft 4.0 or later
 - Portable library tools
 - Visual Studio 2010 or later
+
+### Links
+
+Semantic versioning [semver.org](http://semver.org/)
+Semver tool: [GitVersion](https://github.com/GitTools/GitVersion)
+Branching strategy: [GitHub Flow](https://guides.github.com/introduction/flow/index.html)

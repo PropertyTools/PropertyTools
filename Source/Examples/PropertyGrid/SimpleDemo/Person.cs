@@ -4,6 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
 using System.Windows.Media;
 
 namespace SimpleDemo
@@ -16,6 +17,7 @@ namespace SimpleDemo
         Female
     }
 
+    [MetadataType(typeof(PersonMetadata))]
     public class Person
     {
         [Category("Data")]
@@ -25,6 +27,31 @@ namespace SimpleDemo
         [DisplayName("Family name")]
         public string LastName { get; set; }
 
+        public int Age { get; set; }
+
+        public double Height { get; set; }
+
+        public Mass Weight { get; set; }
+
+        public Genders Gender { get; set; }
+
+        public Color HairColor { get; set; }
+
+        [Description("Check the box if the person owns a bicycle.")]
+        public bool OwnsBicycle { get; set; }
+    }
+
+
+    public class PersonMetadata
+    {
+        [Category("Data")]
+        [DisplayName("First Name")]
+        public string FirstName { get; set; }
+
+        [DisplayName("Last name")]
+        public string LastName { get; set; }
+
+        [DisplayName("My Age Is")]
         public int Age { get; set; }
 
         public double Height { get; set; }

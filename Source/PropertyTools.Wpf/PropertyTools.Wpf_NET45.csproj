@@ -227,6 +227,7 @@
     <Compile Include="ItemsBag\ItemsBagTypeDescriptor.cs" />
     <Compile Include="PropertyGrid\CategoryControlType.cs" />
     <Compile Include="PropertyGrid\DefaultPropertyControlFactory.cs" />
+    <Compile Include="PropertyGrid\MetadataPropertyItemFactory.cs" />
     <Compile Include="PropertyGrid\DefaultPropertyItemFactory.cs" />
     <Compile Include="PropertyGrid\Group.cs" />
     <Compile Include="PropertyGrid\IPropertyControlFactory.cs" />
@@ -279,4 +280,3 @@
   </Target>
   -->
 </Project>
-

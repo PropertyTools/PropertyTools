@@ -14,7 +14,6 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Windows;
 
@@ -167,7 +166,7 @@ namespace PropertyTools.Wpf
             /// </returns>
             public override FrameworkElement CreateDisplayControl(CellRef cell, PropertyDefinition pd)
             {
-                var index = Owner.GetItemIndex(cell);
+                var index = this.Owner.GetItemIndex(cell);
                 return this.ControlFactory.CreateDisplayControl(pd, pd.GetBindingPath(index));
             }
 
@@ -181,7 +180,7 @@ namespace PropertyTools.Wpf
             /// </returns>
             public override FrameworkElement CreateEditControl(CellRef cell, PropertyDefinition pd)
             {
-                var index = Owner.GetItemIndex(cell);
+                var index = this.Owner.GetItemIndex(cell);
                 return this.ControlFactory.CreateEditControl(pd, pd.GetBindingPath(index));
             }
 
@@ -194,7 +193,6 @@ namespace PropertyTools.Wpf
             /// <code>public static T Parse(string s, IFormatProvider formatProvider)</code> and
             /// <code>public string ToString(string format, IFormatProvider formatProvider)</code> should be defined.
             /// interface type is not acceptable for no object instance can be created based on it.</remarks>
-            [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed. Suppression is OK here.")]
             public override void GenerateColumnDefinitions()
             {
                 var list = this.ItemsSource;
@@ -204,24 +202,24 @@ namespace PropertyTools.Wpf
                 }
 
                 var view = CollectionViewSource.GetDefaultView(this.ItemsSource);
-                var iitemProperties = view as IItemProperties;
-                if (iitemProperties != null && iitemProperties.ItemProperties.Count > 0)
+                var itemPropertiesView = view as IItemProperties;
+                if (itemPropertiesView != null && itemPropertiesView.ItemProperties != null && itemPropertiesView.ItemProperties.Count > 0)
                 {
-                    foreach (var info in iitemProperties.ItemProperties)
+                    foreach (var info in itemPropertiesView.ItemProperties)
                     {
                         var descriptor = info.Descriptor as PropertyDescriptor;
-                        if (!descriptor.IsBrowsable)
+                        if (descriptor == null || !descriptor.IsBrowsable)
                         {
                             continue;
                         }
 
-                        Owner.ColumnDefinitions.Add(
+                        this.Owner.ColumnDefinitions.Add(
                             new ColumnDefinition
                             {
                                 Descriptor = descriptor,
                                 Header = info.Name,
-                                HorizontalAlignment = Owner.DefaultHorizontalAlignment,
-                                Width = Owner.DefaultColumnWidth
+                                HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
+                                Width = this.Owner.DefaultColumnWidth
                             });
                     }
 
@@ -245,27 +243,27 @@ namespace PropertyTools.Wpf
                         continue;
                     }
 
-                    Owner.ColumnDefinitions.Add(
+                    this.Owner.ColumnDefinitions.Add(
                         new ColumnDefinition
-                            {
-                                Descriptor = descriptor,
-                                Header = descriptor.Name,
-                                HorizontalAlignment = Owner.DefaultHorizontalAlignment,
-                                Width = Owner.DefaultColumnWidth
-                            });
+                        {
+                            Descriptor = descriptor,
+                            Header = descriptor.Name,
+                            HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
+                            Width = this.Owner.DefaultColumnWidth
+                        });
                 }
 
-                if (Owner.ColumnDefinitions.Count == 0)
+                if (this.Owner.ColumnDefinitions.Count == 0)
                 {
                     var itemsType = TypeHelper.GetItemType(list);
-                    Owner.ColumnDefinitions.Add(
+                    this.Owner.ColumnDefinitions.Add(
                         new ColumnDefinition
-                            {
-                                PropertyType = itemsType,
-                                Header = itemsType.Name,
-                                HorizontalAlignment = Owner.DefaultHorizontalAlignment,
-                                Width = Owner.DefaultColumnWidth
-                            });
+                        {
+                            PropertyType = itemsType,
+                            Header = itemsType.Name,
+                            HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
+                            Width = this.Owner.DefaultColumnWidth
+                        });
                 }
             }
 
@@ -284,7 +282,7 @@ namespace PropertyTools.Wpf
                     return null;
                 }
 
-                var index = Owner.GetItemIndex(cell);
+                var index = this.Owner.GetItemIndex(cell);
                 if (index >= 0 && index < list.Count)
                 {
                     return list[index];
@@ -341,7 +339,7 @@ namespace PropertyTools.Wpf
                 {
                     if (newItem == null)
                     {
-                        newItem = Owner.CreateInstance(itemType);
+                        newItem = this.Owner.CreateInstance(itemType);
                     }
                 }
                 catch
@@ -431,14 +429,14 @@ namespace PropertyTools.Wpf
                 var columns = firstRow != null ? firstRow.Count : 0;
                 for (var ii = 0; ii < columns; ii++)
                 {
-                    Owner.ColumnDefinitions.Add(
+                    this.Owner.ColumnDefinitions.Add(
                         new ColumnDefinition
-                            {
-                                PropertyType = innerType ?? typeof(object),
-                                Header = innerType != null ? innerType.Name : string.Empty,
-                                HorizontalAlignment = Owner.DefaultHorizontalAlignment,
-                                Width = Owner.DefaultColumnWidth
-                            });
+                        {
+                            PropertyType = innerType ?? typeof(object),
+                            Header = innerType != null ? innerType.Name : string.Empty,
+                            HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
+                            Width = this.Owner.DefaultColumnWidth
+                        });
                 }
             }
 
@@ -501,7 +499,7 @@ namespace PropertyTools.Wpf
 
                 var itemType = TypeHelper.GetItemType(list);
 
-                var newList = Owner.CreateInstance(itemType) as IList;
+                var newList = this.Owner.CreateInstance(itemType) as IList;
 
                 var innerType = TypeHelper.GetInnerTypeOfList(list);
                 if (innerType == null)
@@ -515,7 +513,7 @@ namespace PropertyTools.Wpf
                     {
                         for (var ii = 0; ii < this.Owner.Columns; ii++)
                         {
-                            newList.Add(Owner.CreateInstance(innerType));
+                            newList.Add(this.Owner.CreateInstance(innerType));
                         }
 
                         if (index < 0)
@@ -533,7 +531,7 @@ namespace PropertyTools.Wpf
                     // insert/append one new element to each list.
                     foreach (var row in list.OfType<IList>())
                     {
-                        var newItem = Owner.CreateInstance(innerType);
+                        var newItem = this.Owner.CreateInstance(innerType);
                         if (index < 0)
                         {
                             row.Add(newItem);

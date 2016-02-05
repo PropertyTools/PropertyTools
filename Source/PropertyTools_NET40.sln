@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf_NET40", "PropertyTools.Wpf\PropertyTools.Wpf_NET40.csproj", "{F05D6590-542B-4150-AD2F-3B1612A5D4CB}"
 EndProject
@@ -44,6 +44,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools_PCL", "PropertyTools\PropertyTools_PCL.csproj", "{C365CBC8-FB8C-439D-87A4-FAFBB25852EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET40", "PropertyTools.Wpf.ExtendedToolkit\PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET40.csproj", "{424B4EF3-18C0-4A8D-B87A-5DF8F0E9D82F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contrib", "Contrib", "{86D33BCC-67CE-4231-9D9D-FC102AEA97B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -132,5 +134,6 @@ Global
 		{348A711C-C4B7-499D-9418-8920FF953B2B} = {9D139AB3-2AC9-46AD-BAE6-6C206724CC1F}
 		{CDBBC579-4958-42DB-9BD6-F0D0EC441106} = {495DE1C6-8AD0-4119-9279-02B5C2499D1F}
 		{804AA766-9BA6-452A-A99E-D574662BF35A} = {B179EEDB-BEBB-417C-A870-782A4B66F522}
+		{424B4EF3-18C0-4A8D-B87A-5DF8F0E9D82F} = {86D33BCC-67CE-4231-9D9D-FC102AEA97B1}
 	EndGlobalSection
 EndGlobal

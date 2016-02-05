@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf_NET45", "PropertyTools.Wpf\PropertyTools.Wpf_NET45.csproj", "{7168F82F-288A-42C4-9EB1-FBBE5112F211}"
 EndProject
@@ -46,6 +46,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddRemoveDemo_NET45", "Examples\TreeListBox\AddRemoveDemo_NET45\AddRemoveDemo_NET45.csproj", "{E8093378-7B09-4210-91EA-BDE29A2570A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET45", "PropertyTools.Wpf.ExtendedToolkit\PropertyTools.DotNetProjects.Wpf.Extended.Toolkit_NET45.csproj", "{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contrib", "Contrib", "{B2CFD58C-D8DC-4E95-B379-2D7B8E92F2CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,5 +141,6 @@ Global
 		{CDBBC579-4958-42DB-9BD6-F0D0EC441106} = {495DE1C6-8AD0-4119-9279-02B5C2499D1F}
 		{E81E0120-1158-4EFE-B443-CF8B70C4F190} = {B179EEDB-BEBB-417C-A870-782A4B66F522}
 		{E8093378-7B09-4210-91EA-BDE29A2570A8} = {6E342E58-E11E-4C26-819D-4D0328920770}
+		{EA2D98D9-0C0B-46C6-A657-5C4308B9E0A7} = {B2CFD58C-D8DC-4E95-B379-2D7B8E92F2CF}
 	EndGlobalSection
 EndGlobal

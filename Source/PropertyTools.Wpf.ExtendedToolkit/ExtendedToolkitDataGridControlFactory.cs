@@ -1,53 +1,95 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using Xceed.Wpf.Toolkit;
-using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ExtendedToolkitDataGridControlFactory.cs" company="PropertyTools">
+//   Copyright (c) 2014 PropertyTools contributors
+// </copyright>
+// <summary>
+//   Implements a data grid control factory for the Extended.Toolkit.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf.ExtendedToolkit
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+
+    using Xceed.Wpf.Toolkit;
+
+    /// <summary>
+    /// Implements a data grid control factory for the Extended.Toolkit.
+    /// </summary>
     public class ExtendedToolkitDataGridControlFactory : DataGridControlFactory
     {
-        private static Lazy<ExtendedToolkitDataGridControlFactory> _instance = new Lazy<ExtendedToolkitDataGridControlFactory>();
-        public static ExtendedToolkitDataGridControlFactory Instance {get { return _instance.Value; }}
+        /// <summary>
+        /// The lazy instance
+        /// </summary>
+        private static readonly Lazy<ExtendedToolkitDataGridControlFactory> LazyInstance = new Lazy<ExtendedToolkitDataGridControlFactory>();
 
+        /// <summary>
+        /// Gets the instance.
+        /// </summary>
+        /// <value>The instance.</value>
+        public static ExtendedToolkitDataGridControlFactory Instance => LazyInstance.Value;
+
+        /// <summary>
+        /// Creates the display control.
+        /// </summary>
+        /// <param name="propertyDefinition">The property definition.</param>
+        /// <param name="bindingPath">The binding path.</param>
+        /// <returns>A FrameworkElement.</returns>
         public override FrameworkElement CreateDisplayControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var control = propertyDefinition.CreateDisplayControl(bindingPath);
             if (control != null)
+            {
                 return control;
+            }
 
-            var ctl = CreateExtendedToolkitControl(propertyDefinition, bindingPath);
+            var ctl = this.CreateExtendedToolkitControl(propertyDefinition, bindingPath);
             if (ctl != null)
+            {
                 return ctl;
+            }
 
             return base.CreateDisplayControl(propertyDefinition, bindingPath);
         }
 
+        /// <summary>
+        /// Creates the edit control.
+        /// </summary>
+        /// <param name="propertyDefinition">The property definition.</param>
+        /// <param name="bindingPath">The binding path.</param>
+        /// <returns>A FrameworkElement.</returns>
         public override FrameworkElement CreateEditControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var control = propertyDefinition.CreateEditControl(bindingPath);
             if (control != null)
+            {
                 return control;
+            }
 
-            var ctl = CreateExtendedToolkitControl(propertyDefinition, bindingPath);
+            var ctl = this.CreateExtendedToolkitControl(propertyDefinition, bindingPath);
             if (ctl != null)
+            {
                 return ctl;
+            }
 
             return base.CreateEditControl(propertyDefinition, bindingPath);
         }
 
+        /// <summary>
+        /// Creates the extended toolkit control.
+        /// </summary>
+        /// <param name="propertyDefinition">The property definition.</param>
+        /// <param name="bindingPath">The binding path.</param>
+        /// <returns>A FrameworkElement.</returns>
         public FrameworkElement CreateExtendedToolkitControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var propertyType = propertyDefinition.PropertyType;
             if (propertyType.Is(typeof(DateTime)))
             {
-                var c = new DateTimePicker()
+                var c = new DateTimePicker
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -59,7 +101,7 @@ namespace PropertyTools.Wpf.ExtendedToolkit
 
             if (propertyType.Is(typeof(TimeSpan)))
             {
-                var c = new TimeSpanUpDown()
+                var c = new TimeSpanUpDown
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -71,7 +113,7 @@ namespace PropertyTools.Wpf.ExtendedToolkit
 
             if (propertyType.Is(typeof(int)) || propertyType.Is(typeof(int?)))
             {
-                var c = new CalculatorUpDown()
+                var c = new CalculatorUpDown
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -85,7 +127,7 @@ namespace PropertyTools.Wpf.ExtendedToolkit
 
             if (propertyType.Is(typeof(uint)) || propertyType.Is(typeof(uint?)))
             {
-                var c = new CalculatorUpDown()
+                var c = new CalculatorUpDown
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -99,7 +141,7 @@ namespace PropertyTools.Wpf.ExtendedToolkit
 
             if (propertyType.Is(typeof(decimal)) || propertyType.Is(typeof(decimal?)))
             {
-                var c = new CalculatorUpDown()
+                var c = new CalculatorUpDown
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -111,9 +153,9 @@ namespace PropertyTools.Wpf.ExtendedToolkit
                 return c;
             }
 
-            if (propertyType.Is(typeof(Single)) || propertyType.Is(typeof(Single?)))
+            if (propertyType.Is(typeof(float)) || propertyType.Is(typeof(float?)))
             {
-                var c = new CalculatorUpDown()
+                var c = new CalculatorUpDown
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -127,7 +169,7 @@ namespace PropertyTools.Wpf.ExtendedToolkit
 
             if (propertyType.Is(typeof(double)) || propertyType.Is(typeof(double?)))
             {
-                var c = new CalculatorUpDown()
+                var c = new CalculatorUpDown
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -141,7 +183,7 @@ namespace PropertyTools.Wpf.ExtendedToolkit
 
             if (propertyType.Is(typeof(Brush)))
             {
-                var c = new ColorBox.ColorBox()
+                var c = new ColorBox.ColorBox
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -152,27 +194,27 @@ namespace PropertyTools.Wpf.ExtendedToolkit
 
             if (propertyType.Is(typeof(Guid)) || propertyType.Is(typeof(Guid?)))
             {
-                var c = new MaskedTextBox()
+                var c = new MaskedTextBox
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Mask = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
                     IsReadOnly = propertyDefinition.IsReadOnly
                 };
-                c.SetBinding(MaskedTextBox.TextProperty, propertyDefinition.CreateBinding(bindingPath));
+                c.SetBinding(TextBox.TextProperty, propertyDefinition.CreateBinding(bindingPath));
                 return c;
             }
 
             if (propertyType.Is(typeof(char)) || propertyType.Is(typeof(char?)))
             {
-                var c = new MaskedTextBox()
+                var c = new MaskedTextBox
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Mask = "&",
                     IsReadOnly = propertyDefinition.IsReadOnly
                 };
-                c.SetBinding(MaskedTextBox.TextProperty, propertyDefinition.CreateBinding(bindingPath));
+                c.SetBinding(TextBox.TextProperty, propertyDefinition.CreateBinding(bindingPath));
                 return c;
             }
 

@@ -57,16 +57,7 @@
     <Compile Include="..\..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Examples\Window511.xaml.cs">
-      <DependentUpon>Window511.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\Window602.xaml.cs">
-      <DependentUpon>Window602.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DataTypes\MassValueConverter.cs" />
-    <Compile Include="Examples\Window601.xaml.cs">
-      <DependentUpon>Window601.xaml</DependentUpon>
-    </Compile>
     <Compile Include="NET45\ValidatableObject.cs" />
     <Compile Include="Examples\ValidationExampleWindow.xaml.cs">
       <DependentUpon>ValidationExampleWindow.xaml</DependentUpon>
@@ -138,6 +129,15 @@
     </Compile>
     <Compile Include="Examples\Window510.xaml.cs">
       <DependentUpon>Window510.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window511.xaml.cs">
+      <DependentUpon>Window511.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window601.xaml.cs">
+      <DependentUpon>Window601.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\Window602.xaml.cs">
+      <DependentUpon>Window602.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
@@ -307,4 +307,3 @@
   </Target>
   -->
 </Project>
-

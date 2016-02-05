@@ -367,7 +367,13 @@ namespace PropertyTools.Wpf
 
             // Find descriptors by convention
             pi.IsEnabledDescriptor = pi.GetDescriptor(string.Format(this.EnabledPattern, pi.PropertyName));
-            pi.IsVisibleDescriptor = pi.GetDescriptor(string.Format(this.VisiblePattern, pi.PropertyName));
+            var isVisibleDescriptor = pi.GetDescriptor(string.Format(this.VisiblePattern, pi.PropertyName));
+            if (isVisibleDescriptor != null)
+            {
+                pi.IsVisibleDescriptor = isVisibleDescriptor;
+                pi.IsVisibleValue = true;
+            }
+
             pi.OptionalDescriptor = pi.GetDescriptor(string.Format(this.OptionalPattern, pi.PropertyName));
 
             foreach (Attribute attribute in pi.Descriptor.Attributes)
@@ -519,6 +525,7 @@ namespace PropertyTools.Wpf
             if (vba != null)
             {
                 pi.IsVisibleDescriptor = pi.GetDescriptor(vba.PropertyName);
+                pi.IsVisibleValue = vba.PropertyValue;
             }
 
             var oa = attribute as OptionalAttribute;

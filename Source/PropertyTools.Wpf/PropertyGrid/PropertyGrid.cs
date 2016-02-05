@@ -365,9 +365,9 @@ namespace PropertyTools.Wpf
         private const string PartTabs = "PART_Tabs";
 
         /// <summary>
-        /// The boolean to visibility converter.
+        /// The value to visibility converter.
         /// </summary>
-        private static readonly BooleanToVisibilityConverter BoolToVisibilityConverter = new BooleanToVisibilityConverter();
+        private static readonly ValueToVisibilityConverter ValueToVisibilityConverter = new ValueToVisibilityConverter();
 
         /// <summary>
         /// The value to boolean converter.
@@ -979,7 +979,7 @@ namespace PropertyTools.Wpf
                     Grid.SetIsSharedSizeScope(tabPanel, true);
                 }
 
-                var tabItem = new TabItem { Header = tab, Padding = new Thickness(4), Name = (tab.Id ?? String.Empty) };
+                var tabItem = new TabItem { Header = tab, Padding = new Thickness(4), Name = tab.Id ?? string.Empty };
 
                 var dataErrorInfoInstance = instance as IDataErrorInfo;
                 if (dataErrorInfoInstance != null)
@@ -994,11 +994,11 @@ namespace PropertyTools.Wpf
                 else
                 {
                     tabItem.Content = new ScrollViewer
-                                          {
-                                              VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                                              Content = tabPanel,
-                                              Focusable = false
-                                          };
+                    {
+                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        Content = tabPanel,
+                        Focusable = false
+                    };
                 }
 
                 this.tabControl.Items.Add(tabItem);
@@ -1300,26 +1300,26 @@ namespace PropertyTools.Wpf
             }
 
             var labelColumn = new System.Windows.Controls.ColumnDefinition
-                                  {
-                                      Width = GridLength.Auto,
-                                      MinWidth = this.MinimumLabelWidth,
-                                      MaxWidth = this.MaximumLabelWidth,
-                                      SharedSizeGroup =
+            {
+                Width = GridLength.Auto,
+                MinWidth = this.MinimumLabelWidth,
+                MaxWidth = this.MaximumLabelWidth,
+                SharedSizeGroup =
                                           this.LabelWidthSharing
                                           != LabelWidthSharing.NotShared
                                               ? "labelColumn"
                                               : null
-                                  };
+            };
 
             propertyPanel.ColumnDefinitions.Add(labelColumn);
             propertyPanel.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
             var rd = new System.Windows.Controls.RowDefinition
-                         {
-                             Height =
+            {
+                Height =
                                  pi.FillTab
                                      ? new GridLength(1, GridUnitType.Star)
                                      : GridLength.Auto
-                         };
+            };
             propertyPanel.RowDefinitions.Add(rd);
 
             var propertyLabel = this.CreateLabel(pi);
@@ -1375,35 +1375,35 @@ namespace PropertyTools.Wpf
                     }
 
                     var errorControl = new ContentControl
-                                           {
-                                               ContentTemplate = this.ValidationErrorTemplate,
-                                               Focusable = false
-                                           };
+                    {
+                        ContentTemplate = this.ValidationErrorTemplate,
+                        Focusable = false
+                    };
                     var errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
                     var visibilityBinding = new Binding(pi.PropertyName)
-                                      {
-                                          Converter = errorConverter,
-                                          NotifyOnTargetUpdated = true,
-                                          //                                          ValidatesOnDataErrors = false,
+                    {
+                        Converter = errorConverter,
+                        NotifyOnTargetUpdated = true,
 #if !NET40
-                                          ValidatesOnNotifyDataErrors = false,
+                        ValidatesOnNotifyDataErrors = false,
 #endif
-                                          //                                          ValidatesOnExceptions = false
-                                      };
+                        // ValidatesOnDataErrors = false,
+                        // ValidatesOnExceptions = false
+                    };
                     errorControl.SetBinding(VisibilityProperty, visibilityBinding);
 
                     // When the visibility of the error control is changed, updated the HasErrors of the tab
                     errorControl.TargetUpdated += (s, e) => tab.UpdateHasErrors(dataErrorInfoInstance);
 
                     var contentBinding = new Binding(pi.PropertyName)
-                                             {
-                                                 Converter = errorConverter,
-                                                 //                                                 ValidatesOnDataErrors = false,
+                    {
+                        Converter = errorConverter,
 #if !NET40
-                                                 ValidatesOnNotifyDataErrors = false,
+                        ValidatesOnNotifyDataErrors = false,
 #endif
-                                                 //                                                 ValidatesOnExceptions = false
-                                             };
+                        // ValidatesOnDataErrors = false,
+                        // ValidatesOnExceptions = false
+                    };
                     errorControl.SetBinding(ContentControl.ContentProperty, contentBinding);
 
                     // Add a row to the panel
@@ -1484,14 +1484,14 @@ namespace PropertyTools.Wpf
                             if (!string.IsNullOrWhiteSpace(pi.Description))
                             {
                                 var descriptionIconImage = new Image
-                                                               {
-                                                                   Source = this.DescriptionIcon,
-                                                                   Stretch = Stretch.None,
-                                                                   Margin = new Thickness(0, 4, 4, 4),
-                                                                   VerticalAlignment = VerticalAlignment.Top,
-                                                                   HorizontalAlignment =
+                                {
+                                    Source = this.DescriptionIcon,
+                                    Stretch = Stretch.None,
+                                    Margin = new Thickness(0, 4, 4, 4),
+                                    VerticalAlignment = VerticalAlignment.Top,
+                                    HorizontalAlignment =
                                                                        this.DescriptionIconAlignment
-                                                               };
+                                };
 
                                 // RenderOptions.SetBitmapScalingMode(descriptionIconImage, BitmapScalingMode.NearestNeighbor);
                                 labelPanel.Children.Add(descriptionIconImage);
@@ -1557,21 +1557,22 @@ namespace PropertyTools.Wpf
 
             if (pi.IsVisibleDescriptor != null)
             {
-                propertyPanel.SetBinding(
-                    VisibilityProperty,
-                    new Binding(pi.IsVisibleDescriptor.Name) { Converter = BoolToVisibilityConverter });
+                var isVisibleBinding = new Binding(pi.IsVisibleDescriptor.Name);
+                isVisibleBinding.ConverterParameter = pi.IsVisibleValue;
+                isVisibleBinding.Converter = ValueToVisibilityConverter;
+                propertyPanel.SetBinding(VisibilityProperty, isVisibleBinding);
             }
 
             if (this.EnableLabelWidthResizing && pi.HeaderPlacement == HeaderPlacement.Left)
             {
                 propertyPanel.Children.Add(
                     new GridSplitter
-                        {
-                            Width = 4,
-                            Background = Brushes.Transparent,
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            Focusable = false
-                        });
+                    {
+                        Width = 4,
+                        Background = Brushes.Transparent,
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        Focusable = false
+                    });
             }
 
             panel.Children.Add(propertyPanel);
@@ -1590,11 +1591,11 @@ namespace PropertyTools.Wpf
             if (pi.IsOptional)
             {
                 var cb = new CheckBox
-                             {
-                                 Content = pi.DisplayName,
-                                 VerticalAlignment = VerticalAlignment.Center,
-                                 Margin = new Thickness(5, 0, 0, 0)
-                             };
+                {
+                    Content = pi.DisplayName,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(5, 0, 0, 0)
+                };
 
                 cb.SetBinding(
                     ToggleButton.IsCheckedProperty,
@@ -1615,8 +1616,7 @@ namespace PropertyTools.Wpf
                     Margin = new Thickness(5, 0, 0, 0)
                 };
 
-                var converter = new EnumToBooleanConverter();
-                converter.EnumType = pi.RadioDescriptor.PropertyType;
+                var converter = new EnumToBooleanConverter { EnumType = pi.RadioDescriptor.PropertyType };
                 rb.SetBinding(
                     RadioButton.IsCheckedProperty,
                     new Binding(pi.RadioDescriptor.Name) { Converter = converter, ConverterParameter = pi.RadioValue });

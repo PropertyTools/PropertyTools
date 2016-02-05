@@ -313,6 +313,11 @@ namespace PropertyTools.Wpf
         public PropertyDescriptor IsVisibleDescriptor { get; set; }
 
         /// <summary>
+        /// Gets or sets the value that makes the property visible.
+        /// </summary>
+        public object IsVisibleValue { get; set; }
+
+        /// <summary>
         /// Gets or sets the items source.
         /// </summary>
         /// <value>The items source.</value>

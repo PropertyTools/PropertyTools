@@ -24,12 +24,15 @@ namespace ExampleLibrary
         public bool IsColor2Ok { get { return this.Color2 == TestEnumeration.Green || this.Color2 == TestEnumeration.Blue; } }
 
         [VisibleBy("IsColor2Ok")]
-        public string String2 { get; set; }
+        public string GreenOrBlue { get; set; }
+
+        [VisibleBy("Color2", TestEnumeration.Green)]
+        public string Green { get; set; }
 
         [Category("Collapsing group")]
         [Description("This group is collapsing when String3 is not visible.")]
         [VisibleBy("IsColor2Ok")]
-        public string String3 { get; set; }
+        public string NotRed { get; set; }
 
         public TestVisibleProperties()
         {

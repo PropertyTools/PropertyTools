@@ -450,7 +450,7 @@ namespace PropertyTools.Wpf
                 this.SetValue(CanResizeColumnsProperty, value);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether only cells in the changed column should be changed when changing value for a selection.
         /// </summary>
@@ -553,8 +553,15 @@ namespace PropertyTools.Wpf
         /// <value>The create item.</value>
         public Func<object> CreateItem
         {
-            get { return (Func<object>)GetValue(CreateItemProperty); }
-            set { SetValue(CreateItemProperty, value); }
+            get
+            {
+                return (Func<object>)this.GetValue(CreateItemProperty);
+            }
+
+            set
+            {
+                this.SetValue(CreateItemProperty, value);
+            }
         }
 
         /// <summary>
@@ -563,8 +570,15 @@ namespace PropertyTools.Wpf
         /// <value>The create column header.</value>
         public Func<int, object> CreateColumnHeader
         {
-            get { return (Func<int, object>)GetValue(CreateColumnHeaderProperty); }
-            set { SetValue(CreateColumnHeaderProperty, value); }
+            get
+            {
+                return (Func<int, object>)this.GetValue(CreateColumnHeaderProperty);
+            }
+
+            set
+            {
+                this.SetValue(CreateColumnHeaderProperty, value);
+            }
         }
 
         /// <summary>
@@ -802,6 +816,7 @@ namespace PropertyTools.Wpf
                 this.SetValue(ColumnHeadersFormatStringProperty, value);
             }
         }
+
         /// <summary>
         /// Gets the row definitions.
         /// </summary>
@@ -984,10 +999,16 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the number of columns.
+        /// Gets the number of columns.
         /// </summary>
-        /// <value>The columns.</value>
-        private int Columns { get; set; }
+        /// <value>The number of columns.</value>
+        private int Columns
+        {
+            get
+            {
+                return this.sheetGrid.ColumnDefinitions.Count;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether to use columns for the items.
@@ -1019,10 +1040,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the number of rows.
-        /// </summary>
-        /// <value>The rows.</value>
-        private int Rows { get; set; }
+        /// Gets or sets the number of rows.</summary>
+        /// <value>The number of rows.</value>
+        private int Rows
+        {
+            get
+            {
+                return this.sheetGrid.RowDefinitions.Count - 1;
+            }
+        }
 
         /// <summary>
         /// Coerces the current cell.

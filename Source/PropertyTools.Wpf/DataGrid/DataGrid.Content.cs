@@ -175,7 +175,6 @@ namespace PropertyTools.Wpf
         /// <param name="columns">The column index.</param>
         private void UpdateColumns(int columns)
         {
-            this.Columns = columns;
             for (int i = 0; i < columns; i++)
             {
                 var w = this.GetColumnWidth(i);
@@ -361,8 +360,6 @@ namespace PropertyTools.Wpf
         private void UpdateRows(int rows)
         {
             this.rowGrid.Children.Add(this.rowSelectionBackground);
-
-            this.Rows = rows;
 
             for (var i = 0; i < rows; i++)
             {

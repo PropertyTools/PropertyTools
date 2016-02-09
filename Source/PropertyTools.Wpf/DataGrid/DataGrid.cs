@@ -1391,6 +1391,11 @@ namespace PropertyTools.Wpf
         /// <returns>The calculated width of the column.</returns>
         public double AutoSizeColumn(int column)
         {
+            if (column < 0 || column >= this.Columns)
+            {
+                throw new ArgumentException("Invalid column");
+            }
+
             // Initialize with the width of the header element
             var headerElement = this.GetColumnElement(column);
             double maximumWidth = headerElement.ActualWidth + headerElement.Margin.Left + headerElement.Margin.Right;

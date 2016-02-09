@@ -30,6 +30,6 @@ namespace PropertyTools.DataAnnotations
         /// Gets the display name.
         /// </summary>
         /// <value>The display name.</value>
-        public string DisplayName { get; private set; }
+        public virtual string DisplayName { get; private set; }
     }
 }

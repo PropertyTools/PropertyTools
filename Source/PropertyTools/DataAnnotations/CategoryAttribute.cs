@@ -30,6 +30,6 @@ namespace PropertyTools.DataAnnotations
         /// Gets the category.
         /// </summary>
         /// <value>The category.</value>
-        public string Category { get; private set; }
+        public virtual string Category { get; private set; }
     }
 }

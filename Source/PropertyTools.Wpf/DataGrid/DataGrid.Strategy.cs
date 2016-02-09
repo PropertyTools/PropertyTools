@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows.Data;
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -16,28 +14,13 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
     using System.Linq;
     using System.Windows;
+    using System.Windows.Data;
 
     /// <summary>
     /// The data grid.
     /// </summary>
     public partial class DataGrid
     {
-        /// <summary>
-        /// Gets the field factory.
-        /// </summary>
-        private DataGridOperator Operator
-        {
-            get
-            {
-                if (this.IsIListIList())
-                {
-                    return new ListListOperator(this);
-                }
-
-                return new ListOperator(this);
-            }
-        }
-
         /// <summary>
         /// Represents the strategy for operations for <see cref="DataGrid" />.
         /// </summary>

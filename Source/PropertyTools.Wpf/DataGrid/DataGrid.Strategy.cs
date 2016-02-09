@@ -216,7 +216,7 @@ namespace PropertyTools.Wpf
                 if (properties.Count == 0)
                 {
                     // Otherwise try to get the property descriptors from an instance
-                    properties = GetPropertiesFromInstance(list, itemType);
+                    properties = DataGrid.GetPropertiesFromInstance(list, itemType);
                 }
 
                 foreach (PropertyDescriptor descriptor in properties)

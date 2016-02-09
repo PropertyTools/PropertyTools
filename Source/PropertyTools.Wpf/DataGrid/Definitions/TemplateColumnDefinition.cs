@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ColumnDefinition.cs" company="PropertyTools">
+// <copyright file="TemplateColumnDefinition.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
@@ -7,23 +7,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows.Controls;
-
 namespace PropertyTools.Wpf
 {
     using System.Windows;
+    using System.Windows.Controls;
 
     /// <summary>
     /// Defines column-specific properties that apply to DataGrid elements.
     /// </summary>
     public class TemplateColumnDefinition : ColumnDefinition
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TemplateColumnDefinition" /> class.
-        /// </summary>
-        public TemplateColumnDefinition()
-        { }
-
         /// <summary>
         /// Gets or sets CellTemplate.
         /// </summary>
@@ -37,15 +30,15 @@ namespace PropertyTools.Wpf
         public DataTemplate CellEditingTemplate { get; set; }
 
         /// <summary>
-        /// The Default DataGridControlFactory uses this Method to Create the Control
+        /// The DataGridControlFactory uses this method to create the display control.
         /// </summary>
-        /// <param name="bindingPath"></param>
-        /// <returns></returns>
+        /// <param name="bindingPath">The binding path.</param>
+        /// <returns>The display control.</returns>
         public override FrameworkElement CreateDisplayControl(string bindingPath)
         {
             var template = this.CellTemplate;
-            var element = template.LoadContent() as FrameworkElement;
-            var binding = this.CreateBinding("");
+            var element = (FrameworkElement)template.LoadContent();
+            var binding = this.CreateBinding(string.Empty);
             binding.Mode = System.Windows.Data.BindingMode.OneWay;
             var contentControl = new ContentControl()
             {
@@ -58,17 +51,20 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The Default DataGridControlFactory uses this Method to Create the Edit Control
+        /// The DataGridControlFactory uses this method to create the edit control.
         /// </summary>
-        /// <param name="bindingPath"></param>
-        /// <returns></returns>
+        /// <param name="bindingPath">The binding path.</param>
+        /// <returns>The control.</returns>
         public override FrameworkElement CreateEditControl(string bindingPath)
         {
             var template = this.CellEditingTemplate;
             if (template == null)
+            {
                 return this.CreateDisplayControl(bindingPath);
-            var element = template.LoadContent() as FrameworkElement;
-            var binding = this.CreateBinding("");
+            }
+
+            var element = (FrameworkElement)template.LoadContent();
+            var binding = this.CreateBinding(string.Empty);
             binding.Mode = System.Windows.Data.BindingMode.OneWay;
             var contentControl = new ContentControl()
             {

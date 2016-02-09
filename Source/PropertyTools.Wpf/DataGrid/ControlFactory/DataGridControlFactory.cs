@@ -16,7 +16,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Data;
     using System.Windows.Media;
     using System.Windows.Shapes;
-    
+
     using PropertyTools.DataAnnotations;
 
     using HorizontalAlignment = System.Windows.HorizontalAlignment;
@@ -38,7 +38,9 @@ namespace PropertyTools.Wpf
         {
             var control = propertyDefinition.CreateDisplayControl(bindingPath);
             if (control != null)
+            {
                 return control;
+            }
 
             var propertyType = propertyDefinition.PropertyType;
             if (propertyType.Is(typeof(bool)))
@@ -66,7 +68,9 @@ namespace PropertyTools.Wpf
         {
             var control = propertyDefinition.CreateEditControl(bindingPath);
             if (control != null)
+            {
                 return control;
+            }
 
             var propertyType = propertyDefinition.PropertyType;
             if (propertyDefinition.ItemsSourceProperty != null || propertyDefinition.ItemsSource != null)
@@ -100,20 +104,20 @@ namespace PropertyTools.Wpf
             if (propertyDefinition.IsReadOnly)
             {
                 var cm = new CheckMark
-                             {
-                                 VerticalAlignment = VerticalAlignment.Center,
-                                 HorizontalAlignment = propertyDefinition.HorizontalAlignment
-                             };
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = propertyDefinition.HorizontalAlignment
+                };
                 cm.SetBinding(CheckMark.IsCheckedProperty, propertyDefinition.CreateBinding(bindingPath));
                 return cm;
             }
 
             var c = new CheckBox
-                        {
-                            VerticalAlignment = VerticalAlignment.Center,
-                            HorizontalAlignment = propertyDefinition.HorizontalAlignment,
-                            IsEnabled = !propertyDefinition.IsReadOnly
-                        };
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = propertyDefinition.HorizontalAlignment,
+                IsEnabled = !propertyDefinition.IsReadOnly
+            };
             c.SetBinding(ToggleButton.IsCheckedProperty, propertyDefinition.CreateBinding(bindingPath));
             return c;
         }
@@ -129,11 +133,11 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateColorPickerControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var c = new ColorPicker
-                {
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Focusable = false
-                };
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Focusable = false
+            };
             c.SetBinding(ColorPicker.SelectedColorProperty, propertyDefinition.CreateBinding(bindingPath));
             return c;
         }
@@ -149,14 +153,14 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateColorPreviewControl(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var c = new Rectangle
-                        {
-                            Stroke = Brushes.Black,
-                            StrokeThickness = 1,
-                            Width = 12,
-                            Height = 12,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            HorizontalAlignment = HorizontalAlignment.Center
-                        };
+            {
+                Stroke = Brushes.Black,
+                StrokeThickness = 1,
+                Width = 12,
+                Height = 12,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
 
             var binding = propertyDefinition.CreateBinding(bindingPath);
             binding.Converter = new ColorToBrushConverter();

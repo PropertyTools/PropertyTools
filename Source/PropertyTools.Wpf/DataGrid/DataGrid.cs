@@ -2013,7 +2013,7 @@ namespace PropertyTools.Wpf
             }
 
             var currentCell = this.CurrentCell;
-            this.currentEditor.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(s, e, currentCell);
+            this.currentEditor.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(currentCell);
 
             this.SetElementDataContext(this.currentEditor, pd, item);
 
@@ -2180,7 +2180,7 @@ namespace PropertyTools.Wpf
 
                 this.SetElementDataContext(element, pd, item);
 
-                element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(s, e, cell);
+                element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
 
                 element.VerticalAlignment = VerticalAlignment.Center;
                 element.HorizontalAlignment = pd.HorizontalAlignment;
@@ -2875,10 +2875,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Handles changes in the current cell.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="DataTransferEventArgs" /> instance containing the event data.</param>
         /// <param name="changedCell">The cell that was changed.</param>
-        private void CurrentCellSourceUpdated(object sender, DataTransferEventArgs e, CellRef changedCell)
+        private void CurrentCellSourceUpdated(CellRef changedCell)
         {
             // The source of the binding for the current cell was updated
             // (e.g. check box (display control) was changed or a combo box (edit control) was changed
@@ -4451,7 +4449,7 @@ namespace PropertyTools.Wpf
             this.SubscribeToNotifications();
 
             // Update column width when all the controls are loaded.
-            Dispatcher.BeginInvoke(new Action(this.UpdateColumnWidths), DispatcherPriority.Loaded);
+            this.Dispatcher.BeginInvoke(new Action(this.UpdateColumnWidths), DispatcherPriority.Loaded);
         }
 
         /// <summary>

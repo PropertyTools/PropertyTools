@@ -7,14 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-
 namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
     using System.ComponentModel;
     using System.Globalization;
+    using System.Windows;
     using System.Windows.Data;
 
     using PropertyTools.DataAnnotations;
@@ -193,16 +192,16 @@ namespace PropertyTools.Wpf
             }
 
             var binding = new Binding(bindingPath)
-                {
-                    Mode = bindingMode,
-                    Converter = this.Converter,
-                    ConverterParameter = this.ConverterParameter,
-                    StringFormat = formatString,
-                    UpdateSourceTrigger = trigger,
-                    ValidatesOnDataErrors = true,
-                    ValidatesOnExceptions = true,
-                    NotifyOnSourceUpdated = true
-                };
+            {
+                Mode = bindingMode,
+                Converter = this.Converter,
+                ConverterParameter = this.ConverterParameter,
+                StringFormat = formatString,
+                UpdateSourceTrigger = trigger,
+                ValidatesOnDataErrors = true,
+                ValidatesOnExceptions = true,
+                NotifyOnSourceUpdated = true
+            };
             if (this.ConverterCulture != null)
             {
                 binding.ConverterCulture = this.ConverterCulture;
@@ -250,6 +249,26 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// The DataGridControlFactory uses this method to create the display control.
+        /// </summary>
+        /// <param name="bindingPath">The binding path.</param>
+        /// <returns>The display control.</returns>
+        public virtual FrameworkElement CreateDisplayControl(string bindingPath)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// The DataGridControlFactory uses this method to create the edit control.
+        /// </summary>
+        /// <param name="bindingPath">The binding path.</param>
+        /// <returns>The control.</returns>
+        public virtual FrameworkElement CreateEditControl(string bindingPath)
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Gets the first attribute of the specified type.
         /// </summary>
         /// <typeparam name="T">Type of attribute.</typeparam>
@@ -281,27 +300,6 @@ namespace PropertyTools.Wpf
         protected void SetEnumItemsSource()
         {
             this.ItemsSource = Enum.GetValues(this.PropertyType);
-        }
-
-        /// <summary>
-        /// The Default DataGridControlFactory uses this Method to Create the Control
-        /// </summary>
-        /// <param name="bindingPath"></param>
-        /// <returns></returns>
-        public virtual FrameworkElement CreateDisplayControl(string bindingPath)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// The Default DataGridControlFactory uses this Method to Create the Edit Control
-        /// </summary>
-        /// <param name="bindingPath"></param>
-        /// <returns></returns>
-        
-        public virtual FrameworkElement CreateEditControl(string bindingPath)
-        {
-            return null;
         }
     }
 }

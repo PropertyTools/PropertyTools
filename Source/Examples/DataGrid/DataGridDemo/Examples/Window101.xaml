@@ -4,7 +4,13 @@
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         Title="ObservableCollection&lt;ExampleObject&gt;" Height="450" Width="900"
         FocusManager.FocusedElement="{Binding ElementName=grid1}">
-    <Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="ItemsSource">
+                <MenuItem Header="Clear" Click="ClearItemsSource"/>
+                <MenuItem Header="Reset" Click="ResetItemsSource"/>
+            </MenuItem>
+        </Menu>
         <p:DataGrid x:Name="grid1" ItemsSource="{Binding ItemsSource}"/>
-    </Grid>
+    </DockPanel>
 </Window>

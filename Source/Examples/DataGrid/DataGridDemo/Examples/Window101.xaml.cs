@@ -9,30 +9,55 @@
 
 namespace DataGridDemo
 {
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
+    using System.Windows;
+
+    using PropertyTools;
 
     /// <summary>
     /// Interaction logic for Window101.xaml
     /// </summary>
     public partial class Window101
     {
+        private ViewModel vm;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Window101" /> class.
         /// </summary>
         public Window101()
         {
             this.InitializeComponent();
-            this.DataContext = this;
+            this.vm = new ViewModel();
+            this.DataContext = this.vm;
+            this.vm.ItemsSource = Window1.StaticItemsSource;
         }
 
-        /// <summary>
-        /// Gets the items source.
-        /// </summary>
-        public ObservableCollection<ExampleObject> ItemsSource
+
+        private void ClearItemsSource(object sender, RoutedEventArgs e)
         {
-            get
+            this.vm.ItemsSource = null;
+        }
+
+        private void ResetItemsSource(object sender, RoutedEventArgs e)
+        {
+            this.vm.ItemsSource = Window1.StaticItemsSource;
+        }
+
+        public class ViewModel : Observable
+        {
+            private IList<ExampleObject> itemsSource;
+
+            public IList<ExampleObject> ItemsSource
             {
-                return Window1.StaticItemsSource;
+                get
+                {
+                    return this.itemsSource;
+                }
+
+                set
+                {
+                    this.SetValue(ref this.itemsSource, value, () => this.ItemsSource);
+                }
             }
         }
     }

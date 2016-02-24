@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EditableTextBlock.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
@@ -37,11 +37,6 @@ namespace PropertyTools.Wpf
         /// Flags if it is an internal change in the IsEditing property
         /// </summary>
         private bool internalIsEditingChange;
-
-        /// <summary>
-        /// The old focus element.
-        /// </summary>
-        private IInputElement oldfocus;
 
         /// <summary>
         /// The text box.
@@ -97,7 +92,6 @@ namespace PropertyTools.Wpf
             }
 
             var scope = FocusManager.GetFocusScope(this);
-            this.oldfocus = FocusManager.GetFocusedElement(scope);
             this.textBox = new TextBox();
             this.textBox.SetBinding(
                 TextBox.TextProperty,
@@ -156,10 +150,6 @@ namespace PropertyTools.Wpf
             p.Children.Remove(this.textBox);
             this.textBox = null;
             this.Visibility = Visibility.Visible;
-            if (this.oldfocus != null)
-            {
-                this.oldfocus.Focus();
-            }
         }
 
         /// <summary>

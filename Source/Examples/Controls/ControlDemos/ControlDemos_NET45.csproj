@@ -59,6 +59,9 @@
     <Compile Include="Pages\DirectoryPickerPage.xaml.cs">
       <DependentUpon>DirectoryPickerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\EditableTextBlockAndPropertyGridPage.xaml.cs">
+      <DependentUpon>EditableTextBlockAndPropertyGridPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\EditableTextBlockPage.xaml.cs">
       <DependentUpon>EditableTextBlockPage.xaml</DependentUpon>
     </Compile>
@@ -98,6 +101,10 @@
     <Page Include="Pages\DirectoryPickerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\EditableTextBlockAndPropertyGridPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\EditableTextBlockPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -194,4 +201,3 @@
   </Target>
   -->
 </Project>
-

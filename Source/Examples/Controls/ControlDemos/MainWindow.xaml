@@ -4,7 +4,7 @@
         <XmlDataProvider x:Key="samples" Source="Examples.xml" />
     </Window.Resources>
     <DockPanel DataContext="{Binding  Source={StaticResource samples}, XPath=Examples/Example}">
-        <DockPanel Width="160" DockPanel.Dock="Left">
+        <DockPanel Width="240" DockPanel.Dock="Left">
             <Slider DockPanel.Dock="Bottom" x:Name="ScaleSlider" ToolTip="LayoutTransform scale" Value="1" Minimum="1" Maximum="3" Margin="8"/>
             <ListBox ItemsSource="{Binding}" DisplayMemberPath="@Title" IsSynchronizedWithCurrentItem="True" Margin="4"/>
         </DockPanel>

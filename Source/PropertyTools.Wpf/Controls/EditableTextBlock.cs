@@ -106,11 +106,13 @@ namespace PropertyTools.Wpf
             Grid.SetColumnSpan(this.textBox, Grid.GetColumnSpan(this));
             this.Visibility = Visibility.Collapsed;
             var p = this.Parent as Panel;
-            if (p != null)
+            if (p == null)
             {
-                int index = p.Children.IndexOf(this);
-                p.Children.Insert(index, this.textBox);
+                throw new InvalidOperationException(string.Format("{0} must be a child of a {1}", this.GetType(), typeof(Panel)));
             }
+
+            int index = p.Children.IndexOf(this);
+            p.Children.Insert(index, this.textBox);
 
             this.textBox.HorizontalAlignment = this.HorizontalAlignment;
             this.textBox.VerticalAlignment = this.VerticalAlignment;

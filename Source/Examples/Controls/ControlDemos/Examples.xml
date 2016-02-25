@@ -11,4 +11,5 @@
   <Example Page="Pages\SpinControlPage.xaml" Title="SpinControl" Description="An up/down spin control."/>
   <Example Page="Pages\HeaderedEntrySliderPage.xaml" Title="HeaderedEntrySlider" Description="A slider with header and value entry."/>
   <Example Page="Pages\EditableTextBlockPage.xaml" Title="EditableTextBlock" Description="An editable text block."/>
+  <Example Page="Pages\EditableTextBlockAndPropertyGridPage.xaml" Title="EditableTextBlock and PropertyGrid" Description="An editable text block and a property grid working on the same model."/>
 </Examples>

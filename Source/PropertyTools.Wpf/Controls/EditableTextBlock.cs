@@ -41,7 +41,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The old focus element.
         /// </summary>
-        private IInputElement oldfocus;
+        private UIElement oldfocus;
 
         /// <summary>
         /// The text box.
@@ -97,7 +97,7 @@ namespace PropertyTools.Wpf
             }
 
             var scope = FocusManager.GetFocusScope(this);
-            this.oldfocus = FocusManager.GetFocusedElement(scope);
+            this.oldfocus = FocusManager.GetFocusedElement(scope) as UIElement;
             this.textBox = new TextBox();
             this.textBox.SetBinding(
                 TextBox.TextProperty,
@@ -158,7 +158,7 @@ namespace PropertyTools.Wpf
             p.Children.Remove(this.textBox);
             this.textBox = null;
             this.Visibility = Visibility.Visible;
-            if (this.oldfocus != null)
+            if (this.oldfocus != null && this.oldfocus.IsVisible)
             {
                 this.oldfocus.Focus();
             }

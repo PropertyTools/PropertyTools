@@ -299,7 +299,30 @@ namespace PropertyTools.Wpf
         /// </summary>
         protected void SetEnumItemsSource()
         {
+#if NotFixedNullableEnumBug
             this.ItemsSource = Enum.GetValues(this.PropertyType);
+#else
+            Type propType = this.PropertyType;
+
+            if (propType.IsGenericType &&
+                propType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                Type[] typeCol = propType.GetGenericArguments();
+                Type nullableType;
+                if (typeCol.Length > 0)
+                {
+                    nullableType = typeCol[0];
+                    if (nullableType.BaseType == typeof(Enum))
+                    {
+                        this.ItemsSource = Enum.GetValues(nullableType);
+                    }
+                }
+            }
+            else
+            {
+                this.ItemsSource = Enum.GetValues(propType);
+            }
+#endif
         }
     }
 }

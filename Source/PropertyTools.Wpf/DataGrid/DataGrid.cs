@@ -1240,6 +1240,35 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets a value indicating whether to use rows for the items.
+        /// </summary>
+        /// <value><c>true</c> if the items are in rows; otherwise, <c>false</c> .</value>
+        public bool ItemsInRows => !this.ItemsInColumns;
+
+        /// <summary>
+        /// Gets the number of columns.
+        /// </summary>
+        /// <value>The number of columns.</value>
+        public int Columns
+        {
+            get
+            {
+                return this.sheetGrid.ColumnDefinitions.Count;
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of rows.</summary>
+        /// <value>The number of rows.</value>
+        public int Rows
+        {
+            get
+            {
+                return this.sheetGrid.RowDefinitions.Count - 1;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this instance can delete columns.
         /// </summary>
         /// <value><c>true</c> if this instance can delete columns; otherwise, <c>false</c> .</value>
@@ -1302,44 +1331,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the number of columns.
-        /// </summary>
-        /// <value>The number of columns.</value>
-        private int Columns
-        {
-            get
-            {
-                return this.sheetGrid.ColumnDefinitions.Count;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether to use columns for the items.
         /// </summary>
         private bool ItemsInColumns { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether to use rows for the items.
-        /// </summary>
-        /// <value><c>true</c> if the items are in rows; otherwise, <c>false</c> .</value>
-        private bool ItemsInRows => !this.ItemsInColumns;
 
         /// <summary>
         /// Gets the column definitions.
         /// </summary>
         /// <value>The column definitions.</value>
         private Collection<PropertyDefinition> PropertyDefinitions => this.propertyDefinitions;
-
-        /// <summary>
-        /// Gets or sets the number of rows.</summary>
-        /// <value>The number of rows.</value>
-        private int Rows
-        {
-            get
-            {
-                return this.sheetGrid.RowDefinitions.Count - 1;
-            }
-        }
 
         /// <summary>
         /// Gets the field factory.
@@ -2187,7 +2187,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The new instance.
         /// </returns>
-        protected virtual object CreateInstance(Type itemType)
+        public virtual object CreateInstance(Type itemType)
         {
             if (this.CreateItem != null)
             {
@@ -2671,27 +2671,6 @@ namespace PropertyTools.Wpf
             }
 
             return string.Format(formatString, value);
-        }
-
-        /// <summary>
-        /// Gets property descriptors from one instance.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        /// <param name="itemType">The target item type.</param>
-        /// <returns>
-        /// The <see cref="PropertyDescriptorCollection" />.
-        /// </returns>
-        private static PropertyDescriptorCollection GetPropertiesFromInstance(IList items, Type itemType)
-        {
-            foreach (var item in items)
-            {
-                if (item != null && item.GetType() == itemType)
-                {
-                    return TypeDescriptor.GetProperties(item);
-                }
-            }
-
-            return new PropertyDescriptorCollection(new PropertyDescriptor[0]);
         }
 
         /// <summary>
@@ -3355,7 +3334,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The get item index.
         /// </returns>
-        private int GetItemIndex(CellRef cell)
+        public int GetItemIndex(CellRef cell)
         {
             if (this.WrapItems)
             {

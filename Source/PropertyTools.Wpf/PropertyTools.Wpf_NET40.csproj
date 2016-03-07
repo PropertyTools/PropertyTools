@@ -174,8 +174,10 @@
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
-    <Compile Include="DataGrid\DataGrid.Strategy.cs" />
+    <Compile Include="DataGrid\ListListOperator.cs" />
+    <Compile Include="DataGrid\DataGridOperator.cs" />
     <Compile Include="DataGrid\Definitions\TemplateColumnDefinition.cs" />
+    <Compile Include="DataGrid\ListOperator.cs" />
     <Compile Include="Helpers\AutoFiller.cs" />
     <Compile Include="Helpers\CaptureScreenshot.cs" />
     <Compile Include="Helpers\FormattedTimeSpanParser.cs" />

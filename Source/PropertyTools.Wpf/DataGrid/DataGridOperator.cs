@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Represents the strategy for operations for DataGrid.
+//   Represents an abstract base class for DataGrid operators.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,9 +14,10 @@ namespace PropertyTools.Wpf
     using System.Windows;
 
     /// <summary>
-    /// Represents the strategy for operations for <see cref="DataGrid" />.
+    /// Represents an abstract base class for <see cref="DataGrid" /> operators.
     /// </summary>
-    /// <remarks>A strategy wraps operations for DataGrid based on the different data its ItemsSource binds to.</remarks>
+    /// <remarks>An operator implements operations for a <see cref="DataGrid" /> based on the different data its 
+    /// <see cref="DataGrid.ItemsSource" /> binds to.</remarks>
     public abstract class DataGridOperator
     {
         /// <summary>
@@ -31,7 +32,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the owner.
         /// </summary>
-        protected DataGrid Owner { get; private set; }
+        protected DataGrid Owner { get; }
 
         /// <summary>
         /// Gets the control factory.
@@ -46,7 +47,7 @@ namespace PropertyTools.Wpf
         protected IList ItemsSource => this.Owner.ItemsSource;
 
         /// <summary>
-        /// Creates display control.
+        /// Creates the display control for the specified cell.
         /// </summary>
         /// <param name="cell">The cell reference.</param>
         /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
@@ -56,7 +57,7 @@ namespace PropertyTools.Wpf
         public abstract FrameworkElement CreateDisplayControl(CellRef cell, PropertyDefinition pd);
 
         /// <summary>
-        /// Creates edit control.
+        /// Creates the edit control for the specified cell.
         /// </summary>
         /// <param name="cell">The cell reference.</param>
         /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
@@ -66,13 +67,13 @@ namespace PropertyTools.Wpf
         public abstract FrameworkElement CreateEditControl(CellRef cell, PropertyDefinition pd);
 
         /// <summary>
-        /// Generate column definitions based on <seealso cref="ItemsSource" />.
+        /// Generates column definitions based on <seealso cref="ItemsSource" />.
         /// </summary>
         /// <seealso cref="ItemsSource" />
         public abstract void GenerateColumnDefinitions();
 
         /// <summary>
-        /// Gets the item in cell.
+        /// Gets the item in the specified cell.
         /// </summary>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
@@ -89,7 +90,7 @@ namespace PropertyTools.Wpf
         public abstract Type GetItemsType();
 
         /// <summary>
-        /// Inserts item to <see cref="DataGrid" />.
+        /// Inserts an item to <see cref="DataGrid" /> at the specified index.
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>
@@ -98,9 +99,9 @@ namespace PropertyTools.Wpf
         public abstract bool InsertItem(int index);
 
         /// <summary>
-        /// Sets value to item in cell.
+        /// Sets value of the specified cell to the specified value.
         /// </summary>
-        /// <param name="cell">The cell reference.</param>
+        /// <param name="cell">The cell to change.</param>
         /// <param name="value">The value.</param>
         public abstract void SetValue(CellRef cell, object value);
     }

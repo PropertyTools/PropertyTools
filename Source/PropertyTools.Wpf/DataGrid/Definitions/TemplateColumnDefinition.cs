@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Defines column-specific properties that apply to DataGrid elements.
+//   Defines a template column in a DataGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Controls;
 
     /// <summary>
-    /// Defines column-specific properties that apply to DataGrid elements.
+    /// Defines a template column in a <see cref="DataGrid" />.
     /// </summary>
     public class TemplateColumnDefinition : ColumnDefinition
     {

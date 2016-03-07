@@ -18,10 +18,8 @@ namespace PropertyTools.Wpf
 
     using PropertyTools.DataAnnotations;
 
-    using HorizontalAlignment = System.Windows.HorizontalAlignment;
-
     /// <summary>
-    /// Describes properties that applies to columns or rows in an DataGrid.
+    /// Describes properties that applies to columns or rows in an <see cref="DataGrid" />.
     /// </summary>
     public abstract class PropertyDefinition
     {
@@ -105,7 +103,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the horizontal alignment.
         /// </summary>
         /// <value>The horizontal alignment.</value>
-        public HorizontalAlignment HorizontalAlignment { get; set; }
+        public System.Windows.HorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is editable (for ComboBox).

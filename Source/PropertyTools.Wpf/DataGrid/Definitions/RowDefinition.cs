@@ -10,10 +10,9 @@
 namespace PropertyTools.Wpf
 {
     using System.ComponentModel;
-    using System.Windows;
 
     /// <summary>
-    /// Defines row-specific properties that apply to DataGrid elements.
+    /// Defines row-specific properties that apply to <see cref="DataGrid" /> elements.
     /// </summary>
     public class RowDefinition : PropertyDefinition
     {

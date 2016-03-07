@@ -13,7 +13,7 @@ namespace PropertyTools.Wpf
     using System.Windows;
 
     /// <summary>
-    /// Defines column-specific properties that apply to DataGrid elements.
+    /// Defines column-specific properties that apply to <see cref="DataGrid" /> elements.
     /// </summary>
     public class ColumnDefinition : PropertyDefinition
     {

@@ -24,7 +24,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Represents the strategy for operations for <see cref="DataGrid" />.
         /// </summary>
-        /// <remarks>A strategy wraps operations for DataGrid based on the different data it's ItemsSource binds to.</remarks>
+        /// <remarks>A strategy wraps operations for DataGrid based on the different data its ItemsSource binds to.</remarks>
         private abstract class DataGridOperator
         {
             /// <summary>
@@ -197,9 +197,8 @@ namespace PropertyTools.Wpf
                         }
 
                         this.Owner.ColumnDefinitions.Add(
-                            new ColumnDefinition
+                            new ColumnDefinition(descriptor)
                             {
-                                Descriptor = descriptor,
                                 Header = info.Name,
                                 HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
                                 Width = this.Owner.DefaultColumnWidth
@@ -227,9 +226,8 @@ namespace PropertyTools.Wpf
                     }
 
                     this.Owner.ColumnDefinitions.Add(
-                        new ColumnDefinition
+                        new ColumnDefinition(descriptor)
                         {
-                            Descriptor = descriptor,
                             Header = descriptor.Name,
                             HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
                             Width = this.Owner.DefaultColumnWidth

@@ -26,11 +26,6 @@ namespace PropertyTools.Wpf
     public abstract class PropertyDefinition
     {
         /// <summary>
-        /// The property descriptor.
-        /// </summary>
-        private PropertyDescriptor descriptor;
-
-        /// <summary>
         /// The property type.
         /// </summary>
         private Type propertyType;
@@ -41,6 +36,27 @@ namespace PropertyTools.Wpf
         protected PropertyDefinition()
         {
             this.MaxLength = int.MaxValue;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyDefinition"/> class.
+        /// </summary>
+        /// <param name="descriptor">The property descriptor.</param>
+        protected PropertyDefinition(PropertyDescriptor descriptor) : this()
+        {
+            this.Descriptor = descriptor;
+
+            this.IsReadOnly = this.IsReadOnly || (descriptor != null && descriptor.IsReadOnly);
+            if (descriptor != null)
+            {
+                this.PropertyType = descriptor.PropertyType;
+            }
+
+            var ispa = this.GetFirstAttribute<ItemsSourcePropertyAttribute>();
+            if (ispa != null)
+            {
+                this.ItemsSourceProperty = ispa.PropertyName;
+            }
         }
 
         /// <summary>
@@ -62,33 +78,10 @@ namespace PropertyTools.Wpf
         public object ConverterParameter { get; set; }
 
         /// <summary>
-        /// Gets or sets the property descriptor.
+        /// Gets the property descriptor.
         /// </summary>
         /// <value>The descriptor.</value>
-        public PropertyDescriptor Descriptor
-        {
-            get
-            {
-                return this.descriptor;
-            }
-
-            set
-            {
-                this.descriptor = value;
-
-                this.IsReadOnly = this.IsReadOnly || (this.descriptor != null && this.descriptor.IsReadOnly);
-                if (this.descriptor != null)
-                {
-                    this.PropertyType = this.descriptor.PropertyType;
-                }
-
-                var ispa = this.GetFirstAttribute<ItemsSourcePropertyAttribute>();
-                if (ispa != null)
-                {
-                    this.ItemsSourceProperty = ispa.PropertyName;
-                }
-            }
-        }
+        public PropertyDescriptor Descriptor { get; private set; }
 
         /// <summary>
         /// Gets or sets the format string.
@@ -157,7 +150,7 @@ namespace PropertyTools.Wpf
             {
                 if (this.propertyType == null && this.Descriptor != null)
                 {
-                    this.PropertyType = this.descriptor.PropertyType;
+                    this.PropertyType = this.Descriptor.PropertyType;
                 }
 
                 return this.propertyType;
@@ -266,6 +259,15 @@ namespace PropertyTools.Wpf
         public virtual FrameworkElement CreateEditControl(string bindingPath)
         {
             return null;
+        }
+
+        /// <summary>
+        /// Updates the descriptor based on the specified item type and current <see cref="PropertyName" />.
+        /// </summary>
+        /// <param name="itemType">Type of the items.</param>
+        public void UpdateDescriptor(Type itemType)
+        {
+            this.Descriptor = TypeDescriptor.GetProperties(itemType)[this.PropertyName];
         }
 
         /// <summary>

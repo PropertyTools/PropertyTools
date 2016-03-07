@@ -30,8 +30,6 @@ namespace PropertyTools.Wpf
 
     using PropertyTools.DataAnnotations;
 
-    using HorizontalAlignment = System.Windows.HorizontalAlignment;
-
     /// <summary>
     /// Displays enumerable data in a customizable grid.
     /// </summary>
@@ -184,9 +182,9 @@ namespace PropertyTools.Wpf
         public static readonly DependencyProperty DefaultHorizontalAlignmentProperty =
             DependencyProperty.Register(
                 "DefaultHorizontalAlignment",
-                typeof(HorizontalAlignment),
+                typeof(System.Windows.HorizontalAlignment),
                 typeof(DataGrid),
-                new UIPropertyMetadata(HorizontalAlignment.Center));
+                new UIPropertyMetadata(System.Windows.HorizontalAlignment.Center));
 
         /// <summary>
         /// Identifies the <see cref="DefaultRowHeight"/> dependency property.
@@ -923,11 +921,11 @@ namespace PropertyTools.Wpf
         /// Gets or sets the default horizontal alignment.
         /// </summary>
         /// <value>The default horizontal alignment.</value>
-        public HorizontalAlignment DefaultHorizontalAlignment
+        public System.Windows.HorizontalAlignment DefaultHorizontalAlignment
         {
             get
             {
-                return (HorizontalAlignment)this.GetValue(DefaultHorizontalAlignmentProperty);
+                return (System.Windows.HorizontalAlignment)this.GetValue(DefaultHorizontalAlignmentProperty);
             }
 
             set
@@ -1324,25 +1322,13 @@ namespace PropertyTools.Wpf
         /// Gets a value indicating whether to use rows for the items.
         /// </summary>
         /// <value><c>true</c> if the items are in rows; otherwise, <c>false</c> .</value>
-        private bool ItemsInRows
-        {
-            get
-            {
-                return !this.ItemsInColumns;
-            }
-        }
+        private bool ItemsInRows => !this.ItemsInColumns;
 
         /// <summary>
         /// Gets the column definitions.
         /// </summary>
         /// <value>The column definitions.</value>
-        private Collection<PropertyDefinition> PropertyDefinitions
-        {
-            get
-            {
-                return this.propertyDefinitions;
-            }
-        }
+        private Collection<PropertyDefinition> PropertyDefinitions => this.propertyDefinitions;
 
         /// <summary>
         /// Gets or sets the number of rows.</summary>
@@ -4320,7 +4306,7 @@ namespace PropertyTools.Wpf
                            {
                                Text = header != null ? header.ToString() : "-",
                                VerticalAlignment = VerticalAlignment.Center,
-                               HorizontalAlignment = this.ItemsInRows ? pd.HorizontalAlignment : HorizontalAlignment.Center,
+                               HorizontalAlignment = this.ItemsInRows ? pd.HorizontalAlignment : System.Windows.HorizontalAlignment.Center,
                                Padding = new Thickness(4, 2, 4, 2)
                            };
 
@@ -4352,7 +4338,7 @@ namespace PropertyTools.Wpf
                         RenderTransform = new TranslateTransform(3, 0),
                         Focusable = false,
                         VerticalAlignment = VerticalAlignment.Stretch,
-                        HorizontalAlignment = HorizontalAlignment.Right
+                        HorizontalAlignment = System.Windows.HorizontalAlignment.Right
                     };
                     splitter.MouseDoubleClick += this.ColumnSplitterDoubleClick;
                     splitter.DragStarted += this.ColumnSplitterChangeStarted;
@@ -4418,7 +4404,7 @@ namespace PropertyTools.Wpf
                         itemType = TypeHelper.GetItemType(this.ItemsSource);
                     }
 
-                    pd.Descriptor = TypeDescriptor.GetProperties(itemType)[pd.PropertyName];
+                    pd.UpdateDescriptor(itemType);
                 }
             }
 
@@ -4493,7 +4479,7 @@ namespace PropertyTools.Wpf
                            {
                                Text = header != null ? header.ToString() : "-",
                                VerticalAlignment = VerticalAlignment.Center,
-                               HorizontalAlignment = HorizontalAlignment.Center,
+                               HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                                Padding = new Thickness(4, 2, 4, 2)
                            };
 
@@ -4541,7 +4527,7 @@ namespace PropertyTools.Wpf
                 {
                     Text = this.AddItemHeader,
                     VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center
+                    HorizontalAlignment = System.Windows.HorizontalAlignment.Center
                 };
                 var border = new Border
                 {

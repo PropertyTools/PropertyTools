@@ -12,7 +12,9 @@ namespace PropertyTools.Wpf.Tests
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Data;
+    using System.Linq;
     using System.Windows.Media;
 
     using NUnit.Framework;
@@ -84,6 +86,16 @@ namespace PropertyTools.Wpf.Tests
         public void GetItemType_Null_ReturnsNull()
         {
             Assert.AreEqual(null, TypeHelper.GetItemType(null));
+        }
+
+        [Test]
+        public void GetListElementType()
+        {
+            var intArray = new[] { 1, 2 };
+            Assert.AreEqual(typeof(int), TypeHelper.GetListElementType(intArray.GetType()), "int array");
+            Assert.AreEqual(typeof(int), TypeHelper.GetListElementType(intArray.ToList().GetType()), "list of int");
+            Assert.AreEqual(typeof(int), TypeHelper.GetListElementType(new Collection<int>(intArray).GetType()), "collection of int");
+            Assert.AreEqual(typeof(int), TypeHelper.GetListElementType(intArray.Select(x => x).GetType()), "sequence of int");
         }
 
         [Test]

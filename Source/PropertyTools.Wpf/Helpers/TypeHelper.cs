@@ -114,7 +114,7 @@ namespace PropertyTools.Wpf
             // http://stackoverflow.com/questions/1043755/c-generic-list-t-how-to-get-the-type-of-t
             foreach (var interfaceType in listType.GetInterfaces())
             {
-                if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IList<>))
+                if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
                 {
                     var args = interfaceType.GetGenericArguments();
                     if (args.Length > 0)

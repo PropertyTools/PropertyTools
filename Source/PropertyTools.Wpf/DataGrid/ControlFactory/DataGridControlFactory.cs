@@ -179,6 +179,7 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateComboBox(PropertyDefinition propertyDefinition, string bindingPath)
         {
             var c = new ComboBox { IsEditable = propertyDefinition.IsEditable, Focusable = false, Margin = new Thickness(0, 0, -1, -1) };
+            c.HorizontalContentAlignment = propertyDefinition.HorizontalAlignment;
             if (propertyDefinition.ItemsSource != null)
             {
                 c.ItemsSource = propertyDefinition.ItemsSource;

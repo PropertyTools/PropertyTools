@@ -1,0 +1,15 @@
+﻿<Window x:Class="DataGridDemo.EnumExampleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="Enum examples" Height="450" Width="900"
+        FocusManager.FocusedElement="{Binding ElementName=grid1}">
+    <Grid>
+        <p:DataGrid x:Name="grid1" ItemsSource="{Binding ItemsSource}">
+            <!--<p:DataGrid.ColumnDefinitions>
+                <p:ColumnDefinition PropertyName="Fruit" Header="Enum"/>
+                <p:ColumnDefinition PropertyName="NullableFruit" Header="Nullable Enum"/>
+            </p:DataGrid.ColumnDefinitions>-->
+        </p:DataGrid>
+    </Grid>
+</Window>

@@ -58,6 +58,9 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DataTypes\MassValueConverter.cs" />
+    <Compile Include="Examples\EnumExampleWindow.xaml.cs">
+      <DependentUpon>EnumExampleWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NET45\ValidatableObject.cs" />
     <Compile Include="Examples\ValidationExampleWindow.xaml.cs">
       <DependentUpon>ValidationExampleWindow.xaml</DependentUpon>
@@ -142,6 +145,10 @@
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
     <Page Include="Examples\ValidationExampleWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\EnumExampleWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -11,8 +11,10 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Globalization;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Data;
 
@@ -299,7 +301,26 @@ namespace PropertyTools.Wpf
         /// </summary>
         protected void SetEnumItemsSource()
         {
-            this.ItemsSource = Enum.GetValues(this.PropertyType);
+            var values = new List<object>();
+            var enumType = this.PropertyType;
+            if (enumType != null)
+            {
+                var ult = Nullable.GetUnderlyingType(enumType);
+                if (ult != null)
+                {
+                    // TODO: this does not work properly, do we need to use a converter?
+                    values.Add(null);
+                    enumType = ult;
+                }
+            }
+
+            if (enumType == null)
+            {
+                throw new InvalidOperationException("Not enum type: " + this.PropertyType);
+            }
+
+            values.AddRange(Enum.GetValues(enumType).Cast<object>());
+            this.ItemsSource = values;
         }
     }
 }

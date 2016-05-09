@@ -2223,6 +2223,14 @@ namespace PropertyTools.Wpf
 
             switch (e.Key)
             {
+                case Key.Tab:
+                    if(column < this.ColumnDefinitions.Count)
+                    {
+                        this.HideEditor();
+                        this.ChangeCurrentCell(0, shift ? -1 : 1);
+                    }
+                    e.Handled = true;
+                    return;
                 case Key.Enter:
                     if (this.InputDirection == InputDirection.Vertical)
                     {
@@ -2517,6 +2525,22 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Handles text preview input events.
+        /// </summary>
+        /// <param name="e">The event arguements.</param>
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+
+            if (e.Key == Key.ImeProcessed)
+            {
+                var textEditor = this.currentEditor as TextBox;
+                if (textEditor != null && !textEditor.IsFocused)
+                    this.ShowTextBoxEditControl();
+            }
+        }
+
+        /// <summary>
         /// Handles text input events.
         /// </summary>
         /// <param name="e">The event arguments.</param>
@@ -2641,6 +2665,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         private static string CsvEncodeString(string input)
         {
+            if (input == null)
+                input = "";
             input = input.Replace("\"", "\"\"");
             if (input.Contains(";") || input.Contains("\""))
             {

@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
-{
+{    
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -115,6 +115,13 @@ namespace PropertyTools.Wpf
         public static readonly DependencyProperty CanResizeColumnsProperty =
             DependencyProperty.Register(
                 "CanResizeColumns", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
+
+        /// <summary>
+        /// Identifies the <see cref="CanResizeRows"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CanResizeRowsProperty =
+            DependencyProperty.Register(
+                "CanResizeRows", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="MultiChangeInChangedColumnOnly"/> dependency property.
@@ -409,6 +416,11 @@ namespace PropertyTools.Wpf
         /// The column header map.
         /// </summary>
         private readonly Dictionary<int, FrameworkElement> columnHeaderMap = new Dictionary<int, FrameworkElement>();
+
+        /// <summary>
+        /// The row header map.
+        /// </summary>
+        private readonly Dictionary<int, FrameworkElement> rowHeaderMap = new Dictionary<int, FrameworkElement>();
 
         /// <summary>
         /// The auto fill box.
@@ -751,6 +763,23 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(CanResizeColumnsProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance can resize rows.
+        /// </summary>
+        /// <value><c>true</c> if this instance can resize rows; otherwise, <c>false</c> .</value>
+        public bool CanResizeRows
+        {
+            get
+            {
+                return (bool)this.GetValue(CanResizeRowsProperty);
+            }
+
+            set
+            {
+                this.SetValue(CanResizeRowsProperty, value);
             }
         }
 
@@ -1402,6 +1431,29 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Auto-size the specified row.
+        /// </summary>
+        /// <param name="row">The row.</param>
+        public void AutoSizeRow(int row)
+        {
+            // Initialize with the height of the header element
+            var headerElement = this.GetRowElement(row);
+            double maximumHeight = headerElement.ActualHeight + headerElement.Margin.Top + headerElement.Margin.Bottom;
+
+            // Compare with the heights of the cell elements
+            for (int i = 0; i < this.sheetGrid.ColumnDefinitions.Count; i++)
+            {
+                var c = this.GetCellElement(new CellRef(row, i)) as FrameworkElement;
+                if (c != null)
+                {
+                    maximumHeight = Math.Max(maximumHeight, c.ActualHeight + c.Margin.Top + c.Margin.Bottom);
+                }
+            }
+
+            this.sheetGrid.RowDefinitions[row].Height = new GridLength((int)maximumHeight + 2);
+        }
+
+        /// <summary>
         /// Copies items to the clipboard.
         /// </summary>
         public void Copy()
@@ -1860,8 +1912,10 @@ namespace PropertyTools.Wpf
             this.rowGrid.MouseLeftButtonDown += this.RowGridMouseLeftButtonDown;
             this.rowGrid.MouseMove += this.RowGridMouseMove;
             this.rowGrid.MouseLeftButtonUp += this.RowGridMouseLeftButtonUp;
+            this.rowGrid.Loaded += this.RowGridLoaded;
 
             this.columnGrid.Loaded += this.ColumnGridLoaded;
+            this.sheetScrollViewer.SizeChanged += this.RowGridSizeChanged;
 
             this.sheetScrollViewer.SizeChanged += this.ColumnGridSizeChanged;
             this.sheetGrid.MouseLeftButtonDown += this.SheetGridMouseLeftButtonDown;
@@ -3257,6 +3311,24 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the row element for the specified row.
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <returns>
+        /// The row element.
+        /// </returns>
+        private FrameworkElement GetRowElement(int row)
+        {
+            FrameworkElement headerElement;
+            if (this.rowHeaderMap.TryGetValue(row, out headerElement))
+            {
+                return headerElement;
+            }
+
+            throw new InvalidOperationException("Invalid header row: " + row);
+        }
+
+        /// <summary>
         /// Gets the column header for the specified column.
         /// </summary>
         /// <param name="column">The column.</param>
@@ -3378,6 +3450,32 @@ namespace PropertyTools.Wpf
             }
 
             return CellRef.ToRowName(j);
+        }
+
+        /// <summary>
+        /// Gets the row height for the specified row.
+        /// </summary>
+        /// <param name="i">The row index.</param>
+        /// <returns>
+        /// The row height.
+        /// </returns>
+        private GridLength GetRowHeight(int i)
+        {
+            if (i < this.RowDefinitions.Count)
+            {
+                var cd = this.RowDefinitions[i] as RowDefinition;
+                if (cd != null)
+                {
+                    if (cd.Height.Value < 0)
+                    {
+                        return this.DefaultRowHeight;
+                    }
+
+                    return cd.Height;
+                }
+            }
+
+            return this.DefaultRowHeight;
         }
 
         /// <summary>
@@ -3588,6 +3686,16 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Handles row grid loaded events.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void RowGridLoaded(object sender, RoutedEventArgs e)
+        {
+            this.UpdateRowHeights();
+        }
+
+        /// <summary>
         /// The row grid mouse left button down.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -3642,6 +3750,16 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Handles size changed events on the row grid.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void RowGridSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.UpdateRowHeights();
+        }
+
+        /// <summary>
         /// Handles changes in the row scroll viewer.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -3649,6 +3767,71 @@ namespace PropertyTools.Wpf
         private void RowScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             this.sheetScrollViewer.ScrollToVerticalOffset(e.VerticalOffset);
+        }
+
+        /// <summary>
+        /// Handles the row splitter change completed event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="dragCompletedEventArgs">The drag completed event args.</param>
+        private void RowSplitterChangeCompleted(object sender, DragCompletedEventArgs dragCompletedEventArgs)
+        {
+            var gs = (GridSplitter)sender;
+            var tt = gs.ToolTip as ToolTip;
+            if (tt != null)
+            {
+                tt.IsOpen = false;
+                gs.ToolTip = null;
+            }
+        }
+
+        /// <summary>
+        /// Handles the row splitter change delta event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void RowSplitterChangeDelta(object sender, DragDeltaEventArgs e)
+        {
+            var gs = (GridSplitter)sender;
+            var tt = gs.ToolTip as ToolTip;
+
+            if (tt == null)
+            {
+                tt = new ToolTip();
+                gs.ToolTip = tt;
+                tt.IsOpen = true;
+            }
+
+            int row = Grid.GetRow(gs);
+            var height = this.rowGrid.RowDefinitions[row].ActualHeight;
+            tt.Content = string.Format("Height: {0:0.#}", height); // device-independent units
+
+            tt.PlacementTarget = this.rowGrid;
+            tt.Placement = PlacementMode.Relative;
+            var p = Mouse.GetPosition(this.rowGrid);
+            tt.HorizontalOffset = gs.ActualWidth + 4;
+            tt.VerticalOffset = p.Y;
+        }
+
+        /// <summary>
+        /// The row splitter change started.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="dragStartedEventArgs">The drag started event args.</param>
+        private void RowSplitterChangeStarted(object sender, DragStartedEventArgs dragStartedEventArgs)
+        {
+            this.RowSplitterChangeDelta(sender, null);
+        }
+
+        /// <summary>
+        /// The row splitter double click.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void RowSplitterDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            int row = Grid.GetRow((GridSplitter)sender);
+            this.AutoSizeRow(row);
         }
 
         /// <summary>
@@ -4420,6 +4603,7 @@ namespace PropertyTools.Wpf
 
             // Update column width when all the controls are loaded.
             this.Dispatcher.BeginInvoke(new Action(this.UpdateColumnWidths), DispatcherPriority.Loaded);
+            this.Dispatcher.BeginInvoke(new Action(this.UpdateRowHeights), DispatcherPriority.Loaded);
         }
 
         /// <summary>
@@ -4432,10 +4616,12 @@ namespace PropertyTools.Wpf
 
             for (var i = 0; i < rows; i++)
             {
-                this.sheetGrid.RowDefinitions.Add(
-                    new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
-                this.rowGrid.RowDefinitions.Add(
-                    new System.Windows.Controls.RowDefinition { Height = this.DefaultRowHeight });
+                var sheetDefinition = new System.Windows.Controls.RowDefinition { Height = GetRowHeight(i) };
+                sheetGrid.RowDefinitions.Add(sheetDefinition);
+
+                var rowDefinition = new System.Windows.Controls.RowDefinition();
+                rowDefinition.SetBinding(System.Windows.Controls.RowDefinition.HeightProperty, new Binding { Source = sheetDefinition, Path = new PropertyPath("Height"), Mode = BindingMode.TwoWay });
+                rowGrid.RowDefinitions.Add(rowDefinition);
             }
 
             for (var i = 0; i < rows; i++)
@@ -4478,6 +4664,7 @@ namespace PropertyTools.Wpf
 
                 Grid.SetRow(cell, i);
                 this.rowGrid.Children.Add(cell);
+                this.rowHeaderMap[i] = cell;
             }
 
             // Add "Insert" row header
@@ -4488,6 +4675,54 @@ namespace PropertyTools.Wpf
 
             // to cover a possible scrollbar
             this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = new GridLength(20) });
+
+            for (int j = 0; j < rows; j++)
+            {
+                if (this.CanResizeRows)
+                {
+                    var splitter = new GridSplitter
+                    {
+                        ResizeDirection = GridResizeDirection.Rows,
+                        Background = Brushes.Transparent,
+                        Height = 5,
+                        RenderTransform = new TranslateTransform(0, 3),
+                        Focusable = false,
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch
+                    };
+                    splitter.MouseDoubleClick += this.RowSplitterDoubleClick;
+                    splitter.DragStarted += this.RowSplitterChangeStarted;
+                    splitter.DragDelta += this.RowSplitterChangeDelta;
+                    splitter.DragCompleted += this.RowSplitterChangeCompleted;
+                    Grid.SetRow(splitter, j);
+                    this.rowGrid.Children.Add(splitter);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates row heights.
+        /// </summary>
+        private void UpdateRowHeights()
+        {
+            if (!this.IsLoaded)
+            {
+                return;
+            }
+
+            // TODO: this call may cause infinite recursion
+            this.sheetGrid.UpdateLayout();
+            this.rowGrid.UpdateLayout();
+
+            for (int i = 0; i < this.Rows; i++)
+            {
+                if (this.DefaultRowHeight == GridLength.Auto || GetRowHeight(i) == GridLength.Auto /*|| this.AutoSizeRows*/)
+                {
+                    this.AutoSizeRow(i);
+                }
+            }
+
+            this.sheetGrid.UpdateLayout();
         }
 
         /// <summary>

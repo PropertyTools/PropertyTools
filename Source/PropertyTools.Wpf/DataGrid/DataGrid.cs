@@ -50,7 +50,7 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartAutoFillSelection, Type = typeof(Border))]
     [TemplatePart(Name = PartAutoFillBox, Type = typeof(Border))]
     [TemplatePart(Name = PartTopLeft, Type = typeof(Border))]
-    public partial class DataGrid : Control
+    public partial class DataGrid : Control, IWeakEventListener
     {
         /// <summary>
         /// Identifies the <see cref="CreateColumnHeader"/> dependency property.
@@ -1991,6 +1991,18 @@ namespace PropertyTools.Wpf
             this.SelectionCell = new CellRef(
                 Math.Max(rowMax, rowMin + rows - 1),
                 Math.Max(columnMax, columnMin + columns - 1));
+        }
+
+        public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+        {
+            if(managerType == typeof(CollectionChangedEventManager) && sender == subcribedCollection)
+            {
+                OnItemsCollectionChanged(sender, e as NotifyCollectionChangedEventArgs);
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -4135,7 +4147,7 @@ namespace PropertyTools.Wpf
             var collection = this.ItemsSource as INotifyCollectionChanged;
             if (collection != null)
             {
-                collection.CollectionChanged += this.OnItemsCollectionChanged;
+                CollectionChangedEventManager.AddListener(collection, this);
             }
 
             this.subcribedCollection = this.ItemsSource;
@@ -4149,7 +4161,7 @@ namespace PropertyTools.Wpf
             var ncc = this.subcribedCollection as INotifyCollectionChanged;
             if (ncc != null)
             {
-                ncc.CollectionChanged -= this.OnItemsCollectionChanged;
+                CollectionChangedEventManager.RemoveListener(ncc, this);
             }
 
             this.subcribedCollection = null;

@@ -1970,11 +1970,13 @@ namespace PropertyTools.Wpf
             int rows = values.GetUpperBound(0) + 1;
             int columns = values.GetUpperBound(1) + 1;
 
+            UnsubscribeNotifications();
+
             for (int i = rowMin; i <= rowMax || i < rowMin + rows; i++)
             {
                 if (i >= this.Rows)
                 {
-                    if (!this.InsertItem(-1))
+                    if (!this.InsertItem(-1, false))
                     {
                         break;
                     }
@@ -1986,6 +1988,8 @@ namespace PropertyTools.Wpf
                     this.TrySetCellValue(new CellRef(i, j), value);
                 }
             }
+
+            UpdateGridContent();
 
             this.CurrentCell = new CellRef(rowMin, columnMin);
             this.SelectionCell = new CellRef(

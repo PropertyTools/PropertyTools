@@ -265,7 +265,20 @@ namespace PropertyTools.Wpf
         /// <param name="itemType">Type of the items.</param>
         public void UpdateDescriptor(Type itemType)
         {
-            this.Descriptor = TypeDescriptor.GetProperties(itemType)[this.PropertyName];
+            var descriptor = TypeDescriptor.GetProperties(itemType)[this.PropertyName];
+            this.Descriptor = descriptor;
+
+            this.IsReadOnly = this.IsReadOnly || (descriptor != null && descriptor.IsReadOnly);
+            if (descriptor != null)
+            {
+                this.PropertyType = descriptor.PropertyType;
+            }
+
+            var ispa = this.GetFirstAttribute<ItemsSourcePropertyAttribute>();
+            if (ispa != null)
+            {
+                this.ItemsSourceProperty = ispa.PropertyName;
+            }
         }
 
         /// <summary>

@@ -199,13 +199,17 @@ namespace PropertyTools.Wpf
                 "PropertyControlFactory",
                 typeof(IPropertyControlFactory),
                 typeof(PropertyGrid),
-                new UIPropertyMetadata(null));
+                new UIPropertyMetadata(new DefaultPropertyControlFactory()));
 
         /// <summary>
         /// Identifies the <see cref="PropertyItem"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PropertyItemFactoryProperty =
-            DependencyProperty.Register("PropertyItemFactory", typeof(IPropertyItemFactory), typeof(PropertyGrid));
+            DependencyProperty.Register(
+                "PropertyItemFactory", 
+                typeof(IPropertyItemFactory), 
+                typeof(PropertyGrid),
+                new UIPropertyMetadata(new DefaultPropertyItemFactory()));
 
         /// <summary>
         /// Identifies the <see cref="RequiredAttribute"/> dependency property.
@@ -416,15 +420,6 @@ namespace PropertyTools.Wpf
         {
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(PropertyGrid), new FrameworkPropertyMetadata(typeof(PropertyGrid)));
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyGrid" /> class.
-        /// </summary>
-        public PropertyGrid()
-        {
-            this.PropertyControlFactory = new DefaultPropertyControlFactory();
-            this.PropertyItemFactory = new DefaultPropertyItemFactory();
         }
 
         /// <summary>

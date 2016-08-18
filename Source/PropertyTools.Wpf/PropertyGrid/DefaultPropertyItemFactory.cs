@@ -475,14 +475,14 @@ namespace PropertyTools.Wpf
             {
                 var glc = new GridLengthConverter();
                 var cd = new ColumnDefinition
-                             {
-                                 PropertyName = ca.PropertyName,
-                                 Header = ca.Header,
-                                 FormatString = ca.FormatString,
-                                 Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto),
-                                 IsReadOnly = ca.IsReadOnly,
-                                 HorizontalAlignment = StringUtilities.ToHorizontalAlignment(ca.Alignment.ToString(CultureInfo.InvariantCulture))
-                             };
+                {
+                    PropertyName = ca.PropertyName,
+                    Header = ca.Header,
+                    FormatString = ca.FormatString,
+                    Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto),
+                    IsReadOnly = ca.IsReadOnly,
+                    HorizontalAlignment = StringUtilities.ToHorizontalAlignment(ca.Alignment.ToString(CultureInfo.InvariantCulture))
+                };
 
                 // TODO: sort by index
                 pi.Columns.Add(cd);
@@ -536,6 +536,12 @@ namespace PropertyTools.Wpf
                 {
                     pi.OptionalDescriptor = pi.GetDescriptor(oa.PropertyName);
                 }
+            }
+
+            var ila = attribute as IndentationLevelAttribute;
+            if (ila != null)
+            {
+                pi.IndentationLevel = ila.IndentationLevel;
             }
 
             var ra = attribute as EnableByRadioButtonAttribute;

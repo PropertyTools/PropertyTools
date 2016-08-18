@@ -70,6 +70,7 @@
     <Compile Include="Tests\TestFillTabAttribute.cs" />
     <Compile Include="Tests\TestNotifyDataErrorInfo.cs" />
     <Compile Include="Tests\TestEnableByRadioButtonAttribute.cs" />
+    <Compile Include="Tests\TestIndentationLevelAttribute.cs" />
     <Compile Include="Tests\TestSpinnableAttribute.cs" />
     <Compile Include="Tests\TestAutoUpdateTextAttribute.cs" />
     <Compile Include="Tests\TestConverterAttribute.cs" />
@@ -140,4 +141,3 @@
   </Target>
   -->
 </Project>
-

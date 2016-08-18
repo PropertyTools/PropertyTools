@@ -45,6 +45,7 @@ namespace PropertyTools.Wpf
             this.MaxLength = int.MaxValue;
             this.MoveFocusOnEnter = true;
             this.HeaderPlacement = HeaderPlacement.Left;
+            this.IndentationLevel = 0;
             this.HorizontalAlignment = HorizontalAlignment.Left;
             this.DataTypes = new List<DataType>();
             this.Columns = new List<ColumnDefinition>();
@@ -91,6 +92,14 @@ namespace PropertyTools.Wpf
         /// Gets or sets a value indicating whether to auto update text.
         /// </summary>
         public bool AutoUpdateText { get; set; }
+
+        /// <summary>
+        /// Gets or sets the indentation level of the header.
+        /// </summary>
+        /// <value>
+        /// The indentation level.
+        /// </value>
+        public int IndentationLevel { get; set; }
 
         /// <summary>
         /// Gets or sets the category.

@@ -161,6 +161,16 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(4, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="Indentation"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IndentationProperty =
+            DependencyProperty.Register(
+                "Indentation",
+                typeof(double),
+                typeof(PropertyGrid),
+                new UIPropertyMetadata(16d));
+
+        /// <summary>
         /// Identifies the <see cref="LabelWidthSharing"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LabelWidthSharingProperty =
@@ -542,6 +552,25 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(EnumAsRadioButtonsLimitProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the indentation.
+        /// </summary>
+        /// <value>
+        /// The indentation.
+        /// </value>
+        public double Indentation
+        {
+            get
+            {
+                return (double)this.GetValue(IndentationProperty);
+            }
+
+            set
+            {
+                this.SetValue(IndentationProperty, value);
             }
         }
 
@@ -1582,6 +1611,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         private FrameworkElement CreateLabel(PropertyItem pi)
         {
+            var indentation = pi.IndentationLevel * this.Indentation;
+
             FrameworkElement propertyLabel = null;
             if (pi.IsOptional)
             {
@@ -1589,7 +1620,7 @@ namespace PropertyTools.Wpf
                 {
                     Content = pi.DisplayName,
                     VerticalAlignment = VerticalAlignment.Center,
-                    Margin = new Thickness(5, 0, 0, 0)
+                    Margin = new Thickness(5 + indentation, 0, 4, 0)
                 };
 
                 cb.SetBinding(
@@ -1608,12 +1639,12 @@ namespace PropertyTools.Wpf
                     Content = pi.DisplayName,
                     GroupName = pi.RadioDescriptor.Name,
                     VerticalAlignment = VerticalAlignment.Center,
-                    Margin = new Thickness(5, 0, 0, 0)
+                    Margin = new Thickness(5 + indentation, 0, 4, 0)
                 };
 
                 var converter = new EnumToBooleanConverter { EnumType = pi.RadioDescriptor.PropertyType };
                 rb.SetBinding(
-                    RadioButton.IsCheckedProperty,
+                    ToggleButton.IsCheckedProperty,
                     new Binding(pi.RadioDescriptor.Name) { Converter = converter, ConverterParameter = pi.RadioValue });
 
                 var g = new Grid();
@@ -1627,11 +1658,10 @@ namespace PropertyTools.Wpf
                 {
                     Content = pi.DisplayName,
                     VerticalAlignment = VerticalAlignment.Top,
-                    Margin = new Thickness(0, 4, 0, 0)
+                    Margin = new Thickness(indentation, 0, 4, 0)
                 };
             }
 
-            propertyLabel.Margin = new Thickness(0, 0, 4, 0);
             return propertyLabel;
         }
 

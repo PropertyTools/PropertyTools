@@ -76,6 +76,7 @@
     <Compile Include="DataAnnotations\HorizontalAlignment.cs" />
     <Compile Include="DataAnnotations\HorizontalAlignmentAttribute.cs" />
     <Compile Include="DataAnnotations\InputDirection.cs" />
+    <Compile Include="DataAnnotations\IndentationLevelAttribute.cs" />
     <Compile Include="DataAnnotations\InputDirectionAttribute.cs" />
     <Compile Include="DataAnnotations\InputFilePathAttribute.cs" />
     <Compile Include="DataAnnotations\ListAttribute.cs" />

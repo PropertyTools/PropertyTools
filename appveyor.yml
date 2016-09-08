@@ -1,5 +1,6 @@
 install:
   - cinst gitversion.portable -pre -y
+  - cinst gitlink -y
 
 platform: Any CPU
 
@@ -17,6 +18,7 @@ build:
   verbosity: minimal
 
 after_build:
+  - gitlink c:\projects\propertytools -u https://github.com/objorke/propertytools -f Source/PropertyTools.wpf.sln
   - cmd: NuGet pack Source\PropertyTools.Wpf\PropertyTools.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
 
 artifacts:

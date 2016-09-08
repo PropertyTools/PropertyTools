@@ -1,5 +1,6 @@
 install:
   - cinst gitversion.portable -pre -y
+  - cinst gitlink -y
 
 platform: Any CPU
 
@@ -17,6 +18,7 @@ build:
   verbosity: minimal
 
 after_build:
+  - gitlink c:\projects\propertytools -u https://github.com/objorke/propertytools -f Source/PropertyTools.AppVeyor.sln
   - cmd: NuGet pack Source\PropertyTools.Wpf\PropertyTools.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
 
 artifacts:
@@ -24,13 +26,5 @@ artifacts:
     name: PropertyTools-$(GitVersion_SemVer)
     type: zip
   - path: '*.nupkg'
-
-deploy:
-  provider: NuGet
-  server:                  # remove to push to NuGet.org
-  api_key:
-    secure: kM3Kse+ivuuE5RVoe6dPdw+aguWx56K2YeXujGa9tMPQTms3lv7QxNpTLFMALYNa
-  skip_symbols: false
-  symbol_server:           # remove to push symbols to SymbolSource.org
-  artifact: /.*\.nupkg/
-
+    name: PropertyTools-NuGet-$(GitVersion_SemVer)
+    type: zip

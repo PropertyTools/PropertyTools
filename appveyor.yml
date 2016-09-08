@@ -18,7 +18,7 @@ build:
   verbosity: minimal
 
 after_build:
-  - gitlink c:\projects\propertytools -u https://github.com/objorke/propertytools -f Source/PropertyTools.wpf.sln
+  - gitlink c:\projects\propertytools -u https://github.com/objorke/propertytools -f Source/PropertyTools.AppVeyor.sln
   - cmd: NuGet pack Source\PropertyTools.Wpf\PropertyTools.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
 
 artifacts:

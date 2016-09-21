@@ -1,0 +1,19 @@
+﻿<Window x:Class="DataGridDemo.EnableByPropertyExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:local="clr-namespace:DataGridDemo"
+        Title="EnableByProperty example" Height="450" Width="900"
+        FocusManager.FocusedElement="{Binding ElementName=grid1}">
+    <Grid>
+        <p:DataGrid x:Name="grid1" ItemsSource="{Binding ItemsSource}">
+            <p:DataGrid.ColumnDefinitions>
+                <p:ColumnDefinition Header="Enabled" HorizontalAlignment="Center" PropertyName="IsRowEnabled"/>
+                <p:ColumnDefinition Header="Capital" HorizontalAlignment="Center" PropertyName="IsCapital" IsEnabledByProperty="IsRowEnabled"/>
+                <p:ColumnDefinition Header="City" Width="*" PropertyName="City" IsEnabledByProperty="IsRowEnabled"/>
+                <p:ColumnDefinition Header="Size" PropertyName="Size" IsEnabledByProperty="IsRowEnabled"/>
+                <p:ColumnDefinition Header="MetropolInfo" Width="*" PropertyName="MetropolInfo" IsEnabledByProperty="Size" IsEnabledByValue="{x:Static local:CitySize.Metropolis}"/>
+            </p:DataGrid.ColumnDefinitions>
+        </p:DataGrid>
+    </Grid>
+</Window>

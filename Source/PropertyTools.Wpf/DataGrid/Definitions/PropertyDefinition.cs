@@ -55,6 +55,13 @@ namespace PropertyTools.Wpf
             {
                 this.ItemsSourceProperty = ispa.PropertyName;
             }
+
+            var eba = this.GetFirstAttribute<EnableByAttribute>();
+            if (eba != null)
+            {
+                this.IsEnabledByProperty = eba.PropertyName;
+                this.IsEnabledByValue = eba.PropertyValue;
+            }
         }
 
         /// <summary>
@@ -164,6 +171,20 @@ namespace PropertyTools.Wpf
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the name of a property that determines the state of the cell.
+        /// </summary>
+        /// <value>
+        /// The name of the related property.
+        /// </value>
+        public string IsEnabledByProperty { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value that enables the cell.
+        /// </summary>
+        /// <remarks>This property is used if the <see cref="IsEnabledByProperty"/> property is set.</remarks>
+        public object IsEnabledByValue { get; set; }
 
         /// <summary>
         /// Creates a binding.

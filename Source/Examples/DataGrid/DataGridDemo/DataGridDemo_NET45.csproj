@@ -58,6 +58,12 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DataTypes\MassValueConverter.cs" />
+    <Compile Include="Examples\EnableByPropertyExample.xaml.cs">
+      <DependentUpon>EnableByPropertyExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\EnableByAttributeExample.xaml.cs">
+      <DependentUpon>EnableByAttributeExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NET45\ValidatableObject.cs" />
     <Compile Include="Examples\ValidationExampleWindow.xaml.cs">
       <DependentUpon>ValidationExampleWindow.xaml</DependentUpon>
@@ -141,6 +147,14 @@
     </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
+    <Page Include="Examples\EnableByPropertyExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\EnableByAttributeExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\ValidationExampleWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

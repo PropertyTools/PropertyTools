@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
-{    
+{
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -30,6 +30,10 @@ namespace PropertyTools.Wpf
 
     using PropertyTools.DataAnnotations;
 
+    public static class DataGridResourceKeys
+    {
+        
+    }
     /// <summary>
     /// Displays enumerable data in a customizable grid.
     /// </summary>
@@ -1999,7 +2003,7 @@ namespace PropertyTools.Wpf
 
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            if(managerType == typeof(CollectionChangedEventManager) && sender == subcribedCollection)
+            if (managerType == typeof(CollectionChangedEventManager) && sender == subcribedCollection)
             {
                 OnItemsCollectionChanged(sender, e as NotifyCollectionChangedEventArgs);
 
@@ -2075,6 +2079,11 @@ namespace PropertyTools.Wpf
 
             var currentCell = this.CurrentCell;
             this.currentEditor.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(currentCell);
+
+            if (pd.IsEnabledByProperty != null)
+            {
+                this.currentEditor.SetIsEnabledBinding(pd.IsEnabledByProperty, pd.IsEnabledByValue);
+            }
 
             this.SetElementDataContext(this.currentEditor, pd, item);
 
@@ -2240,6 +2249,11 @@ namespace PropertyTools.Wpf
                 element = this.CreateDisplayControl(cell, pd);
 
                 this.SetElementDataContext(element, pd, item);
+
+                if (pd.IsEnabledByProperty != null)
+                {
+                    element.SetIsEnabledBinding(pd.IsEnabledByProperty, pd.IsEnabledByValue);
+                }
 
                 element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
 
@@ -2607,7 +2621,7 @@ namespace PropertyTools.Wpf
             }
 
             var textEditor = this.currentEditor as TextBox;
-            if (textEditor != null)
+            if (textEditor != null && textEditor.IsEnabled)
             {
                 this.ShowTextBoxEditControl();
                 textEditor.Text = e.Text;
@@ -4119,6 +4133,12 @@ namespace PropertyTools.Wpf
         /// </returns>
         private bool ToggleCheck()
         {
+            var checkBox = this.GetCellElement(this.CurrentCell);
+            if (!checkBox.IsEnabled)
+            {
+                return false;
+            }
+
             bool value = true;
             var cellValue = this.GetCellValue(this.CurrentCell);
             if (cellValue is bool)

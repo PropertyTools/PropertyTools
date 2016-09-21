@@ -21,6 +21,20 @@ namespace PropertyTools.Wpf
     public class ValueToBooleanConverter : IValueConverter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ValueToBooleanConverter"/> class.
+        /// </summary>
+        /// <param name="equalValue">The value returned when the specified value equals the parameter.</param>
+        public ValueToBooleanConverter(bool equalValue = true)
+        {
+            this.EqualValue = equalValue;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the value returned when the specified value equals the parameter.
+        /// </summary>
+        public bool EqualValue { get; private set; }
+
+        /// <summary>
         /// Converts a value.
         /// </summary>
         /// <param name="value">The value produced by the binding source.</param>
@@ -34,10 +48,10 @@ namespace PropertyTools.Wpf
         {
             if (value == null)
             {
-                return parameter == null;
+                return parameter == null ? this.EqualValue : !this.EqualValue;
             }
 
-            return value.Equals(parameter);
+            return value.Equals(parameter) ? this.EqualValue : !this.EqualValue;
         }
 
         /// <summary>
@@ -60,7 +74,7 @@ namespace PropertyTools.Wpf
             try
             {
                 bool boolValue = System.Convert.ToBoolean(value, culture);
-                if (boolValue)
+                if (boolValue == this.EqualValue)
                 {
                     return parameter;
                 }

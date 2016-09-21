@@ -57,6 +57,12 @@
     <Compile Include="NET40\DataErrorsChangedEventArgs.cs" />
     <Compile Include="NET40\MaxLengthAttribute.cs" />
     <Compile Include="NET40\ValidatableObject.cs" />
+    <Compile Include="Examples\EnableByPropertyExample.xaml.cs">
+      <DependentUpon>EnableByPropertyExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\EnableByAttributeExample.xaml.cs">
+      <DependentUpon>EnableByAttributeExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ValidationExampleWindow.xaml.cs">
       <DependentUpon>ValidationExampleWindow.xaml</DependentUpon>
     </Compile>
@@ -139,6 +145,14 @@
     </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
+    <Page Include="Examples\EnableByPropertyExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\EnableByAttributeExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\ValidationExampleWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

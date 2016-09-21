@@ -70,6 +70,7 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Converters\ValueToBooleanConverterTests.cs" />
     <Compile Include="Helpers\ColorHelperTests.cs" />
     <Compile Include="Converters\ConverterTests.cs" />
     <Compile Include="Helpers\FormattedTimeSpanParserTests.cs" />

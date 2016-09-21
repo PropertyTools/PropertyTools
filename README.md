@@ -1,5 +1,10 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/b3579d3lja65kt6m)](https://ci.appveyor.com/project/objorke/propertytools)
 
+[![Build status](https://img.shields.io/appveyor/ci/objorke/propertytools.svg?maxAge=2592000)](https://ci.appveyor.com/project/objorke/propertytools) 
+[![Gitter](https://img.shields.io/gitter/room/objorke/propertytools.svg?maxAge=2592000)](https://gitter.im/objorke/propertytools?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![NuGet](https://img.shields.io/nuget/v/propertytools.wpf.svg?maxAge=2592000)](https://www.nuget.org/packages/propertytools.wpf/)
+[![NuGet Pre Release](https://img.shields.io/nuget/vpre/propertytools.wpf.svg?maxAge=2592000)](https://www.nuget.org/packages/propertytools.wpf/)
+
 ```
 License:       The MIT License (MIT)
 Project page:  https://github.com/objorke/PropertyTools/

@@ -59,6 +59,9 @@
     </Compile>
     <Compile Include="DataTypes\MassValueConverter.cs" />
     <Compile Include="NET45\ValidatableObject.cs" />
+    <Compile Include="Examples\ArrayOfObjectExample.xaml.cs">
+      <DependentUpon>ArrayOfObjectExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\EnableByPropertyExample.xaml.cs">
       <DependentUpon>EnableByPropertyExample.xaml</DependentUpon>
     </Compile>
@@ -147,6 +150,10 @@
     </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
+    <Page Include="Examples\ArrayOfObjectExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\EnableByPropertyExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -50,7 +50,7 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartAutoFillSelection, Type = typeof(Border))]
     [TemplatePart(Name = PartAutoFillBox, Type = typeof(Border))]
     [TemplatePart(Name = PartTopLeft, Type = typeof(Border))]
-    public partial class DataGrid : Control, IWeakEventListener
+    public class DataGrid : Control, IWeakEventListener
     {
         /// <summary>
         /// Identifies the <see cref="CreateColumnHeader"/> dependency property.
@@ -804,13 +804,7 @@ namespace PropertyTools.Wpf
         /// Gets the column definitions.
         /// </summary>
         /// <value>The column definitions.</value>
-        public Collection<PropertyDefinition> ColumnDefinitions
-        {
-            get
-            {
-                return this.propertyDefinitions;
-            }
-        }
+        public Collection<PropertyDefinition> ColumnDefinitions => this.propertyDefinitions;
 
         /// <summary>
         /// Gets or sets the height of the column headers.
@@ -1153,13 +1147,7 @@ namespace PropertyTools.Wpf
         /// Gets the row definitions.
         /// </summary>
         /// <value>The row definitions.</value>
-        public Collection<PropertyDefinition> RowDefinitions
-        {
-            get
-            {
-                return this.propertyDefinitions;
-            }
-        }
+        public Collection<PropertyDefinition> RowDefinitions => this.propertyDefinitions;
 
         /// <summary>
         /// Gets or sets the width of the row headers.
@@ -1278,24 +1266,12 @@ namespace PropertyTools.Wpf
         /// Gets the number of columns.
         /// </summary>
         /// <value>The number of columns.</value>
-        public int Columns
-        {
-            get
-            {
-                return this.sheetGrid.ColumnDefinitions.Count;
-            }
-        }
+        public int Columns => this.sheetGrid.ColumnDefinitions.Count;
 
         /// <summary>
         /// Gets the number of rows.</summary>
         /// <value>The number of rows.</value>
-        public int Rows
-        {
-            get
-            {
-                return this.sheetGrid.RowDefinitions.Count - 1;
-            }
-        }
+        public int Rows => this.sheetGrid.RowDefinitions.Count - 1;
 
         /// <summary>
         /// Gets a value indicating whether this instance can delete columns.
@@ -2751,7 +2727,7 @@ namespace PropertyTools.Wpf
         {
             if (string.IsNullOrEmpty(formatString))
             {
-                return value != null ? value.ToString() : null;
+                return value?.ToString();
             }
 
             if (!formatString.Contains("{0"))
@@ -2840,7 +2816,7 @@ namespace PropertyTools.Wpf
 
                 if (targetType == typeof(string))
                 {
-                    convertedValue = value != null ? value.ToString() : null;
+                    convertedValue = value?.ToString();
                     return true;
                 }
 
@@ -3125,7 +3101,7 @@ namespace PropertyTools.Wpf
 
             var column = Grid.GetColumn(gs);
             var width = this.columnGrid.ColumnDefinitions[column].ActualWidth;
-            tt.Content = string.Format("Width: {0:0.#}", width); // device-independent units
+            tt.Content = $"Width: {width:0.#}"; // device-independent units
 
             tt.PlacementTarget = this.columnGrid;
             tt.Placement = PlacementMode.Relative;
@@ -3272,7 +3248,7 @@ namespace PropertyTools.Wpf
             while (column >= 0 && column < this.Columns - 1)
             {
                 var v = this.GetCellValue(new CellRef(row, column));
-                if (v == null || string.IsNullOrEmpty(v.ToString()))
+                if (string.IsNullOrEmpty(v?.ToString()))
                 {
                     break;
                 }
@@ -3297,7 +3273,7 @@ namespace PropertyTools.Wpf
             while (row >= 0 && row < this.Rows)
             {
                 var v = this.GetCellValue(new CellRef(row, column));
-                if (v == null || string.IsNullOrEmpty(v.ToString()))
+                if (string.IsNullOrEmpty(v?.ToString()))
                 {
                     break;
                 }
@@ -3419,7 +3395,7 @@ namespace PropertyTools.Wpf
         private string GetFormatString(CellRef cell)
         {
             var pd = this.GetPropertyDefinition(cell);
-            return pd != null ? pd.FormatString : null;
+            return pd?.FormatString;
         }
 
         /// <summary>
@@ -3839,7 +3815,7 @@ namespace PropertyTools.Wpf
 
             var row = Grid.GetRow(gs);
             var height = this.rowGrid.RowDefinitions[row].ActualHeight;
-            tt.Content = string.Format("Height: {0:0.#}", height); // device-independent units
+            tt.Content = $"Height: {height:0.#}"; // device-independent units
 
             tt.PlacementTarget = this.rowGrid;
             tt.Placement = PlacementMode.Relative;
@@ -4507,13 +4483,13 @@ namespace PropertyTools.Wpf
                 var cell = header as FrameworkElement
                            ?? new TextBlock
                            {
-                               Text = header != null ? header.ToString() : "-",
+                               Text = header?.ToString() ?? "-",
                                VerticalAlignment = VerticalAlignment.Center,
                                HorizontalAlignment = this.ItemsInRows ? pd.HorizontalAlignment : System.Windows.HorizontalAlignment.Center,
                                Padding = new Thickness(4, 2, 4, 2)
                            };
 
-                if (pd != null && pd.Tooltip != null)
+                if (pd?.Tooltip != null)
                 {
                     ToolTipService.SetToolTip(cell, pd.Tooltip);
                 }
@@ -4521,7 +4497,7 @@ namespace PropertyTools.Wpf
                 if (this.ColumnHeadersSource != null && this.ItemsInRows)
                 {
                     cell.DataContext = this.ColumnHeadersSource;
-                    cell.SetBinding(TextBlock.TextProperty, new Binding(string.Format("[{0}]", j)) { StringFormat = this.ColumnHeadersFormatString });
+                    cell.SetBinding(TextBlock.TextProperty, new Binding($"[{j}]") { StringFormat = this.ColumnHeadersFormatString });
                 }
 
                 Grid.SetColumn(cell, j);
@@ -4683,7 +4659,7 @@ namespace PropertyTools.Wpf
                            ??
                            new TextBlock
                            {
-                               Text = header != null ? header.ToString() : "-",
+                               Text = header?.ToString() ?? "-",
                                VerticalAlignment = VerticalAlignment.Center,
                                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                                Padding = new Thickness(4, 2, 4, 2)
@@ -4700,7 +4676,7 @@ namespace PropertyTools.Wpf
                     cell.DataContext = this.RowHeadersSource;
                     cell.SetBinding(
                         TextBlock.TextProperty,
-                        new Binding(string.Format("[{0}]", i)) { StringFormat = this.RowHeadersFormatString });
+                        new Binding($"[{i}]") { StringFormat = this.RowHeadersFormatString });
                 }
 
                 Grid.SetRow(cell, i);

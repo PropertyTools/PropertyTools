@@ -4,6 +4,11 @@
         xmlns:pt="http://propertytools.org/wpf"
         Title="PropertyGrid" Height="400" Width="300">
     <Grid>
-        <pt:PropertyGrid Margin="8" SelectedObject="{Binding SelectedPerson}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <pt:PropertyGrid Margin="8" SelectedObject="{Binding SelectedPerson}" Grid.Row="0"/>
+        <pt:PropertyGrid Name="pgrid2" Margin="8" Grid.Row="1"/>
     </Grid>
 </Window>

@@ -2050,6 +2050,9 @@ namespace PropertyTools.Wpf
             var currentCell = this.CurrentCell;
             this.currentEditor.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(currentCell);
 
+            this.currentEditor.VerticalAlignment = VerticalAlignment.Stretch;
+            this.currentEditor.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+
             if (pd.IsEnabledByProperty != null)
             {
                 this.currentEditor.SetIsEnabledBinding(pd.IsEnabledByProperty, pd.IsEnabledByValue);
@@ -2222,22 +2225,24 @@ namespace PropertyTools.Wpf
                 pd = this.GetPropertyDefinition(cell);
             }
 
-            if (pd != null && item != null)
+            if (pd == null)
             {
-                element = this.Operator.CreateDisplayControl(cell, pd, item);
-
-                this.SetElementDataContext(element, pd, item);
-
-                if (pd.IsEnabledByProperty != null)
-                {
-                    element.SetIsEnabledBinding(pd.IsEnabledByProperty, pd.IsEnabledByValue);
-                }
-
-                element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
-
-                element.VerticalAlignment = VerticalAlignment.Center;
-                element.HorizontalAlignment = pd.HorizontalAlignment;
+                throw new InvalidOperationException("No row/column definition for " + cell);
             }
+
+            element = this.Operator.CreateDisplayControl(cell, pd, item);
+
+            this.SetElementDataContext(element, pd, item);
+
+            if (pd.IsEnabledByProperty != null)
+            {
+                element.SetIsEnabledBinding(pd.IsEnabledByProperty, pd.IsEnabledByValue);
+            }
+
+            element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
+
+            element.VerticalAlignment = VerticalAlignment.Center;
+            element.HorizontalAlignment = pd.HorizontalAlignment;
 
             return element;
         }
@@ -2826,6 +2831,19 @@ namespace PropertyTools.Wpf
                 if (targetType == typeof(int))
                 {
                     convertedValue = Convert.ToInt32(value);
+                    return true;
+                }
+
+                if (targetType == typeof(bool))
+                {
+                    var s = value as string;
+                    if (s != null)
+                    {
+                        convertedValue = !string.IsNullOrEmpty(s) && s != "0";
+                        return true;
+                    }
+
+                    convertedValue = Convert.ToBoolean(value);
                     return true;
                 }
 

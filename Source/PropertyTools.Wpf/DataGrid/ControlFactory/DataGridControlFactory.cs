@@ -9,16 +9,12 @@
 
 namespace PropertyTools.Wpf
 {
-    using System;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
     using System.Windows.Media;
     using System.Windows.Shapes;
-
-    using PropertyTools.DataAnnotations;
 
     using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
@@ -30,51 +26,42 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the display control with data binding.
         /// </summary>
-        /// <param name="propertyDefinition">The property definition.</param>
-        /// <param name="propertyType">The property type.</param>
-        /// <param name="bindingPath">The binding path.</param>
+        /// <param name="cd">The cell definition.</param>
         /// <returns>
         /// The control.
         /// </returns>
-        public virtual FrameworkElement CreateDisplayControl(CellDefinition cellDefinition)
+        public virtual FrameworkElement CreateDisplayControl(CellDefinition cd)
         {
-            //var control = propertyDefinition.CreateDisplayControl(bindingPath);
-            //if (control != null)
-            //{
-            //    return control;
-            //}
-
-            var cb = cellDefinition as CheckCellDefinition;
+            var cb = cd as CheckCellDefinition;
             if (cb != null)
             {
                 return this.CreateCheckBoxControl(cb);
             }
 
-            var co = cellDefinition as ColorCellDefinition;
+            var co = cd as ColorCellDefinition;
             if (co != null)
             {
                 return this.CreateColorPreviewControl(co);
             }
 
-            return this.CreateTextBlockControl(cellDefinition);
+            var td = cd as TemplateCellDefinition;
+            if (td != null)
+            {
+                return this.CreateTemplateControl(td, td.DisplayTemplate);
+            }
+
+            return this.CreateTextBlockControl(cd);
         }
 
         /// <summary>
         /// Creates the edit control with data binding.
         /// </summary>
-        /// <param name="propertyDefinition">The property definition.</param>
-        /// <param name="bindingPath">The binding path.</param>
+        /// <param name="cd">The cell definition.</param>
         /// <returns>
         /// The control.
         /// </returns>
         public virtual FrameworkElement CreateEditControl(CellDefinition cd)
         {
-            //var control = propertyDefinition.CreateEditControl(bindingPath);
-            //if (control != null)
-            //{
-            //    return control;
-            //}
-
             var co = cd as SelectCellDefinition;
             if (co != null)
             {
@@ -93,13 +80,19 @@ namespace PropertyTools.Wpf
                 return this.CreateColorPickerControl(col);
             }
 
+            var td = cd as TemplateCellDefinition;
+            if (td != null)
+            {
+                return this.CreateTemplateControl(td, td.EditingTemplate ?? td.DisplayTemplate);
+            }
+
             var te = cd as TextCellDefinition;
             if (te != null)
             {
                 return this.CreateTextBox(te);
             }
 
-            throw new NotImplementedException();
+            return this.CreateDisplayControl(cd);
         }
 
         /// <summary>
@@ -109,7 +102,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A binding.
         /// </returns>
-        public Binding CreateBinding(CellDefinition cd)
+        protected Binding CreateBinding(CellDefinition cd)
         {
             var bindingMode = cd.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
             var formatString = cd.FormatString;
@@ -144,7 +137,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A binding.
         /// </returns>
-        public Binding CreateOneWayBinding(CellDefinition cd)
+        protected Binding CreateOneWayBinding(CellDefinition cd)
         {
             var b = this.CreateBinding(cd);
             b.Mode = BindingMode.OneWay;
@@ -154,8 +147,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a check box control with data binding.
         /// </summary>
-        /// <param name="propertyDefinition">The property definition.</param>
-        /// <param name="bindingPath">The binding path.</param>
+        /// <param name="cd">The cell definition.</param>
         /// <returns>
         /// A CheckBox.
         /// </returns>
@@ -235,7 +227,16 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateComboBox(SelectCellDefinition cd)
         {
-            var c = new ComboBox { IsEditable = cd.IsEditable, Focusable = false, Margin = new Thickness(0, 0, -1, -1) };
+            var c = new ComboBox
+            {
+                IsEditable = cd.IsEditable,
+                Focusable = false,
+                Margin = new Thickness(1, 1, 0, 0),
+                HorizontalContentAlignment = cd.HorizontalAlignment,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                Padding = new Thickness(0),
+                BorderThickness = new Thickness(0)
+            };
             if (cd.ItemsSource != null)
             {
                 c.ItemsSource = cd.ItemsSource;
@@ -298,6 +299,28 @@ namespace PropertyTools.Wpf
 
             tb.SetBinding(TextBox.TextProperty, this.CreateBinding(cd));
             return tb;
+        }
+
+        /// <summary>
+        /// Creates the template control.
+        /// </summary>
+        /// <param name="td">The definition.</param>
+        /// <param name="t">The data template.</param>
+        /// <returns>A content control.</returns>
+        protected virtual FrameworkElement CreateTemplateControl(TemplateCellDefinition td, DataTemplate t)
+        {
+            var template = t;
+            var element = (FrameworkElement)template.LoadContent();
+            var binding = this.CreateBinding(td);
+            binding.Mode = BindingMode.OneWay;
+            var contentControl = new ContentControl
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Content = element
+            };
+            element.SetBinding(FrameworkElement.DataContextProperty, binding);
+            return contentControl;
         }
 
         /// <summary>

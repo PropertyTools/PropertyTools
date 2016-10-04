@@ -176,6 +176,7 @@
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="DataGrid\Definitions\CellDefinition.cs" />
     <Compile Include="Utilities\BindingUtilities.cs" />
     <Compile Include="DataGrid\ListListOperator.cs" />
     <Compile Include="DataGrid\DataGridOperator.cs" />

@@ -12,7 +12,6 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.ComponentModel;
-    using System.Windows;
     using System.Windows.Data;
 
     /// <summary>

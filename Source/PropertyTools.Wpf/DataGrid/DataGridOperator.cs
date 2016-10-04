@@ -60,36 +60,56 @@ namespace PropertyTools.Wpf
         public virtual FrameworkElement CreateDisplayControl(CellRef cell, PropertyDefinition pd, object item)
         {
             var cd = this.CreateCellDefinition(cell, pd, item);
+            this.ApplyCellProperties(cd, cell, pd, item);
             return this.ControlFactory.CreateDisplayControl(cd);
         }
 
         protected virtual CellDefinition CreateCellDefinition(CellRef cell, PropertyDefinition pd, object item)
         {
             var propertyType = this.GetPropertyType(pd, cell, item);
-            CellDefinition cd = null;
+
+            var tcd = pd as TemplateColumnDefinition;
+            if (tcd != null)
+            {
+                return new TemplateCellDefinition
+                {
+                    DisplayTemplate = tcd.CellTemplate,
+                    EditingTemplate = tcd.CellEditingTemplate
+                };
+            }
+
             if (propertyType.Is(typeof(bool)))
             {
-                cd = new CheckCellDefinition();
+                return new CheckCellDefinition();
             }
 
             if (propertyType.Is(typeof(Color)))
             {
-                cd = new ColorCellDefinition();
+                return new ColorCellDefinition();
             }
+
+            if (propertyType.Is(typeof(Enum)))
+            {
+                return new SelectCellDefinition
+                {
+                    ItemsSource = Enum.GetValues(propertyType)
+                };
+            }
+
             if (pd.ItemsSourceProperty != null || pd.ItemsSource != null)
             {
-                cd = new SelectCellDefinition
+                return new SelectCellDefinition
                 {
                     ItemsSource = pd.ItemsSource,
                     ItemsSourceProperty = pd.ItemsSourceProperty
                 };
             }
 
-            if (cd == null)
-            {
-                cd = new TextCellDefinition();
-            }
+            return new TextCellDefinition();
+        }
 
+        protected virtual void ApplyCellProperties(CellDefinition cd, CellRef cell, PropertyDefinition pd, object item)
+        {
             cd.HorizontalAlignment = pd.HorizontalAlignment;
             cd.BindingPath = this.GetBindingPath(cell, pd);
             cd.Trigger = UpdateSourceTrigger.Default;
@@ -98,7 +118,6 @@ namespace PropertyTools.Wpf
             cd.Converter = pd.Converter;
             cd.ConverterParameter = pd.ConverterParameter;
             cd.ConverterCulture = pd.ConverterCulture;
-            return cd;
         }
 
         /// <summary>
@@ -113,6 +132,7 @@ namespace PropertyTools.Wpf
         public virtual FrameworkElement CreateEditControl(CellRef cell, PropertyDefinition pd, object item)
         {
             var cd = this.CreateCellDefinition(cell, pd, item);
+            this.ApplyCellProperties(cd, cell, pd, item);
             return this.ControlFactory.CreateEditControl(cd);
         }
 

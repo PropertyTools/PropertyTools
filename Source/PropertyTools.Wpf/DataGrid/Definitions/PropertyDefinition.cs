@@ -13,7 +13,6 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.ComponentModel;
     using System.Globalization;
-    using System.Windows;
     using System.Windows.Data;
 
     using PropertyTools.DataAnnotations;
@@ -164,11 +163,6 @@ namespace PropertyTools.Wpf
             set
             {
                 this.propertyType = value;
-
-                if (this.propertyType.Is(typeof(Enum)))
-                {
-                    this.SetEnumItemsSource();
-                }
             }
         }
 
@@ -208,26 +202,6 @@ namespace PropertyTools.Wpf
         public virtual string GetBindingPath(CellRef cell)
         {
             return this.Descriptor != null ? this.Descriptor.Name : string.Format("[{0}][{1}]", cell.Row, cell.Column);
-        }
-
-        /// <summary>
-        /// The DataGridControlFactory uses this method to create the display control.
-        /// </summary>
-        /// <param name="bindingPath">The binding path.</param>
-        /// <returns>The display control.</returns>
-        public virtual FrameworkElement CreateDisplayControl(string bindingPath)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// The DataGridControlFactory uses this method to create the edit control.
-        /// </summary>
-        /// <param name="bindingPath">The binding path.</param>
-        /// <returns>The control.</returns>
-        public virtual FrameworkElement CreateEditControl(string bindingPath)
-        {
-            return null;
         }
 
         /// <summary>
@@ -276,14 +250,6 @@ namespace PropertyTools.Wpf
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Sets the items source for enumerable properties.
-        /// </summary>
-        protected void SetEnumItemsSource()
-        {
-            this.ItemsSource = Enum.GetValues(this.PropertyType);
         }
     }
 }

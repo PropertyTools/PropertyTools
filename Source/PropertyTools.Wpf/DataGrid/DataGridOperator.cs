@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -90,9 +92,16 @@ namespace PropertyTools.Wpf
 
             if (propertyType.Is(typeof(Enum)))
             {
+                var enumType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+                var values = Enum.GetValues(enumType).Cast<object>().ToList();
+                if (Nullable.GetUnderlyingType(propertyType) != null)
+                {
+                    values.Insert(0, null);
+                }
+
                 return new SelectCellDefinition
                 {
-                    ItemsSource = Enum.GetValues(propertyType)
+                    ItemsSource = values
                 };
             }
 
@@ -115,7 +124,11 @@ namespace PropertyTools.Wpf
             cd.Trigger = UpdateSourceTrigger.Default;
             cd.IsReadOnly = pd.IsReadOnly;
             cd.FormatString = pd.FormatString;
-            cd.Converter = pd.Converter;
+            if (pd.Converter != null)
+            {
+                cd.Converter = pd.Converter;
+            }
+
             cd.ConverterParameter = pd.ConverterParameter;
             cd.ConverterCulture = pd.ConverterCulture;
         }

@@ -594,25 +594,25 @@ namespace PropertyTools.Wpf
         /// Gets the delete columns command.
         /// </summary>
         /// <value>The delete columns command.</value>
-        public static ICommand DeleteColumnsCommand { get; private set; }
+        public static ICommand DeleteColumnsCommand { get; }
 
         /// <summary>
         /// Gets the delete rows command.
         /// </summary>
         /// <value>The delete rows command.</value>
-        public static ICommand DeleteRowsCommand { get; private set; }
+        public static ICommand DeleteRowsCommand { get; }
 
         /// <summary>
         /// Gets the insert columns command.
         /// </summary>
         /// <value>The insert columns command.</value>
-        public static ICommand InsertColumnsCommand { get; private set; }
+        public static ICommand InsertColumnsCommand { get; }
 
         /// <summary>
         /// Gets the insert rows command.
         /// </summary>
         /// <value>The insert rows command.</value>
-        public static ICommand InsertRowsCommand { get; private set; }
+        public static ICommand InsertRowsCommand { get; }
 
         /// <summary>
         /// Gets or sets the header used for the add item row/column. Default is "*".
@@ -1371,7 +1371,7 @@ namespace PropertyTools.Wpf
         private Collection<PropertyDefinition> PropertyDefinitions => this.propertyDefinitions;
 
         /// <summary>
-        /// Gets the field factory.
+        /// Gets the operator.
         /// </summary>
         private DataGridOperator Operator
         {
@@ -1387,7 +1387,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The auto size all columns.
+        /// Autosizes all columns.
         /// </summary>
         public void AutoSizeAllColumns()
         {
@@ -1413,10 +1413,10 @@ namespace PropertyTools.Wpf
 
             // Initialize with the width of the header element
             var headerElement = this.GetColumnElement(column);
-            double maximumWidth = headerElement.ActualWidth + headerElement.Margin.Left + headerElement.Margin.Right;
+            var maximumWidth = headerElement.ActualWidth + headerElement.Margin.Left + headerElement.Margin.Right;
 
             // Compare with the widths of the cell elements
-            for (int i = 0; i < this.sheetGrid.RowDefinitions.Count; i++)
+            for (var i = 0; i < this.sheetGrid.RowDefinitions.Count; i++)
             {
                 var c = this.GetCellElement(new CellRef(i, column)) as FrameworkElement;
                 if (c != null)
@@ -1438,10 +1438,10 @@ namespace PropertyTools.Wpf
         {
             // Initialize with the height of the header element
             var headerElement = this.GetRowElement(row);
-            double maximumHeight = headerElement.ActualHeight + headerElement.Margin.Top + headerElement.Margin.Bottom;
+            var maximumHeight = headerElement.ActualHeight + headerElement.Margin.Top + headerElement.Margin.Bottom;
 
             // Compare with the heights of the cell elements
-            for (int i = 0; i < this.sheetGrid.ColumnDefinitions.Count; i++)
+            for (var i = 0; i < this.sheetGrid.ColumnDefinitions.Count; i++)
             {
                 var c = this.GetCellElement(new CellRef(row, i)) as FrameworkElement;
                 if (c != null)
@@ -1540,7 +1540,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The end text edit.
+        /// Ends text editing.
         /// </summary>
         /// <param name="commit">The commit.</param>
         public void EndTextEdit(bool commit = true)
@@ -1568,14 +1568,14 @@ namespace PropertyTools.Wpf
         /// </returns>
         public CellRef GetCell(Point position, bool isInAutoFillMode = false, CellRef relativeTo = default(CellRef))
         {
-            double w = 0;
-            int column = -1;
-            int row = -1;
-            for (int j = 0; j < this.sheetGrid.ColumnDefinitions.Count; j++)
+            var w = 0d;
+            var column = -1;
+            var row = -1;
+            for (var j = 0; j < this.sheetGrid.ColumnDefinitions.Count; j++)
             {
-                double aw0 = j - 1 >= 0 ? this.sheetGrid.ColumnDefinitions[j - 1].ActualWidth : 0;
-                double aw1 = this.sheetGrid.ColumnDefinitions[j].ActualWidth;
-                double aw2 = j + 1 < this.sheetGrid.ColumnDefinitions.Count
+                var aw0 = j - 1 >= 0 ? this.sheetGrid.ColumnDefinitions[j - 1].ActualWidth : 0;
+                var aw1 = this.sheetGrid.ColumnDefinitions[j].ActualWidth;
+                var aw2 = j + 1 < this.sheetGrid.ColumnDefinitions.Count
                                  ? this.sheetGrid.ColumnDefinitions[j + 1].ActualWidth
                                  : 0;
                 if (isInAutoFillMode)
@@ -1611,10 +1611,10 @@ namespace PropertyTools.Wpf
                 column = this.sheetGrid.ColumnDefinitions.Count - 1;
             }
 
-            double h = 0;
+            var h = 0d;
             for (int i = 0; i < this.sheetGrid.RowDefinitions.Count; i++)
             {
-                double ah = this.sheetGrid.RowDefinitions[i].ActualHeight;
+                var ah = this.sheetGrid.RowDefinitions[i].ActualHeight;
                 if (position.Y < h + ah)
                 {
                     row = i;
@@ -1710,14 +1710,14 @@ namespace PropertyTools.Wpf
         /// </returns>
         public Point GetPosition(CellRef cellRef)
         {
-            double x = 0;
-            double y = 0;
-            for (int j = 0; j < cellRef.Column && j < this.sheetGrid.ColumnDefinitions.Count; j++)
+            var x = 0d;
+            var y = 0d;
+            for (var j = 0; j < cellRef.Column && j < this.sheetGrid.ColumnDefinitions.Count; j++)
             {
                 x += this.sheetGrid.ColumnDefinitions[j].ActualWidth;
             }
 
-            for (int i = 0; i < cellRef.Row && i < this.sheetGrid.RowDefinitions.Count; i++)
+            for (var i = 0; i < cellRef.Row && i < this.sheetGrid.RowDefinitions.Count; i++)
             {
                 y += this.sheetGrid.RowDefinitions[i].ActualHeight;
             }
@@ -1732,10 +1732,10 @@ namespace PropertyTools.Wpf
         /// <param name="bottomRightCell">The bottom right cell.</param>
         public void GetVisibleCells(out CellRef topLeftCell, out CellRef bottomRightCell)
         {
-            double left = this.sheetScrollViewer.HorizontalOffset;
-            double right = left + this.sheetScrollViewer.ActualWidth;
-            double top = this.sheetScrollViewer.VerticalOffset;
-            double bottom = top + this.sheetScrollViewer.ActualHeight;
+            var left = this.sheetScrollViewer.HorizontalOffset;
+            var right = left + this.sheetScrollViewer.ActualWidth;
+            var top = this.sheetScrollViewer.VerticalOffset;
+            var bottom = top + this.sheetScrollViewer.ActualHeight;
 
             topLeftCell = this.GetCell(new Point(left, top));
             bottomRightCell = this.GetCell(new Point(right, bottom));
@@ -1792,8 +1792,8 @@ namespace PropertyTools.Wpf
         /// <param name="deltaColumns">The change in columns.</param>
         public void ChangeCurrentCell(int deltaRows, int deltaColumns)
         {
-            int row = this.CurrentCell.Row;
-            int column = this.CurrentCell.Column;
+            var row = this.CurrentCell.Row;
+            var column = this.CurrentCell.Column;
             row += deltaRows;
             column += deltaColumns;
             if (row < 0)
@@ -1953,7 +1953,7 @@ namespace PropertyTools.Wpf
 
             if (values == null && Clipboard.ContainsText())
             {
-                string text = Clipboard.GetText().Trim();
+                var text = Clipboard.GetText().Trim();
                 values = TextToArray(text);
             }
 
@@ -1962,17 +1962,17 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            int rowMin = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
-            int columnMin = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-            int rowMax = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
-            int columnMax = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+            var rowMin = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
+            var columnMin = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+            var rowMax = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
+            var columnMax = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
 
-            int rows = values.GetUpperBound(0) + 1;
-            int columns = values.GetUpperBound(1) + 1;
+            var rows = values.GetUpperBound(0) + 1;
+            var columns = values.GetUpperBound(1) + 1;
 
             this.UnsubscribeNotifications();
 
-            for (int i = rowMin; i <= rowMax || i < rowMin + rows; i++)
+            for (var i = rowMin; i <= rowMax || i < rowMin + rows; i++)
             {
                 if (i >= this.Rows)
                 {
@@ -1982,9 +1982,9 @@ namespace PropertyTools.Wpf
                     }
                 }
 
-                for (int j = columnMin; j <= columnMax || j < columnMin + columns; j++)
+                for (var j = columnMin; j <= columnMax || j < columnMin + columns; j++)
                 {
-                    object value = values[(i - rowMin) % rows, (j - columnMin) % columns];
+                    var value = values[(i - rowMin) % rows, (j - columnMin) % columns];
                     this.TrySetCellValue(new CellRef(i, j), value);
                 }
             }
@@ -2028,8 +2028,8 @@ namespace PropertyTools.Wpf
             var pos1 = this.GetPosition(new CellRef(cellRef.Row + 1, cellRef.Column + 1));
 
             // todo: get correct size
-            const double ScrollBarWidth = 20;
-            const double ScrollBarHeight = 20;
+            const double ScrollBarWidth = 20d;
+            const double ScrollBarHeight = 20d;
 
             if (pos0.X < this.sheetScrollViewer.HorizontalOffset)
             {
@@ -2165,7 +2165,7 @@ namespace PropertyTools.Wpf
         public string ToCsv(string separator = ";")
         {
             var sb = new StringBuilder();
-            for (int j = 0; j < this.Columns; j++)
+            for (var j = 0; j < this.Columns; j++)
             {
                 var h = this.GetColumnHeader(j).ToString();
                 h = CsvEncodeString(h);
@@ -2303,12 +2303,12 @@ namespace PropertyTools.Wpf
         {
             base.OnKeyDown(e);
 
-            bool control = (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None;
-            bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
-            bool alt = (Keyboard.Modifiers & ModifierKeys.Alt) != ModifierKeys.None;
+            var control = (Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.None;
+            var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
+            var alt = (Keyboard.Modifiers & ModifierKeys.Alt) != ModifierKeys.None;
 
-            int row = shift ? this.SelectionCell.Row : this.CurrentCell.Row;
-            int column = shift ? this.SelectionCell.Column : this.CurrentCell.Column;
+            var row = shift ? this.SelectionCell.Row : this.CurrentCell.Row;
+            var column = shift ? this.SelectionCell.Column : this.CurrentCell.Column;
 
             switch (e.Key)
             {
@@ -2589,7 +2589,7 @@ namespace PropertyTools.Wpf
         {
             base.OnPreviewMouseWheel(e);
 
-            bool control = Keyboard.IsKeyDown(Key.LeftCtrl);
+            var control = Keyboard.IsKeyDown(Key.LeftCtrl);
             if (control)
             {
                 double s = 1 + (e.Delta * 0.0004);
@@ -2707,7 +2707,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private static int Clamp(int value, int min, int max)
         {
-            int result = value;
+            var result = value;
             if (result > max)
             {
                 result = max;
@@ -2782,10 +2782,10 @@ namespace PropertyTools.Wpf
         /// </returns>
         private static object[,] TextToArray(string text)
         {
-            int rows = 0;
-            int columns = 0;
+            var rows = 0;
+            var columns = 0;
             var lines = text.Split('\n');
-            foreach (string line in lines)
+            foreach (var line in lines)
             {
                 rows++;
                 var fields = line.Split('\t');
@@ -2801,13 +2801,13 @@ namespace PropertyTools.Wpf
             }
 
             var result = new object[rows, columns];
-            int row = 0;
-            foreach (string line in lines)
+            var row = 0;
+            foreach (var line in lines)
             {
                 var fields = line.Split('\t');
 
-                int column = 0;
-                foreach (string field in fields)
+                var column = 0;
+                foreach (var field in fields)
                 {
                     result[row, column] = field.Trim(" \r\n\t".ToCharArray());
                     column++;
@@ -2895,8 +2895,8 @@ namespace PropertyTools.Wpf
         private static object CoerceCurrentCell(DependencyObject d, object basevalue)
         {
             var cr = (CellRef)basevalue;
-            int row = cr.Row;
-            int column = cr.Column;
+            var row = cr.Row;
+            var column = cr.Column;
             var sg = (DataGrid)d;
             if (sg.AutoInsert)
             {
@@ -2923,8 +2923,8 @@ namespace PropertyTools.Wpf
         private static object CoerceSelectionCell(DependencyObject sender, object basevalue)
         {
             var cr = (CellRef)basevalue;
-            int row = cr.Row;
-            int column = cr.Column;
+            var row = cr.Row;
+            var column = cr.Column;
             var sg = (DataGrid)sender;
             row = Clamp(row, 0, sg.Rows - 1);
             column = Clamp(column, 0, sg.Columns - 1);
@@ -3025,10 +3025,10 @@ namespace PropertyTools.Wpf
         private void ColumnGridMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Focus();
-            int column = this.GetCell(e.GetPosition(this.columnGrid)).Column;
+            var column = this.GetCell(e.GetPosition(this.columnGrid)).Column;
             if (column >= 0)
             {
-                bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
+                var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
                 this.CurrentCell = shift ? new CellRef(0, this.CurrentCell.Column) : new CellRef(0, column);
 
                 this.SelectionCell = new CellRef(this.Rows - 1, column);
@@ -3061,7 +3061,7 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            int column = this.GetCell(e.GetPosition(this.columnGrid)).Column;
+            var column = this.GetCell(e.GetPosition(this.columnGrid)).Column;
             if (column >= 0)
             {
                 this.SelectionCell = new CellRef(this.Rows - 1, column);
@@ -3123,7 +3123,7 @@ namespace PropertyTools.Wpf
                 tt.IsOpen = true;
             }
 
-            int column = Grid.GetColumn(gs);
+            var column = Grid.GetColumn(gs);
             var width = this.columnGrid.ColumnDefinitions[column].ActualWidth;
             tt.Content = string.Format("Width: {0:0.#}", width); // device-independent units
 
@@ -3151,7 +3151,7 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         private void ColumnSplitterDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            int column = Grid.GetColumn((GridSplitter)sender);
+            var column = Grid.GetColumn((GridSplitter)sender);
             this.AutoSizeColumn(column);
         }
 
@@ -3173,9 +3173,9 @@ namespace PropertyTools.Wpf
         {
             if (this.IsIListIList() && this.ColumnHeadersSource != null)
             {
-                int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (int i = to; i >= from; i--)
+                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+                for (var i = to; i >= from; i--)
                 {
                     this.ColumnHeadersSource.RemoveAt(i);
                 }
@@ -3183,9 +3183,9 @@ namespace PropertyTools.Wpf
 
             if (this.ItemsInColumns)
             {
-                int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (int i = to; i >= from; i--)
+                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+                for (var i = to; i >= from; i--)
                 {
                     this.DeleteItem(i, false);
                 }
@@ -3193,7 +3193,7 @@ namespace PropertyTools.Wpf
 
             this.UpdateGridContent();
 
-            int maxColumn = this.Columns > 0 ? this.Columns - 1 : 0;
+            var maxColumn = this.Columns > 0 ? this.Columns - 1 : 0;
             if (this.CurrentCell.Column > maxColumn)
             {
                 this.CurrentCell = new CellRef(maxColumn, this.CurrentCell.Column);
@@ -3210,16 +3210,16 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void DeleteRows()
         {
-            int from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
-            int to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
-            for (int i = to; i >= from; i--)
+            var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
+            var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
+            for (var i = to; i >= from; i--)
             {
                 this.DeleteItem(i, false);
             }
 
             this.UpdateGridContent();
 
-            int maxRow = this.Rows > 0 ? this.Rows - 1 : 0;
+            var maxRow = this.Rows > 0 ? this.Rows - 1 : 0;
             if (this.CurrentCell.Row > maxRow)
             {
                 this.CurrentCell = new CellRef(maxRow, this.CurrentCell.Column);
@@ -3244,11 +3244,11 @@ namespace PropertyTools.Wpf
             var list = this.ItemsSource;
             if (list != null)
             {
-                int index0 = this.ItemsInRows ? cell0.Row : cell0.Column;
-                int index1 = this.ItemsInRows ? cell1.Row : cell1.Column;
-                int min = Math.Min(index0, index1);
-                int max = Math.Max(index0, index1);
-                for (int index = min; index <= max; index++)
+                var index0 = this.ItemsInRows ? cell0.Row : cell0.Column;
+                var index1 = this.ItemsInRows ? cell1.Row : cell1.Column;
+                var min = Math.Min(index0, index1);
+                var max = Math.Max(index0, index1);
+                for (var index = min; index <= max; index++)
                 {
                     if (index >= 0 && index < list.Count)
                     {
@@ -3322,8 +3322,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         private CellRef GetCellRefFromUIElement(UIElement element)
         {
-            int row = Grid.GetRow(element);
-            int column = Grid.GetColumn(element);
+            var row = Grid.GetRow(element);
+            var column = Grid.GetColumn(element);
             return new CellRef(row, column);
         }
 
@@ -3460,7 +3460,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private PropertyDefinition GetPropertyDefinition(CellRef cell)
         {
-            int index = this.ItemsInRows ? cell.Column : cell.Row;
+            var index = this.ItemsInRows ? cell.Column : cell.Row;
 
             if (index < this.PropertyDefinitions.Count)
             {
@@ -3545,7 +3545,7 @@ namespace PropertyTools.Wpf
             }
             else
             {
-                bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
+                var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
 
                 if (!shift)
                 {
@@ -3568,9 +3568,9 @@ namespace PropertyTools.Wpf
         {
             if (this.IsIListIList())
             {
-                int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (int i = from; i <= to; i++)
+                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+                for (var i = from; i <= to; i++)
                 {
                     this.InsertColumnHeader(i);
                 }
@@ -3578,9 +3578,9 @@ namespace PropertyTools.Wpf
 
             if (this.ItemsInColumns)
             {
-                int from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                int to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (int i = 0; i < to - from + 1; i++)
+                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+                for (var i = 0; i < to - from + 1; i++)
                 {
                     this.InsertItem(from, false);
                 }
@@ -3629,9 +3629,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void InsertRows()
         {
-            int from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
-            int to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
-            for (int i = 0; i < to - from + 1; i++)
+            var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
+            var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
+            for (var i = 0; i < to - from + 1; i++)
             {
                 this.InsertItem(from, false);
             }
@@ -3731,7 +3731,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The row grid mouse left button down.
+        /// Handles mouse left button down events on the row grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -3739,10 +3739,10 @@ namespace PropertyTools.Wpf
         {
             this.Focus();
 
-            int row = this.GetCell(e.GetPosition(this.rowGrid)).Row;
+            var row = this.GetCell(e.GetPosition(this.rowGrid)).Row;
             if (row >= 0)
             {
-                bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
+                var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
                 this.CurrentCell = shift ? new CellRef(this.CurrentCell.Row, 0) : new CellRef(row, 0);
 
                 this.SelectionCell = new CellRef(row, this.Columns - 1);
@@ -3754,7 +3754,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The row grid mouse left button up.
+        /// Handles mouse left button up events on the row grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -3765,7 +3765,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The row grid mouse move.
+        /// Handles mouse move events on the row grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -3776,7 +3776,7 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            int row = this.GetCell(e.GetPosition(this.rowGrid)).Row;
+            var row = this.GetCell(e.GetPosition(this.rowGrid)).Row;
             if (row >= 0)
             {
                 this.SelectionCell = new CellRef(row, this.Columns - 1);
@@ -3837,7 +3837,7 @@ namespace PropertyTools.Wpf
                 tt.IsOpen = true;
             }
 
-            int row = Grid.GetRow(gs);
+            var row = Grid.GetRow(gs);
             var height = this.rowGrid.RowDefinitions[row].ActualHeight;
             tt.Content = string.Format("Height: {0:0.#}", height); // device-independent units
 
@@ -3865,7 +3865,7 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         private void RowSplitterDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            int row = Grid.GetRow((GridSplitter)sender);
+            var row = Grid.GetRow((GridSplitter)sender);
             this.AutoSizeRow(row);
         }
 
@@ -3923,7 +3923,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private bool SetCheckInSelectedCells(bool value)
         {
-            bool modified = false;
+            var modified = false;
             foreach (var cell in this.SelectedCells)
             {
                 var currentValue = this.GetCellValue(cell);
@@ -3996,7 +3996,7 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         private void TextEditorPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
+            var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
             var textEditor = sender as TextBox;
             if (textEditor == null)
             {
@@ -4063,23 +4063,23 @@ namespace PropertyTools.Wpf
         /// </returns>
         private string ToString(CellRef cell1, CellRef cell2, string separator, bool encode = false)
         {
-            int rowMin = Math.Min(cell1.Row, cell2.Row);
-            int columnMin = Math.Min(cell1.Column, cell2.Column);
-            int rowMax = Math.Max(cell1.Row, cell2.Row);
-            int columnMax = Math.Max(cell1.Column, cell2.Column);
+            var rowMin = Math.Min(cell1.Row, cell2.Row);
+            var columnMin = Math.Min(cell1.Column, cell2.Column);
+            var rowMax = Math.Max(cell1.Row, cell2.Row);
+            var columnMax = Math.Max(cell1.Column, cell2.Column);
 
             var sb = new StringBuilder();
 
-            for (int i = rowMin; i <= rowMax; i++)
+            for (var i = rowMin; i <= rowMax; i++)
             {
                 if (i > rowMin)
                 {
                     sb.AppendLine();
                 }
 
-                for (int j = columnMin; j <= columnMax; j++)
+                for (var j = columnMin; j <= columnMax; j++)
                 {
-                    string cell = this.GetCellString(new CellRef(i, j));
+                    var cell = this.GetCellString(new CellRef(i, j));
                     if (encode)
                     {
                         cell = CsvEncodeString(cell);
@@ -4110,13 +4110,13 @@ namespace PropertyTools.Wpf
         /// </returns>
         private object[,] ToArray(CellRef cell1, CellRef cell2)
         {
-            int rowMin = Math.Min(cell1.Row, cell2.Row);
-            int columnMin = Math.Min(cell1.Column, cell2.Column);
-            int rowMax = Math.Max(cell1.Row, cell2.Row);
-            int columnMax = Math.Max(cell1.Column, cell2.Column);
+            var rowMin = Math.Min(cell1.Row, cell2.Row);
+            var columnMin = Math.Min(cell1.Column, cell2.Column);
+            var rowMax = Math.Max(cell1.Row, cell2.Row);
+            var columnMax = Math.Max(cell1.Column, cell2.Column);
 
-            int m = rowMax - rowMin + 1;
-            int n = columnMax - columnMin + 1;
+            var m = rowMax - rowMin + 1;
+            var n = columnMax - columnMin + 1;
             var result = new object[m, n];
 
             for (int i = rowMin; i <= rowMax; i++)
@@ -4144,7 +4144,7 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            bool value = true;
+            var value = true;
             var cellValue = this.GetCellValue(this.CurrentCell);
             if (cellValue is bool)
             {
@@ -4231,10 +4231,10 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            int row = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
-            int column = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-            int rowspan = Math.Abs(this.CurrentCell.Row - this.SelectionCell.Row) + 1;
-            int columnspan = Math.Abs(this.CurrentCell.Column - this.SelectionCell.Column) + 1;
+            var row = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
+            var column = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+            var rowspan = Math.Abs(this.CurrentCell.Row - this.SelectionCell.Row) + 1;
+            var columnspan = Math.Abs(this.CurrentCell.Column - this.SelectionCell.Column) + 1;
 
             Grid.SetRow(this.selection, row);
             Grid.SetColumn(this.selection, column);
@@ -4259,13 +4259,13 @@ namespace PropertyTools.Wpf
             Grid.SetColumn(this.autoFillBox, column + columnspan - 1);
             Grid.SetRow(this.autoFillBox, row + rowspan - 1);
 
-            bool allSelected = rowspan == this.Rows && columnspan == this.Columns;
+            var allSelected = rowspan == this.Rows && columnspan == this.Columns;
             this.topLeft.Background = allSelected ? this.rowSelectionBackground.Background : this.rowGrid.Background;
 
-            int r = Math.Min(this.CurrentCell.Row, this.AutoFillCell.Row);
-            int c = Math.Min(this.CurrentCell.Column, this.AutoFillCell.Column);
-            int rs = Math.Abs(this.CurrentCell.Row - this.AutoFillCell.Row) + 1;
-            int cs = Math.Abs(this.CurrentCell.Column - this.AutoFillCell.Column) + 1;
+            var r = Math.Min(this.CurrentCell.Row, this.AutoFillCell.Row);
+            var c = Math.Min(this.CurrentCell.Column, this.AutoFillCell.Column);
+            var rs = Math.Abs(this.CurrentCell.Row - this.AutoFillCell.Row) + 1;
+            var cs = Math.Abs(this.CurrentCell.Column - this.AutoFillCell.Column) + 1;
 
             Grid.SetColumn(this.autoFillSelection, c);
             Grid.SetRow(this.autoFillSelection, r);
@@ -4348,7 +4348,7 @@ namespace PropertyTools.Wpf
             this.sheetGrid.Children.Add(this.currentBackground);
 
             // Add row lines to the sheet
-            for (int i = 1; i <= rows; i++)
+            for (var i = 1; i <= rows; i++)
             {
                 var border = new Border
                 {
@@ -4374,7 +4374,7 @@ namespace PropertyTools.Wpf
             if (rows > 0)
             {
                 // Add column lines to the sheet
-                for (int i = 0; i < columns; i++)
+                for (var i = 0; i < columns; i++)
                 {
                     if (i == 0 && columns > 1)
                     {
@@ -4397,9 +4397,9 @@ namespace PropertyTools.Wpf
             this.cellInsertionIndex = this.sheetGrid.Children.Count;
 
             // Add all cells to the sheet
-            for (int i = 0; i < rows; i++)
+            for (var i = 0; i < rows; i++)
             {
-                for (int j = 0; j < columns; j++)
+                for (var j = 0; j < columns; j++)
                 {
                     this.AddDisplayControl(new CellRef(i, j));
                 }
@@ -4424,9 +4424,9 @@ namespace PropertyTools.Wpf
             this.sheetGrid.UpdateLayout();
             this.columnGrid.UpdateLayout();
 
-            double starsToDistribute = 0;
-            double usedWidth = 0;
-            for (int i = 0; i < this.Columns; i++)
+            var starsToDistribute = 0d;
+            var usedWidth = 0d;
+            for (var i = 0; i < this.Columns; i++)
             {
                 var columnWidth = this.GetColumnWidth(i);
                 if (columnWidth == GridLength.Auto || this.AutoSizeColumns)
@@ -4444,7 +4444,7 @@ namespace PropertyTools.Wpf
             }
 
             var widthPerStar = Math.Max((this.sheetScrollViewer.ActualWidth - usedWidth) / starsToDistribute, 0);
-            for (int i = 0; i < this.Columns; i++)
+            for (var i = 0; i < this.Columns; i++)
             {
                 var columnWidth = this.GetColumnWidth(i);
                 if (columnWidth.IsStar && !this.AutoSizeColumns)
@@ -4455,7 +4455,7 @@ namespace PropertyTools.Wpf
 
             this.sheetGrid.UpdateLayout();
 
-            for (int j = 0; j < this.sheetGrid.ColumnDefinitions.Count; j++)
+            for (var j = 0; j < this.sheetGrid.ColumnDefinitions.Count; j++)
             {
                 this.columnGrid.ColumnDefinitions[j].Width =
                     new GridLength(this.sheetGrid.ColumnDefinitions[j].ActualWidth);
@@ -4468,7 +4468,7 @@ namespace PropertyTools.Wpf
         /// <param name="columns">The column index.</param>
         private void UpdateColumns(int columns)
         {
-            for (int i = 0; i < columns; i++)
+            for (var i = 0; i < columns; i++)
             {
                 var w = this.GetColumnWidth(i);
                 var cd1 = new System.Windows.Controls.ColumnDefinition { Width = w };
@@ -4489,9 +4489,9 @@ namespace PropertyTools.Wpf
             this.columnGrid.ContextMenu = this.ColumnsContextMenu;
 
             this.columnGrid.Children.Add(this.columnSelectionBackground);
-            for (int j = 0; j < columns; j++)
+            for (var j = 0; j < columns; j++)
             {
-                object header = this.GetColumnHeader(j);
+                var header = this.GetColumnHeader(j);
                 var cellref = new CellRef(this.ItemsInRows ? -1 : j, this.ItemsInRows ? j : -1);
                 var pd = this.GetPropertyDefinition(cellref);
 
@@ -4529,7 +4529,7 @@ namespace PropertyTools.Wpf
                 this.columnHeaderMap[j] = cell;
             }
 
-            for (int j = 0; j < columns; j++)
+            for (var j = 0; j < columns; j++)
             {
                 if (this.CanResizeColumns)
                 {
@@ -4611,16 +4611,16 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            int n = this.ItemsSource.Cast<object>().Count();
-            int m = this.PropertyDefinitions.Count;
+            var n = this.ItemsSource.Cast<object>().Count();
+            var m = this.PropertyDefinitions.Count;
 
             if (this.WrapItems)
             {
                 n /= m;
             }
 
-            int rows = this.ItemsInRows ? n : m;
-            int columns = this.ItemsInRows ? m : n;
+            var rows = this.ItemsInRows ? n : m;
+            var columns = this.ItemsInRows ? m : n;
 
             var visibility = rows >= 0 ? Visibility.Visible : Visibility.Hidden;
 
@@ -4717,7 +4717,7 @@ namespace PropertyTools.Wpf
             // to cover a possible scrollbar
             this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = new GridLength(20) });
 
-            for (int j = 0; j < rows; j++)
+            for (var j = 0; j < rows; j++)
             {
                 if (this.CanResizeRows)
                 {
@@ -4755,7 +4755,7 @@ namespace PropertyTools.Wpf
             this.sheetGrid.UpdateLayout();
             this.rowGrid.UpdateLayout();
 
-            for (int i = 0; i < this.Rows; i++)
+            for (var i = 0; i < this.Rows; i++)
             {
                 if (this.DefaultRowHeight == GridLength.Auto || this.GetRowHeight(i) == GridLength.Auto)
                 {

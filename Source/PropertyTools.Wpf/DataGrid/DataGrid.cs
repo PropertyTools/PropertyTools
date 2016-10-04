@@ -30,10 +30,6 @@ namespace PropertyTools.Wpf
 
     using PropertyTools.DataAnnotations;
 
-    public static class DataGridResourceKeys
-    {
-        
-    }
     /// <summary>
     /// Displays enumerable data in a customizable grid.
     /// </summary>
@@ -545,7 +541,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Reference to the collection that has subscribed to the INotifyCollectionChanged event.
         /// </summary>
-        private object subcribedCollection;
+        private object subscribedCollection;
 
         /// <summary>
         /// The top/left control.
@@ -1974,7 +1970,7 @@ namespace PropertyTools.Wpf
             int rows = values.GetUpperBound(0) + 1;
             int columns = values.GetUpperBound(1) + 1;
 
-            UnsubscribeNotifications();
+            this.UnsubscribeNotifications();
 
             for (int i = rowMin; i <= rowMax || i < rowMin + rows; i++)
             {
@@ -1993,7 +1989,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            UpdateGridContent();
+            this.UpdateGridContent();
 
             this.CurrentCell = new CellRef(rowMin, columnMin);
             this.SelectionCell = new CellRef(
@@ -2001,11 +1997,20 @@ namespace PropertyTools.Wpf
                 Math.Max(columnMax, columnMin + columns - 1));
         }
 
+        /// <summary>
+        /// Receives events from the centralized event manager.
+        /// </summary>
+        /// <param name="managerType">The type of the <see cref="T:System.Windows.WeakEventManager" /> calling this method.</param>
+        /// <param name="sender">Object that originated the event.</param>
+        /// <param name="e">Event data.</param>
+        /// <returns>
+        /// true if the listener handled the event. It is considered an error by the <see cref="T:System.Windows.WeakEventManager" /> handling in WPF to register a listener for an event that the listener does not handle. Regardless, the method should return false if it receives an event that it does not recognize or handle.
+        /// </returns>
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            if (managerType == typeof(CollectionChangedEventManager) && sender == subcribedCollection)
+            if (managerType == typeof(CollectionChangedEventManager) && sender == this.subscribedCollection)
             {
-                OnItemsCollectionChanged(sender, e as NotifyCollectionChangedEventArgs);
+                this.OnItemsCollectionChanged(sender, e as NotifyCollectionChangedEventArgs);
 
                 return true;
             }
@@ -3705,7 +3710,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The on content collection changed.
+        /// Handles changes to the items collection.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -4174,7 +4179,7 @@ namespace PropertyTools.Wpf
                 CollectionChangedEventManager.AddListener(collection, this);
             }
 
-            this.subcribedCollection = this.ItemsSource;
+            this.subscribedCollection = this.ItemsSource;
         }
 
         /// <summary>
@@ -4182,13 +4187,13 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void UnsubscribeNotifications()
         {
-            var ncc = this.subcribedCollection as INotifyCollectionChanged;
+            var ncc = this.subscribedCollection as INotifyCollectionChanged;
             if (ncc != null)
             {
                 CollectionChangedEventManager.RemoveListener(ncc, this);
             }
 
-            this.subcribedCollection = null;
+            this.subscribedCollection = null;
         }
 
         /// <summary>
@@ -4652,12 +4657,12 @@ namespace PropertyTools.Wpf
 
             for (var i = 0; i < rows; i++)
             {
-                var sheetDefinition = new System.Windows.Controls.RowDefinition { Height = GetRowHeight(i) };
-                sheetGrid.RowDefinitions.Add(sheetDefinition);
+                var sheetDefinition = new System.Windows.Controls.RowDefinition { Height = this.GetRowHeight(i) };
+                this.sheetGrid.RowDefinitions.Add(sheetDefinition);
 
                 var rowDefinition = new System.Windows.Controls.RowDefinition();
                 rowDefinition.SetBinding(System.Windows.Controls.RowDefinition.HeightProperty, new Binding { Source = sheetDefinition, Path = new PropertyPath("Height"), Mode = BindingMode.TwoWay });
-                rowGrid.RowDefinitions.Add(rowDefinition);
+                this.rowGrid.RowDefinitions.Add(rowDefinition);
             }
 
             for (var i = 0; i < rows; i++)
@@ -4752,7 +4757,7 @@ namespace PropertyTools.Wpf
 
             for (int i = 0; i < this.Rows; i++)
             {
-                if (this.DefaultRowHeight == GridLength.Auto || GetRowHeight(i) == GridLength.Auto /*|| this.AutoSizeRows*/)
+                if (this.DefaultRowHeight == GridLength.Auto || this.GetRowHeight(i) == GridLength.Auto)
                 {
                     this.AutoSizeRow(i);
                 }

@@ -137,9 +137,6 @@
     <Compile Include="Examples\TableExample.xaml.cs">
       <DependentUpon>TableExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\ListOfList\ListOfListOfInvalidExample.xaml.cs">
-      <DependentUpon>ListOfListOfInvalidExample.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Examples\ListOfList\ListOfListOfFruitExample.xaml.cs">
       <DependentUpon>ListOfListOfFruitExample.xaml</DependentUpon>
     </Compile>
@@ -276,10 +273,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\TableExample.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\ListOfList\ListOfListOfInvalidExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -3,31 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         xmlns:dataGridDemo="clr-namespace:DataGridDemo"
-        Title="ObservableCollection&lt;ExampleObject&gt; custom columns" Height="450" Width="900"
-        FocusManager.FocusedElement="{Binding ElementName=grid1}">
+        Title="ObservableCollection&lt;ExampleObject&gt; custom columns" Height="450" Width="900">
+    <Window.DataContext>
+        <dataGridDemo:ExampleViewModel/>
+    </Window.DataContext>
     <Window.Resources>
         <dataGridDemo:MassValueConverter x:Key="MassValueConverter"/>
     </Window.Resources>
     <Grid>
-        <p:DataGrid x:Name="grid1" ItemsSource="{Binding ItemsSource}">
+        <p:DataGrid ItemsSource="{Binding ItemsSource}">
             <p:DataGrid.ColumnDefinitions>
                 <p:ColumnDefinition PropertyName="String" Header="string" Tooltip="contains a string"/>
-                <p:ColumnDefinition PropertyName="Integer">
-                    <p:ColumnDefinition.Header>
-                        <TextBlock FontSize="6" FontWeight="ExtraBold">integer</TextBlock>
-                    </p:ColumnDefinition.Header>
-                </p:ColumnDefinition>
+                <p:ColumnDefinition PropertyName="Integer" Header="integer"/>
                 <p:ColumnDefinition PropertyName="Integer" Header="ReadOnly" IsReadOnly="True"/>
                 <p:ColumnDefinition PropertyName="Fruit" Header="enum"/>
                 <p:ColumnDefinition PropertyName="Selector" Header="selector"/>
                 <p:ColumnDefinition PropertyName="Mass" Header="Mass" Converter="{StaticResource MassValueConverter}"/>
-                <p:TemplateColumnDefinition PropertyName="Fruit" Header="Templated">
-                    <p:TemplateColumnDefinition.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock FontSize="6" FontWeight="ExtraBold" Text="{Binding Fruit}" />
-                        </DataTemplate>
-                    </p:TemplateColumnDefinition.CellTemplate>
-                    </p:TemplateColumnDefinition>
             </p:DataGrid.ColumnDefinitions>
         </p:DataGrid>
     </Grid>

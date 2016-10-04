@@ -27,15 +27,17 @@ namespace DataGridDemo
 
 
             var table = new DataTable();
-            table.Columns.Add(new DataColumn("BoolColumn", typeof (bool)));
-            table.Columns.Add(new DataColumn("StringColumn", typeof (string)));
-            table.Columns.Add(new DataColumn("IntColumn", typeof (int)));
+            table.Columns.Add(new DataColumn("BoolColumn", typeof(bool)));
+            table.Columns.Add(new DataColumn("StringColumn", typeof(string)));
+            table.Columns.Add(new DataColumn("IntColumn", typeof(int)));
             table.Rows.Add(true, "test1", 10);
             table.Rows.Add(false, "test2", 20);
             table.Rows.Add(true, "test3", 30);
             table.Rows.Add(false, "test4", 40);
 
-            Grid1.ItemsSource = table.DefaultView;
+            this.TableView = table.DefaultView;
         }
+
+        public DataView TableView { get; set; }
     }
 }

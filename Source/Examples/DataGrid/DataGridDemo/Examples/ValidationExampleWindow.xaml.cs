@@ -38,13 +38,7 @@ namespace DataGridDemo
         /// <summary>
         /// Gets the items source.
         /// </summary>
-        public ObservableCollection<ExampleObject> ItemsSource
-        {
-            get
-            {
-                return ValidationExampleWindow.StaticItemsSource;
-            }
-        }
+        public ObservableCollection<ExampleObject> ItemsSource => ValidationExampleWindow.StaticItemsSource;
 
         public class ExampleObject : ValidatableObject
         {

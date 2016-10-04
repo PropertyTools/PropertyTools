@@ -10,7 +10,6 @@
 namespace DataGridDemo
 {
     using System;
-    using System.Collections.ObjectModel;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Media;
@@ -26,15 +25,7 @@ namespace DataGridDemo
         public ThreadExample()
         {
             this.InitializeComponent();
-            this.DataContext = this;
-
-            this.ItemsSource = WpfDataGridExample.StaticItemsSource;
         }
-
-        /// <summary>
-        /// Gets or sets the items source.
-        /// </summary>
-        public ObservableCollection<ExampleObject> ItemsSource { get; set; }
 
         /// <summary>
         /// Update the table.
@@ -47,11 +38,12 @@ namespace DataGridDemo
         /// </param>
         private void BtnUpdate_OnClick(object sender, RoutedEventArgs e)
         {
+            var vm = (ExampleViewModel)this.DataContext;
             var task = new Task(
                 () =>
                     {
-                        this.ItemsSource.Clear();
-                        this.ItemsSource.Add(
+                        vm.ItemsSource.Clear();
+                        vm.ItemsSource.Add(
                             new ExampleObject
                             {
                                 Boolean = true,

@@ -3,10 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         xmlns:local="clr-namespace:DataGridDemo"
-        Title="EnableByProperty" Height="450" Width="900"
-        FocusManager.FocusedElement="{Binding ElementName=grid1}">
+        Title="EnableByProperty" Height="450" Width="900">
     <Grid>
-        <p:DataGrid x:Name="grid1" ItemsSource="{Binding ItemsSource}">
+        <p:DataGrid ItemsSource="{Binding ItemsSource}">
             <p:DataGrid.ColumnDefinitions>
                 <p:ColumnDefinition Header="Enabled" HorizontalAlignment="Center" PropertyName="IsRowEnabled"/>
                 <p:ColumnDefinition Header="Capital" HorizontalAlignment="Center" PropertyName="IsCapital" IsEnabledByProperty="IsRowEnabled"/>

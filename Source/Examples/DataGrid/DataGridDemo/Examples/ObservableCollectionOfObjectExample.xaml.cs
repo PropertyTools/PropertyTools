@@ -1,28 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ArrayOfDoubleExample.xaml.cs" company="PropertyTools">
+// <copyright file="ObservableCollectionOfObjectExample.xaml.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for ArrayOfDoubleExample.xaml
+//   Interaction logic for ObservableCollectionOfObjectExample.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace DataGridDemo
 {
+    using System.Collections.ObjectModel;
+
     /// <summary>
-    /// Interaction logic for ArrayOfDoubleExample.xaml
+    /// Interaction logic for ObservableCollectionOfObjectExample.
     /// </summary>
-    public partial class ArrayOfDoubleExample
+    public partial class ObservableCollectionOfObjectExample
     {
         /// <summary>
         /// The static items.
         /// </summary>
-        internal static readonly double[] StaticItems = { 3.0, 7, 9 };
+        private static readonly ObservableCollection<object> StaticItems = new ObservableCollection<object>(ArrayOfObjectExample.StaticItems);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ArrayOfDoubleExample" /> class.
+        /// Initializes a new instance of the <see cref="ArrayOfObjectExample" /> class.
         /// </summary>
-        public ArrayOfDoubleExample()
+        public ObservableCollectionOfObjectExample()
         {
             this.InitializeComponent();
             this.DataContext = this;
@@ -31,6 +35,6 @@ namespace DataGridDemo
         /// <summary>
         /// Gets the items.
         /// </summary>
-        public double[] Items => StaticItems;
+        public ObservableCollection<object> Items => StaticItems;
     }
 }

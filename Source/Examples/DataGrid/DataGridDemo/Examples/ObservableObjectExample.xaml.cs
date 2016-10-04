@@ -29,7 +29,7 @@ namespace DataGridDemo
             this.InitializeComponent();
             this.vm = new ViewModel();
             this.DataContext = this.vm;
-            this.vm.ItemsSource = WpfDataGridExample.StaticItemsSource;
+            this.vm.ItemsSource = ExampleViewModel.StaticItemsSource;
         }
 
 
@@ -40,7 +40,7 @@ namespace DataGridDemo
 
         private void ResetItemsSource(object sender, RoutedEventArgs e)
         {
-            this.vm.ItemsSource = WpfDataGridExample.StaticItemsSource;
+            this.vm.ItemsSource = ExampleViewModel.StaticItemsSource;
         }
 
         public class ViewModel : Observable

@@ -9,8 +9,6 @@
 
 namespace DataGridDemo
 {
-    using System.Collections.ObjectModel;
-
     /// <summary>
     /// Interaction logic for CustomColumnsExample.xaml
     /// </summary>
@@ -22,18 +20,6 @@ namespace DataGridDemo
         public CustomColumnsExample()
         {
             this.InitializeComponent();
-            this.DataContext = this;
-        }
-
-        /// <summary>
-        /// Gets the items source.
-        /// </summary>
-        public ObservableCollection<ExampleObject> ItemsSource
-        {
-            get
-            {
-                return WpfDataGridExample.StaticItemsSource;
-            }
         }
     }
 }

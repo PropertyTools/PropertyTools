@@ -7,28 +7,32 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace DataGridDemo
 {
-    using System;
-
     /// <summary>
     /// Interaction logic for ArrayOfObjectExample.xaml
     /// </summary>
     public partial class ArrayOfObjectExample
     {
         /// <summary>
+        /// The static items.
+        /// </summary>
+        internal static readonly object[] StaticItems = { 1, Math.PI, true, (bool?)true, "Hello", null, Fruit.Apple, (Fruit?)Fruit.Banana };
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ArrayOfObjectExample" /> class.
         /// </summary>
         public ArrayOfObjectExample()
         {
             this.InitializeComponent();
-            this.ItemsSource = new object[] { 1, true, "Hello", Fruit.Apple };
             this.DataContext = this;
         }
 
         /// <summary>
-        /// Gets or sets the items.
+        /// Gets the items.
         /// </summary>
-        public object[] ItemsSource { get; set; }
+        public object[] Items => StaticItems;
     }
 }

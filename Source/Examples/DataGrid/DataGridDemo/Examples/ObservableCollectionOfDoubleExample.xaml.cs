@@ -9,7 +9,7 @@
 
 namespace DataGridDemo
 {
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Interaction logic for ObservableCollectionOfDoubleExample.
@@ -17,18 +17,22 @@ namespace DataGridDemo
     public partial class ObservableCollectionOfDoubleExample
     {
         /// <summary>
+        /// The static items.
+        /// </summary>
+        private static readonly ObservableCollection<double> StaticItems = new ObservableCollection<double>(ArrayOfDoubleExample.StaticItems);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ObservableCollectionOfDoubleExample" /> class.
         /// </summary>
         public ObservableCollectionOfDoubleExample()
         {
             this.InitializeComponent();
-            this.ItemsSource = new List<double> { 3, 7, 9 };
             this.DataContext = this;
         }
 
         /// <summary>
         /// Gets or sets the items.
         /// </summary>
-        public IList<double> ItemsSource { get; set; }
+        public ObservableCollection<double> Items => StaticItems;
     }
 }

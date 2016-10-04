@@ -40,7 +40,7 @@ namespace DataGridDemo
             {
                 this.Type = type;
                 var instance = this.CreateInstance();
-                this.Title = instance.Title;
+                this.Title = instance.Title ?? type.Name;
                 instance.Close();
             }
 

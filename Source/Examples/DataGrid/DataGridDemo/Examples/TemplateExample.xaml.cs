@@ -1,23 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ItemsInColumnsExample.xaml.cs" company="PropertyTools">
+// <copyright file="TemplateExample.xaml.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for ItemsInColumnsExample.
+//   Interaction logic for TemplateExample.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace DataGridDemo
 {
     /// <summary>
-    /// Interaction logic for ItemsInColumnsExample.
+    /// Interaction logic for TemplateExample.
     /// </summary>
-    public partial class CustomRowsExample
+    public partial class TemplateExample
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomRowsExample" /> class.
+        /// Initializes a new instance of the <see cref="TemplateExample" /> class.
         /// </summary>
-        public CustomRowsExample()
+        public TemplateExample()
         {
             this.InitializeComponent();
         }

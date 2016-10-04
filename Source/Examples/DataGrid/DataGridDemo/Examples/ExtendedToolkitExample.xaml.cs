@@ -26,7 +26,7 @@ namespace DataGridDemo
             this.InitializeComponent();
             this.DataContext = this;
 
-            var lst = new List<DemoClass>
+            this.Items = new List<DemoClass>
             {
                 new DemoClass
                 {
@@ -41,9 +41,9 @@ namespace DataGridDemo
                     Double = 3.6
                 }
             };
-
-            this.Grid1.ItemsSource = lst;
         }
+
+        public List<DemoClass> Items { get; set; }
 
         public class DemoClass
         {

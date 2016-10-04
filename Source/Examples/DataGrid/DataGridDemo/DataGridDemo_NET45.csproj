@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="DataTypes\MassValueConverter.cs" />
     <Compile Include="NET45\ValidatableObject.cs" />
+    <Compile Include="Examples\ExampleViewModel.cs" />
     <Compile Include="Examples\ArrayOfObjectExample.xaml.cs">
       <DependentUpon>ArrayOfObjectExample.xaml</DependentUpon>
     </Compile>
@@ -79,6 +80,9 @@
     </Compile>
     <Compile Include="Examples\ObservableObjectExample.xaml.cs">
       <DependentUpon>ObservableObjectExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\ObservableCollectionOfObjectExample.xaml.cs">
+      <DependentUpon>ObservableCollectionOfObjectExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\CustomColumnsExample.xaml.cs">
       <DependentUpon>CustomColumnsExample.xaml</DependentUpon>
@@ -150,6 +154,24 @@
     </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
+    <Page Include="Examples\CustomHeaderExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\TemplateExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ObservableCollectionOfObjectExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Examples\CustomHeaderExample.xaml.cs">
+      <DependentUpon>CustomHeaderExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\TemplateExample.xaml.cs">
+      <DependentUpon>TemplateExample.xaml</DependentUpon>
+    </Compile>
     <Page Include="Examples\ArrayOfObjectExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

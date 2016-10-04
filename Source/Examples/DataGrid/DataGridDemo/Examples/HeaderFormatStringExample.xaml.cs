@@ -52,13 +52,7 @@ namespace DataGridDemo
         /// Gets the table.
         /// </summary>
         /// <value>The table.</value>
-        public Table<double, int, int> Table
-        {
-            get
-            {
-                return StaticTable;
-            }
-        }
+        public Table<double, int, int> Table => StaticTable;
 
         /// <summary>
         /// Gets the create column header function.

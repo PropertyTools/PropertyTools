@@ -51,12 +51,6 @@ namespace DataGridDemo
         /// <summary>
         /// Gets the items source.
         /// </summary>
-        public ObservableCollection<ObservableCollection<Color>> ItemsSource
-        {
-            get
-            {
-                return StaticItemsSource;
-            }
-        }
+        public ObservableCollection<ObservableCollection<Color>> ItemsSource => StaticItemsSource;
     }
 }

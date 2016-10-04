@@ -50,12 +50,6 @@ namespace DataGridDemo
         /// Gets the items source.
         /// </summary>
         /// <value>The items source.</value>
-        public ObservableCollection<ObservableCollection<int>> ItemsSource
-        {
-            get
-            {
-                return StaticItemsSource;
-            }
-        }
+        public ObservableCollection<ObservableCollection<int>> ItemsSource => StaticItemsSource;
     }
 }

@@ -59,13 +59,7 @@ namespace DataGridDemo
         /// <summary>
         /// Gets the items source.
         /// </summary>
-        public ObservableCollection<ObservableCollection<Fruit>> ItemsSource
-        {
-            get
-            {
-                return StaticItemsSource;
-            }
-        }
+        public ObservableCollection<ObservableCollection<Fruit>> ItemsSource => StaticItemsSource;
 
         /// <summary>
         /// Gets the row headers items source.
@@ -73,13 +67,7 @@ namespace DataGridDemo
         /// <value>
         /// The row headers source.
         /// </value>
-        public ObservableCollection<string> RowHeadersItemsSource
-        {
-            get
-            {
-                return StaticRowHeadersItemsSource;
-            }
-        }
+        public ObservableCollection<string> RowHeadersItemsSource => StaticRowHeadersItemsSource;
 
         /// <summary>
         /// Gets the column headers items source.
@@ -87,13 +75,7 @@ namespace DataGridDemo
         /// <value>
         /// The column headers source.
         /// </value>
-        public ObservableCollection<string> ColumnHeadersItemsSource
-        {
-            get
-            {
-                return StaticColumnHeadersItemsSource;
-            }
-        }
+        public ObservableCollection<string> ColumnHeadersItemsSource => StaticColumnHeadersItemsSource;
 
         /// <summary>
         /// Gets the create column header function.

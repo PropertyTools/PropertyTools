@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for ValidationExampleWindow.xaml
+//   Interaction logic for ValidationExampleWindow.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ namespace DataGridDemo
     using PropertyTools;
 
     /// <summary>
-    /// Interaction logic for ValidationExampleWindow.xaml
+    /// Interaction logic for ValidationExampleWindow.
     /// </summary>
     public partial class ValidationExampleWindow
     {

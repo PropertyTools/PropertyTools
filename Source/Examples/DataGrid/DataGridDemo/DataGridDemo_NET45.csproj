@@ -58,92 +58,92 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DataTypes\MassValueConverter.cs" />
+    <Compile Include="NET45\ValidatableObject.cs" />
     <Compile Include="Examples\EnableByPropertyExample.xaml.cs">
       <DependentUpon>EnableByPropertyExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\EnableByAttributeExample.xaml.cs">
       <DependentUpon>EnableByAttributeExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NET45\ValidatableObject.cs" />
     <Compile Include="Examples\ValidationExampleWindow.xaml.cs">
       <DependentUpon>ValidationExampleWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window403.xaml.cs">
-      <DependentUpon>Window403.xaml</DependentUpon>
+    <Compile Include="Examples\WrapItems\WrapItemsOfMassExample.xaml.cs">
+      <DependentUpon>WrapItemsOfMassExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
+    <Compile Include="Examples\WpfDataGridExample.xaml.cs">
+      <DependentUpon>WpfDataGridExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window101.xaml.cs">
-      <DependentUpon>Window101.xaml</DependentUpon>
+    <Compile Include="Examples\ObservableObjectExample.xaml.cs">
+      <DependentUpon>ObservableObjectExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window102.xaml.cs">
-      <DependentUpon>Window102.xaml</DependentUpon>
+    <Compile Include="Examples\CustomColumnsExample.xaml.cs">
+      <DependentUpon>CustomColumnsExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window103.xaml.cs">
-      <DependentUpon>Window103.xaml</DependentUpon>
+    <Compile Include="Examples\ItemsInColumnsExample.xaml.cs">
+      <DependentUpon>ItemsInColumnsExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window201.xaml.cs">
-      <DependentUpon>Window201.xaml</DependentUpon>
+    <Compile Include="Examples\PlainObjectExample.xaml.cs">
+      <DependentUpon>PlainObjectExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window202.xaml.cs">
-      <DependentUpon>Window202.xaml</DependentUpon>
+    <Compile Include="Examples\PlainObjectCustomColumnsExample.xaml.cs">
+      <DependentUpon>PlainObjectCustomColumnsExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window301.xaml.cs">
-      <DependentUpon>Window301.xaml</DependentUpon>
+    <Compile Include="Examples\ListOfIntExample.xaml.cs">
+      <DependentUpon>ListOfIntExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window302.xaml.cs">
-      <DependentUpon>Window302.xaml</DependentUpon>
+    <Compile Include="Examples\ObservableCollectionOfDoubleExample.xaml.cs">
+      <DependentUpon>ObservableCollectionOfDoubleExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window303.xaml.cs">
-      <DependentUpon>Window303.xaml</DependentUpon>
+    <Compile Include="Examples\ListOfVectorExample.xaml.cs">
+      <DependentUpon>ListOfVectorExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window401.xaml.cs">
-      <DependentUpon>Window401.xaml</DependentUpon>
+    <Compile Include="Examples\ArrayOfDoubleExample.xaml.cs">
+      <DependentUpon>ArrayOfDoubleExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window402.xaml.cs">
-      <DependentUpon>Window402.xaml</DependentUpon>
+    <Compile Include="Examples\WrapItems\WrapItemsExample.xaml.cs">
+      <DependentUpon>WrapItemsExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataTypes\Mass.cs" />
     <Compile Include="DataTypes\MassConverter.cs" />
-    <Compile Include="Examples\Window501.xaml.cs">
-      <DependentUpon>Window501.xaml</DependentUpon>
+    <Compile Include="Examples\ListOfList\ListOfListOfIntExample.xaml.cs">
+      <DependentUpon>ListOfListOfIntExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window502.xaml.cs">
-      <DependentUpon>Window502.xaml</DependentUpon>
+    <Compile Include="Examples\ListOfList\ListOfListOfMassExample.xaml.cs">
+      <DependentUpon>ListOfListOfMassExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window503.xaml.cs">
-      <DependentUpon>Window503.xaml</DependentUpon>
+    <Compile Include="Examples\ListOfList\ListOfListOfBoolExample.xaml.cs">
+      <DependentUpon>ListOfListOfBoolExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window504.xaml.cs">
-      <DependentUpon>Window504.xaml</DependentUpon>
+    <Compile Include="Examples\ListOfList\ListOfListOfColorExample.xaml.cs">
+      <DependentUpon>ListOfListOfColorExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window509.xaml.cs">
-      <DependentUpon>Window509.xaml</DependentUpon>
+    <Compile Include="Examples\HeaderFormatStringExample.xaml.cs">
+      <DependentUpon>HeaderFormatStringExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window508.xaml.cs">
-      <DependentUpon>Window508.xaml</DependentUpon>
+    <Compile Include="Examples\SyncTableExample.xaml.cs">
+      <DependentUpon>SyncTableExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window507.xaml.cs">
-      <DependentUpon>Window507.xaml</DependentUpon>
+    <Compile Include="Examples\TableExample.xaml.cs">
+      <DependentUpon>TableExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window506.xaml.cs">
-      <DependentUpon>Window506.xaml</DependentUpon>
+    <Compile Include="Examples\ListOfList\ListOfListOfInvalidExample.xaml.cs">
+      <DependentUpon>ListOfListOfInvalidExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window505.xaml.cs">
-      <DependentUpon>Window505.xaml</DependentUpon>
+    <Compile Include="Examples\ListOfList\ListOfListOfFruitExample.xaml.cs">
+      <DependentUpon>ListOfListOfFruitExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window510.xaml.cs">
-      <DependentUpon>Window510.xaml</DependentUpon>
+    <Compile Include="Examples\ThreadExample.xaml.cs">
+      <DependentUpon>ThreadExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window511.xaml.cs">
-      <DependentUpon>Window511.xaml</DependentUpon>
+    <Compile Include="Examples\ListOfMassExample.xaml.cs">
+      <DependentUpon>ListOfMassExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window601.xaml.cs">
-      <DependentUpon>Window601.xaml</DependentUpon>
+    <Compile Include="Examples\DatatableExample.xaml.cs">
+      <DependentUpon>DatatableExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\Window602.xaml.cs">
-      <DependentUpon>Window602.xaml</DependentUpon>
+    <Compile Include="Examples\ExtendedToolkitExample.xaml.cs">
+      <DependentUpon>ExtendedToolkitExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
@@ -159,95 +159,95 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window403.xaml">
+    <Page Include="Examples\WrapItems\WrapItemsOfMassExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window1.xaml">
+    <Page Include="Examples\WpfDataGridExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Examples\Window103.xaml">
+    <Page Include="Examples\ItemsInColumnsExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window102.xaml">
+    <Page Include="Examples\CustomColumnsExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window402.xaml">
+    <Page Include="Examples\WrapItems\WrapItemsExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window401.xaml">
+    <Page Include="Examples\ArrayOfDoubleExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window202.xaml">
+    <Page Include="Examples\PlainObjectCustomColumnsExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window201.xaml">
+    <Page Include="Examples\PlainObjectExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window303.xaml">
+    <Page Include="Examples\ListOfVectorExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window302.xaml">
+    <Page Include="Examples\ObservableCollectionOfDoubleExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window501.xaml">
+    <Page Include="Examples\ListOfList\ListOfListOfIntExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window502.xaml">
+    <Page Include="Examples\ListOfList\ListOfListOfMassExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Examples\Window503.xaml">
+    <Page Include="Examples\ListOfList\ListOfListOfBoolExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Examples\Window504.xaml">
+    <Page Include="Examples\ListOfList\ListOfListOfColorExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Examples\Window509.xaml">
+    <Page Include="Examples\HeaderFormatStringExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window511.xaml">
+    <Page Include="Examples\ListOfMassExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Examples\Window602.xaml">
+    <Page Include="Examples\ExtendedToolkitExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window601.xaml">
+    <Page Include="Examples\DatatableExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window510.xaml">
+    <Page Include="Examples\ThreadExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window508.xaml">
+    <Page Include="Examples\SyncTableExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window507.xaml">
+    <Page Include="Examples\TableExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window506.xaml">
+    <Page Include="Examples\ListOfList\ListOfListOfInvalidExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\Window505.xaml">
+    <Page Include="Examples\ListOfList\ListOfListOfFruitExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -264,11 +264,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Examples\Window101.xaml">
+    <Page Include="Examples\ObservableObjectExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Examples\Window301.xaml">
+    <Page Include="Examples\ListOfIntExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

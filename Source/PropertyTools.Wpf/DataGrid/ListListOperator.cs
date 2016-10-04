@@ -12,7 +12,6 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.Linq;
-    using System.Windows;
 
     /// <summary>
     /// Represents an operator for <see cref="DataGrid" /> when its ItemsSource is of type <see cref="IList" />&gt;<see cref="IList" />&lt;.
@@ -27,33 +26,7 @@ namespace PropertyTools.Wpf
             : base(owner)
         {
         }
-
-        /// <summary>
-        /// Creates display control.
-        /// </summary>
-        /// <param name="cell">The cell reference.</param>
-        /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
-        /// <returns>
-        /// The display control.
-        /// </returns>
-        public override FrameworkElement CreateDisplayControl(CellRef cell, PropertyDefinition pd)
-        {
-            return this.ControlFactory.CreateDisplayControl(pd, pd.GetBindingPath(cell));
-        }
-
-        /// <summary>
-        /// Creates edit control.
-        /// </summary>
-        /// <param name="cell">The cell reference.</param>
-        /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
-        /// <returns>
-        /// The edit control.
-        /// </returns>
-        public override FrameworkElement CreateEditControl(CellRef cell, PropertyDefinition pd)
-        {
-            return this.ControlFactory.CreateEditControl(pd, pd.GetBindingPath(cell));
-        }
-
+        
         /// <summary>
         /// Generate column definitions based on <seealso cref="DataGridOperator.ItemsSource" />.
         /// </summary>

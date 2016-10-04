@@ -28,35 +28,7 @@ namespace PropertyTools.Wpf
             : base(owner)
         {
         }
-
-        /// <summary>
-        /// Creates display control.
-        /// </summary>
-        /// <param name="cell">The cell reference.</param>
-        /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
-        /// <returns>
-        /// The display control.
-        /// </returns>
-        public override FrameworkElement CreateDisplayControl(CellRef cell, PropertyDefinition pd)
-        {
-            var index = this.Owner.GetItemIndex(cell);
-            return this.ControlFactory.CreateDisplayControl(pd, pd.GetBindingPath(index));
-        }
-
-        /// <summary>
-        /// Creates edit control.
-        /// </summary>
-        /// <param name="cell">The cell reference.</param>
-        /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
-        /// <returns>
-        /// The edit control.
-        /// </returns>
-        public override FrameworkElement CreateEditControl(CellRef cell, PropertyDefinition pd)
-        {
-            var index = this.Owner.GetItemIndex(cell);
-            return this.ControlFactory.CreateEditControl(pd, pd.GetBindingPath(index));
-        }
-
+        
         /// <summary>
         /// Generate column definitions based on <seealso cref="DataGridOperator.ItemsSource" />.
         /// </summary>
@@ -88,11 +60,11 @@ namespace PropertyTools.Wpf
 
                     this.Owner.ColumnDefinitions.Add(
                         new ColumnDefinition(descriptor)
-                            {
-                                Header = info.Name,
-                                HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
-                                Width = this.Owner.DefaultColumnWidth
-                            });
+                        {
+                            Header = info.Name,
+                            HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
+                            Width = this.Owner.DefaultColumnWidth
+                        });
                 }
 
                 return;
@@ -117,11 +89,11 @@ namespace PropertyTools.Wpf
 
                 this.Owner.ColumnDefinitions.Add(
                     new ColumnDefinition(descriptor)
-                        {
-                            Header = descriptor.Name,
-                            HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
-                            Width = this.Owner.DefaultColumnWidth
-                        });
+                    {
+                        Header = descriptor.Name,
+                        HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
+                        Width = this.Owner.DefaultColumnWidth
+                    });
             }
 
             if (this.Owner.ColumnDefinitions.Count == 0)
@@ -129,12 +101,12 @@ namespace PropertyTools.Wpf
                 var itemsType = TypeHelper.GetItemType(list);
                 this.Owner.ColumnDefinitions.Add(
                     new ColumnDefinition
-                        {
-                            PropertyType = itemsType,
-                            Header = itemsType.Name,
-                            HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
-                            Width = this.Owner.DefaultColumnWidth
-                        });
+                    {
+                        PropertyType = itemsType,
+                        Header = itemsType.Name,
+                        HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
+                        Width = this.Owner.DefaultColumnWidth
+                    });
             }
         }
 
@@ -245,6 +217,18 @@ namespace PropertyTools.Wpf
 
             var index = this.Owner.GetItemIndex(cell);
             list[index] = value;
+        }
+
+        /// <summary>
+        /// Gets the binding path for the specified cell.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <param name="pd">The property definition.</param>
+        /// <returns>The binding path</returns>
+        protected override string GetBindingPath(CellRef cell, PropertyDefinition pd)
+        {
+            var index = this.Owner.GetItemIndex(cell);
+            return pd.GetBindingPath(index);
         }
 
         /// <summary>

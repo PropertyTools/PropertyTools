@@ -1349,18 +1349,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the operator.
         /// </summary>
-        private DataGridOperator Operator
-        {
-            get
-            {
-                if (this.IsIListIList())
-                {
-                    return new ListListOperator(this);
-                }
-
-                return new ListOperator(this);
-            }
-        }
+        private DataGridOperator Operator => this.CreateOperator();
 
         /// <summary>
         /// Autosizes all columns.
@@ -2051,7 +2040,7 @@ namespace PropertyTools.Wpf
             }
 
             var item = this.GetItem(this.CurrentCell);
-            this.currentEditor = this.CreateEditControl(this.CurrentCell, pd);
+            this.currentEditor = this.Operator.CreateEditControl(this.CurrentCell, pd, item);
 
             if (this.currentEditor == null)
             {
@@ -2178,25 +2167,33 @@ namespace PropertyTools.Wpf
                     return false;
                 }
 
-                object convertedValue;
-                if (current != null && !pd.IsReadOnly && TryConvert(value, pd.PropertyType, out convertedValue))
+                if (current == null || pd.IsReadOnly)
                 {
-                    if (pd.Descriptor != null)
-                    {
-                        pd.Descriptor.SetValue(current, convertedValue);
-                    }
-                    else
-                    {
-                        this.SetValue(cell, convertedValue);
-
-                        if (!(this.ItemsSource is INotifyCollectionChanged))
-                        {
-                            this.UpdateCellContent(cell);
-                        }
-                    }
-
-                    return true;
+                    return false;
                 }
+
+                object convertedValue;
+                var targetType = this.Operator.GetPropertyType(pd, cell, current);
+                if (!TryConvert(value, targetType, out convertedValue))
+                {
+                    return false;
+                }
+
+                if (pd.Descriptor != null)
+                {
+                    pd.Descriptor.SetValue(current, convertedValue);
+                }
+                else
+                {
+                    this.SetValue(cell, convertedValue);
+
+                    if (!(this.ItemsSource is INotifyCollectionChanged))
+                    {
+                        this.UpdateCellContent(cell);
+                    }
+                }
+
+                return true;
             }
 
             return false;
@@ -2227,7 +2224,7 @@ namespace PropertyTools.Wpf
 
             if (pd != null && item != null)
             {
-                element = this.CreateDisplayControl(cell, pd);
+                element = this.Operator.CreateDisplayControl(cell, pd, item);
 
                 this.SetElementDataContext(element, pd, item);
 
@@ -3634,32 +3631,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates a display control and bind it to the item source's cell element.
-        /// </summary>
-        /// <param name="cell">The cell reference.</param>
-        /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
-        /// <returns>
-        /// The <see cref="FrameworkElement" />.
-        /// </returns>
-        private FrameworkElement CreateDisplayControl(CellRef cell, PropertyDefinition pd)
-        {
-            return this.Operator.CreateDisplayControl(cell, pd);
-        }
-
-        /// <summary>
-        /// Creates a edit control and bind it to the current cell element.
-        /// </summary>
-        /// <param name="cell">The cell reference.</param>
-        /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
-        /// <returns>
-        /// The <see cref="FrameworkElement" />.
-        /// </returns>
-        private FrameworkElement CreateEditControl(CellRef cell, PropertyDefinition pd)
-        {
-            return this.Operator.CreateEditControl(cell, pd);
-        }
-
-        /// <summary>
         /// Sets value to items in cell.
         /// </summary>
         /// <param name="cell">The cell reference.</param>
@@ -4781,6 +4752,20 @@ namespace PropertyTools.Wpf
                 this.sheetGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
                 this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
             }
+        }
+
+        /// <summary>
+        /// Creates the operator for the current items source.
+        /// </summary>
+        /// <returns>The operator.</returns>
+        private DataGridOperator CreateOperator()
+        {
+            if (this.IsIListIList())
+            {
+                return new ListListOperator(this);
+            }
+
+            return new ListOperator(this);
         }
     }
 }

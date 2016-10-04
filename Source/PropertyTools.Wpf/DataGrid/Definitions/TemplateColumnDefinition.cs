@@ -10,7 +10,6 @@
 namespace PropertyTools.Wpf
 {
     using System.Windows;
-    using System.Windows.Controls;
 
     /// <summary>
     /// Defines a template column in a <see cref="DataGrid" />.
@@ -18,17 +17,18 @@ namespace PropertyTools.Wpf
     public class TemplateColumnDefinition : ColumnDefinition
     {
         /// <summary>
-        /// Gets or sets CellTemplate.
+        /// Gets or sets the cell template.
         /// </summary>
-        /// <value>The CellTemplate.</value>
+        /// <value>A data template that contains display controls.</value>
         public DataTemplate CellTemplate { get; set; }
 
         /// <summary>
-        /// Gets or sets CellEditingTemplate.
+        /// Gets or sets the cell template used when editing the cell.
         /// </summary>
-        /// <value>The CellEditingTemplate.</value>
+        /// <value>A data template that contains edit controls.</value>
         public DataTemplate CellEditingTemplate { get; set; }
 
+        /* TODO
         /// <summary>
         /// The DataGridControlFactory uses this method to create the display control.
         /// </summary>
@@ -40,11 +40,11 @@ namespace PropertyTools.Wpf
             var element = (FrameworkElement)template.LoadContent();
             var binding = this.CreateBinding(string.Empty);
             binding.Mode = System.Windows.Data.BindingMode.OneWay;
-            var contentControl = new ContentControl()
+            var contentControl = new ContentControl
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
-                Content = element,
+                Content = element
             };
             element.SetBinding(FrameworkElement.DataContextProperty, binding);
             return contentControl;
@@ -66,14 +66,14 @@ namespace PropertyTools.Wpf
             var element = (FrameworkElement)template.LoadContent();
             var binding = this.CreateBinding(string.Empty);
             binding.Mode = System.Windows.Data.BindingMode.OneWay;
-            var contentControl = new ContentControl()
+            var contentControl = new ContentControl
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
-                Content = element,
+                Content = element
             };
             element.SetBinding(FrameworkElement.DataContextProperty, binding);
             return contentControl;
-        }
+        }*/
     }
 }

@@ -31,14 +31,15 @@ namespace PropertyTools.Wpf.ExtendedToolkit
         /// </summary>
         /// <value>The instance.</value>
         public static ExtendedToolkitDataGridControlFactory Instance => LazyInstance.Value;
-
+        /* TODO
         /// <summary>
         /// Creates the display control.
         /// </summary>
         /// <param name="propertyDefinition">The property definition.</param>
+        /// <param name="propertyType">The property type.</param>
         /// <param name="bindingPath">The binding path.</param>
         /// <returns>A FrameworkElement.</returns>
-        public override FrameworkElement CreateDisplayControl(PropertyDefinition propertyDefinition, string bindingPath)
+        public override FrameworkElement CreateDisplayControl(PropertyDefinition propertyDefinition, Type propertyType, string bindingPath)
         {
             var control = propertyDefinition.CreateDisplayControl(bindingPath);
             if (control != null)
@@ -52,7 +53,7 @@ namespace PropertyTools.Wpf.ExtendedToolkit
                 return ctl;
             }
 
-            return base.CreateDisplayControl(propertyDefinition, bindingPath);
+            return base.CreateDisplayControl(propertyDefinition, propertyType, bindingPath);
         }
 
         /// <summary>
@@ -219,6 +220,6 @@ namespace PropertyTools.Wpf.ExtendedToolkit
             }
 
             return null;
-        }
+        }*/
     }
 }

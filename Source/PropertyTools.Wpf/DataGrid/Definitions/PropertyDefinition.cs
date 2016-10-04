@@ -187,56 +187,6 @@ namespace PropertyTools.Wpf
         public object IsEnabledByValue { get; set; }
 
         /// <summary>
-        /// Creates a binding.
-        /// </summary>
-        /// <param name="bindingPath">The binding path.</param>
-        /// <param name="trigger">The trigger.</param>
-        /// <returns>
-        /// A binding.
-        /// </returns>
-        public Binding CreateBinding(string bindingPath, UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
-        {
-            var bindingMode = this.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
-            var formatString = this.FormatString;
-            if (formatString != null && !formatString.StartsWith("{"))
-            {
-                formatString = "{0:" + formatString + "}";
-            }
-
-            var binding = new Binding(bindingPath)
-            {
-                Mode = bindingMode,
-                Converter = this.Converter,
-                ConverterParameter = this.ConverterParameter,
-                StringFormat = formatString,
-                UpdateSourceTrigger = trigger,
-                ValidatesOnDataErrors = true,
-                ValidatesOnExceptions = true,
-                NotifyOnSourceUpdated = true
-            };
-            if (this.ConverterCulture != null)
-            {
-                binding.ConverterCulture = this.ConverterCulture;
-            }
-
-            return binding;
-        }
-
-        /// <summary>
-        /// Creates the one way binding.
-        /// </summary>
-        /// <param name="bindingPath">The binding path.</param>
-        /// <returns>
-        /// A binding.
-        /// </returns>
-        public Binding CreateOneWayBinding(string bindingPath)
-        {
-            var b = this.CreateBinding(bindingPath);
-            b.Mode = BindingMode.OneWay;
-            return b;
-        }
-
-        /// <summary>
         /// Gets the binding path.
         /// </summary>
         /// <param name="index">The index.</param>

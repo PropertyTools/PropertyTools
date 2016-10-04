@@ -1,51 +1,10 @@
 ﻿<Window x:Class="DataGridDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:DataGridDemo"
         Title="DataGrid demos"
-        SizeToContent="WidthAndHeight">
-    <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Margin" Value="8" />
-            <EventSetter Event="Click" Handler="OpenWindowClick" />
-        </Style>
-    </Window.Resources>
-    <StackPanel Orientation="Horizontal">
-        <StackPanel>
-            <Button Content="ObservableCollection&lt;ExampleObject&gt;" Tag="{x:Type local:ObservableObjectExample}" />
-            <Button Content="ObservableCollection&lt;ExampleObject&gt; (custom columns)" Tag="{x:Type local:CustomColumnsExample}" />
-            <Button Content="ObservableCollection&lt;ExampleObject&gt; (items in columns)" Tag="{x:Type local:ItemsInColumnsExample}" />
-            <Button Content="List&lt;PlainObject&gt;" Tag="{x:Type local:PlainObjectExample}" />
-            <Button Content="List&lt;PlainObject&gt; (custom columns)" Tag="{x:Type local:PlainObjectCustomColumnsExample}" />
-
-            <Button Content="List&lt;int&gt;" Tag="{x:Type local:ListOfIntExample}" />
-            <Button Content="ObservableCollection&lt;double&gt;" Tag="{x:Type local:ObservableCollectionOfDoubleExample}" />
-            <Button Content="List&lt;Vector3D&gt;" Tag="{x:Type local:ListOfVectorExample}" />
-
-            <Button Content="double[]" Tag="{x:Type local:ArrayOfDoubleExample}" />
-            <Button Content="double[] (WrapItems=True)" Tag="{x:Type local:WrapItemsExample}" />
-            <Button Content="Mass[] (WrapItems=True)" Tag="{x:Type local:WrapItemsOfMassExample}" />
-            <Button Content="Validation with INotifyDataErrorInfo" Tag="{x:Type local:ValidationExampleWindow}" />
-            <Button Content="EnableByAttribute" Tag="{x:Type local:EnableByAttributeExample}" />
-            <Button Content="EnableByProperty" Tag="{x:Type local:EnableByPropertyExample}" />
-        </StackPanel>
-        <StackPanel>
-            <Button Content="List&lt;List&lt;int&gt;&gt;" Tag="{x:Type local:ListOfListOfIntExample}" />
-            <Button Content="List&lt;List&lt;Mass&gt;&gt;" Tag="{x:Type local:ListOfListOfMassExample}" />
-            <Button Content="List&lt;List&lt;Boolean&gt;&gt;" Tag="{x:Type local:ListOfListOfBoolExample}" />
-            <Button Content="List&lt;List&lt;Color&gt;&gt;" Tag="{x:Type local:ListOfListOfColorExample}" />
-            <Button Content="List&lt;List&lt;Fruit&gt;&gt;" Tag="{x:Type local:ListOfListOfFruitExample}" />
-            <Button Content="List&lt;List&lt;ExampleObject(Invalid case)&gt;&gt;" Tag="{x:Type local:ListOfListOfInvalidExample}" />
-            <Button Content="Table" Tag="{x:Type local:TableExample}" />
-            <Button Content="Synchronized tables" Tag="{x:Type local:SyncTableExample}" />
-            <Button Content="Table with header format strings" Tag="{x:Type local:HeaderFormatStringExample}" />
-            <Button Content="Table updated in another thread" Tag="{x:Type local:ThreadExample}" />
-            <Button Content="List&lt;Mass&gt;" Tag="{x:Type local:ListOfMassExample}" />
-        </StackPanel>
-        <StackPanel>
-            <Button Content="ObservableCollection&lt;ExampleObject&gt; (WPF DataGrid)" Tag="{x:Type local:WpfDataGridExample}" />
-            <Button Content="Datatable" Tag="{x:Type local:DatatableExample}" />
-            <Button Content="Extended Toolkit Controls" Tag="{x:Type local:ExtendedToolkitExample}" />
-        </StackPanel>
-    </StackPanel>
+        SizeToContent="WidthAndHeight"
+        MinWidth="300" MinHeight="300">
+    <Grid>
+        <ListBox ItemsSource="{Binding Examples}" MouseDoubleClick="OpenExample" BorderThickness="0"/>
+    </Grid>
 </Window>

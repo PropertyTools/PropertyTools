@@ -14,12 +14,12 @@ namespace DataGridDemo
     /// <summary>
     /// Interaction logic for ItemsInColumnsExample.
     /// </summary>
-    public partial class ItemsInColumnsExample
+    public partial class CustomRowsExample
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsInColumnsExample" /> class.
+        /// Initializes a new instance of the <see cref="CustomRowsExample" /> class.
         /// </summary>
-        public ItemsInColumnsExample()
+        public CustomRowsExample()
         {
             this.InitializeComponent();
             this.DataContext = this;

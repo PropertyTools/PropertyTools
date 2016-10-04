@@ -80,8 +80,8 @@
     <Compile Include="Examples\CustomColumnsExample.xaml.cs">
       <DependentUpon>CustomColumnsExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\ItemsInColumnsExample.xaml.cs">
-      <DependentUpon>ItemsInColumnsExample.xaml</DependentUpon>
+    <Compile Include="Examples\CustomRowsExample.xaml.cs">
+      <DependentUpon>CustomRowsExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\PlainObjectExample.xaml.cs">
       <DependentUpon>PlainObjectExample.xaml</DependentUpon>
@@ -167,7 +167,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Examples\ItemsInColumnsExample.xaml">
+    <Page Include="Examples\CustomRowsExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

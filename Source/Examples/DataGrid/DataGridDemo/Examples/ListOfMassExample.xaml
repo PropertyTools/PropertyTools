@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:DataGridDemo"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:pt="http://propertytools.org/wpf"
-        Title="Window511"
+        Title="List&lt;Mass&gt;"
         Width="300"
         Height="300"
         mc:Ignorable="d">

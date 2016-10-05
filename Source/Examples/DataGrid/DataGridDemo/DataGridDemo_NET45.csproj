@@ -57,8 +57,11 @@
     <Compile Include="..\..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DataTypes\MassValueConverter.cs" />
     <Compile Include="NET45\ValidatableObject.cs" />
+    <Compile Include="DataTypes\MassValueConverter.cs" />
+    <Compile Include="Examples\WrapItems\WrapItemsIsEnabledExample.xaml.cs">
+      <DependentUpon>WrapItemsIsEnabledExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ExampleViewModel.cs" />
     <Compile Include="Examples\BackgroundExample.xaml.cs">
       <DependentUpon>BackgroundExample.xaml</DependentUpon>
@@ -210,6 +213,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\WrapItems\MultitypeMatrixExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\WrapItems\WrapItemsIsEnabledExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

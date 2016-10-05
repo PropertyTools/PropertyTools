@@ -76,18 +76,25 @@ namespace PropertyTools.Wpf
         public CultureInfo ConverterCulture { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of a property that determines the state of the cell.
+        /// Gets or sets the source for the IsEnabled binding.
         /// </summary>
-        /// <value>
-        /// The name of the related property.
-        /// </value>
-        public string IsEnabledByProperty { get; set; }
+        public object IsEnabledSource { get; set; }
 
         /// <summary>
-        /// Gets or sets the value that enables the cell.
+        /// Gets or sets the IsEnabled binding path.
         /// </summary>
-        /// <remarks>This property is used if the <see cref="IsEnabledByProperty"/> property is set.</remarks>
-        public object IsEnabledByValue { get; set; }
+        /// <value>
+        /// The is enabled binding path.
+        /// </value>
+        public string IsEnabledBindingPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the IsEnabled parameter.
+        /// </summary>
+        /// <value>
+        /// The is enabled parameter.
+        /// </value>
+        public object IsEnabledParameter { get; set; }
 
         /// <summary>
         /// Gets or sets the background.

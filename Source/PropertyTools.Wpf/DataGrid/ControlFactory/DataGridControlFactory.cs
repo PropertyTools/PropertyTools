@@ -33,7 +33,6 @@ namespace PropertyTools.Wpf
         public FrameworkElement CreateDisplayControl(CellDefinition d)
         {
             var element = this.CreateDisplayControlOverride(d);
-            this.ApplyCommonDisplayControlProperties(d, element);
             return element;
         }
 
@@ -192,11 +191,11 @@ namespace PropertyTools.Wpf
             var c = new CheckBox
             {
                 VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = d.HorizontalAlignment,
-                Background = d.Background,
-                IsEnabled = !d.IsReadOnly
+                HorizontalAlignment = d.HorizontalAlignment
             };
             c.SetBinding(ToggleButton.IsCheckedProperty, this.CreateBinding(d));
+            this.SetIsEnabledBinding(d, c);
+            this.SetBackgroundBinding(d, c);
             return c;
         }
 
@@ -213,10 +212,11 @@ namespace PropertyTools.Wpf
             {
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Background = d.Background,
                 Focusable = false
             };
             c.SetBinding(ColorPicker.SelectedColorProperty, this.CreateBinding(d));
+            this.SetIsEnabledBinding(d, c);
+            this.SetBackgroundBinding(d, c);
             return c;
         }
 
@@ -242,9 +242,12 @@ namespace PropertyTools.Wpf
             var binding = this.CreateBinding(d);
             binding.Converter = new ColorToBrushConverter();
             c.SetBinding(Shape.FillProperty, binding);
+            this.SetIsEnabledBinding(d, c);
 
-            var grid = new Grid { Background = d.Background };
+            var grid = new Grid();
             grid.Children.Add(c);
+            this.SetBackgroundBinding(d, grid);
+            this.SetIsEnabledBinding(d, grid);
             return grid;
         }
 
@@ -264,7 +267,6 @@ namespace PropertyTools.Wpf
                 Margin = new Thickness(1, 1, 0, 0),
                 HorizontalContentAlignment = d.HorizontalAlignment,
                 VerticalContentAlignment = VerticalAlignment.Center,
-                Background = d.Background,
                 Padding = new Thickness(0),
                 BorderThickness = new Thickness(0)
             };
@@ -286,7 +288,8 @@ namespace PropertyTools.Wpf
             binding.NotifyOnSourceUpdated = true;
             c.SetBinding(d.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);
             c.SelectedValuePath = d.SelectedValuePath;
-
+            this.SetIsEnabledBinding(d, c);
+            this.SetBackgroundBinding(d, c);
             return c;
         }
 
@@ -299,16 +302,20 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateTextBlockControl(CellDefinition d)
         {
-            var tb = new TextBlock
+            var c = new TextBlockEx
             {
                 HorizontalAlignment = d.HorizontalAlignment,
                 VerticalAlignment = VerticalAlignment.Center,
                 Padding = new Thickness(4, 0, 4, 0)
             };
 
-            tb.SetBinding(TextBlock.TextProperty, this.CreateOneWayBinding(d));
-            var grid = new Grid { Background = d.Background };
-            grid.Children.Add(tb);
+            c.SetBinding(TextBlock.TextProperty, this.CreateOneWayBinding(d));
+            this.SetIsEnabledBinding(d, c);
+
+            var grid = new Grid();
+            grid.Children.Add(c);
+            this.SetBackgroundBinding(d, grid);
+            this.SetIsEnabledBinding(d, grid);
             return grid;
         }
 
@@ -321,18 +328,19 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateTextBox(TextCellDefinition d)
         {
-            var tb = new TextBox
+            var c = new TextBox
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 HorizontalContentAlignment = d.HorizontalAlignment,
                 MaxLength = d.MaxLength,
                 BorderThickness = new Thickness(0),
-                Margin = new Thickness(1, 1, 0, 0),
-                Background = d.Background
+                Margin = new Thickness(1, 1, 0, 0)
             };
 
-            tb.SetBinding(TextBox.TextProperty, this.CreateBinding(d));
-            return tb;
+            c.SetBinding(TextBox.TextProperty, this.CreateBinding(d));
+            this.SetIsEnabledBinding(d, c);
+            this.SetBackgroundBinding(d, c);
+            return c;
         }
 
         /// <summary>
@@ -343,30 +351,57 @@ namespace PropertyTools.Wpf
         /// <returns>A content control.</returns>
         protected virtual FrameworkElement CreateTemplateControl(TemplateCellDefinition d, DataTemplate template)
         {
-            var element = (FrameworkElement)template.LoadContent();
+            var content = (FrameworkElement)template.LoadContent();
             var binding = this.CreateBinding(d);
             binding.Mode = BindingMode.OneWay;
-            var contentControl = new ContentControl
+            var c = new ContentControl
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
-                Background = d.Background,
-                Content = element
+                Content = content
             };
-            element.SetBinding(FrameworkElement.DataContextProperty, binding);
-            return contentControl;
+            content.SetBinding(FrameworkElement.DataContextProperty, binding);
+            this.SetIsEnabledBinding(d, content);
+            this.SetBackgroundBinding(d, c);
+            return c;
         }
 
         /// <summary>
-        /// Applies common display control properties.
+        /// Sets the IsEnabled binding.
         /// </summary>
         /// <param name="cd">The cell definition.</param>
         /// <param name="element">The element.</param>
-        protected virtual void ApplyCommonDisplayControlProperties(CellDefinition cd, FrameworkElement element)
+        protected virtual void SetIsEnabledBinding(CellDefinition cd, FrameworkElement element)
         {
-            if (cd.IsEnabledByProperty != null)
+            if (cd.IsEnabledBindingPath != null)
             {
-                element.SetIsEnabledBinding(cd.IsEnabledByProperty, cd.IsEnabledByValue);
+                element.SetIsEnabledBinding(cd.IsEnabledBindingPath, cd.IsEnabledParameter, cd.IsEnabledSource);
+            }
+        }
+
+        /// <summary>
+        /// Sets the background binding.
+        /// </summary>
+        /// <param name="cd">The cell definition.</param>
+        /// <param name="c">The control.</param>
+        protected virtual void SetBackgroundBinding(CellDefinition cd, Control c)
+        {
+            if (cd.Background != null)
+            {
+                c.Background = cd.Background;
+            }
+        }
+
+        /// <summary>
+        /// Sets the background binding.
+        /// </summary>
+        /// <param name="d">The cell definition.</param>
+        /// <param name="panel">The panel.</param>
+        protected virtual void SetBackgroundBinding(CellDefinition d, Panel panel)
+        {
+            if (d.Background != null)
+            {
+                panel.Background = d.Background;
             }
         }
 

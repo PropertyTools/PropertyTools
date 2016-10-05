@@ -91,6 +91,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\TextBlockEx\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DataGrid\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -158,6 +162,7 @@
     <Compile Include="Controls\HeaderedEntrySlider\HeaderedEntrySlider.cs" />
     <Compile Include="Controls\SpinControl\SpinControl.cs" />
     <Compile Include="Controls\StackPanelEx.cs" />
+    <Compile Include="Controls\TextBlockEx\TextBlockEx.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\AllMultiValueConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />

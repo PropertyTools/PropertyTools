@@ -340,7 +340,7 @@ namespace PropertyTools.Wpf
         protected virtual void ApplyProperties(CellDefinition cd, DataGrid owner, CellRef cell, PropertyDefinition pd, object item)
         {
             cd.HorizontalAlignment = pd.HorizontalAlignment;
-            cd.BindingPath = this.GetBindingPath(owner, cell, pd);
+            cd.BindingPath = pd.PropertyName ?? this.GetBindingPath(owner, cell);
             cd.IsReadOnly = pd.IsReadOnly;
             cd.FormatString = pd.FormatString;
             if (pd.Converter != null)
@@ -350,8 +350,18 @@ namespace PropertyTools.Wpf
 
             cd.ConverterParameter = pd.ConverterParameter;
             cd.ConverterCulture = pd.ConverterCulture;
-            cd.IsEnabledByProperty = pd.IsEnabledByProperty;
-            cd.IsEnabledByValue = pd.IsEnabledByValue;
+
+            cd.IsEnabledParameter = pd.IsEnabledByValue;
+            if (owner.IsEnabledSource != null)
+            {
+                cd.IsEnabledSource = owner.IsEnabledSource;
+                cd.IsEnabledBindingPath = pd.IsEnabledByProperty ?? this.GetBindingPath(owner, cell);
+            }
+            else
+            {
+                cd.IsEnabledBindingPath = pd.IsEnabledByProperty;
+            }
+
             cd.Background = pd.Background;
         }
 
@@ -401,11 +411,10 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell.</param>
-        /// <param name="pd">The property definition.</param>
         /// <returns>
         /// The binding path
         /// </returns>
-        protected abstract string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd);
+        protected abstract string GetBindingPath(DataGrid owner, CellRef cell);
 
         /// <summary>
         /// Tries to convert an object to the specified type.

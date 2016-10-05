@@ -58,6 +58,9 @@
     <Compile Include="Pages\DirectoryPickerPage.xaml.cs">
       <DependentUpon>DirectoryPickerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\EditableTextBlockAndPropertyGridPage.xaml.cs">
+      <DependentUpon>EditableTextBlockAndPropertyGridPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\EditableTextBlockPage.xaml.cs">
       <DependentUpon>EditableTextBlockPage.xaml</DependentUpon>
     </Compile>
@@ -66,6 +69,9 @@
     </Compile>
     <Compile Include="Pages\HeaderedEntrySliderPage.xaml.cs">
       <DependentUpon>HeaderedEntrySliderPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TextBlockExPage.xaml.cs">
+      <DependentUpon>TextBlockExPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SpinControlPage.xaml.cs">
       <DependentUpon>SpinControlPage.xaml</DependentUpon>
@@ -98,6 +104,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\EditableTextBlockAndPropertyGridPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\EditableTextBlockPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -107,6 +117,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\HeaderedEntrySliderPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\TextBlockExPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -193,4 +207,3 @@
   </Target>
   -->
 </Project>
-

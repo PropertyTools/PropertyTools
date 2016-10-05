@@ -231,14 +231,13 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell.</param>
-        /// <param name="pd">The property definition.</param>
         /// <returns>
         /// The binding path
         /// </returns>
-        protected override string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd)
+        protected override string GetBindingPath(DataGrid owner, CellRef cell)
         {
             var index = this.GetItemIndex(owner, cell);
-            return pd.PropertyName ?? $"[{index}]";
+            return $"[{index}]";
         }
 
         /// <summary>

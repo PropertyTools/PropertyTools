@@ -256,6 +256,15 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
+        /// Identifies the <see cref="IsEnabledSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsEnabledSourceProperty = DependencyProperty.Register(
+            "IsEnabledSource",
+            typeof(IList),
+            typeof(DataGrid),
+            new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
+
+        /// <summary>
         /// Identifies the <see cref="RowHeadersSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RowHeadersSourceProperty = DependencyProperty.Register(
@@ -485,7 +494,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The current editor.
         /// </summary>
-        private FrameworkElement currentEditor;
+        private FrameworkElement currentEditControl;
 
         /// <summary>
         /// The editing cells.
@@ -1075,6 +1084,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the is item enabled source.
+        /// </summary>
+        /// <value>The is item enabled source.</value>
+        public IList IsEnabledSource
+        {
+            get
+            {
+                return (IList)this.GetValue(IsEnabledSourceProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsEnabledSourceProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the row headers source.
         /// </summary>
         /// <value>The row headers source.</value>
@@ -1509,7 +1535,7 @@ namespace PropertyTools.Wpf
         /// <param name="commit">The commit.</param>
         public void EndTextEdit(bool commit = true)
         {
-            var textEditor = this.currentEditor as TextBox;
+            var textEditor = this.currentEditControl as TextBox;
             if (commit && textEditor != null)
             {
                 foreach (var cell in this.editingCells)
@@ -1518,7 +1544,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            this.HideEditor();
+            this.HideEditControl();
         }
 
         /// <summary>
@@ -1688,19 +1714,19 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Hides the current editor control.
         /// </summary>
-        public void HideEditor()
+        public void HideEditControl()
         {
-            if (this.currentEditor != null && this.currentEditor.Visibility == Visibility.Visible)
+            if (this.currentEditControl != null && this.currentEditControl.Visibility == Visibility.Visible)
             {
-                var textEditor = this.currentEditor as TextBox;
+                var textEditor = this.currentEditControl as TextBox;
                 if (textEditor != null)
                 {
                     textEditor.PreviewKeyDown -= this.TextEditorPreviewKeyDown;
                     textEditor.Loaded -= this.TextEditorLoaded;
                 }
 
-                this.sheetGrid.Children.Remove(this.currentEditor);
-                this.currentEditor = null;
+                this.sheetGrid.Children.Remove(this.currentEditControl);
+                this.currentEditControl = null;
                 this.Focus();
             }
         }
@@ -2006,7 +2032,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public bool ShowEditControl()
         {
-            this.HideEditor();
+            this.HideEditControl();
             var pd = this.GetPropertyDefinition(this.CurrentCell);
             if (pd == null || pd.IsReadOnly)
             {
@@ -2019,45 +2045,46 @@ namespace PropertyTools.Wpf
             }
 
             var item = this.GetItem(this.CurrentCell);
-            this.currentEditor = this.Operator.CreateEditControl(this, this.ControlFactory, this.CurrentCell, pd, item);
+            this.currentEditControl = this.Operator.CreateEditControl(this, this.ControlFactory, this.CurrentCell, pd, item);
 
-            if (this.currentEditor == null)
+            if (this.currentEditControl == null)
             {
                 return false;
             }
 
             var currentCell = this.CurrentCell;
-            this.currentEditor.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(currentCell);
+            this.currentEditControl.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(currentCell);
 
-            this.currentEditor.VerticalAlignment = VerticalAlignment.Stretch;
-            this.currentEditor.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+            this.currentEditControl.VerticalAlignment = VerticalAlignment.Stretch;
+            this.currentEditControl.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
 
             if (pd.IsEnabledByProperty != null)
             {
-                this.currentEditor.SetIsEnabledBinding(pd.IsEnabledByProperty, pd.IsEnabledByValue);
+                this.currentEditControl.SetIsEnabledBinding(pd.IsEnabledByProperty, pd.IsEnabledByValue);
             }
 
             var displayControl = this.GetCellElement(this.CurrentCell) ;
-            this.currentEditor.DataContext = displayControl.DataContext;
+            this.currentEditControl.DataContext = displayControl.DataContext;
 
-            var textEditor = this.currentEditor as TextBox;
+
+            var textEditor = this.currentEditControl as TextBox;
             if (textEditor != null)
             {
-                this.currentEditor.Visibility = Visibility.Hidden;
+                this.currentEditControl.Visibility = Visibility.Hidden;
                 textEditor.PreviewKeyDown += this.TextEditorPreviewKeyDown;
                 textEditor.Loaded += this.TextEditorLoaded;
             }
 
             this.editingCells = this.SelectedCells.ToList();
 
-            Grid.SetColumn(this.currentEditor, this.CurrentCell.Column);
-            Grid.SetRow(this.currentEditor, this.CurrentCell.Row);
+            Grid.SetColumn(this.currentEditControl, this.CurrentCell.Column);
+            Grid.SetRow(this.currentEditControl, this.CurrentCell.Row);
 
-            this.sheetGrid.Children.Add(this.currentEditor);
+            this.sheetGrid.Children.Add(this.currentEditControl);
 
-            if (this.currentEditor.Visibility == Visibility.Visible)
+            if (this.currentEditControl.Visibility == Visibility.Visible)
             {
-                this.currentEditor.Focus();
+                this.currentEditControl.Focus();
             }
 
             return true;
@@ -2071,7 +2098,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public bool ShowTextBoxEditControl()
         {
-            var textEditor = this.currentEditor as TextBox;
+            var textEditor = this.currentEditControl as TextBox;
             if (textEditor != null)
             {
                 textEditor.Visibility = Visibility.Visible;
@@ -2092,7 +2119,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public bool OpenComboBoxControl()
         {
-            var comboBox = this.currentEditor as ComboBox;
+            var comboBox = this.currentEditControl as ComboBox;
             if (comboBox != null)
             {
                 comboBox.IsDropDownOpen = true;
@@ -2376,7 +2403,7 @@ namespace PropertyTools.Wpf
             base.OnPreviewKeyDown(e);
             if (e.Key == Key.ImeProcessed)
             {
-                var textEditor = this.currentEditor as TextBox;
+                var textEditor = this.currentEditControl as TextBox;
                 if (textEditor != null && !textEditor.IsFocused)
                 {
                     this.ShowTextBoxEditControl();
@@ -2517,12 +2544,12 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            if (this.currentEditor == null)
+            if (this.currentEditControl == null)
             {
                 this.ShowEditControl();
             }
 
-            var textEditor = this.currentEditor as TextBox;
+            var textEditor = this.currentEditControl as TextBox;
             if (textEditor != null && textEditor.IsEnabled)
             {
                 this.ShowTextBoxEditControl();
@@ -4043,7 +4070,7 @@ namespace PropertyTools.Wpf
 
             if (!this.ShowEditControl())
             {
-                this.HideEditor();
+                this.HideEditControl();
             }
         }
 

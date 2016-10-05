@@ -265,6 +265,15 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
+        /// Identifies the <see cref="BackgroundSource"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty BackgroundSourceProperty = DependencyProperty.Register(
+            "BackgroundSource",
+            typeof(IList),
+            typeof(DataGrid),
+            new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
+
+        /// <summary>
         /// Identifies the <see cref="RowHeadersSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RowHeadersSourceProperty = DependencyProperty.Register(
@@ -1097,6 +1106,23 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(IsEnabledSourceProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the background source.
+        /// </summary>
+        /// <value>The background source.</value>
+        public IList BackgroundSource
+        {
+            get
+            {
+                return (IList)this.GetValue(BackgroundSourceProperty);
+            }
+
+            set
+            {
+                this.SetValue(BackgroundSourceProperty, value);
             }
         }
 

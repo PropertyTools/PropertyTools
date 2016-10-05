@@ -382,13 +382,19 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets the background binding.
         /// </summary>
-        /// <param name="cd">The cell definition.</param>
+        /// <param name="d">The cell definition.</param>
         /// <param name="c">The control.</param>
-        protected virtual void SetBackgroundBinding(CellDefinition cd, Control c)
+        protected virtual void SetBackgroundBinding(CellDefinition d, Control c)
         {
-            if (cd.Background != null)
+            if (d.Background != null)
             {
-                c.Background = cd.Background;
+                c.Background = d.Background;
+            }
+
+            if (d.BackgroundBindingPath != null)
+            {
+                var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundSource };
+                c.SetBinding(Control.BackgroundProperty, binding);
             }
         }
 
@@ -402,6 +408,12 @@ namespace PropertyTools.Wpf
             if (d.Background != null)
             {
                 panel.Background = d.Background;
+            }
+
+            if (d.BackgroundBindingPath != null)
+            {
+                var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundSource };
+                panel.SetBinding(Panel.BackgroundProperty, binding);
             }
         }
 

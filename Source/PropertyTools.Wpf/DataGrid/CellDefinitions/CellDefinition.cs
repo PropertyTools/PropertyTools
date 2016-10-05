@@ -9,6 +9,7 @@
 
 namespace PropertyTools.Wpf
 {
+    using System.Collections;
     using System.Globalization;
     using System.Windows;
     using System.Windows.Data;
@@ -103,5 +104,9 @@ namespace PropertyTools.Wpf
         /// The background.
         /// </value>
         public Brush Background { get; set; }
+
+        public object BackgroundSource { get; set; }
+
+        public string BackgroundBindingPath { get; set; }
     }
 }

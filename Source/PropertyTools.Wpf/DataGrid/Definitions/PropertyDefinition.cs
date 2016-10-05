@@ -123,5 +123,13 @@ namespace PropertyTools.Wpf
         /// The background.
         /// </value>
         public Brush Background { get; set; }
+
+        /// <summary>
+        /// Gets or sets the background property.
+        /// </summary>
+        /// <value>
+        /// The background property.
+        /// </value>
+        public string BackgroundProperty { get; set; }
     }
 }

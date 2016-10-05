@@ -362,7 +362,20 @@ namespace PropertyTools.Wpf
                 cd.IsEnabledBindingPath = pd.IsEnabledByProperty;
             }
 
-            cd.Background = pd.Background;
+            if (owner.BackgroundSource != null)
+            {
+                cd.BackgroundSource = owner.BackgroundSource;
+                cd.BackgroundBindingPath = pd.BackgroundProperty ?? this.GetBindingPath(owner, cell);
+            }
+            else
+            {
+                cd.BackgroundBindingPath = pd.BackgroundProperty;
+            }
+
+            if (pd.Background != null)
+            {
+                cd.Background = pd.Background;
+            }
         }
 
         /// <summary>

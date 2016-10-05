@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Defines column-specific properties that apply to DataGrid elements.
+//   Defines a column in a DataGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace PropertyTools.Wpf
     using System.Windows;
 
     /// <summary>
-    /// Defines column-specific properties that apply to <see cref="DataGrid" /> elements.
+    /// Defines a column in a <see cref="DataGrid" />.
     /// </summary>
     public class ColumnDefinition : PropertyDefinition
     {

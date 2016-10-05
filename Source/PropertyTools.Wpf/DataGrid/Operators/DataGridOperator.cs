@@ -92,11 +92,88 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Generates column definitions based on a list of items.
+        /// Gets the value in the specified cell.
         /// </summary>
-        /// <param name="list">The list.</param>
-        /// <returns>A sequence of column definitions.</returns>
-        protected abstract IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list);
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <returns>The vallue</returns>
+        public virtual object GetCellValue(DataGrid owner, CellRef cell)
+        {
+            if (cell.Column < 0 || cell.Column >= owner.Columns || cell.Row < 0 || cell.Row >= owner.Rows)
+            {
+                return null;
+            }
+
+            var item = this.GetItem(owner, owner.ItemsSource, cell);
+            if (item != null)
+            {
+                var pd = owner.GetPropertyDefinition(cell);
+                if (pd != null)
+                {
+                    var descriptor = this.GetPropertyDescriptor(pd);
+                    if (descriptor != null)
+                    {
+                        return descriptor.GetValue(item);
+                    }
+
+                    return item;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Tries to set cell value in the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <param name="value">The value.</param>
+        /// <returns><c>true</c> if the cell value was set.</returns>
+        public bool TrySetCellValue(DataGrid owner, CellRef cell, object value)
+        {
+            if (owner.ItemsSource != null)
+            {
+                var current = this.GetItem(owner, owner.ItemsSource, cell);
+
+                var pd = owner.GetPropertyDefinition(cell);
+                if (pd == null)
+                {
+                    return false;
+                }
+
+                if (current == null || pd.IsReadOnly)
+                {
+                    return false;
+                }
+
+                object convertedValue;
+                var targetType = this.GetPropertyType(pd, cell, current);
+                if (!TryConvert(value, targetType, out convertedValue))
+                {
+                    return false;
+                }
+
+                var descriptor = this.GetPropertyDescriptor(pd);
+                if (descriptor != null)
+                {
+                    descriptor.SetValue(current, convertedValue);
+                }
+                else
+                {
+                    owner.SetValue(cell, convertedValue);
+
+                    if (!(owner.ItemsSource is INotifyCollectionChanged))
+                    {
+                        owner.UpdateCellContent(cell);
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Gets the item in the specified cell.
@@ -108,6 +185,60 @@ namespace PropertyTools.Wpf
         /// The <see cref="object" />.
         /// </returns>
         public abstract object GetItem(DataGrid owner, IList list, CellRef cell);
+
+        /// <summary>
+        /// Inserts an item to <see cref="DataGrid" /> at the specified index.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="list">The list.</param>
+        /// <param name="index">The index.</param>
+        /// <returns>
+        ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
+        /// </returns>
+        public abstract bool InsertItem(DataGrid owner, IList list, int index);
+
+        /// <summary>
+        /// Sets value of the specified cell to the specified value.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="list">The list.</param>
+        /// <param name="cell">The cell to change.</param>
+        /// <param name="value">The value.</param>
+        public abstract void SetValue(DataGrid owner, IList list, CellRef cell, object value);
+
+        /// <summary>
+        /// Auto-generates the columns.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        public virtual void AutoGenerateColumns(DataGrid owner)
+        {
+            foreach (var cd in this.GenerateColumnDefinitions(owner.ItemsSource))
+            {
+                owner.ColumnDefinitions.Add(cd);
+            }
+        }
+
+        /// <summary>
+        /// Updates the property definitions.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        public virtual void UpdatePropertyDefinitions(DataGrid owner)
+        {
+            this.descriptors.Clear();
+
+            // Set the property descriptors.
+            var itemType = TypeHelper.GetItemType(owner.ItemsSource);
+            var properties = TypeDescriptor.GetProperties(itemType);
+            foreach (var pd in owner.PropertyDefinitions)
+            {
+                if (!string.IsNullOrEmpty(pd.PropertyName))
+                {
+                    var descriptor = properties[pd.PropertyName];
+                    this.SetPropertiesFromDescriptor(pd, descriptor);
+                    this.descriptors[pd] = descriptor;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the type of the property in the specified cell.
@@ -139,37 +270,6 @@ namespace PropertyTools.Wpf
             PropertyDescriptor descriptor;
             return this.descriptors.TryGetValue(pd, out descriptor) ? descriptor : null;
         }
-
-        /// <summary>
-        /// Inserts an item to <see cref="DataGrid" /> at the specified index.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="list">The list.</param>
-        /// <param name="index">The index.</param>
-        /// <returns>
-        ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
-        /// </returns>
-        public abstract bool InsertItem(DataGrid owner, IList list, int index);
-
-        /// <summary>
-        /// Sets value of the specified cell to the specified value.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="list">The list.</param>
-        /// <param name="cell">The cell to change.</param>
-        /// <param name="value">The value.</param>
-        public abstract void SetValue(DataGrid owner, IList list, CellRef cell, object value);
-
-        /// <summary>
-        /// Gets the binding path for the specified cell.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="cell">The cell.</param>
-        /// <param name="pd">The property definition.</param>
-        /// <returns>
-        /// The binding path
-        /// </returns>
-        protected abstract string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd);
 
         /// <summary>
         /// Creates the cell definition for the specified cell.
@@ -255,40 +355,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Auto-generates the columns.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        public virtual void AutoGenerateColumns(DataGrid owner)
-        {
-            foreach (var cd in this.GenerateColumnDefinitions(owner.ItemsSource))
-            {
-                owner.ColumnDefinitions.Add(cd);
-            }
-        }
-
-        /// <summary>
-        /// Updates the property definitions.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        public virtual void UpdatePropertyDefinitions(DataGrid owner)
-        {
-            this.descriptors.Clear();
-
-            // Set the property descriptors.
-            var itemType = TypeHelper.GetItemType(owner.ItemsSource);
-            var properties = TypeDescriptor.GetProperties(itemType);
-            foreach (var pd in owner.PropertyDefinitions)
-            {
-                if (!string.IsNullOrEmpty(pd.PropertyName))
-                {
-                    var descriptor = properties[pd.PropertyName];
-                    this.SetPropertiesFromDescriptor(pd, descriptor);
-                    this.descriptors[pd] = descriptor;
-                }
-            }
-        }
-
-        /// <summary>
         /// Sets the properties from descriptor.
         /// </summary>
         /// <param name="pd">The property definition.</param>
@@ -322,83 +388,23 @@ namespace PropertyTools.Wpf
             }
         }
 
-        public object GetCellValue(DataGrid owner, CellRef cell)
-        {
-            if (cell.Column < 0 || cell.Column >= owner.Columns || cell.Row < 0 || cell.Row >= owner.Rows)
-            {
-                return null;
-            }
-
-            var item = this.GetItem(owner, owner.ItemsSource, cell);
-            if (item != null)
-            {
-                var pd = owner.GetPropertyDefinition(cell);
-                if (pd != null)
-                {
-                    var descriptor = this.GetPropertyDescriptor(pd);
-                    if (descriptor != null)
-                    {
-                        return descriptor.GetValue(item);
-                    }
-
-                    return item;
-                }
-            }
-
-            return null;
-        }
+        /// <summary>
+        /// Generates column definitions based on a list of items.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <returns>A sequence of column definitions.</returns>
+        protected abstract IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list);
 
         /// <summary>
-        /// Tries to set cell value in the specified cell.
+        /// Gets the binding path for the specified cell.
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell.</param>
-        /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if the cell value was set.</returns>
-        public bool TrySetCellValue(DataGrid owner, CellRef cell, object value)
-        {
-            if (owner.ItemsSource != null)
-            {
-                var current = this.GetItem(owner, owner.ItemsSource, cell);
-
-                var pd = owner.GetPropertyDefinition(cell);
-                if (pd == null)
-                {
-                    return false;
-                }
-
-                if (current == null || pd.IsReadOnly)
-                {
-                    return false;
-                }
-
-                object convertedValue;
-                var targetType = this.GetPropertyType(pd, cell, current);
-                if (!TryConvert(value, targetType, out convertedValue))
-                {
-                    return false;
-                }
-
-                var descriptor = this.GetPropertyDescriptor(pd);
-                if (descriptor != null)
-                {
-                    descriptor.SetValue(current, convertedValue);
-                }
-                else
-                {
-                    owner.SetValue(cell, convertedValue);
-
-                    if (!(owner.ItemsSource is INotifyCollectionChanged))
-                    {
-                        owner.UpdateCellContent(cell);
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
-        }
+        /// <param name="pd">The property definition.</param>
+        /// <returns>
+        /// The binding path
+        /// </returns>
+        protected abstract string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd);
 
         /// <summary>
         /// Tries to convert an object to the specified type.

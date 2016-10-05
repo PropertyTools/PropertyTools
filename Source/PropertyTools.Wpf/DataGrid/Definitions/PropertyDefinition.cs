@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Describes properties that applies to columns or rows in an DataGrid.
+//   Describes properties that applies to columns or rows in a DataGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Data;
 
     /// <summary>
-    /// Describes properties that applies to columns or rows in an <see cref="DataGrid" />.
+    /// Describes properties that applies to columns or rows in a <see cref="DataGrid" />.
     /// </summary>
     public abstract class PropertyDefinition
     {

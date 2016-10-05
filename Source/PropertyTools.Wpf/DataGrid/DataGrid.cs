@@ -1338,13 +1338,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether to use columns for the items.
         /// </summary>
-        private bool ItemsInColumns { get; set; }
+        public bool ItemsInColumns { get; internal set; }
 
         /// <summary>
         /// Gets the column definitions.
         /// </summary>
         /// <value>The column definitions.</value>
-        private Collection<PropertyDefinition> PropertyDefinitions => this.propertyDefinitions;
+        internal Collection<PropertyDefinition> PropertyDefinitions => this.propertyDefinitions;
 
         /// <summary>
         /// Gets the operator.
@@ -2261,17 +2261,6 @@ namespace PropertyTools.Wpf
 
             // TODO: the item type may not have a parameterless constructor!
             return Activator.CreateInstance(itemType);
-        }
-
-        /// <summary>
-        /// Generates column definitions based on ItemsSource
-        /// </summary>
-        protected virtual void GenerateColumnDefinitions()
-        {
-            foreach (var cd in this.Operator.GenerateColumnDefinitions(this.ItemsSource))
-            {
-                this.ColumnDefinitions.Add(cd);
-            }
         }
 
         /// <summary>
@@ -4511,30 +4500,15 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            if (this.AutoGenerateColumns && this.PropertyDefinitions.Count == 0)
+            if (this.AutoGenerateColumns && this.ColumnDefinitions.Count == 0)
             {
-                this.GenerateColumnDefinitions();
+                this.Operator.AutoGenerateColumns(this);
             }
+
+            this.Operator.UpdatePropertyDefinitions(this);
 
             // Determine if columns or rows are defined
             this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
-
-            // Set the property descriptors.
-            var itemType = TypeHelper.GetItemType(this.ItemsSource);
-            var properties = TypeDescriptor.GetProperties(itemType);
-            foreach (var pd in this.PropertyDefinitions)
-            {
-                if (!string.IsNullOrEmpty(pd.PropertyName))
-                {
-                    pd.Descriptor = properties[pd.PropertyName];
-                }
-            }
-
-            // Set properties from descriptors
-            foreach (var pd in this.PropertyDefinitions.Where(x => x.Descriptor != null))
-            {
-                pd.SetPropertiesFromDescriptor(pd.Descriptor);
-            }
 
             var n = this.ItemsSource.Count;
             var m = this.PropertyDefinitions.Count;

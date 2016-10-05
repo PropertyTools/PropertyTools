@@ -12,6 +12,7 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Windows;
     using System.Windows.Media;
@@ -234,6 +235,43 @@ namespace PropertyTools.Wpf
 
             cd.ConverterParameter = pd.ConverterParameter;
             cd.ConverterCulture = pd.ConverterCulture;
+        }
+
+        /// <summary>
+        /// Auto-generates the columns.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        public virtual void AutoGenerateColumns(DataGrid owner)
+        {
+            foreach (var cd in this.GenerateColumnDefinitions(owner.ItemsSource))
+            {
+                owner.ColumnDefinitions.Add(cd);
+            }
+        }
+
+        /// <summary>
+        /// Updates the property definitions.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        public virtual void UpdatePropertyDefinitions(DataGrid owner)
+        {
+            // Set the property descriptors.
+            var itemType = TypeHelper.GetItemType(owner.ItemsSource);
+            var properties = TypeDescriptor.GetProperties(itemType);
+            foreach (var pd in owner.PropertyDefinitions)
+            {
+                if (!string.IsNullOrEmpty(pd.PropertyName))
+                {
+                    pd.Descriptor = properties[pd.PropertyName];
+                }
+            }
+
+            // Set properties from descriptors
+            foreach (var pd in owner.PropertyDefinitions.Where(x => x.Descriptor != null))
+            {
+                pd.SetPropertiesFromDescriptor(pd.Descriptor);
+            }
+
         }
     }
 }

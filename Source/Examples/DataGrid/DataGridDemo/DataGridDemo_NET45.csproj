@@ -60,6 +60,9 @@
     <Compile Include="DataTypes\MassValueConverter.cs" />
     <Compile Include="NET45\ValidatableObject.cs" />
     <Compile Include="Examples\ExampleViewModel.cs" />
+    <Compile Include="Examples\WrapItems\MultitypeMatrixExample.xaml.cs">
+      <DependentUpon>MultitypeMatrixExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\NullableEnumExample.xaml.cs">
       <DependentUpon>NullableEnumExample.xaml</DependentUpon>
     </Compile>
@@ -189,6 +192,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\ValidationExampleWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\WrapItems\MultitypeMatrixExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

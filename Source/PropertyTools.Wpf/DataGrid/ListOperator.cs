@@ -37,9 +37,9 @@ namespace PropertyTools.Wpf
                 yield break;
             }
 
+            // Strategy 1: get properties from IItemProperties
             var view = CollectionViewSource.GetDefaultView(list);
             var itemPropertiesView = view as IItemProperties;
-            var generatedColumns = 0;
             if (itemPropertiesView?.ItemProperties != null && itemPropertiesView.ItemProperties.Count > 0)
             {
                 foreach (var info in itemPropertiesView.ItemProperties)
@@ -57,49 +57,50 @@ namespace PropertyTools.Wpf
                             HorizontalAlignment = this.DefaultHorizontalAlignment,
                             Width = this.DefaultColumnWidth
                         };
-                    generatedColumns++;
                 }
+
+                yield break;
             }
 
+            // Strategy 2: get properties from type descriptor
             var itemType = TypeHelper.FindBiggestCommonType(list);
-
             var properties = TypeDescriptor.GetProperties(itemType);
-
             if (properties.Count == 0)
             {
                 // Otherwise try to get the property descriptors from an instance
                 properties = GetPropertiesFromInstance(list, itemType);
             }
 
-            foreach (PropertyDescriptor descriptor in properties)
+            if (properties.Count > 0)
             {
-                if (!descriptor.IsBrowsable)
+                foreach (PropertyDescriptor descriptor in properties)
                 {
-                    continue;
+                    if (!descriptor.IsBrowsable)
+                    {
+                        continue;
+                    }
+
+                    yield return
+                        new ColumnDefinition(descriptor)
+                        {
+                            Header = descriptor.Name,
+                            HorizontalAlignment = this.DefaultHorizontalAlignment,
+                            Width = this.DefaultColumnWidth
+                        };
                 }
 
-                yield return
-                    new ColumnDefinition(descriptor)
-                    {
-                        Header = descriptor.Name,
-                        HorizontalAlignment = this.DefaultHorizontalAlignment,
-                        Width = this.DefaultColumnWidth
-                    };
-                generatedColumns++;
+                yield break;
             }
 
-            if (generatedColumns == 0)
-            {
-                var itemsType = TypeHelper.GetItemType(list);
-                yield return
-                    new ColumnDefinition
-                    {
-                        PropertyType = itemsType,
-                        Header = itemsType.Name,
-                        HorizontalAlignment = this.DefaultHorizontalAlignment,
-                        Width = this.DefaultColumnWidth
-                    };
-            }
+            // Strategy 3: create a single column
+            var itemsType = TypeHelper.GetItemType(list);
+            yield return
+                new ColumnDefinition
+                {
+                    Header = itemsType.Name,
+                    HorizontalAlignment = this.DefaultHorizontalAlignment,
+                    Width = this.DefaultColumnWidth
+                };
         }
 
         /// <summary>

@@ -104,12 +104,12 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue)
         {
-            if (definition.PropertyType == typeof(object) && currentValue != null)
+            if (definition.Descriptor?.PropertyType == null)
             {
-                return currentValue.GetType();
+                return currentValue?.GetType() ?? typeof(object);
             }
 
-            return definition.PropertyType;
+            return definition.Descriptor?.PropertyType;
         }
 
         /// <summary>

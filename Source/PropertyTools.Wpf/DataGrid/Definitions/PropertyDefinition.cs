@@ -24,11 +24,6 @@ namespace PropertyTools.Wpf
     public abstract class PropertyDefinition
     {
         /// <summary>
-        /// The property type.
-        /// </summary>
-        private Type propertyType;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="PropertyDefinition" /> class.
         /// </summary>
         protected PropertyDefinition()
@@ -45,10 +40,6 @@ namespace PropertyTools.Wpf
             this.Descriptor = descriptor;
 
             this.IsReadOnly = this.IsReadOnly || (descriptor != null && descriptor.IsReadOnly);
-            if (descriptor != null)
-            {
-                this.PropertyType = descriptor.PropertyType;
-            }
 
             var ispa = this.GetFirstAttribute<ItemsSourcePropertyAttribute>();
             if (ispa != null)
@@ -146,28 +137,6 @@ namespace PropertyTools.Wpf
         public string PropertyName { get; set; }
 
         /// <summary>
-        /// Gets or sets the type of the property.
-        /// </summary>
-        /// <value>The type of the property.</value>
-        public Type PropertyType
-        {
-            get
-            {
-                if (this.propertyType == null && this.Descriptor != null)
-                {
-                    this.PropertyType = this.Descriptor.PropertyType;
-                }
-
-                return this.propertyType;
-            }
-
-            set
-            {
-                this.propertyType = value;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the name of a property that determines the state of the cell.
         /// </summary>
         /// <value>
@@ -215,10 +184,6 @@ namespace PropertyTools.Wpf
             this.Descriptor = descriptor;
 
             this.IsReadOnly = this.IsReadOnly || (descriptor != null && descriptor.IsReadOnly);
-            if (descriptor != null)
-            {
-                this.PropertyType = descriptor.PropertyType;
-            }
 
             var ispa = this.GetFirstAttribute<ItemsSourcePropertyAttribute>();
             if (ispa != null)

@@ -34,7 +34,6 @@ namespace PropertyTools.Wpf
                yield return
                     new ColumnDefinition
                     {
-                        PropertyType = innerType,
                         Header = innerType.Name,
                         HorizontalAlignment = this.DefaultHorizontalAlignment,
                         Width = this.DefaultColumnWidth

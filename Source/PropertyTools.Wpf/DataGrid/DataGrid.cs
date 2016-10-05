@@ -4516,21 +4516,6 @@ namespace PropertyTools.Wpf
                 this.GenerateColumnDefinitions();
             }
 
-            // If PropertyType is undefined, use the type of the items in the ItemsSource
-            Type itemsType = null;
-            foreach (var pd in this.PropertyDefinitions)
-            {
-                if (pd.PropertyType == null)
-                {
-                    if (itemsType == null)
-                    {
-                        itemsType = this.Operator.GetItemsType(this.ItemsSource);
-                    }
-
-                    pd.PropertyType = itemsType;
-                }
-            }
-
             // Determine if columns or rows are defined
             this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
 

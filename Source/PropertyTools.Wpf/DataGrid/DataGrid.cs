@@ -2213,8 +2213,6 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual UIElement CreateDisplayControl(CellRef cell, PropertyDefinition pd, object item)
         {
-            FrameworkElement element = null;
-
             if (item == null)
             {
                 item = this.GetItem(cell);
@@ -2230,7 +2228,7 @@ namespace PropertyTools.Wpf
                 throw new InvalidOperationException("No row/column definition for " + cell);
             }
 
-            element = this.Operator.CreateDisplayControl(cell, pd, item);
+            var element = this.Operator.CreateDisplayControl(cell, pd, item);
 
             this.SetElementDataContext(element, pd, item);
 

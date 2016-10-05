@@ -13,6 +13,7 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.ComponentModel;
     using System.Globalization;
+    using System.Linq;
     using System.Windows.Data;
 
     using PropertyTools.DataAnnotations;
@@ -189,7 +190,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual string GetBindingPath(int index)
         {
-            return this.Descriptor != null ? this.Descriptor.Name : string.Format("[{0}]", index);
+            return this.Descriptor?.Name ?? $"[{index}]";
         }
 
         /// <summary>
@@ -201,7 +202,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual string GetBindingPath(CellRef cell)
         {
-            return this.Descriptor != null ? this.Descriptor.Name : string.Format("[{0}][{1}]", cell.Row, cell.Column);
+            return this.Descriptor?.Name ?? $"[{cell.Row}][{cell.Column}]";
         }
 
         /// <summary>
@@ -235,21 +236,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected T GetFirstAttribute<T>() where T : Attribute
         {
-            if (this.Descriptor == null)
-            {
-                return null;
-            }
-
-            var type = typeof(T);
-            foreach (var a in this.Descriptor.Attributes)
-            {
-                if (type.IsInstanceOfType(a))
-                {
-                    return a as T;
-                }
-            }
-
-            return null;
+            return this.Descriptor?.Attributes.OfType<T>().FirstOrDefault();
         }
     }
 }

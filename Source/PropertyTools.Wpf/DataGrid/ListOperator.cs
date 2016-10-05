@@ -30,11 +30,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Generate column definitions based on <seealso cref="DataGridOperator.ItemsSource" />.
+        /// Generate column definitions based on a list of items.
         /// </summary>
         /// <param name="list">The list of items.</param>
         /// <returns>A sequence of column definitions.</returns>
-        /// <seealso cref="DataGridOperator.ItemsSource" />
         /// <remarks>The constraint is that all the items in the ItemsSource's should be of the same type.
         /// For non built in type, a
         /// <code>public static T Parse(string s, IFormatProvider formatProvider)</code> and
@@ -49,7 +48,7 @@ namespace PropertyTools.Wpf
 
             var view = CollectionViewSource.GetDefaultView(list);
             var itemPropertiesView = view as IItemProperties;
-            if (itemPropertiesView != null && itemPropertiesView.ItemProperties != null && itemPropertiesView.ItemProperties.Count > 0)
+            if (itemPropertiesView?.ItemProperties != null && itemPropertiesView.ItemProperties.Count > 0)
             {
                 foreach (var info in itemPropertiesView.ItemProperties)
                 {

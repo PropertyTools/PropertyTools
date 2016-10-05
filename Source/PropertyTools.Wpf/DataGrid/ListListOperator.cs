@@ -29,23 +29,22 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Generate column definitions based on <seealso cref="DataGridOperator.ItemsSource" />.
+        /// Generate column definitions based on a list of items.
         /// </summary>
         /// <param name="list">The list of items.</param>
         /// <returns>A sequence of column definitions.</returns>
-        /// <seealso cref="DataGridOperator.ItemsSource" />
         public override IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list)
         {
             var innerType = TypeHelper.GetInnerTypeOfList(list);
             var firstRow = list.Cast<IList>().FirstOrDefault();
-            var columns = firstRow != null ? firstRow.Count : 0;
+            var columns = firstRow?.Count ?? 0;
             for (var ii = 0; ii < columns; ii++)
             {
                yield return
                     new ColumnDefinition
                     {
                         PropertyType = innerType ?? typeof(object),
-                        Header = innerType != null ? innerType.Name : string.Empty,
+                        Header = innerType?.Name ?? string.Empty,
                         HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
                         Width = this.Owner.DefaultColumnWidth
                     };

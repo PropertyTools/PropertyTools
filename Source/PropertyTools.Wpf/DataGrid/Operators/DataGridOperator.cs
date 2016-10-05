@@ -12,7 +12,10 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Globalization;
     using System.Linq;
     using System.Windows;
     using System.Windows.Media;
@@ -59,7 +62,9 @@ namespace PropertyTools.Wpf
         {
             var cd = this.CreateCellDefinition(cell, pd, item);
             this.ApplyCellProperties(owner, cd, cell, pd, item);
-            return controlFactory.CreateDisplayControl(cd);
+            var element = controlFactory.CreateDisplayControl(cd);
+            element.DataContext = pd.Descriptor != null ? item : owner.ItemsSource;
+            return element;
         }
 
         /// <summary>
@@ -155,10 +160,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The binding path
         /// </returns>
-        protected virtual string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd)
-        {
-            return pd.Descriptor?.Name ?? $"[{cell.Row}][{cell.Column}]";
-        }
+        protected abstract string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd);
 
         /// <summary>
         /// Creates the cell definition for the specified cell.
@@ -283,19 +285,183 @@ namespace PropertyTools.Wpf
         /// <param name="pd">The property definition.</param>
         protected virtual void SetPropertiesFromDescriptor(PropertyDefinition pd)
         {
-            pd.IsReadOnly = pd.IsReadOnly || pd.IsReadOnly;
+            if (pd.Descriptor == null)
+            {
+                return;
+            }
 
-            var ispa = pd.Descriptor?.GetFirstAttributeOrDefault<ItemsSourcePropertyAttribute>();
+            if (pd.Descriptor.GetAttributeValue<System.ComponentModel.ReadOnlyAttribute, bool>(a => a.IsReadOnly)
+                || pd.Descriptor.GetAttributeValue<DataAnnotations.ReadOnlyAttribute, bool>(a => a.IsReadOnly)
+                || pd.Descriptor.IsReadOnly)
+            {
+                pd.IsReadOnly = true;
+            }
+
+            var ispa = pd.Descriptor.GetFirstAttributeOrDefault<ItemsSourcePropertyAttribute>();
             if (ispa != null)
             {
                 pd.ItemsSourceProperty = ispa.PropertyName;
             }
 
-            var eba = pd.Descriptor?.GetFirstAttributeOrDefault<EnableByAttribute>();
+            var eba = pd.Descriptor.GetFirstAttributeOrDefault<EnableByAttribute>();
             if (eba != null)
             {
                 pd.IsEnabledByProperty = eba.PropertyName;
                 pd.IsEnabledByValue = eba.PropertyValue;
+            }
+        }
+
+        public object GetCellValue(DataGrid owner, CellRef cell)
+        {
+            if (cell.Column < 0 || cell.Column >= owner.Columns || cell.Row < 0 || cell.Row >= owner.Rows)
+            {
+                return null;
+            }
+
+            var item = this.GetItem(owner, owner.ItemsSource, cell);
+            if (item != null)
+            {
+                var pd = owner.GetPropertyDefinition(cell);
+                if (pd != null)
+                {
+                    if (pd.Descriptor != null)
+                    {
+                        return pd.Descriptor.GetValue(item);
+                    }
+
+                    return item;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Tries to set cell value in the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <param name="value">The value.</param>
+        /// <returns><c>true</c> if the cell value was set.</returns>
+        public bool TrySetCellValue(DataGrid owner, CellRef cell, object value)
+        {
+            if (owner.ItemsSource != null)
+            {
+                var current = this.GetItem(owner, owner.ItemsSource, cell);
+
+                var pd = owner.GetPropertyDefinition(cell);
+                if (pd == null)
+                {
+                    return false;
+                }
+
+                if (current == null || pd.IsReadOnly)
+                {
+                    return false;
+                }
+
+                object convertedValue;
+                var targetType = this.GetPropertyType(pd, cell, current);
+                if (!TryConvert(value, targetType, out convertedValue))
+                {
+                    return false;
+                }
+
+                if (pd.Descriptor != null)
+                {
+                    pd.Descriptor.SetValue(current, convertedValue);
+                }
+                else
+                {
+                    owner.SetValue(cell, convertedValue);
+
+                    if (!(owner.ItemsSource is INotifyCollectionChanged))
+                    {
+                        owner.UpdateCellContent(cell);
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to convert an object to the specified type.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="targetType">The target type.</param>
+        /// <param name="convertedValue">The converted value.</param>
+        /// <returns>
+        /// True if conversion was successful.
+        /// </returns>
+        private static bool TryConvert(object value, Type targetType, out object convertedValue)
+        {
+            try
+            {
+                if (value != null && targetType == value.GetType())
+                {
+                    convertedValue = value;
+                    return true;
+                }
+
+                if (targetType == typeof(string))
+                {
+                    convertedValue = value?.ToString();
+                    return true;
+                }
+
+                if (targetType == typeof(double))
+                {
+                    convertedValue = Convert.ToDouble(value);
+                    return true;
+                }
+
+                if (targetType == typeof(int))
+                {
+                    convertedValue = Convert.ToInt32(value);
+                    return true;
+                }
+
+                if (targetType == typeof(bool))
+                {
+                    var s = value as string;
+                    if (s != null)
+                    {
+                        convertedValue = !string.IsNullOrEmpty(s) && s != "0";
+                        return true;
+                    }
+
+                    convertedValue = Convert.ToBoolean(value);
+                    return true;
+                }
+
+                var converter = TypeDescriptor.GetConverter(targetType);
+                if (value != null && converter.CanConvertFrom(value.GetType()))
+                {
+                    convertedValue = converter.ConvertFrom(value);
+                    return true;
+                }
+
+                if (value != null)
+                {
+                    var parseMethod = targetType.GetMethod("Parse", new[] { value.GetType(), typeof(IFormatProvider) });
+                    if (parseMethod != null)
+                    {
+                        convertedValue = parseMethod.Invoke(null, new[] { value, CultureInfo.CurrentCulture });
+                        return true;
+                    }
+                }
+
+                convertedValue = null;
+                return false;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+                convertedValue = null;
+                return false;
             }
         }
     }

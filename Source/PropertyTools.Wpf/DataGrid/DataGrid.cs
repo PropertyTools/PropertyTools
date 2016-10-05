@@ -16,7 +16,6 @@ namespace PropertyTools.Wpf
     using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Diagnostics;
-    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Windows;
@@ -410,7 +409,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The cell map.
         /// </summary>
-        private readonly Dictionary<int, UIElement> cellMap = new Dictionary<int, UIElement>();
+        private readonly Dictionary<int, FrameworkElement> cellMap = new Dictionary<int, FrameworkElement>();
 
         /// <summary>
         /// The column header map.
@@ -1383,7 +1382,7 @@ namespace PropertyTools.Wpf
             // Compare with the widths of the cell elements
             for (var i = 0; i < this.sheetGrid.RowDefinitions.Count; i++)
             {
-                var c = this.GetCellElement(new CellRef(i, column)) as FrameworkElement;
+                var c = this.GetCellElement(new CellRef(i, column));
                 if (c != null)
                 {
                     maximumWidth = Math.Max(maximumWidth, c.ActualWidth + c.Margin.Left + c.Margin.Right);
@@ -1408,7 +1407,7 @@ namespace PropertyTools.Wpf
             // Compare with the heights of the cell elements
             for (var i = 0; i < this.sheetGrid.ColumnDefinitions.Count; i++)
             {
-                var c = this.GetCellElement(new CellRef(row, i)) as FrameworkElement;
+                var c = this.GetCellElement(new CellRef(row, i));
                 if (c != null)
                 {
                     maximumHeight = Math.Max(maximumHeight, c.ActualHeight + c.Margin.Top + c.Margin.Bottom);
@@ -1609,9 +1608,9 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The element, or <c>null</c> if the cell was not found.
         /// </returns>
-        public UIElement GetCellElement(CellRef cellRef)
+        public FrameworkElement GetCellElement(CellRef cellRef)
         {
-            UIElement e;
+            FrameworkElement e;
             return this.cellMap.TryGetValue(cellRef.GetHashCode(), out e) ? e : null;
         }
 
@@ -1639,31 +1638,11 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
-        /// The get cell value.
+        /// The cell value.
         /// </returns>
         public object GetCellValue(CellRef cell)
         {
-            if (cell.Column < 0 || cell.Column >= this.Columns || cell.Row < 0 || cell.Row >= this.Rows)
-            {
-                return null;
-            }
-
-            var item = this.GetItem(cell);
-            if (item != null)
-            {
-                var pd = this.GetPropertyDefinition(cell);
-                if (pd != null)
-                {
-                    if (pd.Descriptor != null)
-                    {
-                        return pd.Descriptor.GetValue(item);
-                    }
-
-                    return item;
-                }
-            }
-
-            return null;
+            return this.Operator.GetCellValue(this, cell);
         }
 
         /// <summary>
@@ -2058,7 +2037,8 @@ namespace PropertyTools.Wpf
                 this.currentEditor.SetIsEnabledBinding(pd.IsEnabledByProperty, pd.IsEnabledByValue);
             }
 
-            this.SetElementDataContext(this.currentEditor, pd, item);
+            var displayControl = this.GetCellElement(this.CurrentCell) ;
+            this.currentEditor.DataContext = displayControl.DataContext;
 
             var textEditor = this.currentEditor as TextBox;
             if (textEditor != null)
@@ -2160,46 +2140,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual bool TrySetCellValue(CellRef cell, object value)
         {
-            if (this.ItemsSource != null)
-            {
-                var current = this.GetItem(cell);
-
-                var pd = this.GetPropertyDefinition(cell);
-                if (pd == null)
-                {
-                    return false;
-                }
-
-                if (current == null || pd.IsReadOnly)
-                {
-                    return false;
-                }
-
-                object convertedValue;
-                var targetType = this.Operator.GetPropertyType(pd, cell, current);
-                if (!TryConvert(value, targetType, out convertedValue))
-                {
-                    return false;
-                }
-
-                if (pd.Descriptor != null)
-                {
-                    pd.Descriptor.SetValue(current, convertedValue);
-                }
-                else
-                {
-                    this.SetValue(cell, convertedValue);
-
-                    if (!(this.ItemsSource is INotifyCollectionChanged))
-                    {
-                        this.UpdateCellContent(cell);
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
+            return this.Operator.TrySetCellValue(this, cell, value);
         }
 
         /// <summary>
@@ -2211,7 +2152,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The display control.
         /// </returns>
-        protected virtual UIElement CreateDisplayControl(CellRef cell, PropertyDefinition pd, object item)
+        protected virtual FrameworkElement CreateDisplayControl(CellRef cell, PropertyDefinition pd, object item)
         {
             if (item == null)
             {
@@ -2229,8 +2170,6 @@ namespace PropertyTools.Wpf
             }
 
             var element = this.Operator.CreateDisplayControl(this, this.ControlFactory, cell, pd, item);
-
-            this.SetElementDataContext(element, pd, item);
 
             if (pd.IsEnabledByProperty != null)
             {
@@ -2620,7 +2559,7 @@ namespace PropertyTools.Wpf
         /// Updates the content of the specified cell.
         /// </summary>
         /// <param name="cellRef">The cell reference.</param>
-        protected void UpdateCellContent(CellRef cellRef)
+        internal void UpdateCellContent(CellRef cellRef)
         {
             var c = this.GetCellElement(cellRef);
             if (c != null)
@@ -2785,84 +2724,6 @@ namespace PropertyTools.Wpf
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Tries to convert an object to the specified type.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="targetType">The target type.</param>
-        /// <param name="convertedValue">The converted value.</param>
-        /// <returns>
-        /// True if conversion was successful.
-        /// </returns>
-        private static bool TryConvert(object value, Type targetType, out object convertedValue)
-        {
-            try
-            {
-                if (value != null && targetType == value.GetType())
-                {
-                    convertedValue = value;
-                    return true;
-                }
-
-                if (targetType == typeof(string))
-                {
-                    convertedValue = value?.ToString();
-                    return true;
-                }
-
-                if (targetType == typeof(double))
-                {
-                    convertedValue = Convert.ToDouble(value);
-                    return true;
-                }
-
-                if (targetType == typeof(int))
-                {
-                    convertedValue = Convert.ToInt32(value);
-                    return true;
-                }
-
-                if (targetType == typeof(bool))
-                {
-                    var s = value as string;
-                    if (s != null)
-                    {
-                        convertedValue = !string.IsNullOrEmpty(s) && s != "0";
-                        return true;
-                    }
-
-                    convertedValue = Convert.ToBoolean(value);
-                    return true;
-                }
-
-                var converter = TypeDescriptor.GetConverter(targetType);
-                if (value != null && converter.CanConvertFrom(value.GetType()))
-                {
-                    convertedValue = converter.ConvertFrom(value);
-                    return true;
-                }
-
-                if (value != null)
-                {
-                    var parseMethod = targetType.GetMethod("Parse", new[] { value.GetType(), typeof(IFormatProvider) });
-                    if (parseMethod != null)
-                    {
-                        convertedValue = parseMethod.Invoke(null, new[] { value, CultureInfo.CurrentCulture });
-                        return true;
-                    }
-                }
-
-                convertedValue = null;
-                return false;
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(e);
-                convertedValue = null;
-                return false;
-            }
         }
 
         /// <summary>
@@ -3422,7 +3283,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The column/row definition.
         /// </returns>
-        private PropertyDefinition GetPropertyDefinition(CellRef cell)
+        internal PropertyDefinition GetPropertyDefinition(CellRef cell)
         {
             var index = this.ItemsInRows ? cell.Column : cell.Row;
 
@@ -3626,7 +3487,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="cell">The cell reference.</param>
         /// <param name="value">The value to be set.</param>
-        private void SetValue(CellRef cell, object value)
+        internal void SetValue(CellRef cell, object value)
         {
             if (this.ItemsSource == null)
             {
@@ -3864,17 +3725,6 @@ namespace PropertyTools.Wpf
             }
 
             return modified;
-        }
-
-        /// <summary>
-        /// Sets the data context for the specified element.
-        /// </summary>
-        /// <param name="element">The element.</param>
-        /// <param name="pd">The property definition.</param>
-        /// <param name="item">The item.</param>
-        private void SetElementDataContext(FrameworkElement element, PropertyDefinition pd, object item)
-        {
-            element.DataContext = pd.Descriptor != null ? item : this.ItemsSource;
         }
 
         /// <summary>

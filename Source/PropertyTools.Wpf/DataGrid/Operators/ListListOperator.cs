@@ -31,13 +31,13 @@ namespace PropertyTools.Wpf
             var columns = firstRow?.Count ?? 0;
             for (var ii = 0; ii < columns; ii++)
             {
-               yield return
-                    new ColumnDefinition
-                    {
-                        Header = innerType.Name,
-                        HorizontalAlignment = this.DefaultHorizontalAlignment,
-                        Width = this.DefaultColumnWidth
-                    };
+                yield return
+                     new ColumnDefinition
+                     {
+                         Header = innerType.Name,
+                         HorizontalAlignment = this.DefaultHorizontalAlignment,
+                         Width = this.DefaultColumnWidth
+                     };
             }
         }
 
@@ -171,6 +171,20 @@ namespace PropertyTools.Wpf
             }
 
             row[cell.Column] = value;
+        }
+
+        /// <summary>
+        /// Gets the binding path for the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <param name="pd">The property definition.</param>
+        /// <returns>
+        /// The binding path
+        /// </returns>
+        protected override string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd)
+        {
+            return pd.Descriptor?.Name ?? $"[{cell.Row}][{cell.Column}]";
         }
     }
 }

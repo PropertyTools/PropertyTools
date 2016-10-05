@@ -107,6 +107,21 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the value of the first attribute of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of the attribute.</typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="descriptor">The descriptor.</param>
+        /// <param name="func">The mapping function.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The value returned from the mapping function, or the default value if the attribute was not found.</returns>
+        public static TResult GetAttributeValue<T, TResult>(this System.ComponentModel.PropertyDescriptor descriptor, Func<T, TResult> func, TResult defaultValue = default(TResult)) where T : Attribute
+        {
+            var a = descriptor.Attributes.OfType<T>().FirstOrDefault();
+            return a != null ? func(a) : defaultValue;
+        }
+
+        /// <summary>
         /// Gets the first attribute of the specified type.
         /// </summary>
         /// <param name="descriptor">The descriptor.</param>

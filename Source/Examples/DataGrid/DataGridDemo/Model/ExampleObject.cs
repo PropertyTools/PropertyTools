@@ -42,13 +42,7 @@ namespace DataGridDemo
             }
         }
 
-        public bool ReadOnlyBoolean
-        {
-            get
-            {
-                return this.boolean;
-            }
-        }
+        public bool ReadOnlyBoolean => this.boolean;
 
         public Fruit Fruit
         {
@@ -132,13 +126,7 @@ namespace DataGridDemo
             }
         }
 
-        public string ReadOnlyString
-        {
-            get
-            {
-                return s != null ? "L=" + this.s.Length : null;
-            }
-        }
+        public string ReadOnlyString => this.s != null ? "L=" + this.s.Length : null;
 
         public Color Color
         {

@@ -38,32 +38,118 @@ namespace PropertyTools.Wpf
         protected DataGrid Owner { get; }
 
         /// <summary>
-        /// Gets the control factory.
-        /// </summary>
-        /// <remarks>It's the one in Owner.</remarks>
-        protected IDataGridControlFactory ControlFactory => this.Owner.ControlFactory;
-
-        /// <summary>
         /// Creates the display control for the specified cell.
         /// </summary>
+        /// <param name="controlFactory">The control factory.</param>
         /// <param name="cell">The cell reference.</param>
         /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
         /// <param name="item">The current value of the cell.</param>
         /// <returns>
         /// The display control.
         /// </returns>
-        public virtual FrameworkElement CreateDisplayControl(CellRef cell, PropertyDefinition pd, object item)
+        public virtual FrameworkElement CreateDisplayControl(IDataGridControlFactory controlFactory, CellRef cell, PropertyDefinition pd, object item)
         {
             var cd = this.CreateCellDefinition(cell, pd, item);
             this.ApplyCellProperties(cd, cell, pd, item);
-            return this.ControlFactory.CreateDisplayControl(cd);
+            return controlFactory.CreateDisplayControl(cd);
+        }
+
+        /// <summary>
+        /// Creates the edit control for the specified cell.
+        /// </summary>
+        /// <param name="controlFactory">The control factory.</param>
+        /// <param name="cell">The cell reference.</param>
+        /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
+        /// <param name="item">The item.</param>
+        /// <returns>
+        /// The edit control.
+        /// </returns>
+        public virtual FrameworkElement CreateEditControl(IDataGridControlFactory controlFactory, CellRef cell, PropertyDefinition pd, object item)
+        {
+            var cd = this.CreateCellDefinition(cell, pd, item);
+            this.ApplyCellProperties(cd, cell, pd, item);
+            return controlFactory.CreateEditControl(cd);
+        }
+
+        /// <summary>
+        /// Generates column definitions based on a list of items.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <returns>A sequence of column definitions.</returns>
+        public abstract IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list);
+
+        /// <summary>
+        /// Gets the item in the specified cell.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <param name="cell">The cell reference.</param>
+        /// <returns>
+        /// The <see cref="object" />.
+        /// </returns>
+        public abstract object GetItem(IList list, CellRef cell);
+
+        /// <summary>
+        /// Gets the type of the property in the specified cell.
+        /// </summary>
+        /// <param name="definition">The definition.</param>
+        /// <param name="cell">The cell.</param>
+        /// <param name="currentValue">The current value.</param>
+        /// <returns>
+        /// The type of the property.
+        /// </returns>
+        public virtual Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue)
+        {
+            if (definition.PropertyType == typeof(object) && currentValue != null)
+            {
+                return currentValue.GetType();
+            }
+
+            return definition.PropertyType;
+        }
+
+        /// <summary>
+        /// Gets the item type.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <returns>
+        /// The type of the element in the list.
+        /// </returns>
+        public abstract Type GetItemsType(IList list);
+
+        /// <summary>
+        /// Inserts an item to <see cref="DataGrid" /> at the specified index.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <param name="index">The index.</param>
+        /// <returns>
+        ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
+        /// </returns>
+        public abstract bool InsertItem(IList list, int index);
+
+        /// <summary>
+        /// Sets value of the specified cell to the specified value.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <param name="cell">The cell to change.</param>
+        /// <param name="value">The value.</param>
+        public abstract void SetValue(IList list, CellRef cell, object value);
+
+        /// <summary>
+        /// Gets the binding path for the specified cell.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <param name="pd">The property definition.</param>
+        /// <returns>The binding path</returns>
+        protected virtual string GetBindingPath(CellRef cell, PropertyDefinition pd)
+        {
+            return pd.GetBindingPath(cell);
         }
 
         /// <summary>
         /// Creates the cell definition for the specified cell.
         /// </summary>
         /// <param name="cell">The cell.</param>
-        /// <param name="pd">The pd.</param>
+        /// <param name="pd">The row/column definition.</param>
         /// <param name="item">The item.</param>
         /// <returns>The cell definition</returns>
         protected virtual CellDefinition CreateCellDefinition(CellRef cell, PropertyDefinition pd, object item)
@@ -137,95 +223,6 @@ namespace PropertyTools.Wpf
 
             cd.ConverterParameter = pd.ConverterParameter;
             cd.ConverterCulture = pd.ConverterCulture;
-        }
-
-        /// <summary>
-        /// Creates the edit control for the specified cell.
-        /// </summary>
-        /// <param name="cell">The cell reference.</param>
-        /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
-        /// <param name="item">The item.</param>
-        /// <returns>
-        /// The edit control.
-        /// </returns>
-        public virtual FrameworkElement CreateEditControl(CellRef cell, PropertyDefinition pd, object item)
-        {
-            var cd = this.CreateCellDefinition(cell, pd, item);
-            this.ApplyCellProperties(cd, cell, pd, item);
-            return this.ControlFactory.CreateEditControl(cd);
-        }
-
-        /// <summary>
-        /// Generates column definitions based on <seealso cref="ItemsSource" />.
-        /// </summary>
-        /// <seealso cref="ItemsSource" />
-        public abstract IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list);
-
-        /// <summary>
-        /// Gets the item in the specified cell.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <param name="cell">The cell reference.</param>
-        /// <returns>
-        /// The <see cref="object" />.
-        /// </returns>
-        public abstract object GetItem(IList list, CellRef cell);
-
-        /// <summary>
-        /// Gets the type of the property in the specified cell.
-        /// </summary>
-        /// <param name="definition">The definition.</param>
-        /// <param name="cell">The cell.</param>
-        /// <param name="currentValue">The current value.</param>
-        /// <returns>
-        /// The type of the property.
-        /// </returns>
-        public virtual Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue)
-        {
-            if (definition.PropertyType == typeof(object) && currentValue != null)
-            {
-                return currentValue.GetType();
-            }
-
-            return definition.PropertyType;
-        }
-
-        /// <summary>
-        /// Gets the item type.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <returns>
-        /// The type of the element in the list.
-        /// </returns>
-        public abstract Type GetItemsType(IList list);
-
-        /// <summary>
-        /// Inserts an item to <see cref="DataGrid" /> at the specified index.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <param name="index">The index.</param>
-        /// <returns>
-        ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
-        /// </returns>
-        public abstract bool InsertItem(IList list, int index);
-
-        /// <summary>
-        /// Sets value of the specified cell to the specified value.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <param name="cell">The cell to change.</param>
-        /// <param name="value">The value.</param>
-        public abstract void SetValue(IList list, CellRef cell, object value);
-
-        /// <summary>
-        /// Gets the binding path for the specified cell.
-        /// </summary>
-        /// <param name="cell">The cell.</param>
-        /// <param name="pd">The property definition.</param>
-        /// <returns>The binding path</returns>
-        protected virtual string GetBindingPath(CellRef cell, PropertyDefinition pd)
-        {
-            return pd.GetBindingPath(cell);
         }
     }
 }

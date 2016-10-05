@@ -2040,7 +2040,7 @@ namespace PropertyTools.Wpf
             }
 
             var item = this.GetItem(this.CurrentCell);
-            this.currentEditor = this.Operator.CreateEditControl(this.CurrentCell, pd, item);
+            this.currentEditor = this.Operator.CreateEditControl(this.ControlFactory, this.CurrentCell, pd, item);
 
             if (this.currentEditor == null)
             {
@@ -2228,7 +2228,7 @@ namespace PropertyTools.Wpf
                 throw new InvalidOperationException("No row/column definition for " + cell);
             }
 
-            var element = this.Operator.CreateDisplayControl(cell, pd, item);
+            var element = this.Operator.CreateDisplayControl(this.ControlFactory, cell, pd, item);
 
             this.SetElementDataContext(element, pd, item);
 

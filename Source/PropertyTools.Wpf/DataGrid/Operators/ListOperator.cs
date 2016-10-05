@@ -58,7 +58,7 @@ namespace PropertyTools.Wpf
                         Width = this.DefaultColumnWidth
                     };
 
-                    cd.SetPropertiesFromDescriptor(descriptor);
+                    this.SetPropertiesFromDescriptor(cd);
 
                     yield return cd;
                 }
@@ -91,7 +91,7 @@ namespace PropertyTools.Wpf
                         HorizontalAlignment = this.DefaultHorizontalAlignment,
                         Width = this.DefaultColumnWidth
                     };
-                    cd.SetPropertiesFromDescriptor(descriptor);
+                    this.SetPropertiesFromDescriptor(cd);
                     yield return cd;
                 }
 
@@ -252,7 +252,7 @@ namespace PropertyTools.Wpf
         protected override string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd)
         {
             var index = this.GetItemIndex(owner, cell);
-            return pd.GetBindingPath(index);
+            return pd.Descriptor?.Name ?? $"[{index}]";
         }
 
         /// <summary>

@@ -17,6 +17,10 @@ namespace PropertyTools.Wpf
     using System.Windows;
     using System.Windows.Media;
 
+    using PropertyTools.DataAnnotations;
+
+    using HorizontalAlignment = System.Windows.HorizontalAlignment;
+
     /// <summary>
     /// Represents an abstract base class for <see cref="DataGrid" /> operators.
     /// </summary>
@@ -153,7 +157,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd)
         {
-            return pd.GetBindingPath(cell);
+            return pd.Descriptor?.Name ?? $"[{cell.Row}][{cell.Column}]";
         }
 
         /// <summary>
@@ -269,9 +273,30 @@ namespace PropertyTools.Wpf
             // Set properties from descriptors
             foreach (var pd in owner.PropertyDefinitions.Where(x => x.Descriptor != null))
             {
-                pd.SetPropertiesFromDescriptor(pd.Descriptor);
+                this.SetPropertiesFromDescriptor(pd);
+            }
+        }
+
+        /// <summary>
+        /// Sets the properties from descriptor.
+        /// </summary>
+        /// <param name="pd">The property definition.</param>
+        protected virtual void SetPropertiesFromDescriptor(PropertyDefinition pd)
+        {
+            pd.IsReadOnly = pd.IsReadOnly || pd.IsReadOnly;
+
+            var ispa = pd.Descriptor?.GetFirstAttributeOrDefault<ItemsSourcePropertyAttribute>();
+            if (ispa != null)
+            {
+                pd.ItemsSourceProperty = ispa.PropertyName;
             }
 
+            var eba = pd.Descriptor?.GetFirstAttributeOrDefault<EnableByAttribute>();
+            if (eba != null)
+            {
+                pd.IsEnabledByProperty = eba.PropertyName;
+                pd.IsEnabledByValue = eba.PropertyValue;
+            }
         }
     }
 }

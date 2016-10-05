@@ -1736,7 +1736,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public bool InsertItem(int index, bool updateGrid = true)
         {
-            var success = this.Operator.InsertItem(this.ItemsSource, index);
+            var success = this.Operator.InsertItem(this, this.ItemsSource, index);
             if (success)
             {
                 if (updateGrid)
@@ -2040,7 +2040,7 @@ namespace PropertyTools.Wpf
             }
 
             var item = this.GetItem(this.CurrentCell);
-            this.currentEditor = this.Operator.CreateEditControl(this.ControlFactory, this.CurrentCell, pd, item);
+            this.currentEditor = this.Operator.CreateEditControl(this, this.ControlFactory, this.CurrentCell, pd, item);
 
             if (this.currentEditor == null)
             {
@@ -2228,7 +2228,7 @@ namespace PropertyTools.Wpf
                 throw new InvalidOperationException("No row/column definition for " + cell);
             }
 
-            var element = this.Operator.CreateDisplayControl(this.ControlFactory, cell, pd, item);
+            var element = this.Operator.CreateDisplayControl(this, this.ControlFactory, cell, pd, item);
 
             this.SetElementDataContext(element, pd, item);
 
@@ -3423,24 +3423,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private object GetItem(CellRef cell)
         {
-            return this.Operator.GetItem(this.ItemsSource, cell);
-        }
-
-        /// <summary>
-        /// Gets the item index for the specified cell.
-        /// </summary>
-        /// <param name="cell">The cell.</param>
-        /// <returns>
-        /// The get item index.
-        /// </returns>
-        public int GetItemIndex(CellRef cell)
-        {
-            if (this.WrapItems)
-            {
-                return this.ItemsInRows ? (cell.Row * this.Columns) + cell.Column : (cell.Column * this.Rows) + cell.Row;
-            }
-
-            return this.ItemsInRows ? cell.Row : cell.Column;
+            return this.Operator.GetItem(this, this.ItemsSource, cell);
         }
 
         /// <summary>
@@ -3661,7 +3644,7 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            this.Operator.SetValue(this.ItemsSource, cell, value);
+            this.Operator.SetValue(this, this.ItemsSource, cell, value);
         }
 
         /// <summary>
@@ -4781,10 +4764,10 @@ namespace PropertyTools.Wpf
         {
             if (this.IsIListIList())
             {
-                return new ListListOperator(this);
+                return new ListListOperator();
             }
 
-            return new ListOperator(this);
+            return new ListOperator();
         }
     }
 }

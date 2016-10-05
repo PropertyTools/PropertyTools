@@ -20,22 +20,13 @@ namespace PropertyTools.Wpf
     public class ListListOperator : DataGridOperator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListListOperator" /> class.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        public ListListOperator(DataGrid owner)
-            : base(owner)
-        {
-        }
-
-        /// <summary>
         /// Generate column definitions based on a list of items.
         /// </summary>
         /// <param name="list">The list of items.</param>
         /// <returns>A sequence of column definitions.</returns>
         public override IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list)
         {
-            var innerType = TypeHelper.GetInnerTypeOfList(list);
+            var innerType = TypeHelper.GetInnerTypeOfList(list) ?? typeof(object);
             var firstRow = list.Cast<IList>().FirstOrDefault();
             var columns = firstRow?.Count ?? 0;
             for (var ii = 0; ii < columns; ii++)
@@ -43,10 +34,10 @@ namespace PropertyTools.Wpf
                yield return
                     new ColumnDefinition
                     {
-                        PropertyType = innerType ?? typeof(object),
-                        Header = innerType?.Name ?? string.Empty,
-                        HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
-                        Width = this.Owner.DefaultColumnWidth
+                        PropertyType = innerType,
+                        Header = innerType.Name,
+                        HorizontalAlignment = this.DefaultHorizontalAlignment,
+                        Width = this.DefaultColumnWidth
                     };
             }
         }
@@ -54,12 +45,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the item in cell.
         /// </summary>
+        /// <param name="owner">The owner.</param>
         /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
         /// The <see cref="object" />.
         /// </returns>
-        public override object GetItem(IList list, CellRef cell)
+        public override object GetItem(DataGrid owner, IList list, CellRef cell)
         {
             int rowIndex = cell.Row;
             int columnIndex = cell.Column;
@@ -97,12 +89,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Inserts item to <see cref="DataGrid" />.
         /// </summary>
+        /// <param name="owner">The owner.</param>
         /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
         /// <returns>
         /// Returns <c>true</c> if insertion is successful, <c>false</c> otherwise.
         /// </returns>
-        public override bool InsertItem(IList list, int index)
+        public override bool InsertItem(DataGrid owner, IList list, int index)
         {
             if (list == null)
             {
@@ -111,7 +104,7 @@ namespace PropertyTools.Wpf
 
             var itemType = TypeHelper.GetItemType(list);
 
-            var newList = this.Owner.CreateInstance(itemType) as IList;
+            var newList = owner.CreateInstance(itemType) as IList;
 
             var innerType = TypeHelper.GetInnerTypeOfList(list);
             if (innerType == null)
@@ -119,13 +112,13 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            if (this.Owner.ItemsInRows)
+            if (owner.ItemsInRows)
             {
                 if (newList != null)
                 {
-                    for (var ii = 0; ii < this.Owner.Columns; ii++)
+                    for (var ii = 0; ii < owner.Columns; ii++)
                     {
-                        newList.Add(this.Owner.CreateInstance(innerType));
+                        newList.Add(owner.CreateInstance(innerType));
                     }
 
                     if (index < 0)
@@ -143,7 +136,7 @@ namespace PropertyTools.Wpf
                 // insert/append one new element to each list.
                 foreach (var row in list.OfType<IList>())
                 {
-                    var newItem = this.Owner.CreateInstance(innerType);
+                    var newItem = owner.CreateInstance(innerType);
                     if (index < 0)
                     {
                         row.Add(newItem);
@@ -161,10 +154,11 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets value to item in cell.
         /// </summary>
+        /// <param name="owner">The owner.</param>
         /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <param name="value">The value.</param>
-        public override void SetValue(IList list, CellRef cell, object value)
+        public override void SetValue(DataGrid owner, IList list, CellRef cell, object value)
         {
             if (list == null || cell.Row < 0 || cell.Column < 0 || cell.Row >= list.Count)
             {

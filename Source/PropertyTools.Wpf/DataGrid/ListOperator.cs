@@ -21,15 +21,6 @@ namespace PropertyTools.Wpf
     public class ListOperator : DataGridOperator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListOperator" /> class.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        public ListOperator(DataGrid owner)
-            : base(owner)
-        {
-        }
-
-        /// <summary>
         /// Generate column definitions based on a list of items.
         /// </summary>
         /// <param name="list">The list of items.</param>
@@ -48,6 +39,7 @@ namespace PropertyTools.Wpf
 
             var view = CollectionViewSource.GetDefaultView(list);
             var itemPropertiesView = view as IItemProperties;
+            var generatedColumns = 0;
             if (itemPropertiesView?.ItemProperties != null && itemPropertiesView.ItemProperties.Count > 0)
             {
                 foreach (var info in itemPropertiesView.ItemProperties)
@@ -62,9 +54,10 @@ namespace PropertyTools.Wpf
                         new ColumnDefinition(descriptor)
                         {
                             Header = info.Name,
-                            HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
-                            Width = this.Owner.DefaultColumnWidth
+                            HorizontalAlignment = this.DefaultHorizontalAlignment,
+                            Width = this.DefaultColumnWidth
                         };
+                    generatedColumns++;
                 }
             }
 
@@ -85,45 +78,47 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                this.Owner.ColumnDefinitions.Add(
+                yield return
                     new ColumnDefinition(descriptor)
                     {
                         Header = descriptor.Name,
-                        HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
-                        Width = this.Owner.DefaultColumnWidth
-                    });
+                        HorizontalAlignment = this.DefaultHorizontalAlignment,
+                        Width = this.DefaultColumnWidth
+                    };
+                generatedColumns++;
             }
 
-            if (this.Owner.ColumnDefinitions.Count == 0)
+            if (generatedColumns == 0)
             {
                 var itemsType = TypeHelper.GetItemType(list);
-                this.Owner.ColumnDefinitions.Add(
+                yield return
                     new ColumnDefinition
                     {
                         PropertyType = itemsType,
                         Header = itemsType.Name,
-                        HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
-                        Width = this.Owner.DefaultColumnWidth
-                    });
+                        HorizontalAlignment = this.DefaultHorizontalAlignment,
+                        Width = this.DefaultColumnWidth
+                    };
             }
         }
 
         /// <summary>
         /// Gets the item in cell.
         /// </summary>
+        /// <param name="owner">The owner.</param>
         /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
         /// The item <see cref="object" />.
         /// </returns>
-        public override object GetItem(IList list, CellRef cell)
+        public override object GetItem(DataGrid owner, IList list, CellRef cell)
         {
             if (list == null)
             {
                 return null;
             }
 
-            var index = this.Owner.GetItemIndex(cell);
+            var index = this.GetItemIndex(owner, cell);
             if (index >= 0 && index < list.Count)
             {
                 return list[index];
@@ -147,12 +142,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Inserts item to <see cref="DataGrid" />.
         /// </summary>
+        /// <param name="owner">The owner.</param>
         /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
         /// <returns>
         ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
         /// </returns>
-        public override bool InsertItem(IList list, int index)
+        public override bool InsertItem(DataGrid owner, IList list, int index)
         {
             if (list == null)
             {
@@ -181,7 +177,7 @@ namespace PropertyTools.Wpf
             {
                 if (newItem == null)
                 {
-                    newItem = this.Owner.CreateInstance(itemType);
+                    newItem = owner.CreateInstance(itemType);
                 }
             }
             catch
@@ -204,29 +200,51 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets value to item in cell.
         /// </summary>
+        /// <param name="owner">The owner.</param>
         /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <param name="value">The value.</param>
-        public override void SetValue(IList list, CellRef cell, object value)
+        public override void SetValue(DataGrid owner, IList list, CellRef cell, object value)
         {
             if (list == null || cell.Column < 0 || cell.Row < 0)
             {
                 return;
             }
 
-            var index = this.Owner.GetItemIndex(cell);
+            var index = this.GetItemIndex(owner, cell);
             list[index] = value;
+        }
+
+        /// <summary>
+        /// Gets the item index for the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <returns>
+        /// The get item index.
+        /// </returns>
+        protected virtual int GetItemIndex(DataGrid owner, CellRef cell)
+        {
+            if (owner.WrapItems)
+            {
+                return owner.ItemsInRows ? (cell.Row * owner.Columns) + cell.Column : (cell.Column * owner.Rows) + cell.Row;
+            }
+
+            return owner.ItemsInRows ? cell.Row : cell.Column;
         }
 
         /// <summary>
         /// Gets the binding path for the specified cell.
         /// </summary>
+        /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell.</param>
         /// <param name="pd">The property definition.</param>
-        /// <returns>The binding path</returns>
-        protected override string GetBindingPath(CellRef cell, PropertyDefinition pd)
+        /// <returns>
+        /// The binding path
+        /// </returns>
+        protected override string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd)
         {
-            var index = this.Owner.GetItemIndex(cell);
+            var index = this.GetItemIndex(owner, cell);
             return pd.GetBindingPath(index);
         }
 

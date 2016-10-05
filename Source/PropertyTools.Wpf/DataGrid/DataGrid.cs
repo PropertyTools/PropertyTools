@@ -2170,12 +2170,7 @@ namespace PropertyTools.Wpf
             }
 
             var element = this.Operator.CreateDisplayControl(this, this.ControlFactory, cell, pd, item);
-
             element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
-
-            element.VerticalAlignment = VerticalAlignment.Center;
-            element.HorizontalAlignment = pd.HorizontalAlignment;
-
             return element;
         }
 

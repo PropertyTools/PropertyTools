@@ -14,6 +14,7 @@
                 <p:ColumnDefinition PropertyName="Integer" Width="1*" Header="integer"/>
                 <p:ColumnDefinition PropertyName="Fruit" Width="1*" Header="enum"/>
                 <p:ColumnDefinition PropertyName="Selector" Width="1*" Header="selector"/>
+                <p:ColumnDefinition PropertyName="Color" Width="1*" Header="Color"/>
             </p:DataGrid.ColumnDefinitions>
         </p:DataGrid>
     </Grid>

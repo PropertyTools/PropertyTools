@@ -12,6 +12,7 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.Globalization;
     using System.Windows.Data;
+    using System.Windows.Media;
 
     /// <summary>
     /// Describes properties that applies to columns or rows in a <see cref="DataGrid" />.
@@ -114,5 +115,13 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <remarks>This property is used if the <see cref="IsEnabledByProperty"/> property is set.</remarks>
         public object IsEnabledByValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the background brush.
+        /// </summary>
+        /// <value>
+        /// The background.
+        /// </value>
+        public Brush Background { get; set; }
     }
 }

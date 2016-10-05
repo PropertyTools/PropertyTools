@@ -352,6 +352,7 @@ namespace PropertyTools.Wpf
             cd.ConverterCulture = pd.ConverterCulture;
             cd.IsEnabledByProperty = pd.IsEnabledByProperty;
             cd.IsEnabledByValue = pd.IsEnabledByValue;
+            cd.Background = pd.Background;
         }
 
         /// <summary>

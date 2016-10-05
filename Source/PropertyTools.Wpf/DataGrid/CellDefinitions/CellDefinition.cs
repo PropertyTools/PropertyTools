@@ -12,6 +12,7 @@ namespace PropertyTools.Wpf
     using System.Globalization;
     using System.Windows;
     using System.Windows.Data;
+    using System.Windows.Media;
 
     /// <summary>
     /// Defines the content of a cell.
@@ -87,5 +88,13 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <remarks>This property is used if the <see cref="IsEnabledByProperty"/> property is set.</remarks>
         public object IsEnabledByValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the background.
+        /// </summary>
+        /// <value>
+        /// The background.
+        /// </value>
+        public Brush Background { get; set; }
     }
 }

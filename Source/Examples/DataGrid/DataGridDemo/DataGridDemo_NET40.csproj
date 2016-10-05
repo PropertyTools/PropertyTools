@@ -58,6 +58,12 @@
     <Compile Include="NET40\MaxLengthAttribute.cs" />
     <Compile Include="NET40\ValidatableObject.cs" />
     <Compile Include="Examples\ExampleViewModel.cs" />
+    <Compile Include="Examples\BackgroundExample.xaml.cs">
+      <DependentUpon>BackgroundExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\GettingStartedExample.xaml.cs">
+      <DependentUpon>GettingStartedExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\WrapItems\MultitypeMatrixExample.xaml.cs">
       <DependentUpon>MultitypeMatrixExample.xaml</DependentUpon>
     </Compile>
@@ -155,6 +161,14 @@
     </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
+    <Page Include="Examples\BackgroundExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\GettingStartedExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\CustomHeaderExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -26,129 +26,129 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the display control with data binding.
         /// </summary>
-        /// <param name="cd">The cell definition.</param>
+        /// <param name="d">The cell definition.</param>
         /// <returns>
         /// The control.
         /// </returns>
-        public FrameworkElement CreateDisplayControl(CellDefinition cd)
+        public FrameworkElement CreateDisplayControl(CellDefinition d)
         {
-            var element = this.CreateDisplayControlOverride(cd);
-            this.ApplyCommonDisplayControlProperties(cd, element);
+            var element = this.CreateDisplayControlOverride(d);
+            this.ApplyCommonDisplayControlProperties(d, element);
             return element;
         }
 
         /// <summary>
         /// Creates the edit control with data binding.
         /// </summary>
-        /// <param name="cd">The cell definition.</param>
+        /// <param name="d">The cell definition.</param>
         /// <returns>
         /// The control.
         /// </returns>
-        public virtual FrameworkElement CreateEditControl(CellDefinition cd)
+        public virtual FrameworkElement CreateEditControl(CellDefinition d)
         {
-            var element = this.CreateEditControlOverride(cd);
+            var element = this.CreateEditControlOverride(d);
             return element;
         }
 
         /// <summary>
         /// Creates the display control.
         /// </summary>
-        /// <param name="cd">The cell definition.</param>
+        /// <param name="d">The cell definition.</param>
         /// <returns>The display control.</returns>
-        protected virtual FrameworkElement CreateDisplayControlOverride(CellDefinition cd)
+        protected virtual FrameworkElement CreateDisplayControlOverride(CellDefinition d)
         {
-            var cb = cd as CheckCellDefinition;
+            var cb = d as CheckCellDefinition;
             if (cb != null)
             {
                 return this.CreateCheckBoxControl(cb);
             }
 
-            var co = cd as ColorCellDefinition;
+            var co = d as ColorCellDefinition;
             if (co != null)
             {
                 return this.CreateColorPreviewControl(co);
             }
 
-            var td = cd as TemplateCellDefinition;
+            var td = d as TemplateCellDefinition;
             if (td != null)
             {
                 return this.CreateTemplateControl(td, td.DisplayTemplate);
             }
 
-            return this.CreateTextBlockControl(cd);
+            return this.CreateTextBlockControl(d);
         }
 
         /// <summary>
         /// Creates the edit control.
         /// </summary>
-        /// <param name="cd">The cell definition.</param>
+        /// <param name="d">The cell definition.</param>
         /// <returns>
         /// The control.
         /// </returns>
-        protected virtual FrameworkElement CreateEditControlOverride(CellDefinition cd)
+        protected virtual FrameworkElement CreateEditControlOverride(CellDefinition d)
         {
-            var co = cd as SelectCellDefinition;
+            var co = d as SelectCellDefinition;
             if (co != null)
             {
                 return this.CreateComboBox(co);
             }
 
-            var cb = cd as CheckCellDefinition;
+            var cb = d as CheckCellDefinition;
             if (cb != null)
             {
                 return null;
             }
 
-            var col = cd as ColorCellDefinition;
+            var col = d as ColorCellDefinition;
             if (col != null)
             {
                 return this.CreateColorPickerControl(col);
             }
 
-            var td = cd as TemplateCellDefinition;
+            var td = d as TemplateCellDefinition;
             if (td != null)
             {
                 return this.CreateTemplateControl(td, td.EditTemplate ?? td.DisplayTemplate);
             }
 
-            var te = cd as TextCellDefinition;
+            var te = d as TextCellDefinition;
             if (te != null)
             {
                 return this.CreateTextBox(te);
             }
 
-            return this.CreateDisplayControl(cd);
+            return this.CreateDisplayControl(d);
         }
 
         /// <summary>
         /// Creates a binding.
         /// </summary>
-        /// <param name="cd">The cd.</param>
+        /// <param name="d">The cd.</param>
         /// <returns>
         /// A binding.
         /// </returns>
-        protected Binding CreateBinding(CellDefinition cd)
+        protected Binding CreateBinding(CellDefinition d)
         {
-            var bindingMode = cd.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
-            var formatString = cd.FormatString;
+            var bindingMode = d.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
+            var formatString = d.FormatString;
             if (formatString != null && !formatString.StartsWith("{"))
             {
                 formatString = "{0:" + formatString + "}";
             }
 
-            var binding = new Binding(cd.BindingPath)
+            var binding = new Binding(d.BindingPath)
             {
                 Mode = bindingMode,
-                Converter = cd.Converter,
-                ConverterParameter = cd.ConverterParameter,
+                Converter = d.Converter,
+                ConverterParameter = d.ConverterParameter,
                 StringFormat = formatString,
                 ValidatesOnDataErrors = true,
                 ValidatesOnExceptions = true,
                 NotifyOnSourceUpdated = true
             };
-            if (cd.ConverterCulture != null)
+            if (d.ConverterCulture != null)
             {
-                binding.ConverterCulture = cd.ConverterCulture;
+                binding.ConverterCulture = d.ConverterCulture;
             }
 
             return binding;
@@ -171,60 +171,63 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a check box control with data binding.
         /// </summary>
-        /// <param name="cd">The cell definition.</param>
+        /// <param name="d">The cell definition.</param>
         /// <returns>
         /// A CheckBox.
         /// </returns>
-        protected virtual FrameworkElement CreateCheckBoxControl(CellDefinition cd)
+        protected virtual FrameworkElement CreateCheckBoxControl(CellDefinition d)
         {
-            if (cd.IsReadOnly)
+            if (d.IsReadOnly)
             {
                 var cm = new CheckMark
                 {
                     VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = cd.HorizontalAlignment
+                    HorizontalAlignment = d.HorizontalAlignment,
+                    Background = d.Background
                 };
-                cm.SetBinding(CheckMark.IsCheckedProperty, this.CreateBinding(cd));
+                cm.SetBinding(CheckMark.IsCheckedProperty, this.CreateBinding(d));
                 return cm;
             }
 
             var c = new CheckBox
             {
                 VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = cd.HorizontalAlignment,
-                IsEnabled = !cd.IsReadOnly
+                HorizontalAlignment = d.HorizontalAlignment,
+                Background = d.Background,
+                IsEnabled = !d.IsReadOnly
             };
-            c.SetBinding(ToggleButton.IsCheckedProperty, this.CreateBinding(cd));
+            c.SetBinding(ToggleButton.IsCheckedProperty, this.CreateBinding(d));
             return c;
         }
 
         /// <summary>
         /// Creates a color picker control with data binding.
         /// </summary>
-        /// <param name="cd">The cell definition.</param>
+        /// <param name="d">The cell definition.</param>
         /// <returns>
         /// A color picker.
         /// </returns>
-        protected virtual FrameworkElement CreateColorPickerControl(CellDefinition cd)
+        protected virtual FrameworkElement CreateColorPickerControl(CellDefinition d)
         {
             var c = new ColorPicker
             {
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
+                Background = d.Background,
                 Focusable = false
             };
-            c.SetBinding(ColorPicker.SelectedColorProperty, this.CreateBinding(cd));
+            c.SetBinding(ColorPicker.SelectedColorProperty, this.CreateBinding(d));
             return c;
         }
 
         /// <summary>
         /// Creates a color preview control with data binding.
         /// </summary>
-        /// <param name="cd">The cell definition.</param>
+        /// <param name="d">The cell definition.</param>
         /// <returns>
         /// A preview control.
         /// </returns>
-        protected virtual FrameworkElement CreateColorPreviewControl(ColorCellDefinition cd)
+        protected virtual FrameworkElement CreateColorPreviewControl(ColorCellDefinition d)
         {
             var c = new Rectangle
             {
@@ -236,49 +239,53 @@ namespace PropertyTools.Wpf
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
-            var binding = this.CreateBinding(cd);
+            var binding = this.CreateBinding(d);
             binding.Converter = new ColorToBrushConverter();
             c.SetBinding(Shape.FillProperty, binding);
-            return c;
+
+            var grid = new Grid { Background = d.Background };
+            grid.Children.Add(c);
+            return grid;
         }
 
         /// <summary>
         /// Creates a combo box with data binding.
         /// </summary>
-        /// <param name="cd">The cell definition.</param>
+        /// <param name="d">The cell definition.</param>
         /// <returns>
         /// A ComboBox.
         /// </returns>
-        protected virtual FrameworkElement CreateComboBox(SelectCellDefinition cd)
+        protected virtual FrameworkElement CreateComboBox(SelectCellDefinition d)
         {
             var c = new ComboBox
             {
-                IsEditable = cd.IsEditable,
+                IsEditable = d.IsEditable,
                 Focusable = false,
                 Margin = new Thickness(1, 1, 0, 0),
-                HorizontalContentAlignment = cd.HorizontalAlignment,
+                HorizontalContentAlignment = d.HorizontalAlignment,
                 VerticalContentAlignment = VerticalAlignment.Center,
+                Background = d.Background,
                 Padding = new Thickness(0),
                 BorderThickness = new Thickness(0)
             };
-            if (cd.ItemsSource != null)
+            if (d.ItemsSource != null)
             {
-                c.ItemsSource = cd.ItemsSource;
+                c.ItemsSource = d.ItemsSource;
             }
             else
             {
-                if (cd.ItemsSourceProperty != null)
+                if (d.ItemsSourceProperty != null)
                 {
-                    var itemsSourceBinding = new Binding(cd.ItemsSourceProperty);
+                    var itemsSourceBinding = new Binding(d.ItemsSourceProperty);
                     c.SetBinding(ItemsControl.ItemsSourceProperty, itemsSourceBinding);
                 }
             }
 
             c.DropDownClosed += (s, e) => FocusParentDataGrid(c);
-            var binding = this.CreateBinding(cd);
+            var binding = this.CreateBinding(d);
             binding.NotifyOnSourceUpdated = true;
-            c.SetBinding(cd.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);
-            c.SelectedValuePath = cd.SelectedValuePath;
+            c.SetBinding(d.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);
+            c.SelectedValuePath = d.SelectedValuePath;
 
             return c;
         }
@@ -286,61 +293,64 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates a text block control with data binding.
         /// </summary>
-        /// <param name="cd">The cd.</param>
+        /// <param name="d">The cell definition.</param>
         /// <returns>
         /// A TextBlock.
         /// </returns>
-        protected virtual FrameworkElement CreateTextBlockControl(CellDefinition cd)
+        protected virtual FrameworkElement CreateTextBlockControl(CellDefinition d)
         {
             var tb = new TextBlock
             {
-                HorizontalAlignment = cd.HorizontalAlignment,
+                HorizontalAlignment = d.HorizontalAlignment,
                 VerticalAlignment = VerticalAlignment.Center,
                 Padding = new Thickness(4, 0, 4, 0)
             };
 
-            tb.SetBinding(TextBlock.TextProperty, this.CreateOneWayBinding(cd));
-            return tb;
+            tb.SetBinding(TextBlock.TextProperty, this.CreateOneWayBinding(d));
+            var grid = new Grid { Background = d.Background };
+            grid.Children.Add(tb);
+            return grid;
         }
 
         /// <summary>
         /// Creates a text box with data binding.
         /// </summary>
-        /// <param name="cd">The cd.</param>
+        /// <param name="d">The cell definition.</param>
         /// <returns>
         /// A TextBox.
         /// </returns>
-        protected virtual FrameworkElement CreateTextBox(TextCellDefinition cd)
+        protected virtual FrameworkElement CreateTextBox(TextCellDefinition d)
         {
             var tb = new TextBox
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                HorizontalContentAlignment = cd.HorizontalAlignment,
-                MaxLength = cd.MaxLength,
+                HorizontalContentAlignment = d.HorizontalAlignment,
+                MaxLength = d.MaxLength,
                 BorderThickness = new Thickness(0),
-                Margin = new Thickness(1, 1, 0, 0)
+                Margin = new Thickness(1, 1, 0, 0),
+                Background = d.Background
             };
 
-            tb.SetBinding(TextBox.TextProperty, this.CreateBinding(cd));
+            tb.SetBinding(TextBox.TextProperty, this.CreateBinding(d));
             return tb;
         }
 
         /// <summary>
         /// Creates the template control.
         /// </summary>
-        /// <param name="td">The definition.</param>
-        /// <param name="t">The data template.</param>
+        /// <param name="d">The definition.</param>
+        /// <param name="template">The data template.</param>
         /// <returns>A content control.</returns>
-        protected virtual FrameworkElement CreateTemplateControl(TemplateCellDefinition td, DataTemplate t)
+        protected virtual FrameworkElement CreateTemplateControl(TemplateCellDefinition d, DataTemplate template)
         {
-            var template = t;
             var element = (FrameworkElement)template.LoadContent();
-            var binding = this.CreateBinding(td);
+            var binding = this.CreateBinding(d);
             binding.Mode = BindingMode.OneWay;
             var contentControl = new ContentControl
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch,
+                Background = d.Background,
                 Content = element
             };
             element.SetBinding(FrameworkElement.DataContextProperty, binding);

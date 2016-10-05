@@ -50,13 +50,17 @@ namespace PropertyTools.Wpf
                         continue;
                     }
 
-                    yield return
-                        new ColumnDefinition(descriptor)
-                        {
-                            Header = info.Name,
-                            HorizontalAlignment = this.DefaultHorizontalAlignment,
-                            Width = this.DefaultColumnWidth
-                        };
+                    var cd = new ColumnDefinition
+                    {
+                        PropertyName = descriptor.Name,
+                        Header = info.Name,
+                        HorizontalAlignment = this.DefaultHorizontalAlignment,
+                        Width = this.DefaultColumnWidth
+                    };
+
+                    cd.SetPropertiesFromDescriptor(descriptor);
+
+                    yield return cd;
                 }
 
                 yield break;
@@ -80,13 +84,15 @@ namespace PropertyTools.Wpf
                         continue;
                     }
 
-                    yield return
-                        new ColumnDefinition(descriptor)
-                        {
-                            Header = descriptor.Name,
-                            HorizontalAlignment = this.DefaultHorizontalAlignment,
-                            Width = this.DefaultColumnWidth
-                        };
+                    var cd = new ColumnDefinition
+                    {
+                        PropertyName = descriptor.Name,
+                        Header = descriptor.Name,
+                        HorizontalAlignment = this.DefaultHorizontalAlignment,
+                        Width = this.DefaultColumnWidth
+                    };
+                    cd.SetPropertiesFromDescriptor(descriptor);
+                    yield return cd;
                 }
 
                 yield break;

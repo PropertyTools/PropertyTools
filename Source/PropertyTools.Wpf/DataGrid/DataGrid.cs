@@ -3646,7 +3646,7 @@ namespace PropertyTools.Wpf
 
             this.Operator.SetValue(this, this.ItemsSource, cell, value);
         }
-        
+
         /// <summary>
         /// Handles changes to the items collection.
         /// </summary>
@@ -4519,19 +4519,21 @@ namespace PropertyTools.Wpf
             // Determine if columns or rows are defined
             this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
 
-            // If only PropertyName has been defined, use the type of the items to get the descriptor.
-            Type itemType = null;
+            // Set the property descriptors.
+            var itemType = TypeHelper.GetItemType(this.ItemsSource);
+            var properties = TypeDescriptor.GetProperties(itemType);
             foreach (var pd in this.PropertyDefinitions)
             {
-                if (pd.Descriptor == null && !string.IsNullOrEmpty(pd.PropertyName))
+                if (!string.IsNullOrEmpty(pd.PropertyName))
                 {
-                    if (itemType == null)
-                    {
-                        itemType = TypeHelper.GetItemType(this.ItemsSource);
-                    }
-
-                    pd.UpdateDescriptor(itemType);
+                    pd.Descriptor = properties[pd.PropertyName];
                 }
+            }
+
+            // Set properties from descriptors
+            foreach (var pd in this.PropertyDefinitions.Where(x => x.Descriptor != null))
+            {
+                pd.SetPropertiesFromDescriptor(pd.Descriptor);
             }
 
             var n = this.ItemsSource.Count;

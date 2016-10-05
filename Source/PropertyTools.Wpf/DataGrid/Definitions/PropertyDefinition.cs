@@ -32,30 +32,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyDefinition"/> class.
-        /// </summary>
-        /// <param name="descriptor">The property descriptor.</param>
-        protected PropertyDefinition(PropertyDescriptor descriptor) : this()
-        {
-            this.Descriptor = descriptor;
-
-            this.IsReadOnly = this.IsReadOnly || (descriptor != null && descriptor.IsReadOnly);
-
-            var ispa = this.GetFirstAttribute<ItemsSourcePropertyAttribute>();
-            if (ispa != null)
-            {
-                this.ItemsSourceProperty = ispa.PropertyName;
-            }
-
-            var eba = this.GetFirstAttribute<EnableByAttribute>();
-            if (eba != null)
-            {
-                this.IsEnabledByProperty = eba.PropertyName;
-                this.IsEnabledByValue = eba.PropertyValue;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the converter.
         /// </summary>
         /// <value>The converter.</value>
@@ -74,10 +50,10 @@ namespace PropertyTools.Wpf
         public object ConverterParameter { get; set; }
 
         /// <summary>
-        /// Gets the property descriptor.
+        /// Gets or sets the property descriptor.
         /// </summary>
         /// <value>The descriptor.</value>
-        public PropertyDescriptor Descriptor { get; private set; }
+        public PropertyDescriptor Descriptor { get; internal set; }
 
         /// <summary>
         /// Gets or sets the format string.
@@ -150,6 +126,29 @@ namespace PropertyTools.Wpf
         /// <remarks>This property is used if the <see cref="IsEnabledByProperty"/> property is set.</remarks>
         public object IsEnabledByValue { get; set; }
 
+        public void SetPropertiesFromDescriptor(PropertyDescriptor descriptor)
+        {
+            if (descriptor == null)
+            {
+                throw new ArgumentException(nameof(descriptor));
+            }
+
+            this.IsReadOnly = this.IsReadOnly || (descriptor != null && descriptor.IsReadOnly);
+
+            var ispa = descriptor.GetFirstAttributeOrDefault<ItemsSourcePropertyAttribute>();
+            if (ispa != null)
+            {
+                this.ItemsSourceProperty = ispa.PropertyName;
+            }
+
+            var eba = descriptor.GetFirstAttributeOrDefault<EnableByAttribute>();
+            if (eba != null)
+            {
+                this.IsEnabledByProperty = eba.PropertyName;
+                this.IsEnabledByValue = eba.PropertyValue;
+            }
+        }
+
         /// <summary>
         /// Gets the binding path.
         /// </summary>
@@ -172,36 +171,6 @@ namespace PropertyTools.Wpf
         public virtual string GetBindingPath(CellRef cell)
         {
             return this.Descriptor?.Name ?? $"[{cell.Row}][{cell.Column}]";
-        }
-
-        /// <summary>
-        /// Updates the descriptor based on the specified item type and current <see cref="PropertyName" />.
-        /// </summary>
-        /// <param name="itemType">Type of the items.</param>
-        public void UpdateDescriptor(Type itemType)
-        {
-            var descriptor = TypeDescriptor.GetProperties(itemType)[this.PropertyName];
-            this.Descriptor = descriptor;
-
-            this.IsReadOnly = this.IsReadOnly || (descriptor != null && descriptor.IsReadOnly);
-
-            var ispa = this.GetFirstAttribute<ItemsSourcePropertyAttribute>();
-            if (ispa != null)
-            {
-                this.ItemsSourceProperty = ispa.PropertyName;
-            }
-        }
-
-        /// <summary>
-        /// Gets the first attribute of the specified type.
-        /// </summary>
-        /// <typeparam name="T">Type of attribute.</typeparam>
-        /// <returns>
-        /// The attribute, or <c>null</c>.
-        /// </returns>
-        protected T GetFirstAttribute<T>() where T : Attribute
-        {
-            return this.Descriptor?.Attributes.OfType<T>().FirstOrDefault();
         }
     }
 }

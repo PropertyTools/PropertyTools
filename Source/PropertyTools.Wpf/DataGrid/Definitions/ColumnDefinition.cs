@@ -9,7 +9,6 @@
 
 namespace PropertyTools.Wpf
 {
-    using System.ComponentModel;
     using System.Windows;
 
     /// <summary>
@@ -21,15 +20,6 @@ namespace PropertyTools.Wpf
         /// Initializes a new instance of the <see cref="ColumnDefinition" /> class.
         /// </summary>
         public ColumnDefinition()
-        {
-            this.Width = GridLength.Auto;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnDefinition"/> class.
-        /// </summary>
-        /// <param name="descriptor">The property descriptor.</param>
-        public ColumnDefinition(PropertyDescriptor descriptor) : base(descriptor)
         {
             this.Width = GridLength.Auto;
         }

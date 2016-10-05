@@ -84,8 +84,8 @@
     <Compile Include="Examples\WpfDataGridExample.xaml.cs">
       <DependentUpon>WpfDataGridExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\ObservableObjectExample.xaml.cs">
-      <DependentUpon>ObservableObjectExample.xaml</DependentUpon>
+    <Compile Include="Examples\ObservableCollectionOfExampleObjectExample.xaml.cs">
+      <DependentUpon>ObservableCollectionOfExampleObjectExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ObservableCollectionOfObjectExample.xaml.cs">
       <DependentUpon>ObservableCollectionOfObjectExample.xaml</DependentUpon>
@@ -300,7 +300,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Examples\ObservableObjectExample.xaml">
+    <Page Include="Examples\ObservableCollectionOfExampleObjectExample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

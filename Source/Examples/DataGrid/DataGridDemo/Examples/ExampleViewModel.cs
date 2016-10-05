@@ -1,17 +1,40 @@
 ﻿namespace DataGridDemo
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Windows.Input;
     using System.Windows.Media;
+
+    using PropertyTools.Wpf;
 
     public class ExampleViewModel
     {
         static ExampleViewModel()
         {
             StaticItemsSource = new ObservableCollection<ExampleObject>();
-            for (int i = 0; i < 50; i++)
+            CreateObjects(StaticItemsSource);
+        }
+
+        public ExampleViewModel()
+        {
+            this.ClearCommand = new DelegateCommand(this.Clear);
+            this.ResetCommand = new DelegateCommand(this.Reset);
+        }
+
+        public static ObservableCollection<ExampleObject> StaticItemsSource { get; }
+
+        public ObservableCollection<ExampleObject> ItemsSource => StaticItemsSource;
+
+        public ICommand ClearCommand { get; }
+
+        public ICommand ResetCommand { get; }
+
+        private static void CreateObjects(ICollection<ExampleObject> list, int n = 50)
+        {
+            for (int i = 0; i < n; i++)
             {
-                StaticItemsSource.Add(
+                list.Add(
                     new ExampleObject
                     {
                         Boolean = true,
@@ -23,7 +46,7 @@
                         Selector = null,
                         String = "Hello"
                     });
-                StaticItemsSource.Add(
+                list.Add(
                     new ExampleObject
                     {
                         Boolean = false,
@@ -37,9 +60,17 @@
                     });
             }
         }
-        public ObservableCollection<ExampleObject> ItemsSource => StaticItemsSource;
 
-        public static ObservableCollection<ExampleObject> StaticItemsSource;
 
+        private void Reset()
+        {
+            this.ItemsSource.Clear();
+            CreateObjects(this.ItemsSource);
+        }
+
+        private void Clear()
+        {
+            this.ItemsSource.Clear();
+        }
     }
 }

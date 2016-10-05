@@ -1,9 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.0.0]
+### Changed
+- DataGrid: IDataGridControlFactory interface
+- DataGrid: TemplateColumnDefinition binding path
+
+### Added
+- DataGrid: Support for different types in the same column #118
+
 ## [1.1.0]
 ### Added
-- Support for IsEnabled in DataGrid cells
+- DataGrid: Support for IsEnabled on cell level
 
 ## [1.0.0] - 2016-09-08
 ### Added

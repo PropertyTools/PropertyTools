@@ -6,7 +6,7 @@
     <Grid>
         <p:DataGrid ItemsSource="{Binding ItemsSource}">
             <p:DataGrid.ColumnDefinitions>
-                <p:ColumnDefinition PropertyType="{x:Type Vector3D}" Header="Vector" FormatString="0.000" HorizontalAlignment="Center" Width="1*"/>
+                <p:ColumnDefinition Header="Vector" FormatString="0.000" HorizontalAlignment="Center" Width="1*"/>
             </p:DataGrid.ColumnDefinitions>
         </p:DataGrid>
     </Grid>

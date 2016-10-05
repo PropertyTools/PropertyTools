@@ -3646,18 +3646,7 @@ namespace PropertyTools.Wpf
 
             this.Operator.SetValue(this, this.ItemsSource, cell, value);
         }
-
-        /// <summary>
-        /// Gets type of the element in ItemsSource.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="Type" />.
-        /// </returns>
-        private Type GetItemsType()
-        {
-            return this.Operator.GetItemsType(this.ItemsSource);
-        }
-
+        
         /// <summary>
         /// Handles changes to the items collection.
         /// </summary>
@@ -4535,7 +4524,7 @@ namespace PropertyTools.Wpf
                 {
                     if (itemsType == null)
                     {
-                        itemsType = this.GetItemsType();
+                        itemsType = this.Operator.GetItemsType(this.ItemsSource);
                     }
 
                     pd.PropertyType = itemsType;
@@ -4560,7 +4549,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            var n = this.ItemsSource.Cast<object>().Count();
+            var n = this.ItemsSource.Count;
             var m = this.PropertyDefinitions.Count;
 
             if (this.WrapItems)
@@ -4691,7 +4680,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Updates row heights.
+        /// Updates the row heights.
         /// </summary>
         private void UpdateRowHeights()
         {
@@ -4716,9 +4705,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Adds a "insert" row.
+        /// Adds an "insert" row.
         /// </summary>
-        /// <param name="rows">The rows.</param>
+        /// <param name="rows">The number of rows.</param>
         /// <remarks>This row is below/to the right of the data rows/columns.</remarks>
         private void AddInserterRow(int rows)
         {

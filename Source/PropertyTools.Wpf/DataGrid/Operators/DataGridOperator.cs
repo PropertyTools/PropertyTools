@@ -61,9 +61,10 @@ namespace PropertyTools.Wpf
         public virtual FrameworkElement CreateDisplayControl(DataGrid owner, IDataGridControlFactory controlFactory, CellRef cell, PropertyDefinition pd, object item)
         {
             var cd = this.CreateCellDefinition(cell, pd, item);
-            this.ApplyCellProperties(owner, cd, cell, pd, item);
+            this.ApplyProperties(cd, owner, cell, pd, item);
             var element = controlFactory.CreateDisplayControl(cd);
-            element.DataContext = pd.Descriptor != null ? item : owner.ItemsSource;
+            element.DataContext = pd.PropertyName != null ? item : owner.ItemsSource;
+
             return element;
         }
 
@@ -81,7 +82,7 @@ namespace PropertyTools.Wpf
         public virtual FrameworkElement CreateEditControl(DataGrid owner, IDataGridControlFactory controlFactory, CellRef cell, PropertyDefinition pd, object item)
         {
             var cd = this.CreateCellDefinition(cell, pd, item);
-            this.ApplyCellProperties(owner, cd, cell, pd, item);
+            this.ApplyProperties(cd, owner, cell, pd, item);
             return controlFactory.CreateEditControl(cd);
         }
 
@@ -90,7 +91,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="list">The list.</param>
         /// <returns>A sequence of column definitions.</returns>
-        public abstract IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list);
+        protected abstract IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list);
 
         /// <summary>
         /// Gets the item in the specified cell.
@@ -112,7 +113,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The type of the property.
         /// </returns>
-        public virtual Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue)
+        protected virtual Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue)
         {
             if (definition.Descriptor?.PropertyType == null)
             {
@@ -121,15 +122,6 @@ namespace PropertyTools.Wpf
 
             return definition.Descriptor?.PropertyType;
         }
-
-        /// <summary>
-        /// Gets the item type.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <returns>
-        /// The type of the element in the list.
-        /// </returns>
-        public abstract Type GetItemsType(IList list);
 
         /// <summary>
         /// Inserts an item to <see cref="DataGrid" /> at the specified index.
@@ -223,12 +215,12 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Applies the properties to the specified cell definition.
         /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="cd">The cell definition.</param>
+        /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell.</param>
         /// <param name="pd">The row/column definition.</param>
         /// <param name="item">The current value of the cell.</param>
-        protected virtual void ApplyCellProperties(DataGrid owner, CellDefinition cd, CellRef cell, PropertyDefinition pd, object item)
+        protected virtual void ApplyProperties(CellDefinition cd, DataGrid owner, CellRef cell, PropertyDefinition pd, object item)
         {
             cd.HorizontalAlignment = pd.HorizontalAlignment;
             cd.BindingPath = this.GetBindingPath(owner, cell, pd);
@@ -241,6 +233,8 @@ namespace PropertyTools.Wpf
 
             cd.ConverterParameter = pd.ConverterParameter;
             cd.ConverterCulture = pd.ConverterCulture;
+            cd.IsEnabledByProperty = pd.IsEnabledByProperty;
+            cd.IsEnabledByValue = pd.IsEnabledByValue;
         }
 
         /// <summary>
@@ -268,14 +262,10 @@ namespace PropertyTools.Wpf
             {
                 if (!string.IsNullOrEmpty(pd.PropertyName))
                 {
-                    pd.Descriptor = properties[pd.PropertyName];
+                    var descriptor = properties[pd.PropertyName];
+                    this.SetPropertiesFromDescriptor(pd, descriptor);
+                    pd.Descriptor = descriptor;
                 }
-            }
-
-            // Set properties from descriptors
-            foreach (var pd in owner.PropertyDefinitions.Where(x => x.Descriptor != null))
-            {
-                this.SetPropertiesFromDescriptor(pd);
             }
         }
 
@@ -283,27 +273,29 @@ namespace PropertyTools.Wpf
         /// Sets the properties from descriptor.
         /// </summary>
         /// <param name="pd">The property definition.</param>
-        protected virtual void SetPropertiesFromDescriptor(PropertyDefinition pd)
+        /// <param name="descriptor">The descriptor.</param>
+        /// <exception cref="System.ArgumentException"></exception>
+        protected virtual void SetPropertiesFromDescriptor(PropertyDefinition pd, PropertyDescriptor descriptor)
         {
-            if (pd.Descriptor == null)
+            if (descriptor == null)
             {
-                return;
+                throw new ArgumentException(nameof(descriptor));
             }
 
-            if (pd.Descriptor.GetAttributeValue<System.ComponentModel.ReadOnlyAttribute, bool>(a => a.IsReadOnly)
-                || pd.Descriptor.GetAttributeValue<DataAnnotations.ReadOnlyAttribute, bool>(a => a.IsReadOnly)
-                || pd.Descriptor.IsReadOnly)
+            if (descriptor.GetAttributeValue<System.ComponentModel.ReadOnlyAttribute, bool>(a => a.IsReadOnly)
+                || descriptor.GetAttributeValue<DataAnnotations.ReadOnlyAttribute, bool>(a => a.IsReadOnly)
+                || descriptor.IsReadOnly)
             {
                 pd.IsReadOnly = true;
             }
 
-            var ispa = pd.Descriptor.GetFirstAttributeOrDefault<ItemsSourcePropertyAttribute>();
+            var ispa = descriptor.GetFirstAttributeOrDefault<ItemsSourcePropertyAttribute>();
             if (ispa != null)
             {
                 pd.ItemsSourceProperty = ispa.PropertyName;
             }
 
-            var eba = pd.Descriptor.GetFirstAttributeOrDefault<EnableByAttribute>();
+            var eba = descriptor.GetFirstAttributeOrDefault<EnableByAttribute>();
             if (eba != null)
             {
                 pd.IsEnabledByProperty = eba.PropertyName;

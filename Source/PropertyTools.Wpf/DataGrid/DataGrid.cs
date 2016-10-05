@@ -2171,11 +2171,6 @@ namespace PropertyTools.Wpf
 
             var element = this.Operator.CreateDisplayControl(this, this.ControlFactory, cell, pd, item);
 
-            if (pd.IsEnabledByProperty != null)
-            {
-                element.SetIsEnabledBinding(pd.IsEnabledByProperty, pd.IsEnabledByValue);
-            }
-
             element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
 
             element.VerticalAlignment = VerticalAlignment.Center;

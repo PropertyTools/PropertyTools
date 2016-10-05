@@ -30,7 +30,7 @@ namespace PropertyTools.Wpf
         /// <code>public static T Parse(string s, IFormatProvider formatProvider)</code> and
         /// <code>public string ToString(string format, IFormatProvider formatProvider)</code> should be defined.
         /// interface type is not acceptable for no object instance can be created based on it.</remarks>
-        public override IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list)
+        protected override IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list)
         {
             if (list == null)
             {
@@ -57,8 +57,6 @@ namespace PropertyTools.Wpf
                         HorizontalAlignment = this.DefaultHorizontalAlignment,
                         Width = this.DefaultColumnWidth
                     };
-
-                    this.SetPropertiesFromDescriptor(cd);
 
                     yield return cd;
                 }
@@ -91,7 +89,7 @@ namespace PropertyTools.Wpf
                         HorizontalAlignment = this.DefaultHorizontalAlignment,
                         Width = this.DefaultColumnWidth
                     };
-                    this.SetPropertiesFromDescriptor(cd);
+
                     yield return cd;
                 }
 
@@ -132,19 +130,7 @@ namespace PropertyTools.Wpf
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Gets the item type.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <returns>
-        /// The type of the elements in the list.
-        /// </returns>
-        public override Type GetItemsType(IList list)
-        {
-            return TypeHelper.GetItemType(list);
-        }
+        }        
 
         /// <summary>
         /// Inserts item to <see cref="DataGrid" />.
@@ -252,7 +238,7 @@ namespace PropertyTools.Wpf
         protected override string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd)
         {
             var index = this.GetItemIndex(owner, cell);
-            return pd.Descriptor?.Name ?? $"[{index}]";
+            return pd.PropertyName ?? $"[{index}]";
         }
 
         /// <summary>

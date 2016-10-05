@@ -9,7 +9,6 @@
 
 namespace PropertyTools.Wpf
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
@@ -24,7 +23,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="list">The list of items.</param>
         /// <returns>A sequence of column definitions.</returns>
-        public override IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list)
+        protected override IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list)
         {
             var innerType = TypeHelper.GetInnerTypeOfList(list) ?? typeof(object);
             var firstRow = list.Cast<IList>().FirstOrDefault();
@@ -71,18 +70,6 @@ namespace PropertyTools.Wpf
             }
 
             return ((IList)list[rowIndex])[columnIndex];
-        }
-
-        /// <summary>
-        /// Gets the item type.
-        /// </summary>
-        /// <param name="list">The list.</param>
-        /// <returns>
-        /// The type of the elements in the list.
-        /// </returns>
-        public override Type GetItemsType(IList list)
-        {
-            return TypeHelper.GetInnerMostGenericType(list);
         }
 
         /// <summary>
@@ -184,7 +171,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected override string GetBindingPath(DataGrid owner, CellRef cell, PropertyDefinition pd)
         {
-            return pd.Descriptor?.Name ?? $"[{cell.Row}][{cell.Column}]";
+            return pd.PropertyName ?? $"[{cell.Row}][{cell.Column}]";
         }
     }
 }

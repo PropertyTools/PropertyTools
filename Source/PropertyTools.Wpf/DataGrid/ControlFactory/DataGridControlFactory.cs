@@ -30,7 +30,32 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The control.
         /// </returns>
-        public virtual FrameworkElement CreateDisplayControl(CellDefinition cd)
+        public FrameworkElement CreateDisplayControl(CellDefinition cd)
+        {
+            var element = this.CreateDisplayControlOverride(cd);
+            this.ApplyCommonDisplayControlProperties(cd, element);
+            return element;
+        }
+
+        /// <summary>
+        /// Creates the edit control with data binding.
+        /// </summary>
+        /// <param name="cd">The cell definition.</param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        public virtual FrameworkElement CreateEditControl(CellDefinition cd)
+        {
+            var element = this.CreateEditControlOverride(cd);
+            return element;
+        }
+
+        /// <summary>
+        /// Creates the display control.
+        /// </summary>
+        /// <param name="cd">The cell definition.</param>
+        /// <returns>The display control.</returns>
+        protected virtual FrameworkElement CreateDisplayControlOverride(CellDefinition cd)
         {
             var cb = cd as CheckCellDefinition;
             if (cb != null)
@@ -54,13 +79,13 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates the edit control with data binding.
+        /// Creates the edit control.
         /// </summary>
         /// <param name="cd">The cell definition.</param>
         /// <returns>
         /// The control.
         /// </returns>
-        public virtual FrameworkElement CreateEditControl(CellDefinition cd)
+        protected virtual FrameworkElement CreateEditControlOverride(CellDefinition cd)
         {
             var co = cd as SelectCellDefinition;
             if (co != null)
@@ -320,6 +345,19 @@ namespace PropertyTools.Wpf
             };
             element.SetBinding(FrameworkElement.DataContextProperty, binding);
             return contentControl;
+        }
+
+        /// <summary>
+        /// Applies common display control properties.
+        /// </summary>
+        /// <param name="cd">The cell definition.</param>
+        /// <param name="element">The element.</param>
+        protected virtual void ApplyCommonDisplayControlProperties(CellDefinition cd, FrameworkElement element)
+        {
+            if (cd.IsEnabledByProperty != null)
+            {
+                element.SetIsEnabledBinding(cd.IsEnabledByProperty, cd.IsEnabledByValue);
+            }
         }
 
         /// <summary>

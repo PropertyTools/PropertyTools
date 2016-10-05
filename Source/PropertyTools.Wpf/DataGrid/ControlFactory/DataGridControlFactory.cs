@@ -267,7 +267,7 @@ namespace PropertyTools.Wpf
                 Margin = new Thickness(1, 1, 0, 0),
                 HorizontalContentAlignment = d.HorizontalAlignment,
                 VerticalContentAlignment = VerticalAlignment.Center,
-                Padding = new Thickness(0),
+                Padding = new Thickness(3, 0, 3, 0),
                 BorderThickness = new Thickness(0)
             };
             if (d.ItemsSource != null)

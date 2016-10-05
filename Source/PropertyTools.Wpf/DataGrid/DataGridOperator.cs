@@ -11,6 +11,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Windows;
     using System.Windows.Media;
@@ -41,12 +42,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <remarks>It's the one in Owner.</remarks>
         protected IDataGridControlFactory ControlFactory => this.Owner.ControlFactory;
-
-        /// <summary>
-        /// Gets the items source.
-        /// </summary>
-        /// <remarks>It's the one in Owner.</remarks>
-        protected IList ItemsSource => this.Owner.ItemsSource;
 
         /// <summary>
         /// Creates the display control for the specified cell.
@@ -164,16 +159,17 @@ namespace PropertyTools.Wpf
         /// Generates column definitions based on <seealso cref="ItemsSource" />.
         /// </summary>
         /// <seealso cref="ItemsSource" />
-        public abstract void GenerateColumnDefinitions();
+        public abstract IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list);
 
         /// <summary>
         /// Gets the item in the specified cell.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
         /// The <see cref="object" />.
         /// </returns>
-        public abstract object GetItem(CellRef cell);
+        public abstract object GetItem(IList list, CellRef cell);
 
         /// <summary>
         /// Gets the type of the property in the specified cell.
@@ -197,26 +193,29 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the item type.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <returns>
         /// The type of the element in the list.
         /// </returns>
-        public abstract Type GetItemsType();
+        public abstract Type GetItemsType(IList list);
 
         /// <summary>
         /// Inserts an item to <see cref="DataGrid" /> at the specified index.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
         /// <returns>
-        /// <c>true</c> if insertion is successful, <c>false</c> otherwise.
+        ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
         /// </returns>
-        public abstract bool InsertItem(int index);
+        public abstract bool InsertItem(IList list, int index);
 
         /// <summary>
         /// Sets value of the specified cell to the specified value.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <param name="cell">The cell to change.</param>
         /// <param name="value">The value.</param>
-        public abstract void SetValue(CellRef cell, object value);
+        public abstract void SetValue(IList list, CellRef cell, object value);
 
         /// <summary>
         /// Gets the binding path for the specified cell.

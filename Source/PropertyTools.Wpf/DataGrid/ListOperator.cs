@@ -11,6 +11,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows.Data;
 
@@ -27,25 +28,26 @@ namespace PropertyTools.Wpf
             : base(owner)
         {
         }
-        
+
         /// <summary>
         /// Generate column definitions based on <seealso cref="DataGridOperator.ItemsSource" />.
         /// </summary>
+        /// <param name="list">The list of items.</param>
+        /// <returns>A sequence of column definitions.</returns>
         /// <seealso cref="DataGridOperator.ItemsSource" />
         /// <remarks>The constraint is that all the items in the ItemsSource's should be of the same type.
         /// For non built in type, a
         /// <code>public static T Parse(string s, IFormatProvider formatProvider)</code> and
         /// <code>public string ToString(string format, IFormatProvider formatProvider)</code> should be defined.
         /// interface type is not acceptable for no object instance can be created based on it.</remarks>
-        public override void GenerateColumnDefinitions()
+        public override IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list)
         {
-            var list = this.ItemsSource;
             if (list == null)
             {
-                return;
+                yield break;
             }
 
-            var view = CollectionViewSource.GetDefaultView(this.ItemsSource);
+            var view = CollectionViewSource.GetDefaultView(list);
             var itemPropertiesView = view as IItemProperties;
             if (itemPropertiesView != null && itemPropertiesView.ItemProperties != null && itemPropertiesView.ItemProperties.Count > 0)
             {
@@ -57,16 +59,14 @@ namespace PropertyTools.Wpf
                         continue;
                     }
 
-                    this.Owner.ColumnDefinitions.Add(
+                    yield return
                         new ColumnDefinition(descriptor)
                         {
                             Header = info.Name,
                             HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
                             Width = this.Owner.DefaultColumnWidth
-                        });
+                        };
                 }
-
-                return;
             }
 
             var itemType = TypeHelper.FindBiggestCommonType(list);
@@ -112,13 +112,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the item in cell.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
         /// The item <see cref="object" />.
         /// </returns>
-        public override object GetItem(CellRef cell)
+        public override object GetItem(IList list, CellRef cell)
         {
-            var list = this.ItemsSource;
             if (list == null)
             {
                 return null;
@@ -136,24 +136,25 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the item type.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <returns>
         /// The type of the elements in the list.
         /// </returns>
-        public override Type GetItemsType()
+        public override Type GetItemsType(IList list)
         {
-            return TypeHelper.GetItemType(this.ItemsSource);
+            return TypeHelper.GetItemType(list);
         }
 
         /// <summary>
         /// Inserts item to <see cref="DataGrid" />.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
         /// <returns>
-        /// <c>true</c> if insertion is successful, <c>false</c> otherwise.
+        ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
         /// </returns>
-        public override bool InsertItem(int index)
+        public override bool InsertItem(IList list, int index)
         {
-            var list = this.ItemsSource;
             if (list == null)
             {
                 return false;
@@ -204,11 +205,11 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets value to item in cell.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <param name="value">The value.</param>
-        public override void SetValue(CellRef cell, object value)
+        public override void SetValue(IList list, CellRef cell, object value)
         {
-            var list = this.ItemsSource;
             if (list == null || cell.Column < 0 || cell.Row < 0)
             {
                 return;

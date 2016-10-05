@@ -11,6 +11,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
@@ -26,40 +27,41 @@ namespace PropertyTools.Wpf
             : base(owner)
         {
         }
-        
+
         /// <summary>
         /// Generate column definitions based on <seealso cref="DataGridOperator.ItemsSource" />.
         /// </summary>
+        /// <param name="list">The list of items.</param>
+        /// <returns>A sequence of column definitions.</returns>
         /// <seealso cref="DataGridOperator.ItemsSource" />
-        public override void GenerateColumnDefinitions()
+        public override IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list)
         {
-            var list = this.ItemsSource;
             var innerType = TypeHelper.GetInnerTypeOfList(list);
             var firstRow = list.Cast<IList>().FirstOrDefault();
             var columns = firstRow != null ? firstRow.Count : 0;
             for (var ii = 0; ii < columns; ii++)
             {
-                this.Owner.ColumnDefinitions.Add(
+               yield return
                     new ColumnDefinition
                     {
                         PropertyType = innerType ?? typeof(object),
                         Header = innerType != null ? innerType.Name : string.Empty,
                         HorizontalAlignment = this.Owner.DefaultHorizontalAlignment,
                         Width = this.Owner.DefaultColumnWidth
-                    });
+                    };
             }
         }
 
         /// <summary>
         /// Gets the item in cell.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
         /// The <see cref="object" />.
         /// </returns>
-        public override object GetItem(CellRef cell)
+        public override object GetItem(IList list, CellRef cell)
         {
-            var list = this.ItemsSource;
             int rowIndex = cell.Row;
             int columnIndex = cell.Column;
             if (list == null || rowIndex < 0 || columnIndex < 0)
@@ -84,24 +86,25 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the item type.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <returns>
         /// The type of the elements in the list.
         /// </returns>
-        public override Type GetItemsType()
+        public override Type GetItemsType(IList list)
         {
-            return TypeHelper.GetInnerMostGenericType(this.ItemsSource);
+            return TypeHelper.GetInnerMostGenericType(list);
         }
 
         /// <summary>
         /// Inserts item to <see cref="DataGrid" />.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
         /// <returns>
         /// Returns <c>true</c> if insertion is successful, <c>false</c> otherwise.
         /// </returns>
-        public override bool InsertItem(int index)
+        public override bool InsertItem(IList list, int index)
         {
-            var list = this.ItemsSource;
             if (list == null)
             {
                 return false;
@@ -159,11 +162,11 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets value to item in cell.
         /// </summary>
+        /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <param name="value">The value.</param>
-        public override void SetValue(CellRef cell, object value)
+        public override void SetValue(IList list, CellRef cell, object value)
         {
-            var list = this.ItemsSource;
             if (list == null || cell.Row < 0 || cell.Column < 0 || cell.Row >= list.Count)
             {
                 return;

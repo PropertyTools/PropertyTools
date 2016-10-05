@@ -1736,7 +1736,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public bool InsertItem(int index, bool updateGrid = true)
         {
-            var success = this.Operator.InsertItem(index);
+            var success = this.Operator.InsertItem(this.ItemsSource, index);
             if (success)
             {
                 if (updateGrid)
@@ -2268,7 +2268,10 @@ namespace PropertyTools.Wpf
         /// </summary>
         protected virtual void GenerateColumnDefinitions()
         {
-            this.Operator.GenerateColumnDefinitions();
+            foreach (var cd in this.Operator.GenerateColumnDefinitions(this.ItemsSource))
+            {
+                this.ColumnDefinitions.Add(cd);
+            }
         }
 
         /// <summary>
@@ -3420,7 +3423,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private object GetItem(CellRef cell)
         {
-            return this.Operator.GetItem(cell);
+            return this.Operator.GetItem(this.ItemsSource, cell);
         }
 
         /// <summary>
@@ -3658,7 +3661,7 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            this.Operator.SetValue(cell, value);
+            this.Operator.SetValue(this.ItemsSource, cell, value);
         }
 
         /// <summary>
@@ -3669,7 +3672,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private Type GetItemsType()
         {
-            return this.Operator.GetItemsType();
+            return this.Operator.GetItemsType(this.ItemsSource);
         }
 
         /// <summary>

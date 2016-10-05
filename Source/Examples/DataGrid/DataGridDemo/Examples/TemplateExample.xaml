@@ -12,7 +12,7 @@
             <p:DataGrid.ColumnDefinitions>
                 <p:ColumnDefinition PropertyName="Fruit" Header="Fruit"/>
                 
-                <p:TemplateColumnDefinition PropertyName="Fruit" Header="Templated">
+                <p:TemplateColumnDefinition PropertyName="Fruit" Header="Templated (property)">
                     <p:TemplateColumnDefinition.CellTemplate>
                         <DataTemplate>
                             <TextBlock FontWeight="Bold" Text="{Binding}" Margin="2" Background="LightSeaGreen"/>
@@ -21,6 +21,19 @@
                     <p:TemplateColumnDefinition.CellEditingTemplate>
                         <DataTemplate>
                             <TextBlock FontStyle="Italic" Text="{Binding}" Padding="2" Background="LightBlue"/>
+                        </DataTemplate>
+                    </p:TemplateColumnDefinition.CellEditingTemplate>
+                </p:TemplateColumnDefinition>
+
+                <p:TemplateColumnDefinition PropertyName="" Header="Templated (row)">
+                    <p:TemplateColumnDefinition.CellTemplate>
+                        <DataTemplate DataType="dataGridDemo:ExampleObject">
+                            <TextBlock FontWeight="Bold" Text="{Binding Fruit}" Margin="2" Background="LightSeaGreen"/>
+                        </DataTemplate>
+                    </p:TemplateColumnDefinition.CellTemplate>
+                    <p:TemplateColumnDefinition.CellEditingTemplate>
+                        <DataTemplate DataType="dataGridDemo:ExampleObject">
+                            <TextBlock FontStyle="Italic" Text="{Binding Fruit}" Padding="2" Background="LightBlue"/>
                         </DataTemplate>
                     </p:TemplateColumnDefinition.CellEditingTemplate>
                 </p:TemplateColumnDefinition>

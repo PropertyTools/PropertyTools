@@ -7,14 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace PropertyTools.Wpf
 {
     using System;
     using System.Collections;
+    using System.Linq;
     using System.Windows;
-    using System.Windows.Data;
     using System.Windows.Media;
 
     /// <summary>
@@ -66,6 +64,13 @@ namespace PropertyTools.Wpf
             return this.ControlFactory.CreateDisplayControl(cd);
         }
 
+        /// <summary>
+        /// Creates the cell definition for the specified cell.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <param name="pd">The pd.</param>
+        /// <param name="item">The item.</param>
+        /// <returns>The cell definition</returns>
         protected virtual CellDefinition CreateCellDefinition(CellRef cell, PropertyDefinition pd, object item)
         {
             var propertyType = this.GetPropertyType(pd, cell, item);
@@ -76,7 +81,7 @@ namespace PropertyTools.Wpf
                 return new TemplateCellDefinition
                 {
                     DisplayTemplate = tcd.CellTemplate,
-                    EditingTemplate = tcd.CellEditingTemplate
+                    EditTemplate = tcd.CellEditingTemplate
                 };
             }
 
@@ -117,11 +122,17 @@ namespace PropertyTools.Wpf
             return new TextCellDefinition();
         }
 
+        /// <summary>
+        /// Applies the properties to the specified cell definition.
+        /// </summary>
+        /// <param name="cd">The cell definition.</param>
+        /// <param name="cell">The cell.</param>
+        /// <param name="pd">The row/column definition.</param>
+        /// <param name="item">The current value of the cell.</param>
         protected virtual void ApplyCellProperties(CellDefinition cd, CellRef cell, PropertyDefinition pd, object item)
         {
             cd.HorizontalAlignment = pd.HorizontalAlignment;
             cd.BindingPath = this.GetBindingPath(cell, pd);
-            cd.Trigger = UpdateSourceTrigger.Default;
             cd.IsReadOnly = pd.IsReadOnly;
             cd.FormatString = pd.FormatString;
             if (pd.Converter != null)

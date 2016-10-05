@@ -83,7 +83,7 @@ namespace PropertyTools.Wpf
             var td = cd as TemplateCellDefinition;
             if (td != null)
             {
-                return this.CreateTemplateControl(td, td.EditingTemplate ?? td.DisplayTemplate);
+                return this.CreateTemplateControl(td, td.EditTemplate ?? td.DisplayTemplate);
             }
 
             var te = cd as TextCellDefinition;
@@ -117,7 +117,6 @@ namespace PropertyTools.Wpf
                 Converter = cd.Converter,
                 ConverterParameter = cd.ConverterParameter,
                 StringFormat = formatString,
-                UpdateSourceTrigger = cd.Trigger,
                 ValidatesOnDataErrors = true,
                 ValidatesOnExceptions = true,
                 NotifyOnSourceUpdated = true

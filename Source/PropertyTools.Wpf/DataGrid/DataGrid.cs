@@ -1348,7 +1348,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the operator.
         /// </summary>
-        private DataGridOperator Operator => this.CreateOperator();
+        private DataGridOperator Operator { get; set; }
 
         /// <summary>
         /// Autosizes all columns.
@@ -4344,6 +4344,8 @@ namespace PropertyTools.Wpf
             {
                 return;
             }
+
+            this.Operator = this.CreateOperator();
 
             if (this.AutoGenerateColumns && this.ColumnDefinitions.Count == 0)
             {

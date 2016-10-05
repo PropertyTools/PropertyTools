@@ -10,7 +10,6 @@
 namespace PropertyTools.Wpf
 {
     using System.Collections;
-    using System.ComponentModel;
     using System.Globalization;
     using System.Windows.Data;
 
@@ -26,12 +25,6 @@ namespace PropertyTools.Wpf
         {
             this.MaxLength = int.MaxValue;
         }
-
-        /// <summary>
-        /// Gets the property descriptor.
-        /// </summary>
-        /// <value>The descriptor.</value>
-        public PropertyDescriptor Descriptor { get; internal set; }
 
         /// <summary>
         /// Gets or sets the converter.

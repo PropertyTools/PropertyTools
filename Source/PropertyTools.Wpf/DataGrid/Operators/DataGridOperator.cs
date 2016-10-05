@@ -32,6 +32,11 @@ namespace PropertyTools.Wpf
     public abstract class DataGridOperator
     {
         /// <summary>
+        /// The property descriptors.
+        /// </summary>
+        private readonly Dictionary<PropertyDefinition, PropertyDescriptor> descriptors = new Dictionary<PropertyDefinition, PropertyDescriptor>();
+
+        /// <summary>
         /// Gets or sets the default horizontal alignment.
         /// </summary>
         /// <value>
@@ -115,12 +120,24 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue)
         {
-            if (definition.Descriptor?.PropertyType == null)
+            var descriptor = this.GetPropertyDescriptor(definition);
+            if (descriptor?.PropertyType == null)
             {
                 return currentValue?.GetType() ?? typeof(object);
             }
 
-            return definition.Descriptor?.PropertyType;
+            return descriptor.PropertyType;
+        }
+
+        /// <summary>
+        /// Gets the property descriptor.
+        /// </summary>
+        /// <param name="pd">The property definition.</param>
+        /// <returns>The property descriptor.</returns>
+        protected virtual PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd)
+        {
+            PropertyDescriptor descriptor;
+            return this.descriptors.TryGetValue(pd, out descriptor) ? descriptor : null;
         }
 
         /// <summary>
@@ -255,6 +272,8 @@ namespace PropertyTools.Wpf
         /// <param name="owner">The owner.</param>
         public virtual void UpdatePropertyDefinitions(DataGrid owner)
         {
+            this.descriptors.Clear();
+
             // Set the property descriptors.
             var itemType = TypeHelper.GetItemType(owner.ItemsSource);
             var properties = TypeDescriptor.GetProperties(itemType);
@@ -264,7 +283,7 @@ namespace PropertyTools.Wpf
                 {
                     var descriptor = properties[pd.PropertyName];
                     this.SetPropertiesFromDescriptor(pd, descriptor);
-                    pd.Descriptor = descriptor;
+                    this.descriptors[pd] = descriptor;
                 }
             }
         }
@@ -316,9 +335,10 @@ namespace PropertyTools.Wpf
                 var pd = owner.GetPropertyDefinition(cell);
                 if (pd != null)
                 {
-                    if (pd.Descriptor != null)
+                    var descriptor = this.GetPropertyDescriptor(pd);
+                    if (descriptor != null)
                     {
-                        return pd.Descriptor.GetValue(item);
+                        return descriptor.GetValue(item);
                     }
 
                     return item;
@@ -359,9 +379,10 @@ namespace PropertyTools.Wpf
                     return false;
                 }
 
-                if (pd.Descriptor != null)
+                var descriptor = this.GetPropertyDescriptor(pd);
+                if (descriptor != null)
                 {
-                    pd.Descriptor.SetValue(current, convertedValue);
+                    descriptor.SetValue(current, convertedValue);
                 }
                 else
                 {

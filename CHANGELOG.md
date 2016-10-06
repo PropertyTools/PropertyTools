@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - DataGrid: Support for different types in the same column #118
+- DataGrid: Support for cell backgrounds #119
+- DataGrid: CellDefinitionFactory property #120
 
 ## [1.1.0]
 ### Added

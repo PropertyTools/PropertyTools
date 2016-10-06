@@ -16,9 +16,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Globalization;
-    using System.Linq;
     using System.Windows;
-    using System.Windows.Media;
 
     using PropertyTools.DataAnnotations;
 
@@ -29,7 +27,7 @@ namespace PropertyTools.Wpf
     /// </summary>
     /// <remarks>An operator implements operations for a <see cref="DataGrid" /> based on the different data its 
     /// <see cref="DataGrid.ItemsSource" /> binds to.</remarks>
-    public abstract class DataGridOperator
+    public abstract class DataGridOperator : IDataGridOperator
     {
         /// <summary>
         /// The property descriptors.
@@ -57,7 +55,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell.</param>
-        /// <returns>The vallue</returns>
+        /// <returns>The value</returns>
         public virtual object GetCellValue(DataGrid owner, CellRef cell)
         {
             if (cell.Column < 0 || cell.Column >= owner.Columns || cell.Row < 0 || cell.Row >= owner.Rows)
@@ -111,7 +109,7 @@ namespace PropertyTools.Wpf
         /// <param name="cell">The cell reference.</param>
         /// <returns>
         /// The <see cref="object" />.
-        /// </returns>
+        /// </returns>au
         public abstract object GetItem(DataGrid owner, CellRef cell);
 
         /// <summary>
@@ -358,6 +356,12 @@ namespace PropertyTools.Wpf
             return false;
         }
 
+        /// <summary>
+        /// Gets the data context for the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <returns>The context object.</returns>
         public object GetDataContext(DataGrid owner, CellRef cell)
         {
             var pd = owner.GetPropertyDefinition(cell);

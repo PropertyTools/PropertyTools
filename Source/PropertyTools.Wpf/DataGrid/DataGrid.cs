@@ -1421,7 +1421,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the operator.
         /// </summary>
-        public DataGridOperator Operator { get; private set; }
+        public IDataGridOperator Operator { get; private set; }
 
         /// <summary>
         /// Gets the row/column definitions.
@@ -4594,7 +4594,7 @@ namespace PropertyTools.Wpf
         /// Creates the operator for the current items source.
         /// </summary>
         /// <returns>The operator.</returns>
-        private DataGridOperator CreateOperator()
+        private IDataGridOperator CreateOperator()
         {
             if (this.IsIListIList())
             {

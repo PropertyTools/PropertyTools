@@ -187,6 +187,7 @@
     <Compile Include="DataGrid\CellDefinitions\SelectCellDefinition.cs" />
     <Compile Include="DataGrid\CellDefinitions\TemplateCellDefinition.cs" />
     <Compile Include="DataGrid\CellDefinitions\TextCellDefinition.cs" />
+    <Compile Include="DataGrid\Operators\IDataGridOperator.cs" />
     <Compile Include="Utilities\BindingUtilities.cs" />
     <Compile Include="DataGrid\Operators\ListListOperator.cs" />
     <Compile Include="DataGrid\Operators\DataGridOperator.cs" />

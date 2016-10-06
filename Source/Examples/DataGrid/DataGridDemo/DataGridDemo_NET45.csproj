@@ -57,13 +57,13 @@
     <Compile Include="..\..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Examples\WrapItems\BackgroundSourceExample.xaml.cs">
-      <DependentUpon>BackgroundSourceExample.xaml</DependentUpon>
+    <Compile Include="Examples\WrapItems\BackgroundBindingSourceExample.xaml.cs">
+      <DependentUpon>BackgroundBindingSourceExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="NET45\ValidatableObject.cs" />
     <Compile Include="DataTypes\MassValueConverter.cs" />
-    <Compile Include="Examples\WrapItems\WrapItemsIsEnabledExample.xaml.cs">
-      <DependentUpon>WrapItemsIsEnabledExample.xaml</DependentUpon>
+    <Compile Include="Examples\WrapItems\IsEnabledBindingSourceExample.xaml.cs">
+      <DependentUpon>IsEnabledBindingSourceExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ExampleViewModel.cs" />
     <Compile Include="Examples\BackgroundExample.xaml.cs">
@@ -219,11 +219,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\WrapItems\BackgroundSourceExample.xaml">
+    <Page Include="Examples\WrapItems\BackgroundBindingSourceExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\WrapItems\WrapItemsIsEnabledExample.xaml">
+    <Page Include="Examples\WrapItems\IsEnabledBindingSourceExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

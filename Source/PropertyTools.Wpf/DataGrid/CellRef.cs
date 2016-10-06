@@ -43,24 +43,12 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the column.
         /// </summary>
-        public int Column
-        {
-            get
-            {
-                return this.column;
-            }
-        }
+        public int Column => this.column;
 
         /// <summary>
         /// Gets the row.
         /// </summary>
-        public int Row
-        {
-            get
-            {
-                return this.row;
-            }
-        }
+        public int Row => this.row;
 
         /// <summary>
         /// Converts a column number to a column name.

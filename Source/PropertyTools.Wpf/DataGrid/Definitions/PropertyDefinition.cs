@@ -122,6 +122,7 @@ namespace PropertyTools.Wpf
         /// <value>
         /// The background.
         /// </value>
+        /// <remarks>If set, this overrides <see cref="BackgroundProperty" />.</remarks>
         public Brush Background { get; set; }
 
         /// <summary>

@@ -54,101 +54,137 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="CreateColumnHeader"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CreateColumnHeaderProperty =
-            DependencyProperty.Register("CreateColumnHeader", typeof(Func<int, object>), typeof(DataGrid), new PropertyMetadata(null));
+        public static readonly DependencyProperty CreateColumnHeaderProperty = DependencyProperty.Register(
+            "CreateColumnHeader",
+            typeof(Func<int, object>),
+            typeof(DataGrid),
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="CreateItem"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CreateItemProperty =
-            DependencyProperty.Register("CreateItem", typeof(Func<object>), typeof(DataGrid), new PropertyMetadata(null));
+        public static readonly DependencyProperty CreateItemProperty = DependencyProperty.Register(
+            "CreateItem",
+            typeof(Func<object>),
+            typeof(DataGrid),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="AddItemHeader"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AddItemHeaderProperty = DependencyProperty.Register(
-            "AddItemHeader", typeof(string), typeof(DataGrid), new UIPropertyMetadata("+"));
+            "AddItemHeader",
+            typeof(string),
+            typeof(DataGrid),
+            new UIPropertyMetadata("+"));
 
         /// <summary>
         /// Identifies the <see cref="AlternatingRowsBackground"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty AlternatingRowsBackgroundProperty =
-            DependencyProperty.Register(
-                "AlternatingRowsBackground", typeof(Brush), typeof(DataGrid), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty AlternatingRowsBackgroundProperty = DependencyProperty.Register(
+                "AlternatingRowsBackground",
+                typeof(Brush),
+                typeof(DataGrid),
+                new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="AutoGenerateColumns"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty AutoGenerateColumnsProperty =
-            DependencyProperty.Register(
-                "AutoGenerateColumns", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
+        public static readonly DependencyProperty AutoGenerateColumnsProperty = DependencyProperty.Register(
+                "AutoGenerateColumns",
+                typeof(bool),
+                typeof(DataGrid),
+                new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="AutoInsert"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AutoInsertProperty = DependencyProperty.Register(
-            "AutoInsert", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
+            "AutoInsert",
+            typeof(bool),
+            typeof(DataGrid),
+            new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="AutoSizeColumns"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty AutoSizeColumnsProperty =
-            DependencyProperty.Register(
-                "AutoSizeColumns", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(false));
+        public static readonly DependencyProperty AutoSizeColumnsProperty = DependencyProperty.Register(
+                "AutoSizeColumns",
+                typeof(bool),
+                typeof(DataGrid),
+                new UIPropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="CanDelete"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanDeleteProperty = DependencyProperty.Register(
-            "CanDelete", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
+            "CanDelete",
+            typeof(bool),
+            typeof(DataGrid),
+            new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="CanInsert"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanInsertProperty = DependencyProperty.Register(
-            "CanInsert", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
+            "CanInsert",
+            typeof(bool),
+            typeof(DataGrid),
+            new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="CanResizeColumns"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CanResizeColumnsProperty =
-            DependencyProperty.Register(
-                "CanResizeColumns", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
+        public static readonly DependencyProperty CanResizeColumnsProperty = DependencyProperty.Register(
+                "CanResizeColumns",
+                typeof(bool),
+                typeof(DataGrid),
+                new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="CanResizeRows"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CanResizeRowsProperty =
-            DependencyProperty.Register(
-                "CanResizeRows", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
+        public static readonly DependencyProperty CanResizeRowsProperty = DependencyProperty.Register(
+                "CanResizeRows",
+                typeof(bool),
+                typeof(DataGrid),
+                new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="MultiChangeInChangedColumnOnly"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MultiChangeInChangedColumnOnlyProperty =
-            DependencyProperty.Register(
-                "MultiChangeInChangedColumnOnly", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(false));
+        public static readonly DependencyProperty MultiChangeInChangedColumnOnlyProperty = DependencyProperty.Register(
+                "MultiChangeInChangedColumnOnly",
+                typeof(bool),
+                typeof(DataGrid),
+                new UIPropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="ColumnHeaderHeight"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ColumnHeaderHeightProperty =
-            DependencyProperty.Register(
-                "ColumnHeaderHeight", typeof(GridLength), typeof(DataGrid), new UIPropertyMetadata(new GridLength(20)));
+        public static readonly DependencyProperty ColumnHeaderHeightProperty = DependencyProperty.Register(
+                "ColumnHeaderHeight",
+                typeof(GridLength),
+                typeof(DataGrid),
+                new UIPropertyMetadata(new GridLength(20)));
 
         /// <summary>
         /// Identifies the <see cref="SheetContextMenu"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty SheetContextMenuProperty =
-            DependencyProperty.Register(
-                "SheetContextMenu", typeof(ContextMenu), typeof(DataGrid), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty SheetContextMenuProperty = DependencyProperty.Register(
+                "SheetContextMenu",
+                typeof(ContextMenu),
+                typeof(DataGrid),
+                new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="ColumnsContextMenu"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ColumnsContextMenuProperty =
-            DependencyProperty.Register(
-                "ColumnsContextMenu", typeof(ContextMenu), typeof(DataGrid), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty ColumnsContextMenuProperty = DependencyProperty.Register(
+                "ColumnsContextMenu",
+                typeof(ContextMenu),
+                typeof(DataGrid),
+                new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="ControlFactory"/> dependency property.
@@ -185,8 +221,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="DefaultColumnWidth"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty DefaultColumnWidthProperty =
-            DependencyProperty.Register(
+        public static readonly DependencyProperty DefaultColumnWidthProperty = DependencyProperty.Register(
                 "DefaultColumnWidth",
                 typeof(GridLength),
                 typeof(DataGrid),
@@ -195,8 +230,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="DefaultHorizontalAlignment"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty DefaultHorizontalAlignmentProperty =
-            DependencyProperty.Register(
+        public static readonly DependencyProperty DefaultHorizontalAlignmentProperty = DependencyProperty.Register(
                 "DefaultHorizontalAlignment",
                 typeof(System.Windows.HorizontalAlignment),
                 typeof(DataGrid),
@@ -205,15 +239,20 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="DefaultRowHeight"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty DefaultRowHeightProperty =
-            DependencyProperty.Register(
-                "DefaultRowHeight", typeof(GridLength), typeof(DataGrid), new UIPropertyMetadata(new GridLength(20)));
+        public static readonly DependencyProperty DefaultRowHeightProperty = DependencyProperty.Register(
+                "DefaultRowHeight",
+                typeof(GridLength),
+                typeof(DataGrid),
+                new UIPropertyMetadata(new GridLength(20)));
 
         /// <summary>
         /// Identifies the <see cref="EasyInsert"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EasyInsertProperty = DependencyProperty.Register(
-            "EasyInsert", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(true));
+            "EasyInsert",
+            typeof(bool),
+            typeof(DataGrid),
+            new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="GridLineBrush"/> dependency property.
@@ -227,8 +266,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="HeaderBorderBrush"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty HeaderBorderBrushProperty =
-            DependencyProperty.Register(
+        public static readonly DependencyProperty HeaderBorderBrushProperty = DependencyProperty.Register(
                 "HeaderBorderBrush",
                 typeof(Brush),
                 typeof(DataGrid),
@@ -238,14 +276,19 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="InputDirection"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InputDirectionProperty = DependencyProperty.Register(
-            "InputDirection", typeof(InputDirection), typeof(DataGrid), new UIPropertyMetadata(InputDirection.Vertical));
+            "InputDirection",
+            typeof(InputDirection),
+            typeof(DataGrid),
+            new UIPropertyMetadata(InputDirection.Vertical));
 
         /// <summary>
         /// Identifies the <see cref="ItemHeaderPropertyPath"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ItemHeaderPropertyPathProperty =
-            DependencyProperty.Register(
-                "ItemHeaderPropertyPath", typeof(string), typeof(DataGrid), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty ItemHeaderPropertyPathProperty = DependencyProperty.Register(
+                "ItemHeaderPropertyPath",
+                typeof(string),
+                typeof(DataGrid),
+                new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="ItemsInColumns"/> dependency property.
@@ -261,24 +304,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
             "ItemsSource",
-            typeof(IList),
-            typeof(DataGrid),
-            new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
-
-        /// <summary>
-        /// Identifies the <see cref="IsEnabledSource"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsEnabledSourceProperty = DependencyProperty.Register(
-            "IsEnabledSource",
-            typeof(IList),
-            typeof(DataGrid),
-            new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
-
-        /// <summary>
-        /// Identifies the <see cref="BackgroundSource"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty BackgroundSourceProperty = DependencyProperty.Register(
-            "BackgroundSource",
             typeof(IList),
             typeof(DataGrid),
             new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
@@ -323,20 +348,28 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="RowHeaderWidth"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RowHeaderWidthProperty = DependencyProperty.Register(
-            "RowHeaderWidth", typeof(GridLength), typeof(DataGrid), new UIPropertyMetadata(new GridLength(40)));
+            "RowHeaderWidth",
+            typeof(GridLength),
+            typeof(DataGrid),
+            new UIPropertyMetadata(new GridLength(40)));
 
         /// <summary>
         /// Identifies the <see cref="RowsContextMenu"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty RowsContextMenuProperty =
-            DependencyProperty.Register(
-                "RowsContextMenu", typeof(ContextMenu), typeof(DataGrid), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty RowsContextMenuProperty = DependencyProperty.Register(
+                "RowsContextMenu",
+                typeof(ContextMenu),
+                typeof(DataGrid),
+                new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="SelectedItems"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.Register(
-            "SelectedItems", typeof(IEnumerable), typeof(DataGrid), new UIPropertyMetadata(null));
+            "SelectedItems",
+            typeof(IEnumerable),
+            typeof(DataGrid),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="SelectionCell"/> dependency property.
@@ -345,14 +378,16 @@ namespace PropertyTools.Wpf
             "SelectionCell",
             typeof(CellRef),
             typeof(DataGrid),
-            new UIPropertyMetadata(
-                new CellRef(0, 0), (d, e) => ((DataGrid)d).SelectionCellChanged(), CoerceSelectionCell));
+            new UIPropertyMetadata(new CellRef(0, 0), (d, e) => ((DataGrid)d).SelectionCellChanged(), CoerceSelectionCell));
 
         /// <summary>
         /// Identifies the <see cref="WrapItems"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty WrapItemsProperty = DependencyProperty.Register(
-            "WrapItems", typeof(bool), typeof(DataGrid), new UIPropertyMetadata(false));
+            "WrapItems",
+            typeof(bool),
+            typeof(DataGrid),
+            new UIPropertyMetadata(false));
 
         /// <summary>
         /// The auto fill box.
@@ -1119,40 +1154,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the is item enabled source.
-        /// </summary>
-        /// <value>The is item enabled source.</value>
-        public IList IsEnabledSource
-        {
-            get
-            {
-                return (IList)this.GetValue(IsEnabledSourceProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsEnabledSourceProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the background source.
-        /// </summary>
-        /// <value>The background source.</value>
-        public IList BackgroundSource
-        {
-            get
-            {
-                return (IList)this.GetValue(BackgroundSourceProperty);
-            }
-
-            set
-            {
-                this.SetValue(BackgroundSourceProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the row headers source.
         /// </summary>
         /// <value>The row headers source.</value>
@@ -1418,15 +1419,15 @@ namespace PropertyTools.Wpf
         public bool ItemsInColumns { get; internal set; }
 
         /// <summary>
-        /// Gets the column definitions.
-        /// </summary>
-        /// <value>The column definitions.</value>
-        internal Collection<PropertyDefinition> PropertyDefinitions => this.propertyDefinitions;
-
-        /// <summary>
         /// Gets the operator.
         /// </summary>
-        internal DataGridOperator Operator { get; private set; }
+        public DataGridOperator Operator { get; private set; }
+
+        /// <summary>
+        /// Gets the row/column definitions.
+        /// </summary>
+        /// <value>The row/column definitions.</value>
+        public Collection<PropertyDefinition> PropertyDefinitions => this.propertyDefinitions;
 
         /// <summary>
         /// Autosizes all columns.
@@ -2874,6 +2875,19 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Inserts the display control for the specified cell.
+        /// </summary>
+        /// <param name="cellRef">The cell reference.</param>
+        private void InsertDisplayControl(CellRef cellRef)
+        {
+            var e = this.CreateDisplayControl(cellRef);
+            SetElementPosition(e, cellRef);
+            this.sheetGrid.Children.Insert(this.cellInsertionIndex, e);
+            this.cellInsertionIndex++;
+            this.cellMap.Add(cellRef.GetHashCode(), e);
+        }
+
+        /// <summary>
         /// Handles mouse left button down events on the add item cell.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -3481,19 +3495,6 @@ namespace PropertyTools.Wpf
             {
                 this.ColumnHeadersSource.Add(newItem);
             }
-        }
-
-        /// <summary>
-        /// Inserts the display control for the specified cell.
-        /// </summary>
-        /// <param name="cellRef">The cell reference.</param>
-        private void InsertDisplayControl(CellRef cellRef)
-        {
-            var e = this.CreateDisplayControl(cellRef);
-            SetElementPosition(e, cellRef);
-            this.sheetGrid.Children.Insert(this.cellInsertionIndex, e);
-            this.cellInsertionIndex++;
-            this.cellMap.Add(cellRef.GetHashCode(), e);
         }
 
         /// <summary>

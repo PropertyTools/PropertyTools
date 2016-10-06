@@ -1,4 +1,13 @@
-﻿namespace PropertyTools.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CellDefinitionFactory.cs" company="PropertyTools">
+//   Copyright (c) 2014 PropertyTools contributors
+// </copyright>
+// <summary>
+//   Implements the default cell definition factory.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace PropertyTools.Wpf
 {
     using System;
     using System.Linq;
@@ -88,7 +97,6 @@
             return new TextCellDefinition();
         }
 
-
         /// <summary>
         /// Applies the properties to the specified cell definition.
         /// </summary>
@@ -111,30 +119,14 @@
             cd.ConverterParameter = pd.ConverterParameter;
             cd.ConverterCulture = pd.ConverterCulture;
 
-            cd.IsEnabledParameter = pd.IsEnabledByValue;
-            if (owner.IsEnabledSource != null)
-            {
-                cd.IsEnabledSource = owner.IsEnabledSource;
-                cd.IsEnabledBindingPath = pd.IsEnabledByProperty ?? owner.Operator.GetBindingPath(owner, cell);
-            }
-            else
-            {
-                cd.IsEnabledBindingPath = pd.IsEnabledByProperty;
-            }
-
-            if (owner.BackgroundSource != null)
-            {
-                cd.BackgroundSource = owner.BackgroundSource;
-                cd.BackgroundBindingPath = pd.BackgroundProperty ?? owner.Operator.GetBindingPath(owner, cell);
-            }
-            else
-            {
-                cd.BackgroundBindingPath = pd.BackgroundProperty;
-            }
+            cd.IsEnabledBindingParameter = pd.IsEnabledByValue;
+            cd.IsEnabledBindingPath = pd.IsEnabledByProperty;
+            cd.BackgroundBindingPath = pd.BackgroundProperty;
 
             if (pd.Background != null)
             {
-                cd.Background = pd.Background;
+                cd.BackgroundBindingSource = pd.Background;
+                cd.BackgroundBindingPath = string.Empty;
             }
         }
     }

@@ -1,14 +1,23 @@
-﻿namespace PropertyTools.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ICellDefinitionFactory.cs" company="PropertyTools">
+//   Copyright (c) 2014 PropertyTools contributors
+// </copyright>
+// <summary>
+//   Specifies functionality to create a cell definition object for a cell.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// Defines the cell definition factories.
+    /// Specifies functionality to create a cell definition object for a cell.
     /// </summary>
     public interface ICellDefinitionFactory
     {
         /// <summary>
         /// Creates the cell definition for the specified cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
+        /// <param name="owner">The data grid.</param>
         /// <param name="cell">The cell.</param>
         /// <param name="item">The item.</param>
         /// <returns>

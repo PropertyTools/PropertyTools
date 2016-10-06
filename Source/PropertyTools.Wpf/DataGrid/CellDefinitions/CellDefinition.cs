@@ -12,7 +12,6 @@ namespace PropertyTools.Wpf
     using System.Globalization;
     using System.Windows;
     using System.Windows.Data;
-    using System.Windows.Media;
 
     /// <summary>
     /// Defines the content of a cell.
@@ -78,7 +77,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets the source for the IsEnabled binding.
         /// </summary>
-        public object IsEnabledSource { get; set; }
+        public object IsEnabledBindingSource { get; set; }
 
         /// <summary>
         /// Gets or sets the IsEnabled binding path.
@@ -94,15 +93,7 @@ namespace PropertyTools.Wpf
         /// <value>
         /// The converter parameter.
         /// </value>
-        public object IsEnabledParameter { get; set; }
-
-        /// <summary>
-        /// Gets or sets the background.
-        /// </summary>
-        /// <value>
-        /// The background.
-        /// </value>
-        public Brush Background { get; set; }
+        public object IsEnabledBindingParameter { get; set; }
 
         /// <summary>
         /// Gets or sets the background source.
@@ -110,7 +101,7 @@ namespace PropertyTools.Wpf
         /// <value>
         /// The binding source.
         /// </value>
-        public object BackgroundSource { get; set; }
+        public object BackgroundBindingSource { get; set; }
 
         /// <summary>
         /// Gets or sets the background binding path.

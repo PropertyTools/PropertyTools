@@ -195,9 +195,9 @@ namespace PropertyTools.Wpf
                 {
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = d.HorizontalAlignment,
-                    Background = d.Background
                 };
                 cm.SetBinding(CheckMark.IsCheckedProperty, this.CreateBinding(d));
+                this.SetBackgroundBinding(d, cm);
                 return cm;
             }
 
@@ -388,7 +388,7 @@ namespace PropertyTools.Wpf
         {
             if (cd.IsEnabledBindingPath != null)
             {
-                element.SetIsEnabledBinding(cd.IsEnabledBindingPath, cd.IsEnabledParameter, cd.IsEnabledSource);
+                element.SetIsEnabledBinding(cd.IsEnabledBindingPath, cd.IsEnabledBindingParameter, cd.IsEnabledBindingSource);
             }
         }
 
@@ -399,14 +399,9 @@ namespace PropertyTools.Wpf
         /// <param name="c">The control.</param>
         protected virtual void SetBackgroundBinding(CellDefinition d, Control c)
         {
-            if (d.Background != null)
-            {
-                c.Background = d.Background;
-            }
-
             if (d.BackgroundBindingPath != null)
             {
-                var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundSource };
+                var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundBindingSource };
                 c.SetBinding(Control.BackgroundProperty, binding);
             }
         }
@@ -418,14 +413,9 @@ namespace PropertyTools.Wpf
         /// <param name="panel">The panel.</param>
         protected virtual void SetBackgroundBinding(CellDefinition d, Panel panel)
         {
-            if (d.Background != null)
-            {
-                panel.Background = d.Background;
-            }
-
             if (d.BackgroundBindingPath != null)
             {
-                var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundSource };
+                var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundBindingSource };
                 panel.SetBinding(Panel.BackgroundProperty, binding);
             }
         }

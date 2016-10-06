@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for ValidationExampleWindow.xaml
+//   Interaction logic for ValidationExampleWindow.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ namespace DataGridDemo
     using PropertyTools;
 
     /// <summary>
-    /// Interaction logic for ValidationExampleWindow.xaml
+    /// Interaction logic for ValidationExampleWindow.
     /// </summary>
     public partial class ValidationExampleWindow
     {
@@ -38,13 +38,7 @@ namespace DataGridDemo
         /// <summary>
         /// Gets the items source.
         /// </summary>
-        public ObservableCollection<ExampleObject> ItemsSource
-        {
-            get
-            {
-                return ValidationExampleWindow.StaticItemsSource;
-            }
-        }
+        public ObservableCollection<ExampleObject> ItemsSource => ValidationExampleWindow.StaticItemsSource;
 
         public class ExampleObject : ValidatableObject
         {

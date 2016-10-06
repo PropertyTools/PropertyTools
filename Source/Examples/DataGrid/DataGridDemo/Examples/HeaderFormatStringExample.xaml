@@ -1,0 +1,15 @@
+﻿<Window x:Class="DataGridDemo.HeaderFormatStringExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="Header format string" Height="450" Width="400">
+    <Grid>
+        <p:DataGrid 
+                    ItemsSource="{Binding Table.Cells}" 
+                    RowHeadersSource="{Binding Table.RowHeaders}" 
+                    ColumnHeadersSource="{Binding Table.ColumnHeaders}"
+                    CreateColumnHeader="{Binding CreateColumnHeader}"
+                    RowHeadersFormatString="Row {0}"
+                    ColumnHeadersFormatString="Col {0}"/>
+    </Grid>
+</Window>

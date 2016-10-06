@@ -1,0 +1,12 @@
+﻿<Window x:Class="DataGridDemo.WpfDataGridExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dataGridDemo="clr-namespace:DataGridDemo"
+        Title="WPF DataGrid" Height="450" Width="900">
+    <Window.DataContext>
+        <dataGridDemo:ExampleViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <DataGrid ItemsSource="{Binding ItemsSource}"/>
+    </Grid>
+</Window>

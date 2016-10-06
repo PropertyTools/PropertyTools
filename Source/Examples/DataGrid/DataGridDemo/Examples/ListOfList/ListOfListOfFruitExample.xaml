@@ -1,0 +1,14 @@
+﻿<Window x:Class="DataGridDemo.ListOfListOfFruitExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="List&lt;List&lt;Fruit&gt;&gt;" Height="450" Width="400">
+    <Grid>
+        <p:DataGrid
+            ItemsSource="{Binding ItemsSource}"
+            RowHeadersSource="{Binding RowHeadersItemsSource}"
+            ColumnHeadersSource="{Binding ColumnHeadersItemsSource}"
+            CreateColumnHeader="{Binding CreateColumnHeader}">
+        </p:DataGrid>
+    </Grid>
+</Window>

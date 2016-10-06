@@ -12,4 +12,5 @@
   <Example Page="Pages\HeaderedEntrySliderPage.xaml" Title="HeaderedEntrySlider" Description="A slider with header and value entry."/>
   <Example Page="Pages\EditableTextBlockPage.xaml" Title="EditableTextBlock" Description="An editable text block."/>
   <Example Page="Pages\EditableTextBlockAndPropertyGridPage.xaml" Title="EditableTextBlock and PropertyGrid" Description="An editable text block and a property grid working on the same model."/>
+  <Example Page="Pages\TextBlockExPage.xaml" Title="TextBlockEx" Description="A text block that can be disabled."/>
 </Examples>

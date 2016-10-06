@@ -3,17 +3,16 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Defines row-specific properties that apply to DataGrid elements.
+//   Defines a row in a DataGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
-    using System.ComponentModel;
     using System.Windows;
 
     /// <summary>
-    /// Defines row-specific properties that apply to <see cref="DataGrid" /> elements.
+    /// Defines a row in a <see cref="DataGrid" />.
     /// </summary>
     public class RowDefinition : PropertyDefinition
     {
@@ -21,15 +20,6 @@ namespace PropertyTools.Wpf
         /// Initializes a new instance of the <see cref="RowDefinition"/> class.
         /// </summary>
         public RowDefinition()
-        {
-            this.Height = GridLength.Auto;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RowDefinition"/> class.
-        /// </summary>
-        /// <param name="descriptor">The property descriptor.</param>
-        public RowDefinition(PropertyDescriptor descriptor) : base(descriptor)
         {
             this.Height = GridLength.Auto;
         }

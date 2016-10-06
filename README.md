@@ -1,6 +1,7 @@
-[![Build status](https://img.shields.io/appveyor/ci/objorke/propertytools/master.svg?maxAge=2592000)](https://ci.appveyor.com/project/objorke/propertytools) 
-[![Gitter](https://img.shields.io/gitter/room/objorke/propertytools.svg?maxAge=2592000)](https://gitter.im/objorke/propertytools?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![NuGet](https://img.shields.io/nuget/v/propertytools.wpf.svg?maxAge=3600)](https://www.nuget.org/packages/propertytools.wpf/)
+[![Build status](https://img.shields.io/appveyor/ci/objorke/propertytools/master.svg)](https://ci.appveyor.com/project/objorke/propertytools) 
+[![Gitter](https://img.shields.io/gitter/room/objorke/propertytools.svg)](https://gitter.im/objorke/propertytools?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![NuGet](https://img.shields.io/nuget/v/propertytools.wpf.svg)](https://www.nuget.org/packages/propertytools.wpf/)
+[![Issues](https://img.shields.io/github/issues/objorke/propertytools.svg)](https://github.com/objorke/propertytools/issues)
 
 ```
 License:       The MIT License (MIT)

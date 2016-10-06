@@ -1,0 +1,20 @@
+﻿<Window x:Class="DataGridDemo.CustomRowsExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:dataGridDemo="clr-namespace:DataGridDemo"
+        Title="ObservableCollection&lt;ExampleObject&gt; custom rows" Height="450" Width="900">
+    <Window.DataContext>
+        <dataGridDemo:ExampleViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <p:DataGrid ItemsSource="{Binding ItemsSource}" RowHeaderWidth="120">
+            <p:DataGrid.RowDefinitions>
+                <p:RowDefinition PropertyName="Integer" Header="integer"/>
+                <p:RowDefinition PropertyName="String" Header="string"/>
+                <p:RowDefinition PropertyName="Fruit" Header="enum"/>
+                <p:RowDefinition PropertyName="Selector" Header="selector"/>
+            </p:DataGrid.RowDefinitions>
+        </p:DataGrid>
+    </Grid>
+</Window>

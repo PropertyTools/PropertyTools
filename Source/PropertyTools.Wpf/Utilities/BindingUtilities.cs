@@ -1,5 +1,15 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BindingUtilities.cs" company="PropertyTools">
+//   Copyright (c) 2014 PropertyTools contributors
+// </copyright>
+// <summary>
+//   Provides binding utility extension methods.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace PropertyTools.Wpf
 {
+    using System;
     using System.Windows;
     using System.Windows.Data;
 
@@ -17,18 +27,29 @@ namespace PropertyTools.Wpf
         /// Binds the IsEnabled property of the specified element to the specified property and value.
         /// </summary>
         /// <param name="element">The element.</param>
-        /// <param name="enabledByProperty">The enabled by property.</param>
-        /// <param name="enabledByValue">The value that enables the element.</param>
-        public static void SetIsEnabledBinding(this FrameworkElement element, string enabledByProperty, object enabledByValue)
+        /// <param name="path">The path.</param>
+        /// <param name="parameter">The converter parameter (optional).</param>
+        /// <param name="bindingSource">The binding source (optional).</param>
+        public static void SetIsEnabledBinding(this FrameworkElement element, string path, object parameter = null, object bindingSource = null)
         {
-            var isEnabledBinding = new Binding(enabledByProperty);
-            if (enabledByValue != null)
+            if (path == null)
             {
-                isEnabledBinding.ConverterParameter = enabledByValue;
-                isEnabledBinding.Converter = ValueToBooleanConverter;
+                throw new ArgumentNullException(nameof(path));
             }
 
-            element.SetBinding(UIElement.IsEnabledProperty, isEnabledBinding);
+            var binding = new Binding(path);
+            if (bindingSource != null)
+            {
+                binding.Source = bindingSource;
+            }
+
+            if (parameter != null)
+            {
+                binding.ConverterParameter = parameter;
+                binding.Converter = ValueToBooleanConverter;
+            }
+
+            element.SetBinding(UIElement.IsEnabledProperty, binding);
         }
     }
 }

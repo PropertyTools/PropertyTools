@@ -107,6 +107,21 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the value of the first attribute of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type of the attribute.</typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="descriptor">The descriptor.</param>
+        /// <param name="func">The mapping function.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The value returned from the mapping function, or the default value if the attribute was not found.</returns>
+        public static TResult GetAttributeValue<T, TResult>(this System.ComponentModel.PropertyDescriptor descriptor, Func<T, TResult> func, TResult defaultValue = default(TResult)) where T : Attribute
+        {
+            var a = descriptor.Attributes.OfType<T>().FirstOrDefault();
+            return a != null ? func(a) : defaultValue;
+        }
+
+        /// <summary>
         /// Gets the first attribute of the specified type.
         /// </summary>
         /// <param name="descriptor">The descriptor.</param>
@@ -115,22 +130,6 @@ namespace PropertyTools.Wpf
         public static Attribute GetFirstAttributeOrDefault(this System.ComponentModel.PropertyDescriptor descriptor, Type attributeType)
         {
             return descriptor.Attributes.Cast<Attribute>().FirstOrDefault(attribute => attribute.GetType().IsAssignableFrom(attributeType));
-        }
-
-        /// <summary>
-        /// Determines whether the specified property is browsable.
-        /// </summary>
-        /// <param name="pd">The property descriptor.</param>
-        /// <returns><c>true</c> if the specified property is browsable; otherwise, <c>false</c>.</returns>
-        public static bool IsBrowsable(this System.ComponentModel.PropertyDescriptor pd)
-        {
-            var a = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
-            if (a != null)
-            {
-                return a.Browsable;
-            }
-
-            return pd.IsBrowsable;
         }
 
         /// <summary>

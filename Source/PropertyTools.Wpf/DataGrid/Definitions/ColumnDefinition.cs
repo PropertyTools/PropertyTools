@@ -3,17 +3,16 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Defines column-specific properties that apply to DataGrid elements.
+//   Defines a column in a DataGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
-    using System.ComponentModel;
     using System.Windows;
 
     /// <summary>
-    /// Defines column-specific properties that apply to <see cref="DataGrid" /> elements.
+    /// Defines a column in a <see cref="DataGrid" />.
     /// </summary>
     public class ColumnDefinition : PropertyDefinition
     {
@@ -21,15 +20,6 @@ namespace PropertyTools.Wpf
         /// Initializes a new instance of the <see cref="ColumnDefinition" /> class.
         /// </summary>
         public ColumnDefinition()
-        {
-            this.Width = GridLength.Auto;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnDefinition"/> class.
-        /// </summary>
-        /// <param name="descriptor">The property descriptor.</param>
-        public ColumnDefinition(PropertyDescriptor descriptor) : base(descriptor)
         {
             this.Width = GridLength.Auto;
         }

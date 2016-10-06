@@ -3,65 +3,28 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Describes properties that applies to columns or rows in an DataGrid.
+//   Describes properties that applies to columns or rows in a DataGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
-    using System;
     using System.Collections;
-    using System.ComponentModel;
     using System.Globalization;
-    using System.Windows;
     using System.Windows.Data;
-
-    using PropertyTools.DataAnnotations;
+    using System.Windows.Media;
 
     /// <summary>
-    /// Describes properties that applies to columns or rows in an <see cref="DataGrid" />.
+    /// Describes properties that applies to columns or rows in a <see cref="DataGrid" />.
     /// </summary>
     public abstract class PropertyDefinition
     {
-        /// <summary>
-        /// The property type.
-        /// </summary>
-        private Type propertyType;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyDefinition" /> class.
         /// </summary>
         protected PropertyDefinition()
         {
             this.MaxLength = int.MaxValue;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyDefinition"/> class.
-        /// </summary>
-        /// <param name="descriptor">The property descriptor.</param>
-        protected PropertyDefinition(PropertyDescriptor descriptor) : this()
-        {
-            this.Descriptor = descriptor;
-
-            this.IsReadOnly = this.IsReadOnly || (descriptor != null && descriptor.IsReadOnly);
-            if (descriptor != null)
-            {
-                this.PropertyType = descriptor.PropertyType;
-            }
-
-            var ispa = this.GetFirstAttribute<ItemsSourcePropertyAttribute>();
-            if (ispa != null)
-            {
-                this.ItemsSourceProperty = ispa.PropertyName;
-            }
-
-            var eba = this.GetFirstAttribute<EnableByAttribute>();
-            if (eba != null)
-            {
-                this.IsEnabledByProperty = eba.PropertyName;
-                this.IsEnabledByValue = eba.PropertyValue;
-            }
         }
 
         /// <summary>
@@ -81,12 +44,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The converter parameter.</value>
         public object ConverterParameter { get; set; }
-
-        /// <summary>
-        /// Gets the property descriptor.
-        /// </summary>
-        /// <value>The descriptor.</value>
-        public PropertyDescriptor Descriptor { get; private set; }
 
         /// <summary>
         /// Gets or sets the format string.
@@ -146,33 +103,6 @@ namespace PropertyTools.Wpf
         public string PropertyName { get; set; }
 
         /// <summary>
-        /// Gets or sets the type of the property.
-        /// </summary>
-        /// <value>The type of the property.</value>
-        public Type PropertyType
-        {
-            get
-            {
-                if (this.propertyType == null && this.Descriptor != null)
-                {
-                    this.PropertyType = this.Descriptor.PropertyType;
-                }
-
-                return this.propertyType;
-            }
-
-            set
-            {
-                this.propertyType = value;
-
-                if (this.propertyType.Is(typeof(Enum)))
-                {
-                    this.SetEnumItemsSource();
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the name of a property that determines the state of the cell.
         /// </summary>
         /// <value>
@@ -187,153 +117,20 @@ namespace PropertyTools.Wpf
         public object IsEnabledByValue { get; set; }
 
         /// <summary>
-        /// Creates a binding.
+        /// Gets or sets the background brush.
         /// </summary>
-        /// <param name="bindingPath">The binding path.</param>
-        /// <param name="trigger">The trigger.</param>
-        /// <returns>
-        /// A binding.
-        /// </returns>
-        public Binding CreateBinding(string bindingPath, UpdateSourceTrigger trigger = UpdateSourceTrigger.Default)
-        {
-            var bindingMode = this.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
-            var formatString = this.FormatString;
-            if (formatString != null && !formatString.StartsWith("{"))
-            {
-                formatString = "{0:" + formatString + "}";
-            }
-
-            var binding = new Binding(bindingPath)
-            {
-                Mode = bindingMode,
-                Converter = this.Converter,
-                ConverterParameter = this.ConverterParameter,
-                StringFormat = formatString,
-                UpdateSourceTrigger = trigger,
-                ValidatesOnDataErrors = true,
-                ValidatesOnExceptions = true,
-                NotifyOnSourceUpdated = true
-            };
-            if (this.ConverterCulture != null)
-            {
-                binding.ConverterCulture = this.ConverterCulture;
-            }
-
-            return binding;
-        }
+        /// <value>
+        /// The background.
+        /// </value>
+        /// <remarks>If set, this overrides <see cref="BackgroundProperty" />.</remarks>
+        public Brush Background { get; set; }
 
         /// <summary>
-        /// Creates the one way binding.
+        /// Gets or sets the background property.
         /// </summary>
-        /// <param name="bindingPath">The binding path.</param>
-        /// <returns>
-        /// A binding.
-        /// </returns>
-        public Binding CreateOneWayBinding(string bindingPath)
-        {
-            var b = this.CreateBinding(bindingPath);
-            b.Mode = BindingMode.OneWay;
-            return b;
-        }
-
-        /// <summary>
-        /// Gets the binding path.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <returns>
-        /// The binding path.
-        /// </returns>
-        public virtual string GetBindingPath(int index)
-        {
-            return this.Descriptor != null ? this.Descriptor.Name : string.Format("[{0}]", index);
-        }
-
-        /// <summary>
-        /// Gets the binding path.
-        /// </summary>
-        /// <param name="cell">The cell.</param>
-        /// <returns>
-        /// The binding path.
-        /// </returns>
-        public virtual string GetBindingPath(CellRef cell)
-        {
-            return this.Descriptor != null ? this.Descriptor.Name : string.Format("[{0}][{1}]", cell.Row, cell.Column);
-        }
-
-        /// <summary>
-        /// The DataGridControlFactory uses this method to create the display control.
-        /// </summary>
-        /// <param name="bindingPath">The binding path.</param>
-        /// <returns>The display control.</returns>
-        public virtual FrameworkElement CreateDisplayControl(string bindingPath)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// The DataGridControlFactory uses this method to create the edit control.
-        /// </summary>
-        /// <param name="bindingPath">The binding path.</param>
-        /// <returns>The control.</returns>
-        public virtual FrameworkElement CreateEditControl(string bindingPath)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Updates the descriptor based on the specified item type and current <see cref="PropertyName" />.
-        /// </summary>
-        /// <param name="itemType">Type of the items.</param>
-        public void UpdateDescriptor(Type itemType)
-        {
-            var descriptor = TypeDescriptor.GetProperties(itemType)[this.PropertyName];
-            this.Descriptor = descriptor;
-
-            this.IsReadOnly = this.IsReadOnly || (descriptor != null && descriptor.IsReadOnly);
-            if (descriptor != null)
-            {
-                this.PropertyType = descriptor.PropertyType;
-            }
-
-            var ispa = this.GetFirstAttribute<ItemsSourcePropertyAttribute>();
-            if (ispa != null)
-            {
-                this.ItemsSourceProperty = ispa.PropertyName;
-            }
-        }
-
-        /// <summary>
-        /// Gets the first attribute of the specified type.
-        /// </summary>
-        /// <typeparam name="T">Type of attribute.</typeparam>
-        /// <returns>
-        /// The attribute, or <c>null</c>.
-        /// </returns>
-        protected T GetFirstAttribute<T>() where T : Attribute
-        {
-            if (this.Descriptor == null)
-            {
-                return null;
-            }
-
-            var type = typeof(T);
-            foreach (var a in this.Descriptor.Attributes)
-            {
-                if (type.IsInstanceOfType(a))
-                {
-                    return a as T;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Sets the items source for enumerable properties.
-        /// </summary>
-        protected void SetEnumItemsSource()
-        {
-            this.ItemsSource = Enum.GetValues(this.PropertyType);
-        }
+        /// <value>
+        /// The background property.
+        /// </value>
+        public string BackgroundProperty { get; set; }
     }
 }

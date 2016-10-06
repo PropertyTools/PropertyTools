@@ -3,31 +3,69 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for MainWindow.xaml
+//   Interaction logic for the main window.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace DataGridDemo
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Input;
 
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for the main window.
     /// </summary>
     public partial class MainWindow
     {
-        /// <summary>
-        /// Opens a window.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
-        private void OpenWindowClick(object sender, RoutedEventArgs e)
+        public MainWindow()
         {
-            var type = (Type)((Button)sender).Tag;
-            var window = (Window)Activator.CreateInstance(type);
-            window.Show();
+            this.DataContext = this;
+            var windowType = typeof(Window);
+            this.Examples.AddRange(
+                typeof(MainWindow).Assembly.GetTypes()
+                .Where(t => t.Name.EndsWith("Example") && windowType.IsAssignableFrom(t))
+                .Select(t => new ExampleWindow(t))
+                .OrderBy(e => e.Title));
+        }
+
+        public List<ExampleWindow> Examples { get; } = new List<ExampleWindow>();
+
+        public class ExampleWindow
+        {
+            public ExampleWindow(Type type)
+            {
+                this.Type = type;
+                var instance = this.CreateInstance();
+                this.Title = instance.Title ?? type.Name;
+                instance.Close();
+            }
+
+            public string Title { get; }
+
+            public Type Type { get; }
+
+            public Window CreateInstance() => (Window)Activator.CreateInstance(this.Type);
+
+            public void Show()
+            {
+                this.CreateInstance().Show();
+            }
+
+            public override string ToString()
+            {
+                return this.Title;
+            }
+        }
+
+        private void OpenExample(object sender, MouseButtonEventArgs e)
+        {
+            var listBox = (ListBox)sender;
+            var example = (ExampleWindow)listBox?.SelectedItem;
+            example?.Show();
         }
     }
 }

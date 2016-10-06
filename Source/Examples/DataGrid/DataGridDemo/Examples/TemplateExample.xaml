@@ -1,0 +1,43 @@
+﻿<Window x:Class="DataGridDemo.TemplateExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:dataGridDemo="clr-namespace:DataGridDemo"
+        Title="Templates" Height="450" Width="900">
+    <Window.DataContext>
+        <dataGridDemo:ExampleViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <p:DataGrid ItemsSource="{Binding ItemsSource}">
+            <p:DataGrid.ColumnDefinitions>
+                <p:ColumnDefinition PropertyName="Fruit" Header="Fruit"/>
+                
+                <p:TemplateColumnDefinition PropertyName="Fruit" Header="Templated (property)">
+                    <p:TemplateColumnDefinition.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" Text="{Binding}" Margin="2" Background="LightSeaGreen"/>
+                        </DataTemplate>
+                    </p:TemplateColumnDefinition.CellTemplate>
+                    <p:TemplateColumnDefinition.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBlock FontStyle="Italic" Text="{Binding}" Padding="2" Background="LightBlue"/>
+                        </DataTemplate>
+                    </p:TemplateColumnDefinition.CellEditingTemplate>
+                </p:TemplateColumnDefinition>
+
+                <p:TemplateColumnDefinition PropertyName="" Header="Templated (row)">
+                    <p:TemplateColumnDefinition.CellTemplate>
+                        <DataTemplate DataType="dataGridDemo:ExampleObject">
+                            <TextBlock FontWeight="Bold" Text="{Binding Fruit}" Margin="2" Background="LightSeaGreen"/>
+                        </DataTemplate>
+                    </p:TemplateColumnDefinition.CellTemplate>
+                    <p:TemplateColumnDefinition.CellEditingTemplate>
+                        <DataTemplate DataType="dataGridDemo:ExampleObject">
+                            <TextBlock FontStyle="Italic" Text="{Binding Fruit}" Padding="2" Background="LightBlue"/>
+                        </DataTemplate>
+                    </p:TemplateColumnDefinition.CellEditingTemplate>
+                </p:TemplateColumnDefinition>
+            </p:DataGrid.ColumnDefinitions>
+        </p:DataGrid>
+    </Grid>
+</Window>

@@ -2,7 +2,7 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>PropertyTools.Wpf</id>
-    <version>2014.2</version>
+    <version>$version$</version>
     <authors>objo</authors>
     <description>Custom controls for WPF: PropertyGrid, DataGrid, multi-select TreeView, ColorPicker and more</description>
     <releaseNotes></releaseNotes>
@@ -10,14 +10,12 @@
     <projectUrl>https://github.com/objorke/PropertyTools/</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/objorke/PropertyTools/master/Images/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <tags>wpf controls propertygrid dataform datagrid</tags>
+    <tags>wpf controls propertygrid dataform datagrid treeview colorpicker</tags>
   </metadata>
   <files>
-    <file src="..\..\Output\PCL\PropertyTools.???" target="lib\portable-net40+sl5+wp8+win8" />
-    <file src="..\..\Output\NET40\PropertyTools.???" target="lib\net40" />
-    <file src="..\..\Output\NET40\PropertyTools.Wpf.???" target="lib\net40" />
-    <file src="..\..\Output\NET45\PropertyTools.???" target="lib\net45" />
-    <file src="..\..\Output\NET45\PropertyTools.Wpf.???" target="lib\net45" />
+    <file src="bin\Release\PropertyTools.???" target="lib\portable-net45+win8+wpa81+wp8" />
+    <file src="bin\Release\PropertyTools.???" target="lib\net45" />
+    <file src="bin\Release\PropertyTools.Wpf.???" target="lib\net45" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />

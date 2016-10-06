@@ -14,7 +14,7 @@ Gitter chat:   https://gitter.im/objorke/PropertyTools
 |-------------------|------------------------------------------------------------------------------------------|--------|
 | PropertyGrid      | A control that shows properties of an object or a collection of objects.                 | Stable |
 | DataGrid          | A data grid with an "Excel feel" (note that the control is not virtualized)              | Stable |
-| TreeListBox       | A ListBox that looks and feels like a TreeView (supports multi-select and drag-drop)     | Some bugs remaining |
+| TreeListBox       | A ListBox that looks and feels like a TreeView (supports multi-select and drag-drop)     | Stable |
 | ColorPicker       | A color picker                                                                           | Stable |
 | RadioButtonList   | A collection of radio buttons that binds to an enum                                      | Stable |
 | EnumMenuItem      | A collection of checkable menuitems that binds to an enum                                | Stable |
@@ -25,6 +25,7 @@ Gitter chat:   https://gitter.im/objorke/PropertyTools
 | SpinControl       | A numeric up/down spinner control                                                        | Stable |
 | LinkBlock         | A hyperlink on a TextBlock                                                               | Stable |
 | SliderEx          | A Slider that calls IEditableObject.BeginEdit/EndEdit when thumb dragging                | Stable |
+| TextBlockEx       | A TextBlock that contains a style for disable state                                      | Stable |
 | PopupBox          | A restyled `ComboBox` where you can put anything in the Popup                            | Stable |
 | FormattingTextBox | A `TextBox` where you can bind the StringFormat                                          | Stable |
 
@@ -44,27 +45,10 @@ Gitter chat:   https://gitter.im/objorke/PropertyTools
 
 ![ColorPicker](/Images/ColorPicker.png) ![ColorPicker](/Images/ColorPicker2.png)
 
-### AboutDialog
-
-Generic "About" dialog
-
-- Titles and version is taken from AssemblyInfo
-- Open System Info...
-- Copy report
-
-![AboutDialog](/Images/AboutDialog.png)
-
-### PropertyDialog
-
-Below is an example `PropertyDialog` bound to `Settings.Default`:
-
-![OptionsDialog](/Images/PropertyDialog.png)
-
 ### Build requirements
 
-- Microsoft 4.0 or later
-- Portable library tools
-- Visual Studio 2010 or later
+- Microsoft 4.5 or later
+- Visual Studio 2015 or later
 
 ### Links
 

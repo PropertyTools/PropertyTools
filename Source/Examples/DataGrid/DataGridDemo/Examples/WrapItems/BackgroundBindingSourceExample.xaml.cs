@@ -55,11 +55,6 @@ namespace DataGridDemo
                 this.backgroundSource = backgroundSource;
             }
 
-            public override CellDefinition CreateCellDefinition(DataGrid owner, CellRef cell, object item)
-            {
-                return base.CreateCellDefinition(owner, cell, item);
-            }
-
             protected override void ApplyProperties(CellDefinition cd, DataGrid owner, CellRef cell, PropertyDefinition pd, object item)
             {
                 base.ApplyProperties(cd, owner, cell, pd, item);

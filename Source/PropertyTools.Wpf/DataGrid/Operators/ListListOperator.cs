@@ -44,15 +44,15 @@ namespace PropertyTools.Wpf
         /// Gets the item in cell.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
         /// The <see cref="object" />.
         /// </returns>
-        public override object GetItem(DataGrid owner, IList list, CellRef cell)
+        public override object GetItem(DataGrid owner,  CellRef cell)
         {
-            int rowIndex = cell.Row;
-            int columnIndex = cell.Column;
+            var list = owner.ItemsSource;
+            var rowIndex = cell.Row;
+            var columnIndex = cell.Column;
             if (list == null || rowIndex < 0 || columnIndex < 0)
             {
                 return null;
@@ -76,13 +76,13 @@ namespace PropertyTools.Wpf
         /// Inserts item to <see cref="DataGrid" />.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
         /// <returns>
         /// Returns <c>true</c> if insertion is successful, <c>false</c> otherwise.
         /// </returns>
-        public override bool InsertItem(DataGrid owner, IList list, int index)
+        public override bool InsertItem(DataGrid owner,  int index)
         {
+            var list = owner.ItemsSource;
             if (list == null)
             {
                 return false;
@@ -141,11 +141,11 @@ namespace PropertyTools.Wpf
         /// Sets value to item in cell.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <param name="value">The value.</param>
-        public override void SetValue(DataGrid owner, IList list, CellRef cell, object value)
+        public override void SetValue(DataGrid owner, CellRef cell, object value)
         {
+            var list = owner.ItemsSource;
             if (list == null || cell.Row < 0 || cell.Column < 0 || cell.Row >= list.Count)
             {
                 return;

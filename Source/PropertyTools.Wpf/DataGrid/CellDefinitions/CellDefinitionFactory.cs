@@ -23,16 +23,15 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell.</param>
-        /// <param name="item">The item.</param>
         /// <returns>
         /// The cell definition
         /// </returns>
         public virtual CellDefinition CreateCellDefinition(
             DataGrid owner,
-            CellRef cell,
-            object item)
+            CellRef cell)
         {
             var pd = owner.GetPropertyDefinition(cell);
+            var item = owner.Operator.GetItem(owner, cell);
             var cd = this.CreateCellDefinitionOverride(owner, cell, pd, item);
             this.ApplyProperties(cd, owner, cell, pd, item);
             return cd;

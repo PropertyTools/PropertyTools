@@ -19,13 +19,11 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="owner">The data grid.</param>
         /// <param name="cell">The cell.</param>
-        /// <param name="item">The item.</param>
         /// <returns>
         /// The cell definition
         /// </returns>
         CellDefinition CreateCellDefinition(
             DataGrid owner,
-            CellRef cell,
-            object item);
+            CellRef cell);
     }
 }

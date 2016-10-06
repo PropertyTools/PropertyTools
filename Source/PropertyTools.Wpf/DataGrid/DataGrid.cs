@@ -1794,7 +1794,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public bool InsertItem(int index, bool updateGrid = true)
         {
-            var success = this.Operator.InsertItem(this, this.ItemsSource, index);
+            var success = this.Operator.InsertItem(this, index);
             if (success)
             {
                 if (updateGrid)
@@ -2093,9 +2093,7 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            var item = this.GetItem(cell);
-
-            var cd = this.CellDefinitionFactory.CreateCellDefinition(this, cell, item);
+            var cd = this.CellDefinitionFactory.CreateCellDefinition(this, cell);
             this.currentEditControl = this.ControlFactory.CreateEditControl(cd);
 
             if (this.currentEditControl == null)
@@ -2223,9 +2221,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateDisplayControl(CellRef cell)
         {
-            var item = this.GetItem(cell);
-
-            var cd = this.CellDefinitionFactory.CreateCellDefinition(this, cell, item);
+            var cd = this.CellDefinitionFactory.CreateCellDefinition(this, cell);
             var element = this.ControlFactory.CreateDisplayControl(cd);
             element.DataContext = this.Operator.GetDataContext(this, cell);
             element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
@@ -3326,18 +3322,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the item for the specified cell.
-        /// </summary>
-        /// <param name="cell">The cell reference.</param>
-        /// <returns>
-        /// The item.
-        /// </returns>
-        private object GetItem(CellRef cell)
-        {
-            return this.Operator.GetItem(this, this.ItemsSource, cell);
-        }
-
-        /// <summary>
         /// Gets the column/row definition for the specified cell.
         /// </summary>
         /// <param name="cell">The cell reference.</param>
@@ -3542,7 +3526,7 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            this.Operator.SetValue(this, this.ItemsSource, cell, value);
+            this.Operator.SetValue(this, cell, value);
         }
 
         /// <summary>
@@ -4490,7 +4474,7 @@ namespace PropertyTools.Wpf
 
                 if (this.ItemHeaderPropertyPath != null && this.ItemsInRows)
                 {
-                    cell.DataContext = this.GetItem(new CellRef(i, -1));
+                    cell.DataContext = this.Operator.GetItem(this, new CellRef(i, -1));
                     cell.SetBinding(TextBlock.TextProperty, new Binding(this.ItemHeaderPropertyPath));
                 }
 

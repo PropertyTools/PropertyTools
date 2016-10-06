@@ -65,7 +65,7 @@ namespace PropertyTools.Wpf
                 return null;
             }
 
-            var item = this.GetItem(owner, owner.ItemsSource, cell);
+            var item = this.GetItem(owner,  cell);
             if (item != null)
             {
                 var pd = owner.GetPropertyDefinition(cell);
@@ -108,32 +108,29 @@ namespace PropertyTools.Wpf
         /// Gets the item in the specified cell.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <param name="list">The list.</param>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
         /// The <see cref="object" />.
         /// </returns>
-        public abstract object GetItem(DataGrid owner, IList list, CellRef cell);
+        public abstract object GetItem(DataGrid owner, CellRef cell);
 
         /// <summary>
         /// Inserts an item to <see cref="DataGrid" /> at the specified index.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
         /// <returns>
         ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
         /// </returns>
-        public abstract bool InsertItem(DataGrid owner, IList list, int index);
+        public abstract bool InsertItem(DataGrid owner, int index);
 
         /// <summary>
         /// Sets value of the specified cell to the specified value.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        /// <param name="list">The list.</param>
         /// <param name="cell">The cell to change.</param>
         /// <param name="value">The value.</param>
-        public abstract void SetValue(DataGrid owner, IList list, CellRef cell, object value);
+        public abstract void SetValue(DataGrid owner, CellRef cell, object value);
 
         /// <summary>
         /// Auto-generates the columns.
@@ -320,7 +317,7 @@ namespace PropertyTools.Wpf
         {
             if (owner.ItemsSource != null)
             {
-                var current = this.GetItem(owner, owner.ItemsSource, cell);
+                var current = this.GetItem(owner, cell);
 
                 var pd = owner.GetPropertyDefinition(cell);
                 if (pd == null)
@@ -364,7 +361,7 @@ namespace PropertyTools.Wpf
         public object GetDataContext(DataGrid owner, CellRef cell)
         {
             var pd = owner.GetPropertyDefinition(cell);
-            var item = this.GetItem(owner, owner.ItemsSource, cell);
+            var item = this.GetItem(owner, cell);
             return pd.PropertyName != null ? item : owner.ItemsSource;
         }
     }

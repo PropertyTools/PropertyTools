@@ -133,22 +133,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Determines whether the specified property is browsable.
-        /// </summary>
-        /// <param name="pd">The property descriptor.</param>
-        /// <returns><c>true</c> if the specified property is browsable; otherwise, <c>false</c>.</returns>
-        public static bool IsBrowsable(this System.ComponentModel.PropertyDescriptor pd)
-        {
-            var a = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
-            if (a != null)
-            {
-                return a.Browsable;
-            }
-
-            return pd.IsBrowsable;
-        }
-
-        /// <summary>
         /// Determines whether the property is read-only.
         /// </summary>
         /// <param name="pd">The property descriptor.</param>

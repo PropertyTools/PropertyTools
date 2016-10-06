@@ -186,8 +186,15 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                // Skip properties marked with [System.ComponentModel.Browsable(false)] or [PropertyTools.DataAnnotations.Browsable(false)]
-                if (!pd.IsBrowsable())
+                // Skip properties marked with [PropertyTools.DataAnnotations.Browsable(false)]
+                var ba = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
+                if (ba != null && !ba.Browsable)
+                {
+                    continue;
+                }
+
+                // Skip properties marked with [System.ComponentModel.Browsable(false)]
+                if (!pd.IsBrowsable)
                 {
                     continue;
                 }

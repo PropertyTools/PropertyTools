@@ -53,45 +53,6 @@ namespace PropertyTools.Wpf
         public GridLength DefaultColumnWidth { get; set; } = new GridLength(1, GridUnitType.Star);
 
         /// <summary>
-        /// Creates the display control for the specified cell.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="controlFactory">The control factory.</param>
-        /// <param name="cell">The cell reference.</param>
-        /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
-        /// <param name="item">The current value of the cell.</param>
-        /// <returns>
-        /// The display control.
-        /// </returns>
-        public virtual FrameworkElement CreateDisplayControl(DataGrid owner, IDataGridControlFactory controlFactory, CellRef cell, PropertyDefinition pd, object item)
-        {
-            var cd = this.CreateCellDefinition(cell, pd, item);
-            this.ApplyProperties(cd, owner, cell, pd, item);
-            var element = controlFactory.CreateDisplayControl(cd);
-            element.DataContext = pd.PropertyName != null ? item : owner.ItemsSource;
-
-            return element;
-        }
-
-        /// <summary>
-        /// Creates the edit control for the specified cell.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="controlFactory">The control factory.</param>
-        /// <param name="cell">The cell reference.</param>
-        /// <param name="pd">The <see cref="PropertyDefinition" />.</param>
-        /// <param name="item">The item.</param>
-        /// <returns>
-        /// The edit control.
-        /// </returns>
-        public virtual FrameworkElement CreateEditControl(DataGrid owner, IDataGridControlFactory controlFactory, CellRef cell, PropertyDefinition pd, object item)
-        {
-            var cd = this.CreateCellDefinition(cell, pd, item);
-            this.ApplyProperties(cd, owner, cell, pd, item);
-            return controlFactory.CreateEditControl(cd);
-        }
-
-        /// <summary>
         /// Gets the value in the specified cell.
         /// </summary>
         /// <param name="owner">The owner.</param>
@@ -124,55 +85,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Tries to set cell value in the specified cell.
+        /// Gets the type of the property in the specified cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
+        /// <param name="definition">The definition.</param>
         /// <param name="cell">The cell.</param>
-        /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if the cell value was set.</returns>
-        public bool TrySetCellValue(DataGrid owner, CellRef cell, object value)
+        /// <param name="currentValue">The current value.</param>
+        /// <returns>
+        /// The type of the property.
+        /// </returns>
+        public virtual Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue)
         {
-            if (owner.ItemsSource != null)
+            var descriptor = this.GetPropertyDescriptor(definition);
+            if (descriptor?.PropertyType == null)
             {
-                var current = this.GetItem(owner, owner.ItemsSource, cell);
-
-                var pd = owner.GetPropertyDefinition(cell);
-                if (pd == null)
-                {
-                    return false;
-                }
-
-                if (current == null || pd.IsReadOnly)
-                {
-                    return false;
-                }
-
-                object convertedValue;
-                var targetType = this.GetPropertyType(pd, cell, current);
-                if (!TryConvert(value, targetType, out convertedValue))
-                {
-                    return false;
-                }
-
-                var descriptor = this.GetPropertyDescriptor(pd);
-                if (descriptor != null)
-                {
-                    descriptor.SetValue(current, convertedValue);
-                }
-                else
-                {
-                    owner.SetValue(cell, convertedValue);
-
-                    if (!(owner.ItemsSource is INotifyCollectionChanged))
-                    {
-                        owner.UpdateCellContent(cell);
-                    }
-                }
-
-                return true;
+                return currentValue?.GetType() ?? typeof(object);
             }
 
-            return false;
+            return descriptor.PropertyType;
         }
 
         /// <summary>
@@ -241,26 +170,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the type of the property in the specified cell.
-        /// </summary>
-        /// <param name="definition">The definition.</param>
-        /// <param name="cell">The cell.</param>
-        /// <param name="currentValue">The current value.</param>
-        /// <returns>
-        /// The type of the property.
-        /// </returns>
-        protected virtual Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue)
-        {
-            var descriptor = this.GetPropertyDescriptor(definition);
-            if (descriptor?.PropertyType == null)
-            {
-                return currentValue?.GetType() ?? typeof(object);
-            }
-
-            return descriptor.PropertyType;
-        }
-
-        /// <summary>
         /// Gets the property descriptor.
         /// </summary>
         /// <param name="pd">The property definition.</param>
@@ -269,113 +178,6 @@ namespace PropertyTools.Wpf
         {
             PropertyDescriptor descriptor;
             return this.descriptors.TryGetValue(pd, out descriptor) ? descriptor : null;
-        }
-
-        /// <summary>
-        /// Creates the cell definition for the specified cell.
-        /// </summary>
-        /// <param name="cell">The cell.</param>
-        /// <param name="pd">The row/column definition.</param>
-        /// <param name="item">The item.</param>
-        /// <returns>The cell definition</returns>
-        protected virtual CellDefinition CreateCellDefinition(CellRef cell, PropertyDefinition pd, object item)
-        {
-            var propertyType = this.GetPropertyType(pd, cell, item);
-
-            var tcd = pd as TemplateColumnDefinition;
-            if (tcd != null)
-            {
-                return new TemplateCellDefinition
-                {
-                    DisplayTemplate = tcd.CellTemplate,
-                    EditTemplate = tcd.CellEditingTemplate
-                };
-            }
-
-            if (propertyType.Is(typeof(bool)))
-            {
-                return new CheckCellDefinition();
-            }
-
-            if (propertyType.Is(typeof(Color)))
-            {
-                return new ColorCellDefinition();
-            }
-
-            if (propertyType.Is(typeof(Enum)))
-            {
-                var enumType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
-                var values = Enum.GetValues(enumType).Cast<object>().ToList();
-                if (Nullable.GetUnderlyingType(propertyType) != null)
-                {
-                    values.Insert(0, null);
-                }
-
-                return new SelectCellDefinition
-                {
-                    ItemsSource = values
-                };
-            }
-
-            if (pd.ItemsSourceProperty != null || pd.ItemsSource != null)
-            {
-                return new SelectCellDefinition
-                {
-                    ItemsSource = pd.ItemsSource,
-                    ItemsSourceProperty = pd.ItemsSourceProperty
-                };
-            }
-
-            return new TextCellDefinition();
-        }
-
-        /// <summary>
-        /// Applies the properties to the specified cell definition.
-        /// </summary>
-        /// <param name="cd">The cell definition.</param>
-        /// <param name="owner">The owner.</param>
-        /// <param name="cell">The cell.</param>
-        /// <param name="pd">The row/column definition.</param>
-        /// <param name="item">The current value of the cell.</param>
-        protected virtual void ApplyProperties(CellDefinition cd, DataGrid owner, CellRef cell, PropertyDefinition pd, object item)
-        {
-            cd.HorizontalAlignment = pd.HorizontalAlignment;
-            cd.BindingPath = pd.PropertyName ?? this.GetBindingPath(owner, cell);
-            cd.IsReadOnly = pd.IsReadOnly;
-            cd.FormatString = pd.FormatString;
-            if (pd.Converter != null)
-            {
-                cd.Converter = pd.Converter;
-            }
-
-            cd.ConverterParameter = pd.ConverterParameter;
-            cd.ConverterCulture = pd.ConverterCulture;
-
-            cd.IsEnabledParameter = pd.IsEnabledByValue;
-            if (owner.IsEnabledSource != null)
-            {
-                cd.IsEnabledSource = owner.IsEnabledSource;
-                cd.IsEnabledBindingPath = pd.IsEnabledByProperty ?? this.GetBindingPath(owner, cell);
-            }
-            else
-            {
-                cd.IsEnabledBindingPath = pd.IsEnabledByProperty;
-            }
-
-            if (owner.BackgroundSource != null)
-            {
-                cd.BackgroundSource = owner.BackgroundSource;
-                cd.BackgroundBindingPath = pd.BackgroundProperty ?? this.GetBindingPath(owner, cell);
-            }
-            else
-            {
-                cd.BackgroundBindingPath = pd.BackgroundProperty;
-            }
-
-            if (pd.Background != null)
-            {
-                cd.Background = pd.Background;
-            }
         }
 
         /// <summary>
@@ -427,7 +229,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The binding path
         /// </returns>
-        protected abstract string GetBindingPath(DataGrid owner, CellRef cell);
+        public abstract string GetBindingPath(DataGrid owner, CellRef cell);
 
         /// <summary>
         /// Tries to convert an object to the specified type.
@@ -505,6 +307,65 @@ namespace PropertyTools.Wpf
                 convertedValue = null;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Tries to set cell value in the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <param name="value">The value.</param>
+        /// <returns><c>true</c> if the cell value was set.</returns>
+        public virtual bool TrySetCellValue(DataGrid owner, CellRef cell, object value)
+        {
+            if (owner.ItemsSource != null)
+            {
+                var current = this.GetItem(owner, owner.ItemsSource, cell);
+
+                var pd = owner.GetPropertyDefinition(cell);
+                if (pd == null)
+                {
+                    return false;
+                }
+
+                if (current == null || pd.IsReadOnly)
+                {
+                    return false;
+                }
+
+                object convertedValue;
+                var targetType = this.GetPropertyType(pd, cell, current);
+                if (!TryConvert(value, targetType, out convertedValue))
+                {
+                    return false;
+                }
+
+                var descriptor = this.GetPropertyDescriptor(pd);
+                if (descriptor != null)
+                {
+                    descriptor.SetValue(current, convertedValue);
+                }
+                else
+                {
+                    owner.SetValue(cell, convertedValue);
+
+                    if (!(owner.ItemsSource is INotifyCollectionChanged))
+                    {
+                        owner.UpdateCellContent(cell);
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public object GetDataContext(DataGrid owner, CellRef cell)
+        {
+            var pd = owner.GetPropertyDefinition(cell);
+            var item = this.GetItem(owner, owner.ItemsSource, cell);
+            return pd.PropertyName != null ? item : owner.ItemsSource;
         }
     }
 }

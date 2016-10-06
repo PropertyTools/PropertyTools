@@ -168,7 +168,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The binding path
         /// </returns>
-        protected override string GetBindingPath(DataGrid owner, CellRef cell)
+        public override string GetBindingPath(DataGrid owner, CellRef cell)
         {
             return $"[{cell.Row}][{cell.Column}]";
         }

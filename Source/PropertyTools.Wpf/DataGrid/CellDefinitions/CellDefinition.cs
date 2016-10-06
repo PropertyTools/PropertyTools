@@ -9,7 +9,6 @@
 
 namespace PropertyTools.Wpf
 {
-    using System.Collections;
     using System.Globalization;
     using System.Windows;
     using System.Windows.Data;
@@ -37,10 +36,10 @@ namespace PropertyTools.Wpf
         public string BindingPath { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is read only.
+        /// Gets or sets a value indicating whether the binding mode should be one-way.
         /// </summary>
         /// <value>
-        /// <c>true</c> if this instance is read only; otherwise, <c>false</c>.
+        /// <c>true</c> if the binding mode should be one-way; otherwise, <c>false</c>.
         /// </value>
         public bool IsReadOnly { get; set; }
 
@@ -85,15 +84,15 @@ namespace PropertyTools.Wpf
         /// Gets or sets the IsEnabled binding path.
         /// </summary>
         /// <value>
-        /// The is enabled binding path.
+        /// The binding path.
         /// </value>
         public string IsEnabledBindingPath { get; set; }
 
         /// <summary>
-        /// Gets or sets the IsEnabled parameter.
+        /// Gets or sets the IsEnabled converter parameter.
         /// </summary>
         /// <value>
-        /// The is enabled parameter.
+        /// The converter parameter.
         /// </value>
         public object IsEnabledParameter { get; set; }
 
@@ -105,8 +104,20 @@ namespace PropertyTools.Wpf
         /// </value>
         public Brush Background { get; set; }
 
+        /// <summary>
+        /// Gets or sets the background source.
+        /// </summary>
+        /// <value>
+        /// The binding source.
+        /// </value>
         public object BackgroundSource { get; set; }
 
+        /// <summary>
+        /// Gets or sets the background binding path.
+        /// </summary>
+        /// <value>
+        /// The binding path.
+        /// </value>
         public string BackgroundBindingPath { get; set; }
     }
 }

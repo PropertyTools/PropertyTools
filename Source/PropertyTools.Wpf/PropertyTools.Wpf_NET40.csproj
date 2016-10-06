@@ -180,8 +180,10 @@
     <Compile Include="Converters\NullToBoolConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="DataGrid\CellDefinitions\CellDefinition.cs" />
+    <Compile Include="DataGrid\CellDefinitions\CellDefinitionFactory.cs" />
     <Compile Include="DataGrid\CellDefinitions\CheckCellDefinition.cs" />
     <Compile Include="DataGrid\CellDefinitions\ColorCellDefinition.cs" />
+    <Compile Include="DataGrid\CellDefinitions\ICellDefinitionFactory.cs" />
     <Compile Include="DataGrid\CellDefinitions\SelectCellDefinition.cs" />
     <Compile Include="DataGrid\CellDefinitions\TemplateCellDefinition.cs" />
     <Compile Include="DataGrid\CellDefinitions\TextCellDefinition.cs" />

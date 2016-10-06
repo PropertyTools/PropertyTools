@@ -45,7 +45,20 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual FrameworkElement CreateEditControl(CellDefinition d)
         {
+            if (d.IsReadOnly)
+            {
+                return null;
+            }
+
             var element = this.CreateEditControlOverride(d);
+
+            if (element != null)
+            {
+                // The edit control should fill the cell
+                element.VerticalAlignment = VerticalAlignment.Stretch;
+                element.HorizontalAlignment = HorizontalAlignment.Stretch;
+            }
+
             return element;
         }
 

@@ -160,6 +160,16 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(new DataGridControlFactory()));
 
         /// <summary>
+        /// Identifies the <see cref="CellDefinitionFactory"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CellDefinitionFactoryProperty = DependencyProperty.Register(
+            "CellDefinitionFactory",
+            typeof(ICellDefinitionFactory),
+            typeof(DataGrid),
+            new UIPropertyMetadata(new CellDefinitionFactory()));
+
+
+        /// <summary>
         /// Identifies the <see cref="CurrentCell"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CurrentCellProperty = DependencyProperty.Register(
@@ -875,7 +885,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets ControlFactory.
+        /// Gets or sets the control factory.
         /// </summary>
         public IDataGridControlFactory ControlFactory
         {
@@ -887,6 +897,22 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(ControlFactoryProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the cell definition factory.
+        /// </summary>
+        public ICellDefinitionFactory CellDefinitionFactory
+        {
+            get
+            {
+                return (ICellDefinitionFactory)this.GetValue(CellDefinitionFactoryProperty);
+            }
+
+            set
+            {
+                this.SetValue(CellDefinitionFactoryProperty, value);
             }
         }
 
@@ -1400,7 +1426,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the operator.
         /// </summary>
-        private DataGridOperator Operator { get; set; }
+        internal DataGridOperator Operator { get; private set; }
 
         /// <summary>
         /// Autosizes all columns.
@@ -2059,19 +2085,17 @@ namespace PropertyTools.Wpf
         public bool ShowEditControl()
         {
             this.HideEditControl();
-            var pd = this.GetPropertyDefinition(this.CurrentCell);
-            if (pd == null || pd.IsReadOnly)
+            var cell = this.CurrentCell;
+
+            if (cell.Row >= this.Rows || cell.Column >= this.Columns)
             {
                 return false;
             }
 
-            if (this.CurrentCell.Row >= this.Rows || this.CurrentCell.Column >= this.Columns)
-            {
-                return false;
-            }
+            var item = this.GetItem(cell);
 
-            var item = this.GetItem(this.CurrentCell);
-            this.currentEditControl = this.Operator.CreateEditControl(this, this.ControlFactory, this.CurrentCell, pd, item);
+            var cd = this.CellDefinitionFactory.CreateCellDefinition(this, cell, item);
+            this.currentEditControl = this.ControlFactory.CreateEditControl(cd);
 
             if (this.currentEditControl == null)
             {
@@ -2081,18 +2105,11 @@ namespace PropertyTools.Wpf
             var currentCell = this.CurrentCell;
             this.currentEditControl.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(currentCell);
 
-            this.currentEditControl.VerticalAlignment = VerticalAlignment.Stretch;
-            this.currentEditControl.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-
-            if (pd.IsEnabledByProperty != null)
-            {
-                this.currentEditControl.SetIsEnabledBinding(pd.IsEnabledByProperty, pd.IsEnabledByValue);
-            }
-
-            var displayControl = this.GetCellElement(this.CurrentCell) ;
+            // Use the same data context as the current display control
+            var displayControl = this.GetCellElement(this.CurrentCell);
             this.currentEditControl.DataContext = displayControl.DataContext;
 
-
+            // TODO: refactor this special case
             var textEditor = this.currentEditControl as TextBox;
             if (textEditor != null)
             {
@@ -2200,29 +2217,16 @@ namespace PropertyTools.Wpf
         /// Creates the display control for the specified cell.
         /// </summary>
         /// <param name="cell">The cell.</param>
-        /// <param name="pd">The property definition.</param>
-        /// <param name="item">The item.</param>
         /// <returns>
         /// The display control.
         /// </returns>
-        protected virtual FrameworkElement CreateDisplayControl(CellRef cell, PropertyDefinition pd, object item)
+        protected virtual FrameworkElement CreateDisplayControl(CellRef cell)
         {
-            if (item == null)
-            {
-                item = this.GetItem(cell);
-            }
+            var item = this.GetItem(cell);
 
-            if (pd == null)
-            {
-                pd = this.GetPropertyDefinition(cell);
-            }
-
-            if (pd == null)
-            {
-                throw new InvalidOperationException("No row/column definition for " + cell);
-            }
-
-            var element = this.Operator.CreateDisplayControl(this, this.ControlFactory, cell, pd, item);
+            var cd = this.CellDefinitionFactory.CreateCellDefinition(this, cell, item);
+            var element = this.ControlFactory.CreateDisplayControl(cd);
+            element.DataContext = this.Operator.GetDataContext(this, cell);
             element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
             return element;
         }
@@ -2858,7 +2862,7 @@ namespace PropertyTools.Wpf
         /// <param name="cellRef">The cell reference.</param>
         private void AddDisplayControl(CellRef cellRef)
         {
-            var e = this.CreateDisplayControl(cellRef, null, null);
+            var e = this.CreateDisplayControl(cellRef);
             if (e == null)
             {
                 return;
@@ -3485,7 +3489,7 @@ namespace PropertyTools.Wpf
         /// <param name="cellRef">The cell reference.</param>
         private void InsertDisplayControl(CellRef cellRef)
         {
-            var e = this.CreateDisplayControl(cellRef, null, null);
+            var e = this.CreateDisplayControl(cellRef);
             SetElementPosition(e, cellRef);
             this.sheetGrid.Children.Insert(this.cellInsertionIndex, e);
             this.cellInsertionIndex++;

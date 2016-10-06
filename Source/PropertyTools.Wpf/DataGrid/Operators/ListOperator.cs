@@ -234,7 +234,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The binding path
         /// </returns>
-        protected override string GetBindingPath(DataGrid owner, CellRef cell)
+        public override string GetBindingPath(DataGrid owner, CellRef cell)
         {
             var index = this.GetItemIndex(owner, cell);
             return $"[{index}]";

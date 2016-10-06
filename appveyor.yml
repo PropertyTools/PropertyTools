@@ -22,9 +22,6 @@ after_build:
   - cmd: NuGet pack Source\PropertyTools.Wpf\PropertyTools.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
 
 artifacts:
-  - path: Output
-    name: PropertyTools-$(GitVersion_SemVer)
-    type: zip
   - path: '*.nupkg'
-    name: PropertyTools-NuGet-$(GitVersion_SemVer)
+    name: PropertyTools.Wpf-$(GitVersion_SemVer)
     type: zip

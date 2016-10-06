@@ -14,6 +14,7 @@ namespace PropertyTools
     using System.Diagnostics;
     using System.Globalization;
     using System.Linq.Expressions;
+    using System.Reflection;
 
     /// <summary>
     /// Provides a base class implementing INotifyPropertyChanged.
@@ -118,7 +119,7 @@ namespace PropertyTools
             var type = this.GetType();
 
             // Look for a public property with the specified name.
-            var propertyInfo = type.GetProperty(propertyName);
+            var propertyInfo = type.GetTypeInfo().GetDeclaredProperty(propertyName);
 
             Debug.Assert(propertyInfo != null, string.Format(CultureInfo.InvariantCulture, "{0} is not a property of {1}", propertyName, type.FullName));
         }

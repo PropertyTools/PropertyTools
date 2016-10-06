@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3A9FED3D-0EC6-412F-B690-5119A9EE2AD9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExampleLibrary</RootNamespace>
+    <AssemblyName>ExampleLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="PropertyChanged, Version=1.50.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyChanged.Fody.1.50.3\lib\portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\PropertyChanged.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Objects\Length.cs" />
+    <Compile Include="Objects\Mass.cs" />
+    <Compile Include="Objects\MassConverter.cs" />
+    <Compile Include="Objects\UnitUtilities.cs" />
+    <Compile Include="PropertyGridExampleAttribute.cs" />
+    <Compile Include="Tests\BigIntegerConverter.cs" />
+    <Compile Include="Tests\ComplexConverter.cs" />
+    <Compile Include="Tests\TestBrowsableAttribute.cs" />
+    <Compile Include="Tests\TestCheckableItems.cs" />
+    <Compile Include="Tests\TestContentAttribute.cs" />
+    <Compile Include="Tests\TestDescriptionAttribute.cs" />
+    <Compile Include="Tests\TestEditableAttribute.cs" />
+    <Compile Include="Tests\TestFillTabAttribute.cs" />
+    <Compile Include="Tests\TestNotifyDataErrorInfo.cs" />
+    <Compile Include="Tests\TestEnableByRadioButtonAttribute.cs" />
+    <Compile Include="Tests\TestIndentationLevelAttribute.cs" />
+    <Compile Include="Tests\TestSpinnableAttribute.cs" />
+    <Compile Include="Tests\TestAutoUpdateTextAttribute.cs" />
+    <Compile Include="Tests\TestConverterAttribute.cs" />
+    <Compile Include="Tests\TestDataAnnotations.cs" />
+    <Compile Include="Tests\TestDataTypes.cs" />
+    <Compile Include="Tests\TestEnums.cs" />
+    <Compile Include="Tests\TestExceptions.cs" />
+    <Compile Include="Tests\TestFormatStringAttribute.cs" />
+    <Compile Include="Tests\TestImageSource.cs" />
+    <Compile Include="TestBase.cs" />
+    <Compile Include="Tests\TestCommentAttribute.cs" />
+    <Compile Include="Tests\TestCollections.cs" />
+    <Compile Include="Tests\TestDictionary.cs" />
+    <Compile Include="Tests\TestPassword.cs" />
+    <Compile Include="Tests\TestPerformance.cs" />
+    <Compile Include="Tests\TestSlidableAttribute.cs" />
+    <Compile Include="Tests\TestSubClass.cs" />
+    <Compile Include="Tests\TestDirectoryPathAttribute.cs" />
+    <Compile Include="Tests\TestAutomaticDisplayNames.cs" />
+    <Compile Include="Tests\TestCategoryAttribute.cs" />
+    <Compile Include="Examples.cs" />
+    <Compile Include="Tests\TestDataErrorInfo.cs" />
+    <Compile Include="Tests\TestDisplayNameAttribute.cs" />
+    <Compile Include="Tests\TestEnabledProperties.cs" />
+    <Compile Include="Tests\TestOptionalProperties.cs" />
+    <Compile Include="Tests\TestFilePathAttribute.cs" />
+    <Compile Include="Properties\AssemblyDescription.cs" />
+    <Compile Include="Tests\TestEnumeration.cs" />
+    <Compile Include="Tests\TestAdvancedTypes.cs" />
+    <Compile Include="Tests\TestReadOnlyAttribute.cs" />
+    <Compile Include="Tests\TestSimpleTypes.cs" />
+    <Compile Include="Tests\TestItemsSourcePropertyAttribute.cs" />
+    <Compile Include="Tests\TestHeaderPlacementAttribute.cs" />
+    <Compile Include="Tests\TestVisibleProperties.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\sheep.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj">
+      <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>
+      <Name>PropertyTools.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PropertyTools\PropertyTools.csproj">
+      <Project>{c365cbc8-fb8c-439d-87a4-fafbb25852ea}</Project>
+      <Name>PropertyTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\packages\Fody.1.29.2\build\portable-net+sl+win+wpa+wp\Fody.targets" Condition="Exists('..\..\..\packages\Fody.1.29.2\build\portable-net+sl+win+wpa+wp\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\Fody.1.29.2\build\portable-net+sl+win+wpa+wp\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Fody.1.29.2\build\portable-net+sl+win+wpa+wp\Fody.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

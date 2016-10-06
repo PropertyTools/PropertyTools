@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - DataGrid: IDataGridControlFactory interface
 - DataGrid: TemplateColumnDefinition binding path
+- Target .NET 4.5 #117
 
 ### Added
 - DataGrid: Support for different types in the same column #118

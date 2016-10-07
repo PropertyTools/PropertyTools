@@ -141,7 +141,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected Binding CreateBinding(CellDefinition d)
         {
-            var bindingMode = d.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
+            var bindingMode = d.IsReadOnly || string.IsNullOrEmpty(d.BindingPath) ? BindingMode.OneWay : BindingMode.TwoWay;
             var formatString = d.FormatString;
             if (formatString != null && !formatString.StartsWith("{"))
             {

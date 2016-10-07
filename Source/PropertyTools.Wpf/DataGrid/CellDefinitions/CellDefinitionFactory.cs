@@ -32,7 +32,9 @@ namespace PropertyTools.Wpf
         {
             var pd = owner.GetPropertyDefinition(cell);
             var item = owner.Operator.GetItem(owner, cell);
-            var cd = this.CreateCellDefinitionOverride(owner, cell, pd, item);
+            var propertyType = owner.Operator.GetPropertyType(pd, cell, item);
+            var cd = this.CreateCellDefinitionOverride(owner, cell, pd, propertyType, item);
+            cd.BindingPath = pd.PropertyName ?? owner.Operator.GetBindingPath(owner, cell);
             this.ApplyProperties(cd, owner, cell, pd, item);
             return cd;
         }
@@ -43,12 +45,11 @@ namespace PropertyTools.Wpf
         /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell.</param>
         /// <param name="pd">The property definition.</param>
+        /// <param name="propertyType">The property type.</param>
         /// <param name="item">The item.</param>
         /// <returns>A cell definition.</returns>
-        protected virtual CellDefinition CreateCellDefinitionOverride(DataGrid owner, CellRef cell, PropertyDefinition pd, object item)
+        protected virtual CellDefinition CreateCellDefinitionOverride(DataGrid owner, CellRef cell, PropertyDefinition pd, Type propertyType, object item)
         {
-            var propertyType = owner.Operator.GetPropertyType(pd, cell, item);
-
             var tcd = pd as TemplateColumnDefinition;
             if (tcd != null)
             {
@@ -107,7 +108,6 @@ namespace PropertyTools.Wpf
         protected virtual void ApplyProperties(CellDefinition cd, DataGrid owner, CellRef cell, PropertyDefinition pd, object item)
         {
             cd.HorizontalAlignment = pd.HorizontalAlignment;
-            cd.BindingPath = pd.PropertyName ?? owner.Operator.GetBindingPath(owner, cell);
             cd.IsReadOnly = pd.IsReadOnly;
             cd.FormatString = pd.FormatString;
             if (pd.Converter != null)

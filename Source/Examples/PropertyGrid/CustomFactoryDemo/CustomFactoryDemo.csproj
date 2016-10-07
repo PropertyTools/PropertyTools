@@ -55,8 +55,8 @@
     <Compile Include="Attributes\ImportantAttribute.cs" />
     <Compile Include="Factories\ImportantPropertyItem.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="Factories\PropertyControlFactory.cs" />
-    <Compile Include="Factories\PropertyItemFactory.cs" />
+    <Compile Include="Factories\CustomPropertyGridControlFactory.cs" />
+    <Compile Include="Factories\CustomPropertyGridOperator.cs" />
     <Compile Include="Model\Range.cs" />
     <Compile Include="Model\TestObject.cs" />
     <Page Include="Views\MainWindow.xaml">

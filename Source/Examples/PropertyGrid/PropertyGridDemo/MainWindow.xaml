@@ -114,8 +114,8 @@
                 <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="{Binding}" Margin="4 0 0 0" Foreground="Red" VerticalAlignment="Center"/>
             </Grid>
         </DataTemplate>
-        <local:LocalPropertyControlFactory x:Key="PropertyControlFactory"/>
-        <local:LocalPropertyItemFactory x:Key="PropertyItemFactory"/>
+        <local:CustomControlFactory x:Key="CustomControlFactory"/>
+        <local:CustomOperator x:Key="CustomOperator"/>
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -148,8 +148,8 @@
             <pt:PropertyGrid 
                 Grid.Column="1" 
                 x:Name="PropertyGrid1"
-                PropertyControlFactory="{StaticResource PropertyControlFactory}"
-                PropertyItemFactory="{StaticResource PropertyItemFactory}"
+                ControlFactory="{StaticResource CustomControlFactory}"
+                Operator="{StaticResource CustomOperator}"
                 CategoryControlTemplate="{StaticResource CategoryControlTemplate1}"
                 CategoryHeaderTemplate="{StaticResource HeaderTemplate1}"
                 TabHeaderTemplate="{StaticResource HeaderTemplate2}"

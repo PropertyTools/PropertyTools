@@ -53,9 +53,9 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="LengthConverter.cs" />
-    <Compile Include="LocalPropertyItemFactory.cs" />
+    <Compile Include="CustomOperator.cs" />
     <Compile Include="MainViewModel.cs" />
-    <Compile Include="LocalPropertyControlFactory.cs" />
+    <Compile Include="CustomControlFactory.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

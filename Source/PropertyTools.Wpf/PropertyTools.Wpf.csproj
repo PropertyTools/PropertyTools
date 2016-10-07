@@ -239,12 +239,12 @@
     <Compile Include="ItemsBag\ItemsBagTypeDescriptionProvider.cs" />
     <Compile Include="ItemsBag\ItemsBagTypeDescriptor.cs" />
     <Compile Include="PropertyGrid\CategoryControlType.cs" />
-    <Compile Include="PropertyGrid\DefaultPropertyControlFactory.cs" />
-    <Compile Include="PropertyGrid\DefaultPropertyItemFactory.cs" />
+    <Compile Include="PropertyGrid\PropertyGridControlFactory.cs" />
+    <Compile Include="PropertyGrid\PropertyGridOperator.cs" />
     <Compile Include="PropertyGrid\Group.cs" />
-    <Compile Include="PropertyGrid\IPropertyControlFactory.cs" />
+    <Compile Include="PropertyGrid\IPropertyGridControlFactory.cs" />
     <Compile Include="PropertyGrid\IPropertyGridOptions.cs" />
-    <Compile Include="PropertyGrid\IPropertyItemFactory.cs" />
+    <Compile Include="PropertyGrid\IPropertyGridOperator.cs" />
     <Compile Include="PropertyGrid\PropertyGrid.cs" />
     <Compile Include="PropertyGrid\PropertyControlFactoryOptions.cs" />
     <Compile Include="PropertyGrid\PropertyItem.cs" />

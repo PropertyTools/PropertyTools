@@ -10,14 +10,14 @@ namespace CustomFactoryDemo
     {
         public TestObject TestObject { get; set; }
 
-        public PropertyControlFactory PropertyControlFactory { get; set; }
+        public CustomPropertyGridControlFactory CustomPropertyGridControlFactory { get; set; }
 
-        public PropertyItemFactory PropertyItemFactory { get; set; }
+        public CustomPropertyGridOperator CustomPropertyGridOperator { get; set; }
 
         public MainViewModel()
         {
-            this.PropertyControlFactory = new PropertyControlFactory();
-            this.PropertyItemFactory = new PropertyItemFactory();
+            this.CustomPropertyGridControlFactory = new CustomPropertyGridControlFactory();
+            this.CustomPropertyGridOperator = new CustomPropertyGridOperator();
             this.TestObject = new TestObject { Title = "Title", Range1 = new Range { Minimum = 0, Maximum = 100 } };
         }
     }

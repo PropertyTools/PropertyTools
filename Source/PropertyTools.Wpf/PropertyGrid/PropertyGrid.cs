@@ -202,24 +202,24 @@ namespace PropertyTools.Wpf
                 "MoveFocusOnEnter", typeof(bool), typeof(PropertyGrid), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// Identifies the <see cref="PropertyControlFactory"/> dependency property.
+        /// Identifies the <see cref="ControlFactory"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty PropertyControlFactoryProperty =
+        public static readonly DependencyProperty ControlFactoryProperty =
             DependencyProperty.Register(
-                "PropertyControlFactory",
-                typeof(IPropertyControlFactory),
+                "ControlFactory",
+                typeof(IPropertyGridControlFactory),
                 typeof(PropertyGrid),
-                new UIPropertyMetadata(new DefaultPropertyControlFactory()));
+                new UIPropertyMetadata(new PropertyGridControlFactory()));
 
         /// <summary>
         /// Identifies the <see cref="PropertyItem"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty PropertyItemFactoryProperty =
+        public static readonly DependencyProperty OperatorProperty =
             DependencyProperty.Register(
-                "PropertyItemFactory", 
-                typeof(IPropertyItemFactory), 
+                "Operator", 
+                typeof(IPropertyGridOperator), 
                 typeof(PropertyGrid),
-                new UIPropertyMetadata(new DefaultPropertyItemFactory()));
+                new UIPropertyMetadata(new PropertyGridOperator()));
 
         /// <summary>
         /// Identifies the <see cref="RequiredAttribute"/> dependency property.
@@ -643,35 +643,35 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the property control factory.
+        /// Gets or sets the control factory.
         /// </summary>
-        public IPropertyControlFactory PropertyControlFactory
+        public IPropertyGridControlFactory ControlFactory
         {
             get
             {
-                return (IPropertyControlFactory)this.GetValue(PropertyControlFactoryProperty);
+                return (IPropertyGridControlFactory)this.GetValue(ControlFactoryProperty);
             }
 
             set
             {
-                this.SetValue(PropertyControlFactoryProperty, value);
+                this.SetValue(ControlFactoryProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the property item factory.
+        /// Gets or sets the operator.
         /// </summary>
-        /// <value>The property item factory.</value>
-        public IPropertyItemFactory PropertyItemFactory
+        /// <value>The operator.</value>
+        public IPropertyGridOperator Operator
         {
             get
             {
-                return (IPropertyItemFactory)this.GetValue(PropertyItemFactoryProperty);
+                return (IPropertyGridOperator)this.GetValue(OperatorProperty);
             }
 
             set
             {
-                this.SetValue(PropertyItemFactoryProperty, value);
+                this.SetValue(OperatorProperty, value);
             }
         }
 
@@ -1675,7 +1675,7 @@ namespace PropertyTools.Wpf
         private FrameworkElement CreatePropertyControl(PropertyItem pi)
         {
             var options = new PropertyControlFactoryOptions { EnumAsRadioButtonsLimit = this.EnumAsRadioButtonsLimit };
-            var control = this.PropertyControlFactory.CreateControl(pi, options);
+            var control = this.ControlFactory.CreateControl(pi, options);
             if (control != null)
             {
                 control.SetValue(AutomationProperties.AutomationIdProperty, pi.PropertyName);
@@ -1727,14 +1727,14 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void UpdateControls()
         {
-            if (this.PropertyItemFactory == null)
+            if (this.Operator == null)
             {
                 return;
             }
 
             var oldIndex = this.tabControl != null ? this.tabControl.SelectedIndex : -1;
 
-            var tabs = this.PropertyItemFactory.CreateModel(this.CurrentObject, false, this);
+            var tabs = this.Operator.CreateModel(this.CurrentObject, false, this);
             var tabsArray = tabs != null ? tabs.ToArray() : null;
             var areTabsVisible = this.TabVisibility == TabVisibility.Visible
                                  || (this.TabVisibility == TabVisibility.VisibleIfMoreThanOne && tabsArray != null && tabsArray.Length > 1);

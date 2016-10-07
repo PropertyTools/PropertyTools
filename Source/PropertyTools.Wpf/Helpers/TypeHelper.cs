@@ -208,7 +208,7 @@ namespace PropertyTools.Wpf
         public static Type GetInnerTypeOfList(IList list)
         {
             var innerType = TypeHelper.GetInnerMostGenericType(list);
-            if (innerType.IsInterface)
+            if (innerType != null && innerType.IsInterface)
             {
                 if (list.Count > 0)
                 {

@@ -252,15 +252,22 @@ namespace PropertyTools.Wpf
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
-            var binding = this.CreateBinding(d);
-            binding.Converter = new ColorToBrushConverter();
-            c.SetBinding(Shape.FillProperty, binding);
-            this.SetIsEnabledBinding(d, c);
+            // Bind to the data context, since the binding may contain a custom converter
+            var contextBinding = this.CreateBinding(d);
+            c.SetBinding(FrameworkElement.DataContextProperty, contextBinding);
 
+            // Convert the color in the data context to a brush
+            var fillBinding = new Binding { Converter = new ColorToBrushConverter() };
+            c.SetBinding(Shape.FillProperty, fillBinding);
+
+            // Create a container to support background binding
             var grid = new Grid();
             grid.Children.Add(c);
             this.SetBackgroundBinding(d, grid);
+
+            this.SetIsEnabledBinding(d, c);
             this.SetIsEnabledBinding(d, grid);
+
             return grid;
         }
 

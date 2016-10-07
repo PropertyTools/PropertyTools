@@ -12,7 +12,7 @@ namespace PropertyTools.Wpf
     using System.Windows;
 
     /// <summary>
-    /// Specifies a control factory for the DataGrid.
+    /// Specifies a control factory for the <see cref="DataGrid" />.
     /// </summary>
     public interface IDataGridControlFactory
     {

@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Describes properties that applies to columns or rows in a DataGrid.
+//   Provides a base class for column and row definitions in a DataGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     /// <summary>
-    /// Describes properties that applies to columns or rows in a <see cref="DataGrid" />.
+    /// Provides a base class for column and row definitions in a <see cref="DataGrid" />.
     /// </summary>
     public abstract class PropertyDefinition
     {

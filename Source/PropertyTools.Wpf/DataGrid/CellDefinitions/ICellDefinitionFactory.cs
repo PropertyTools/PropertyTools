@@ -3,14 +3,14 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Specifies functionality to create a cell definition object for a cell.
+//   Specifies a cell definition factory for the DataGrid.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf
 {
     /// <summary>
-    /// Specifies functionality to create a cell definition object for a cell.
+    /// Specifies a <see cref="CellDefinition" /> factory for the <see cref="DataGrid" />.
     /// </summary>
     public interface ICellDefinitionFactory
     {

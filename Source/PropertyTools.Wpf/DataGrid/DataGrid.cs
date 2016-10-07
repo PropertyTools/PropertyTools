@@ -2243,7 +2243,14 @@ namespace PropertyTools.Wpf
             }
 
             // TODO: the item type may not have a parameterless constructor!
-            return Activator.CreateInstance(itemType);
+            try
+            {
+                return Activator.CreateInstance(itemType);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>

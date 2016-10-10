@@ -2595,6 +2595,20 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Creates the operator for the current items source.
+        /// </summary>
+        /// <returns>The operator.</returns>
+        protected virtual IDataGridOperator CreateOperator()
+        {
+            if (this.IsIListIList())
+            {
+                return new ListListOperator();
+            }
+
+            return new ListOperator();
+        }
+
+        /// <summary>
         /// Updates all cells.
         /// </summary>
         protected void UpdateAllCells()
@@ -4580,20 +4594,6 @@ namespace PropertyTools.Wpf
                 this.sheetGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
                 this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
             }
-        }
-
-        /// <summary>
-        /// Creates the operator for the current items source.
-        /// </summary>
-        /// <returns>The operator.</returns>
-        private IDataGridOperator CreateOperator()
-        {
-            if (this.IsIListIList())
-            {
-                return new ListListOperator();
-            }
-
-            return new ListOperator();
         }
     }
 }

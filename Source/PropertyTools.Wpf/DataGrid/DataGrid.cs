@@ -1355,68 +1355,30 @@ namespace PropertyTools.Wpf
         /// Gets a value indicating whether this instance can delete columns.
         /// </summary>
         /// <value><c>true</c> if this instance can delete columns; otherwise, <c>false</c> .</value>
-        protected virtual bool CanDeleteColumns
-        {
-            get
-            {
-                if (this.IsIListIList())
-                {
-                    return true;
-                }
-
-                var list = this.ItemsSource;
-                return this.CanDelete && this.ItemsInColumns && list != null && !list.IsFixedSize;
-            }
-        }
+        protected virtual bool CanDeleteColumns => this.Operator.CanDeleteColumns(this);
 
         /// <summary>
         /// Gets a value indicating whether this instance can delete rows.
         /// </summary>
         /// <value><c>true</c> if this instance can delete rows; otherwise, <c>false</c> .</value>
-        protected virtual bool CanDeleteRows
-        {
-            get
-            {
-                var list = this.ItemsSource;
-                return this.CanDelete && this.ItemsInRows && list != null && !list.IsFixedSize;
-            }
-        }
+        protected virtual bool CanDeleteRows => this.Operator.CanDeleteRows(this);
 
         /// <summary>
         /// Gets a value indicating whether this instance can insert columns.
         /// </summary>
         /// <value><c>true</c> if this instance can insert columns; otherwise, <c>false</c> .</value>
-        protected virtual bool CanInsertColumns
-        {
-            get
-            {
-                if (this.IsIListIList())
-                {
-                    return true;
-                }
-
-                var list = this.ItemsSource;
-                return this.ItemsInColumns && this.CanInsert && list != null && !list.IsFixedSize;
-            }
-        }
+        protected virtual bool CanInsertColumns => this.Operator.CanInsertColumns(this);
 
         /// <summary>
         /// Gets a value indicating whether this instance can insert rows.
         /// </summary>
         /// <value><c>true</c> if this instance can insert rows; otherwise, <c>false</c> .</value>
-        private bool CanInsertRows
-        {
-            get
-            {
-                var list = this.ItemsSource;
-                return this.ItemsInRows && this.CanInsert && list != null && !list.IsFixedSize;
-            }
-        }
+        private bool CanInsertRows => this.Operator.CanInsertRows(this);
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use columns for the items.
+        /// Gets a value indicating whether to use columns for the items.
         /// </summary>
-        public bool ItemsInColumns { get; internal set; }
+        public bool ItemsInColumns { get; private set; }
 
         /// <summary>
         /// Gets the operator.
@@ -1549,37 +1511,15 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The delete item.
         /// </returns>
-        public bool DeleteItem(int index, bool updateGrid)
+        public void DeleteItem(int index, bool updateGrid)
         {
-            var list = this.ItemsSource;
-            if (list == null)
+            if (this.Operator.DeleteItem(this, index))
             {
-                return false;
-            }
-
-            if (index < 0 || index >= list.Count)
-            {
-                return false;
-            }
-
-            if (this.IsIListIList() && this.ItemsInColumns)
-            {
-                foreach (var row in this.ItemsSource.OfType<IList>().Where(row => index < row.Count))
+                if (updateGrid)
                 {
-                    row.RemoveAt(index);
+                    this.UpdateGridContent();
                 }
             }
-            else
-            {
-                list.RemoveAt(index);
-            }
-
-            if (updateGrid)
-            {
-                this.UpdateGridContent();
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -2600,7 +2540,13 @@ namespace PropertyTools.Wpf
         /// <returns>The operator.</returns>
         protected virtual IDataGridOperator CreateOperator()
         {
-            if (this.IsIListIList())
+            var list = this.ItemsSource;
+            if (list == null)
+            {
+                return null;
+            }
+
+            if (TypeHelper.IsIListIList(list.GetType()))
             {
                 return new ListListOperator();
             }
@@ -3091,26 +3037,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void DeleteColumns()
         {
-            if (this.IsIListIList() && this.ColumnHeadersSource != null)
-            {
-                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (var i = to; i >= from; i--)
-                {
-                    this.ColumnHeadersSource.RemoveAt(i);
-                }
-            }
-
-            if (this.ItemsInColumns)
-            {
-                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (var i = to; i >= from; i--)
-                {
-                    this.DeleteItem(i, false);
-                }
-            }
-
+            this.Operator.DeleteColumns(this);
             this.UpdateGridContent();
 
             var maxColumn = this.Columns > 0 ? this.Columns - 1 : 0;
@@ -3130,13 +3057,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void DeleteRows()
         {
-            var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
-            var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
-            for (var i = to; i >= from; i--)
-            {
-                this.DeleteItem(i, false);
-            }
-
+            this.Operator.DeleteRows(this);
             this.UpdateGridContent();
 
             var maxRow = this.Rows > 0 ? this.Rows - 1 : 0;
@@ -3457,49 +3378,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void InsertColumns()
         {
-            if (this.IsIListIList())
-            {
-                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (var i = from; i <= to; i++)
-                {
-                    this.InsertColumnHeader(i);
-                }
-            }
-
-            if (this.ItemsInColumns)
-            {
-                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (var i = 0; i < to - from + 1; i++)
-                {
-                    this.InsertItem(from, false);
-                }
-            }
-
+            this.Operator.InsertColumns(this);
             this.UpdateGridContent();
-        }
-
-        /// <summary>
-        /// Insert column header to ColumnHeadersSource.
-        /// </summary>
-        /// <param name="index">The position.</param>
-        private void InsertColumnHeader(int index)
-        {
-            if (this.ColumnHeadersSource == null)
-            {
-                return;
-            }
-
-            var newItem = this.CreateColumnHeader(index);
-            if (index >= 0 && index < this.ColumnHeadersSource.Count)
-            {
-                this.ColumnHeadersSource.Insert(index, newItem);
-            }
-            else
-            {
-                this.ColumnHeadersSource.Add(newItem);
-            }
         }
 
         /// <summary>
@@ -3507,32 +3387,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void InsertRows()
         {
-            var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
-            var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
-            for (var i = 0; i < to - from + 1; i++)
-            {
-                this.InsertItem(from, false);
-            }
-
+            this.Operator.InsertRows(this);
             this.UpdateGridContent();
-        }
-
-        /// <summary>
-        /// Determines whether the item source is <see cref="IList" />&gt;<see cref="IList" />&lt;.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the item source is <see cref="IList" />&gt;<see cref="IList" />&lt;; otherwise, <c>false</c>.
-        /// </returns>
-        private bool IsIListIList()
-        {
-            var list = this.ItemsSource;
-            if (list == null)
-            {
-                return false;
-            }
-
-            var type = list.GetType();
-            return TypeHelper.IsIListIList(type);
         }
 
         /// <summary>

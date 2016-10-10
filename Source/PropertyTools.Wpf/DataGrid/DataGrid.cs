@@ -3522,21 +3522,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Sets value to items in cell.
-        /// </summary>
-        /// <param name="cell">The cell reference.</param>
-        /// <param name="value">The value to be set.</param>
-        internal void SetValue(CellRef cell, object value)
-        {
-            if (this.ItemsSource == null)
-            {
-                return;
-            }
-
-            this.Operator.SetValue(this, cell, value);
-        }
-
-        /// <summary>
         /// Handles changes to the items collection.
         /// </summary>
         /// <param name="sender">The sender.</param>

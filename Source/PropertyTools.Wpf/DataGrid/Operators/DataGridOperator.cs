@@ -342,7 +342,7 @@ namespace PropertyTools.Wpf
                 }
                 else
                 {
-                    owner.SetValue(cell, convertedValue);
+                    this.SetValue(owner, cell, convertedValue);
 
                     if (!(owner.ItemsSource is INotifyCollectionChanged))
                     {

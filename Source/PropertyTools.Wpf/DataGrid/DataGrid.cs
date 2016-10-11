@@ -1424,6 +1424,7 @@ namespace PropertyTools.Wpf
             for (var i = 0; i < this.sheetGrid.RowDefinitions.Count; i++)
             {
                 var c = this.GetCellElement(new CellRef(i, column));
+
                 if (c != null)
                 {
                     maximumWidth = Math.Max(maximumWidth, c.ActualWidth + c.Margin.Left + c.Margin.Right);
@@ -1630,7 +1631,19 @@ namespace PropertyTools.Wpf
         public FrameworkElement GetCellElement(CellRef cellRef)
         {
             FrameworkElement e;
-            return this.cellMap.TryGetValue(cellRef.GetHashCode(), out e) ? e : null;
+            if (this.cellMap.TryGetValue(cellRef.GetHashCode(), out e))
+            {
+                // check if the element is wrapped in a border container
+                var border = e as Border;
+                if (border != null)
+                {
+                    return (FrameworkElement)border.Child;
+                }
+
+                return e;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -3784,8 +3797,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         private bool ToggleCheck()
         {
-            var checkBox = this.GetCellElement(this.CurrentCell);
-            if (!checkBox.IsEnabled)
+            var element = this.GetCellElement(this.CurrentCell);
+            if (!element.IsEnabled)
             {
                 return false;
             }

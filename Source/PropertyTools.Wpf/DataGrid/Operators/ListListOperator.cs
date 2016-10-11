@@ -87,6 +87,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Insert column header to ColumnHeadersSource.
         /// </summary>
+        /// <param name="owner">The data grid.</param>
         /// <param name="index">The position.</param>
         private void InsertColumnHeader(DataGrid owner, int index)
         {
@@ -179,7 +180,7 @@ namespace PropertyTools.Wpf
 
             var itemType = TypeHelper.GetItemType(list);
 
-            var newList = owner.CreateInstance(itemType) as IList;
+            var newList = this.CreateItem(owner, itemType) as IList;
 
             var innerType = TypeHelper.GetInnerTypeOfList(list);
             if (innerType == null)
@@ -193,7 +194,7 @@ namespace PropertyTools.Wpf
                 {
                     for (var ii = 0; ii < owner.Columns; ii++)
                     {
-                        newList.Add(owner.CreateInstance(innerType));
+                        newList.Add(this.CreateItem(owner, innerType));
                     }
 
                     if (index < 0)
@@ -211,7 +212,7 @@ namespace PropertyTools.Wpf
                 // insert/append one new element to each list.
                 foreach (var row in list.OfType<IList>())
                 {
-                    var newItem = owner.CreateInstance(innerType);
+                    var newItem = this.CreateItem(owner, innerType);
                     if (index < 0)
                     {
                         row.Add(newItem);

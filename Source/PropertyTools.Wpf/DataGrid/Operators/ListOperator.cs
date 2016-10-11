@@ -170,7 +170,7 @@ namespace PropertyTools.Wpf
             {
                 if (newItem == null)
                 {
-                    newItem = owner.CreateInstance(itemType);
+                    newItem = this.CreateItem(owner, itemType);
                 }
             }
             catch

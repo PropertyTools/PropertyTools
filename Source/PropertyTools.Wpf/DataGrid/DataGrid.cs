@@ -2169,31 +2169,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates a new instance of the specified type.
-        /// </summary>
-        /// <param name="itemType">The type.</param>
-        /// <returns>
-        /// The new instance.
-        /// </returns>
-        public virtual object CreateInstance(Type itemType)
-        {
-            if (this.CreateItem != null)
-            {
-                return this.CreateItem();
-            }
-
-            // TODO: the item type may not have a parameterless constructor!
-            try
-            {
-                return Activator.CreateInstance(itemType);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Handles KeyDown events on the grid.
         /// </summary>
         /// <param name="e">The event arguments.</param>

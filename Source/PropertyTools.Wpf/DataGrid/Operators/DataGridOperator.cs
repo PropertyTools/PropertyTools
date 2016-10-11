@@ -310,6 +310,32 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Creates a new instance of the specified type.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <param name="itemType">The type.</param>
+        /// <returns>
+        /// The new instance.
+        /// </returns>
+        public virtual object CreateItem(DataGrid owner, Type itemType)
+        {
+            if (owner.CreateItem != null)
+            {
+                return owner.CreateItem();
+            }
+
+            // TODO: the item type may not have a parameterless constructor!
+            try
+            {
+                return Activator.CreateInstance(itemType);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Gets the property descriptor.
         /// </summary>
         /// <param name="pd">The property definition.</param>

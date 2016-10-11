@@ -17,13 +17,10 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the cell definition for the specified cell.
         /// </summary>
-        /// <param name="owner">The data grid.</param>
-        /// <param name="cell">The cell.</param>
+        /// <param name="d">The cell descriptor.</param>
         /// <returns>
         /// The cell definition
         /// </returns>
-        CellDefinition CreateCellDefinition(
-            DataGrid owner,
-            CellRef cell);
+        CellDefinition CreateCellDefinition(CellDescriptor d);
     }
 }

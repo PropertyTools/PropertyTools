@@ -55,11 +55,11 @@ namespace DataGridDemo
                 this.backgroundSource = backgroundSource;
             }
 
-            protected override void ApplyProperties(CellDefinition cd, DataGrid owner, CellRef cell, PropertyDefinition pd, object item)
+            protected override void ApplyProperties(CellDefinition cd, CellDescriptor d)
             {
-                base.ApplyProperties(cd, owner, cell, pd, item);
+                base.ApplyProperties(cd, d);
                 cd.BackgroundBindingSource = this.backgroundSource;
-                cd.BackgroundBindingPath = owner.Operator.GetBindingPath(owner, cell);
+                cd.BackgroundBindingPath = d.BindingPath;
             }
         }
     }

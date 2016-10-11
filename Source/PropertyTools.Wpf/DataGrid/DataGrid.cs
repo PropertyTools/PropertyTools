@@ -2046,7 +2046,8 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            var cd = this.CellDefinitionFactory.CreateCellDefinition(this, cell);
+            var d = this.CreateCellDescriptor(cell);
+            var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
             this.currentEditControl = this.ControlFactory.CreateEditControl(cd);
 
             if (this.currentEditControl == null)
@@ -2174,11 +2175,27 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateDisplayControl(CellRef cell)
         {
-            var cd = this.CellDefinitionFactory.CreateCellDefinition(this, cell);
+            var d = this.CreateCellDescriptor(cell);
+            var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
             var element = this.ControlFactory.CreateDisplayControl(cd);
             element.DataContext = this.Operator.GetDataContext(this, cell);
             element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
             return element;
+        }
+
+        private CellDescriptor CreateCellDescriptor(CellRef cell)
+        {
+            var pd = this.GetPropertyDefinition(cell);
+            var item = this.Operator.GetItem(this, cell);
+            var d = new CellDescriptor
+            {
+                PropertyDefinition = pd,
+                Item = item,
+                Descriptor = this.Operator.GetPropertyDescriptor(pd),
+                PropertyType = this.Operator.GetPropertyType(pd, cell, item),
+                BindingPath = pd.PropertyName ?? this.Operator.GetBindingPath(this, cell)
+            };
+            return d;
         }
 
         /// <summary>

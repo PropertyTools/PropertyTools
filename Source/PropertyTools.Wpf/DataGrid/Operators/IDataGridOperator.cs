@@ -10,6 +10,7 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.ComponentModel;
 
     /// <summary>
     /// Specifies DataGrid functionality dependent on the type of items source.
@@ -38,6 +39,13 @@ namespace PropertyTools.Wpf
         /// The type of the property.
         /// </returns>
         Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue);
+
+        /// <summary>
+        /// Gets the property descriptor.
+        /// </summary>
+        /// <param name="pd">The property definition.</param>
+        /// <returns>The property descriptor.</returns>
+        PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd);
 
         /// <summary>
         /// Gets the binding path for the specified cell.

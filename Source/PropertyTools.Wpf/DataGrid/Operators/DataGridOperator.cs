@@ -340,7 +340,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="pd">The property definition.</param>
         /// <returns>The property descriptor.</returns>
-        protected virtual PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd)
+        public virtual PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd)
         {
             PropertyDescriptor descriptor;
             return this.descriptors.TryGetValue(pd, out descriptor) ? descriptor : null;

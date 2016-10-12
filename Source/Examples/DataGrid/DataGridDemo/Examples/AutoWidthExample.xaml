@@ -1,0 +1,21 @@
+﻿<Window x:Class="DataGridDemo.AutoWidthExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:dataGridDemo="clr-namespace:DataGridDemo"
+        Title="Auto width" Height="450" Width="900">
+    <Window.DataContext>
+        <dataGridDemo:ExampleViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <p:DataGrid ItemsSource="{Binding ItemsSource}">
+            <p:DataGrid.ColumnDefinitions>
+                <p:ColumnDefinition PropertyName="String" Header="string"/>
+                <p:ColumnDefinition PropertyName="Integer" Header="integer"/>
+                <p:ColumnDefinition PropertyName="Fruit" Header="enum"/>
+                <p:ColumnDefinition PropertyName="Selector" Header="selector"/>
+                <p:ColumnDefinition PropertyName="Color" Header="Color"/>
+            </p:DataGrid.ColumnDefinitions>
+        </p:DataGrid>
+    </Grid>
+</Window>

@@ -281,8 +281,12 @@ namespace PropertyTools.Wpf
             var fillBinding = new Binding { Converter = new ColorToBrushConverter() };
             c.SetBinding(Shape.FillProperty, fillBinding);
 
+            // Create a grid for the data context
+            var grid = new Grid();
+            grid.Children.Add(c);
+
             // Create a container to support background binding
-            return this.CreateContainer(d, c);
+            return this.CreateContainer(d, grid);
         }
 
         /// <summary>

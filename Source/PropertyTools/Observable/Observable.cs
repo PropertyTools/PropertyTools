@@ -71,11 +71,7 @@ namespace PropertyTools
         /// True if the property was set.
         /// </returns>
         /// <remarks>This method uses the CallerMemberNameAttribute to determine the property name.</remarks>
-#if NET45
         protected bool SetValue<T>(ref T field, T value, [System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
-#else
-        protected bool SetValue<T>(ref T field, T value, string propertyName)
-#endif
         {
             // ReSharper disable once RedundantNameQualifier
             if (object.Equals(field, value))

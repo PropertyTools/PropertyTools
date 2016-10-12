@@ -20,6 +20,8 @@
 
         public string BindingPath { get; set; }
 
-        public IEnumerable<Attribute> Attributes => this.Descriptor?.Attributes.Cast<Attribute>();
+        public IEnumerable<Attribute> Attributes => this.Descriptor?.Attributes.Cast<Attribute>() ?? new Attribute[0];
+
+        public object BindingSource { get; set; }
     }
 }

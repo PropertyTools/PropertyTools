@@ -29,6 +29,7 @@ namespace PropertyTools.Wpf
         {
             var cd = this.CreateCellDefinitionOverride(d);
             cd.BindingPath = d.BindingPath;
+            cd.BindingSource = d.BindingSource;
             this.ApplyProperties(cd, d);
             return cd;
         }

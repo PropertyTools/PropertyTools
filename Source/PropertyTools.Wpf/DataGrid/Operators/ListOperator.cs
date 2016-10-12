@@ -140,7 +140,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
         /// </returns>
-        public override bool InsertItem(DataGrid owner,  int index)
+        public override bool InsertItem(DataGrid owner, int index)
         {
             var list = owner.ItemsSource;
             if (list == null)
@@ -236,6 +236,12 @@ namespace PropertyTools.Wpf
         /// </returns>
         public override string GetBindingPath(DataGrid owner, CellRef cell)
         {
+            var pd = owner.GetPropertyDefinition(cell);
+            if (pd?.PropertyName != null)
+            {
+                return pd.PropertyName;
+            }
+
             var index = this.GetItemIndex(owner, cell);
             return $"[{index}]";
         }

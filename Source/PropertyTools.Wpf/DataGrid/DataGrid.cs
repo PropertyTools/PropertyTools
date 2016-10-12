@@ -2031,62 +2031,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Shows the edit control for the current cell.
-        /// </summary>
-        /// <returns>
-        /// True if an edit control is shown.
-        /// </returns>
-        public bool ShowEditControl()
-        {
-            this.HideEditControl();
-            var cell = this.CurrentCell;
-
-            if (cell.Row >= this.Rows || cell.Column >= this.Columns)
-            {
-                return false;
-            }
-
-            var d = this.CreateCellDescriptor(cell);
-            var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
-            this.currentEditControl = this.ControlFactory.CreateEditControl(cd);
-
-            if (this.currentEditControl == null)
-            {
-                return false;
-            }
-
-            var currentCell = this.CurrentCell;
-            this.currentEditControl.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(currentCell);
-
-            // Use the same data context as the current display control
-            var displayControl = this.GetCellElement(this.CurrentCell);
-            this.currentEditControl.DataContext = displayControl.DataContext;
-
-            // TODO: refactor this special case
-            var textEditor = this.currentEditControl as TextBox;
-            if (textEditor != null)
-            {
-                this.currentEditControl.Visibility = Visibility.Hidden;
-                textEditor.PreviewKeyDown += this.TextEditorPreviewKeyDown;
-                textEditor.Loaded += this.TextEditorLoaded;
-            }
-
-            this.editingCells = this.SelectedCells.ToList();
-
-            Grid.SetColumn(this.currentEditControl, this.CurrentCell.Column);
-            Grid.SetRow(this.currentEditControl, this.CurrentCell.Row);
-
-            this.sheetGrid.Children.Add(this.currentEditControl);
-
-            if (this.currentEditControl.Visibility == Visibility.Visible)
-            {
-                this.currentEditControl.Focus();
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// Shows the text box editor.
         /// </summary>
         /// <returns>
@@ -2178,24 +2122,89 @@ namespace PropertyTools.Wpf
             var d = this.CreateCellDescriptor(cell);
             var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
             var element = this.ControlFactory.CreateDisplayControl(cd);
-            element.DataContext = this.Operator.GetDataContext(this, cell);
+            if (element == null)
+            {
+#if DEBUG
+                throw new InvalidOperationException("Display control not implemented for " + cd);
+#else
+                return null;
+#endif
+            }
+
+            element.DataContext = cd.BindingSource;
             element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
+
             return element;
         }
 
-        private CellDescriptor CreateCellDescriptor(CellRef cell)
+        /// <summary>
+        /// Creates the edit control for the specified cell.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <returns>
+        /// The edit control.
+        /// </returns>
+        protected virtual FrameworkElement CreateEditControl(CellRef cell)
         {
-            var pd = this.GetPropertyDefinition(cell);
-            var item = this.Operator.GetItem(this, cell);
-            var d = new CellDescriptor
+            var d = this.CreateCellDescriptor(cell);
+            var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
+            var element = this.ControlFactory.CreateEditControl(cd);
+            if (element == null)
             {
-                PropertyDefinition = pd,
-                Item = item,
-                Descriptor = this.Operator.GetPropertyDescriptor(pd),
-                PropertyType = this.Operator.GetPropertyType(pd, cell, item),
-                BindingPath = pd.PropertyName ?? this.Operator.GetBindingPath(this, cell)
-            };
-            return d;
+                return null;
+            }
+
+            var currentCell = this.CurrentCell;
+            element.DataContext = cd.BindingSource;
+            element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(currentCell);
+
+            return element;
+        }
+
+        /// <summary>
+        /// Shows the edit control for the current cell.
+        /// </summary>
+        /// <returns>
+        /// True if an edit control is shown.
+        /// </returns>
+        public bool ShowEditControl()
+        {
+            this.HideEditControl();
+            var cell = this.CurrentCell;
+
+            if (cell.Row >= this.Rows || cell.Column >= this.Columns)
+            {
+                return false;
+            }
+
+            this.currentEditControl = this.CreateEditControl(cell);
+            if (this.currentEditControl == null)
+            {
+                return false;
+            }
+
+            // TODO: refactor this special case
+            var textEditor = this.currentEditControl as TextBox;
+            if (textEditor != null)
+            {
+                this.currentEditControl.Visibility = Visibility.Hidden;
+                textEditor.PreviewKeyDown += this.TextEditorPreviewKeyDown;
+                textEditor.Loaded += this.TextEditorLoaded;
+            }
+
+            this.editingCells = this.SelectedCells.ToList();
+
+            Grid.SetColumn(this.currentEditControl, this.CurrentCell.Column);
+            Grid.SetRow(this.currentEditControl, this.CurrentCell.Row);
+
+            this.sheetGrid.Children.Add(this.currentEditControl);
+
+            if (this.currentEditControl.Visibility == Visibility.Visible)
+            {
+                this.currentEditControl.Focus();
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -2840,6 +2849,27 @@ namespace PropertyTools.Wpf
             SetElementPosition(e, cellRef);
             this.sheetGrid.Children.Add(e);
             this.cellMap.Add(cellRef.GetHashCode(), e);
+        }
+
+        /// <summary>
+        /// Creates the cell descriptor for the specified cell.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <returns>A cell descriptor.</returns>
+        private CellDescriptor CreateCellDescriptor(CellRef cell)
+        {
+            var pd = this.GetPropertyDefinition(cell);
+            var item = this.Operator.GetItem(this, cell);
+            var d = new CellDescriptor
+            {
+                PropertyDefinition = pd,
+                Item = item,
+                Descriptor = this.Operator.GetPropertyDescriptor(pd),
+                PropertyType = this.Operator.GetPropertyType(pd, cell, item),
+                BindingPath = this.Operator.GetBindingPath(this, cell),
+                BindingSource = this.Operator.GetDataContext(this, cell)
+            };
+            return d;
         }
 
         /// <summary>

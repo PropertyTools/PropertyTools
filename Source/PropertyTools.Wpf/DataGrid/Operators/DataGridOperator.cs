@@ -416,6 +416,23 @@ namespace PropertyTools.Wpf
                     return true;
                 }
 
+                if (value == null)
+                {
+                    // reference types
+                    if (!targetType.IsValueType)
+                    {
+                        convertedValue = null;
+                        return true;
+                    }
+
+                    // nullable types
+                    if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        convertedValue = null;
+                        return true;
+                    }
+                }
+
                 if (targetType == typeof(string))
                 {
                     convertedValue = value?.ToString();

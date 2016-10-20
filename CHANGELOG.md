@@ -23,5 +23,6 @@ All notable changes to this project will be documented in this file.
 - First semantic version release
 
 [Unreleased]: https://github.com/objorke/PropertyTools/compare/v1.1.0...HEAD
+[2.0.0]: https://github.com/objorke/PropertyTools/compare/v2.0.0...v1.1.0
 [1.1.0]: https://github.com/objorke/PropertyTools/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/objorke/PropertyTools/compare/v0.1.0...v1.0.0

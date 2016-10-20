@@ -49,6 +49,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf.Extended.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddRemoveDemo", "Examples\TreeListBox\AddRemoveDemo\AddRemoveDemo.csproj", "{E8093378-7B09-4210-91EA-BDE29A2570A8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F68C48B5-6B99-4174-AB97-3C10CC7F9AE2}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitattributes = ..\.gitattributes
+		..\.gitignore = ..\.gitignore
+		..\appveyor.yml = ..\appveyor.yml
+		..\AUTHORS = ..\AUTHORS
+		..\CHANGELOG.md = ..\CHANGELOG.md
+		..\CONTRIBUTORS = ..\CONTRIBUTORS
+		..\GitVersion.yml = ..\GitVersion.yml
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

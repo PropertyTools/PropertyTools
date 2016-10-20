@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2.0.0]
+## [2.0.1]
 ### Changed
 - DataGrid: IDataGridControlFactory interface
 - DataGrid: TemplateColumnDefinition binding path
@@ -22,7 +22,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - First semantic version release
 
-[Unreleased]: https://github.com/objorke/PropertyTools/compare/v1.1.0...HEAD
-[2.0.0]: https://github.com/objorke/PropertyTools/compare/v2.0.0...v1.1.0
+[Unreleased]: https://github.com/objorke/PropertyTools/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/objorke/PropertyTools/compare/v2.0.1...v1.1.0
 [1.1.0]: https://github.com/objorke/PropertyTools/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/objorke/PropertyTools/compare/v0.1.0...v1.0.0

@@ -264,7 +264,6 @@
     <Compile Include="TreeListBox\TreeListBox.cs" />
     <Compile Include="TreeListBox\TreeListBoxDragDropHelper.cs" />
     <Compile Include="TreeListBox\TreeListBoxItem.cs" />
-    <None Include="ClassDiagrams\Dialogs.cd" />
     <AppDesigner Include="Properties\" />
     <None Include="PropertyTools.snk" />
   </ItemGroup>

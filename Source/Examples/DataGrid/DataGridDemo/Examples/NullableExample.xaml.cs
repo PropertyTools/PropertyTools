@@ -28,7 +28,14 @@ namespace DataGridDemo
         private static readonly ObservableCollection<ExampleObject> StaticItems =
             new ObservableCollection<ExampleObject>
                 {
-                    new ExampleObject { Boolean = true, Integer=1, Double = Math.PI, Color = Colors.Orange, Fruit = Fruit.Orange},
+                    new ExampleObject
+                        {
+                            Boolean = true,
+                            Integer = 1,
+                            Double = Math.PI,
+                            Color = Colors.Orange,
+                            Fruit = Fruit.Orange
+                        },
                     new ExampleObject()
                 };
 

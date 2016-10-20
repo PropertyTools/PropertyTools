@@ -41,12 +41,12 @@ namespace DataGridDemo
                 this.isItemEnabledSource = isItemEnabledSource;
             }
 
-            protected override void ApplyProperties(CellDefinition cd, DataGrid owner, CellRef cell, PropertyDefinition pd, object item)
+            protected override void ApplyProperties(CellDefinition cd, CellDescriptor d)
             {
-                base.ApplyProperties(cd, owner, cell, pd, item);
+                base.ApplyProperties(cd, d);
                 cd.IsEnabledBindingSource = this.isItemEnabledSource;
                 cd.IsEnabledBindingParameter = "yes";
-                cd.IsEnabledBindingPath = owner.Operator.GetBindingPath(owner, cell);
+                cd.IsEnabledBindingPath = d.BindingPath;
             }
         }
 

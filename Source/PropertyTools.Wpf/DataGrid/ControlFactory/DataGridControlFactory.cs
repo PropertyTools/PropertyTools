@@ -133,6 +133,25 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Creates a container with background binding.
+        /// </summary>
+        /// <param name="d">The cell definition.</param>
+        /// <param name="c">The control to add to the container.</param>
+        /// <returns>The container element.</returns>
+        protected virtual FrameworkElement CreateContainer(CellDefinition d, FrameworkElement c)
+        {
+            if (d.BackgroundBindingPath == null)
+            {
+                return c;
+            }
+
+            var container = new Border { Child = c };
+            var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundBindingSource };
+            container.SetBinding(Border.BackgroundProperty, binding);
+            return container;
+        }
+
+        /// <summary>
         /// Creates a binding.
         /// </summary>
         /// <param name="d">The cd.</param>
@@ -141,7 +160,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected Binding CreateBinding(CellDefinition d)
         {
-            var bindingMode = d.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
+            var bindingMode = d.IsReadOnly || string.IsNullOrEmpty(d.BindingPath) ? BindingMode.OneWay : BindingMode.TwoWay;
             var formatString = d.FormatString;
             if (formatString != null && !formatString.StartsWith("{"))
             {
@@ -252,16 +271,22 @@ namespace PropertyTools.Wpf
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
-            var binding = this.CreateBinding(d);
-            binding.Converter = new ColorToBrushConverter();
-            c.SetBinding(Shape.FillProperty, binding);
+            // Bind to the data context, since the binding may contain a custom converter
+            var contextBinding = this.CreateBinding(d);
+            c.SetBinding(FrameworkElement.DataContextProperty, contextBinding);
+
             this.SetIsEnabledBinding(d, c);
 
+            // Convert the color in the data context to a brush
+            var fillBinding = new Binding { Converter = new ColorToBrushConverter() };
+            c.SetBinding(Shape.FillProperty, fillBinding);
+
+            // Create a grid for the data context
             var grid = new Grid();
             grid.Children.Add(c);
-            this.SetBackgroundBinding(d, grid);
-            this.SetIsEnabledBinding(d, grid);
-            return grid;
+
+            // Create a container to support background binding
+            return this.CreateContainer(d, grid);
         }
 
         /// <summary>
@@ -325,11 +350,7 @@ namespace PropertyTools.Wpf
             c.SetBinding(TextBlock.TextProperty, this.CreateOneWayBinding(d));
             this.SetIsEnabledBinding(d, c);
 
-            var grid = new Grid();
-            grid.Children.Add(c);
-            this.SetBackgroundBinding(d, grid);
-            this.SetIsEnabledBinding(d, grid);
-            return grid;
+            return this.CreateContainer(d, c);
         }
 
         /// <summary>
@@ -399,25 +420,29 @@ namespace PropertyTools.Wpf
         /// <param name="c">The control.</param>
         protected virtual void SetBackgroundBinding(CellDefinition d, Control c)
         {
-            if (d.BackgroundBindingPath != null)
+            if (d.BackgroundBindingPath == null)
             {
-                var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundBindingSource };
-                c.SetBinding(Control.BackgroundProperty, binding);
+                return;
             }
+
+            var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundBindingSource };
+            c.SetBinding(Control.BackgroundProperty, binding);
         }
 
         /// <summary>
         /// Sets the background binding.
         /// </summary>
         /// <param name="d">The cell definition.</param>
-        /// <param name="panel">The panel.</param>
-        protected virtual void SetBackgroundBinding(CellDefinition d, Panel panel)
+        /// <param name="container">The container.</param>
+        protected virtual void SetBackgroundBinding(CellDefinition d, Border container)
         {
-            if (d.BackgroundBindingPath != null)
+            if (d.BackgroundBindingPath == null)
             {
-                var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundBindingSource };
-                panel.SetBinding(Panel.BackgroundProperty, binding);
+                return;
             }
+
+            var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundBindingSource };
+            container.SetBinding(Border.BackgroundProperty, binding);
         }
 
         /// <summary>
@@ -433,10 +458,7 @@ namespace PropertyTools.Wpf
             }
 
             var u = parent as UIElement;
-            if (u != null)
-            {
-                u.Focus();
-            }
+            u?.Focus();
         }
     }
 }

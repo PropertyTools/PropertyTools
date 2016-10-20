@@ -20,7 +20,6 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <IntermediateOutputPath>obj\Debug\NET45\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,7 +30,6 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <IntermediateOutputPath>obj\Release\NET45\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -183,6 +181,7 @@
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="DataGrid\CellDefinitions\CellDefinition.cs" />
     <Compile Include="DataGrid\CellDefinitions\CellDefinitionFactory.cs" />
+    <Compile Include="DataGrid\CellDefinitions\CellDescriptor.cs" />
     <Compile Include="DataGrid\CellDefinitions\CheckCellDefinition.cs" />
     <Compile Include="DataGrid\CellDefinitions\ColorCellDefinition.cs" />
     <Compile Include="DataGrid\CellDefinitions\ICellDefinitionFactory.cs" />
@@ -241,12 +240,12 @@
     <Compile Include="ItemsBag\ItemsBagTypeDescriptionProvider.cs" />
     <Compile Include="ItemsBag\ItemsBagTypeDescriptor.cs" />
     <Compile Include="PropertyGrid\CategoryControlType.cs" />
-    <Compile Include="PropertyGrid\DefaultPropertyControlFactory.cs" />
-    <Compile Include="PropertyGrid\DefaultPropertyItemFactory.cs" />
+    <Compile Include="PropertyGrid\PropertyGridControlFactory.cs" />
+    <Compile Include="PropertyGrid\PropertyGridOperator.cs" />
     <Compile Include="PropertyGrid\Group.cs" />
-    <Compile Include="PropertyGrid\IPropertyControlFactory.cs" />
+    <Compile Include="PropertyGrid\IPropertyGridControlFactory.cs" />
     <Compile Include="PropertyGrid\IPropertyGridOptions.cs" />
-    <Compile Include="PropertyGrid\IPropertyItemFactory.cs" />
+    <Compile Include="PropertyGrid\IPropertyGridOperator.cs" />
     <Compile Include="PropertyGrid\PropertyGrid.cs" />
     <Compile Include="PropertyGrid\PropertyControlFactoryOptions.cs" />
     <Compile Include="PropertyGrid\PropertyItem.cs" />
@@ -265,7 +264,6 @@
     <Compile Include="TreeListBox\TreeListBox.cs" />
     <Compile Include="TreeListBox\TreeListBoxDragDropHelper.cs" />
     <Compile Include="TreeListBox\TreeListBoxItem.cs" />
-    <None Include="ClassDiagrams\Dialogs.cd" />
     <AppDesigner Include="Properties\" />
     <None Include="PropertyTools.snk" />
   </ItemGroup>

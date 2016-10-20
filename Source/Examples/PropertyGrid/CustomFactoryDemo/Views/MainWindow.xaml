@@ -4,8 +4,8 @@
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" Title="CustomFactoryDemo" Height="350" Width="300">
     <Grid Margin="4">
         <p:PropertyGrid 
-            PropertyItemFactory="{Binding PropertyItemFactory}" 
-            PropertyControlFactory="{Binding PropertyControlFactory}" 
+            Operator="{Binding CustomPropertyGridOperator}" 
+            ControlFactory="{Binding CustomPropertyGridControlFactory}" 
             SelectedObject="{Binding TestObject}"/>
     </Grid>
 </Window>

@@ -9,6 +9,7 @@
 
 namespace PropertyTools.Wpf
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
@@ -18,6 +19,95 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class ListListOperator : DataGridOperator
     {
+        public override bool CanDeleteColumns(DataGrid owner)
+        {
+            return true;
+        }
+
+        public override bool CanInsertColumns(DataGrid owner)
+        {
+            return true;
+        }
+
+        public override bool DeleteItem(DataGrid owner, int index)
+        {
+            var list = owner.ItemsSource;
+            if (list == null)
+            {
+                return false;
+            }
+
+            if (index < 0 || index >= list.Count)
+            {
+                return false;
+            }
+
+            if (owner.ItemsInColumns)
+            {
+                foreach (var row in owner.ItemsSource.OfType<IList>().Where(row => index < row.Count))
+                {
+                    row.RemoveAt(index);
+                }
+            }
+            else
+            {
+                list.RemoveAt(index);
+            }
+
+            return true;
+        }
+
+        public override void DeleteColumns(DataGrid owner)
+        {
+            if (owner.ColumnHeadersSource != null)
+            {
+                var from = Math.Min(owner.CurrentCell.Column, owner.SelectionCell.Column);
+                var to = Math.Max(owner.CurrentCell.Column, owner.SelectionCell.Column);
+                for (var i = to; i >= from; i--)
+                {
+                    owner.ColumnHeadersSource.RemoveAt(i);
+                }
+            }
+
+            base.DeleteColumns(owner);
+        }
+
+        public override void InsertColumns(DataGrid owner)
+        {
+            var from = Math.Min(owner.CurrentCell.Column, owner.SelectionCell.Column);
+            var to = Math.Max(owner.CurrentCell.Column, owner.SelectionCell.Column);
+            for (var i = from; i <= to; i++)
+            {
+                this.InsertColumnHeader(owner, i);
+            }
+
+            base.InsertColumns(owner);
+        }
+
+        /// <summary>
+        /// Insert column header to ColumnHeadersSource.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <param name="index">The position.</param>
+        private void InsertColumnHeader(DataGrid owner, int index)
+        {
+            if (owner.ColumnHeadersSource == null)
+            {
+                return;
+            }
+
+            var newItem = owner.CreateColumnHeader(index);
+            if (index >= 0 && index < owner.ColumnHeadersSource.Count)
+            {
+                owner.ColumnHeadersSource.Insert(index, newItem);
+            }
+            else
+            {
+                owner.ColumnHeadersSource.Add(newItem);
+            }
+        }
+
+
         /// <summary>
         /// Generate column definitions based on a list of items.
         /// </summary>
@@ -48,7 +138,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The <see cref="object" />.
         /// </returns>
-        public override object GetItem(DataGrid owner,  CellRef cell)
+        public override object GetItem(DataGrid owner, CellRef cell)
         {
             var list = owner.ItemsSource;
             var rowIndex = cell.Row;
@@ -80,7 +170,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// Returns <c>true</c> if insertion is successful, <c>false</c> otherwise.
         /// </returns>
-        public override bool InsertItem(DataGrid owner,  int index)
+        public override bool InsertItem(DataGrid owner, int index)
         {
             var list = owner.ItemsSource;
             if (list == null)
@@ -90,7 +180,7 @@ namespace PropertyTools.Wpf
 
             var itemType = TypeHelper.GetItemType(list);
 
-            var newList = owner.CreateInstance(itemType) as IList;
+            var newList = this.CreateItem(owner, itemType) as IList;
 
             var innerType = TypeHelper.GetInnerTypeOfList(list);
             if (innerType == null)
@@ -104,7 +194,7 @@ namespace PropertyTools.Wpf
                 {
                     for (var ii = 0; ii < owner.Columns; ii++)
                     {
-                        newList.Add(owner.CreateInstance(innerType));
+                        newList.Add(this.CreateItem(owner, innerType));
                     }
 
                     if (index < 0)
@@ -122,7 +212,7 @@ namespace PropertyTools.Wpf
                 // insert/append one new element to each list.
                 foreach (var row in list.OfType<IList>())
                 {
-                    var newItem = owner.CreateInstance(innerType);
+                    var newItem = this.CreateItem(owner, innerType);
                     if (index < 0)
                     {
                         row.Add(newItem);

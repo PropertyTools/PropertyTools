@@ -21,35 +21,29 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the cell definition for the specified cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="cell">The cell.</param>
+        /// <param name="d">The d.</param>
         /// <returns>
         /// The cell definition
         /// </returns>
-        public virtual CellDefinition CreateCellDefinition(
-            DataGrid owner,
-            CellRef cell)
+        public virtual CellDefinition CreateCellDefinition(CellDescriptor d)
         {
-            var pd = owner.GetPropertyDefinition(cell);
-            var item = owner.Operator.GetItem(owner, cell);
-            var cd = this.CreateCellDefinitionOverride(owner, cell, pd, item);
-            this.ApplyProperties(cd, owner, cell, pd, item);
+            var cd = this.CreateCellDefinitionOverride(d);
+            cd.BindingPath = d.BindingPath;
+            cd.BindingSource = d.BindingSource;
+            this.ApplyProperties(cd, d);
             return cd;
         }
 
         /// <summary>
         /// Creates the cell definition object.
         /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="cell">The cell.</param>
-        /// <param name="pd">The property definition.</param>
-        /// <param name="item">The item.</param>
-        /// <returns>A cell definition.</returns>
-        protected virtual CellDefinition CreateCellDefinitionOverride(DataGrid owner, CellRef cell, PropertyDefinition pd, object item)
+        /// <param name="d">The cell descriptor.</param>
+        /// <returns>
+        /// A cell definition.
+        /// </returns>
+        protected virtual CellDefinition CreateCellDefinitionOverride(CellDescriptor d)
         {
-            var propertyType = owner.Operator.GetPropertyType(pd, cell, item);
-
-            var tcd = pd as TemplateColumnDefinition;
+            var tcd = d.PropertyDefinition as TemplateColumnDefinition;
             if (tcd != null)
             {
                 return new TemplateCellDefinition
@@ -59,21 +53,21 @@ namespace PropertyTools.Wpf
                 };
             }
 
-            if (propertyType.Is(typeof(bool)))
+            if (d.PropertyType.Is(typeof(bool)))
             {
                 return new CheckCellDefinition();
             }
 
-            if (propertyType.Is(typeof(Color)))
+            if (d.PropertyType.Is(typeof(Color)))
             {
                 return new ColorCellDefinition();
             }
 
-            if (propertyType.Is(typeof(Enum)))
+            if (d.PropertyType.Is(typeof(Enum)))
             {
-                var enumType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+                var enumType = Nullable.GetUnderlyingType(d.PropertyType) ?? d.PropertyType;
                 var values = Enum.GetValues(enumType).Cast<object>().ToList();
-                if (Nullable.GetUnderlyingType(propertyType) != null)
+                if (Nullable.GetUnderlyingType(d.PropertyType) != null)
                 {
                     values.Insert(0, null);
                 }
@@ -84,12 +78,12 @@ namespace PropertyTools.Wpf
                 };
             }
 
-            if (pd.ItemsSourceProperty != null || pd.ItemsSource != null)
+            if (d.PropertyDefinition.ItemsSourceProperty != null || d.PropertyDefinition.ItemsSource != null)
             {
                 return new SelectCellDefinition
                 {
-                    ItemsSource = pd.ItemsSource,
-                    ItemsSourceProperty = pd.ItemsSourceProperty
+                    ItemsSource = d.PropertyDefinition.ItemsSource,
+                    ItemsSourceProperty = d.PropertyDefinition.ItemsSourceProperty
                 };
             }
 
@@ -100,14 +94,11 @@ namespace PropertyTools.Wpf
         /// Applies the properties to the specified cell definition.
         /// </summary>
         /// <param name="cd">The cell definition.</param>
-        /// <param name="owner">The owner.</param>
-        /// <param name="cell">The cell.</param>
-        /// <param name="pd">The row/column definition.</param>
-        /// <param name="item">The current value of the cell.</param>
-        protected virtual void ApplyProperties(CellDefinition cd, DataGrid owner, CellRef cell, PropertyDefinition pd, object item)
+        /// <param name="d">The cell descriptor.</param>
+        protected virtual void ApplyProperties(CellDefinition cd, CellDescriptor d)
         {
+            var pd = d.PropertyDefinition;
             cd.HorizontalAlignment = pd.HorizontalAlignment;
-            cd.BindingPath = pd.PropertyName ?? owner.Operator.GetBindingPath(owner, cell);
             cd.IsReadOnly = pd.IsReadOnly;
             cd.FormatString = pd.FormatString;
             if (pd.Converter != null)

@@ -1355,68 +1355,30 @@ namespace PropertyTools.Wpf
         /// Gets a value indicating whether this instance can delete columns.
         /// </summary>
         /// <value><c>true</c> if this instance can delete columns; otherwise, <c>false</c> .</value>
-        protected virtual bool CanDeleteColumns
-        {
-            get
-            {
-                if (this.IsIListIList())
-                {
-                    return true;
-                }
-
-                var list = this.ItemsSource;
-                return this.CanDelete && this.ItemsInColumns && list != null && !list.IsFixedSize;
-            }
-        }
+        protected virtual bool CanDeleteColumns => this.Operator.CanDeleteColumns(this);
 
         /// <summary>
         /// Gets a value indicating whether this instance can delete rows.
         /// </summary>
         /// <value><c>true</c> if this instance can delete rows; otherwise, <c>false</c> .</value>
-        protected virtual bool CanDeleteRows
-        {
-            get
-            {
-                var list = this.ItemsSource;
-                return this.CanDelete && this.ItemsInRows && list != null && !list.IsFixedSize;
-            }
-        }
+        protected virtual bool CanDeleteRows => this.Operator.CanDeleteRows(this);
 
         /// <summary>
         /// Gets a value indicating whether this instance can insert columns.
         /// </summary>
         /// <value><c>true</c> if this instance can insert columns; otherwise, <c>false</c> .</value>
-        protected virtual bool CanInsertColumns
-        {
-            get
-            {
-                if (this.IsIListIList())
-                {
-                    return true;
-                }
-
-                var list = this.ItemsSource;
-                return this.ItemsInColumns && this.CanInsert && list != null && !list.IsFixedSize;
-            }
-        }
+        protected virtual bool CanInsertColumns => this.Operator.CanInsertColumns(this);
 
         /// <summary>
         /// Gets a value indicating whether this instance can insert rows.
         /// </summary>
         /// <value><c>true</c> if this instance can insert rows; otherwise, <c>false</c> .</value>
-        private bool CanInsertRows
-        {
-            get
-            {
-                var list = this.ItemsSource;
-                return this.ItemsInRows && this.CanInsert && list != null && !list.IsFixedSize;
-            }
-        }
+        private bool CanInsertRows => this.Operator.CanInsertRows(this);
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use columns for the items.
+        /// Gets a value indicating whether to use columns for the items.
         /// </summary>
-        public bool ItemsInColumns { get; internal set; }
+        public bool ItemsInColumns { get; private set; }
 
         /// <summary>
         /// Gets the operator.
@@ -1462,6 +1424,7 @@ namespace PropertyTools.Wpf
             for (var i = 0; i < this.sheetGrid.RowDefinitions.Count; i++)
             {
                 var c = this.GetCellElement(new CellRef(i, column));
+
                 if (c != null)
                 {
                     maximumWidth = Math.Max(maximumWidth, c.ActualWidth + c.Margin.Left + c.Margin.Right);
@@ -1549,37 +1512,15 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The delete item.
         /// </returns>
-        public bool DeleteItem(int index, bool updateGrid)
+        public void DeleteItem(int index, bool updateGrid)
         {
-            var list = this.ItemsSource;
-            if (list == null)
+            if (this.Operator.DeleteItem(this, index))
             {
-                return false;
-            }
-
-            if (index < 0 || index >= list.Count)
-            {
-                return false;
-            }
-
-            if (this.IsIListIList() && this.ItemsInColumns)
-            {
-                foreach (var row in this.ItemsSource.OfType<IList>().Where(row => index < row.Count))
+                if (updateGrid)
                 {
-                    row.RemoveAt(index);
+                    this.UpdateGridContent();
                 }
             }
-            else
-            {
-                list.RemoveAt(index);
-            }
-
-            if (updateGrid)
-            {
-                this.UpdateGridContent();
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -1690,7 +1631,19 @@ namespace PropertyTools.Wpf
         public FrameworkElement GetCellElement(CellRef cellRef)
         {
             FrameworkElement e;
-            return this.cellMap.TryGetValue(cellRef.GetHashCode(), out e) ? e : null;
+            if (this.cellMap.TryGetValue(cellRef.GetHashCode(), out e))
+            {
+                // check if the element is wrapped in a border container
+                var border = e as Border;
+                if (border != null)
+                {
+                    return (FrameworkElement)border.Child;
+                }
+
+                return e;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -2078,61 +2031,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Shows the edit control for the current cell.
-        /// </summary>
-        /// <returns>
-        /// True if an edit control is shown.
-        /// </returns>
-        public bool ShowEditControl()
-        {
-            this.HideEditControl();
-            var cell = this.CurrentCell;
-
-            if (cell.Row >= this.Rows || cell.Column >= this.Columns)
-            {
-                return false;
-            }
-
-            var cd = this.CellDefinitionFactory.CreateCellDefinition(this, cell);
-            this.currentEditControl = this.ControlFactory.CreateEditControl(cd);
-
-            if (this.currentEditControl == null)
-            {
-                return false;
-            }
-
-            var currentCell = this.CurrentCell;
-            this.currentEditControl.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(currentCell);
-
-            // Use the same data context as the current display control
-            var displayControl = this.GetCellElement(this.CurrentCell);
-            this.currentEditControl.DataContext = displayControl.DataContext;
-
-            // TODO: refactor this special case
-            var textEditor = this.currentEditControl as TextBox;
-            if (textEditor != null)
-            {
-                this.currentEditControl.Visibility = Visibility.Hidden;
-                textEditor.PreviewKeyDown += this.TextEditorPreviewKeyDown;
-                textEditor.Loaded += this.TextEditorLoaded;
-            }
-
-            this.editingCells = this.SelectedCells.ToList();
-
-            Grid.SetColumn(this.currentEditControl, this.CurrentCell.Column);
-            Grid.SetRow(this.currentEditControl, this.CurrentCell.Row);
-
-            this.sheetGrid.Children.Add(this.currentEditControl);
-
-            if (this.currentEditControl.Visibility == Visibility.Visible)
-            {
-                this.currentEditControl.Focus();
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// Shows the text box editor.
         /// </summary>
         /// <returns>
@@ -2221,29 +2119,92 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateDisplayControl(CellRef cell)
         {
-            var cd = this.CellDefinitionFactory.CreateCellDefinition(this, cell);
+            var d = this.CreateCellDescriptor(cell);
+            var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
             var element = this.ControlFactory.CreateDisplayControl(cd);
-            element.DataContext = this.Operator.GetDataContext(this, cell);
+            if (element == null)
+            {
+#if DEBUG
+                throw new InvalidOperationException("Display control not implemented for " + cd);
+#else
+                return null;
+#endif
+            }
+
+            element.DataContext = cd.BindingSource;
             element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
+
             return element;
         }
 
         /// <summary>
-        /// Creates a new instance of the specified type.
+        /// Creates the edit control for the specified cell.
         /// </summary>
-        /// <param name="itemType">The type.</param>
+        /// <param name="cell">The cell.</param>
         /// <returns>
-        /// The new instance.
+        /// The edit control.
         /// </returns>
-        public virtual object CreateInstance(Type itemType)
+        protected virtual FrameworkElement CreateEditControl(CellRef cell)
         {
-            if (this.CreateItem != null)
+            var d = this.CreateCellDescriptor(cell);
+            var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
+            var element = this.ControlFactory.CreateEditControl(cd);
+            if (element == null)
             {
-                return this.CreateItem();
+                return null;
             }
 
-            // TODO: the item type may not have a parameterless constructor!
-            return Activator.CreateInstance(itemType);
+            var currentCell = this.CurrentCell;
+            element.DataContext = cd.BindingSource;
+            element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(currentCell);
+
+            return element;
+        }
+
+        /// <summary>
+        /// Shows the edit control for the current cell.
+        /// </summary>
+        /// <returns>
+        /// True if an edit control is shown.
+        /// </returns>
+        public bool ShowEditControl()
+        {
+            this.HideEditControl();
+            var cell = this.CurrentCell;
+
+            if (cell.Row >= this.Rows || cell.Column >= this.Columns)
+            {
+                return false;
+            }
+
+            this.currentEditControl = this.CreateEditControl(cell);
+            if (this.currentEditControl == null)
+            {
+                return false;
+            }
+
+            // TODO: refactor this special case
+            var textEditor = this.currentEditControl as TextBox;
+            if (textEditor != null)
+            {
+                this.currentEditControl.Visibility = Visibility.Hidden;
+                textEditor.PreviewKeyDown += this.TextEditorPreviewKeyDown;
+                textEditor.Loaded += this.TextEditorLoaded;
+            }
+
+            this.editingCells = this.SelectedCells.ToList();
+
+            Grid.SetColumn(this.currentEditControl, this.CurrentCell.Column);
+            Grid.SetRow(this.currentEditControl, this.CurrentCell.Row);
+
+            this.sheetGrid.Children.Add(this.currentEditControl);
+
+            if (this.currentEditControl.Visibility == Visibility.Visible)
+            {
+                this.currentEditControl.Focus();
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -2588,6 +2549,26 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Creates the operator for the current items source.
+        /// </summary>
+        /// <returns>The operator.</returns>
+        protected virtual IDataGridOperator CreateOperator()
+        {
+            var list = this.ItemsSource;
+            if (list == null)
+            {
+                return null;
+            }
+
+            if (TypeHelper.IsIListIList(list.GetType()))
+            {
+                return new ListListOperator();
+            }
+
+            return new ListOperator();
+        }
+
+        /// <summary>
         /// Updates all cells.
         /// </summary>
         protected void UpdateAllCells()
@@ -2871,6 +2852,27 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Creates the cell descriptor for the specified cell.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <returns>A cell descriptor.</returns>
+        private CellDescriptor CreateCellDescriptor(CellRef cell)
+        {
+            var pd = this.GetPropertyDefinition(cell);
+            var item = this.Operator.GetItem(this, cell);
+            var d = new CellDescriptor
+            {
+                PropertyDefinition = pd,
+                Item = item,
+                Descriptor = this.Operator.GetPropertyDescriptor(pd),
+                PropertyType = this.Operator.GetPropertyType(pd, cell, item),
+                BindingPath = this.Operator.GetBindingPath(this, cell),
+                BindingSource = this.Operator.GetDataContext(this, cell)
+            };
+            return d;
+        }
+
+        /// <summary>
         /// Inserts the display control for the specified cell.
         /// </summary>
         /// <param name="cellRef">The cell reference.</param>
@@ -3070,26 +3072,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void DeleteColumns()
         {
-            if (this.IsIListIList() && this.ColumnHeadersSource != null)
-            {
-                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (var i = to; i >= from; i--)
-                {
-                    this.ColumnHeadersSource.RemoveAt(i);
-                }
-            }
-
-            if (this.ItemsInColumns)
-            {
-                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (var i = to; i >= from; i--)
-                {
-                    this.DeleteItem(i, false);
-                }
-            }
-
+            this.Operator.DeleteColumns(this);
             this.UpdateGridContent();
 
             var maxColumn = this.Columns > 0 ? this.Columns - 1 : 0;
@@ -3109,13 +3092,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void DeleteRows()
         {
-            var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
-            var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
-            for (var i = to; i >= from; i--)
-            {
-                this.DeleteItem(i, false);
-            }
-
+            this.Operator.DeleteRows(this);
             this.UpdateGridContent();
 
             var maxRow = this.Rows > 0 ? this.Rows - 1 : 0;
@@ -3436,49 +3413,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void InsertColumns()
         {
-            if (this.IsIListIList())
-            {
-                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (var i = from; i <= to; i++)
-                {
-                    this.InsertColumnHeader(i);
-                }
-            }
-
-            if (this.ItemsInColumns)
-            {
-                var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-                for (var i = 0; i < to - from + 1; i++)
-                {
-                    this.InsertItem(from, false);
-                }
-            }
-
+            this.Operator.InsertColumns(this);
             this.UpdateGridContent();
-        }
-
-        /// <summary>
-        /// Insert column header to ColumnHeadersSource.
-        /// </summary>
-        /// <param name="index">The position.</param>
-        private void InsertColumnHeader(int index)
-        {
-            if (this.ColumnHeadersSource == null)
-            {
-                return;
-            }
-
-            var newItem = this.CreateColumnHeader(index);
-            if (index >= 0 && index < this.ColumnHeadersSource.Count)
-            {
-                this.ColumnHeadersSource.Insert(index, newItem);
-            }
-            else
-            {
-                this.ColumnHeadersSource.Add(newItem);
-            }
         }
 
         /// <summary>
@@ -3486,47 +3422,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void InsertRows()
         {
-            var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
-            var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
-            for (var i = 0; i < to - from + 1; i++)
-            {
-                this.InsertItem(from, false);
-            }
-
+            this.Operator.InsertRows(this);
             this.UpdateGridContent();
-        }
-
-        /// <summary>
-        /// Determines whether the item source is <see cref="IList" />&gt;<see cref="IList" />&lt;.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if the item source is <see cref="IList" />&gt;<see cref="IList" />&lt;; otherwise, <c>false</c>.
-        /// </returns>
-        private bool IsIListIList()
-        {
-            var list = this.ItemsSource;
-            if (list == null)
-            {
-                return false;
-            }
-
-            var type = list.GetType();
-            return TypeHelper.IsIListIList(type);
-        }
-
-        /// <summary>
-        /// Sets value to items in cell.
-        /// </summary>
-        /// <param name="cell">The cell reference.</param>
-        /// <param name="value">The value to be set.</param>
-        internal void SetValue(CellRef cell, object value)
-        {
-            if (this.ItemsSource == null)
-            {
-                return;
-            }
-
-            this.Operator.SetValue(this, cell, value);
         }
 
         /// <summary>
@@ -3947,8 +3844,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         private bool ToggleCheck()
         {
-            var checkBox = this.GetCellElement(this.CurrentCell);
-            if (!checkBox.IsEnabled)
+            var element = this.GetCellElement(this.CurrentCell);
+            if (!element.IsEnabled)
             {
                 return false;
             }
@@ -4588,20 +4485,6 @@ namespace PropertyTools.Wpf
                 this.sheetGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
                 this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
             }
-        }
-
-        /// <summary>
-        /// Creates the operator for the current items source.
-        /// </summary>
-        /// <returns>The operator.</returns>
-        private IDataGridOperator CreateOperator()
-        {
-            if (this.IsIListIList())
-            {
-                return new ListListOperator();
-            }
-
-            return new ListOperator();
         }
     }
 }

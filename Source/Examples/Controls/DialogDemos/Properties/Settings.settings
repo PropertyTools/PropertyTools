@@ -14,7 +14,7 @@
     <Setting Name="WindowMenuItems" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
-    <Setting Name="MRUItems" Type="System.Int32" Scope="User">
+    <Setting Name="MostRecentlyUsedItems" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">6</Value>
     </Setting>
     <Setting Name="StartupAction" Type="DialogDemos.StartupAction" Scope="User">

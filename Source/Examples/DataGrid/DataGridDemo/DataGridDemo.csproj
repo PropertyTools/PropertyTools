@@ -57,6 +57,18 @@
     <Compile Include="..\..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Examples\AutoWidthExample.xaml.cs">
+      <DependentUpon>AutoWidthExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\NullableExample.xaml.cs">
+      <DependentUpon>NullableExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\RelativeWidthExample.xaml.cs">
+      <DependentUpon>RelativeWidthExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\AbsoluteWidthExample.xaml.cs">
+      <DependentUpon>AbsoluteWidthExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\WrapItems\BackgroundBindingSourceExample.xaml.cs">
       <DependentUpon>BackgroundBindingSourceExample.xaml</DependentUpon>
     </Compile>
@@ -74,9 +86,6 @@
     </Compile>
     <Compile Include="Examples\WrapItems\MultitypeMatrixExample.xaml.cs">
       <DependentUpon>MultitypeMatrixExample.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Examples\NullableEnumExample.xaml.cs">
-      <DependentUpon>NullableEnumExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ArrayOfObjectExample.xaml.cs">
       <DependentUpon>ArrayOfObjectExample.xaml</DependentUpon>
@@ -173,15 +182,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\AutoWidthExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\NullableExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\RelativeWidthExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\AbsoluteWidthExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\GettingStartedExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\CustomHeaderExample.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Examples\NullableEnumExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -341,25 +362,7 @@
     <Compile Include="Properties\AssemblyDescription.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

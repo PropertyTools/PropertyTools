@@ -35,6 +35,15 @@ namespace PropertyTools.Wpf
         public string BindingPath { get; set; }
 
         /// <summary>
+        /// Gets or sets the binding source.
+        /// </summary>
+        /// <value>
+        /// The binding source.
+        /// </value>
+        /// <remarks>This is used for the DataContext of the cell.</remarks>
+        public object BindingSource { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the binding mode should be one-way.
         /// </summary>
         /// <value>

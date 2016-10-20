@@ -16,6 +16,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Globalization;
+    using System.Linq;
     using System.Windows;
 
     using PropertyTools.DataAnnotations;
@@ -51,6 +52,150 @@ namespace PropertyTools.Wpf
         public GridLength DefaultColumnWidth { get; set; } = new GridLength(1, GridUnitType.Star);
 
         /// <summary>
+        /// Determines whether columns can be deleted.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns>
+        ///   <c>true</c> if columns can be deleted; otherwise <c>false</c>.
+        /// </returns>
+        public virtual bool CanDeleteColumns(DataGrid owner)
+        {
+            var list = owner.ItemsSource;
+            return owner.CanDelete && owner.ItemsInColumns && list != null && !list.IsFixedSize;
+        }
+
+        /// <summary>
+        /// Determines whether rows can be deleted.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns>
+        ///   <c>true</c> if rows can be deleted; otherwise <c>false</c>.
+        /// </returns>
+        public virtual bool CanDeleteRows(DataGrid owner)
+        {
+            var list = owner.ItemsSource;
+            return owner.CanDelete && owner.ItemsInRows && list != null && !list.IsFixedSize;
+        }
+
+        /// <summary>
+        /// Determines whether columns can be inserted.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns>
+        ///   <c>true</c> if columns can be inserted; otherwise <c>false</c>.
+        /// </returns>
+        public virtual bool CanInsertColumns(DataGrid owner)
+        {
+            var list = owner.ItemsSource;
+            return owner.ItemsInColumns && owner.CanInsert && list != null && !list.IsFixedSize;
+        }
+
+        /// <summary>
+        /// Determines whether rows can be inserted.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns>
+        ///   <c>true</c> if rows can be inserted; otherwise <c>false</c>.
+        /// </returns>
+        public virtual bool CanInsertRows(DataGrid owner)
+        {
+            var list = owner.ItemsSource;
+            return owner.ItemsInRows && owner.CanInsert && list != null && !list.IsFixedSize;
+        }
+
+        /// <summary>
+        /// Deletes the item at the specified index.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <param name="index">The index.</param>
+        /// <returns>
+        ///   <c>true</c> if rows can be inserted; otherwise <c>false</c>.
+        /// </returns>
+        public virtual bool DeleteItem(DataGrid owner, int index)
+        {
+            var list = owner.ItemsSource;
+            if (list == null)
+            {
+                return false;
+            }
+
+            if (index < 0 || index >= list.Count)
+            {
+                return false;
+            }
+
+            list.RemoveAt(index);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Deletes the columns.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        public virtual void DeleteColumns(DataGrid owner)
+        {
+            if (!owner.ItemsInColumns)
+            {
+                return;
+            }
+
+            var cell = owner.CurrentCell;
+            var selectionCell = owner.SelectionCell;
+            var from = Math.Min(cell.Column, selectionCell.Column);
+            var to = Math.Max(cell.Column, selectionCell.Column);
+            for (var i = to; i >= @from; i--)
+            {
+                this.DeleteItem(owner, i);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the rows.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        public virtual void DeleteRows(DataGrid owner)
+        {
+            var from = Math.Min(owner.CurrentCell.Row, owner.SelectionCell.Row);
+            var to = Math.Max(owner.CurrentCell.Row, owner.SelectionCell.Row);
+            for (var i = to; i >= from; i--)
+            {
+                this.DeleteItem(owner, i);
+            }
+        }
+
+        /// <summary>
+        /// Inserts the columns.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        public virtual void InsertColumns(DataGrid owner)
+        {
+            if (owner.ItemsInColumns)
+            {
+                var from = Math.Min(owner.CurrentCell.Column, owner.SelectionCell.Column);
+                var to = Math.Max(owner.CurrentCell.Column, owner.SelectionCell.Column);
+                for (var i = 0; i < to - from + 1; i++)
+                {
+                    this.InsertItem(owner, from);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Inserts the rows.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        public virtual void InsertRows(DataGrid owner)
+        {
+            var from = Math.Min(owner.CurrentCell.Row, owner.SelectionCell.Row);
+            var to = Math.Max(owner.CurrentCell.Row, owner.SelectionCell.Row);
+            for (var i = 0; i < to - from + 1; i++)
+            {
+                this.InsertItem(owner, from);
+            }
+        }
+
+        /// <summary>
         /// Gets the value in the specified cell.
         /// </summary>
         /// <param name="owner">The owner.</param>
@@ -63,7 +208,7 @@ namespace PropertyTools.Wpf
                 return null;
             }
 
-            var item = this.GetItem(owner,  cell);
+            var item = this.GetItem(owner, cell);
             if (item != null)
             {
                 var pd = owner.GetPropertyDefinition(cell);
@@ -165,11 +310,37 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Creates a new instance of the specified type.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <param name="itemType">The type.</param>
+        /// <returns>
+        /// The new instance.
+        /// </returns>
+        public virtual object CreateItem(DataGrid owner, Type itemType)
+        {
+            if (owner.CreateItem != null)
+            {
+                return owner.CreateItem();
+            }
+
+            // TODO: the item type may not have a parameterless constructor!
+            try
+            {
+                return Activator.CreateInstance(itemType);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Gets the property descriptor.
         /// </summary>
         /// <param name="pd">The property definition.</param>
         /// <returns>The property descriptor.</returns>
-        protected virtual PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd)
+        public virtual PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd)
         {
             PropertyDescriptor descriptor;
             return this.descriptors.TryGetValue(pd, out descriptor) ? descriptor : null;
@@ -243,6 +414,23 @@ namespace PropertyTools.Wpf
                 {
                     convertedValue = value;
                     return true;
+                }
+
+                if (value == null)
+                {
+                    // reference types
+                    if (!targetType.IsValueType)
+                    {
+                        convertedValue = null;
+                        return true;
+                    }
+
+                    // nullable types
+                    if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        convertedValue = null;
+                        return true;
+                    }
                 }
 
                 if (targetType == typeof(string))
@@ -342,7 +530,7 @@ namespace PropertyTools.Wpf
                 }
                 else
                 {
-                    owner.SetValue(cell, convertedValue);
+                    this.SetValue(owner, cell, convertedValue);
 
                     if (!(owner.ItemsSource is INotifyCollectionChanged))
                     {

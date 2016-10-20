@@ -10,6 +10,7 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.ComponentModel;
 
     /// <summary>
     /// Specifies DataGrid functionality dependent on the type of items source.
@@ -19,13 +20,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Auto-generates the columns.
         /// </summary>
-        /// <param name="owner">The owner.</param>
+        /// <param name="owner">The data grid.</param>
         void AutoGenerateColumns(DataGrid owner);
 
         /// <summary>
         /// Updates the property definitions.
         /// </summary>
-        /// <param name="owner">The owner.</param>
+        /// <param name="owner">The data grid.</param>
         void UpdatePropertyDefinitions(DataGrid owner);
 
         /// <summary>
@@ -40,9 +41,16 @@ namespace PropertyTools.Wpf
         Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue);
 
         /// <summary>
+        /// Gets the property descriptor.
+        /// </summary>
+        /// <param name="pd">The property definition.</param>
+        /// <returns>The property descriptor.</returns>
+        PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd);
+
+        /// <summary>
         /// Gets the binding path for the specified cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
+        /// <param name="owner">The data grid.</param>
         /// <param name="cell">The cell.</param>
         /// <returns>
         /// The binding path
@@ -52,15 +60,15 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the value in the specified cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
+        /// <param name="owner">The data grid.</param>
         /// <param name="cell">The cell.</param>
         /// <returns>The value</returns>
         object GetCellValue(DataGrid owner, CellRef cell);
 
         /// <summary>
-        /// Inserts an item to <see cref="DataGrid" /> at the specified index.
+        /// Inserts an item at the specified index.
         /// </summary>
-        /// <param name="owner">The owner.</param>
+        /// <param name="owner">The data grid.</param>
         /// <param name="index">The index.</param>
         /// <returns>
         ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
@@ -70,7 +78,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the item in the specified cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
+        /// <param name="owner">The data grid.</param>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
         /// The <see cref="object" />.
@@ -80,7 +88,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets value of the specified cell to the specified value.
         /// </summary>
-        /// <param name="owner">The owner.</param>
+        /// <param name="owner">The data grid.</param>
         /// <param name="cell">The cell to change.</param>
         /// <param name="value">The value.</param>
         void SetValue(DataGrid owner, CellRef cell, object value);
@@ -88,7 +96,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Tries to set cell value in the specified cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
+        /// <param name="owner">The data grid.</param>
         /// <param name="cell">The cell.</param>
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the cell value was set.</returns>
@@ -97,9 +105,69 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the data context for the specified cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
+        /// <param name="owner">The data grid.</param>
         /// <param name="cell">The cell.</param>
         /// <returns>The context object.</returns>
         object GetDataContext(DataGrid owner, CellRef cell);
+
+        /// <summary>
+        /// Determines whether columns can be deleted.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns><c>true</c> if columns can be deleted; otherwise <c>false</c>.</returns>
+        bool CanDeleteColumns(DataGrid owner);
+
+        /// <summary>
+        /// Determines whether rows can be deleted.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns><c>true</c> if rows can be deleted; otherwise <c>false</c>.</returns>
+        bool CanDeleteRows(DataGrid owner);
+
+        /// <summary>
+        /// Determines whether columns can be inserted.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns><c>true</c> if columns can be inserted; otherwise <c>false</c>.</returns>
+        bool CanInsertColumns(DataGrid owner);
+
+        /// <summary>
+        /// Determines whether rows can be inserted.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns><c>true</c> if rows can be inserted; otherwise <c>false</c>.</returns>
+        bool CanInsertRows(DataGrid owner);
+
+        /// <summary>
+        /// Deletes the item at the specified index.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <param name="index">The index.</param>
+        /// <returns><c>true</c> if rows can be inserted; otherwise <c>false</c>.</returns>
+        bool DeleteItem(DataGrid owner, int index);
+
+        /// <summary>
+        /// Deletes the columns.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        void DeleteColumns(DataGrid owner);
+
+        /// <summary>
+        /// Deletes the rows.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        void DeleteRows(DataGrid owner);
+
+        /// <summary>
+        /// Inserts the columns.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        void InsertColumns(DataGrid owner);
+
+        /// <summary>
+        /// Inserts the rows.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        void InsertRows(DataGrid owner);
     }
 }

@@ -266,9 +266,7 @@ namespace PropertyTools.Wpf
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
                 Width = 12,
-                Height = 12,
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center
+                Height = 12
             };
 
             // Bind to the data context, since the binding may contain a custom converter
@@ -282,7 +280,11 @@ namespace PropertyTools.Wpf
             c.SetBinding(Shape.FillProperty, fillBinding);
 
             // Create a grid for the data context
-            var grid = new Grid();
+            var grid = new Grid
+                           {
+                               VerticalAlignment = VerticalAlignment.Center,
+                               HorizontalAlignment = HorizontalAlignment.Center
+                           };
             grid.Children.Add(c);
 
             // Create a container to support background binding

@@ -106,15 +106,6 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(true));
 
         /// <summary>
-        /// Identifies the <see cref="AutoSizeColumns"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty AutoSizeColumnsProperty = DependencyProperty.Register(
-                "AutoSizeColumns",
-                typeof(bool),
-                typeof(DataGrid),
-                new UIPropertyMetadata(false));
-
-        /// <summary>
         /// Identifies the <see cref="CanDelete"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanDeleteProperty = DependencyProperty.Register(
@@ -757,23 +748,6 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(AutoInsertProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether auto size columns is enabled.
-        /// </summary>
-        /// <value><c>true</c> if [auto size columns]; otherwise, <c>false</c> .</value>
-        public bool AutoSizeColumns
-        {
-            get
-            {
-                return (bool)this.GetValue(AutoSizeColumnsProperty);
-            }
-
-            set
-            {
-                this.SetValue(AutoSizeColumnsProperty, value);
             }
         }
 
@@ -4119,7 +4093,7 @@ namespace PropertyTools.Wpf
             for (var i = 0; i < this.Columns; i++)
             {
                 var columnWidth = this.GetColumnWidth(i);
-                if (columnWidth == GridLength.Auto || this.AutoSizeColumns)
+                if (columnWidth == GridLength.Auto)
                 {
                     usedWidth += this.AutoSizeColumn(i);
                 }
@@ -4139,7 +4113,7 @@ namespace PropertyTools.Wpf
             for (var i = 0; i < this.Columns; i++)
             {
                 var columnWidth = this.GetColumnWidth(i);
-                if (columnWidth.IsStar && !this.AutoSizeColumns)
+                if (columnWidth.IsStar)
                 {
                     this.SetColumnWidth(i, new GridLength(widthPerStar * columnWidth.Value));
                 }

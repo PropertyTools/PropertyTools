@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+### Removed
+- DataGrid.AutoSizeColumns
+
+### Fixed
+- DataGrid auto column width
+
 ## [2.0.1]
 ### Changed
 - DataGrid: IDataGridControlFactory interface

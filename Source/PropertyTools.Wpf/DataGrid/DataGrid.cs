@@ -1405,6 +1405,19 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Autosizes all rows.
+        /// </summary>
+        private void AutoSizeAllRows()
+        {
+            this.sheetGrid.UpdateLayout();
+            this.rowGrid.UpdateLayout();
+            for (int i = 0; i < this.Rows; i++)
+            {
+                this.AutoSizeRow(i);
+            }
+        }
+
+        /// <summary>
         /// Auto-sizes the specified column.
         /// </summary>
         /// <param name="column">The column.</param>
@@ -3584,6 +3597,12 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         private void RowSplitterDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                this.AutoSizeAllRows();
+            }
+
+
             var row = Grid.GetRow((GridSplitter)sender);
             this.AutoSizeRow(row);
         }

@@ -1885,12 +1885,7 @@ namespace PropertyTools.Wpf
             this.rowGrid.MouseLeftButtonDown += this.RowGridMouseLeftButtonDown;
             this.rowGrid.MouseMove += this.RowGridMouseMove;
             this.rowGrid.MouseLeftButtonUp += this.RowGridMouseLeftButtonUp;
-            this.rowGrid.Loaded += this.RowGridLoaded;
-
-            this.columnGrid.Loaded += this.ColumnGridLoaded;
-            this.sheetScrollViewer.SizeChanged += this.RowGridSizeChanged;
-
-            this.sheetScrollViewer.SizeChanged += this.ColumnGridSizeChanged;
+            this.sheetScrollViewer.SizeChanged += (s, e) => this.UpdateGridSize();
             this.sheetGrid.MouseLeftButtonDown += this.SheetGridMouseLeftButtonDown;
 
             this.autoFiller = new AutoFiller(this.GetCellValue, this.TrySetCellValue);
@@ -2909,16 +2904,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles column grid loaded events.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void ColumnGridLoaded(object sender, RoutedEventArgs e)
-        {
-            this.UpdateColumnWidths();
-        }
-
-        /// <summary>
         /// Handles mouse left button down events on the column grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -2968,16 +2953,6 @@ namespace PropertyTools.Wpf
 
                 // e.Handled = true;
             }
-        }
-
-        /// <summary>
-        /// Handles size changed events on the column grid.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void ColumnGridSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.UpdateColumnWidths();
         }
 
         /// <summary>
@@ -3454,16 +3429,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles row grid loaded events.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void RowGridLoaded(object sender, RoutedEventArgs e)
-        {
-            this.UpdateRowHeights();
-        }
-
-        /// <summary>
         /// Handles mouse left button down events on the row grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -3514,16 +3479,6 @@ namespace PropertyTools.Wpf
                 this.SelectionCell = new CellRef(row, this.Columns - 1);
                 e.Handled = true;
             }
-        }
-
-        /// <summary>
-        /// Handles size changed events on the row grid.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void RowGridSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.UpdateRowHeights();
         }
 
         /// <summary>
@@ -4137,9 +4092,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Updates column widths.
+        /// Updates the column widths and row heights.
         /// </summary>
-        private void UpdateColumnWidths()
+        private void UpdateGridSize()
         {
             if (!this.IsLoaded)
             {
@@ -4149,6 +4104,15 @@ namespace PropertyTools.Wpf
             // TODO: this call may cause infinite recursion
             this.sheetGrid.UpdateLayout();
             this.columnGrid.UpdateLayout();
+            this.rowGrid.UpdateLayout();
+
+            for (var i = 0; i < this.Rows; i++)
+            {
+                if (this.DefaultRowHeight == GridLength.Auto || this.GetRowHeight(i) == GridLength.Auto)
+                {
+                    this.AutoSizeRow(i);
+                }
+            }
 
             var starsToDistribute = 0d;
             var usedWidth = 0d;
@@ -4169,7 +4133,9 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            var widthPerStar = Math.Max((this.sheetScrollViewer.ActualWidth - usedWidth) / starsToDistribute, 0);
+            var availableWidth = this.sheetScrollViewer.ViewportWidth;
+
+            var widthPerStar = Math.Max((availableWidth - usedWidth) / starsToDistribute, 0);
             for (var i = 0; i < this.Columns; i++)
             {
                 var columnWidth = this.GetColumnWidth(i);
@@ -4343,8 +4309,7 @@ namespace PropertyTools.Wpf
             this.SubscribeToNotifications();
 
             // Update column width when all the controls are loaded.
-            this.Dispatcher.BeginInvoke(new Action(this.UpdateColumnWidths), DispatcherPriority.Loaded);
-            this.Dispatcher.BeginInvoke(new Action(this.UpdateRowHeights), DispatcherPriority.Loaded);
+            this.Dispatcher.BeginInvoke(new Action(this.UpdateGridSize), DispatcherPriority.Loaded);
         }
 
         /// <summary>
@@ -4439,31 +4404,6 @@ namespace PropertyTools.Wpf
                     this.rowGrid.Children.Add(splitter);
                 }
             }
-        }
-
-        /// <summary>
-        /// Updates the row heights.
-        /// </summary>
-        private void UpdateRowHeights()
-        {
-            if (!this.IsLoaded)
-            {
-                return;
-            }
-
-            // TODO: this call may cause infinite recursion
-            this.sheetGrid.UpdateLayout();
-            this.rowGrid.UpdateLayout();
-
-            for (var i = 0; i < this.Rows; i++)
-            {
-                if (this.DefaultRowHeight == GridLength.Auto || this.GetRowHeight(i) == GridLength.Auto)
-                {
-                    this.AutoSizeRow(i);
-                }
-            }
-
-            this.sheetGrid.UpdateLayout();
         }
 
         /// <summary>

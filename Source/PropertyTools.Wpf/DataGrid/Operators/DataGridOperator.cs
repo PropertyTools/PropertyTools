@@ -12,9 +12,7 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Globalization;
     using System.Windows;
 
@@ -495,9 +493,8 @@ namespace PropertyTools.Wpf
                 convertedValue = null;
                 return false;
             }
-            catch (Exception e)
+            catch
             {
-                Trace.WriteLine(e);
                 convertedValue = null;
                 return false;
             }

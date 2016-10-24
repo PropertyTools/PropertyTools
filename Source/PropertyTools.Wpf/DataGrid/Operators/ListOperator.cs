@@ -151,20 +151,6 @@ namespace PropertyTools.Wpf
             var itemType = TypeHelper.GetItemType(list);
 
             object newItem = null;
-            if (itemType == typeof(string))
-            {
-                newItem = string.Empty;
-            }
-
-            if (itemType == typeof(double))
-            {
-                newItem = 0.0;
-            }
-
-            if (itemType == typeof(int))
-            {
-                newItem = 0;
-            }
 
             try
             {

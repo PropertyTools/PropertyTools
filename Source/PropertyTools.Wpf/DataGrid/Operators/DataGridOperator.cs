@@ -313,8 +313,23 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The new instance.
         /// </returns>
-        public virtual object CreateItem(DataGrid owner, Type itemType)
+        protected virtual object CreateItem(DataGrid owner, Type itemType)
         {
+            if (itemType == typeof(string))
+            {
+                return string.Empty;
+            }
+
+            if (itemType == typeof(double))
+            {
+                return 0.0;
+            }
+
+            if (itemType == typeof(int))
+            {
+                return 0;
+            }
+
             if (owner.CreateItem != null)
             {
                 return owner.CreateItem();

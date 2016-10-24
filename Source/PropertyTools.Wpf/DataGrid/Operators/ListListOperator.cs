@@ -29,7 +29,7 @@ namespace PropertyTools.Wpf
             return true;
         }
 
-        public override bool DeleteItem(DataGrid owner, int index)
+        protected override bool DeleteItem(DataGrid owner, int index)
         {
             var list = owner.ItemsSource;
             if (list == null)
@@ -57,31 +57,33 @@ namespace PropertyTools.Wpf
             return true;
         }
 
-        public override void DeleteColumns(DataGrid owner)
+        public override void DeleteColumns(DataGrid owner, int index, int n)
         {
             if (owner.ColumnHeadersSource != null)
             {
-                var from = Math.Min(owner.CurrentCell.Column, owner.SelectionCell.Column);
-                var to = Math.Max(owner.CurrentCell.Column, owner.SelectionCell.Column);
-                for (var i = to; i >= from; i--)
+                for (var i = index + n - 1; i >= index; i--)
                 {
                     owner.ColumnHeadersSource.RemoveAt(i);
                 }
             }
 
-            base.DeleteColumns(owner);
+            base.DeleteColumns(owner, index, n);
         }
 
-        public override void InsertColumns(DataGrid owner)
+        /// <summary>
+        /// Inserts the columns.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <param name="index">The index.</param>
+        /// <param name="n">The number of columns to insert.</param>
+        public override void InsertColumns(DataGrid owner, int index, int n)
         {
-            var from = Math.Min(owner.CurrentCell.Column, owner.SelectionCell.Column);
-            var to = Math.Max(owner.CurrentCell.Column, owner.SelectionCell.Column);
-            for (var i = from; i <= to; i++)
+            for (var i = 0; i < n; i++)
             {
-                this.InsertColumnHeader(owner, i);
+                this.InsertColumnHeader(owner, index + i);
             }
 
-            base.InsertColumns(owner);
+            base.InsertColumns(owner, index, n);
         }
 
         /// <summary>

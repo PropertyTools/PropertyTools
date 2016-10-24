@@ -1505,25 +1505,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Deletes an item.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <param name="updateGrid">The update grid.</param>
-        /// <returns>
-        /// The delete item.
-        /// </returns>
-        public void DeleteItem(int index, bool updateGrid)
-        {
-            if (this.Operator.DeleteItem(this, index))
-            {
-                if (updateGrid)
-                {
-                    this.UpdateGridContent();
-                }
-            }
-        }
-
-        /// <summary>
         /// Ends text editing.
         /// </summary>
         /// <param name="commit">The commit.</param>
@@ -3072,7 +3053,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void DeleteColumns()
         {
-            this.Operator.DeleteColumns(this);
+            var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+            var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+            this.Operator.DeleteColumns(this, from, to - from + 1);
             this.UpdateGridContent();
 
             var maxColumn = this.Columns > 0 ? this.Columns - 1 : 0;
@@ -3092,7 +3075,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void DeleteRows()
         {
-            this.Operator.DeleteRows(this);
+            var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
+            var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
+            this.Operator.DeleteRows(this, from, to - from + 1);
             this.UpdateGridContent();
 
             var maxRow = this.Rows > 0 ? this.Rows - 1 : 0;
@@ -3413,7 +3398,10 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void InsertColumns()
         {
-            this.Operator.InsertColumns(this);
+            var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+            var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+
+            this.Operator.InsertColumns(this, from, to - from + 1);
             this.UpdateGridContent();
         }
 
@@ -3422,7 +3410,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void InsertRows()
         {
-            this.Operator.InsertRows(this);
+            var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
+            var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
+            this.Operator.InsertRows(this, from, to - from + 1);
             this.UpdateGridContent();
         }
 

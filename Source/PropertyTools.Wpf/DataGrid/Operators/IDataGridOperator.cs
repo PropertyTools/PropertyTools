@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Specifies DataGrid functionality dependent on the type of items source.
+//   Specifies DataGrid functionality that depends on the type of items source.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
 
     /// <summary>
-    /// Specifies DataGrid functionality dependent on the type of items source.
+    /// Specifies DataGrid functionality that depends on the type of items source.
     /// </summary>
     public interface IDataGridOperator
     {
@@ -139,35 +139,35 @@ namespace PropertyTools.Wpf
         bool CanInsertRows(DataGrid owner);
 
         /// <summary>
-        /// Deletes the item at the specified index.
+        /// Deletes columns at the specified index.
         /// </summary>
         /// <param name="owner">The data grid.</param>
         /// <param name="index">The index.</param>
-        /// <returns><c>true</c> if rows can be inserted; otherwise <c>false</c>.</returns>
-        bool DeleteItem(DataGrid owner, int index);
+        /// <param name="n">The number of columns to delete.</param>
+        void DeleteColumns(DataGrid owner, int index, int n);
 
         /// <summary>
-        /// Deletes the columns.
+        /// Deletes rows at the specified index.
         /// </summary>
         /// <param name="owner">The data grid.</param>
-        void DeleteColumns(DataGrid owner);
+        /// <param name="index">The index.</param>
+        /// <param name="n">The number of rows to delete.</param>
+        void DeleteRows(DataGrid owner, int index, int n);
 
         /// <summary>
-        /// Deletes the rows.
+        /// Inserts columns at the specified index.
         /// </summary>
         /// <param name="owner">The data grid.</param>
-        void DeleteRows(DataGrid owner);
+        /// <param name="index">The index.</param>
+        /// <param name="n">The number of columns to insert.</param>
+        void InsertColumns(DataGrid owner, int index, int n);
 
         /// <summary>
-        /// Inserts the columns.
+        /// Inserts rows at the specified index.
         /// </summary>
         /// <param name="owner">The data grid.</param>
-        void InsertColumns(DataGrid owner);
-
-        /// <summary>
-        /// Inserts the rows.
-        /// </summary>
-        /// <param name="owner">The data grid.</param>
-        void InsertRows(DataGrid owner);
+        /// <param name="index">The index.</param>
+        /// <param name="n">The number of rows to insert.</param>
+        void InsertRows(DataGrid owner, int index, int n);
     }
 }

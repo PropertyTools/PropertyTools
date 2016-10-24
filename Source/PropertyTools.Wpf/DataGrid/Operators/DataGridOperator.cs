@@ -16,7 +16,6 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Globalization;
-    using System.Linq;
     using System.Windows;
 
     using PropertyTools.DataAnnotations;
@@ -111,7 +110,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         ///   <c>true</c> if rows can be inserted; otherwise <c>false</c>.
         /// </returns>
-        public virtual bool DeleteItem(DataGrid owner, int index)
+        protected virtual bool DeleteItem(DataGrid owner, int index)
         {
             var list = owner.ItemsSource;
             if (list == null)
@@ -133,18 +132,16 @@ namespace PropertyTools.Wpf
         /// Deletes the columns.
         /// </summary>
         /// <param name="owner">The data grid.</param>
-        public virtual void DeleteColumns(DataGrid owner)
+        /// <param name="index">The index.</param>
+        /// <param name="n">The number of columns to delete.</param>
+        public virtual void DeleteColumns(DataGrid owner, int index, int n)
         {
             if (!owner.ItemsInColumns)
             {
                 return;
             }
 
-            var cell = owner.CurrentCell;
-            var selectionCell = owner.SelectionCell;
-            var from = Math.Min(cell.Column, selectionCell.Column);
-            var to = Math.Max(cell.Column, selectionCell.Column);
-            for (var i = to; i >= @from; i--)
+            for (var i = index + n - 1; i >= index; i--)
             {
                 this.DeleteItem(owner, i);
             }
@@ -154,44 +151,43 @@ namespace PropertyTools.Wpf
         /// Deletes the rows.
         /// </summary>
         /// <param name="owner">The data grid.</param>
-        public virtual void DeleteRows(DataGrid owner)
+        /// <param name="index">The index.</param>
+        /// <param name="n">The number of rows to delete.</param>
+        public virtual void DeleteRows(DataGrid owner, int index, int n)
         {
-            var from = Math.Min(owner.CurrentCell.Row, owner.SelectionCell.Row);
-            var to = Math.Max(owner.CurrentCell.Row, owner.SelectionCell.Row);
-            for (var i = to; i >= from; i--)
+            for (var i = index + n - 1; i >= index; i--)
             {
                 this.DeleteItem(owner, i);
             }
         }
 
         /// <summary>
-        /// Inserts the columns.
+        /// Inserts columns at the specified index.
         /// </summary>
         /// <param name="owner">The data grid.</param>
-        public virtual void InsertColumns(DataGrid owner)
+        /// <param name="index">The index.</param>
+        /// <param name="n">The number of columns to insert.</param>
+        public virtual void InsertColumns(DataGrid owner, int index, int n)
         {
-            if (owner.ItemsInColumns)
+            if (!owner.ItemsInColumns) return;
+
+            for (var i = 0; i < n; i++)
             {
-                var from = Math.Min(owner.CurrentCell.Column, owner.SelectionCell.Column);
-                var to = Math.Max(owner.CurrentCell.Column, owner.SelectionCell.Column);
-                for (var i = 0; i < to - from + 1; i++)
-                {
-                    this.InsertItem(owner, from);
-                }
+                this.InsertItem(owner, index);
             }
         }
 
         /// <summary>
-        /// Inserts the rows.
+        /// Inserts rows at the specified index.
         /// </summary>
         /// <param name="owner">The data grid.</param>
-        public virtual void InsertRows(DataGrid owner)
+        /// <param name="index">The index.</param>
+        /// <param name="n">The number of rows to insert.</param>
+        public virtual void InsertRows(DataGrid owner, int index, int n)
         {
-            var from = Math.Min(owner.CurrentCell.Row, owner.SelectionCell.Row);
-            var to = Math.Max(owner.CurrentCell.Row, owner.SelectionCell.Row);
-            for (var i = 0; i < to - from + 1; i++)
+            for (var i = 0; i < n; i++)
             {
-                this.InsertItem(owner, from);
+                this.InsertItem(owner, index);
             }
         }
 

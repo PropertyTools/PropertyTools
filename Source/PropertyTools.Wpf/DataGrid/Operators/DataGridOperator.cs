@@ -512,47 +512,42 @@ namespace PropertyTools.Wpf
         /// <returns><c>true</c> if the cell value was set.</returns>
         public virtual bool TrySetCellValue(DataGrid owner, CellRef cell, object value)
         {
-            if (owner.ItemsSource != null)
+            if (owner.ItemsSource == null)
             {
-                var current = this.GetItem(owner, cell);
-
-                var pd = owner.GetPropertyDefinition(cell);
-                if (pd == null)
-                {
-                    return false;
-                }
-
-                if (current == null || pd.IsReadOnly)
-                {
-                    return false;
-                }
-
-                object convertedValue;
-                var targetType = this.GetPropertyType(pd, cell, current);
-                if (!TryConvert(value, targetType, out convertedValue))
-                {
-                    return false;
-                }
-
-                var descriptor = this.GetPropertyDescriptor(pd);
-                if (descriptor != null)
-                {
-                    descriptor.SetValue(current, convertedValue);
-                }
-                else
-                {
-                    this.SetValue(owner, cell, convertedValue);
-
-                    if (!(owner.ItemsSource is INotifyCollectionChanged))
-                    {
-                        owner.UpdateCellContent(cell);
-                    }
-                }
-
-                return true;
+                return false;
             }
 
-            return false;
+            var current = this.GetItem(owner, cell);
+
+            var pd = owner.GetPropertyDefinition(cell);
+            if (pd == null)
+            {
+                return false;
+            }
+
+            if (current == null || pd.IsReadOnly)
+            {
+                return false;
+            }
+
+            object convertedValue;
+            var targetType = this.GetPropertyType(pd, cell, current);
+            if (!TryConvert(value, targetType, out convertedValue))
+            {
+                return false;
+            }
+
+            var descriptor = this.GetPropertyDescriptor(pd);
+            if (descriptor != null)
+            {
+                descriptor.SetValue(current, convertedValue);
+            }
+            else
+            {
+                this.SetValue(owner, cell, convertedValue);
+            }
+
+            return true;
         }
 
         /// <summary>

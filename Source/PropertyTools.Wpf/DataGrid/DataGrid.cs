@@ -1394,7 +1394,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Autosizes all columns.
         /// </summary>
-        public void AutoSizeAllColumns()
+        private void AutoSizeAllColumns()
         {
             this.sheetGrid.UpdateLayout();
             this.columnGrid.UpdateLayout();
@@ -1405,11 +1405,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Auto-size the specified column.
+        /// Auto-sizes the specified column.
         /// </summary>
         /// <param name="column">The column.</param>
         /// <returns>The calculated width of the column.</returns>
-        public double AutoSizeColumn(int column)
+        private double AutoSizeColumn(int column)
         {
             if (column < 0 || column >= this.Columns)
             {
@@ -1437,10 +1437,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Auto-size the specified row.
+        /// Auto-sizes the specified row.
         /// </summary>
         /// <param name="row">The row.</param>
-        public void AutoSizeRow(int row)
+        private void AutoSizeRow(int row)
         {
             // Initialize with the height of the header element
             var headerElement = this.GetRowElement(row);
@@ -1460,7 +1460,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Copies items to the clipboard.
+        /// Copies the selected cells to the clipboard, tab-separated.
         /// </summary>
         public void Copy()
         {
@@ -1477,7 +1477,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Copies the selected cells.
+        /// Copies the selected cells to the clipboard.
         /// </summary>
         /// <param name="separator">The separator.</param>
         public void Copy(string separator)
@@ -1508,7 +1508,7 @@ namespace PropertyTools.Wpf
         /// Ends text editing.
         /// </summary>
         /// <param name="commit">The commit.</param>
-        public void EndTextEdit(bool commit = true)
+        private void EndTextEdit(bool commit = true)
         {
             var textEditor = this.currentEditControl as TextBox;
             if (commit && textEditor != null)
@@ -1531,7 +1531,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The cell reference.
         /// </returns>
-        public CellRef GetCell(Point position, bool isInAutoFillMode = false, CellRef relativeTo = default(CellRef))
+        private CellRef GetCell(Point position, bool isInAutoFillMode = false, CellRef relativeTo = default(CellRef))
         {
             var w = 0d;
             var column = -1;
@@ -1609,7 +1609,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The element, or <c>null</c> if the cell was not found.
         /// </returns>
-        public FrameworkElement GetCellElement(CellRef cellRef)
+        private FrameworkElement GetCellElement(CellRef cellRef)
         {
             FrameworkElement e;
             if (this.cellMap.TryGetValue(cellRef.GetHashCode(), out e))
@@ -1634,7 +1634,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The cell string.
         /// </returns>
-        public string GetCellString(CellRef cell)
+        private string GetCellString(CellRef cell)
         {
             var value = this.GetCellValue(cell);
             if (value == null)
@@ -1653,7 +1653,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The cell value.
         /// </returns>
-        public object GetCellValue(CellRef cell)
+        private object GetCellValue(CellRef cell)
         {
             return this.Operator.GetCellValue(this, cell);
         }
@@ -1665,7 +1665,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The upper-left position of the cell.
         /// </returns>
-        public Point GetPosition(CellRef cellRef)
+        private Point GetPosition(CellRef cellRef)
         {
             var x = 0d;
             var y = 0d;
@@ -1682,12 +1682,13 @@ namespace PropertyTools.Wpf
             return new Point(x, y);
         }
 
+#if FEATURE_VIRTUALIZATION
         /// <summary>
         /// Gets the visible cells.
         /// </summary>
         /// <param name="topLeftCell">The top left cell.</param>
         /// <param name="bottomRightCell">The bottom right cell.</param>
-        public void GetVisibleCells(out CellRef topLeftCell, out CellRef bottomRightCell)
+        private void GetVisibleCells(out CellRef topLeftCell, out CellRef bottomRightCell)
         {
             var left = this.sheetScrollViewer.HorizontalOffset;
             var right = left + this.sheetScrollViewer.ActualWidth;
@@ -1697,11 +1698,12 @@ namespace PropertyTools.Wpf
             topLeftCell = this.GetCell(new Point(left, top));
             bottomRightCell = this.GetCell(new Point(right, bottom));
         }
+#endif
 
         /// <summary>
         /// Hides the current editor control.
         /// </summary>
-        public void HideEditControl()
+        private void HideEditControl()
         {
             if (this.currentEditControl != null && this.currentEditControl.Visibility == Visibility.Visible)
             {
@@ -1726,7 +1728,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// <c>true</c> if an item was inserted, <c>false</c> otherwise.
         /// </returns>
-        public bool InsertItem(int index, bool updateGrid = true)
+        private bool InsertItem(int index, bool updateGrid = true)
         {
             var actualIndex = this.Operator.InsertItem(this, index);
             if (actualIndex != -1)
@@ -1750,7 +1752,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="deltaRows">The change in rows.</param>
         /// <param name="deltaColumns">The change in columns.</param>
-        public void ChangeCurrentCell(int deltaRows, int deltaColumns)
+        private void ChangeCurrentCell(int deltaRows, int deltaColumns)
         {
             var row = this.CurrentCell.Row;
             var column = this.CurrentCell.Column;
@@ -1968,7 +1970,7 @@ namespace PropertyTools.Wpf
         {
             if (managerType == typeof(CollectionChangedEventManager) && sender == this.subscribedCollection)
             {
-                this.OnItemsCollectionChanged(sender, e as NotifyCollectionChangedEventArgs);
+                this.OnItemsCollectionChanged(e as NotifyCollectionChangedEventArgs);
 
                 return true;
             }
@@ -1980,7 +1982,7 @@ namespace PropertyTools.Wpf
         /// Scroll the specified cell into view.
         /// </summary>
         /// <param name="cellRef">The cell reference.</param>
-        public void ScrollIntoView(CellRef cellRef)
+        private void ScrollIntoView(CellRef cellRef)
         {
             var pos0 = this.GetPosition(cellRef);
             var pos1 = this.GetPosition(new CellRef(cellRef.Row + 1, cellRef.Column + 1));
@@ -2018,7 +2020,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// <c>true</c> if the text editor was shown, <c>false</c> otherwise.
         /// </returns>
-        public bool ShowTextBoxEditControl()
+        private bool ShowTextBoxEditControl()
         {
             var textEditor = this.currentEditControl as TextBox;
             if (textEditor != null)
@@ -2039,7 +2041,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// <c>true</c> if the combo box was shown, <c>false</c> otherwise.
         /// </returns>
-        public bool OpenComboBoxControl()
+        private bool OpenComboBoxControl()
         {
             var comboBox = this.currentEditControl as ComboBox;
             if (comboBox != null)
@@ -2059,7 +2061,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The comma separated values string.
         /// </returns>
-        public string ToCsv(string separator = ";")
+        private string ToCsv(string separator = ";")
         {
             var sb = new StringBuilder();
             for (var j = 0; j < this.Columns; j++)
@@ -2087,9 +2089,15 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// True if the value was set.
         /// </returns>
-        public virtual bool TrySetCellValue(CellRef cell, object value)
+        private bool TrySetCellValue(CellRef cell, object value)
         {
-            return this.Operator.TrySetCellValue(this, cell, value);
+            var cellWasSet = this.Operator.TrySetCellValue(this, cell, value);
+            if (cellWasSet && !(this.ItemsSource is INotifyCollectionChanged))
+            {
+                this.UpdateCellContent(cell);
+            }
+
+            return cellWasSet;
         }
 
         /// <summary>
@@ -2099,7 +2107,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The display control.
         /// </returns>
-        protected virtual FrameworkElement CreateDisplayControl(CellRef cell)
+        private FrameworkElement CreateDisplayControl(CellRef cell)
         {
             var d = this.CreateCellDescriptor(cell);
             var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
@@ -2126,7 +2134,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The edit control.
         /// </returns>
-        protected virtual FrameworkElement CreateEditControl(CellRef cell)
+        private FrameworkElement CreateEditControl(CellRef cell)
         {
             var d = this.CreateCellDescriptor(cell);
             var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
@@ -2149,7 +2157,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// True if an edit control is shown.
         /// </returns>
-        public bool ShowEditControl()
+        private bool ShowEditControl()
         {
             this.HideEditControl();
             var cell = this.CurrentCell;
@@ -2424,7 +2432,7 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            bool isInAutoFillMode = this.autoFillSelection.Visibility == Visibility.Visible;
+            var isInAutoFillMode = this.autoFillSelection.Visibility == Visibility.Visible;
 
             var pos = e.GetPosition(this.sheetGrid);
             var cellRef = this.GetCell(pos, isInAutoFillMode, this.CurrentCell);
@@ -2550,7 +2558,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Updates all cells.
         /// </summary>
-        protected void UpdateAllCells()
+        private void UpdateAllCells()
         {
             foreach (var element in this.cellMap.Values)
             {
@@ -2563,7 +2571,7 @@ namespace PropertyTools.Wpf
         /// Updates the content of the specified cell.
         /// </summary>
         /// <param name="cellRef">The cell reference.</param>
-        internal void UpdateCellContent(CellRef cellRef)
+        private void UpdateCellContent(CellRef cellRef)
         {
             var c = this.GetCellElement(cellRef);
             if (c != null)
@@ -3030,6 +3038,11 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         private void ColumnSplitterDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                this.AutoSizeAllColumns();
+            }
+
             var column = Grid.GetColumn((GridSplitter)sender);
             this.AutoSizeColumn(column);
         }
@@ -3415,10 +3428,14 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Handles changes to the items collection.
         /// </summary>
-        /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnItemsCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
+            if (e == null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             // TODO: update only changed rows/columns
             this.Dispatcher.Invoke(new Action(this.UpdateGridContent));
         }

@@ -1,9 +1,9 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DatatableExample.xaml.cs" company="PropertyTools">
+// <copyright file="DataTableExample.xaml.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for DatatableExample.xaml
+//   Interaction logic for DataTableExample.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,14 +13,14 @@ namespace DataGridDemo
     using System.Data;
 
     /// <summary>
-    /// Interaction logic for DatatableExample
+    /// Interaction logic for DataTableExample
     /// </summary>
-    public partial class DatatableExample
+    public partial class DataTableExample
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DatatableExample" /> class.
+        /// Initializes a new instance of the <see cref="DataTableExample" /> class.
         /// </summary>
-        public DatatableExample()
+        public DataTableExample()
         {
             this.InitializeComponent();
             this.DataContext = this;

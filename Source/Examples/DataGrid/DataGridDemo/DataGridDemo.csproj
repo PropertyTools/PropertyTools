@@ -173,8 +173,8 @@
     <Compile Include="Examples\ListOfMassExample.xaml.cs">
       <DependentUpon>ListOfMassExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\DatatableExample.xaml.cs">
-      <DependentUpon>DatatableExample.xaml</DependentUpon>
+    <Compile Include="Examples\DataTableExample.xaml.cs">
+      <DependentUpon>DataTableExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ExtendedToolkitExample.xaml.cs">
       <DependentUpon>ExtendedToolkitExample.xaml</DependentUpon>
@@ -323,7 +323,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\DatatableExample.xaml">
+    <Page Include="Examples\DataTableExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

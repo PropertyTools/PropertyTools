@@ -4,6 +4,6 @@
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         Title="List&lt;PlainObject&gt;" Height="450" Width="900">
     <Grid>
-        <p:DataGrid ItemsSource="{Binding ItemsSource}" EasyInsert="False"/>
+        <p:DataGrid ItemsSource="{Binding ItemsSource}"/>
     </Grid>
 </Window>

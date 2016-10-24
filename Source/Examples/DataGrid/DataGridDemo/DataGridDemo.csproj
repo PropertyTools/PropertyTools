@@ -63,6 +63,9 @@
     <Compile Include="Examples\NullableExample.xaml.cs">
       <DependentUpon>NullableExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\EasyInsertExample.xaml.cs">
+      <DependentUpon>EasyInsertExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\RelativeWidthExample.xaml.cs">
       <DependentUpon>RelativeWidthExample.xaml</DependentUpon>
     </Compile>
@@ -187,6 +190,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\NullableExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\EasyInsertExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

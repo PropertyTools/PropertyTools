@@ -12,7 +12,7 @@
             <p:DataGrid.ColumnDefinitions>
                 <p:ColumnDefinition PropertyName="Integer">
                     <p:ColumnDefinition.Header>
-                        <TextBlock FontStyle="Italic">integer</TextBlock>
+                        <TextBlock FontStyle="Italic" HorizontalAlignment="Center">integer</TextBlock>
                     </p:ColumnDefinition.Header>
                 </p:ColumnDefinition>
             </p:DataGrid.ColumnDefinitions>

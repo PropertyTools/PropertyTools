@@ -71,9 +71,9 @@ namespace PropertyTools.Wpf
         /// <param name="owner">The data grid.</param>
         /// <param name="index">The index.</param>
         /// <returns>
-        ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
+        /// The index of the inserted item if insertion is successful, <c>-1</c> otherwise.
         /// </returns>
-        bool InsertItem(DataGrid owner, int index);
+        int InsertItem(DataGrid owner, int index);
 
         /// <summary>
         /// Gets the item in the specified cell.

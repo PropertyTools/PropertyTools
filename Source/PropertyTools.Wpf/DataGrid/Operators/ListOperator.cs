@@ -138,42 +138,36 @@ namespace PropertyTools.Wpf
         /// <param name="owner">The owner.</param>
         /// <param name="index">The index.</param>
         /// <returns>
-        ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
+        /// The index of the inserted item if insertion is successful, <c>-1</c> otherwise.
         /// </returns>
-        public override bool InsertItem(DataGrid owner, int index)
+        public override int InsertItem(DataGrid owner, int index)
         {
             var list = owner.ItemsSource;
             if (list == null)
             {
-                return false;
+                return -1;
             }
 
             var itemType = TypeHelper.GetItemType(list);
 
-            object newItem = null;
-
             try
             {
-                if (newItem == null)
+                var newItem = this.CreateItem(owner, itemType);
+                if (index < 0)
                 {
-                    newItem = this.CreateItem(owner, itemType);
+                    index = list.Add(newItem);
                 }
+                else
+                {
+                    list.Insert(index, newItem);
+                }
+
+                return index;
             }
             catch
             {
-                return false;
+                return -1;
             }
-
-            if (index < 0)
-            {
-                list.Add(newItem);
-            }
-            else
-            {
-                list.Insert(index, newItem);
-            }
-
-            return true;
         }
 
         /// <summary>

@@ -9,7 +9,6 @@
 
 namespace PropertyTools.Wpf
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
@@ -170,14 +169,14 @@ namespace PropertyTools.Wpf
         /// <param name="owner">The owner.</param>
         /// <param name="index">The index.</param>
         /// <returns>
-        /// Returns <c>true</c> if insertion is successful, <c>false</c> otherwise.
+        /// The index of the inserted item if insertion is successful, <c>-1</c> otherwise.
         /// </returns>
-        public override bool InsertItem(DataGrid owner, int index)
+        public override int InsertItem(DataGrid owner, int index)
         {
             var list = owner.ItemsSource;
             if (list == null)
             {
-                return false;
+                return -1;
             }
 
             var itemType = TypeHelper.GetItemType(list);
@@ -187,7 +186,7 @@ namespace PropertyTools.Wpf
             var innerType = TypeHelper.GetInnerTypeOfList(list);
             if (innerType == null)
             {
-                return false;
+                return -1;
             }
 
             if (owner.ItemsInRows)
@@ -201,7 +200,7 @@ namespace PropertyTools.Wpf
 
                     if (index < 0)
                     {
-                        list.Add(newList);
+                        index = list.Add(newList);
                     }
                     else
                     {
@@ -217,7 +216,7 @@ namespace PropertyTools.Wpf
                     var newItem = this.CreateItem(owner, innerType);
                     if (index < 0)
                     {
-                        row.Add(newItem);
+                        index = row.Add(newItem);
                     }
                     else
                     {
@@ -226,7 +225,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            return true;
+            return index;
         }
 
         /// <summary>

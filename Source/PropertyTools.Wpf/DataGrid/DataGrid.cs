@@ -1055,7 +1055,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether easy insert (press enter/down/right to add new rows/columns) is enabled.
         /// </summary>
-        /// <value><c>true</c> if [easy insert]; otherwise, <c>false</c>.</value>
+        /// <value><c>true</c> if easy insert is enabled; otherwise, <c>false</c>.</value>
         public bool EasyInsert
         {
             get
@@ -1728,13 +1728,16 @@ namespace PropertyTools.Wpf
         /// </returns>
         public bool InsertItem(int index, bool updateGrid = true)
         {
-            var success = this.Operator.InsertItem(this, index);
-            if (success)
+            var actualIndex = this.Operator.InsertItem(this, index);
+            if (actualIndex != -1)
             {
                 if (updateGrid)
                 {
                     this.UpdateGridContent();
                 }
+
+                var cell = this.ItemsInRows ? new CellRef(actualIndex, 0) : new CellRef(0, actualIndex);
+                this.CurrentCell = this.SelectionCell = cell;
 
                 return true;
             }
@@ -1789,9 +1792,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            this.CurrentCell = new CellRef(row, column);
-            this.SelectionCell = new CellRef(row, column);
-            this.ScrollIntoView(this.CurrentCell);
+            this.CurrentCell = this.SelectionCell = new CellRef(row, column);
         }
 
         /// <summary>
@@ -2348,17 +2349,14 @@ namespace PropertyTools.Wpf
                 this.endPressed = false;
             }
 
-            if (shift)
+            var cell = new CellRef(row, column);
+
+            if (!shift)
             {
-                this.SelectionCell = new CellRef(row, column);
-            }
-            else
-            {
-                this.CurrentCell = new CellRef(row, column);
-                this.SelectionCell = new CellRef(row, column);
+                this.CurrentCell = cell;
             }
 
-            this.ScrollIntoView(new CellRef(row, column));
+            this.SelectionCell = cell;
 
             e.Handled = true;
         }
@@ -2912,7 +2910,6 @@ namespace PropertyTools.Wpf
             {
                 var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
                 this.CurrentCell = shift ? new CellRef(0, this.CurrentCell.Column) : new CellRef(0, column);
-
                 this.SelectionCell = new CellRef(this.Rows - 1, column);
             }
 
@@ -3385,7 +3382,6 @@ namespace PropertyTools.Wpf
                 }
 
                 this.SelectionCell = cellRef;
-                this.ScrollIntoView(cellRef);
                 Mouse.OverrideCursor = this.sheetGrid.Cursor;
             }
 
@@ -3451,7 +3447,6 @@ namespace PropertyTools.Wpf
             {
                 var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
                 this.CurrentCell = shift ? new CellRef(this.CurrentCell.Row, 0) : new CellRef(row, 0);
-
                 this.SelectionCell = new CellRef(row, this.Columns - 1);
             }
 
@@ -3588,7 +3583,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The select all.
+        /// Selects all cells.
         /// </summary>
         private void SelectAll()
         {
@@ -3859,8 +3854,7 @@ namespace PropertyTools.Wpf
         private void TopLeftMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Focus();
-            this.CurrentCell = new CellRef(0, 0);
-            this.SelectionCell = new CellRef(this.Rows - 1, this.Columns - 1);
+            this.SelectAll();
             e.Handled = true;
         }
 

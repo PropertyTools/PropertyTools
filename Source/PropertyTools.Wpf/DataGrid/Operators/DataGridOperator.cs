@@ -259,9 +259,9 @@ namespace PropertyTools.Wpf
         /// <param name="owner">The owner.</param>
         /// <param name="index">The index.</param>
         /// <returns>
-        ///   <c>true</c> if insertion is successful, <c>false</c> otherwise.
+        /// The index of the inserted item if insertion is successful, <c>-1</c> otherwise.
         /// </returns>
-        public abstract bool InsertItem(DataGrid owner, int index);
+        public abstract int InsertItem(DataGrid owner, int index);
 
         /// <summary>
         /// Sets value of the specified cell to the specified value.

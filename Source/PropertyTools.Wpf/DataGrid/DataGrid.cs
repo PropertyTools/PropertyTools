@@ -1726,7 +1726,8 @@ namespace PropertyTools.Wpf
                 }
 
                 var cell = this.ItemsInRows ? new CellRef(actualIndex, 0) : new CellRef(0, actualIndex);
-                this.CurrentCell = this.SelectionCell = cell;
+                this.SelectionCell = cell;
+                this.CurrentCell = cell;
 
                 return true;
             }
@@ -1781,7 +1782,9 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            this.CurrentCell = this.SelectionCell = new CellRef(row, column);
+            var cell = new CellRef(row, column);
+            this.SelectionCell = cell;
+            this.CurrentCell = cell;
         }
 
         /// <summary>
@@ -1933,10 +1936,10 @@ namespace PropertyTools.Wpf
 
             this.UpdateGridContent();
 
-            this.CurrentCell = new CellRef(rowMin, columnMin);
             this.SelectionCell = new CellRef(
                 Math.Max(rowMax, rowMin + rows - 1),
                 Math.Max(columnMax, columnMin + columns - 1));
+            this.CurrentCell = new CellRef(rowMin, columnMin);
         }
 
         /// <summary>
@@ -1966,22 +1969,20 @@ namespace PropertyTools.Wpf
         /// <param name="cellRef">The cell reference.</param>
         private void ScrollIntoView(CellRef cellRef)
         {
+            this.sheetGrid.UpdateLayout();
+
             var pos0 = this.GetPosition(cellRef);
             var pos1 = this.GetPosition(new CellRef(cellRef.Row + 1, cellRef.Column + 1));
-
-            // todo: get correct size
-            const double ScrollBarWidth = 20d;
-            const double ScrollBarHeight = 20d;
 
             if (pos0.X < this.sheetScrollViewer.HorizontalOffset)
             {
                 this.sheetScrollViewer.ScrollToHorizontalOffset(pos0.X);
             }
 
-            if (pos1.X > this.sheetScrollViewer.HorizontalOffset + this.sheetScrollViewer.ActualWidth - ScrollBarWidth)
+            if (pos1.X > this.sheetScrollViewer.HorizontalOffset + this.sheetScrollViewer.ViewportWidth)
             {
-                this.sheetScrollViewer.ScrollToHorizontalOffset(
-                    Math.Max(pos1.X - this.sheetScrollViewer.ActualWidth + ScrollBarWidth, 0));
+                var newOffset = Math.Max(pos1.X - this.sheetScrollViewer.ViewportWidth, 0);
+                this.sheetScrollViewer.ScrollToHorizontalOffset(newOffset);
             }
 
             if (pos0.Y < this.sheetScrollViewer.VerticalOffset)
@@ -1989,10 +1990,10 @@ namespace PropertyTools.Wpf
                 this.sheetScrollViewer.ScrollToVerticalOffset(pos0.Y);
             }
 
-            if (pos1.Y > this.sheetScrollViewer.VerticalOffset + this.sheetScrollViewer.ActualHeight - ScrollBarHeight)
+            if (pos1.Y > this.sheetScrollViewer.VerticalOffset + this.sheetScrollViewer.ViewportHeight)
             {
-                this.sheetScrollViewer.ScrollToVerticalOffset(
-                    Math.Max(pos1.Y - this.sheetScrollViewer.ActualHeight + ScrollBarHeight, 0));
+                var newOffset = Math.Max(pos1.Y - this.sheetScrollViewer.ViewportHeight, 0);
+                this.sheetScrollViewer.ScrollToVerticalOffset(newOffset);
             }
         }
 
@@ -2889,8 +2890,8 @@ namespace PropertyTools.Wpf
             if (column >= 0)
             {
                 var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
-                this.CurrentCell = shift ? new CellRef(0, this.CurrentCell.Column) : new CellRef(0, column);
                 this.SelectionCell = new CellRef(this.Rows - 1, column);
+                this.CurrentCell = shift ? new CellRef(0, this.CurrentCell.Column) : new CellRef(0, column);
             }
 
             this.isSelectingColumns = true;
@@ -3415,8 +3416,8 @@ namespace PropertyTools.Wpf
             if (row >= 0)
             {
                 var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
-                this.CurrentCell = shift ? new CellRef(this.CurrentCell.Row, 0) : new CellRef(row, 0);
                 this.SelectionCell = new CellRef(row, this.Columns - 1);
+                this.CurrentCell = shift ? new CellRef(this.CurrentCell.Row, 0) : new CellRef(row, 0);
             }
 
             this.isSelectingRows = true;
@@ -3552,9 +3553,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void SelectAll()
         {
-            this.CurrentCell = new CellRef(0, 0);
             this.SelectionCell = new CellRef(this.Rows - 1, this.Columns - 1);
-            this.ScrollIntoView(this.CurrentCell);
+            this.CurrentCell = new CellRef(0, 0);
         }
 
         /// <summary>

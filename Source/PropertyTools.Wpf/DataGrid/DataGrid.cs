@@ -1728,7 +1728,7 @@ namespace PropertyTools.Wpf
                 var cell = this.ItemsInRows ? new CellRef(actualIndex, 0) : new CellRef(0, actualIndex);
                 this.SelectionCell = cell;
                 this.CurrentCell = cell;
-
+                this.ScrollIntoView(cell);
                 return true;
             }
 
@@ -1785,6 +1785,7 @@ namespace PropertyTools.Wpf
             var cell = new CellRef(row, column);
             this.SelectionCell = cell;
             this.CurrentCell = cell;
+            this.ScrollIntoView(cell);
         }
 
         /// <summary>
@@ -1940,6 +1941,7 @@ namespace PropertyTools.Wpf
                 Math.Max(rowMax, rowMin + rows - 1),
                 Math.Max(columnMax, columnMin + columns - 1));
             this.CurrentCell = new CellRef(rowMin, columnMin);
+            this.ScrollIntoView(this.CurrentCell);
         }
 
         /// <summary>
@@ -2348,6 +2350,7 @@ namespace PropertyTools.Wpf
             }
 
             this.SelectionCell = cell;
+            this.ScrollIntoView(cell);
 
             e.Handled = true;
         }
@@ -2880,6 +2883,7 @@ namespace PropertyTools.Wpf
                 var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
                 this.SelectionCell = new CellRef(this.Rows - 1, column);
                 this.CurrentCell = shift ? new CellRef(0, this.CurrentCell.Column) : new CellRef(0, column);
+                this.ScrollIntoView(this.CurrentCell);
             }
 
             this.isSelectingColumns = true;
@@ -3029,6 +3033,8 @@ namespace PropertyTools.Wpf
             {
                 this.SelectionCell = new CellRef(maxColumn, this.SelectionCell.Column);
             }
+
+            this.ScrollIntoView(this.CurrentCell);
         }
 
         /// <summary>
@@ -3051,6 +3057,8 @@ namespace PropertyTools.Wpf
             {
                 this.SelectionCell = new CellRef(maxRow, this.SelectionCell.Column);
             }
+
+            this.ScrollIntoView(this.CurrentCell);
         }
 
         /// <summary>
@@ -3332,6 +3340,7 @@ namespace PropertyTools.Wpf
                 }
 
                 this.SelectionCell = cellRef;
+                this.ScrollIntoView(cellRef);
                 Mouse.OverrideCursor = this.sheetGrid.Cursor;
             }
 
@@ -3392,6 +3401,7 @@ namespace PropertyTools.Wpf
                 var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
                 this.SelectionCell = new CellRef(row, this.Columns - 1);
                 this.CurrentCell = shift ? new CellRef(this.CurrentCell.Row, 0) : new CellRef(row, 0);
+                this.ScrollIntoView(this.CurrentCell);
             }
 
             this.isSelectingRows = true;
@@ -3529,6 +3539,7 @@ namespace PropertyTools.Wpf
         {
             this.SelectionCell = new CellRef(this.Rows - 1, this.Columns - 1);
             this.CurrentCell = new CellRef(0, 0);
+            this.ScrollIntoView(this.CurrentCell);
         }
 
         /// <summary>
@@ -3841,8 +3852,6 @@ namespace PropertyTools.Wpf
         private void CurrentCellChanged()
         {
             this.SelectedCellsChanged();
-
-            this.ScrollIntoView(this.CurrentCell);
 
             if (this.AutoInsert && (this.CurrentCell.Row >= this.Rows || this.CurrentCell.Column >= this.Columns))
             {

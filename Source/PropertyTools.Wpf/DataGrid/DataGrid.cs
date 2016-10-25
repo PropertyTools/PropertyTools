@@ -1451,22 +1451,33 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the selection cell range.
+        /// </summary>
+        /// <returns>The cell range.</returns>
+        protected CellRange GetSelectionRange()
+        {
+            return new CellRange(this.CurrentCell, this.SelectionCell);            
+        }
+
+        /// <summary>
         /// Copies the selected cells to the clipboard.
         /// </summary>
         /// <param name="separator">The separator.</param>
         protected void Copy(string separator)
         {
-            var text = this.SelectionToString(separator);
-            var array = this.SelectionToArray();
+            var range = this.GetSelectionRange();
+            var valueArray = this.GetCellValues(range);
+            var stringArray = this.GetCellStrings(range, valueArray);
+            var text = this.ConvertToCsv(stringArray, separator, true);
 
             var dataObject = new DataObject();
             dataObject.SetText(text);
 
-            if (AreAllElementsSerializable(array))
+            if (AreAllElementsSerializable(valueArray))
             {
                 try
                 {
-                    dataObject.SetData(typeof(DataGrid), array);
+                    dataObject.SetData(typeof(DataGrid), valueArray);
                 }
                 catch (Exception e)
                 {
@@ -1605,17 +1616,12 @@ namespace PropertyTools.Wpf
         /// Gets the formatted string value for the specified cell.
         /// </summary>
         /// <param name="cell">The cell.</param>
+        /// <param name="value">The value.</param>
         /// <returns>
         /// The cell string.
         /// </returns>
-        private string GetCellString(CellRef cell)
+        protected virtual string FormatCellString(CellRef cell, object value)
         {
-            var value = this.GetCellValue(cell);
-            if (value == null)
-            {
-                return null;
-            }
-
             var formatString = this.GetFormatString(cell);
             return FormatValue(value, formatString);
         }
@@ -1890,7 +1896,7 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            var range = this.SetValues(values, new CellRange(this.CurrentCell, this.SelectionCell));
+            var range = this.SetValues(values, this.GetSelectionRange());
 
             this.SelectionCell = range.BottomRight;
             this.CurrentCell = range.TopLeft;
@@ -2058,27 +2064,37 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Exports the grid to comma separated values.
         /// </summary>
+        /// <param name="range">The range.</param>
         /// <param name="separator">The separator.</param>
+        /// <param name="includeHeader">Include a header if set to <c>true</c>.</param>
         /// <returns>
         /// The comma separated values string.
         /// </returns>
-        private string ToCsv(string separator = ";")
+        protected string ToCsv(CellRange range, string separator = ";", bool includeHeader = true)
         {
             var sb = new StringBuilder();
-            for (var j = 0; j < this.Columns; j++)
+
+            if (includeHeader)
             {
-                var h = this.GetColumnHeader(j).ToString();
-                h = CsvEncodeString(h);
-                if (sb.Length > 0)
+                for (var j = range.LeftColumn; j <= range.RightColumn; j++)
                 {
-                    sb.Append(separator);
+                    var h = this.GetColumnHeader(j).ToString();
+                    h = CsvEncodeString(h);
+                    if (sb.Length > 0)
+                    {
+                        sb.Append(separator);
+                    }
+
+                    sb.Append(h);
                 }
 
-                sb.Append(h);
+                sb.AppendLine();
             }
 
-            sb.AppendLine();
-            sb.Append(this.SheetToString(";", true));
+            var strings = this.GetCellStrings(range);
+            var csv = this.ConvertToCsv(strings, ";", true);
+            sb.Append(csv);
+
             return sb.ToString();
         }
 
@@ -2343,7 +2359,7 @@ namespace PropertyTools.Wpf
                 case Key.C:
                     if (control && alt)
                     {
-                        Clipboard.SetText(this.ToCsv());
+                        Clipboard.SetText(this.ToCsv(this.GetSelectionRange()));
                         e.Handled = true;
                     }
 
@@ -2639,6 +2655,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         private static string CsvEncodeString(string input)
         {
+            if (input == null)
+            {
+                return null;
+            }
+
             input = input.Replace("\"", "\"\"");
             if (input.Contains(";") || input.Contains("\""))
             {
@@ -3567,30 +3588,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Formats the selected cells as a string.
-        /// </summary>
-        /// <param name="separator">The separator.</param>
-        /// <param name="encode">Determines whether to encode the elements.</param>
-        /// <returns>
-        /// The string.
-        /// </returns>
-        private string SelectionToString(string separator, bool encode = false)
-        {
-            return this.ToString(this.CurrentCell, this.SelectionCell, separator, encode);
-        }
-
-        /// <summary>
-        /// Converts the selected cells to an array of objects.
-        /// </summary>
-        /// <returns>
-        /// The array.
-        /// </returns>
-        private object[,] SelectionToArray()
-        {
-            return this.ToArray(this.CurrentCell, this.SelectionCell);
-        }
-
-        /// <summary>
         /// Sets the boolean value in the selected cells.
         /// </summary>
         /// <param name="value">The value.</param>
@@ -3627,19 +3624,6 @@ namespace PropertyTools.Wpf
                 this.ShowTextBoxEditControl();
                 e.Handled = true;
             }
-        }
-
-        /// <summary>
-        /// Exports the whole grid sheet to a string.
-        /// </summary>
-        /// <param name="separator">The separator.</param>
-        /// <param name="encode">The encode.</param>
-        /// <returns>
-        /// The sheet to string.
-        /// </returns>
-        private string SheetToString(string separator, bool encode = false)
-        {
-            return this.ToString(new CellRef(0, 0), new CellRef(this.Rows - 1, this.Columns - 1), separator, encode);
         }
 
         /// <summary>
@@ -3717,40 +3701,37 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Exports the specified cell range to a string.
+        /// Converts the specified array to a csv string.
         /// </summary>
-        /// <param name="cell1">The cell 1.</param>
-        /// <param name="cell2">The cell 2.</param>
+        /// <param name="input">The input.</param>
         /// <param name="separator">The separator.</param>
         /// <param name="encode">Determines whether to encode the elements.</param>
         /// <returns>
         /// The to string.
         /// </returns>
-        private string ToString(CellRef cell1, CellRef cell2, string separator, bool encode = false)
+        private string ConvertToCsv(string[,] input, string separator, bool encode = false)
         {
-            var rowMin = Math.Min(cell1.Row, cell2.Row);
-            var columnMin = Math.Min(cell1.Column, cell2.Column);
-            var rowMax = Math.Max(cell1.Row, cell2.Row);
-            var columnMax = Math.Max(cell1.Column, cell2.Column);
+            int m = input.GetLength(0);
+            int n = input.GetLength(1);
 
             var sb = new StringBuilder();
 
-            for (var i = rowMin; i <= rowMax; i++)
+            for (var i = 0; i < m; i++)
             {
-                if (i > rowMin)
+                if (i > 0)
                 {
                     sb.AppendLine();
                 }
 
-                for (var j = columnMin; j <= columnMax; j++)
+                for (var j = 0; j < n; j++)
                 {
-                    var cell = this.GetCellString(new CellRef(i, j));
+                    var cell = input[i, j];
                     if (encode)
                     {
                         cell = CsvEncodeString(cell);
                     }
 
-                    if (j > columnMin)
+                    if (j > 0)
                     {
                         sb.Append(separator);
                     }
@@ -3766,29 +3747,44 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Converts the specified cell range to an array.
+        /// Gets the cell values of the specified cell range.
         /// </summary>
-        /// <param name="cell1">The cell1.</param>
-        /// <param name="cell2">The cell2.</param>
+        /// <param name="range">The range.</param>
         /// <returns>
-        /// An array.
+        /// An array of cell values.
         /// </returns>
-        private object[,] ToArray(CellRef cell1, CellRef cell2)
+        protected object[,] GetCellValues(CellRange range)
         {
-            var rowMin = Math.Min(cell1.Row, cell2.Row);
-            var columnMin = Math.Min(cell1.Column, cell2.Column);
-            var rowMax = Math.Max(cell1.Row, cell2.Row);
-            var columnMax = Math.Max(cell1.Column, cell2.Column);
-
-            var m = rowMax - rowMin + 1;
-            var n = columnMax - columnMin + 1;
-            var result = new object[m, n];
-
-            for (int i = rowMin; i <= rowMax; i++)
+            var result = new object[range.Rows, range.Columns];
+            for (int i = 0; i < range.Rows; i++)
             {
-                for (int j = columnMin; j <= columnMax; j++)
+                for (int j = 0; j < range.Columns; j++)
                 {
-                    result[i - rowMin, j - columnMin] = this.GetCellValue(new CellRef(i, j));
+                    result[i, j] = this.GetCellValue(new CellRef(range.TopRow + i, range.LeftColumn + j));
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the string values of the specified cell range.
+        /// </summary>
+        /// <param name="range">The range.</param>
+        /// <param name="values">The values (optional).</param>
+        /// <returns>
+        /// An array of cell strings.
+        /// </returns>
+        protected string[,] GetCellStrings(CellRange range, object[,] values = null)
+        {
+            var result = new string[range.Rows, range.Columns];
+            for (int i = 0; i < range.Rows; i++)
+            {
+                for (int j = 0; j < range.Columns; j++)
+                {
+                    var cell = new CellRef(range.TopRow + i, range.LeftColumn + j);
+                    var value = values != null ? values[i, j] : this.GetCellValue(cell);
+                    result[i, j] = this.FormatCellString(cell, value);
                 }
             }
 

@@ -13,25 +13,6 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
     using System.Globalization;
 
-    public class CellRange
-    {
-        public CellRange(CellRef cell1, CellRef cell2)
-        {
-            this.TopLeft = new CellRef(Math.Min(cell1.Row, cell2.Row), Math.Min(cell1.Column, cell2.Column));
-            this.BottomRight = new CellRef(Math.Max(cell1.Row, cell2.Row), Math.Max(cell1.Column, cell2.Column));
-        }
-
-        public CellRef TopLeft { get; }
-        public CellRef BottomRight { get; }
-
-        public int TopRow => this.TopLeft.Row;
-
-        public int BottomRow => this.BottomRight.Row;
-
-        public int LeftColumn => this.TopLeft.Column;
-
-        public int RightColumn => this.BottomRight.Column;
-    }
     /// <summary>
     /// Represents a cell reference.
     /// </summary>

@@ -2539,18 +2539,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Updates all cells.
-        /// </summary>
-        private void UpdateAllCells()
-        {
-            foreach (var element in this.cellMap.Values)
-            {
-                var cell = this.GetCellRefFromUIElement(element);
-                this.UpdateCellContent(cell);
-            }
-        }
-
-        /// <summary>
         /// Updates the content of the specified cell.
         /// </summary>
         /// <param name="cellRef">The cell reference.</param>
@@ -3148,20 +3136,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets a cell reference from the specified display control.
-        /// </summary>
-        /// <param name="element">The element.</param>
-        /// <returns>
-        /// The cell reference.
-        /// </returns>
-        private CellRef GetCellRefFromUIElement(UIElement element)
-        {
-            var row = Grid.GetRow(element);
-            var column = Grid.GetColumn(element);
-            return new CellRef(row, column);
-        }
-
-        /// <summary>
         /// Gets the column element for the specified column.
         /// </summary>
         /// <param name="column">The column.</param>
@@ -3400,7 +3374,7 @@ namespace PropertyTools.Wpf
             }
 
             // TODO: update only changed rows/columns
-            this.Dispatcher.Invoke(new Action(this.UpdateGridContent));
+            this.Dispatcher.Invoke(this.UpdateGridContent);
         }
 
         /// <summary>

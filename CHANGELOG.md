@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [3.0.0]
+### Changed
+- DataGrid commands moved to DataGridCommands
+
 ### Removed
 - DataGrid.AutoSizeColumns
 

@@ -609,11 +609,6 @@ namespace PropertyTools.Wpf
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(DataGrid),
                 new FrameworkPropertyMetadata(typeof(DataGrid)));
-
-            InsertRowsCommand = new RoutedCommand("InsertRows", typeof(DataGrid));
-            DeleteRowsCommand = new RoutedCommand("DeleteRows", typeof(DataGrid));
-            InsertColumnsCommand = new RoutedCommand("InsertColumns", typeof(DataGrid));
-            DeleteColumnsCommand = new RoutedCommand("DeleteColumns", typeof(DataGrid));
         }
 
         /// <summary>
@@ -623,49 +618,25 @@ namespace PropertyTools.Wpf
         {
             this.CommandBindings.Add(
                 new CommandBinding(
-                    InsertRowsCommand,
+                    DataGridCommands.InsertRows,
                     (s, e) => this.InsertRows(),
                     (s, e) => e.CanExecute = this.CanInsertRows));
             this.CommandBindings.Add(
                 new CommandBinding(
-                    DeleteRowsCommand,
+                   DataGridCommands.DeleteRows,
                     (s, e) => this.DeleteRows(),
                     (s, e) => e.CanExecute = this.CanDeleteRows));
             this.CommandBindings.Add(
                 new CommandBinding(
-                    InsertColumnsCommand,
+                   DataGridCommands.InsertColumns,
                     (s, e) => this.InsertColumns(),
                     (s, e) => e.CanExecute = this.CanInsertColumns));
             this.CommandBindings.Add(
                 new CommandBinding(
-                    DeleteColumnsCommand,
+                   DataGridCommands.DeleteColumns,
                     (s, e) => this.DeleteColumns(),
                     (s, e) => e.CanExecute = this.CanDeleteColumns));
         }
-
-        /// <summary>
-        /// Gets the delete columns command.
-        /// </summary>
-        /// <value>The delete columns command.</value>
-        public static ICommand DeleteColumnsCommand { get; }
-
-        /// <summary>
-        /// Gets the delete rows command.
-        /// </summary>
-        /// <value>The delete rows command.</value>
-        public static ICommand DeleteRowsCommand { get; }
-
-        /// <summary>
-        /// Gets the insert columns command.
-        /// </summary>
-        /// <value>The insert columns command.</value>
-        public static ICommand InsertColumnsCommand { get; }
-
-        /// <summary>
-        /// Gets the insert rows command.
-        /// </summary>
-        /// <value>The insert rows command.</value>
-        public static ICommand InsertRowsCommand { get; }
 
         /// <summary>
         /// Gets or sets the header used for the add item row/column. Default is "*".

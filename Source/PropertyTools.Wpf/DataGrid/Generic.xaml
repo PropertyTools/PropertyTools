@@ -21,24 +21,26 @@
         <Setter Property="RowsContextMenu">
             <Setter.Value>
                 <ContextMenu>
-                    <MenuItem Header="Insert" Command="local:DataGrid.InsertRowsCommand"/>
-                    <MenuItem Header="Delete" Command="local:DataGrid.DeleteRowsCommand"/>
+                    <MenuItem Header="Insert" Command="local:DataGridCommands.InsertRows"/>
+                    <MenuItem Header="Delete" Command="local:DataGridCommands.DeleteRows"/>
                 </ContextMenu>
             </Setter.Value>
         </Setter>
         <Setter Property="ColumnsContextMenu">
             <Setter.Value>
                 <ContextMenu>
-                    <MenuItem Header="Insert" Command="local:DataGrid.InsertColumnsCommand"/>
-                    <MenuItem Header="Delete" Command="local:DataGrid.DeleteColumnsCommand"/>
+                    <MenuItem Header="Insert" Command="local:DataGridCommands.InsertColumns"/>
+                    <MenuItem Header="Delete" Command="local:DataGridCommands.DeleteColumns"/>
                 </ContextMenu>
             </Setter.Value>
         </Setter>
         <Setter Property="SheetContextMenu">
             <Setter.Value>
                 <ContextMenu>
+                    <MenuItem Command="ApplicationCommands.Cut"/>
                     <MenuItem Command="ApplicationCommands.Copy"/>
                     <MenuItem Command="ApplicationCommands.Paste"/>
+                    <MenuItem Command="ApplicationCommands.Delete"/>
                 </ContextMenu>
             </Setter.Value>
         </Setter>

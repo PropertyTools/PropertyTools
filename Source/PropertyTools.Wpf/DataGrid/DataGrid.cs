@@ -1449,7 +1449,15 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Copies the selected cells to the clipboard, tab-separated.
         /// </summary>
-        public void Copy()
+        private void Copy()
+        {
+            this.CopyOverride();
+        }
+
+        /// <summary>
+        /// Implements the copy operation.
+        /// </summary>
+        protected virtual void CopyOverride()
         {
             this.Copy("\t");
         }
@@ -1457,7 +1465,15 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Cuts the selected items.
         /// </summary>
-        public void Cut()
+        private void Cut()
+        {
+            this.CutOverride();
+        }
+
+        /// <summary>
+        /// Implements the cut operation.
+        /// </summary>
+        protected virtual void CutOverride()
         {
             this.Copy();
             this.Delete();
@@ -1467,7 +1483,7 @@ namespace PropertyTools.Wpf
         /// Copies the selected cells to the clipboard.
         /// </summary>
         /// <param name="separator">The separator.</param>
-        public void Copy(string separator)
+        protected void Copy(string separator)
         {
             var text = this.SelectionToString(separator);
             var array = this.SelectionToArray();
@@ -1884,12 +1900,79 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Pastes the content from the clipboard to the current selection.
+        /// Pastes the content from the clipboard to the selected cells.
         /// </summary>
         public void Paste()
         {
-            object[,] values = null;
+            this.PasteOverride();
+        }
 
+        /// <summary>
+        /// Implements the paste operation.
+        /// </summary>
+        protected virtual void PasteOverride()
+        {
+            var values = this.GetClipboardData();
+
+            if (values == null)
+            {
+                return;
+            }
+
+            var range = this.SetValues(values, new CellRange(this.CurrentCell, this.SelectionCell));
+
+            this.SelectionCell = range.BottomRight;
+            this.CurrentCell = range.TopLeft;
+            this.ScrollIntoView(this.CurrentCell);
+        }
+
+        /// <summary>
+        /// Sets the values in the specified range.
+        /// </summary>
+        /// <param name="values">The values.</param>
+        /// <param name="range">The range.</param>
+        /// <returns>The range that was actually set.</returns>
+        protected virtual CellRange SetValues(object[,] values, CellRange range)
+        {
+            var rows = values.GetUpperBound(0) + 1;
+            var columns = values.GetUpperBound(1) + 1;
+
+            var bottomRight = new CellRef(Math.Max(range.BottomRow, range.TopRow + rows - 1),
+                Math.Max(range.BottomRight.Column, range.LeftColumn + columns - 1));
+            var outputRange = new CellRange(range.TopLeft, bottomRight);
+
+            this.UnsubscribeNotifications();
+
+            for (var i = range.TopRow; i <= outputRange.BottomRow; i++)
+            {
+                if (i >= this.Rows)
+                {
+                    if (!this.InsertItem(-1, false))
+                    {
+                        break;
+                    }
+                }
+
+                for (var j = range.LeftColumn; j <= outputRange.RightColumn; j++)
+                {
+                    var value = values[(i - outputRange.TopRow) % rows, (j - outputRange.LeftColumn) % columns];
+                    this.TrySetCellValue(new CellRef(i, j), value);
+                }
+            }
+
+            // TODO: only update changed cells (or rely on bindings)
+            this.UpdateGridContent();
+
+            return outputRange;
+        }
+
+        /// <summary>
+        /// Gets the clipboard data.
+        /// </summary>
+        /// <returns>A two-dimensional array of values.</returns>
+        protected virtual object[,] GetClipboardData()
+        {
+            object[,] values = null;
             var dataObject = Clipboard.GetDataObject();
             if (dataObject != null)
             {
@@ -1900,48 +1983,10 @@ namespace PropertyTools.Wpf
             if (values == null && Clipboard.ContainsText())
             {
                 var text = Clipboard.GetText().Trim();
-                values = TextToArray(text);
+                values = this.TextToArray(text);
             }
 
-            if (values == null)
-            {
-                return;
-            }
-
-            var rowMin = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
-            var columnMin = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-            var rowMax = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
-            var columnMax = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-
-            var rows = values.GetUpperBound(0) + 1;
-            var columns = values.GetUpperBound(1) + 1;
-
-            this.UnsubscribeNotifications();
-
-            for (var i = rowMin; i <= rowMax || i < rowMin + rows; i++)
-            {
-                if (i >= this.Rows)
-                {
-                    if (!this.InsertItem(-1, false))
-                    {
-                        break;
-                    }
-                }
-
-                for (var j = columnMin; j <= columnMax || j < columnMin + columns; j++)
-                {
-                    var value = values[(i - rowMin) % rows, (j - columnMin) % columns];
-                    this.TrySetCellValue(new CellRef(i, j), value);
-                }
-            }
-
-            this.UpdateGridContent();
-
-            this.SelectionCell = new CellRef(
-                Math.Max(rowMax, rowMin + rows - 1),
-                Math.Max(columnMax, columnMin + columns - 1));
-            this.CurrentCell = new CellRef(rowMin, columnMin);
-            this.ScrollIntoView(this.CurrentCell);
+            return values;
         }
 
         /// <summary>
@@ -2673,7 +2718,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// An 2-dimensional array of strings.
         /// </returns>
-        private static object[,] TextToArray(string text)
+        protected virtual object[,] TextToArray(string text)
         {
             var rows = 0;
             var columns = 0;
@@ -3003,9 +3048,17 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles the delete command.
+        /// Deletes the content in the selected cells.
         /// </summary>
         private void Delete()
+        {
+            this.DeleteOverride();
+        }
+
+        /// <summary>
+        /// Implements the delete operation.
+        /// </summary>
+        protected virtual void DeleteOverride()
         {
             foreach (var cell in this.SelectedCells)
             {

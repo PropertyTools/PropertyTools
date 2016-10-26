@@ -1991,7 +1991,7 @@ namespace PropertyTools.Wpf
         /// Scroll the specified cell into view.
         /// </summary>
         /// <param name="cellRef">The cell reference.</param>
-        private void ScrollIntoView(CellRef cellRef)
+        protected void ScrollIntoView(CellRef cellRef)
         {
             this.sheetGrid.UpdateLayout();
 

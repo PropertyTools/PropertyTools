@@ -2376,12 +2376,13 @@ namespace PropertyTools.Wpf
 
             var cell = new CellRef(row, column);
 
+            this.SelectionCell = cell;
+
             if (!shift)
             {
                 this.CurrentCell = cell;
             }
 
-            this.SelectionCell = cell;
             this.ScrollIntoView(cell);
 
             e.Handled = true;

@@ -169,12 +169,6 @@ namespace DataGridDemo
         }
 
         [Browsable(false)]
-        public IEnumerable<string> Items
-        {
-            get
-            {
-                return new[] { "Oslo", "Stockholm", "Copenhagen" };
-            }
-        }
+        public IEnumerable<string> Items => new[] { "Oslo", "Stockholm", "Copenhagen" };
     }
 }

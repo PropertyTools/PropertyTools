@@ -92,6 +92,14 @@ namespace PropertyTools.Wpf
         public string ItemsSourceProperty { get; set; }
 
         /// <summary>
+        /// Gets or sets the selected value path (for ComboBox).
+        /// </summary>
+        /// <value>
+        /// The selected value path.
+        /// </value>
+        public string SelectedValuePath { get; set; }
+
+        /// <summary>
         /// Gets or sets the max length (for TextBox).
         /// </summary>
         public int MaxLength { get; set; }

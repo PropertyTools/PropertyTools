@@ -57,6 +57,9 @@
     <Compile Include="..\..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Examples\SelectorExample.xaml.cs">
+      <DependentUpon>SelectorExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\AutoWidthExample.xaml.cs">
       <DependentUpon>AutoWidthExample.xaml</DependentUpon>
     </Compile>
@@ -181,6 +184,10 @@
     </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
+    <Page Include="Examples\SelectorExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\BackgroundExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

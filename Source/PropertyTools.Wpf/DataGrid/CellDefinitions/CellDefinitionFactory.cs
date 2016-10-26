@@ -83,7 +83,8 @@ namespace PropertyTools.Wpf
                 return new SelectCellDefinition
                 {
                     ItemsSource = d.PropertyDefinition.ItemsSource,
-                    ItemsSourceProperty = d.PropertyDefinition.ItemsSourceProperty
+                    ItemsSourceProperty = d.PropertyDefinition.ItemsSourceProperty,
+                    SelectedValuePath = d.PropertyDefinition.SelectedValuePath
                 };
             }
 

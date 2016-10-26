@@ -381,6 +381,12 @@ namespace PropertyTools.Wpf
                 pd.ItemsSourceProperty = ispa.PropertyName;
             }
 
+            var svpa = descriptor.GetFirstAttributeOrDefault<SelectedValuePathAttribute>();
+            if (svpa != null)
+            {
+                pd.SelectedValuePath = svpa.Path;
+            }
+
             var eba = descriptor.GetFirstAttributeOrDefault<EnableByAttribute>();
             if (eba != null)
             {

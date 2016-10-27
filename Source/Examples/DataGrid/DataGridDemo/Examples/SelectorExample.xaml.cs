@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+
 namespace DataGridDemo
 {
     using System.Collections.Generic;
@@ -35,7 +37,8 @@ namespace DataGridDemo
             public ViewModel()
             {
                 var item = new Item();
-                item.Fruit = item.Fruits.First();
+                item.Fruit1 = item.Fruits.First();
+                item.Fruit2 = "Kiwi";
                 item.City1 = item.Cities.First();
                 item.City2 = item.Cities.Last().Name;
                 item.City3 = item.Cities.First();
@@ -43,32 +46,47 @@ namespace DataGridDemo
                 item.SelectedAnimal = item.Animals.First();
                 this.Items.Add(item);
             }
+
             public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>();
 
             public class Item : Observable
             {
-                private string fruit;
+                private string fruit1;
+                private string fruit2;
 
+                private City city1;
                 private string city2;
-
                 private City city3;
-
                 private string city4;
 
                 private Animal selectedAnimal;
-                private City city1;
 
                 [ItemsSourceProperty(nameof(Fruits))]
-                public string Fruit
+                public string Fruit1
                 {
                     get
                     {
-                        return this.fruit;
+                        return this.fruit1;
                     }
 
                     set
                     {
-                        this.SetValue(ref this.fruit, value, () => this.Fruit);
+                        this.SetValue(ref this.fruit1, value, () => this.Fruit1);
+                    }
+                }
+
+                [ItemsSourceProperty(nameof(Fruits))]
+                [Editable(true)]
+                public string Fruit2
+                {
+                    get
+                    {
+                        return this.fruit2;
+                    }
+
+                    set
+                    {
+                        this.SetValue(ref this.fruit2, value, () => this.Fruit2);
                     }
                 }
 

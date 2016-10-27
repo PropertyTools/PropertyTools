@@ -375,6 +375,12 @@ namespace PropertyTools.Wpf
                 pd.IsReadOnly = true;
             }
 
+            if (descriptor.GetAttributeValue<System.ComponentModel.DataAnnotations.EditableAttribute, bool>(a => a.AllowEdit)
+                || descriptor.GetAttributeValue<DataAnnotations.EditableAttribute, bool>(a => a.AllowEdit))
+            {
+                pd.IsEditable = true;
+            }
+
             var ispa = descriptor.GetFirstAttributeOrDefault<ItemsSourcePropertyAttribute>();
             if (ispa != null)
             {

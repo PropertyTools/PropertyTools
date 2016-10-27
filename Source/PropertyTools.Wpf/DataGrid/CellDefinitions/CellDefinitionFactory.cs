@@ -85,7 +85,8 @@ namespace PropertyTools.Wpf
                     ItemsSource = d.PropertyDefinition.ItemsSource,
                     ItemsSourceProperty = d.PropertyDefinition.ItemsSourceProperty,
                     SelectedValuePath = d.PropertyDefinition.SelectedValuePath,
-                    DisplayMemberPath = d.PropertyDefinition.DisplayMemberPath
+                    DisplayMemberPath = d.PropertyDefinition.DisplayMemberPath,
+                    IsEditable = d.PropertyDefinition.IsEditable
                 };
             }
 

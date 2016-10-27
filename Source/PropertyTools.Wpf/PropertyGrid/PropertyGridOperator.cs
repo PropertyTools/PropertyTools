@@ -574,10 +574,16 @@ namespace PropertyTools.Wpf
                 pi.IsContent = true;
             }
 
-            var ea = attribute as EditableAttribute;
+            var ea = attribute as System.ComponentModel.DataAnnotations.EditableAttribute;
             if (ea != null)
             {
                 pi.IsEditable = ea.AllowEdit;
+            }
+
+            var ea2 = attribute as DataAnnotations.EditableAttribute;
+            if (ea2 != null)
+            {
+                pi.IsEditable = ea2.AllowEdit;
             }
 
             if (attribute is AutoUpdateTextAttribute)

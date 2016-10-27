@@ -309,13 +309,14 @@ namespace PropertyTools.Wpf
             var c = new ComboBox
             {
                 IsEditable = d.IsEditable,
-                Focusable = false,
+                Focusable = false, // keep focus on the data grid until the user opens the dropdown
                 Margin = new Thickness(1, 1, 0, 0),
                 HorizontalContentAlignment = d.HorizontalAlignment,
                 VerticalContentAlignment = VerticalAlignment.Center,
                 Padding = new Thickness(3, 0, 3, 0),
                 BorderThickness = new Thickness(0)
             };
+
             if (d.ItemsSource != null)
             {
                 c.ItemsSource = d.ItemsSource;
@@ -329,7 +330,24 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            c.DropDownClosed += (s, e) => FocusParentDataGrid(c);
+            c.DropDownOpened += (s, e) =>
+            {
+                // when the dropdown has been opened by F4 or mouse down
+                // it should be possible to change selection by the arrow keys
+                // or edit the text (if the property is annotated as editable)
+                c.Focusable = true;
+            };
+
+            c.DropDownClosed += (s, e) =>
+            {
+                // when the dropdown has been closed
+                // the arrows keys should be used to change cell
+                // the (undesired) side effect is also that the text cannot be edited (if the property is annotated as editable)
+                c.Focusable = false;
+
+                FocusParentDataGrid(c);
+            };
+
             var binding = this.CreateBinding(d);
             binding.NotifyOnSourceUpdated = true;
             c.SetBinding(d.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);

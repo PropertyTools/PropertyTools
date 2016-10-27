@@ -11,6 +11,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - DataGrid auto column width
 
+### Added
+- EditableAttribute
+
 ## [2.0.1]
 ### Changed
 - DataGrid: IDataGridControlFactory interface

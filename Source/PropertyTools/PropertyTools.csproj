@@ -62,6 +62,7 @@
     <Compile Include="DataAnnotations\DisplayMemberPathAttribute.cs" />
     <Compile Include="DataAnnotations\DisplayNameAttribute.cs" />
     <Compile Include="DataAnnotations\EasyInsertAttribute.cs" />
+    <Compile Include="DataAnnotations\EditableAttribute.cs" />
     <Compile Include="DataAnnotations\EnableByAttribute.cs" />
     <Compile Include="DataAnnotations\FillTabAttribute.cs" />
     <Compile Include="DataAnnotations\FilterPropertyAttribute.cs" />

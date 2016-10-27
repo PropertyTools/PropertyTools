@@ -6,7 +6,8 @@
     <Grid>
         <p:DataGrid ItemsSource="{Binding Items}">
             <p:DataGrid.ColumnDefinitions>
-                <p:ColumnDefinition PropertyName="Fruit" Header="Fruit" Width="*"/>
+                <p:ColumnDefinition PropertyName="Fruit1" Header="Fruit1" Width="*"/>
+                <p:ColumnDefinition PropertyName="Fruit2" Header="Fruit2" Width="*"/>
                 <p:ColumnDefinition PropertyName="City1" Header="City1" Width="*"/>
                 <p:ColumnDefinition PropertyName="City2" Header="City2" Width="*" />
                 <p:ColumnDefinition PropertyName="City3" Header="City3" Width="*" />

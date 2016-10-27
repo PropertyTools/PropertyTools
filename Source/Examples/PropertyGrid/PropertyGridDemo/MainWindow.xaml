@@ -4,6 +4,9 @@
         xmlns:local="clr-namespace:PropertyGridDemo"
         xmlns:pt="http://propertytools.org/wpf"
         Title="PropertyGrid Demo" Height="720" Width="960">
+    <Window.DataContext>
+        <local:MainViewModel/>
+    </Window.DataContext>
     <Window.Resources>
         <DataTemplate x:Key="HeaderTemplate1">
             <StackPanel Orientation="Horizontal">
@@ -119,10 +122,7 @@
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="Exit" Click="FileExitClick"/>
-            </MenuItem>
-            <MenuItem Header="PropertyGrid">
+            <MenuItem Header="Options">
                 <MenuItem Header="Show description icons" IsChecked="{Binding ShowDescriptionIcons, ElementName=PropertyGrid1}" IsCheckable="true"/>
                 <MenuItem Header="Show declared only" IsChecked="{Binding ShowDeclaredOnly, ElementName=PropertyGrid1}" IsCheckable="true"/>
                 <MenuItem Header="Show read-only properties" IsChecked="{Binding ShowReadOnlyProperties, ElementName=PropertyGrid1}" IsCheckable="true"/>

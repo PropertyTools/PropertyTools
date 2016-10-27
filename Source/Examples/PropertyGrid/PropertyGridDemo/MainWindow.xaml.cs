@@ -7,24 +7,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-
 namespace PropertyGridDemo
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = new MainViewModel();
-        }
-
-        private void FileExitClick(object sender, RoutedEventArgs e)
-        {
-            this.Close();
+            this.InitializeComponent();
         }
     }
 }

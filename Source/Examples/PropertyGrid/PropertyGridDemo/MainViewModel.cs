@@ -24,8 +24,8 @@ namespace PropertyGridDemo
         public MainViewModel()
         {
             this.Models = Examples.GetPropertyGridExamples().ToList();
-            this.SelectedItem = this.Models.FirstOrDefault(o => o.GetType() == typeof(TestSimpleTypes));
-            foreach (TestBase m in this.Models)
+            this.SelectedItem = this.Models.FirstOrDefault(o => o.GetType() == typeof(SimpleTypesExample));
+            foreach (Example m in this.Models)
             {
                 m.PropertyChanged += this.TestChanged;
             }

@@ -35,24 +35,47 @@ namespace DataGridDemo
             public ViewModel()
             {
                 var item = new Item();
-                item.City1 = item.Cities1.First();
-                item.City2 = item.Cities2.Last().Name;
-                item.City3 = item.Cities2.First();
+                item.Fruit = item.Fruits.First();
+                item.City1 = item.Cities.First();
+                item.City2 = item.Cities.Last().Name;
+                item.City3 = item.Cities.First();
+                item.City4 = item.Cities.First().Name;
+                item.SelectedAnimal = item.Animals.First();
                 this.Items.Add(item);
             }
             public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>();
 
             public class Item : Observable
             {
-                private string city1;
+                private string fruit;
 
                 private string city2;
 
                 private City city3;
-                private Animal selectedAnimal;
 
-                [ItemsSourceProperty(nameof(Cities1))]
-                public string City1
+                private string city4;
+
+                private Animal selectedAnimal;
+                private City city1;
+
+                [ItemsSourceProperty(nameof(Fruits))]
+                public string Fruit
+                {
+                    get
+                    {
+                        return this.fruit;
+                    }
+
+                    set
+                    {
+                        this.SetValue(ref this.fruit, value, () => this.Fruit);
+                    }
+                }
+
+                public IEnumerable<string> Fruits { get; } = new[] { "Apple", "Banana", "Orange" };
+
+                [ItemsSourceProperty(nameof(Cities))]
+                public City City1
                 {
                     get
                     {
@@ -65,9 +88,7 @@ namespace DataGridDemo
                     }
                 }
 
-                public IEnumerable<string> Cities1 { get; } = new[] { "Oslo", "Stockholm", "Copenhagen" };
-
-                [ItemsSourceProperty(nameof(Cities2))]
+                [ItemsSourceProperty(nameof(Cities))]
                 [SelectedValuePath(nameof(City.Name))]
                 public string City2
                 {
@@ -82,7 +103,7 @@ namespace DataGridDemo
                     }
                 }
 
-                [ItemsSourceProperty(nameof(Cities2))]
+                [ItemsSourceProperty(nameof(Cities))]
                 [DisplayMemberPath(nameof(City.Name))]
                 public City City3
                 {
@@ -97,7 +118,23 @@ namespace DataGridDemo
                     }
                 }
 
-                public IEnumerable<City> Cities2 { get; } = CreateCities().ToArray();
+                [ItemsSourceProperty(nameof(Cities))]
+                [SelectedValuePath(nameof(City.Name))]
+                [DisplayMemberPath(nameof(City.Name))]
+                public string City4
+                {
+                    get
+                    {
+                        return this.city4;
+                    }
+
+                    set
+                    {
+                        this.SetValue(ref this.city4, value, () => this.City4);
+                    }
+                }
+
+                public IEnumerable<City> Cities { get; } = CreateCities().ToArray();
 
                 [ItemsSourceProperty(nameof(Animals))]
                 [DisplayMemberPath(nameof(Animal.Name))]

@@ -69,6 +69,12 @@ namespace PropertyTools.Wpf
         /// <returns>The display control.</returns>
         protected virtual FrameworkElement CreateDisplayControlOverride(CellDefinition d)
         {
+            var scd = d as SelectCellDefinition;
+            if (scd != null)
+            {
+                return this.CreateTextBlockControl(scd);
+            }
+
             var cb = d as CheckCellDefinition;
             if (cb != null)
             {
@@ -281,10 +287,10 @@ namespace PropertyTools.Wpf
 
             // Create a grid for the data context
             var grid = new Grid
-                           {
-                               VerticalAlignment = VerticalAlignment.Center,
-                               HorizontalAlignment = HorizontalAlignment.Center
-                           };
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
             grid.Children.Add(c);
 
             // Create a container to support background binding
@@ -350,7 +356,44 @@ namespace PropertyTools.Wpf
                 Padding = new Thickness(4, 0, 4, 0)
             };
 
-            c.SetBinding(TextBlock.TextProperty, this.CreateOneWayBinding(d));
+            var binding = this.CreateOneWayBinding(d);
+
+            var scd = d as SelectCellDefinition;
+            if (!string.IsNullOrEmpty(scd?.DisplayMemberPath))
+            {
+                binding.Path.Path += "." + scd.DisplayMemberPath;
+            }
+
+            c.SetBinding(TextBlock.TextProperty, binding);
+            this.SetIsEnabledBinding(d, c);
+
+            return this.CreateContainer(d, c);
+        }
+
+        /// <summary>
+        /// Creates a text block control for a selector cell.
+        /// </summary>
+        /// <param name="d">The cell definition.</param>
+        /// <returns>
+        /// A TextBlock.
+        /// </returns>
+        protected virtual FrameworkElement CreateTextBlockControl(SelectCellDefinition d)
+        {
+            var c = new TextBlockEx
+            {
+                HorizontalAlignment = d.HorizontalAlignment,
+                VerticalAlignment = VerticalAlignment.Center,
+                Padding = new Thickness(4, 0, 4, 0)
+            };
+
+            var binding = this.CreateOneWayBinding(d);
+
+            if (!string.IsNullOrEmpty(d.DisplayMemberPath) && string.IsNullOrEmpty(d.SelectedValuePath))
+            {
+                binding.Path.Path += "." + d.DisplayMemberPath;
+            }
+
+            c.SetBinding(TextBlock.TextProperty, binding);
             this.SetIsEnabledBinding(d, c);
 
             return this.CreateContainer(d, c);

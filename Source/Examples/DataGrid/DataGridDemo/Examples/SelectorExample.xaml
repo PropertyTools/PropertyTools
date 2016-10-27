@@ -2,13 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
-        Title="Selectors" Height="450" Width="300">
+        Title="Selectors" Height="450" Width="450">
     <Grid>
         <p:DataGrid ItemsSource="{Binding Items}">
             <p:DataGrid.ColumnDefinitions>
-                <p:ColumnDefinition PropertyName="City1" Width="*"/>
-                <p:ColumnDefinition PropertyName="City2" Width="*" />
-                <p:ColumnDefinition PropertyName="City3" Width="*" />
+                <p:ColumnDefinition PropertyName="City1" Header="City1" Width="*"/>
+                <p:ColumnDefinition PropertyName="City2" Header="City2" Width="*" />
+                <p:ColumnDefinition PropertyName="City3" Header="City3" Width="*" />
+                <p:ColumnDefinition PropertyName="SelectedAnimal" DisplayMemberPath="Name" Header="SelectedAnimal" Width="*" />
             </p:DataGrid.ColumnDefinitions>
         </p:DataGrid>
     </Grid>

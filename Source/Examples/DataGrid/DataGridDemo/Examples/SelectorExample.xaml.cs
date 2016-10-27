@@ -49,6 +49,7 @@ namespace DataGridDemo
                 private string city2;
 
                 private City city3;
+                private Animal selectedAnimal;
 
                 [ItemsSourceProperty(nameof(Cities1))]
                 public string City1
@@ -64,7 +65,7 @@ namespace DataGridDemo
                     }
                 }
 
-                public IEnumerable<string> Cities1 => new[] { "Oslo", "Stockholm", "Copenhagen" };
+                public IEnumerable<string> Cities1 { get; } = new[] { "Oslo", "Stockholm", "Copenhagen" };
 
                 [ItemsSourceProperty(nameof(Cities2))]
                 [SelectedValuePath(nameof(City.Name))]
@@ -82,7 +83,7 @@ namespace DataGridDemo
                 }
 
                 [ItemsSourceProperty(nameof(Cities2))]
-                [DisplayMemberPath("Name")]
+                [DisplayMemberPath(nameof(City.Name))]
                 public City City3
                 {
                     get
@@ -96,21 +97,56 @@ namespace DataGridDemo
                     }
                 }
 
-                public IEnumerable<City> Cities2
-                    =>
-                        new[]
-                            {
-                                new City { Name = "Oslo" }, new City { Name = "Stockholm" },
-                                new City { Name = "Copenhagen" }
-                            };
+                public IEnumerable<City> Cities2 { get; } = CreateCities().ToArray();
+
+                [ItemsSourceProperty(nameof(Animals))]
+                [DisplayMemberPath(nameof(Animal.Name))]
+                public Animal SelectedAnimal
+                {
+                    get
+                    {
+                        return this.selectedAnimal;
+                    }
+
+                    set
+                    {
+                        this.SetValue(ref this.selectedAnimal, value, () => this.SelectedAnimal);
+                    }
+                }
+
+                public IEnumerable<Animal> Animals => CreateAnimals(); // create a new sequence every time... The element class must implement Equals.
+
+                private static IEnumerable<City> CreateCities()
+                {
+                    yield return new City { Name = "Oslo", Country = "Norway" };
+                    yield return new City { Name = "Stockholm", Country = "Sweden" };
+                    yield return new City { Name = "Copenhagen", Country = "Denmark" };
+                }
+
+                private static IEnumerable<Animal> CreateAnimals()
+                {
+                    yield return new Animal { Name = "Bear" };
+                    yield return new Animal { Name = "Wolf" };
+                    yield return new Animal { Name = "Moose" };
+                }
 
                 public class City
                 {
                     public string Name { get; set; }
-
+                    public string Country { get; set; }
                     public override string ToString()
                     {
-                        return this.Name;
+                        return $"{this.Name}, {this.Country}";
+                    }
+                }
+
+                public class Animal
+                {
+                    public string Name { get; set; }
+
+                    public override bool Equals(object obj)
+                    {
+                        return string.Equals(this.Name, (obj as Animal)?.Name);
                     }
                 }
             }

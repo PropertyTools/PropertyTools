@@ -72,7 +72,7 @@ namespace PropertyTools.Wpf
                     values.Insert(0, null);
                 }
 
-                return new SelectCellDefinition
+                return new SelectorCellDefinition
                 {
                     ItemsSource = values
                 };
@@ -80,7 +80,7 @@ namespace PropertyTools.Wpf
 
             if (d.PropertyDefinition.ItemsSourceProperty != null || d.PropertyDefinition.ItemsSource != null)
             {
-                return new SelectCellDefinition
+                return new SelectorCellDefinition
                 {
                     ItemsSource = d.PropertyDefinition.ItemsSource,
                     ItemsSourceProperty = d.PropertyDefinition.ItemsSourceProperty,

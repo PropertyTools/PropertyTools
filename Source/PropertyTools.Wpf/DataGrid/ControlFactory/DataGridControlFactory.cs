@@ -69,7 +69,7 @@ namespace PropertyTools.Wpf
         /// <returns>The display control.</returns>
         protected virtual FrameworkElement CreateDisplayControlOverride(CellDefinition d)
         {
-            var scd = d as SelectCellDefinition;
+            var scd = d as SelectorCellDefinition;
             if (scd != null)
             {
                 return this.CreateTextBlockControl(scd);
@@ -105,7 +105,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateEditControlOverride(CellDefinition d)
         {
-            var co = d as SelectCellDefinition;
+            var co = d as SelectorCellDefinition;
             if (co != null)
             {
                 return this.CreateComboBox(co);
@@ -304,7 +304,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A ComboBox.
         /// </returns>
-        protected virtual FrameworkElement CreateComboBox(SelectCellDefinition d)
+        protected virtual FrameworkElement CreateComboBox(SelectorCellDefinition d)
         {
             var c = new ComboBox
             {
@@ -358,7 +358,7 @@ namespace PropertyTools.Wpf
 
             var binding = this.CreateOneWayBinding(d);
 
-            var scd = d as SelectCellDefinition;
+            var scd = d as SelectorCellDefinition;
             if (!string.IsNullOrEmpty(scd?.DisplayMemberPath))
             {
                 binding.Path.Path += "." + scd.DisplayMemberPath;
@@ -377,7 +377,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A TextBlock.
         /// </returns>
-        protected virtual FrameworkElement CreateTextBlockControl(SelectCellDefinition d)
+        protected virtual FrameworkElement CreateTextBlockControl(SelectorCellDefinition d)
         {
             var c = new TextBlockEx
             {

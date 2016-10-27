@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SelectCellDefinition.cs" company="PropertyTools">
+// <copyright file="SelectorCellDefinition.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
@@ -15,7 +15,7 @@ namespace PropertyTools.Wpf
     /// Defines a cell that contains a selectable property.
     /// </summary>
     /// <seealso cref="PropertyTools.Wpf.CellDefinition" />
-    public class SelectCellDefinition : CellDefinition
+    public class SelectorCellDefinition : CellDefinition
     {
         /// <summary>
         /// Gets or sets a value indicating whether this instance is editable.

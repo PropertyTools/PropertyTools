@@ -1456,7 +1456,7 @@ namespace PropertyTools.Wpf
         /// <returns>The cell range.</returns>
         protected CellRange GetSelectionRange()
         {
-            return new CellRange(this.CurrentCell, this.SelectionCell);            
+            return new CellRange(this.CurrentCell, this.SelectionCell);
         }
 
         /// <summary>
@@ -1776,9 +1776,12 @@ namespace PropertyTools.Wpf
             }
 
             var cell = new CellRef(row, column);
-            this.SelectionCell = cell;
-            this.CurrentCell = cell;
-            this.ScrollIntoView(cell);
+            if (!this.HandleAutoInsert(cell))
+            {
+                this.SelectionCell = cell;
+                this.CurrentCell = cell;
+                this.ScrollIntoView(cell);
+            }
         }
 
         /// <summary>
@@ -2375,15 +2378,18 @@ namespace PropertyTools.Wpf
             }
 
             var cell = new CellRef(row, column);
-
-            this.SelectionCell = cell;
-
-            if (!shift)
+            if (!this.HandleAutoInsert(cell))
             {
-                this.CurrentCell = cell;
-            }
 
-            this.ScrollIntoView(cell);
+                this.SelectionCell = cell;
+
+                if (!shift)
+                {
+                    this.CurrentCell = cell;
+                }
+
+                this.ScrollIntoView(cell);
+            }
 
             e.Handled = true;
         }
@@ -3347,7 +3353,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles the button down event.
+        /// Handles the mouse button down event.
         /// </summary>
         /// <param name="e">The event arguments.</param>
         private void HandleButtonDown(MouseButtonEventArgs e)
@@ -3378,15 +3384,18 @@ namespace PropertyTools.Wpf
             }
             else
             {
-                var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
-
-                if (!shift)
+                if (!this.HandleAutoInsert(cellRef))
                 {
-                    this.CurrentCell = cellRef;
-                }
 
-                this.SelectionCell = cellRef;
-                this.ScrollIntoView(cellRef);
+                    var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
+                    if (!shift)
+                    {
+                        this.CurrentCell = cellRef;
+                    }
+
+                    this.SelectionCell = cellRef;
+                    this.ScrollIntoView(cellRef);
+                }
                 Mouse.OverrideCursor = this.sheetGrid.Cursor;
             }
 
@@ -3868,16 +3877,26 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Handles automatic insert of items.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <returns><c>true</c> if an item was inserted; otherwise <c>false</c>.</returns>
+        private bool HandleAutoInsert(CellRef cell)
+        {
+            if (this.AutoInsert && (cell.Row >= this.Rows || cell.Column >= this.Columns))
+            {
+                return this.InsertItem(-1);
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Handles change in current cell.
         /// </summary>
         private void CurrentCellChanged()
         {
             this.SelectedCellsChanged();
-
-            if (this.AutoInsert && (this.CurrentCell.Row >= this.Rows || this.CurrentCell.Column >= this.Columns))
-            {
-                this.InsertItem(-1);
-            }
         }
 
         /// <summary>

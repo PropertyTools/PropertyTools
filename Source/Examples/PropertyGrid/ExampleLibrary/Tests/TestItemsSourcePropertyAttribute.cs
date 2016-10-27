@@ -10,7 +10,7 @@
 namespace ExampleLibrary
 {
     using System.Collections.Generic;
-    
+
     using PropertyTools.DataAnnotations;
 
     /// <summary>
@@ -35,7 +35,8 @@ namespace ExampleLibrary
                                 new Employee { Name = "Amy E. Alberts", Type = "CSG", EmployeeNumber = 99222 },
                                 new Employee { Name = "Stefan Hesse", Type = "FTE", EmployeeNumber = -1 },
                             };
-            this.SelectedEmployee = 12345;
+            this.SelectedEmployeeNumber = 12345;
+            this.SelectedEmployee = this.Employees[2];
         }
 
         [Browsable(false)]
@@ -52,10 +53,21 @@ namespace ExampleLibrary
         [Browsable(false)]
         public List<Employee> Employees { get; set; }
 
-        [Category("SelectedValuePath = \"EmployeeNumber\"")]
+        [Category("SelectedValuePath")]
         [ItemsSourceProperty("Employees")]
         [SelectedValuePath("EmployeeNumber")]
-        public int SelectedEmployee { get; set; }
+        public int SelectedEmployeeNumber { get; set; }
+
+        [Category("SelectedValuePath / DisplayMemberPath")]
+        [ItemsSourceProperty("Employees")]
+        [DisplayMemberPath("Name")]
+        [SelectedValuePath("EmployeeNumber")]
+        public int SelectedEmployeeNumber2 { get; set; }
+
+        [Category("DisplayMemberPath")]
+        [ItemsSourceProperty("Employees")]
+        [DisplayMemberPath("EmployeeNumber")]
+        public Employee SelectedEmployee { get; set; }
 
         public override string ToString()
         {
@@ -72,7 +84,7 @@ namespace ExampleLibrary
 
             public override string ToString()
             {
-                return string.Format("{0} ({1})", this.Name, this.Type);
+                return $"{this.Name} ({this.Type}) #{this.EmployeeNumber}";
             }
         }
     }

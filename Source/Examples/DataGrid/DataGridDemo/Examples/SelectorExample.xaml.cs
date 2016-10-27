@@ -82,6 +82,7 @@ namespace DataGridDemo
                 }
 
                 [ItemsSourceProperty(nameof(Cities2))]
+                [DisplayMemberPath("Name")]
                 public City City3
                 {
                     get

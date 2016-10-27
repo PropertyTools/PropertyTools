@@ -100,6 +100,14 @@ namespace PropertyTools.Wpf
         public string SelectedValuePath { get; set; }
 
         /// <summary>
+        /// Gets or sets the display member path.
+        /// </summary>
+        /// <value>
+        /// The display member path.
+        /// </value>
+        public string DisplayMemberPath { get; set; }
+
+        /// <summary>
         /// Gets or sets the max length (for TextBox).
         /// </summary>
         public int MaxLength { get; set; }

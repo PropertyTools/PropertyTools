@@ -323,6 +323,7 @@ namespace PropertyTools.Wpf
             }
 
             c.SelectedValuePath = property.SelectedValuePath;
+            c.DisplayMemberPath = property.DisplayMemberPath;
 
             c.SetBinding(property.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, property.CreateBinding());
 

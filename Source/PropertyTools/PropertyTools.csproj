@@ -59,6 +59,7 @@
     <Compile Include="DataAnnotations\DefaultExtensionPropertyAttribute.cs" />
     <Compile Include="DataAnnotations\DescriptionAttribute.cs" />
     <Compile Include="DataAnnotations\DirectoryPathAttribute.cs" />
+    <Compile Include="DataAnnotations\DisplayMemberPathAttribute.cs" />
     <Compile Include="DataAnnotations\DisplayNameAttribute.cs" />
     <Compile Include="DataAnnotations\EasyInsertAttribute.cs" />
     <Compile Include="DataAnnotations\EnableByAttribute.cs" />

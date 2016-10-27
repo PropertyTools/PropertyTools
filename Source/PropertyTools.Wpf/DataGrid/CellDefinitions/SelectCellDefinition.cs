@@ -48,5 +48,13 @@ namespace PropertyTools.Wpf
         /// The selected value path.
         /// </value>
         public string SelectedValuePath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the display member path.
+        /// </summary>
+        /// <value>
+        /// The display member path.
+        /// </value>
+        public string DisplayMemberPath { get; set; }
     }
 }

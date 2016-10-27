@@ -387,6 +387,12 @@ namespace PropertyTools.Wpf
                 pd.SelectedValuePath = svpa.Path;
             }
 
+            var dmpa = descriptor.GetFirstAttributeOrDefault<DisplayMemberPathAttribute>();
+            if (dmpa != null)
+            {
+                pd.DisplayMemberPath = dmpa.Path;
+            }
+
             var eba = descriptor.GetFirstAttributeOrDefault<EnableByAttribute>();
             if (eba != null)
             {

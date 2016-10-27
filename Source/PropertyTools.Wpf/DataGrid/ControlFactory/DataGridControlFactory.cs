@@ -328,6 +328,7 @@ namespace PropertyTools.Wpf
             binding.NotifyOnSourceUpdated = true;
             c.SetBinding(d.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);
             c.SelectedValuePath = d.SelectedValuePath;
+            c.DisplayMemberPath = d.DisplayMemberPath;
             this.SetIsEnabledBinding(d, c);
             this.SetBackgroundBinding(d, c);
             return c;

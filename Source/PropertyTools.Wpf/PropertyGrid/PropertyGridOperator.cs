@@ -417,6 +417,12 @@ namespace PropertyTools.Wpf
                 pi.SelectedValuePath = svpa.Path;
             }
 
+            var dmpa = attribute as DisplayMemberPathAttribute;
+            if (dmpa != null)
+            {
+                pi.DisplayMemberPath = dmpa.Path;
+            }
+
             var f = attribute as FontAttribute;
             if (f != null)
             {

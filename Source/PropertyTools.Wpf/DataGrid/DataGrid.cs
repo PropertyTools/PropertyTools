@@ -3116,20 +3116,18 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Enumerate the items in the specified cell range. This is used to update the SelectedItems property.
         /// </summary>
-        /// <param name="cell0">The cell 0.</param>
-        /// <param name="cell1">The cell 1.</param>
+        /// <param name="range">The range.</param>
         /// <returns>
         /// The items enumeration.
         /// </returns>
-        private IEnumerable EnumerateItems(CellRef cell0, CellRef cell1)
+        private IEnumerable EnumerateItems(CellRange range)
         {
+            // TODO: this should use the operator
             var list = this.ItemsSource;
             if (list != null)
             {
-                var index0 = this.ItemsInRows ? cell0.Row : cell0.Column;
-                var index1 = this.ItemsInRows ? cell1.Row : cell1.Column;
-                var min = Math.Min(index0, index1);
-                var max = Math.Max(index0, index1);
+                var min = this.ItemsInRows ? range.TopRow : range.LeftColumn;
+                var max = this.ItemsInRows ? range.BottomRow : range.RightColumn;
                 for (var index = min; index <= max; index++)
                 {
                     if (index >= 0 && index < list.Count)
@@ -3950,7 +3948,7 @@ namespace PropertyTools.Wpf
             Grid.SetColumnSpan(this.autoFillSelection, cs);
             Grid.SetRowSpan(this.autoFillSelection, rs);
 
-            this.SelectedItems = this.EnumerateItems(this.CurrentCell, this.SelectionCell);
+            this.SelectedItems = this.EnumerateItems(this.GetSelectionRange());
 
             if (!this.ShowEditControl())
             {

@@ -41,12 +41,6 @@ namespace DataGridDemo
         public string Selector { get; set; }
 
         [Browsable(false)]
-        public IEnumerable<string> Items
-        {
-            get
-            {
-                return new[] { "Oslo", "Stockholm", "Copenhagen" };
-            }
-        }
+        public IEnumerable<string> Items => StandardCollections.Cities;
     }
 }

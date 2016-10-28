@@ -8,6 +8,7 @@ namespace DataGridDemo
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Windows.Media;
 
     using PropertyTools;
@@ -56,6 +57,8 @@ namespace DataGridDemo
                 this.SetValue(ref this.fruit, value, () => this.Fruit);
             }
         }
+
+        public IEnumerable<Fruit> Fruits => Enum.GetValues(typeof(Fruit)).Cast<Fruit>();
 
         public double Number
         {
@@ -169,6 +172,6 @@ namespace DataGridDemo
         }
 
         [Browsable(false)]
-        public IEnumerable<string> Items => new[] { "Oslo", "Stockholm", "Copenhagen" };
+        public IEnumerable<string> Items => StandardCollections.Cities;
     }
 }

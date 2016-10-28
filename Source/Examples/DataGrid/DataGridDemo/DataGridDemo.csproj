@@ -57,6 +57,9 @@
     <Compile Include="..\..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Examples\StandardDataGrid\GettingStartedExample.xaml.cs">
+      <DependentUpon>GettingStartedExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\SelectorExample.xaml.cs">
       <DependentUpon>SelectorExample.xaml</DependentUpon>
     </Compile>
@@ -78,6 +81,7 @@
     <Compile Include="Examples\WrapItems\BackgroundBindingSourceExample.xaml.cs">
       <DependentUpon>BackgroundBindingSourceExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\StandardCollections.cs" />
     <Compile Include="Model\ValidatableObject.cs" />
     <Compile Include="DataTypes\MassValueConverter.cs" />
     <Compile Include="Examples\WrapItems\IsEnabledBindingSourceExample.xaml.cs">
@@ -184,6 +188,10 @@
     </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
+    <Page Include="Examples\StandardDataGrid\GettingStartedExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\SelectorExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -393,6 +401,7 @@
       <Name>PropertyTools</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

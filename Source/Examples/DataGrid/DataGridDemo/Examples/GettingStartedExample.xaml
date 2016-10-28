@@ -11,7 +11,8 @@
         <p:DataGrid ItemsSource="{Binding ItemsSource}">
             <p:DataGrid.ColumnDefinitions>
                 <p:ColumnDefinition PropertyName="String" Width="2*"  Header="string"/>
-                <p:ColumnDefinition PropertyName="Integer" Width="1*" Header="integer"/>
+                <p:ColumnDefinition PropertyName="Integer" Width="1*" HorizontalAlignment="Center" Header="integer"/>
+                <p:ColumnDefinition PropertyName="Boolean" Width="1*" HorizontalAlignment="Center" Header="boolean"/>
                 <p:ColumnDefinition PropertyName="Fruit" Width="1*" Header="enum"/>
                 <p:ColumnDefinition PropertyName="Selector" Width="1*" Header="selector"/>
                 <p:ColumnDefinition PropertyName="Color" Width="1*" Header="Color"/>

@@ -1,0 +1,61 @@
+﻿<Window x:Class="DataGridDemo.StandardDataGrid.GettingStartedExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:dataGridDemo="clr-namespace:DataGridDemo"
+        Title="Standard WPF DataGrid" Height="450" Width="900">
+    <Window.Resources>
+        <p:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <dataGridDemo:ExampleViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <DataGrid ItemsSource="{Binding ItemsSource}" AutoGenerateColumns="False" SelectionUnit="Cell" SelectionMode="Extended">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding String}" Header="string" Width="2*"/>
+                <DataGridTextColumn Binding="{Binding Integer}" Header="integer" Width="1*"/>
+                <DataGridTemplateColumn Header="enum" Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding Fruit}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <ComboBox Visibility="Hidden"/> <!-- Get the height from the combo box -->
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedValue="{Binding Fruit}" ItemsSource="{Binding Fruits}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Boolean}" Header="boolean"/>
+                <DataGridTemplateColumn Header="selector" Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Selector}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox  SelectedValue="{Binding Selector}" ItemsSource="{Binding Items}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="color" Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Rectangle Width="12" Height="12" Stroke="Black" StrokeThickness="1"  Fill="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <p:ColorPicker SelectedColor="{Binding Color}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

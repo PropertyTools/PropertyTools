@@ -30,33 +30,22 @@
 
         public ICommand ResetCommand { get; }
 
-        private static void CreateObjects(ICollection<ExampleObject> list, int n = 50)
+        private static void CreateObjects(ICollection<ExampleObject> list, int n = 10)
         {
+            var r = new Random(0);
             for (int i = 0; i < n; i++)
             {
                 list.Add(
                     new ExampleObject
                     {
-                        Boolean = true,
-                        DateTime = DateTime.Now,
-                        Color = Colors.Blue,
-                        Number = Math.PI,
-                        Fruit = Fruit.Apple,
-                        Integer = 7,
+                        Boolean = r.Next(2) == 0,
+                        DateTime = DateTime.Now.AddDays(r.Next(365)),
+                        Color = Color.FromArgb((byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255)),
+                        Number = r.Next(),
+                        Fruit = (Fruit)r.Next(5),
+                        Integer = r.Next(1024),
                         Selector = null,
-                        String = "Hello"
-                    });
-                list.Add(
-                    new ExampleObject
-                    {
-                        Boolean = false,
-                        DateTime = DateTime.Now.AddDays(-1),
-                        Color = Colors.Gold,
-                        Number = Math.E,
-                        Fruit = Fruit.Pear,
-                        Integer = -1,
-                        Selector = null,
-                        String = "World"
+                        String = StandardCollections.GenerateName()
                     });
             }
         }

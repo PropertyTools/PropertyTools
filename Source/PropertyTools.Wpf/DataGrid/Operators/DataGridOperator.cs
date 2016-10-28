@@ -391,7 +391,7 @@ namespace PropertyTools.Wpf
         {
             if (descriptor == null)
             {
-                throw new ArgumentException(nameof(descriptor));
+                return;
             }
 
             if (descriptor.GetAttributeValue<System.ComponentModel.ReadOnlyAttribute, bool>(a => a.IsReadOnly)

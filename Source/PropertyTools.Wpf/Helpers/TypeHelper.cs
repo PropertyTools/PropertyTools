@@ -90,6 +90,8 @@ namespace PropertyTools.Wpf
             return null;
         }
 
+        private static readonly Type GenericEnumerable = typeof(IEnumerable<>);
+
         /// <summary>
         /// Gets the type of the items in the specified enumeration.
         /// </summary>
@@ -99,7 +101,13 @@ namespace PropertyTools.Wpf
         /// </returns>
         public static Type GetItemType(IEnumerable enumerable)
         {
-            return enumerable != null ? enumerable.AsQueryable().ElementType : null;
+            if (!GenericEnumerable.IsInstanceOfType(enumerable))
+            {
+                var first = enumerable.Cast<object>().FirstOrDefault();
+                return first?.GetType();
+            }
+
+            return enumerable?.AsQueryable().ElementType;
         }
 
         /// <summary>

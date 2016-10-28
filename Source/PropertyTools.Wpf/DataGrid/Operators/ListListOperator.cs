@@ -18,16 +18,38 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class ListListOperator : DataGridOperator
     {
+        /// <summary>
+        /// Determines whether columns can be deleted.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns>
+        /// <c>true</c> if columns can be deleted; otherwise <c>false</c>.
+        /// </returns>
         public override bool CanDeleteColumns(DataGrid owner)
         {
             return true;
         }
 
+        /// <summary>
+        /// Determines whether columns can be inserted.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns>
+        /// <c>true</c> if columns can be inserted; otherwise <c>false</c>.
+        /// </returns>
         public override bool CanInsertColumns(DataGrid owner)
         {
             return true;
         }
 
+        /// <summary>
+        /// Deletes the item at the specified index.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <param name="index">The index.</param>
+        /// <returns>
+        /// <c>true</c> if rows can be inserted; otherwise <c>false</c>.
+        /// </returns>
         protected override bool DeleteItem(DataGrid owner, int index)
         {
             var list = owner.ItemsSource;
@@ -56,6 +78,12 @@ namespace PropertyTools.Wpf
             return true;
         }
 
+        /// <summary>
+        /// Deletes the columns.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <param name="index">The index.</param>
+        /// <param name="n">The number of columns to delete.</param>
         public override void DeleteColumns(DataGrid owner, int index, int n)
         {
             if (owner.ColumnHeadersSource != null)

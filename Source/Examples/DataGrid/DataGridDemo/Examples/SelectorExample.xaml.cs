@@ -203,6 +203,11 @@ namespace DataGridDemo
                     {
                         return string.Equals(this.Name, (obj as Animal)?.Name);
                     }
+
+                    public override int GetHashCode()
+                    {
+                        return this.Name.GetHashCode();
+                    }
                 }
             }
         }

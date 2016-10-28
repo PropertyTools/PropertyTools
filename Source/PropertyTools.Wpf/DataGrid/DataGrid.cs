@@ -1265,7 +1265,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets or sets a value indicating whether to wrap items in the defined columns.
         /// </summary>
-        /// <value><c>true</c> if [wrap items]; otherwise, <c>false</c> .</value>
+        /// <value><c>true</c> if items should be wrapped; otherwise, <c>false</c> .</value>
         public bool WrapItems
         {
             get
@@ -2575,6 +2575,11 @@ namespace PropertyTools.Wpf
             if (TypeHelper.IsIListIList(list.GetType()))
             {
                 return new ListListOperator();
+            }
+
+            if (this.WrapItems)
+            {
+                return new WrapItemsOperator();
             }
 
             return new ListOperator();
@@ -4272,16 +4277,8 @@ namespace PropertyTools.Wpf
             // Determine if columns or rows are defined
             this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
 
-            var n = this.ItemsSource.Count;
-            var m = this.PropertyDefinitions.Count;
-
-            if (this.WrapItems)
-            {
-                n /= m;
-            }
-
-            var rows = this.ItemsInRows ? n : m;
-            var columns = this.ItemsInRows ? m : n;
+            var rows = this.Operator.GetRowCount(this);
+            var columns = this.Operator.GetColumnCount(this);
 
             var visibility = rows >= 0 ? Visibility.Visible : Visibility.Hidden;
 

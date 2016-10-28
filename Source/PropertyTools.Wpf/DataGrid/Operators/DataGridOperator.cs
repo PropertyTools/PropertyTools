@@ -190,6 +190,32 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the number of rows.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns>
+        /// The number.
+        /// </returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public virtual int GetRowCount(DataGrid owner)
+        {
+            return owner.ItemsInRows ? owner.ItemsSource.Count : owner.PropertyDefinitions.Count;
+        }
+
+        /// <summary>
+        /// Gets the number of columns.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <returns>
+        /// The number.
+        /// </returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public virtual int GetColumnCount(DataGrid owner)
+        {
+            return owner.ItemsInRows ? owner.PropertyDefinitions.Count : owner.ItemsSource.Count;
+        }
+
+        /// <summary>
         /// Gets the value in the specified cell.
         /// </summary>
         /// <param name="owner">The owner.</param>

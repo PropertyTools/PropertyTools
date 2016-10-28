@@ -1,8 +1,8 @@
-﻿<Window x:Class="DataGridDemo.ArrayOfObjectExample"
+﻿<Window x:Class="DataGridDemo.ObservableCollectionOfObjectExample"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
-        Title="object[]" Height="450" Width="300">
+        Title="WrapItems: ObservableCollection&lt;object&gt;" Height="450" Width="300">
     <Grid>
         <p:DataGrid ItemsSource="{Binding Items}" WrapItems="True">
             <p:DataGrid.ColumnDefinitions>

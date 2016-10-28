@@ -169,5 +169,19 @@ namespace PropertyTools.Wpf
         /// <param name="index">The index.</param>
         /// <param name="n">The number of rows to insert.</param>
         void InsertRows(DataGrid owner, int index, int n);
+
+        /// <summary>
+        /// Gets the number of rows.
+        /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <returns>The number.</returns>
+        int GetRowCount(DataGrid dataGrid);
+
+        /// <summary>
+        /// Gets the number of columns.
+        /// </summary>
+        /// <param name="dataGrid">The data grid.</param>
+        /// <returns>The number.</returns>
+        int GetColumnCount(DataGrid dataGrid);
     }
 }

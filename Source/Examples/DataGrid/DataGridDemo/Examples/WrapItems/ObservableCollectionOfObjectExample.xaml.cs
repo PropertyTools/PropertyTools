@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace DataGridDemo
 {
     using System.Collections.ObjectModel;

@@ -97,7 +97,7 @@
     <Compile Include="Examples\WrapItems\MultitypeMatrixExample.xaml.cs">
       <DependentUpon>MultitypeMatrixExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\ArrayOfObjectExample.xaml.cs">
+    <Compile Include="Examples\WrapItems\ArrayOfObjectExample.xaml.cs">
       <DependentUpon>ArrayOfObjectExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\EnableByPropertyExample.xaml.cs">
@@ -118,7 +118,7 @@
     <Compile Include="Examples\ObservableCollectionOfExampleObjectExample.xaml.cs">
       <DependentUpon>ObservableCollectionOfExampleObjectExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\ObservableCollectionOfObjectExample.xaml.cs">
+    <Compile Include="Examples\WrapItems\ObservableCollectionOfObjectExample.xaml.cs">
       <DependentUpon>ObservableCollectionOfObjectExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\CustomColumnsExample.xaml.cs">
@@ -232,7 +232,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\ObservableCollectionOfObjectExample.xaml">
+    <Page Include="Examples\WrapItems\ObservableCollectionOfObjectExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -242,7 +242,7 @@
     <Compile Include="Examples\TemplateExample.xaml.cs">
       <DependentUpon>TemplateExample.xaml</DependentUpon>
     </Compile>
-    <Page Include="Examples\ArrayOfObjectExample.xaml">
+    <Page Include="Examples\WrapItems\ArrayOfObjectExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

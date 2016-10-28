@@ -198,11 +198,6 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual int GetItemIndex(DataGrid owner, CellRef cell)
         {
-            if (owner.WrapItems)
-            {
-                return owner.ItemsInRows ? (cell.Row * owner.Columns) + cell.Column : (cell.Column * owner.Rows) + cell.Row;
-            }
-
             return owner.ItemsInRows ? cell.Row : cell.Column;
         }
 

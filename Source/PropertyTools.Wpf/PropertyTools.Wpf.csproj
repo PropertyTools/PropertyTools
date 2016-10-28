@@ -191,6 +191,7 @@
     <Compile Include="DataGrid\CellRange.cs" />
     <Compile Include="DataGrid\DataGridCommands.cs" />
     <Compile Include="DataGrid\IDataGridOperator.cs" />
+    <Compile Include="DataGrid\Operators\WrapItemsOperator.cs" />
     <Compile Include="Utilities\BindingUtilities.cs" />
     <Compile Include="DataGrid\Operators\ListListOperator.cs" />
     <Compile Include="DataGrid\Operators\DataGridOperator.cs" />

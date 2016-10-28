@@ -1280,6 +1280,14 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the collection view.
+        /// </summary>
+        /// <value>
+        /// The collection view.
+        /// </value>
+        public ICollectionView CollectionView { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether to use rows for the items.
         /// </summary>
         /// <value><c>true</c> if the items are in rows; otherwise, <c>false</c> .</value>
@@ -4274,6 +4282,9 @@ namespace PropertyTools.Wpf
 
             this.Operator.UpdatePropertyDefinitions(this);
 
+            this.CollectionView = CollectionViewSource.GetDefaultView(this.ItemsSource);
+            // this.CollectionView.SortDescriptions.Add(new SortDescription(this.PropertyDefinitions[0].PropertyName, ListSortDirection.Descending));
+            
             // Determine if columns or rows are defined
             this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
 

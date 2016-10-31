@@ -297,7 +297,7 @@ namespace PropertyTools.Wpf
             "ItemsSource",
             typeof(IList),
             typeof(DataGrid),
-            new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).UpdateGridContent()));
+            new UIPropertyMetadata(null, (d, e) => ((DataGrid)d).ItemsSourceChanged()));
 
         /// <summary>
         /// Identifies the <see cref="RowHeadersSource"/> dependency property.
@@ -594,12 +594,17 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Reference to the collection that has subscribed to the INotifyCollectionChanged event.
         /// </summary>
-        private object subscribedCollection;
+        private INotifyCollectionChanged subscribedCollection;
 
         /// <summary>
         /// The top/left control.
         /// </summary>
         private Border topLeft;
+
+        /// <summary>
+        /// Flag used for collection changed notification suspension.
+        /// </summary>
+        private bool suspendCollectionChangedNotifications;
 
         /// <summary>
         /// Initializes static members of the <see cref="DataGrid" /> class.
@@ -1929,7 +1934,7 @@ namespace PropertyTools.Wpf
                 Math.Max(range.BottomRight.Column, range.LeftColumn + columns - 1));
             var outputRange = new CellRange(range.TopLeft, bottomRight);
 
-            this.UnsubscribeNotifications();
+            this.suspendCollectionChangedNotifications = true;
 
             for (var i = range.TopRow; i <= outputRange.BottomRow; i++)
             {
@@ -1950,6 +1955,7 @@ namespace PropertyTools.Wpf
 
             // TODO: only update changed cells (or rely on bindings)
             this.UpdateGridContent();
+            this.suspendCollectionChangedNotifications = false;
 
             return outputRange;
         }
@@ -3448,6 +3454,11 @@ namespace PropertyTools.Wpf
                 throw new ArgumentNullException(nameof(e));
             }
 
+            if (this.suspendCollectionChangedNotifications)
+            {
+                return;
+            }
+
             // TODO: update only changed rows/columns
             this.Dispatcher.Invoke(this.UpdateGridContent);
         }
@@ -3850,34 +3861,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Subscribes to collection changed notifications.
-        /// </summary>
-        private void SubscribeToNotifications()
-        {
-            var collection = this.ItemsSource as INotifyCollectionChanged;
-            if (collection != null)
-            {
-                CollectionChangedEventManager.AddListener(collection, this);
-            }
-
-            this.subscribedCollection = this.ItemsSource;
-        }
-
-        /// <summary>
-        /// Unsubscribes the collection changed notifications.
-        /// </summary>
-        private void UnsubscribeNotifications()
-        {
-            var ncc = this.subscribedCollection as INotifyCollectionChanged;
-            if (ncc != null)
-            {
-                CollectionChangedEventManager.RemoveListener(ncc, this);
-            }
-
-            this.subscribedCollection = null;
-        }
-
-        /// <summary>
         /// Sets the width of the specified column.
         /// </summary>
         /// <param name="column">The column to change.</param>
@@ -4254,12 +4237,32 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Handles changes in the <see cref="ItemsSource" /> property.
+        /// </summary>
+        private void ItemsSourceChanged()
+        {
+            if (this.subscribedCollection != null)
+            {
+                CollectionChangedEventManager.RemoveListener(this.subscribedCollection, this);
+                this.subscribedCollection = null;
+            }
+
+            this.CollectionView = this.ItemsSource != null ? CollectionViewSource.GetDefaultView(this.ItemsSource) : null;
+
+            this.UpdateGridContent();
+
+            if (this.CollectionView != null)
+            {
+                CollectionChangedEventManager.AddListener(this.CollectionView, this);
+                this.subscribedCollection = this.CollectionView;
+            }
+        }
+
+        /// <summary>
         /// Updates all the UIElements of the grid (both cells, headers, row and column lines).
         /// </summary>
         private void UpdateGridContent()
         {
-            this.UnsubscribeNotifications();
-
             if (this.sheetGrid == null)
             {
                 // return if the template has not yet been applied
@@ -4282,9 +4285,8 @@ namespace PropertyTools.Wpf
 
             this.Operator.UpdatePropertyDefinitions(this);
 
-            this.CollectionView = CollectionViewSource.GetDefaultView(this.ItemsSource);
             // this.CollectionView.SortDescriptions.Add(new SortDescription(this.PropertyDefinitions[0].PropertyName, ListSortDirection.Descending));
-            
+
             // Determine if columns or rows are defined
             this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
 
@@ -4308,8 +4310,6 @@ namespace PropertyTools.Wpf
 
             this.UpdateSelectionVisibility();
             this.ShowEditControl();
-
-            this.SubscribeToNotifications();
 
             // Update column width when all the controls are loaded.
             this.Dispatcher.BeginInvoke(new Action(this.UpdateGridSize), DispatcherPriority.Loaded);

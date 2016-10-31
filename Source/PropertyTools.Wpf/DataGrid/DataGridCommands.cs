@@ -25,6 +25,9 @@ namespace PropertyTools.Wpf
             DeleteRows = new RoutedCommand("DeleteRows", typeof(DataGrid));
             InsertColumns = new RoutedCommand("InsertColumns", typeof(DataGrid));
             DeleteColumns = new RoutedCommand("DeleteColumns", typeof(DataGrid));
+            SortAscending = new RoutedCommand("SortAscending", typeof(DataGrid));
+            SortDescending = new RoutedCommand("SortDescending", typeof(DataGrid));
+            ClearSort = new RoutedCommand("ClearSort", typeof(DataGrid));
         }
 
         /// <summary>
@@ -50,5 +53,23 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The insert rows command.</value>
         public static ICommand InsertRows { get; }
+
+        /// <summary>
+        /// Gets the sort ascending command.
+        /// </summary>
+        /// <value>The sort ascending command.</value>
+        public static ICommand SortAscending { get; }
+
+        /// <summary>
+        /// Gets the sort descending command.
+        /// </summary>
+        /// <value>The sort descending command.</value>
+        public static ICommand SortDescending { get; }
+
+        /// <summary>
+        /// Gets the clear sort command.
+        /// </summary>
+        /// <value>The clear sort command.</value>
+        public static ICommand ClearSort { get; }
     }
 }

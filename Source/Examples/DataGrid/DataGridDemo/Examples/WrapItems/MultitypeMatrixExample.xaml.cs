@@ -158,7 +158,15 @@ namespace DataGridDemo
 
             int IList.IndexOf(object value)
             {
-                throw new NotImplementedException();
+                for (int i = 0; i < this.values.Length; i++)
+                {
+                    if (object.ReferenceEquals(this.values[i], value))
+                    {
+                        return i;
+                    }
+                }
+
+                return -1;
             }
 
             void IList<object>.Insert(int index, object item)

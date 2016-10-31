@@ -25,6 +25,7 @@ namespace PropertyTools.Wpf
         protected PropertyDefinition()
         {
             this.MaxLength = int.MaxValue;
+            this.CanSort = true;
         }
 
         /// <summary>
@@ -148,5 +149,13 @@ namespace PropertyTools.Wpf
         /// The background property.
         /// </value>
         public string BackgroundProperty { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the items can be sorted by this column/row.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if items can be sorted; otherwise, <c>false</c>.
+        /// </value>
+        public bool CanSort { get; set; }
     }
 }

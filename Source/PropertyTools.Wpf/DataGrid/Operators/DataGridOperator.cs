@@ -216,6 +216,19 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Determines whether items can be sorted by the specified column/row index.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <param name="index">The column index if items are in rows, otherwise the row index.</param>
+        /// <returns>
+        ///   <c>true</c> if the items can be sorted; <c>false</c> otherwise.
+        /// </returns>
+        public virtual bool CanSort(DataGrid owner, int index)
+        {
+            return owner.PropertyDefinitions[index].CanSort;
+        }
+
+        /// <summary>
         /// Gets the value in the specified cell.
         /// </summary>
         /// <param name="owner">The owner.</param>

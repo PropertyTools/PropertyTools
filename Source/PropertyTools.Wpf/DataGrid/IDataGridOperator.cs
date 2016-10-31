@@ -183,5 +183,15 @@ namespace PropertyTools.Wpf
         /// <param name="dataGrid">The data grid.</param>
         /// <returns>The number.</returns>
         int GetColumnCount(DataGrid dataGrid);
+
+        /// <summary>
+        /// Determines whether items can be sorted by the specified column/row index.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <param name="index">The column index if items are in rows, otherwise the row index.</param>
+        /// <returns>
+        ///   <c>true</c> if the items can be sorted; <c>false</c> otherwise.
+        /// </returns>
+        bool CanSort(DataGrid owner, int index);
     }
 }

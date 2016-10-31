@@ -31,6 +31,10 @@
                 <ContextMenu>
                     <MenuItem Header="Insert" Command="local:DataGridCommands.InsertColumns"/>
                     <MenuItem Header="Delete" Command="local:DataGridCommands.DeleteColumns"/>
+                    <Separator/>
+                    <MenuItem Header="Sort smallest to largest" Command="local:DataGridCommands.SortAscending"/>
+                    <MenuItem Header="Sort largest to smallest" Command="local:DataGridCommands.SortDescending"/>
+                    <MenuItem Header="Do not sort" Command="local:DataGridCommands.ClearSort"/>
                 </ContextMenu>
             </Setter.Value>
         </Setter>

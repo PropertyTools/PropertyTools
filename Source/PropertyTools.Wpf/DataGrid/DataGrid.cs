@@ -512,11 +512,6 @@ namespace PropertyTools.Wpf
         private Grid columnGrid;
 
         /// <summary>
-        /// The is selecting rows.
-        /// </summary>
-        private bool isSelectingRows;
-
-        /// <summary>
         /// The row grid control.
         /// </summary>
         private Grid rowGrid;
@@ -550,16 +545,6 @@ namespace PropertyTools.Wpf
         /// The end pressed.
         /// </summary>
         private bool endPressed;
-
-        /// <summary>
-        /// The is capturing.
-        /// </summary>
-        private bool isCapturing;
-
-        /// <summary>
-        /// The is selecting columns.
-        /// </summary>
-        private bool isSelectingColumns;
 
         /// <summary>
         /// The sheet grid control.
@@ -641,6 +626,21 @@ namespace PropertyTools.Wpf
                    DataGridCommands.DeleteColumns,
                     (s, e) => this.DeleteColumns(),
                     (s, e) => e.CanExecute = this.CanDeleteColumns));
+            this.CommandBindings.Add(
+                new CommandBinding(
+                   DataGridCommands.SortAscending,
+                    (s, e) => this.Sort(ListSortDirection.Ascending),
+                    (s, e) => e.CanExecute = this.CanSort()));
+            this.CommandBindings.Add(
+                new CommandBinding(
+                   DataGridCommands.SortDescending,
+                    (s, e) => this.Sort(ListSortDirection.Descending),
+                    (s, e) => e.CanExecute = this.CanSort()));
+            this.CommandBindings.Add(
+                new CommandBinding(
+                   DataGridCommands.ClearSort,
+                    (s, e) => this.ClearSort(),
+                    (s, e) => e.CanExecute = this.CanSort()));
         }
 
         /// <summary>
@@ -1864,16 +1864,16 @@ namespace PropertyTools.Wpf
             this.rowScrollViewer.ScrollChanged += this.RowScrollViewerScrollChanged;
             this.columnScrollViewer.ScrollChanged += this.ColumnScrollViewerScrollChanged;
 
-            this.topLeft.MouseLeftButtonDown += this.TopLeftMouseLeftButtonDown;
-            this.autoFillBox.MouseLeftButtonDown += this.AutoFillBoxMouseLeftButtonDown;
-            this.columnGrid.MouseLeftButtonDown += this.ColumnGridMouseLeftButtonDown;
+            this.topLeft.MouseDown += this.TopLeftMouseDown;
+            this.autoFillBox.MouseLeftButtonDown += this.AutoFillBoxMouseDown;
+            this.columnGrid.MouseDown += this.ColumnGridMouseDown;
             this.columnGrid.MouseMove += this.ColumnGridMouseMove;
-            this.columnGrid.MouseLeftButtonUp += this.ColumnGridMouseLeftButtonUp;
-            this.rowGrid.MouseLeftButtonDown += this.RowGridMouseLeftButtonDown;
+            this.columnGrid.MouseUp += this.ColumnGridMouseUp;
+            this.rowGrid.MouseDown += this.RowGridMouseDown;
             this.rowGrid.MouseMove += this.RowGridMouseMove;
-            this.rowGrid.MouseLeftButtonUp += this.RowGridMouseLeftButtonUp;
+            this.rowGrid.MouseUp += this.RowGridMouseUp;
             this.sheetScrollViewer.SizeChanged += (s, e) => this.UpdateGridSize();
-            this.sheetGrid.MouseLeftButtonDown += this.SheetGridMouseLeftButtonDown;
+            this.sheetGrid.MouseDown += this.SheetGridMouseDown;
 
             this.autoFiller = new AutoFiller(this.GetCellValue, this.TrySetCellValue);
 
@@ -2433,7 +2433,49 @@ namespace PropertyTools.Wpf
         {
             this.Focus();
             base.OnMouseLeftButtonDown(e);
-            this.HandleButtonDown(e);
+
+            var pos = e.GetPosition(this.sheetGrid);
+            var cellRef = this.GetCell(pos);
+
+            if (cellRef.Column == -1 || cellRef.Row == -1)
+            {
+                return;
+            }
+
+            if (cellRef.Row >= this.Rows && (!this.CanInsertRows || !this.EasyInsert))
+            {
+                return;
+            }
+
+            if (cellRef.Column > this.Columns && (!this.CanInsertColumns || !this.EasyInsert))
+            {
+                return;
+            }
+
+            if (this.autoFillSelection.Visibility == Visibility.Visible)
+            {
+                this.AutoFillCell = cellRef;
+                Mouse.OverrideCursor = this.autoFillBox.Cursor;
+                this.autoFillToolTip.IsOpen = true;
+            }
+            else
+            {
+                if (!this.HandleAutoInsert(cellRef))
+                {
+
+                    var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
+                    if (!shift)
+                    {
+                        this.CurrentCell = cellRef;
+                    }
+
+                    this.SelectionCell = cellRef;
+                    this.ScrollIntoView(cellRef);
+                }
+                Mouse.OverrideCursor = this.sheetGrid.Cursor;
+            }
+
+            this.CaptureMouse();
             e.Handled = true;
         }
 
@@ -2445,7 +2487,6 @@ namespace PropertyTools.Wpf
         {
             this.OnMouseUp(e);
 
-            this.isCapturing = false;
             this.ReleaseMouseCapture();
             Mouse.OverrideCursor = null;
 
@@ -2466,7 +2507,7 @@ namespace PropertyTools.Wpf
         {
             base.OnMouseMove(e);
 
-            if (!this.isCapturing)
+            if (!this.IsMouseCaptured)
             {
                 return;
             }
@@ -2922,22 +2963,22 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles mouse left button down events on the auto fill box.
+        /// Handles mouse down events on the auto fill box.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void AutoFillBoxMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void AutoFillBoxMouseDown(object sender, MouseButtonEventArgs e)
         {
             // Show the auto-fill selection border
             this.autoFillSelection.Visibility = Visibility.Visible;
         }
 
         /// <summary>
-        /// Handles mouse left button down events on the column grid.
+        /// Handles mouse down events on the column grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void ColumnGridMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ColumnGridMouseDown(object sender, MouseButtonEventArgs e)
         {
             this.Focus();
             var column = this.GetCell(e.GetPosition(this.columnGrid)).Column;
@@ -2949,19 +2990,18 @@ namespace PropertyTools.Wpf
                 this.ScrollIntoView(this.CurrentCell);
             }
 
-            this.isSelectingColumns = true;
+            this.columnGrid.CaptureMouse();
             e.Handled = true;
         }
 
         /// <summary>
-        /// Handles mouse left button up events on the column grid.
+        /// Handles mouse up events on the column grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void ColumnGridMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void ColumnGridMouseUp(object sender, MouseButtonEventArgs e)
         {
             this.columnGrid.ReleaseMouseCapture();
-            this.isSelectingColumns = false;
         }
 
         /// <summary>
@@ -2971,7 +3011,7 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         private void ColumnGridMouseMove(object sender, MouseEventArgs e)
         {
-            if (!this.isSelectingColumns)
+            if (!this.columnGrid.IsMouseCaptured)
             {
                 return;
             }
@@ -3130,6 +3170,52 @@ namespace PropertyTools.Wpf
             }
 
             this.ScrollIntoView(this.CurrentCell);
+        }
+
+        public bool IsSortingAscending => true;
+        public bool IsSortingDescending => false;
+
+        /// <summary>
+        /// Clears the sort descriptions.
+        /// </summary>
+        private void ClearSort()
+        {
+            this.CollectionView.SortDescriptions.Clear();
+        }
+
+        /// <summary>
+        /// Sorts the selected columns/rows in the specified direction.
+        /// </summary>
+        /// <param name="direction">The sort direction.</param>
+        /// <param name="append">Append the sort description if set to <c>true</c>.</param>
+        private void Sort(ListSortDirection direction, bool append = false)
+        {
+            var index = this.ItemsInRows ? this.CurrentCell.Column : this.CurrentCell.Row;
+            var propertyName = this.PropertyDefinitions[index].PropertyName;
+
+            if (!append)
+            {
+                this.CollectionView.SortDescriptions.Clear();
+            }
+
+            try
+            {
+                this.CollectionView.SortDescriptions.Add(new SortDescription(propertyName, direction));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the current column/row can be sorted.
+        /// </summary>
+        /// <returns></returns>
+        private bool CanSort()
+        {
+            var index = this.ItemsInRows ? this.CurrentCell.Column : this.CurrentCell.Row;
+            return this.CollectionView != null && this.Operator.CanSort(this, index);
         }
 
         /// <summary>
@@ -3370,57 +3456,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles the mouse button down event.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        private void HandleButtonDown(MouseButtonEventArgs e)
-        {
-            var pos = e.GetPosition(this.sheetGrid);
-            var cellRef = this.GetCell(pos);
-
-            if (cellRef.Column == -1 || cellRef.Row == -1)
-            {
-                return;
-            }
-
-            if (cellRef.Row >= this.Rows && (!this.CanInsertRows || !this.EasyInsert))
-            {
-                return;
-            }
-
-            if (cellRef.Column > this.Columns && (!this.CanInsertColumns || !this.EasyInsert))
-            {
-                return;
-            }
-
-            if (this.autoFillSelection.Visibility == Visibility.Visible)
-            {
-                this.AutoFillCell = cellRef;
-                Mouse.OverrideCursor = this.autoFillBox.Cursor;
-                this.autoFillToolTip.IsOpen = true;
-            }
-            else
-            {
-                if (!this.HandleAutoInsert(cellRef))
-                {
-
-                    var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
-                    if (!shift)
-                    {
-                        this.CurrentCell = cellRef;
-                    }
-
-                    this.SelectionCell = cellRef;
-                    this.ScrollIntoView(cellRef);
-                }
-                Mouse.OverrideCursor = this.sheetGrid.Cursor;
-            }
-
-            this.CaptureMouse();
-            this.isCapturing = true;
-        }
-
-        /// <summary>
         /// Inserts columns at the selected column.
         /// </summary>
         private void InsertColumns()
@@ -3464,11 +3499,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles mouse left button down events on the row grid.
+        /// Handles mouse down events on the row grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void RowGridMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void RowGridMouseDown(object sender, MouseButtonEventArgs e)
         {
             this.Focus();
 
@@ -3481,20 +3516,18 @@ namespace PropertyTools.Wpf
                 this.ScrollIntoView(this.CurrentCell);
             }
 
-            this.isSelectingRows = true;
             this.rowGrid.CaptureMouse();
             e.Handled = true;
         }
 
         /// <summary>
-        /// Handles mouse left button up events on the row grid.
+        /// Handles mouse up events on the row grid.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void RowGridMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void RowGridMouseUp(object sender, MouseButtonEventArgs e)
         {
             this.rowGrid.ReleaseMouseCapture();
-            this.isSelectingRows = false;
         }
 
         /// <summary>
@@ -3504,7 +3537,7 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         private void RowGridMouseMove(object sender, MouseEventArgs e)
         {
-            if (!this.isSelectingRows)
+            if (!this.rowGrid.IsMouseCaptured)
             {
                 return;
             }
@@ -3645,11 +3678,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles mouse left button down on the grid sheet.
+        /// Handles mouse down events on the grid sheet.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void SheetGridMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void SheetGridMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
             {
@@ -3849,11 +3882,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles mouse left button down events on the top/left selection control.
+        /// Handles mouse down events on the top/left selection control.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void TopLeftMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TopLeftMouseDown(object sender, MouseButtonEventArgs e)
         {
             this.Focus();
             this.SelectAll();
@@ -4247,7 +4280,15 @@ namespace PropertyTools.Wpf
                 this.subscribedCollection = null;
             }
 
-            this.CollectionView = this.ItemsSource != null ? CollectionViewSource.GetDefaultView(this.ItemsSource) : null;
+            if (this.ItemsSource != null)
+            {
+                var source = new CollectionViewSource { Source = this.ItemsSource };
+                this.CollectionView = source.View;
+            }
+            else
+            {
+                this.CollectionView = null;
+            }
 
             this.UpdateGridContent();
 

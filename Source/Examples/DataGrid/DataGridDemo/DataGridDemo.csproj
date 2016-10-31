@@ -57,6 +57,9 @@
     <Compile Include="..\..\..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Examples\InputDirectionExample.xaml.cs">
+      <DependentUpon>InputDirectionExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\StandardDataGrid\GettingStartedExample.xaml.cs">
       <DependentUpon>GettingStartedExample.xaml</DependentUpon>
     </Compile>
@@ -188,6 +191,10 @@
     </Compile>
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
+    <Page Include="Examples\InputDirectionExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\StandardDataGrid\GettingStartedExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

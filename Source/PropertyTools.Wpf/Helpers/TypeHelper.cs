@@ -20,6 +20,11 @@ namespace PropertyTools.Wpf
     public static class TypeHelper
     {
         /// <summary>
+        /// The <see cref="IEnumerable&lt;&gt;" /> type.
+        /// </summary>
+        private static readonly Type GenericEnumerableType = typeof(IEnumerable<>);
+
+        /// <summary>
         /// Finds the biggest common type of items in the list.
         /// </summary>
         /// <param name="items">The list.</param>
@@ -90,8 +95,6 @@ namespace PropertyTools.Wpf
             return null;
         }
 
-        private static readonly Type GenericEnumerable = typeof(IEnumerable<>);
-
         /// <summary>
         /// Gets the type of the items in the specified enumeration.
         /// </summary>
@@ -101,10 +104,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         public static Type GetItemType(IEnumerable enumerable)
         {
-            if (!GenericEnumerable.IsInstanceOfType(enumerable))
+            if (enumerable != null && !GenericEnumerableType.IsInstanceOfType(enumerable))
             {
-                var first = enumerable.Cast<object>().FirstOrDefault();
-                return first?.GetType();
+                var ifs = enumerable.GetType().GetInterfaces().ToArray();
+                var i = ifs.First(it => it.IsGenericType && it.GetGenericTypeDefinition() == GenericEnumerableType);
+                return i.GetGenericArguments()[0];
             }
 
             return enumerable?.AsQueryable().ElementType;

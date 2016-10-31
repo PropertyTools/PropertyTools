@@ -2876,12 +2876,6 @@ namespace PropertyTools.Wpf
             // Set the same value in all selected cells.
             foreach (var cell in selectedCells)
             {
-                /*if (changedCell.Equals(cell))
-                {
-                    // this value should already be set by the binding
-                    continue;
-                }*/
-
                 if (this.MultiChangeInChangedColumnOnly && cell.Column != changedCell.Column)
                 {
                     // do not change value in other columns when this property is set to true

@@ -436,6 +436,13 @@ namespace PropertyTools.Wpf
                 Margin = new Thickness(1, 1, 0, 0)
             };
 
+            c.Loaded += (sender, args) =>
+                {
+                    var tb = (TextBox)sender;
+                    tb.CaretIndex = tb.Text.Length;
+                    tb.SelectAll();
+                };
+
             c.SetBinding(TextBox.TextProperty, this.CreateBinding(d));
             this.SetIsEnabledBinding(d, c);
             this.SetBackgroundBinding(d, c);

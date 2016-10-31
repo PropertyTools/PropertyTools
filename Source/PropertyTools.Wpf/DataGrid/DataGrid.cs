@@ -1503,24 +1503,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Ends text editing.
-        /// </summary>
-        /// <param name="commit">The commit.</param>
-        private void EndTextEdit(bool commit = true)
-        {
-            var textEditor = this.currentEditControl as TextBox;
-            if (commit && textEditor != null)
-            {
-                foreach (var cell in this.editingCells)
-                {
-                    this.TrySetCellValue(cell, textEditor.Text);
-                }
-            }
-
-            this.HideEditControl();
-        }
-
-        /// <summary>
         /// Gets the cell reference for the specified position.
         /// </summary>
         /// <param name="position">The position.</param>
@@ -1694,17 +1676,16 @@ namespace PropertyTools.Wpf
 #endif
 
         /// <summary>
-        /// Hides the current editor control.
+        /// Removes the current editor control.
         /// </summary>
-        private void HideEditControl()
+        private void RemoveEditControl()
         {
-            if (this.currentEditControl != null && this.currentEditControl.Visibility == Visibility.Visible)
+            if (this.currentEditControl != null/* && this.currentEditControl.Visibility == Visibility.Visible*/)
             {
                 var textEditor = this.currentEditControl as TextBox;
                 if (textEditor != null)
                 {
                     textEditor.PreviewKeyDown -= this.TextEditorPreviewKeyDown;
-                    textEditor.Loaded -= this.TextEditorLoaded;
                 }
 
                 this.sheetGrid.Children.Remove(this.currentEditControl);
@@ -2046,6 +2027,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         private bool ShowTextBoxEditControl()
         {
+            if (this.currentEditControl == null)
+            {
+                this.ShowEditControl();
+            }
+
             var textEditor = this.currentEditControl as TextBox;
             if (textEditor != null)
             {
@@ -2191,20 +2177,25 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// True if an edit control is shown.
         /// </returns>
-        private bool ShowEditControl()
+        private void ShowEditControl()
         {
-            this.HideEditControl();
+            this.RemoveEditControl();
             var cell = this.CurrentCell;
 
             if (cell.Row >= this.Rows || cell.Column >= this.Columns)
             {
-                return false;
+                return;
+            }
+
+            if (this.currentEditControl != null)
+            {
+                throw new InvalidOperationException();
             }
 
             this.currentEditControl = this.CreateEditControl(cell);
             if (this.currentEditControl == null)
             {
-                return false;
+                return;
             }
 
             // TODO: refactor this special case
@@ -2213,7 +2204,6 @@ namespace PropertyTools.Wpf
             {
                 this.currentEditControl.Visibility = Visibility.Hidden;
                 textEditor.PreviewKeyDown += this.TextEditorPreviewKeyDown;
-                textEditor.Loaded += this.TextEditorLoaded;
             }
 
             this.editingCells = this.SelectedCells.ToList();
@@ -2227,8 +2217,6 @@ namespace PropertyTools.Wpf
             {
                 this.currentEditControl.Focus();
             }
-
-            return true;
         }
 
         /// <summary>
@@ -2608,8 +2596,13 @@ namespace PropertyTools.Wpf
             if (textEditor != null && textEditor.IsEnabled)
             {
                 this.ShowTextBoxEditControl();
-                textEditor.Text = e.Text;
-                textEditor.CaretIndex = textEditor.Text.Length;
+                this.Dispatcher.BeginInvoke(new Action(
+                    () =>
+                        {
+                            // make sure this code is executed after the textbox has been loaded (and bindings updated)
+                            textEditor.Text = e.Text;
+                            textEditor.CaretIndex = textEditor.Text.Length;
+                        }), DispatcherPriority.Loaded);
             }
 
             e.Handled = true;
@@ -2873,7 +2866,7 @@ namespace PropertyTools.Wpf
             // (e.g. check box (display control) was changed or a combo box (edit control) was changed
             var value = this.GetCellValue(changedCell);
 
-            var selectedCells = this.SelectedCells.ToArray();
+            var selectedCells = this.editingCells.ToArray();
             if (!selectedCells.Contains(changedCell))
             {
                 // do not set other cells when changed cell is outside selection
@@ -2883,11 +2876,11 @@ namespace PropertyTools.Wpf
             // Set the same value in all selected cells.
             foreach (var cell in selectedCells)
             {
-                if (changedCell.Equals(cell))
+                /*if (changedCell.Equals(cell))
                 {
                     // this value should already be set by the binding
                     continue;
-                }
+                }*/
 
                 if (this.MultiChangeInChangedColumnOnly && cell.Column != changedCell.Column)
                 {
@@ -3171,9 +3164,6 @@ namespace PropertyTools.Wpf
 
             this.ScrollIntoView(this.CurrentCell);
         }
-
-        public bool IsSortingAscending => true;
-        public bool IsSortingDescending => false;
 
         /// <summary>
         /// Clears the sort descriptions.
@@ -3692,18 +3682,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Handles the loaded event for the text editor.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
-        private void TextEditorLoaded(object sender, RoutedEventArgs e)
-        {
-            var tb = (TextBox)sender;
-            tb.CaretIndex = tb.Text.Length;
-            tb.SelectAll();
-        }
-
-        /// <summary>
         /// Handles key down events in the TextBox editor.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -3724,7 +3702,7 @@ namespace PropertyTools.Wpf
                 case Key.Left:
                     if (textEditor.CaretIndex == 0 && !isEverythingSelected)
                     {
-                        this.EndTextEdit();
+                        this.RemoveEditControl();
                         this.OnKeyDown(e);
                         e.Handled = true;
                     }
@@ -3733,7 +3711,7 @@ namespace PropertyTools.Wpf
                 case Key.Right:
                     if (textEditor.CaretIndex == textEditor.Text.Length && !isEverythingSelected)
                     {
-                        this.EndTextEdit();
+                        this.RemoveEditControl();
                         this.OnKeyDown(e);
                         e.Handled = true;
                     }
@@ -3741,12 +3719,12 @@ namespace PropertyTools.Wpf
                     break;
                 case Key.Down:
                 case Key.Up:
-                    this.EndTextEdit();
+                    this.RemoveEditControl();
                     this.OnKeyDown(e);
                     e.Handled = true;
                     break;
                 case Key.Enter:
-                    this.EndTextEdit();
+                    this.RemoveEditControl();
                     if (this.InputDirection == InputDirection.Vertical)
                     {
                         this.ChangeCurrentCell(shift ? -1 : 1, 0);
@@ -3759,7 +3737,8 @@ namespace PropertyTools.Wpf
                     e.Handled = true;
                     break;
                 case Key.Escape:
-                    this.EndTextEdit(false);
+                    BindingOperations.ClearBinding(this.currentEditControl, TextBox.TextProperty);
+                    this.RemoveEditControl();
                     e.Handled = true;
                     break;
             }
@@ -3979,10 +3958,7 @@ namespace PropertyTools.Wpf
 
             this.SelectedItems = this.EnumerateItems(this.GetSelectionRange());
 
-            if (!this.ShowEditControl())
-            {
-                this.HideEditControl();
-            }
+            this.ShowEditControl();
         }
 
         /// <summary>
@@ -4017,7 +3993,6 @@ namespace PropertyTools.Wpf
         private void SelectionCellChanged()
         {
             this.SelectedCellsChanged();
-
             this.ScrollIntoView(this.SelectionCell);
         }
 
@@ -4325,8 +4300,6 @@ namespace PropertyTools.Wpf
             }
 
             this.Operator.UpdatePropertyDefinitions(this);
-
-            // this.CollectionView.SortDescriptions.Add(new SortDescription(this.PropertyDefinitions[0].PropertyName, ListSortDirection.Descending));
 
             // Determine if columns or rows are defined
             this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;

@@ -1763,7 +1763,7 @@ namespace PropertyTools.Wpf
             {
                 column = 0;
                 row++;
-                if (row >= this.Rows)
+                if (row >= this.Rows && (!this.CanInsertRows || !this.EasyInsert))
                 {
                     row = 0;
                 }

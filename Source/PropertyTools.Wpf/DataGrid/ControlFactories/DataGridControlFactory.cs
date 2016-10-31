@@ -271,6 +271,7 @@ namespace PropertyTools.Wpf
             {
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
+                SnapsToDevicePixels = true,
                 Width = 12,
                 Height = 12
             };

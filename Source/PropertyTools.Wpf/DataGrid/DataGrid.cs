@@ -485,6 +485,11 @@ namespace PropertyTools.Wpf
         private readonly Dictionary<int, FrameworkElement> rowHeaderMap = new Dictionary<int, FrameworkElement>();
 
         /// <summary>
+        /// The sort descriptors
+        /// </summary>
+        private readonly SortDescriptionCollection sortDescriptions = new SortDescriptionCollection();
+
+        /// <summary>
         /// The auto fill box.
         /// </summary>
         private Border autoFillBox;
@@ -3003,6 +3008,12 @@ namespace PropertyTools.Wpf
                 this.ScrollIntoView(this.CurrentCell);
             }
 
+            // LMB toggles the sort
+            if (e.ChangedButton == MouseButton.Left && this.CanSort())
+            {
+                this.ToggleSort();
+            }
+
             this.columnGrid.CaptureMouse();
             e.Handled = true;
         }
@@ -3190,7 +3201,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void ClearSort()
         {
-            this.CollectionView.SortDescriptions.Clear();
+            this.sortDescriptions.Clear();
             this.RefreshSort();
         }
 
@@ -3206,12 +3217,12 @@ namespace PropertyTools.Wpf
 
             if (!append)
             {
-                this.CollectionView.SortDescriptions.Clear();
+                this.sortDescriptions.Clear();
             }
 
             try
             {
-                this.CollectionView.SortDescriptions.Add(new SortDescription(propertyName, direction));
+                this.sortDescriptions.Add(new SortDescription(propertyName, direction));
             }
             catch (Exception e)
             {
@@ -3226,14 +3237,17 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void RefreshSort()
         {
+            var sortDescriptionCollection = this.CollectionView.SortDescriptions;
             var sdc = this.CustomSort as ISortDescriptionComparer;
             if (sdc != null)
             {
-                sdc.SortDescriptions.Clear();
-                foreach (var sd in this.CollectionView.SortDescriptions)
-                {
-                    sdc.SortDescriptions.Add(sd);
-                }
+                sortDescriptionCollection = sdc.SortDescriptions;
+            }
+
+            sortDescriptionCollection.Clear();
+            foreach (var sd in this.sortDescriptions)
+            {
+                sortDescriptionCollection.Add(sd);
             }
 
             var lcv = this.CollectionView as ListCollectionView;
@@ -3251,6 +3265,48 @@ namespace PropertyTools.Wpf
         {
             var index = this.ItemsInRows ? this.CurrentCell.Column : this.CurrentCell.Row;
             return this.CollectionView != null && this.Operator.CanSort(this, index);
+        }
+
+        /// <summary>
+        /// Toggles the sort direction for the current column/row.
+        /// </summary>
+        /// <param name="append">Append the sort description if set to <c>true</c>.</param>
+        private void ToggleSort(bool append = false)
+        {
+            var index = this.ItemsInRows ? this.CurrentCell.Column : this.CurrentCell.Row;
+            var propertyName = this.PropertyDefinitions[index].PropertyName;
+
+            SortDescription? current = null;
+            if (this.sortDescriptions.Any(s => s.PropertyName == propertyName))
+            {
+                current = this.sortDescriptions.First(s => s.PropertyName == propertyName);
+            }
+
+            if (!append)
+            {
+                this.sortDescriptions.Clear();
+            }
+
+            try
+            {
+                if (!current.HasValue)
+                {
+                    this.sortDescriptions.Add(new SortDescription(propertyName, ListSortDirection.Ascending));
+                }
+                else
+                {
+                    if (current.Value.Direction == ListSortDirection.Ascending)
+                    {
+                        this.sortDescriptions.Add(new SortDescription(propertyName, ListSortDirection.Descending));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+
+            this.RefreshSort();
         }
 
         /// <summary>

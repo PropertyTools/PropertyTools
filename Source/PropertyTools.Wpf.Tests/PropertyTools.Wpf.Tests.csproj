@@ -73,6 +73,7 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Comparers\NaturalStringComparerTests.cs" />
     <Compile Include="Converters\ValueToBooleanConverterTests.cs" />
     <Compile Include="Helpers\ColorHelperTests.cs" />
     <Compile Include="Converters\ConverterTests.cs" />

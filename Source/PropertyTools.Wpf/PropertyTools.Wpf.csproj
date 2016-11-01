@@ -141,6 +141,9 @@
     <Compile Include="Behaviors\ScreenGrab.cs" />
     <Compile Include="CommandBindings\DelegateCommandBinding.cs" />
     <Compile Include="CommandBindings\DelegateCommandBinding{T}.cs" />
+    <Compile Include="Comparers\EnumerableComparer{T}.cs" />
+    <Compile Include="Comparers\ISortDescriptionComparer.cs" />
+    <Compile Include="Comparers\NaturalSortDescriptionComparer.cs" />
     <Compile Include="Controls\Bitmap.cs" />
     <Compile Include="Controls\ColorPicker\ColorPicker.cs" />
     <Compile Include="Controls\ColorPicker\ColorPickerPanel.cs" />
@@ -184,6 +187,7 @@
     <Compile Include="DataGrid\CellDefinitions\CellDescriptor.cs" />
     <Compile Include="DataGrid\CellDefinitions\CheckCellDefinition.cs" />
     <Compile Include="DataGrid\CellDefinitions\ColorCellDefinition.cs" />
+    <Compile Include="Comparers\NaturalObjectComparer.cs" />
     <Compile Include="DataGrid\ICellDefinitionFactory.cs" />
     <Compile Include="DataGrid\CellDefinitions\SelectorCellDefinition.cs" />
     <Compile Include="DataGrid\CellDefinitions\TemplateCellDefinition.cs" />
@@ -192,6 +196,7 @@
     <Compile Include="DataGrid\DataGridCommands.cs" />
     <Compile Include="DataGrid\IDataGridOperator.cs" />
     <Compile Include="DataGrid\Operators\WrapItemsOperator.cs" />
+    <Compile Include="Comparers\NaturalStringComparer.cs" />
     <Compile Include="Utilities\BindingUtilities.cs" />
     <Compile Include="DataGrid\Operators\ListListOperator.cs" />
     <Compile Include="DataGrid\Operators\DataGridOperator.cs" />

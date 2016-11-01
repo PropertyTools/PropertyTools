@@ -20,7 +20,7 @@ namespace PropertyTools.Wpf
     public static class TypeHelper
     {
         /// <summary>
-        /// The <see cref="IEnumerable&lt;&gt;" /> type.
+        /// The generic sequence type.
         /// </summary>
         private static readonly Type GenericEnumerableType = typeof(IEnumerable<>);
 

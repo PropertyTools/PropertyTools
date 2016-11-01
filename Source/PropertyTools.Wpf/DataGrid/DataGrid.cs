@@ -52,6 +52,15 @@ namespace PropertyTools.Wpf
     public class DataGrid : Control, IWeakEventListener
     {
         /// <summary>
+        /// Identifies the <see cref="CustomSort"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CustomSortProperty = DependencyProperty.Register(
+            "CustomSort",
+            typeof(IComparer),
+            typeof(DataGrid),
+            new PropertyMetadata(null));
+
+        /// <summary>
         /// Identifies the <see cref="CreateColumnHeader"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CreateColumnHeaderProperty = DependencyProperty.Register(
@@ -915,6 +924,23 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(CreateItemProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the custom sort comparer.
+        /// </summary>
+        /// <value>The custom sort comparer.</value>
+        public IComparer CustomSort
+        {
+            get
+            {
+                return (IComparer)this.GetValue(CustomSortProperty);
+            }
+
+            set
+            {
+                this.SetValue(CustomSortProperty, value);
             }
         }
 
@@ -3165,6 +3191,7 @@ namespace PropertyTools.Wpf
         private void ClearSort()
         {
             this.CollectionView.SortDescriptions.Clear();
+            this.RefreshSort();
         }
 
         /// <summary>
@@ -3189,6 +3216,30 @@ namespace PropertyTools.Wpf
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+            }
+
+            this.RefreshSort();
+        }
+
+        /// <summary>
+        /// Refreshes the sort.
+        /// </summary>
+        private void RefreshSort()
+        {
+            var sdc = this.CustomSort as ISortDescriptionComparer;
+            if (sdc != null)
+            {
+                sdc.SortDescriptions.Clear();
+                foreach (var sd in this.CollectionView.SortDescriptions)
+                {
+                    sdc.SortDescriptions.Add(sd);
+                }
+            }
+
+            var lcv = this.CollectionView as ListCollectionView;
+            if (lcv != null && this.CustomSort != null)
+            {
+                lcv.CustomSort = this.CustomSort;
             }
         }
 
@@ -4253,6 +4304,7 @@ namespace PropertyTools.Wpf
             {
                 var source = new CollectionViewSource { Source = this.ItemsSource };
                 this.CollectionView = source.View;
+                this.RefreshSort();
             }
             else
             {

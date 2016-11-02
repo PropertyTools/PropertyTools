@@ -556,6 +556,11 @@ namespace PropertyTools.Wpf
         private IEnumerable<CellRef> editingCells;
 
         /// <summary>
+        /// The sort description markers
+        /// </summary>
+        private readonly List<FrameworkElement> sortDescriptionMarkers = new List<FrameworkElement>();
+
+        /// <summary>
         /// The end pressed.
         /// </summary>
         private bool endPressed;
@@ -3255,6 +3260,8 @@ namespace PropertyTools.Wpf
             {
                 lcv.CustomSort = this.CustomSort;
             }
+
+            this.UpdateSortDescriptionMarkers();
         }
 
         /// <summary>
@@ -4251,6 +4258,47 @@ namespace PropertyTools.Wpf
             {
                 this.columnGrid.ColumnDefinitions[j].Width =
                     new GridLength(this.sheetGrid.ColumnDefinitions[j].ActualWidth);
+            }
+        }
+
+        private void UpdateSortDescriptionMarkers()
+        {
+            foreach (var sdm in this.sortDescriptionMarkers)
+            {
+                this.columnGrid.Children.Remove(sdm);
+            }
+            this.sortDescriptionMarkers.Clear();
+
+            if (!this.ItemsInRows)
+            {
+                return;
+            }
+
+            foreach (var sd in this.sortDescriptions)
+            {
+                int index = -1;
+                for (int i = 0; i < this.PropertyDefinitions.Count; i++)
+                {
+                    if (this.PropertyDefinitions[i].PropertyName == sd.PropertyName)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
+                if (index == -1) continue;
+
+                var tb = new TextBlock
+                {
+                    Text = sd.Direction == ListSortDirection.Ascending ? "▼" : "▲",
+                    Foreground = Brushes.DarkGray,
+                    Margin = new Thickness(0, 0, 4, 0),
+                    HorizontalAlignment = System.Windows.HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                Grid.SetColumn(tb, index);
+                this.columnGrid.Children.Add(tb);
+                this.sortDescriptionMarkers.Add(tb);
             }
         }
 

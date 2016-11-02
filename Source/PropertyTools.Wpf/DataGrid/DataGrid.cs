@@ -2200,9 +2200,8 @@ namespace PropertyTools.Wpf
                 return null;
             }
 
-            var currentCell = this.CurrentCell;
             element.DataContext = cd.BindingSource;
-            element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(currentCell);
+            element.SourceUpdated += (s, e) => this.CurrentCellSourceUpdated(cell);
 
             return element;
         }
@@ -2915,6 +2914,12 @@ namespace PropertyTools.Wpf
                 if (this.MultiChangeInChangedColumnOnly && cell.Column != changedCell.Column)
                 {
                     // do not change value in other columns when this property is set to true
+                    continue;
+                }
+
+                if (cell.Equals(changedCell))
+                {
+                    // the current cell should already be set
                     continue;
                 }
 

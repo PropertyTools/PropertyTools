@@ -47,7 +47,7 @@ namespace ControlDemos
 
             set
             {
-                this.SetValue(ref this.text1, value, () => this.Text1);
+                this.SetValue(ref this.text1, value);
             }
         }
 
@@ -65,7 +65,7 @@ namespace ControlDemos
                     throw new Exception("Spaces not allowed.");
                 }
 
-                this.SetValue(ref this.text2, value, () => this.Text2);
+                this.SetValue(ref this.text2, value);
             }
         }
     }

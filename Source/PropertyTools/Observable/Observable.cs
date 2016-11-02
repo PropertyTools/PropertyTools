@@ -9,11 +9,9 @@
 
 namespace PropertyTools
 {
-    using System;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Globalization;
-    using System.Linq.Expressions;
     using System.Reflection;
 
     /// <summary>
@@ -43,21 +41,7 @@ namespace PropertyTools
         /// <param name="propertyName">Name of the property.</param>
         protected void RaisePropertyChanged(string propertyName)
         {
-            var handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        /// <summary>
-        /// Raises the property changed event for the property specified by a property expression.
-        /// </summary>
-        /// <typeparam name="TProperty">The type of the property.</typeparam>
-        /// <param name="propertyExpression">The property expression.</param>
-        protected void RaisePropertyChanged<TProperty>(Expression<Func<TProperty>> propertyExpression)
-        {
-            this.RaisePropertyChanged(ExpressionUtilities.GetName(propertyExpression));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
@@ -86,23 +70,6 @@ namespace PropertyTools
             field = value;
             this.OnPropertyChanged(propertyName, oldValue, value);
             return true;
-        }
-
-        /// <summary>
-        /// Sets the property value.
-        /// </summary>
-        /// <typeparam name="T">The type of the property.</typeparam>
-        /// <param name="field">The field.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="propertyExpression">The property expression.</param>
-        /// <returns>
-        /// True if the property was set.
-        /// </returns>
-        /// <remarks>This method uses the CallerMemberNameAttribute to determine the property name.</remarks>
-        protected bool SetValue<T>(ref T field, T value, Expression<Func<T>> propertyExpression)
-        {
-            // ReSharper disable once ExplicitCallerInfoArgument
-            return this.SetValue(ref field, value, ExpressionUtilities.GetName(propertyExpression));
         }
 
         /// <summary>

@@ -47,7 +47,7 @@ namespace ControlDemos
 
             set
             {
-                this.SetValue(ref this.basePath, value, () => this.BasePath);
+                this.SetValue(ref this.basePath, value);
             }
         }
 
@@ -60,7 +60,7 @@ namespace ControlDemos
 
             set
             {
-                this.SetValue(ref this.directory, value, () => this.Directory);
+                this.SetValue(ref this.directory, value);
             }
         }
     }

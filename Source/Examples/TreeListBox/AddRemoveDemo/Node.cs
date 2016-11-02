@@ -38,7 +38,7 @@ namespace AddRemoveDemo
 
             set
             {
-                this.SetValue(ref this.showChildren, value, () => this.ShowChildren);
+                this.SetValue(ref this.showChildren, value);
             }
         }
 
@@ -51,7 +51,7 @@ namespace AddRemoveDemo
 
             set
             {
-                this.SetValue(ref this.isChecked, value, () => this.IsChecked);
+                this.SetValue(ref this.isChecked, value);
             }
         }
 

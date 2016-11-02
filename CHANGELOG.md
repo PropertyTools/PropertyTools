@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 - DataGrid.AutoSizeColumns
+- Observable methods based on expressions
+- ExpressionUtilities class
 
 ### Fixed
 - DataGrid auto column width

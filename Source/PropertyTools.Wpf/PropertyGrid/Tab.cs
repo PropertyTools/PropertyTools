@@ -61,7 +61,7 @@ namespace PropertyTools.Wpf
 
             set
             {
-                this.SetValue(ref this.hasErrors, value, () => this.HasErrors);
+                this.SetValue(ref this.hasErrors, value);
             }
         }
 

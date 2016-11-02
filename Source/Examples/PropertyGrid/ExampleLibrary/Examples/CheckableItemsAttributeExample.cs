@@ -68,7 +68,7 @@ namespace ExampleLibrary
 
                 set
                 {
-                    this.SetValue(ref this.isChecked, value, () => this.IsChecked);
+                    this.SetValue(ref this.isChecked, value);
                 }
             }
 

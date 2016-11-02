@@ -42,7 +42,7 @@ namespace ControlDemos
             public double Value
             {
                 get { return this.value; }
-                set { this.SetValue(ref this.value, value, () => this.Value); }
+                set { this.SetValue(ref this.value, value); }
             }
         }
     }

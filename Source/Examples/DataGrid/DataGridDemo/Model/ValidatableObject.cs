@@ -148,11 +148,11 @@ namespace PropertyTools
 
             // The actual validation errors may change every time the property is changed 
             // (e.g. if the property depends on another property)
-            this.RaisePropertyChanged(() => this.ErrorMessages);
+            this.RaisePropertyChanged(nameof(this.ErrorMessages));
 
             if (hadErrors != this.HasErrors)
             {
-                this.RaisePropertyChanged(() => this.HasErrors);
+                this.RaisePropertyChanged(nameof(this.HasErrors));
             }
         }
     }

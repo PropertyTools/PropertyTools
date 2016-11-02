@@ -42,9 +42,9 @@ namespace PropertyGridDemo
 
             set
             {
-                if (this.SetValue(ref this.selectedItem, value, () => this.SelectedItem))
+                if (this.SetValue(ref this.selectedItem, value))
                 {
-                    this.RaisePropertyChanged(() => this.Output);
+                    this.RaisePropertyChanged(nameof(this.Output));
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace PropertyGridDemo
         private void TestChanged(object sender, PropertyChangedEventArgs e)
         {
             Debug.WriteLine("Changed " + e.PropertyName);
-            this.RaisePropertyChanged(() => this.Output);
+            this.RaisePropertyChanged(nameof(this.Output));
         }
     }
 }

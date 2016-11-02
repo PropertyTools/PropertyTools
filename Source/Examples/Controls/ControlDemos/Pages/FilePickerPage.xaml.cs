@@ -54,7 +54,7 @@ namespace ControlDemos
 
             set
             {
-                this.SetValue(ref this.filePath, value, () => this.FilePath);
+                this.SetValue(ref this.filePath, value);
             }
         }
 
@@ -67,7 +67,7 @@ namespace ControlDemos
 
             set
             {
-                this.SetValue(ref this.filePaths, value, () => this.FilePaths);
+                this.SetValue(ref this.filePaths, value);
             }
         }
 
@@ -80,7 +80,7 @@ namespace ControlDemos
 
             set
             {
-                this.SetValue(ref this.basePath, value, () => this.BasePath);
+                this.SetValue(ref this.basePath, value);
             }
         }
     }

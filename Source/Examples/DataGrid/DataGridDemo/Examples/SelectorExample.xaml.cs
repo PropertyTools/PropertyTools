@@ -71,7 +71,7 @@ namespace DataGridDemo
 
                     set
                     {
-                        this.SetValue(ref this.fruit1, value, () => this.Fruit1);
+                        this.SetValue(ref this.fruit1, value);
                     }
                 }
 
@@ -86,7 +86,7 @@ namespace DataGridDemo
 
                     set
                     {
-                        this.SetValue(ref this.fruit2, value, () => this.Fruit2);
+                        this.SetValue(ref this.fruit2, value);
                     }
                 }
 
@@ -102,7 +102,7 @@ namespace DataGridDemo
 
                     set
                     {
-                        this.SetValue(ref this.city1, value, () => this.City1);
+                        this.SetValue(ref this.city1, value);
                     }
                 }
 
@@ -117,7 +117,7 @@ namespace DataGridDemo
 
                     set
                     {
-                        this.SetValue(ref this.city2, value, () => this.City2);
+                        this.SetValue(ref this.city2, value);
                     }
                 }
 
@@ -132,7 +132,7 @@ namespace DataGridDemo
 
                     set
                     {
-                        this.SetValue(ref this.city3, value, () => this.City3);
+                        this.SetValue(ref this.city3, value);
                     }
                 }
 
@@ -148,7 +148,7 @@ namespace DataGridDemo
 
                     set
                     {
-                        this.SetValue(ref this.city4, value, () => this.City4);
+                        this.SetValue(ref this.city4, value);
                     }
                 }
 
@@ -165,7 +165,7 @@ namespace DataGridDemo
 
                     set
                     {
-                        this.SetValue(ref this.selectedAnimal, value, () => this.SelectedAnimal);
+                        this.SetValue(ref this.selectedAnimal, value);
                     }
                 }
 

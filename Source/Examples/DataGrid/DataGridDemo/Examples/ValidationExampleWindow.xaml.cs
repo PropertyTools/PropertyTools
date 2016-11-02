@@ -89,7 +89,7 @@ namespace DataGridDemo
 
                 set
                 {
-                    this.SetValue(ref this.requiredString, value, () => this.RequiredString);
+                    this.SetValue(ref this.requiredString, value);
                 }
             }
 
@@ -107,7 +107,7 @@ namespace DataGridDemo
 
                 set
                 {
-                    this.SetValue(ref this.maxLength3, value, () => this.MaxLength3);
+                    this.SetValue(ref this.maxLength3, value);
                 }
             }
 
@@ -125,7 +125,7 @@ namespace DataGridDemo
 
                 set
                 {
-                    this.SetValue(ref this.percentage, value, () => this.Percentage);
+                    this.SetValue(ref this.percentage, value);
                 }
             }
 
@@ -142,7 +142,7 @@ namespace DataGridDemo
 
                 set
                 {
-                    if (this.SetValue(ref this.minimum, value, () => this.Minimum))
+                    if (this.SetValue(ref this.minimum, value))
                     {
                         // Also validate the dependent property
                         this.ValidateProperty("Maximum", this.Maximum);
@@ -164,7 +164,7 @@ namespace DataGridDemo
 
                 set
                 {
-                    this.SetValue(ref this.maximum, value, () => this.Maximum);
+                    this.SetValue(ref this.maximum, value);
                 }
             }
         }

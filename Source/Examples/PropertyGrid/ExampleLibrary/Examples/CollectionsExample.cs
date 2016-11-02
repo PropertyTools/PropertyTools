@@ -102,7 +102,7 @@ namespace ExampleLibrary
             }
             set
             {
-                this.SetValue(ref name, value, () => Name);
+                this.SetValue(ref name, value);
             }
         }
 
@@ -114,7 +114,7 @@ namespace ExampleLibrary
             }
             set
             {
-                this.SetValue(ref number, value, () => Number);
+                this.SetValue(ref this.number, value);
             }
         }
 
@@ -126,7 +126,7 @@ namespace ExampleLibrary
             }
             set
             {
-                this.SetValue(ref fraction, value, () => Fraction);
+                this.SetValue(ref this.fraction, value);
             }
         }
     }

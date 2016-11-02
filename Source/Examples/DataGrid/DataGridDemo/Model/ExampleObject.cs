@@ -36,7 +36,7 @@ namespace DataGridDemo
 
             set
             {
-                if (this.SetValue(ref this.boolean, value, () => this.Boolean))
+                if (this.SetValue(ref this.boolean, value))
                 {
                     this.RaisePropertyChanged("ReadOnlyBoolean");
                 }
@@ -54,7 +54,7 @@ namespace DataGridDemo
 
             set
             {
-                this.SetValue(ref this.fruit, value, () => this.Fruit);
+                this.SetValue(ref this.fruit, value);
             }
         }
 
@@ -69,7 +69,7 @@ namespace DataGridDemo
 
             set
             {
-                this.SetValue(ref this.number, value, () => this.Number);
+                this.SetValue(ref this.number, value);
             }
         }
 
@@ -82,7 +82,7 @@ namespace DataGridDemo
 
             set
             {
-                this.SetValue(ref this.integer, value, () => this.Integer);
+                this.SetValue(ref this.integer, value);
             }
         }
 
@@ -96,7 +96,7 @@ namespace DataGridDemo
 
             set
             {
-                this.SetValue(ref this.readOnlyInteger, value, () => this.ReadOnlyInteger);
+                this.SetValue(ref this.readOnlyInteger, value);
             }
         }
 
@@ -109,7 +109,7 @@ namespace DataGridDemo
 
             set
             {
-                this.SetValue(ref this.dateTime, value, () => this.DateTime);
+                this.SetValue(ref this.dateTime, value);
             }
         }
 
@@ -122,9 +122,9 @@ namespace DataGridDemo
 
             set
             {
-                if (this.SetValue(ref this.s, value, () => this.String))
+                if (this.SetValue(ref this.s, value))
                 {
-                    this.RaisePropertyChanged(() => this.ReadOnlyString);
+                    this.RaisePropertyChanged(nameof(this.ReadOnlyString));
                 }
             }
         }
@@ -140,7 +140,7 @@ namespace DataGridDemo
 
             set
             {
-                this.SetValue(ref this.color, value, () => this.Color);
+                this.SetValue(ref this.color, value);
             }
         }
 
@@ -153,7 +153,7 @@ namespace DataGridDemo
 
             set
             {
-                this.SetValue(ref this.mass, value, () => this.Mass);
+                this.SetValue(ref this.mass, value);
             }
         }
 
@@ -167,7 +167,7 @@ namespace DataGridDemo
 
             set
             {
-                this.SetValue(ref this.selector, value, () => this.Selector);
+                this.SetValue(ref this.selector, value);
             }
         }
 

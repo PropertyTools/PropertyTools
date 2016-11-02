@@ -95,7 +95,7 @@ namespace AddRemoveDemo
 
             set
             {
-                this.SetValue(ref this.selectedItem, value, () => this.SelectedItem);
+                this.SetValue(ref this.selectedItem, value);
             }
         }
 

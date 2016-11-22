@@ -43,18 +43,19 @@ namespace DataGridDemo
                 () =>
                     {
                         vm.ItemsSource.Clear();
-                        vm.ItemsSource.Add(
-                            new ExampleObject
-                            {
-                                Boolean = true,
-                                DateTime = DateTime.Now,
-                                Color = Colors.Blue,
-                                Number = Math.PI,
-                                Fruit = Fruit.Apple,
-                                Integer = 7,
-                                Selector = null,
-                                String = "Hello"
-                            });
+                        for (int i = 0; i < 10; i++)
+                            vm.ItemsSource.Add(
+                                new ExampleObject
+                                {
+                                    Boolean = true,
+                                    DateTime = DateTime.Now,
+                                    Color = Colors.Blue,
+                                    Number = Math.PI,
+                                    Fruit = Fruit.Apple,
+                                    Integer = i,
+                                    Selector = null,
+                                    String = "Hello"
+                                });
                     });
             task.Start();
         }

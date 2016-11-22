@@ -611,6 +611,11 @@ namespace PropertyTools.Wpf
         private bool suspendCollectionChangedNotifications;
 
         /// <summary>
+        /// The synchronized collection
+        /// </summary>
+        private IList synchronizedCollection;
+
+        /// <summary>
         /// Initializes static members of the <see cref="DataGrid" /> class.
         /// </summary>
         static DataGrid()
@@ -4403,14 +4408,26 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void ItemsSourceChanged()
         {
+            if (this.synchronizedCollection != null)
+            {
+                BindingOperations.DisableCollectionSynchronization(this.synchronizedCollection);
+                this.synchronizedCollection = null;
+            }
+
             if (this.subscribedCollection != null)
             {
                 CollectionChangedEventManager.RemoveListener(this.subscribedCollection, this);
+
                 this.subscribedCollection = null;
             }
 
             if (this.ItemsSource != null)
             {
+                this.synchronizedCollection = this.ItemsSource;
+
+                // Enables the collection to be accessed across multiple threads
+                BindingOperations.EnableCollectionSynchronization((IList)this.synchronizedCollection, this);
+
                 var source = new CollectionViewSource { Source = this.ItemsSource };
                 this.CollectionView = source.View;
                 this.RefreshSort();

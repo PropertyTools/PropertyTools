@@ -211,7 +211,7 @@ namespace DataGridDemo
 
             void ICollection.CopyTo(Array array, int index)
             {
-                throw new NotImplementedException();
+                this.values.CopyTo(array, index);
             }
 
             private int GetIndex(int i, int j)

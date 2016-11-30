@@ -1741,9 +1741,9 @@ namespace PropertyTools.Wpf
         /// <param name="index">The index.</param>
         /// <param name="updateGrid">Determines whether the grid should be updated.</param>
         /// <returns>
-        /// <c>true</c> if an item was inserted, <c>false</c> otherwise.
+        /// The actual index of the inserted item, <c>-1</c> if no item was inserted.
         /// </returns>
-        private bool InsertItem(int index, bool updateGrid = true)
+        private int InsertItem(int index, bool updateGrid = true)
         {
             var actualIndex = this.Operator.InsertItem(this, index);
             if (actualIndex != -1)
@@ -1752,15 +1752,9 @@ namespace PropertyTools.Wpf
                 {
                     this.UpdateGridContent();
                 }
-
-                var cell = this.ItemsInRows ? new CellRef(actualIndex, 0) : new CellRef(0, actualIndex);
-                this.SelectionCell = cell;
-                this.CurrentCell = cell;
-                this.ScrollIntoView(cell);
-                return true;
             }
 
-            return false;
+            return actualIndex;
         }
 
         /// <summary>
@@ -1962,7 +1956,7 @@ namespace PropertyTools.Wpf
             {
                 if (i >= this.Rows)
                 {
-                    if (!this.InsertItem(-1, false))
+                    if (this.InsertItem(-1, false) == -1)
                     {
                         break;
                     }
@@ -2991,7 +2985,19 @@ namespace PropertyTools.Wpf
         private void AddItemCellMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Focus();
-            this.InsertItem(-1);
+            var actualIndex = this.InsertItem(-1);
+            if (actualIndex != -1)
+            {
+                var viewIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
+
+                var cell = this.ItemsInRows
+                               ? new CellRef(viewIndex, 0)
+                               : new CellRef(0, viewIndex);
+                this.SelectionCell = cell;
+                this.CurrentCell = cell;
+                this.ScrollIntoView(cell);
+            }
+
             e.Handled = true;
         }
 
@@ -4009,7 +4015,16 @@ namespace PropertyTools.Wpf
         {
             if (this.AutoInsert && (cell.Row >= this.Rows || cell.Column >= this.Columns))
             {
-                return this.InsertItem(-1);
+                var actualIndex = this.InsertItem(-1);
+                if (actualIndex != -1)
+                {
+                    actualIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
+                    var actualCell = this.ItemsInRows ? new CellRef(actualIndex, cell.Column) : new CellRef(cell.Row, actualIndex);
+                    this.SelectionCell = actualCell;
+                    this.CurrentCell = actualCell;
+                    this.ScrollIntoView(actualCell);
+                    return true;
+                }
             }
 
             return false;
@@ -4493,6 +4508,7 @@ namespace PropertyTools.Wpf
             this.UpdateRows(rows);
             this.UpdateColumns(columns);
             this.UpdateCells(rows, columns);
+            this.UpdateSortDescriptionMarkers();
 
             this.UpdateSelectionVisibility();
             this.ShowEditControl();

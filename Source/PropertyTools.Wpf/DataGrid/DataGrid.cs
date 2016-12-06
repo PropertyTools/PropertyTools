@@ -390,6 +390,11 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(false));
 
         /// <summary>
+        /// The horizontal scroll bar visibility to height converter
+        /// </summary>
+        private static readonly VisibilityConverter HorizontalScrollBarVisibilityConverter = new VisibilityConverter { CollapsedValue = 0d, HiddenValue = 0d, VisibleValue = SystemParameters.HorizontalScrollBarHeight };
+
+        /// <summary>
         /// The auto fill box.
         /// </summary>
         private const string PartAutoFillBox = "PART_AutoFillBox";
@@ -3029,7 +3034,7 @@ namespace PropertyTools.Wpf
                 var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
                 this.SelectionCell = new CellRef(this.Rows - 1, column);
                 this.CurrentCell = shift ? new CellRef(0, this.CurrentCell.Column) : new CellRef(0, column);
-                this.ScrollIntoView(this.CurrentCell);
+                this.ScrollIntoView(this.SelectionCell);
             }
 
             // LMB toggles the sort
@@ -3626,12 +3631,20 @@ namespace PropertyTools.Wpf
             this.Focus();
 
             var row = this.GetCell(e.GetPosition(this.rowGrid)).Row;
+            var isRightButton = e.ChangedButton == MouseButton.Right;
+            var selectionRange = this.GetSelectionRange();
+            if (isRightButton && selectionRange.TopRow <= row && selectionRange.BottomRow >= row)
+            {
+                // do nothing, just show the context menu
+                return;
+            }
+
             if (row >= 0)
             {
                 var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
                 this.SelectionCell = new CellRef(row, this.Columns - 1);
                 this.CurrentCell = shift ? new CellRef(this.CurrentCell.Row, 0) : new CellRef(row, 0);
-                this.ScrollIntoView(this.CurrentCell);
+                this.ScrollIntoView(this.SelectionCell);
             }
 
             this.rowGrid.CaptureMouse();
@@ -4588,8 +4601,19 @@ namespace PropertyTools.Wpf
             // set the context menu
             this.rowGrid.ContextMenu = this.RowsContextMenu;
 
-            // to cover a possible scrollbar
-            this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = new GridLength(20) });
+            // add a row definition to cover a possible scrollbar
+            var scrollBarRowDefinition = new System.Windows.Controls.RowDefinition();
+            this.rowGrid.RowDefinitions.Add(scrollBarRowDefinition);
+
+            // bind the height of the row definition to the visibility of the main horizontal scroll bar 
+            scrollBarRowDefinition.SetBinding(
+                System.Windows.Controls.RowDefinition.HeightProperty,
+                new Binding(nameof(ScrollViewer.ComputedHorizontalScrollBarVisibility))
+                {
+                    Source = this.sheetScrollViewer,
+                    Converter = HorizontalScrollBarVisibilityConverter,
+                    ConverterParameter = SystemParameters.HorizontalScrollBarHeight
+                });
 
             for (var j = 0; j < rows; j++)
             {

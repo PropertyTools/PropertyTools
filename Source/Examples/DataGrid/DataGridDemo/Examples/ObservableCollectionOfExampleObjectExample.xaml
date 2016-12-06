@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         xmlns:dataGridDemo="clr-namespace:DataGridDemo"
-        Title="ObservableCollection&lt;ExampleObject&gt;" Height="450" Width="900"
-        FocusManager.FocusedElement="{Binding ElementName=grid1}">
+        Title="ObservableCollection&lt;ExampleObject&gt;" Height="450" Width="900">
     <Window.DataContext>
         <dataGridDemo:ExampleViewModel/>
     </Window.DataContext>
@@ -15,6 +14,6 @@
                 <MenuItem Header="Reset" Command="{Binding ResetCommand}"/>
             </MenuItem>
         </Menu>
-        <p:DataGrid x:Name="grid1" ItemsSource="{Binding ItemsSource}"/>
+        <p:DataGrid ItemsSource="{Binding ItemsSource}"/>
     </DockPanel>
 </Window>

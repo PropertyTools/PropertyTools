@@ -199,14 +199,7 @@ namespace PropertyTools.Wpf
         protected virtual int GetItemIndex(DataGrid owner, CellRef cell)
         {
             var index = owner.ItemsInRows ? cell.Row : cell.Column;
-            if (owner.CollectionView != null)
-            {
-                // TODO: find a better way to do this
-                owner.CollectionView.MoveCurrentToPosition(index);
-                return owner.ItemsSource.IndexOf(owner.CollectionView.CurrentItem);
-            }
-
-            return index;
+            return GetItemsSourceIndex(owner, index);
         }
 
         /// <summary>

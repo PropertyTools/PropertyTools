@@ -281,6 +281,43 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Converts the collection view index to an items source index.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="index">The index in the collection view.</param>
+        /// <returns>The index in the items source</returns>
+        public virtual int GetItemsSourceIndex(DataGrid owner, int index)
+        {
+            if (owner.CollectionView == null)
+            {
+                return index;
+            }
+
+            // TODO: find a better way to do this
+            owner.CollectionView.MoveCurrentToPosition(index);
+            return owner.ItemsSource.IndexOf(owner.CollectionView.CurrentItem);
+        }
+
+        /// <summary>
+        /// Converts the items source index to a collection view index.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="index">The index in the items source.</param>
+        /// <returns>The index in the collection view</returns>
+        public virtual int GetCollectionViewIndex(DataGrid owner, int index)
+        {
+            if (owner.CollectionView == null)
+            {
+                return index;
+            }
+
+            // TODO: find a better way to do this
+            var current = owner.ItemsSource[index];
+            owner.CollectionView.MoveCurrentTo(current);
+            return owner.CollectionView.CurrentPosition;
+        }
+
+        /// <summary>
         /// Gets the item in the specified cell.
         /// </summary>
         /// <param name="owner">The owner.</param>

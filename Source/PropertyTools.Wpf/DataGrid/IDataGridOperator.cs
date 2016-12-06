@@ -66,6 +66,22 @@ namespace PropertyTools.Wpf
         object GetCellValue(DataGrid owner, CellRef cell);
 
         /// <summary>
+        /// Converts the items source index to a collection view index.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="index">The index in the items source.</param>
+        /// <returns>The index in the collection view</returns>
+        int GetCollectionViewIndex(DataGrid owner, int index);
+
+        /// <summary>
+        /// Converts the collection view index to an items source index.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="index">The index in the collection view.</param>
+        /// <returns>The index in the items source</returns>
+        int GetItemsSourceIndex(DataGrid owner, int index);
+
+        /// <summary>
         /// Inserts an item at the specified index.
         /// </summary>
         /// <param name="owner">The data grid.</param>

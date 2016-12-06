@@ -390,6 +390,11 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(false));
 
         /// <summary>
+        /// The horizontal scroll bar visibility to height converter
+        /// </summary>
+        private static readonly VisibilityConverter HorizontalScrollBarVisibilityConverter = new VisibilityConverter { CollapsedValue = 0d, HiddenValue = 0d, VisibleValue = SystemParameters.HorizontalScrollBarHeight };
+
+        /// <summary>
         /// The auto fill box.
         /// </summary>
         private const string PartAutoFillBox = "PART_AutoFillBox";
@@ -1741,9 +1746,9 @@ namespace PropertyTools.Wpf
         /// <param name="index">The index.</param>
         /// <param name="updateGrid">Determines whether the grid should be updated.</param>
         /// <returns>
-        /// <c>true</c> if an item was inserted, <c>false</c> otherwise.
+        /// The actual index of the inserted item, <c>-1</c> if no item was inserted.
         /// </returns>
-        private bool InsertItem(int index, bool updateGrid = true)
+        private int InsertItem(int index, bool updateGrid = true)
         {
             var actualIndex = this.Operator.InsertItem(this, index);
             if (actualIndex != -1)
@@ -1752,15 +1757,12 @@ namespace PropertyTools.Wpf
                 {
                     this.UpdateGridContent();
                 }
-
-                var cell = this.ItemsInRows ? new CellRef(actualIndex, 0) : new CellRef(0, actualIndex);
-                this.SelectionCell = cell;
-                this.CurrentCell = cell;
-                this.ScrollIntoView(cell);
-                return true;
             }
 
-            return false;
+            // The collection view may need to be refreshed
+            this.CollectionView.Refresh();
+
+            return actualIndex;
         }
 
         /// <summary>
@@ -1962,7 +1964,7 @@ namespace PropertyTools.Wpf
             {
                 if (i >= this.Rows)
                 {
-                    if (!this.InsertItem(-1, false))
+                    if (this.InsertItem(-1, false) == -1)
                     {
                         break;
                     }
@@ -2991,7 +2993,19 @@ namespace PropertyTools.Wpf
         private void AddItemCellMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Focus();
-            this.InsertItem(-1);
+            var actualIndex = this.InsertItem(-1);
+            if (actualIndex != -1)
+            {
+                var viewIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
+
+                var cell = this.ItemsInRows
+                               ? new CellRef(viewIndex, 0)
+                               : new CellRef(0, viewIndex);
+                this.SelectionCell = cell;
+                this.CurrentCell = cell;
+                this.ScrollIntoView(cell);
+            }
+
             e.Handled = true;
         }
 
@@ -3020,7 +3034,7 @@ namespace PropertyTools.Wpf
                 var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
                 this.SelectionCell = new CellRef(this.Rows - 1, column);
                 this.CurrentCell = shift ? new CellRef(0, this.CurrentCell.Column) : new CellRef(0, column);
-                this.ScrollIntoView(this.CurrentCell);
+                this.ScrollIntoView(this.SelectionCell);
             }
 
             // LMB toggles the sort
@@ -3217,7 +3231,7 @@ namespace PropertyTools.Wpf
         private void ClearSort()
         {
             this.sortDescriptions.Clear();
-            this.RefreshSort();
+            this.UpdateCollectionView();
         }
 
         /// <summary>
@@ -3244,13 +3258,13 @@ namespace PropertyTools.Wpf
                 Debug.WriteLine(e.Message);
             }
 
-            this.RefreshSort();
+            this.UpdateCollectionView();
         }
 
         /// <summary>
-        /// Refreshes the sort.
+        /// Updates the sort descriptions of the collection view and the visual markers.
         /// </summary>
-        private void RefreshSort()
+        private void UpdateCollectionView()
         {
             var sortDescriptionCollection = this.CollectionView.SortDescriptions;
             var sdc = this.CustomSort as ISortDescriptionComparer;
@@ -3271,6 +3285,7 @@ namespace PropertyTools.Wpf
                 lcv.CustomSort = this.CustomSort;
             }
 
+            this.CollectionView.Refresh();
             this.UpdateSortDescriptionMarkers();
         }
 
@@ -3323,7 +3338,7 @@ namespace PropertyTools.Wpf
                 Debug.WriteLine(e.Message);
             }
 
-            this.RefreshSort();
+            this.UpdateCollectionView();
         }
 
         /// <summary>
@@ -3616,12 +3631,20 @@ namespace PropertyTools.Wpf
             this.Focus();
 
             var row = this.GetCell(e.GetPosition(this.rowGrid)).Row;
+            var isRightButton = e.ChangedButton == MouseButton.Right;
+            var selectionRange = this.GetSelectionRange();
+            if (isRightButton && selectionRange.TopRow <= row && selectionRange.BottomRow >= row)
+            {
+                // do nothing, just show the context menu
+                return;
+            }
+
             if (row >= 0)
             {
                 var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
                 this.SelectionCell = new CellRef(row, this.Columns - 1);
                 this.CurrentCell = shift ? new CellRef(this.CurrentCell.Row, 0) : new CellRef(row, 0);
-                this.ScrollIntoView(this.CurrentCell);
+                this.ScrollIntoView(this.SelectionCell);
             }
 
             this.rowGrid.CaptureMouse();
@@ -4009,7 +4032,16 @@ namespace PropertyTools.Wpf
         {
             if (this.AutoInsert && (cell.Row >= this.Rows || cell.Column >= this.Columns))
             {
-                return this.InsertItem(-1);
+                var actualIndex = this.InsertItem(-1);
+                if (actualIndex != -1)
+                {
+                    actualIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
+                    var actualCell = this.ItemsInRows ? new CellRef(actualIndex, cell.Column) : new CellRef(cell.Row, actualIndex);
+                    this.SelectionCell = actualCell;
+                    this.CurrentCell = actualCell;
+                    this.ScrollIntoView(actualCell);
+                    return true;
+                }
             }
 
             return false;
@@ -4426,11 +4458,11 @@ namespace PropertyTools.Wpf
                 this.synchronizedCollection = this.ItemsSource;
 
                 // Enables the collection to be accessed across multiple threads
-                BindingOperations.EnableCollectionSynchronization((IList)this.synchronizedCollection, this);
+                BindingOperations.EnableCollectionSynchronization(this.synchronizedCollection, this);
 
                 var source = new CollectionViewSource { Source = this.ItemsSource };
                 this.CollectionView = source.View;
-                this.RefreshSort();
+                this.UpdateCollectionView();
             }
             else
             {
@@ -4493,6 +4525,7 @@ namespace PropertyTools.Wpf
             this.UpdateRows(rows);
             this.UpdateColumns(columns);
             this.UpdateCells(rows, columns);
+            this.UpdateSortDescriptionMarkers();
 
             this.UpdateSelectionVisibility();
             this.ShowEditControl();
@@ -4568,8 +4601,19 @@ namespace PropertyTools.Wpf
             // set the context menu
             this.rowGrid.ContextMenu = this.RowsContextMenu;
 
-            // to cover a possible scrollbar
-            this.rowGrid.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = new GridLength(20) });
+            // add a row definition to cover a possible scrollbar
+            var scrollBarRowDefinition = new System.Windows.Controls.RowDefinition();
+            this.rowGrid.RowDefinitions.Add(scrollBarRowDefinition);
+
+            // bind the height of the row definition to the visibility of the main horizontal scroll bar 
+            scrollBarRowDefinition.SetBinding(
+                System.Windows.Controls.RowDefinition.HeightProperty,
+                new Binding(nameof(ScrollViewer.ComputedHorizontalScrollBarVisibility))
+                {
+                    Source = this.sheetScrollViewer,
+                    Converter = HorizontalScrollBarVisibilityConverter,
+                    ConverterParameter = SystemParameters.HorizontalScrollBarHeight
+                });
 
             for (var j = 0; j < rows; j++)
             {

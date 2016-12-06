@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - DataGrid auto column width
+- DataGrid scrolling row headers with horizontal scroll bar
+- DataGrid set correct row when sorting rows and adding a new row 
 
 ### Added
 - EditableAttribute

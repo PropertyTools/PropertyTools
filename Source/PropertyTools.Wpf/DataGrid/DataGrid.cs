@@ -3226,7 +3226,7 @@ namespace PropertyTools.Wpf
         private void ClearSort()
         {
             this.sortDescriptions.Clear();
-            this.RefreshSort();
+            this.UpdateCollectionView();
         }
 
         /// <summary>
@@ -3253,13 +3253,13 @@ namespace PropertyTools.Wpf
                 Debug.WriteLine(e.Message);
             }
 
-            this.RefreshSort();
+            this.UpdateCollectionView();
         }
 
         /// <summary>
         /// Updates the sort descriptions of the collection view and the visual markers.
         /// </summary>
-        private void RefreshSort()
+        private void UpdateCollectionView()
         {
             var sortDescriptionCollection = this.CollectionView.SortDescriptions;
             var sdc = this.CustomSort as ISortDescriptionComparer;
@@ -3333,7 +3333,7 @@ namespace PropertyTools.Wpf
                 Debug.WriteLine(e.Message);
             }
 
-            this.RefreshSort();
+            this.UpdateCollectionView();
         }
 
         /// <summary>
@@ -4449,7 +4449,7 @@ namespace PropertyTools.Wpf
 
                 var source = new CollectionViewSource { Source = this.ItemsSource };
                 this.CollectionView = source.View;
-                this.RefreshSort();
+                this.UpdateCollectionView();
             }
             else
             {

@@ -1754,6 +1754,9 @@ namespace PropertyTools.Wpf
                 }
             }
 
+            // The collection view may need to be refreshed
+            this.CollectionView.Refresh();
+
             return actualIndex;
         }
 
@@ -3254,7 +3257,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Refreshes the sort.
+        /// Updates the sort descriptions of the collection view and the visual markers.
         /// </summary>
         private void RefreshSort()
         {
@@ -3277,6 +3280,7 @@ namespace PropertyTools.Wpf
                 lcv.CustomSort = this.CustomSort;
             }
 
+            this.CollectionView.Refresh();
             this.UpdateSortDescriptionMarkers();
         }
 
@@ -4441,7 +4445,7 @@ namespace PropertyTools.Wpf
                 this.synchronizedCollection = this.ItemsSource;
 
                 // Enables the collection to be accessed across multiple threads
-                BindingOperations.EnableCollectionSynchronization((IList)this.synchronizedCollection, this);
+                BindingOperations.EnableCollectionSynchronization(this.synchronizedCollection, this);
 
                 var source = new CollectionViewSource { Source = this.ItemsSource };
                 this.CollectionView = source.View;

@@ -250,10 +250,10 @@ namespace PropertyTools.Wpf
             }
 
             var c = new CheckBox
-                {
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Left
-                };
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
 
             c.SetBinding(ToggleButton.IsCheckedProperty, property.CreateBinding());
             return c;
@@ -340,12 +340,12 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateCommentControl(PropertyItem property)
         {
             var tb = new TextBlock
-                         {
-                             VerticalAlignment = VerticalAlignment.Center,
-                             Margin = new Thickness(4),
-                             Focusable = false,
-                             TextWrapping = TextWrapping.Wrap
-                         };
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(4),
+                Focusable = false,
+                TextWrapping = TextWrapping.Wrap
+            };
             ScrollViewer.SetHorizontalScrollBarVisibility(tb, ScrollBarVisibility.Hidden);
             ScrollViewer.SetVerticalScrollBarVisibility(tb, ScrollBarVisibility.Hidden);
             tb.SetBinding(TextBlock.TextProperty, property.CreateBinding());
@@ -399,14 +399,14 @@ namespace PropertyTools.Wpf
             // TextBox is the default control
             var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
             var c = new TextBoxEx
-                {
-                    AcceptsReturn = property.AcceptsReturn,
-                    MaxLength = property.MaxLength,
-                    IsReadOnly = property.IsReadOnly,
-                    TextWrapping = property.TextWrapping,
-                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                    VerticalContentAlignment = property.AcceptsReturn ? VerticalAlignment.Top : VerticalAlignment.Center
-                };
+            {
+                AcceptsReturn = property.AcceptsReturn,
+                MaxLength = property.MaxLength,
+                IsReadOnly = property.IsReadOnly,
+                TextWrapping = property.TextWrapping,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                VerticalContentAlignment = property.AcceptsReturn ? VerticalAlignment.Top : VerticalAlignment.Center
+            };
 
             if (property.FontFamily != null)
             {
@@ -477,6 +477,9 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateEnumControl(
             PropertyItem property, PropertyControlFactoryOptions options)
         {
+            // TODO: use check boxes for bit fields
+            //// var isBitField = property.Descriptor.PropertyType.GetTypeInfo().GetCustomAttributes<FlagsAttribute>().Any();
+
             var enumType = TypeHelper.GetEnumType(property.Descriptor.PropertyType);
             var values = Enum.GetValues(enumType);
             var style = property.SelectorStyle;
@@ -525,12 +528,12 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateFilePathControl(PropertyItem property)
         {
             var c = new FilePicker
-                {
-                    Filter = property.FilePathFilter,
-                    DefaultExtension = property.FilePathDefaultExtension,
-                    UseOpenDialog = property.IsFileOpenDialog,
-                    FileDialogService = this.FileDialogService
-                };
+            {
+                Filter = property.FilePathFilter,
+                DefaultExtension = property.FilePathDefaultExtension,
+                UseOpenDialog = property.IsFileOpenDialog,
+                FileDialogService = this.FileDialogService
+            };
             if (property.RelativePathDescriptor != null)
             {
                 c.SetBinding(FilePicker.BasePathProperty, new Binding(property.RelativePathDescriptor.Name));
@@ -594,15 +597,15 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateFontPreview(PropertyItem property)
         {
             var c = new TextBoxEx
-                {
-                    Background = Brushes.Transparent,
-                    BorderBrush = null,
-                    AcceptsReturn = true,
-                    IsReadOnly = property.IsReadOnly,
-                    TextWrapping = TextWrapping.Wrap,
-                    FontWeight = FontWeight.FromOpenTypeWeight(property.FontWeight),
-                    FontSize = property.FontSize
-                };
+            {
+                Background = Brushes.Transparent,
+                BorderBrush = null,
+                AcceptsReturn = true,
+                IsReadOnly = property.IsReadOnly,
+                TextWrapping = TextWrapping.Wrap,
+                FontWeight = FontWeight.FromOpenTypeWeight(property.FontWeight),
+                FontSize = property.FontSize
+            };
             TextOptions.SetTextFormattingMode(c, TextFormattingMode.Display);
             TextOptions.SetTextRenderingMode(c, TextRenderingMode.ClearType);
             c.SetBinding(TextBox.TextProperty, new Binding(property.Descriptor.Name) { Mode = BindingMode.OneWay });
@@ -736,14 +739,14 @@ namespace PropertyTools.Wpf
             g.ColumnDefinitions.Add(
                 new System.Windows.Controls.ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             var s = new Slider
-                {
-                    Minimum = property.SliderMinimum,
-                    Maximum = property.SliderMaximum,
-                    SmallChange = property.SliderSmallChange,
-                    LargeChange = property.SliderLargeChange,
-                    TickFrequency = property.SliderTickFrequency,
-                    IsSnapToTickEnabled = property.SliderSnapToTicks
-                };
+            {
+                Minimum = property.SliderMinimum,
+                Maximum = property.SliderMaximum,
+                SmallChange = property.SliderSmallChange,
+                LargeChange = property.SliderLargeChange,
+                TickFrequency = property.SliderTickFrequency,
+                IsSnapToTickEnabled = property.SliderSnapToTicks
+            };
             s.SetBinding(RangeBase.ValueProperty, property.CreateBinding());
             g.Children.Add(s);
 
@@ -778,21 +781,21 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateSpinControl(PropertyItem property)
         {
             var tb = new TextBoxEx
-                {
-                    IsReadOnly = property.IsReadOnly,
-                    BorderThickness = new Thickness(0),
-                    HorizontalContentAlignment = ConvertHorizontalAlignment(property.HorizontalAlignment),
-                    VerticalContentAlignment = VerticalAlignment.Center
-                };
+            {
+                IsReadOnly = property.IsReadOnly,
+                BorderThickness = new Thickness(0),
+                HorizontalContentAlignment = ConvertHorizontalAlignment(property.HorizontalAlignment),
+                VerticalContentAlignment = VerticalAlignment.Center
+            };
             tb.SetBinding(TextBox.TextProperty, property.CreateBinding());
             var c = new SpinControl
-                {
-                    Maximum = property.SpinMaximum,
-                    Minimum = property.SpinMinimum,
-                    SmallChange = property.SpinSmallChange,
-                    LargeChange = property.SpinLargeChange,
-                    Content = tb
-                };
+            {
+                Maximum = property.SpinMaximum,
+                Minimum = property.SpinMinimum,
+                SmallChange = property.SpinSmallChange,
+                LargeChange = property.SpinLargeChange,
+                Content = tb
+            };
 
             // Note: Do not apply the converter to the SpinControl
             c.SetBinding(SpinControl.ValueProperty, property.CreateBinding(UpdateSourceTrigger.Default, false));

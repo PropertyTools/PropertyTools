@@ -17,7 +17,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - EditableAttribute
-- DataGrid sorting commands #124
+- DataGrid: sorting commands #124
+- PropertyGrid: support nullable enums #129
 
 ## [2.0.1]
 ### Changed

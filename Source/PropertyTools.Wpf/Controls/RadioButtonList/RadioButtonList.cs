@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Represents a control that shows a list of radiobuttons.
+//   Represents a control that shows a list of radio buttons.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,23 +11,18 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
 
     /// <summary>
-    /// Represents a control that shows a list of radiobuttons.
+    /// Represents a control that shows a list of radio buttons.
     /// </summary>
-    /// <remarks>See http://bea.stollnitz.com/blog/?p=28 and http://code.msdn.microsoft.com/wpfradiobuttonlist</remarks>
     [TemplatePart(Name = PartPanel, Type = typeof(StackPanel))]
     public class RadioButtonList : Control
     {
-        /// <summary>
-        /// The part panel.
-        /// </summary>
-        private const string PartPanel = "PART_Panel";
-
         /// <summary>
         /// Identifies the <see cref="DescriptionConverter"/> dependency property.
         /// </summary>
@@ -72,6 +67,11 @@ namespace PropertyTools.Wpf
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChanged));
 
         /// <summary>
+        /// The part panel.
+        /// </summary>
+        private const string PartPanel = "PART_Panel";
+
+        /// <summary>
         /// The panel.
         /// </summary>
         private StackPanel panel;
@@ -90,7 +90,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         public RadioButtonList()
         {
-            this.DataContextChanged += this.RadioButtonListDataContextChanged;
+            this.DataContextChanged += this.HandleDataContextChanged;
         }
 
         /// <summary>
@@ -111,9 +111,9 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the type of the enum.
+        /// Gets or sets the type of the enumeration.
         /// </summary>
-        /// <value>The type of the enum.</value>
+        /// <value>The type of the enumeration.</value>
         public Type EnumType
         {
             get
@@ -210,7 +210,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Called when the Value changed or the EnumType changed.
+        /// Called when the <see cref="Value" /> has changed or the <see cref="EnumType" /> has changed.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event args.</param>
@@ -220,11 +220,11 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The radio button list data context changed.
+        /// Handles data context changes.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event args.</param>
-        private void RadioButtonListDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void HandleDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             this.UpdateContent();
         }
@@ -261,26 +261,48 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute();
+            var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute().ToList();
+
+            // if the type is nullable, add the null value
+            if (Nullable.GetUnderlyingType(this.EnumType) != null)
+            {
+                enumValues.Add(null);
+            }
+
             var converter = new EnumToBooleanConverter { EnumType = enumType };
 
             foreach (var itemValue in enumValues)
             {
-                var rb = new RadioButton
-                    {
-                        Content =
-                            this.DescriptionConverter.Convert(
-                                itemValue, typeof(string), null, CultureInfo.CurrentCulture),
-                        Padding = this.ItemPadding
-                    };
+                object content;
+                if (itemValue != null)
+                {
+                    content = this.DescriptionConverter.Convert(
+                        itemValue,
+                        typeof(string),
+                        null,
+                        CultureInfo.CurrentCulture);
+                }
+                else
+                {
+                    content = "-";
+                }
 
-                var isCheckedBinding = new Binding("Value")
-                    {
-                       Converter = converter, ConverterParameter = itemValue, Source = this, Mode = BindingMode.TwoWay
-                    };
+                var rb = new RadioButton
+                {
+                    Content = content,
+                    Padding = this.ItemPadding
+                };
+
+                var isCheckedBinding = new Binding(nameof(this.Value))
+                {
+                    Converter = converter,
+                    ConverterParameter = itemValue,
+                    Source = this,
+                    Mode = BindingMode.TwoWay
+                };
                 rb.SetBinding(ToggleButton.IsCheckedProperty, isCheckedBinding);
 
-                rb.SetBinding(MarginProperty, new Binding("ItemMargin") { Source = this });
+                rb.SetBinding(MarginProperty, new Binding(nameof(this.ItemMargin)) { Source = this });
 
                 this.panel.Children.Add(rb);
             }

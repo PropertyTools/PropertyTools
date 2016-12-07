@@ -10,38 +10,41 @@ namespace ExampleLibrary
 
     using PropertyTools.DataAnnotations;
 
-    public enum Fruits1 { Apple, Pears, Bananas }
+    public enum Fruit { Apple, Pear, Banana }
 
-    public enum Fruits2 { }
+    public enum Fruit2 { }
 
-    public enum Fruits3 { [Browsable(false)] Apple, Pears, Bananas }
+    public enum Fruit3 {[Browsable(false)] Apple, Pear, Banana }
 
-    public enum Fruits4 { [Browsable(false)] Apple, [Browsable(false)] Pears, [Browsable(false)] Bananas }
+    public enum Fruit4 {[Browsable(false)] Apple, [Browsable(false)] Pear, [Browsable(false)] Banana }
 
-    public enum Fruits5 { [Description("Epler")] Apple, [Description("Pærer")] Pears, [Description("Bananer")] Bananas }
+    public enum Fruit5 {[Description("Eple")] Apple, [Description("Pære")] Pear, [Description("Banan")] Banana }
 
     [Flags]
-    public enum Fruits6 { Apple=1, Pears=2, Bananas=4 }
+    public enum Fruit6 { All = Apple | Pear | Banana, Apple = 1, Pear = 2, Banana = 4 }
 
     [PropertyGridExample]
     public class EnumsExample : Example
     {
-        [Description("Normal enum.")]
-        public Fruits1 Fruits1 { get; set; }
+        [Description("Normal enum")]
+        public Fruit Fruit { get; set; }
 
-        [Description("Empty enum.")]
-        public Fruits2 Fruits2 { get; set; }
+        [Description("Empty enum")]
+        public Fruit2 Fruit2 { get; set; }
 
-        [Description("First item is not browsable.")]
-        public Fruits3 Fruits3 { get; set; }
+        [Description("First item is not browsable")]
+        public Fruit3 Fruit3 { get; set; }
 
-        [Description("No items are browsable.")]
-        public Fruits4 Fruits4 { get; set; }
+        [Description("No items are browsable")]
+        public Fruit4 Fruit4 { get; set; }
 
-        [Description("With descriptions.")]
-        public Fruits5 Fruits5 { get; set; }
+        [Description("With descriptions")]
+        public Fruit5 Fruit5 { get; set; }
 
-        [Description("Flags.")]
-        public Fruits6 Fruits6 { get; set; }
+        [Description("Bit field (FlagsAttribute)")]
+        public Fruit6 Fruit6 { get; set; }
+
+        [Description("Nullable enum")]
+        public Fruit? Fruit7 { get; set; }
     }
 }

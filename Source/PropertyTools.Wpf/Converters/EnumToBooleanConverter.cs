@@ -40,6 +40,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null && parameter == null)
+            {
+                return true;
+            }
+
             if (value == null || parameter == null)
             {
                 return DependencyProperty.UnsetValue;
@@ -62,7 +67,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null || parameter == null)
+            if (value == null)
             {
                 return DependencyProperty.UnsetValue;
             }
@@ -72,6 +77,11 @@ namespace PropertyTools.Wpf
                 bool boolValue = System.Convert.ToBoolean(value, culture);
                 if (boolValue)
                 {
+                    if (parameter == null)
+                    {
+                        return parameter;
+                    }
+
                     return Enum.Parse(this.EnumType, parameter.ToString());
                 }
             }

@@ -558,7 +558,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The editing cells.
         /// </summary>
-        private IEnumerable<CellRef> editingCells;
+        private IList<CellRef> editingCells;
 
         /// <summary>
         /// The sort description markers
@@ -2234,6 +2234,8 @@ namespace PropertyTools.Wpf
                 throw new InvalidOperationException();
             }
 
+            this.editingCells = this.SelectedCells.ToList();
+
             this.currentEditControl = this.CreateEditControl(cell);
             if (this.currentEditControl == null)
             {
@@ -2247,8 +2249,6 @@ namespace PropertyTools.Wpf
                 this.currentEditControl.Visibility = Visibility.Hidden;
                 textEditor.PreviewKeyDown += this.TextEditorPreviewKeyDown;
             }
-
-            this.editingCells = this.SelectedCells.ToList();
 
             Grid.SetColumn(this.currentEditControl, this.CurrentCell.Column);
             Grid.SetRow(this.currentEditControl, this.CurrentCell.Row);
@@ -2904,6 +2904,11 @@ namespace PropertyTools.Wpf
         /// <param name="changedCell">The cell that was changed.</param>
         private void CurrentCellSourceUpdated(CellRef changedCell)
         {
+            if (this.editingCells == null)
+            {
+                return;
+            }
+
             // The source of the binding for the current cell was updated
             // (e.g. check box (display control) was changed or a combo box (edit control) was changed
             var value = this.GetCellValue(changedCell);

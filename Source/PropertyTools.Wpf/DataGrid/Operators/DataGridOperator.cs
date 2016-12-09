@@ -111,6 +111,7 @@ namespace PropertyTools.Wpf
         protected virtual bool DeleteItem(DataGrid owner, int index)
         {
             var list = owner.ItemsSource;
+            index = this.GetItemsSourceIndex(owner, index);
             if (list == null)
             {
                 return false;

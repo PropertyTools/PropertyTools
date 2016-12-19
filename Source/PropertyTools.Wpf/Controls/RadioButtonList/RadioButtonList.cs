@@ -264,7 +264,7 @@ namespace PropertyTools.Wpf
             var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute().ToList();
 
             // if the type is nullable, add the null value
-            if (Nullable.GetUnderlyingType(this.EnumType) != null)
+            if (Nullable.GetUnderlyingType(enumType) != null)
             {
                 enumValues.Add(null);
             }

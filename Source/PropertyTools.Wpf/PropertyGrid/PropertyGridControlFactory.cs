@@ -467,6 +467,29 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the values for the specified enumeration type.
+        /// </summary>
+        /// <param name="enumType">The enumeration type.</param>
+        /// <returns>A sequence of values.</returns>
+        protected virtual IEnumerable<object> GetEnumValues(Type enumType)
+        {
+            var ult = Nullable.GetUnderlyingType(enumType);
+            var isNullable = ult != null;
+            if (isNullable)
+            {
+                enumType = ult;
+            }
+
+            var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute().ToList();
+            if (isNullable)
+            {
+                enumValues.Add(null);
+            }
+
+            return enumValues;
+        }
+
+        /// <summary>
         /// Creates the select control.
         /// </summary>
         /// <param name="property">The property.</param>
@@ -480,8 +503,7 @@ namespace PropertyTools.Wpf
             // TODO: use check boxes for bit fields
             //// var isBitField = property.Descriptor.PropertyType.GetTypeInfo().GetCustomAttributes<FlagsAttribute>().Any();
 
-            var enumType = TypeHelper.GetEnumType(property.Descriptor.PropertyType);
-            var values = Enum.GetValues(enumType);
+            var values = this.GetEnumValues(property.Descriptor.PropertyType).ToArray();
             var style = property.SelectorStyle;
             if (style == DataAnnotations.SelectorStyle.Auto)
             {
@@ -501,14 +523,14 @@ namespace PropertyTools.Wpf
 
                 case DataAnnotations.SelectorStyle.ComboBox:
                     {
-                        var c = new ComboBox { ItemsSource = Enum.GetValues(enumType) };
+                        var c = new ComboBox { ItemsSource = values };
                         c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
                         return c;
                     }
 
                 case DataAnnotations.SelectorStyle.ListBox:
                     {
-                        var c = new ListBox { ItemsSource = Enum.GetValues(enumType) };
+                        var c = new ListBox { ItemsSource = values };
                         c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
                         return c;
                     }

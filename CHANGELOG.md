@@ -6,14 +6,15 @@ All notable changes to this project will be documented in this file.
 - DataGrid commands moved to DataGridCommands
 
 ### Removed
-- DataGrid.AutoSizeColumns
+- DataGrid: AutoSizeColumns property
 - Observable methods based on expressions
 - ExpressionUtilities class
 
 ### Fixed
-- DataGrid auto column width
-- DataGrid scrolling row headers with horizontal scroll bar
-- DataGrid set correct row when sorting rows and adding a new row 
+- DataGrid: auto column width
+- DataGrid: scrolling row headers with horizontal scroll bar
+- DataGrid: set correct row when sorting rows and adding a new row 
+- PropertyGrid: support BrowsableAttribute on enum items when shown as ComboBox or ListBox #133
 
 ### Added
 - EditableAttribute

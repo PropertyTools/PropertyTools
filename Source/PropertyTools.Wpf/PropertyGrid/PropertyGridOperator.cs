@@ -388,6 +388,11 @@ namespace PropertyTools.Wpf
                 this.SetAttribute(attribute, pi, instance);
             }
 
+            if (pi.Columns.Count > 1)
+            {
+                pi.Columns.Sort((cd1, cd2) => cd1.Index.CompareTo(cd2.Index));
+            }
+
             pi.IsOptional = pi.IsOptional || pi.OptionalDescriptor != null;
 
             if (pi.Descriptor.PropertyType == typeof(TimeSpan) && pi.Converter == null)
@@ -494,10 +499,10 @@ namespace PropertyTools.Wpf
                     FormatString = ca.FormatString,
                     Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto),
                     IsReadOnly = ca.IsReadOnly,
-                    HorizontalAlignment = StringUtilities.ToHorizontalAlignment(ca.Alignment.ToString(CultureInfo.InvariantCulture))
+                    HorizontalAlignment = StringUtilities.ToHorizontalAlignment(ca.Alignment.ToString(CultureInfo.InvariantCulture)),
+                    Index = ca.ColumnIndex
                 };
 
-                // TODO: sort by index
                 pi.Columns.Add(cd);
             }
 

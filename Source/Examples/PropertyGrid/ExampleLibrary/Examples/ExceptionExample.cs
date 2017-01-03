@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestExceptions.cs" company="PropertyTools">
+// <copyright file="ExceptionExample.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------

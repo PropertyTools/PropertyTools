@@ -16,7 +16,7 @@ namespace ExampleLibrary
         public static bool TrySplitValueAndUnit(string s, IFormatProvider provider, out double value, out string unit)
         {
             s = s.Trim();
-            Match m = unitAndValueExpression.Match(s);
+            var m = unitAndValueExpression.Match(s);
             if (!m.Success)
             {
                 value = 0;

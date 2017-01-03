@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestVisibleProperties.cs" company="PropertyTools">
+// <copyright file="VisibleByAttributeExample.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------

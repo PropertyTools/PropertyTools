@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestBrowsableAttribute.cs" company="PropertyTools">
+// <copyright file="BrowsableAttributeExample.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------

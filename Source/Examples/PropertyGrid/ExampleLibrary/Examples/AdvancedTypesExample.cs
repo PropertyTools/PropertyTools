@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestAdvancedTypes.cs" company="PropertyTools">
+// <copyright file="AdvancedTypesExample.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------

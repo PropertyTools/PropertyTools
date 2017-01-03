@@ -10,20 +10,12 @@ namespace ExampleLibrary
 
     public struct Length : IFormattable, IComparable
     {
-        private double value;
-
-        public double Value
-        {
-            get
-            {
-                return this.value;
-            }
-        }
-
         public Length(double value)
         {
-            this.value = value;
+            this.Value = value;
         }
+
+        public double Value { get; }
 
         public static Length operator +(Length left, Length right)
         {
@@ -54,7 +46,7 @@ namespace ExampleLibrary
         {
             if (obj is Length)
             {
-                return this.value.CompareTo(((Length)obj).value);
+                return this.Value.CompareTo(((Length)obj).Value);
             }
 
             return 1;

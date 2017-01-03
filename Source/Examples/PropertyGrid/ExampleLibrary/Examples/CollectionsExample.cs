@@ -46,8 +46,8 @@ namespace ExampleLibrary
         public Collection<Item> Collection { get; set; }
 
         [Category("Custom|Specified columns")]
-        [Column(0, "Name", "Name", null, "2*", 'L')]
         [Column(1, "Fraction", "%", "P2", "1*", 'R')]
+        [Column(0, "Name", "Name", null, "2*", 'L')]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         public Collection<Item> Collection2 { get; set; }
 

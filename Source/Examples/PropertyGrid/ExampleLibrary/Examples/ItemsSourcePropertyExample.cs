@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestItemsSourcePropertyAttribute.cs" company="PropertyTools">
+// <copyright file="ItemsSourcePropertyExample.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>

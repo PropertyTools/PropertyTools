@@ -13,20 +13,12 @@ namespace ExampleLibrary
     [TypeConverter(typeof(MassConverter))]
     public class Mass : IFormattable, IComparable
     {
-        private double value;
-
-        public double Value
-        {
-            get
-            {
-                return this.value;
-            }
-        }
-
         public Mass(double value)
         {
-            this.value = value;
+            this.Value = value;
         }
+
+        public double Value { get; }
 
         public static Mass operator +(Mass left, Mass right)
         {
@@ -57,7 +49,7 @@ namespace ExampleLibrary
         {
             if (obj is Mass)
             {
-                return this.value.CompareTo(((Mass)obj).value);
+                return this.Value.CompareTo(((Mass)obj).Value);
             }
 
             return 1;

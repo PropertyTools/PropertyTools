@@ -13,5 +13,8 @@ namespace ExampleLibrary
     {
         [AutoUpdateText]
         public string Text { get; set; }
+
+        [AutoUpdateText]
+        public double Number { get; set; }
     }
 }

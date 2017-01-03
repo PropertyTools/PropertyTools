@@ -37,7 +37,7 @@ namespace ExampleLibrary
 
         public ImageSourceExample()
         {
-            var uri = new Uri("pack://application:,,,/ExampleLibrary;component/Images/sheep.png", UriKind.Absolute);
+            var uri = new Uri("pack://application:,,,/ExampleLibrary;component/Examples/sheep.png", UriKind.Absolute);
             var sri = Application.GetResourceStream(uri);
             var bitmap = new BitmapImage(uri);
             this.Image = bitmap;

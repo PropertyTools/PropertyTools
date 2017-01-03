@@ -107,7 +107,7 @@
     <Compile Include="Examples\VisibleByAttributeExample.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\sheep.png" />
+    <Resource Include="Examples\sheep.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj">

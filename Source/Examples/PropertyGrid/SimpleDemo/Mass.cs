@@ -36,9 +36,9 @@ namespace SimpleDemo
         {
             s = s.Replace(',', '.').Trim();
             var r = new Regex(@"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?");
-            Match m = r.Match(s);
+            var m = r.Match(s);
             if (!m.Success) return null;
-            double value = double.Parse(m.Groups[0].Value, CultureInfo.InvariantCulture);
+            var value = double.Parse(m.Groups[0].Value, CultureInfo.InvariantCulture);
             // string unit = m.Groups[1].Value;
             return new Mass { Value = value };
         }
@@ -51,7 +51,7 @@ namespace SimpleDemo
         /// </returns>
         public override string ToString()
         {
-            return string.Format("{0:N0} kg", Value, CultureInfo.InvariantCulture);
+            return string.Format("{0:N0} kg", this.Value, CultureInfo.InvariantCulture);
         }
     }
 }

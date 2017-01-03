@@ -16,13 +16,17 @@ namespace UndoRedoDemo
         public override void Write(string message)
         {
             if (this.OnAppend != null)
+            {
                 this.OnAppend.Invoke(message, false);
+            }
         }
 
         public override void WriteLine(string message)
         {
             if (this.OnAppend != null)
+            {
                 this.OnAppend.Invoke(message, true);
+            }
         }
 
         public DelegateTraceListener()

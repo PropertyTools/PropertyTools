@@ -16,7 +16,7 @@ namespace CustomFactoryDemo
     {
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             this.DataContext = new MainViewModel();
         }
     }

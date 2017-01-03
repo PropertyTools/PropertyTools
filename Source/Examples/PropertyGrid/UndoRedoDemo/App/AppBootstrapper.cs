@@ -13,12 +13,12 @@ namespace UndoRedoDemo
     {
         public AppBootstrapper()
         {
-            Initialize();
+            this.Initialize();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            DisplayRootViewFor<ShellViewModel>();
+            this.DisplayRootViewFor<ShellViewModel>();
         }
     }
 }

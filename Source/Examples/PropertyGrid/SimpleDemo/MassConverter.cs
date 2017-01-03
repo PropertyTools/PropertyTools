@@ -32,6 +32,7 @@ namespace SimpleDemo
             {
                 return true;
             }
+
             return base.CanConvertFrom(context, sourceType);
         }
 
@@ -51,6 +52,7 @@ namespace SimpleDemo
             {
                 return Mass.Parse((string) value);
             }
+
             return base.ConvertFrom(context, culture, value);
         }
     }

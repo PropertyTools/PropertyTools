@@ -16,9 +16,9 @@ namespace UndoRedoDemo
 
         public PropertyChangeUndoRedoAction(object instance, string property, object oldValue)
         {
-            Instance = instance;
-            Property = property;
-            OldValue = oldValue;
+            this.Instance = instance;
+            this.Property = property;
+            this.OldValue = oldValue;
         }
 
         public override string ToString()
@@ -28,22 +28,22 @@ namespace UndoRedoDemo
 
         public IUndoRedoAction Execute()
         {
-            var type = Instance.GetType();
-            var pi = type.GetProperty(Property);
-            var value = pi.GetValue(Instance, null);
-            var ii = Instance as ISupportInitialize;
+            var type = this.Instance.GetType();
+            var pi = type.GetProperty(this.Property);
+            var value = pi.GetValue(this.Instance, null);
+            var ii = this.Instance as ISupportInitialize;
             if (ii != null)
             {
                 ii.BeginInit();
             }
 
-            pi.SetValue(Instance, OldValue, null);
+            pi.SetValue(this.Instance, this.OldValue, null);
             if (ii != null)
             {
                 ii.EndInit();
             }
 
-            return new PropertyChangeUndoRedoAction(Instance, Property, value);
+            return new PropertyChangeUndoRedoAction(this.Instance, this.Property, value);
         }
     }
 }

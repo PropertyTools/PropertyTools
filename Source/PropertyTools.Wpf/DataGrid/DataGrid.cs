@@ -1759,8 +1759,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            // The collection view may need to be refreshed
-            this.CollectionView.Refresh();
+            this.RefreshIfRequired();
 
             return actualIndex;
         }
@@ -3190,7 +3189,7 @@ namespace PropertyTools.Wpf
             var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
             var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
             this.Operator.DeleteColumns(this, from, to - from + 1);
-            this.UpdateGridContent();
+            this.RefreshIfRequired();
 
             var maxColumn = this.Columns > 0 ? this.Columns - 1 : 0;
             if (this.CurrentCell.Column > maxColumn)
@@ -3214,7 +3213,7 @@ namespace PropertyTools.Wpf
             var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
             var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
             this.Operator.DeleteRows(this, from, to - from + 1);
-            this.UpdateGridContent();
+            this.RefreshIfRequired();
 
             var maxRow = this.Rows > 0 ? this.Rows - 1 : 0;
             if (this.CurrentCell.Row > maxRow)
@@ -3592,7 +3591,7 @@ namespace PropertyTools.Wpf
             var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
 
             this.Operator.InsertColumns(this, from, to - from + 1);
-            this.UpdateGridContent();
+            this.RefreshIfRequired();
         }
 
         /// <summary>
@@ -3603,7 +3602,18 @@ namespace PropertyTools.Wpf
             var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
             var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
             this.Operator.InsertRows(this, from, to - from + 1);
-            this.UpdateGridContent();
+            this.RefreshIfRequired();
+        }
+
+        /// <summary>
+        /// Refreshes the collection view and updates the grid content, if the ItemsSource is not implementing INotifyCollectionChanged.
+        /// </summary>
+        private void RefreshIfRequired()
+        {
+            if (!(this.ItemsSource is INotifyCollectionChanged))
+            {
+                this.CollectionView.Refresh();
+            }
         }
 
         /// <summary>

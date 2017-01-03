@@ -36,10 +36,10 @@ namespace UndoRedoDemo
         }
         public Measurement()
         {
-            BeginInit();
-            Time = DateTime.Now;
-            Value = 12.34;
-            EndInit();
+            this.BeginInit();
+            this.Time = DateTime.Now;
+            this.Value = 12.34;
+            this.EndInit();
         }
 
         public override string ToString()

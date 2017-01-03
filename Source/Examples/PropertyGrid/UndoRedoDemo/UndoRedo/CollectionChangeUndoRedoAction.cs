@@ -16,33 +16,38 @@ namespace UndoRedoDemo
 
         public NotifyCollectionChangedEventArgs Args { get; set; }
 
-        public CollectionChangeUndoRedoAction(IList collection, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        public CollectionChangeUndoRedoAction(IList collection, NotifyCollectionChangedEventArgs e)
         {
-            Collection = collection;
-            Args = e;
+            this.Collection = collection;
+            this.Args = e;
         }
 
         public override string ToString()
         {
-            return Args.Action.ToString();
+            return this.Args.Action.ToString();
         }
 
         public IUndoRedoAction Execute()
         {
-            var ii = Collection as ISupportInitialize;
+            var ii = this.Collection as ISupportInitialize;
             if (ii != null) ii.BeginInit();
             IUndoRedoAction result = null;
-            if (Args.Action == NotifyCollectionChangedAction.Add)
+            if (this.Args.Action == NotifyCollectionChangedAction.Add)
             {
-                Collection.RemoveAt(Collection.Count - 1);
-                result = new CollectionChangeUndoRedoAction(Collection, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, Args.NewItems));
+                this.Collection.RemoveAt(this.Collection.Count - 1);
+                result = new CollectionChangeUndoRedoAction(this.Collection, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, Args.NewItems));
             }
-            if (Args.Action == NotifyCollectionChangedAction.Remove)
+
+            if (this.Args.Action == NotifyCollectionChangedAction.Remove)
             {
                 foreach (var i in Args.OldItems)
-                    Collection.Add(i);
-                result = new CollectionChangeUndoRedoAction(Collection, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Args.OldItems));
+                {
+                    this.Collection.Add(i);
+                }
+
+                result = new CollectionChangeUndoRedoAction(this.Collection, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Args.OldItems));
             }
+
             if (ii != null) ii.EndInit();
             return result;
         }

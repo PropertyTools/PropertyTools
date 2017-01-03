@@ -14,7 +14,7 @@ namespace SimpleDemo
 
         public MainWindowViewModel()
         {
-            this.SelectedPerson = new Person()
+            this.SelectedPerson = new Person
                 {
                     FirstName = "Anders",
                     LastName = "Andersen",

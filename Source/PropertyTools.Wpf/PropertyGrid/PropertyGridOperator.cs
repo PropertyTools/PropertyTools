@@ -178,7 +178,21 @@ namespace PropertyTools.Wpf
         {
             var instanceType = instance.GetType();
 
-            var properties = TypeDescriptor.GetProperties(instance);
+            // check if the MetadataTypeAttribute is set
+            var metadataTypeAttribute = instanceType.GetCustomAttributes(typeof(MetadataTypeAttribute), true)
+                                     .OfType<MetadataTypeAttribute>().FirstOrDefault();
+            PropertyDescriptorCollection properties;
+            if (metadataTypeAttribute != null)
+            {
+                // use the metadata type for reflection
+                instanceType = metadataTypeAttribute.MetadataClassType;
+                properties = TypeDescriptor.GetProperties(instanceType);
+            }
+            else
+            {
+                properties = TypeDescriptor.GetProperties(instance);
+            }
+
             foreach (PropertyDescriptor pd in properties)
             {
                 if (options.ShowDeclaredOnly && pd.ComponentType != instanceType)

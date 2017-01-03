@@ -99,6 +99,7 @@
     <Compile Include="Examples\ImageSourceExample.cs" />
     <Compile Include="Examples\IndentationLevelAttributeExample.cs" />
     <Compile Include="Examples\ItemsSourcePropertyExample.cs" />
+    <Compile Include="Examples\MetaDataTypeExample.cs" />
     <Compile Include="Examples\NotifyDataErrorInfoExample.cs" />
     <Compile Include="Examples\OptionalAttributeExample.cs" />
     <Compile Include="Examples\PasswordExample.cs" />

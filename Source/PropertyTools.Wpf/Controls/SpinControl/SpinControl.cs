@@ -36,81 +36,94 @@ namespace PropertyTools.Wpf
         private const string PartUp = "PART_UP";
 
         /// <summary>
-        /// Gets or sets the culture used when parsing the LargeChange/SmallChange properties.
-        /// </summary>
-        /// <value>The culture.</value>
-        public CultureInfo Culture
-        {
-            get { return (CultureInfo)GetValue(CultureProperty); }
-            set { SetValue(CultureProperty, value); }
-        }
-
-        /// <summary>
         /// Identifies the <see cref="Culture"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CultureProperty =
-            DependencyProperty.Register("Culture", typeof(CultureInfo), typeof(SpinControl), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty CultureProperty = DependencyProperty.Register(
+            nameof(Culture),
+            typeof(CultureInfo),
+            typeof(SpinControl),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="DownButtonGeometry"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty DownButtonGeometryProperty =
-            DependencyProperty.Register(
-                "DownButtonGeometry", typeof(Geometry), typeof(SpinControl), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty DownButtonGeometryProperty = DependencyProperty.Register(
+            nameof(DownButtonGeometry),
+            typeof(Geometry),
+            typeof(SpinControl),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="LargeChange"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register(
-            "LargeChange", typeof(object), typeof(SpinControl), new UIPropertyMetadata(10.0));
+            nameof(LargeChange),
+            typeof(object),
+            typeof(SpinControl),
+            new UIPropertyMetadata(10.0));
 
         /// <summary>
         /// Identifies the <see cref="Maximum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
-            "Maximum", typeof(object), typeof(SpinControl), new UIPropertyMetadata(100.0));
+            nameof(Maximum),
+            typeof(object),
+            typeof(SpinControl),
+            new UIPropertyMetadata(100.0));
 
         /// <summary>
         /// Identifies the <see cref="Minimum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
-            "Minimum", typeof(object), typeof(SpinControl), new UIPropertyMetadata(0.0));
+            nameof(Minimum),
+            typeof(object),
+            typeof(SpinControl),
+            new UIPropertyMetadata(0.0));
 
         /// <summary>
         /// Identifies the <see cref="RepeatInterval"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RepeatIntervalProperty = DependencyProperty.Register(
-            "RepeatInterval", typeof(int), typeof(SpinControl), new UIPropertyMetadata(50));
+            nameof(RepeatInterval),
+            typeof(int),
+            typeof(SpinControl),
+            new UIPropertyMetadata(50));
 
         /// <summary>
         /// Identifies the <see cref="SmallChange"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register(
-            "SmallChange", typeof(object), typeof(SpinControl), new UIPropertyMetadata(1.0));
+            nameof(SmallChange),
+            typeof(object),
+            typeof(SpinControl),
+            new UIPropertyMetadata(1.0));
 
         /// <summary>
         /// Identifies the <see cref="SpinButtonWidth"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty SpinButtonWidthProperty =
-            DependencyProperty.Register(
-                "SpinButtonWidth", typeof(GridLength), typeof(SpinControl), new UIPropertyMetadata(new GridLength(14)));
+        public static readonly DependencyProperty SpinButtonWidthProperty = DependencyProperty.Register(
+            nameof(SpinButtonWidth),
+            typeof(GridLength),
+            typeof(SpinControl),
+            new UIPropertyMetadata(new GridLength(14)));
 
         /// <summary>
         /// Identifies the <see cref="UpButtonGeometry"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty UpButtonGeometryProperty =
-            DependencyProperty.Register(
-                "UpButtonGeometry", typeof(Geometry), typeof(SpinControl), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty UpButtonGeometryProperty = DependencyProperty.Register(
+            nameof(UpButtonGeometry),
+            typeof(Geometry),
+            typeof(SpinControl),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value",
+            nameof(Value),
             typeof(object),
             typeof(SpinControl),
-            new FrameworkPropertyMetadata(
-                null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SpinnerValueChanged, CoerceSpinnerValue));
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SpinnerValueChanged, CoerceSpinnerValue));
 
         /// <summary>
         /// The down button.
@@ -129,6 +142,16 @@ namespace PropertyTools.Wpf
         {
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(SpinControl), new FrameworkPropertyMetadata(typeof(SpinControl)));
+        }
+
+        /// <summary>
+        /// Gets or sets the culture used when parsing the LargeChange/SmallChange properties.
+        /// </summary>
+        /// <value>The culture.</value>
+        public CultureInfo Culture
+        {
+            get { return (CultureInfo)this.GetValue(CultureProperty); }
+            set { this.SetValue(CultureProperty, value); }
         }
 
         /// <summary>
@@ -523,7 +546,7 @@ namespace PropertyTools.Wpf
             {
                 var intChange = Convert.ToUInt64(change);
                 var currentValue = (ulong)this.Value;
-                ulong newValue = sign > 0 ? currentValue + intChange : currentValue - intChange;
+                var newValue = sign > 0 ? currentValue + intChange : currentValue - intChange;
                 if (sign > 0 && currentValue > ulong.MaxValue - intChange)
                 {
                     newValue = ulong.MaxValue;
@@ -543,7 +566,7 @@ namespace PropertyTools.Wpf
             {
                 var intChange = Convert.ToUInt32(change);
                 var currentValue = (uint)this.Value;
-                uint newValue = sign > 0 ? currentValue + intChange : currentValue - intChange;
+                var newValue = sign > 0 ? currentValue + intChange : currentValue - intChange;
                 if (sign > 0 && currentValue > uint.MaxValue - intChange)
                 {
                     newValue = uint.MaxValue;
@@ -623,7 +646,7 @@ namespace PropertyTools.Wpf
             {
                 var floatChange = Convert.ToSingle(change);
                 var currentValue = (float)this.Value;
-                float newValue = sign > 0 ? currentValue + floatChange : currentValue - floatChange;
+                var newValue = sign > 0 ? currentValue + floatChange : currentValue - floatChange;
                 if (sign > 0 && currentValue > float.MaxValue - floatChange)
                 {
                     newValue = float.MaxValue;
@@ -642,7 +665,7 @@ namespace PropertyTools.Wpf
             {
                 var decimalChange = Convert.ToDecimal(change);
                 var currentValue = (decimal)this.Value;
-                decimal newValue = sign > 0 ? currentValue + decimalChange : currentValue - decimalChange;
+                var newValue = sign > 0 ? currentValue + decimalChange : currentValue - decimalChange;
                 if (sign > 0 && currentValue > decimal.MaxValue - decimalChange)
                 {
                     newValue = decimal.MaxValue;
@@ -668,7 +691,7 @@ namespace PropertyTools.Wpf
 
                 if (this.IsNumeric(change))
                 {
-                    double doubleChange = Convert.ToDouble(change);
+                    var doubleChange = Convert.ToDouble(change);
                     if (Math.Abs(doubleChange) > double.Epsilon)
                     {
                         newValue = ((DateTime)this.Value).AddDays(doubleChange * sign);
@@ -691,7 +714,7 @@ namespace PropertyTools.Wpf
 
                 if (this.IsNumeric(change))
                 {
-                    double doubleChange = Convert.ToDouble(change);
+                    var doubleChange = Convert.ToDouble(change);
                     if (Math.Abs(doubleChange) > double.Epsilon)
                     {
                         newValue = current.Add(TimeSpan.FromSeconds(doubleChange * sign));
@@ -699,7 +722,6 @@ namespace PropertyTools.Wpf
                 }
 
                 this.Value = this.CoerceSpinnerValue(newValue);
-                return;
             }
         }
 
@@ -722,7 +744,7 @@ namespace PropertyTools.Wpf
                 var maximumType = this.Maximum.GetType();
                 if (maximumType == basevalue.GetType())
                 {
-                    if (Compare(basevalue, this.Maximum) == 1)
+                    if (this.Compare(basevalue, this.Maximum) == 1)
                     {
                         return this.Maximum;
                     }
@@ -734,7 +756,7 @@ namespace PropertyTools.Wpf
                 var minimumType = this.Minimum.GetType();
                 if (minimumType == basevalue.GetType())
                 {
-                    if (Compare(basevalue, this.Minimum) == -1)
+                    if (this.Compare(basevalue, this.Minimum) == -1)
                     {
                         return this.Minimum;
                     }
@@ -770,13 +792,13 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            double numericValue = double.NaN;
+            var numericValue = double.NaN;
             if (this.IsNumeric(basevalue))
             {
                 numericValue = Convert.ToDouble(basevalue);
             }
 
-            double numericMaximum = double.MaxValue;
+            var numericMaximum = double.MaxValue;
             if (this.Maximum != null && this.IsNumeric(this.Maximum))
             {
                 numericMaximum = Convert.ToDouble(this.Maximum);
@@ -786,7 +808,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            double numericMinimum = double.MinValue;
+            var numericMinimum = double.MinValue;
             if (this.Minimum != null && this.IsNumeric(this.Minimum))
             {
                 numericMinimum = Convert.ToDouble(this.Minimum);

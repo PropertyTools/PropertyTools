@@ -26,7 +26,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Source"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
-            "Source",
+            nameof(Source),
             typeof(BitmapSource),
             typeof(Bitmap),
             new FrameworkPropertyMetadata(

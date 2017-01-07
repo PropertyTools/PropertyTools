@@ -22,7 +22,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="SelectedValue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedValueProperty = DependencyProperty.Register(
-            "SelectedValue",
+            nameof(SelectedValue),
             typeof(object),
             typeof(EnumMenuItem),
             new FrameworkPropertyMetadata(

@@ -24,7 +24,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="FormatProvider"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FormatProviderProperty = DependencyProperty.Register(
-            "FormatProvider",
+            nameof(FormatProvider),
             typeof(IFormatProvider),
             typeof(FormattingTextBox),
             new UIPropertyMetadata(CultureInfo.InvariantCulture));
@@ -33,13 +33,16 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="StringFormat"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register(
-            "StringFormat", typeof(string), typeof(FormattingTextBox), new UIPropertyMetadata(null, StringFormatChanged));
+            nameof(StringFormat),
+            typeof(string),
+            typeof(FormattingTextBox),
+            new UIPropertyMetadata(null, StringFormatChanged));
 
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value",
+            nameof(Value),
             typeof(object),
             typeof(FormattingTextBox),
             new FrameworkPropertyMetadata(

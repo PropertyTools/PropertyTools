@@ -25,13 +25,19 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="LeftColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LeftColorProperty = DependencyProperty.Register(
-            "LeftColor", typeof(Color?), typeof(ColorSlider), new UIPropertyMetadata(Colors.Black));
+            nameof(LeftColor),
+            typeof(Color?),
+            typeof(ColorSlider),
+            new UIPropertyMetadata(Colors.Black));
 
         /// <summary>
         /// Identifies the <see cref="RightColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RightColorProperty = DependencyProperty.Register(
-            "RightColor", typeof(Color?), typeof(ColorSlider), new UIPropertyMetadata(Colors.White));
+            nameof(RightColor),
+            typeof(Color?),
+            typeof(ColorSlider),
+            new UIPropertyMetadata(Colors.White));
 
         /// <summary>
         /// Initializes static members of the <see cref="ColorSlider" /> class.

@@ -22,19 +22,25 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="HasItems"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HasItemsProperty = DependencyProperty.Register(
-            "HasItems", typeof(bool), typeof(TreeListBoxItem), new UIPropertyMetadata(false));
+            nameof(HasItems),
+            typeof(bool),
+            typeof(TreeListBoxItem),
+            new UIPropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="IsDropTarget"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsDropTargetProperty = DependencyProperty.Register(
-            "IsDropTarget", typeof(bool), typeof(TreeListBoxItem), new UIPropertyMetadata(false));
+            nameof(IsDropTarget),
+            typeof(bool),
+            typeof(TreeListBoxItem),
+            new UIPropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="IsExpanded"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register(
-            "IsExpanded",
+            nameof(IsExpanded),
             typeof(bool),
             typeof(TreeListBoxItem),
             new FrameworkPropertyMetadata(
@@ -46,13 +52,15 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="LevelPadding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LevelPaddingProperty = DependencyProperty.Register(
-            "LevelPadding", typeof(Thickness), typeof(TreeListBoxItem));
+            nameof(LevelPadding),
+            typeof(Thickness),
+            typeof(TreeListBoxItem));
 
         /// <summary>
         /// Identifies the <see cref="Level"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LevelProperty = DependencyProperty.Register(
-            "Level",
+            nameof(Level),
             typeof(int),
             typeof(TreeListBoxItem),
             new UIPropertyMetadata(0, (s, e) => ((TreeListBoxItem)s).LevelOrIndentationChanged()));

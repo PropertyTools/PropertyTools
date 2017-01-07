@@ -20,9 +20,11 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="VisibleChildrenCount"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty VisibleChildrenCountProperty =
-            DependencyProperty.Register(
-                "VisibleChildrenCount", typeof(int), typeof(StackPanelEx), new UIPropertyMetadata(-1));
+        public static readonly DependencyProperty VisibleChildrenCountProperty = DependencyProperty.Register(
+            nameof(VisibleChildrenCount),
+            typeof(int),
+            typeof(StackPanelEx),
+            new UIPropertyMetadata(-1));
 
         /// <summary>
         /// Gets the number of visible children.

@@ -31,7 +31,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Alpha"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty AlphaProperty = DependencyProperty.Register(
-            "Alpha",
+            nameof(Alpha),
             typeof(int),
             typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
@@ -40,7 +40,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Blue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BlueProperty = DependencyProperty.Register(
-            "Blue",
+            nameof(Blue),
             typeof(int),
             typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
@@ -49,7 +49,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Brightness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register(
-            "Brightness",
+            nameof(Brightness),
             typeof(int),
             typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
@@ -58,7 +58,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Green"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty GreenProperty = DependencyProperty.Register(
-            "Green",
+            nameof(Green),
             typeof(int),
             typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
@@ -67,7 +67,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Hue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
-            "Hue",
+            nameof(Hue),
             typeof(int),
             typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
@@ -76,13 +76,16 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="IsPicking"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsPickingProperty = DependencyProperty.Register(
-            "IsPicking", typeof(bool), typeof(ColorPickerPanel), new UIPropertyMetadata(false, IsPickingChanged));
+            nameof(IsPicking),
+            typeof(bool),
+            typeof(ColorPickerPanel),
+            new UIPropertyMetadata(false, IsPickingChanged));
 
         /// <summary>
         /// Identifies the <see cref="Red"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RedProperty = DependencyProperty.Register(
-            "Red",
+            nameof(Red),
             typeof(int),
             typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
@@ -91,7 +94,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Saturation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SaturationProperty = DependencyProperty.Register(
-            "Saturation",
+            nameof(Saturation),
             typeof(int),
             typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ComponentChanged));
@@ -100,7 +103,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="SelectedColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
-            "SelectedColor",
+            nameof(SelectedColor),
             typeof(Color?),
             typeof(ColorPickerPanel),
             new FrameworkPropertyMetadata(

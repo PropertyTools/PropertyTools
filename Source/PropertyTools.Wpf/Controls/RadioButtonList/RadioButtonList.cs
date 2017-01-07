@@ -26,42 +26,53 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="DescriptionConverter"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty DescriptionConverterProperty =
-            DependencyProperty.Register(
-                "DescriptionConverter",
-                typeof(IValueConverter),
-                typeof(RadioButtonList),
-                new UIPropertyMetadata(new EnumDescriptionConverter()));
+        public static readonly DependencyProperty DescriptionConverterProperty = DependencyProperty.Register(
+            nameof(DescriptionConverter),
+            typeof(IValueConverter),
+            typeof(RadioButtonList),
+            new UIPropertyMetadata(new EnumDescriptionConverter()));
 
         /// <summary>
         /// Identifies the <see cref="EnumType"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(
-            "EnumType", typeof(Type), typeof(RadioButtonList), new UIPropertyMetadata(null, ValueChanged));
+            nameof(EnumType),
+            typeof(Type),
+            typeof(RadioButtonList),
+            new UIPropertyMetadata(null, ValueChanged));
 
         /// <summary>
         /// Identifies the <see cref="ItemMargin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemMarginProperty = DependencyProperty.Register(
-            "ItemMargin", typeof(Thickness), typeof(RadioButtonList), new UIPropertyMetadata(new Thickness(0, 4, 0, 4)));
+            nameof(ItemMargin),
+            typeof(Thickness),
+            typeof(RadioButtonList),
+            new UIPropertyMetadata(new Thickness(0, 4, 0, 4)));
 
         /// <summary>
         /// Identifies the <see cref="ItemPadding"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemPaddingProperty = DependencyProperty.Register(
-            "ItemPadding", typeof(Thickness), typeof(RadioButtonList), new UIPropertyMetadata(new Thickness(4, 0, 0, 0)));
+            nameof(ItemPadding),
+            typeof(Thickness),
+            typeof(RadioButtonList),
+            new UIPropertyMetadata(new Thickness(4, 0, 0, 0)));
 
         /// <summary>
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-            "Orientation", typeof(Orientation), typeof(RadioButtonList), new UIPropertyMetadata(Orientation.Vertical));
+            nameof(Orientation),
+            typeof(Orientation),
+            typeof(RadioButtonList),
+            new UIPropertyMetadata(Orientation.Vertical));
 
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value",
+            nameof(Value),
             typeof(object),
             typeof(RadioButtonList),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChanged));

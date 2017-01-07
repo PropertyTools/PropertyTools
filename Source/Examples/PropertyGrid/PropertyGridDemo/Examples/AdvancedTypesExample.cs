@@ -69,7 +69,7 @@ namespace ExampleLibrary
         [Category("System.Windows.Media.Media3D")]
         public Point3D Point3D { get; set; }
         public Vector3D Vector3D { get; set; }
-        public Quaternion Quaternion { get; set; }
+        public System.Windows.Media.Media3D.Quaternion Quaternion { get; set; }
         public Matrix3D Matrix3D { get; set; }
     }
 }

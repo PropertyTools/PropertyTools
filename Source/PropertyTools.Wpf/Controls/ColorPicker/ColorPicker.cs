@@ -25,7 +25,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="SelectedColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
-            "SelectedColor",
+            nameof(SelectedColor),
             typeof(Color?),
             typeof(ColorPicker),
             new FrameworkPropertyMetadata(

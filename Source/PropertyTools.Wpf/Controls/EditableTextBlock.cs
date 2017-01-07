@@ -25,7 +25,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="IsEditing"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsEditingProperty = DependencyProperty.Register(
-            "IsEditing",
+            nameof(IsEditing),
             typeof(bool),
             typeof(EditableTextBlock),
             new FrameworkPropertyMetadata(

@@ -22,63 +22,88 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Header"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(
-            "Header", typeof(string), typeof(HeaderedEntrySlider), new UIPropertyMetadata(null));
+            nameof(Header),
+            typeof(string),
+            typeof(HeaderedEntrySlider),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="EntryStringFormat"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EntryStringFormatProperty = DependencyProperty.Register(
-            "EntryStringFormat", typeof(string), typeof(HeaderedEntrySlider), new UIPropertyMetadata("0.##"));
+            nameof(EntryStringFormat),
+            typeof(string),
+            typeof(HeaderedEntrySlider),
+            new UIPropertyMetadata("0.##"));
 
         /// <summary>
         /// Identifies the <see cref="EntryContentAlignment"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EntryContentAlignmentProperty = DependencyProperty.Register(
-            "EntryContentAlignment", typeof(HorizontalAlignment), typeof(HeaderedEntrySlider), new UIPropertyMetadata(HorizontalAlignment.Right));
+            nameof(EntryContentAlignment),
+            typeof(HorizontalAlignment),
+            typeof(HeaderedEntrySlider),
+            new UIPropertyMetadata(HorizontalAlignment.Right));
 
         /// <summary>
         /// Identifies the <see cref="LargeChange"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register(
-            "LargeChange", typeof(double), typeof(HeaderedEntrySlider), new UIPropertyMetadata(10d));
+            nameof(LargeChange),
+            typeof(double),
+            typeof(HeaderedEntrySlider),
+            new UIPropertyMetadata(10d));
 
         /// <summary>
         /// Identifies the <see cref="Maximum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
-            "Maximum", typeof(double), typeof(HeaderedEntrySlider), new UIPropertyMetadata(100d));
+            nameof(Maximum),
+            typeof(double),
+            typeof(HeaderedEntrySlider),
+            new UIPropertyMetadata(100d));
 
         /// <summary>
         /// Identifies the <see cref="Minimum"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
-            "Minimum", typeof(double), typeof(HeaderedEntrySlider), new UIPropertyMetadata(0d));
+            nameof(Minimum),
+            typeof(double),
+            typeof(HeaderedEntrySlider),
+            new UIPropertyMetadata(0d));
 
         /// <summary>
         /// Identifies the <see cref="SmallChange"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register(
-            "SmallChange", typeof(double), typeof(HeaderedEntrySlider), new UIPropertyMetadata(1d));
+            nameof(SmallChange),
+            typeof(double),
+            typeof(HeaderedEntrySlider),
+            new UIPropertyMetadata(1d));
 
         /// <summary>
         /// Identifies the <see cref="HeaderWidth"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty HeaderWidthProperty =
-            DependencyProperty.Register(
-                "HeaderWidth", typeof(GridLength), typeof(HeaderedEntrySlider), new UIPropertyMetadata(GridLength.Auto));
+        public static readonly DependencyProperty HeaderWidthProperty = DependencyProperty.Register(
+            nameof(HeaderWidth),
+            typeof(GridLength),
+            typeof(HeaderedEntrySlider),
+            new UIPropertyMetadata(GridLength.Auto));
 
         /// <summary>
         /// Identifies the <see cref="EntryWidth"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty EntryWidthProperty =
-            DependencyProperty.Register(
-                "EntryWidth", typeof(GridLength), typeof(HeaderedEntrySlider), new UIPropertyMetadata(new GridLength(80)));
+        public static readonly DependencyProperty EntryWidthProperty = DependencyProperty.Register(
+            nameof(EntryWidth),
+            typeof(GridLength),
+            typeof(HeaderedEntrySlider),
+            new UIPropertyMetadata(new GridLength(80)));
 
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value",
+            nameof(Value),
             typeof(double),
             typeof(HeaderedEntrySlider),
             new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));

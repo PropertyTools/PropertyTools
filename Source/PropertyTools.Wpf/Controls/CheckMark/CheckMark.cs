@@ -21,7 +21,10 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="IsChecked"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
-            "IsChecked", typeof(bool), typeof(CheckMark), new PropertyMetadata(false));
+            nameof(IsChecked), 
+            typeof(bool), 
+            typeof(CheckMark), 
+            new PropertyMetadata(false));
 
         /// <summary>
         /// Initializes static members of the <see cref="CheckMark" /> class.

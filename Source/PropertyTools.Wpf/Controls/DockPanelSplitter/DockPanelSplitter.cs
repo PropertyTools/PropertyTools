@@ -22,15 +22,20 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="ProportionalResize"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ProportionalResizeProperty =
-            DependencyProperty.Register(
-                "ProportionalResize", typeof(bool), typeof(DockPanelSplitter), new UIPropertyMetadata(true));
+        public static readonly DependencyProperty ProportionalResizeProperty = DependencyProperty.Register(
+            nameof(ProportionalResize),
+            typeof(bool),
+            typeof(DockPanelSplitter),
+            new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="Thickness"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
-            "Thickness", typeof(double), typeof(DockPanelSplitter), new UIPropertyMetadata(4.0, ThicknessChanged));
+            nameof(Thickness),
+            typeof(double),
+            typeof(DockPanelSplitter),
+            new UIPropertyMetadata(4.0, ThicknessChanged));
 
         /// <summary>
         /// The element.

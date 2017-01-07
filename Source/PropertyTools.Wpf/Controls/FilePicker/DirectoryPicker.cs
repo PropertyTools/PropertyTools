@@ -24,7 +24,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Directory"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DirectoryProperty = DependencyProperty.Register(
-            "Directory",
+            nameof(Directory),
             typeof(string),
             typeof(DirectoryPicker),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
@@ -32,36 +32,47 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="FolderBrowserDialogService"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty FolderBrowserDialogServiceProperty =
-            DependencyProperty.Register(
-                "FolderBrowserDialogService",
-                typeof(IFolderBrowserDialogService),
-                typeof(DirectoryPicker),
-                new UIPropertyMetadata(null));
+        public static readonly DependencyProperty FolderBrowserDialogServiceProperty = DependencyProperty.Register(
+            nameof(FolderBrowserDialogService),
+            typeof(IFolderBrowserDialogService),
+            typeof(DirectoryPicker),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="BrowseButtonContent"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty BrowseButtonContentProperty =
-            DependencyProperty.Register("BrowseButtonContent", typeof(object), typeof(DirectoryPicker), new PropertyMetadata("..."));
+        public static readonly DependencyProperty BrowseButtonContentProperty = DependencyProperty.Register(
+            nameof(BrowseButtonContent),
+            typeof(object),
+            typeof(DirectoryPicker),
+            new PropertyMetadata("..."));
 
         /// <summary>
         /// Identifies the <see cref="ExploreButtonContent"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ExploreButtonContentProperty =
-            DependencyProperty.Register("ExploreButtonContent", typeof(object), typeof(DirectoryPicker), new PropertyMetadata(null));
+        public static readonly DependencyProperty ExploreButtonContentProperty = DependencyProperty.Register(
+            nameof(ExploreButtonContent),
+            typeof(object),
+            typeof(DirectoryPicker),
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="BrowseButtonToolTip"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty BrowseButtonToolTipProperty =
-            DependencyProperty.Register("BrowseButtonToolTip", typeof(object), typeof(DirectoryPicker), new PropertyMetadata(null));
+        public static readonly DependencyProperty BrowseButtonToolTipProperty = DependencyProperty.Register(
+            nameof(BrowseButtonToolTip),
+            typeof(object),
+            typeof(DirectoryPicker),
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="ExploreButtonToolTip"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ExploreButtonToolTipProperty =
-            DependencyProperty.Register("ExploreButtonToolTip", typeof(object), typeof(DirectoryPicker), new PropertyMetadata(null));
+        public static readonly DependencyProperty ExploreButtonToolTipProperty = DependencyProperty.Register(
+            nameof(ExploreButtonToolTip),
+            typeof(object),
+            typeof(DirectoryPicker),
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Initializes static members of the <see cref="DirectoryPicker" /> class.

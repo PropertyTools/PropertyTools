@@ -26,7 +26,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Hue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
-            "Hue",
+            nameof(Hue),
             typeof(double),
             typeof(SpectrumSlider),
             new FrameworkPropertyMetadata(

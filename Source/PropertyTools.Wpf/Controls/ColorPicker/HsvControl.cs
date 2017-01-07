@@ -30,7 +30,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Hue"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HueProperty = DependencyProperty.Register(
-            "Hue",
+            nameof(Hue),
             typeof(double),
             typeof(HsvControl),
             new FrameworkPropertyMetadata(
@@ -40,7 +40,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Saturation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SaturationProperty = DependencyProperty.Register(
-            "Saturation",
+            nameof(Saturation),
             typeof(double),
             typeof(HsvControl),
             new FrameworkPropertyMetadata(
@@ -50,7 +50,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="SelectedColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty = DependencyProperty.Register(
-            "SelectedColor",
+            nameof(SelectedColor),
             typeof(Color?),
             typeof(HsvControl),
             new FrameworkPropertyMetadata(Colors.Transparent, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
@@ -59,7 +59,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value",
+            nameof(Value),
             typeof(double),
             typeof(HsvControl),
             new FrameworkPropertyMetadata(

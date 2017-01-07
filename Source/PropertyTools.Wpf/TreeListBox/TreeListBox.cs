@@ -28,18 +28,17 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="ChildrenPath"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ChildrenPathProperty =
-            DependencyProperty.Register(
-                "ChildrenPath",
-                typeof(string),
-                typeof(TreeListBox),
-                new UIPropertyMetadata("Children"));
+        public static readonly DependencyProperty ChildrenPathProperty = DependencyProperty.Register(
+            nameof(ChildrenPath),
+            typeof(string),
+            typeof(TreeListBox),
+            new UIPropertyMetadata("Children"));
 
         /// <summary>
         /// Identifies the <see cref="Indentation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IndentationProperty = DependencyProperty.Register(
-            "Indentation",
+            nameof(Indentation),
             typeof(double),
             typeof(TreeListBox),
             new UIPropertyMetadata(10.0, (s, e) => ((TreeListBox)s).IndentationChanged()));
@@ -48,23 +47,25 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="IsExpandedPath"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsExpandedPathProperty = DependencyProperty.Register(
-            "IsExpandedPath", typeof(string), typeof(TreeListBox), new UIPropertyMetadata("IsExpanded"));
+            nameof(IsExpandedPath),
+            typeof(string),
+            typeof(TreeListBox),
+            new UIPropertyMetadata("IsExpanded"));
 
         /// <summary>
         /// Identifies the <see cref="IsSelectedPath"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty IsSelectedPathProperty =
-            DependencyProperty.Register(
-                "IsSelectedPath",
-                typeof(string),
-                typeof(TreeListBox),
-                new UIPropertyMetadata("IsSelected"));
+        public static readonly DependencyProperty IsSelectedPathProperty = DependencyProperty.Register(
+            nameof(IsSelectedPath),
+            typeof(string),
+            typeof(TreeListBox),
+            new UIPropertyMetadata("IsSelected"));
 
         /// <summary>
         /// Identifies the <see cref="HierarchySource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TreeSourceProperty = DependencyProperty.Register(
-            "HierarchySource",
+            nameof(HierarchySource),
             typeof(IEnumerable),
             typeof(TreeListBox),
             new UIPropertyMetadata(null, (s, e) => ((TreeListBox)s).HierarchySourceChanged(e)));

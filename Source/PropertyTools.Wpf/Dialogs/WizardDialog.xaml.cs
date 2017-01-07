@@ -21,13 +21,19 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="CurrentPage"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CurrentPageProperty = DependencyProperty.Register(
-            "CurrentPage", typeof(int), typeof(WizardDialog), new UIPropertyMetadata(-1, CurrentPage_Changed));
+            nameof(CurrentPage),
+            typeof(int),
+            typeof(WizardDialog),
+            new UIPropertyMetadata(-1, CurrentPage_Changed));
 
         /// <summary>
         /// Identifies the <see cref="Pages"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PagesProperty = DependencyProperty.Register(
-            "Pages", typeof(List<object>), typeof(WizardDialog), new UIPropertyMetadata(null));
+            nameof(Pages),
+            typeof(List<object>),
+            typeof(WizardDialog),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WizardDialog" /> class.

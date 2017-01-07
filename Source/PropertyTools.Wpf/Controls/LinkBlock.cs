@@ -24,7 +24,10 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="NavigateUri"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty NavigateUriProperty = DependencyProperty.Register(
-            "NavigateUri", typeof(Uri), typeof(LinkBlock), new UIPropertyMetadata(null));
+            nameof(NavigateUri), 
+            typeof(Uri), 
+            typeof(LinkBlock), 
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Initializes static members of the <see cref="LinkBlock" /> class.

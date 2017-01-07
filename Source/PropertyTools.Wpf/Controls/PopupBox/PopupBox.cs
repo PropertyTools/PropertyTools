@@ -21,7 +21,10 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="PopupTemplate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PopupTemplateProperty = DependencyProperty.Register(
-            "PopupTemplate", typeof(DataTemplate), typeof(PopupBox), new UIPropertyMetadata(null));
+            nameof(PopupTemplate),
+            typeof(DataTemplate),
+            typeof(PopupBox),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Initializes static members of the <see cref="PopupBox" /> class.

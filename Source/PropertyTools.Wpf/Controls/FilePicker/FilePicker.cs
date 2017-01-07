@@ -28,34 +28,31 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="BasePath"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BasePathProperty = DependencyProperty.Register(
-            "BasePath", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
+            nameof(BasePath), typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="DefaultExtension"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty DefaultExtensionProperty =
-            DependencyProperty.Register(
-                "DefaultExtension", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty DefaultExtensionProperty = DependencyProperty.Register(
+            nameof(DefaultExtension), typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="Multiselect"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MultiselectProperty =
-            DependencyProperty.Register(
-                 "Multiselect", typeof(bool), typeof(FilePicker), new UIPropertyMetadata(false));
+        public static readonly DependencyProperty MultiselectProperty = DependencyProperty.Register(
+            nameof(Multiselect), typeof(bool), typeof(FilePicker), new UIPropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="FileDialogService"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty FileDialogServiceProperty =
-            DependencyProperty.Register(
-                "FileDialogService", typeof(IFileDialogService), typeof(FilePicker), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty FileDialogServiceProperty = DependencyProperty.Register(
+            nameof(FileDialogService), typeof(IFileDialogService), typeof(FilePicker), new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="FilePath"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FilePathProperty = DependencyProperty.Register(
-            "FilePath",
+            nameof(FilePath),
             typeof(string),
             typeof(FilePicker),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
@@ -64,7 +61,7 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="FilePaths"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FilePathsProperty = DependencyProperty.Register(
-            "FilePaths",
+            nameof(FilePaths),
             typeof(string[]),
             typeof(FilePicker),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnFilePathsChanged));
@@ -73,49 +70,73 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="Filter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(
-            "Filter", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null));
+            nameof(Filter),
+            typeof(string),
+            typeof(FilePicker),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="UseOpenDialog"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UseOpenDialogProperty = DependencyProperty.Register(
-            "UseOpenDialog", typeof(bool), typeof(FilePicker), new UIPropertyMetadata(true));
+            nameof(UseOpenDialog),
+            typeof(bool),
+            typeof(FilePicker),
+            new UIPropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="BrowseButtonContent"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty BrowseButtonContentProperty =
-            DependencyProperty.Register("BrowseButtonContent", typeof(object), typeof(FilePicker), new PropertyMetadata("..."));
+        public static readonly DependencyProperty BrowseButtonContentProperty = DependencyProperty.Register(
+            nameof(BrowseButtonContent),
+            typeof(object),
+            typeof(FilePicker),
+            new PropertyMetadata("..."));
 
         /// <summary>
         /// Identifies the <see cref="ExploreButtonContent"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ExploreButtonContentProperty =
-            DependencyProperty.Register("ExploreButtonContent", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
+        public static readonly DependencyProperty ExploreButtonContentProperty = DependencyProperty.Register(
+            nameof(ExploreButtonContent),
+            typeof(object),
+            typeof(FilePicker),
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="OpenButtonContent"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty OpenButtonContentProperty =
-            DependencyProperty.Register("OpenButtonContent", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
+        public static readonly DependencyProperty OpenButtonContentProperty = DependencyProperty.Register(
+            nameof(OpenButtonContent),
+            typeof(object),
+            typeof(FilePicker),
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="BrowseButtonToolTip"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty BrowseButtonToolTipProperty =
-            DependencyProperty.Register("BrowseButtonToolTip", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
+        public static readonly DependencyProperty BrowseButtonToolTipProperty = DependencyProperty.Register(
+            nameof(BrowseButtonToolTip),
+            typeof(object),
+            typeof(FilePicker),
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="ExploreButtonToolTip"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ExploreButtonToolTipProperty =
-            DependencyProperty.Register("ExploreButtonToolTip", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
+        public static readonly DependencyProperty ExploreButtonToolTipProperty = DependencyProperty.Register(
+            nameof(ExploreButtonToolTip),
+            typeof(object),
+            typeof(FilePicker),
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="OpenButtonToolTip"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty OpenButtonToolTipProperty =
-            DependencyProperty.Register("OpenButtonToolTip", typeof(object), typeof(FilePicker), new PropertyMetadata(null));
+        public static readonly DependencyProperty OpenButtonToolTipProperty = DependencyProperty.Register(
+            nameof(OpenButtonToolTip),
+            typeof(object),
+            typeof(FilePicker),
+            new PropertyMetadata(null));
 
         /// <summary>
         /// Initializes static members of the <see cref="FilePicker" /> class.
@@ -441,12 +462,12 @@ namespace PropertyTools.Wpf
                 if (this.UseOpenDialog)
                 {
                     var d = new OpenFileDialog
-                        {
-                            FileName = this.FilePath,
-                            Filter = this.Filter,
-                            DefaultExt = this.DefaultExtension,
-                            Multiselect = this.Multiselect
-                        };
+                    {
+                        FileName = this.FilePath,
+                        Filter = this.Filter,
+                        DefaultExt = this.DefaultExtension,
+                        Multiselect = this.Multiselect
+                    };
                     if (true == d.ShowDialog())
                     {
                         if (this.Multiselect)
@@ -464,11 +485,11 @@ namespace PropertyTools.Wpf
                 else
                 {
                     var d = new SaveFileDialog
-                        {
-                            FileName = this.FilePath,
-                            Filter = this.Filter,
-                            DefaultExt = this.DefaultExtension
-                        };
+                    {
+                        FileName = this.FilePath,
+                        Filter = this.Filter,
+                        DefaultExt = this.DefaultExtension
+                    };
                     if (true == d.ShowDialog())
                     {
                         filename = d.FileName;

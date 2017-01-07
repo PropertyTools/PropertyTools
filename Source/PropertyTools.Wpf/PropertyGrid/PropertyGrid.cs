@@ -101,141 +101,139 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="CategoryControlTemplate"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CategoryControlTemplateProperty =
-            DependencyProperty.Register(
-                "CategoryControlTemplate",
-                typeof(ControlTemplate),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(null));
+        public static readonly DependencyProperty CategoryControlTemplateProperty = DependencyProperty.Register(
+            nameof(CategoryControlTemplate),
+            typeof(ControlTemplate),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="CategoryControlType"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CategoryControlTypeProperty =
-            DependencyProperty.Register(
-                "CategoryControlType",
-                typeof(CategoryControlType),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(CategoryControlType.GroupBox, AppearanceChanged));
+        public static readonly DependencyProperty CategoryControlTypeProperty = DependencyProperty.Register(
+            nameof(CategoryControlType),
+            typeof(CategoryControlType),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(CategoryControlType.GroupBox, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="CategoryHeaderTemplate"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty CategoryHeaderTemplateProperty =
-            DependencyProperty.Register("CategoryHeaderTemplate", typeof(DataTemplate), typeof(PropertyGrid));
+        public static readonly DependencyProperty CategoryHeaderTemplateProperty = DependencyProperty.Register(
+            nameof(CategoryHeaderTemplate),
+            typeof(DataTemplate),
+            typeof(PropertyGrid));
 
         /// <summary>
         /// Identifies the <see cref="DescriptionIconAlignment"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty DescriptionIconAlignmentProperty =
-            DependencyProperty.Register(
-                "DescriptionIconAlignment",
-                typeof(HorizontalAlignment),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(HorizontalAlignment.Right, AppearanceChanged));
+        public static readonly DependencyProperty DescriptionIconAlignmentProperty = DependencyProperty.Register(
+            nameof(DescriptionIconAlignment),
+            typeof(HorizontalAlignment),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(HorizontalAlignment.Right, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="DescriptionIcon"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty DescriptionIconProperty =
-            DependencyProperty.Register("DescriptionIcon", typeof(ImageSource), typeof(PropertyGrid));
+        public static readonly DependencyProperty DescriptionIconProperty = DependencyProperty.Register(
+            nameof(DescriptionIcon), typeof(ImageSource), typeof(PropertyGrid));
 
         /// <summary>
         /// Identifies the <see cref="EnableLabelWidthResizing"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty EnableLabelWidthResizingProperty =
-            DependencyProperty.Register(
-                "EnableLabelWidthResizing",
-                typeof(bool),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(true, AppearanceChanged));
+        public static readonly DependencyProperty EnableLabelWidthResizingProperty = DependencyProperty.Register(
+            nameof(EnableLabelWidthResizing),
+            typeof(bool),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="EnumAsRadioButtonsLimit"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty EnumAsRadioButtonsLimitProperty =
-            DependencyProperty.Register(
-                "EnumAsRadioButtonsLimit",
-                typeof(int),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(4, AppearanceChanged));
+        public static readonly DependencyProperty EnumAsRadioButtonsLimitProperty = DependencyProperty.Register(
+            nameof(EnumAsRadioButtonsLimit),
+            typeof(int),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(4, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="Indentation"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty IndentationProperty =
-            DependencyProperty.Register(
-                "Indentation",
-                typeof(double),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(16d));
+        public static readonly DependencyProperty IndentationProperty = DependencyProperty.Register(
+            nameof(Indentation),
+            typeof(double),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(16d));
 
         /// <summary>
         /// Identifies the <see cref="LabelWidthSharing"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty LabelWidthSharingProperty =
-            DependencyProperty.Register(
-                "LabelWidthSharing",
-                typeof(LabelWidthSharing),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(LabelWidthSharing.SharedInTab, AppearanceChanged));
+        public static readonly DependencyProperty LabelWidthSharingProperty = DependencyProperty.Register(
+            nameof(LabelWidthSharing),
+            typeof(LabelWidthSharing),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(LabelWidthSharing.SharedInTab, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="MaximumLabelWidth"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MaximumLabelWidthProperty =
-            DependencyProperty.Register(
-                "MaximumLabelWidth", typeof(double), typeof(PropertyGrid), new UIPropertyMetadata(double.MaxValue));
+        public static readonly DependencyProperty MaximumLabelWidthProperty = DependencyProperty.Register(
+            nameof(MaximumLabelWidth),
+            typeof(double),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(double.MaxValue));
 
         /// <summary>
         /// Identifies the <see cref="MinimumLabelWidth"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MinimumLabelWidthProperty =
-            DependencyProperty.Register(
-                "MinimumLabelWidth", typeof(double), typeof(PropertyGrid), new UIPropertyMetadata(70.0));
+        public static readonly DependencyProperty MinimumLabelWidthProperty = DependencyProperty.Register(
+            nameof(MinimumLabelWidth),
+            typeof(double),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(70.0));
 
         /// <summary>
         /// Identifies the <see cref="MoveFocusOnEnter"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty MoveFocusOnEnterProperty =
-            DependencyProperty.Register(
-                "MoveFocusOnEnter", typeof(bool), typeof(PropertyGrid), new UIPropertyMetadata(false));
+        public static readonly DependencyProperty MoveFocusOnEnterProperty = DependencyProperty.Register(
+            nameof(MoveFocusOnEnter),
+            typeof(bool),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="ControlFactory"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ControlFactoryProperty =
-            DependencyProperty.Register(
-                "ControlFactory",
-                typeof(IPropertyGridControlFactory),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(new PropertyGridControlFactory()));
+        public static readonly DependencyProperty ControlFactoryProperty = DependencyProperty.Register(
+            nameof(ControlFactory),
+            typeof(IPropertyGridControlFactory),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(new PropertyGridControlFactory()));
 
         /// <summary>
         /// Identifies the <see cref="PropertyItem"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty OperatorProperty =
-            DependencyProperty.Register(
-                "Operator", 
-                typeof(IPropertyGridOperator), 
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(new PropertyGridOperator()));
+        public static readonly DependencyProperty OperatorProperty = DependencyProperty.Register(
+            nameof(Operator),
+            typeof(IPropertyGridOperator),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(new PropertyGridOperator()));
 
         /// <summary>
         /// Identifies the <see cref="RequiredAttribute"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty RequiredAttributeProperty =
-            DependencyProperty.Register(
-                "RequiredAttribute",
-                typeof(Type),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(null, AppearanceChanged));
+        public static readonly DependencyProperty RequiredAttributeProperty = DependencyProperty.Register(
+            nameof(RequiredAttribute),
+            typeof(Type),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="SelectedObject"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedObjectProperty = DependencyProperty.Register(
-            "SelectedObject",
+            nameof(SelectedObject),
             typeof(object),
             typeof(PropertyGrid),
             new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).OnSelectedObjectChanged(e)));
@@ -243,38 +241,35 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="SelectedObjects"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty SelectedObjectsProperty =
-            DependencyProperty.Register(
-                "SelectedObjects",
-                typeof(IEnumerable),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).SelectedObjectsChanged(e)));
+        public static readonly DependencyProperty SelectedObjectsProperty = DependencyProperty.Register(
+            nameof(SelectedObjects),
+            typeof(IEnumerable),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).SelectedObjectsChanged(e)));
 
         /// <summary>
         /// Identifies the <see cref="SelectedTabIndex"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty SelectedTabIndexProperty =
-            DependencyProperty.Register(
-                "SelectedTabIndex",
-                typeof(int),
-                typeof(PropertyGrid),
-                new FrameworkPropertyMetadata(0, (s, e) => ((PropertyGrid)s).SelectedTabIndexChanged(e)));
+        public static readonly DependencyProperty SelectedTabIndexProperty = DependencyProperty.Register(
+            nameof(SelectedTabIndex),
+            typeof(int),
+            typeof(PropertyGrid),
+            new FrameworkPropertyMetadata(0, (s, e) => ((PropertyGrid)s).SelectedTabIndexChanged(e)));
 
         /// <summary>
         /// The selected tab id property.
         /// </summary>
-        public static readonly DependencyProperty SelectedTabIdProperty =
-            DependencyProperty.Register(
-                "SelectedTabId",
-                typeof(string),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).SelectedTabChanged(e)));
+        public static readonly DependencyProperty SelectedTabIdProperty = DependencyProperty.Register(
+            nameof(SelectedTabId),
+            typeof(string),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).SelectedTabChanged(e)));
 
         /// <summary>
         /// Identifies the <see cref="CheckBoxLayout"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CheckBoxLayoutProperty = DependencyProperty.Register(
-            "CheckBoxLayout",
+            nameof(CheckBoxLayout),
             typeof(CheckBoxLayout),
             typeof(PropertyGrid),
             new UIPropertyMetadata(CheckBoxLayout.Header, AppearanceChanged));
@@ -282,86 +277,100 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="ShowDeclaredOnly"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ShowDeclaredOnlyProperty =
-            DependencyProperty.Register(
-                "ShowDeclaredOnly",
-                typeof(bool),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(false, AppearanceChanged));
+        public static readonly DependencyProperty ShowDeclaredOnlyProperty = DependencyProperty.Register(
+            nameof(ShowDeclaredOnly),
+            typeof(bool),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(false, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ShowDescriptionIcons"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ShowDescriptionIconsProperty =
-            DependencyProperty.Register(
-                "ShowDescriptionIcons",
-                typeof(bool),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(true, AppearanceChanged));
+        public static readonly DependencyProperty ShowDescriptionIconsProperty = DependencyProperty.Register(
+            nameof(ShowDescriptionIcons),
+            typeof(bool),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ShowReadOnlyProperties"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ShowReadOnlyPropertiesProperty =
-            DependencyProperty.Register(
-                "ShowReadOnlyProperties",
-                typeof(bool),
-                typeof(PropertyGrid),
-                new UIPropertyMetadata(true, AppearanceChanged));
+        public static readonly DependencyProperty ShowReadOnlyPropertiesProperty = DependencyProperty.Register(
+            nameof(ShowReadOnlyProperties),
+            typeof(bool),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="TabHeaderTemplate"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty TabHeaderTemplateProperty =
-            DependencyProperty.Register("TabHeaderTemplate", typeof(DataTemplate), typeof(PropertyGrid));
+        public static readonly DependencyProperty TabHeaderTemplateProperty = DependencyProperty.Register(
+            nameof(TabHeaderTemplate),
+            typeof(DataTemplate),
+            typeof(PropertyGrid));
 
         /// <summary>
         /// Identifies the <see cref="TabPageHeaderTemplate"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty TabPageHeaderTemplateProperty =
-            DependencyProperty.Register(
-                "TabPageHeaderTemplate", typeof(DataTemplate), typeof(PropertyGrid), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty TabPageHeaderTemplateProperty = DependencyProperty.Register(
+            nameof(TabPageHeaderTemplate),
+            typeof(DataTemplate),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="TabStripPlacement"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty TabStripPlacementProperty =
-            DependencyProperty.Register(
-                "TabStripPlacement", typeof(Dock), typeof(PropertyGrid), new UIPropertyMetadata(Dock.Top));
+        public static readonly DependencyProperty TabStripPlacementProperty = DependencyProperty.Register(
+            nameof(TabStripPlacement),
+            typeof(Dock),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(Dock.Top));
 
         /// <summary>
         /// Identifies the <see cref="ToolTipTemplate"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ToolTipTemplateProperty =
-            DependencyProperty.Register(
-                "ToolTipTemplate", typeof(DataTemplate), typeof(PropertyGrid), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty ToolTipTemplateProperty = DependencyProperty.Register(
+            nameof(ToolTipTemplate),
+            typeof(DataTemplate),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="TabVisibility"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TabVisibilityProperty = DependencyProperty.Register(
-            "TabVisibility", typeof(TabVisibility), typeof(PropertyGrid), new UIPropertyMetadata(TabVisibility.Visible, AppearanceChanged));
+            nameof(TabVisibility),
+            typeof(TabVisibility),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(TabVisibility.Visible, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="ValidationErrorStyle"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ValidationErrorStyleProperty =
-            DependencyProperty.Register(
-                "ValidationErrorStyle", typeof(Style), typeof(PropertyGrid), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty ValidationErrorStyleProperty = DependencyProperty.Register(
+            nameof(ValidationErrorStyle),
+            typeof(Style),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="ValidationErrorTemplate"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ValidationErrorTemplateProperty =
-            DependencyProperty.Register(
-                "ValidationErrorTemplate", typeof(DataTemplate), typeof(PropertyGrid), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty ValidationErrorTemplateProperty = DependencyProperty.Register(
+            nameof(ValidationErrorTemplate),
+            typeof(DataTemplate),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="ValidationTemplate"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ValidationTemplateProperty =
-            DependencyProperty.Register(
-                "ValidationTemplate", typeof(ControlTemplate), typeof(PropertyGrid), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty ValidationTemplateProperty = DependencyProperty.Register(
+            nameof(ValidationTemplate),
+            typeof(ControlTemplate),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null));
 
         /// <summary>
         /// The panel part name.

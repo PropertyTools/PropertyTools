@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - EditableAttribute
 - DataGrid: sorting commands #124
 - PropertyGrid: support nullable enums #129
+- PropertyGrid: option to disable auto fill #143
 
 ## [2.0.1]
 ### Changed

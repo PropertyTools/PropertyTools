@@ -282,6 +282,15 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(InputDirection.Vertical));
 
         /// <summary>
+        /// Identifies the <see cref="IsAutoFillEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsAutoFillEnabledProperty = DependencyProperty.Register(
+            nameof(IsAutoFillEnabled),
+            typeof(bool),
+            typeof(DataGrid),
+            new PropertyMetadata(true));
+
+        /// <summary>
         /// Identifies the <see cref="ItemHeaderPropertyPath"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemHeaderPropertyPathProperty = DependencyProperty.Register(
@@ -1113,6 +1122,23 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(InputDirectionProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the auto fill is enabled or not.
+        /// </summary>
+        /// <value>If auto fill is enabled, <c>true</c>; otherwise <c>false</c>.</value>
+        public bool IsAutoFillEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsAutoFillEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsAutoFillEnabledProperty, value);
             }
         }
 
@@ -4134,7 +4160,7 @@ namespace PropertyTools.Wpf
             this.currentBackground.Visibility = this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
                                                     ? Visibility.Visible
                                                     : Visibility.Hidden;
-            this.autoFillBox.Visibility = this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
+            this.autoFillBox.Visibility = this.IsAutoFillEnabled && this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
                                               ? Visibility.Visible
                                               : Visibility.Hidden;
             this.selectionBackground.Visibility = this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns

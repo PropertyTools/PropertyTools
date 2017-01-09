@@ -64,7 +64,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Identifies the <see cref="HierarchySource"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty TreeSourceProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty HierarchySourceProperty = DependencyProperty.Register(
             nameof(HierarchySource),
             typeof(IEnumerable),
             typeof(TreeListBox),
@@ -83,7 +83,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// The is expanded map.
         /// </summary>
-        private readonly Dictionary<object, bool> isExpanded = new Dictionary<object, bool>();
+        private readonly Dictionary<object, bool> isExpandedMap = new Dictionary<object, bool>();
 
         /// <summary>
         /// A map from children collection to item.
@@ -94,6 +94,11 @@ namespace PropertyTools.Wpf
         /// A map from item to level. This is used to set the Level property of the containers.
         /// </summary>
         private readonly Dictionary<object, int> itemLevelMap = new Dictionary<object, int>();
+
+        /// <summary>
+        /// Dummy object that acts as the root node.
+        /// </summary>
+        private readonly object rootNode = 0;
 
         /// <summary>
         /// Initializes static members of the <see cref="TreeListBox" /> class.
@@ -128,12 +133,12 @@ namespace PropertyTools.Wpf
         {
             get
             {
-                return (IEnumerable)this.GetValue(TreeSourceProperty);
+                return (IEnumerable)this.GetValue(HierarchySourceProperty);
             }
 
             set
             {
-                this.SetValue(TreeSourceProperty, value);
+                this.SetValue(HierarchySourceProperty, value);
             }
         }
 
@@ -218,8 +223,9 @@ namespace PropertyTools.Wpf
 
                 case NotifyCollectionChangedAction.Reset:
                     // lookup the items that has been cleared from the item
-                    var items = this.itemToParentMap.Where(kvp => kvp.Value == item).Select(kvp => kvp.Key).ToArray();
+                    var items = this.itemToParentMap.Where(kvp => kvp.Value == item).Select(kvp => kvp.Key).ToList();
                     this.RemoveItems(items);
+                    this.InsertItems(item, children, 0);
                     break;
             }
 
@@ -228,7 +234,7 @@ namespace PropertyTools.Wpf
                 case NotifyCollectionChangedAction.Move:
                 case NotifyCollectionChangedAction.Add:
                 case NotifyCollectionChangedAction.Replace:
-                    if (this.isExpanded[item])
+                    if (this.isExpandedMap[item])
                     {
                         this.InsertItems(item, e.NewItems, e.NewStartingIndex);
                     }
@@ -240,7 +246,7 @@ namespace PropertyTools.Wpf
             if (container != null)
             {
                 // Update the HasItems flag
-                container.HasItems = children != null && children.Cast<object>().Any();
+                container.HasItems = (children != null) && children.Cast<object>().Any();
             }
         }
 
@@ -264,10 +270,10 @@ namespace PropertyTools.Wpf
         {
             if (item == null)
             {
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             }
 
-            if (!this.isExpanded[item])
+            if (!this.isExpandedMap[item])
             {
                 return;
             }
@@ -280,7 +286,7 @@ namespace PropertyTools.Wpf
 
             this.RemoveItems(children);
 
-            this.isExpanded[item] = false;
+            this.isExpandedMap[item] = false;
 
             var container = this.GetContainerFromItem(item);
             if (container != null)
@@ -298,10 +304,10 @@ namespace PropertyTools.Wpf
         {
             if (item == null)
             {
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             }
 
-            if (this.isExpanded[item])
+            if (this.isExpandedMap[item])
             {
                 return;
             }
@@ -313,7 +319,7 @@ namespace PropertyTools.Wpf
             }
 
             this.InsertItems(item, children, 0);
-            this.isExpanded[item] = true;
+            this.isExpandedMap[item] = true;
 
             var container = this.GetContainerFromItem(item);
             if (container != null)
@@ -429,7 +435,7 @@ namespace PropertyTools.Wpf
 #if DEBUG
             if (!this.itemToParentMap.ContainsKey(item))
             {
-                throw new InvalidOperationException(string.Format("Missing parent for item {0}", item));
+                throw new InvalidOperationException($"Missing parent for item {item}");
             }
 #endif
 
@@ -449,7 +455,7 @@ namespace PropertyTools.Wpf
             }
 
             var children = this.itemToChildrenMap[item];
-            container.HasItems = children != null && children.Cast<object>().Any();
+            container.HasItems = (children != null) && children.Cast<object>().Any();
         }
 
         /// <summary>
@@ -496,29 +502,21 @@ namespace PropertyTools.Wpf
             var oldTreeSource = e.OldValue as IEnumerable;
             if (oldTreeSource != null)
             {
-                foreach (var item in oldTreeSource)
-                {
-                    var container = this.GetContainerFromItem(item);
-                    if (container == null)
-                    {
-                        continue;
-                    }
-
-                    if (container.IsSelected)
-                    {
-                        this.SelectedItems.Remove(item);
-                    }
-                }
+                this.SelectedItems.Clear();
             }
 
             this.ClearItems();
 
-            var hierarchySource = this.HierarchySource;
+            var hierarchySource = this.HierarchySource as IList ?? this.HierarchySource?.Cast<object>().ToList();
             if (hierarchySource != null)
             {
+                this.childrenToItemMap.Add(hierarchySource, this.rootNode);
+                this.itemToChildrenMap.Add(this.rootNode, hierarchySource);
+                this.SubscribeForCollectionChanges(hierarchySource);
+
                 foreach (var item in hierarchySource)
                 {
-                    this.AddItem(item, null);
+                    this.AddItem(item);
                 }
             }
         }
@@ -610,12 +608,12 @@ namespace PropertyTools.Wpf
         /// <returns>The sibling item.</returns>
         private object GetNextParentSibling(object item)
         {
-            var parentItem = this.itemToParentMap[item];
-            if (parentItem == null)
+            if (item == this.rootNode)
             {
                 return null;
             }
 
+            var parentItem = this.itemToParentMap[item];
             var parentChildren = this.itemToChildrenMap[parentItem];
 
             int index = parentChildren.IndexOf(item);
@@ -639,10 +637,10 @@ namespace PropertyTools.Wpf
                 var item = queue.Dequeue();
                 if (this.Items.Contains(item))
                 {
-                    if (this.isExpanded[item])
+                    if (this.isExpandedMap[item])
                     {
                         IList children;
-                        if (this.itemToChildrenMap.TryGetValue(item, out children) && children != null)
+                        if (this.itemToChildrenMap.TryGetValue(item, out children) && (children != null))
                         {
                             foreach (var child in children)
                             {
@@ -671,7 +669,7 @@ namespace PropertyTools.Wpf
             this.itemToChildrenMap.Clear();
             this.childrenToItemMap.Clear();
             this.itemLevelMap.Clear();
-            this.isExpanded.Clear();
+            this.isExpandedMap.Clear();
         }
 
         /// <summary>
@@ -693,7 +691,7 @@ namespace PropertyTools.Wpf
             this.itemToChildrenMap.Remove(item);
             this.childrenToItemMap.Remove(children);
             this.itemLevelMap.Remove(item);
-            this.isExpanded.Remove(item);
+            this.isExpandedMap.Remove(item);
         }
 
         /// <summary>
@@ -706,7 +704,7 @@ namespace PropertyTools.Wpf
         {
             if (item == null)
             {
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             }
 
 #if DEBUG
@@ -729,8 +727,8 @@ namespace PropertyTools.Wpf
             this.childrenToItemMap[children] = item;
 
             this.SubscribeForCollectionChanges(children);
-            this.itemLevelMap[item] = (parent != null ? this.itemLevelMap[parent] : -1) + 1;
-            this.isExpanded[item] = false;
+            this.itemLevelMap[item] = (parent == this.rootNode ? -1 : this.itemLevelMap[parent]) + 1;
+            this.isExpandedMap[item] = false;
             this.Items.Insert(index, item);
         }
 
@@ -738,10 +736,9 @@ namespace PropertyTools.Wpf
         /// Adds the item.
         /// </summary>
         /// <param name="item">The item.</param>
-        /// <param name="parent">The parent.</param>
-        private void AddItem(object item, object parent)
+        private void AddItem(object item)
         {
-            this.InsertItem(this.Items.Count, item, parent);
+            this.InsertItem(this.Items.Count, item, this.rootNode);
         }
 
         /// <summary>

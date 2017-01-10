@@ -23,7 +23,13 @@ namespace PropertyTools.Wpf
         {
             this.Width = GridLength.Auto;
         }
-
+        
+        /// <summary>
+        /// Gets or sets the index.
+        /// </summary>
+        /// <value>The index.</value>
+        public int Index { get; set; }        
+        
         /// <summary>
         /// Gets or sets the column width.
         /// </summary>

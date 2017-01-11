@@ -501,12 +501,12 @@ namespace PropertyTools.Wpf
             if (cpa != null)
             {
                 var descriptor = pi.GetDescriptor(cpa.PropertyName);
-                var columns = descriptor?.GetValue(instance) as IEnumerable<DataAnnotations.ColumnDefinition>;
+                var columns = descriptor?.GetValue(instance) as IEnumerable<Column>;
 
                 if (columns != null)
                 {
                     var glc = new GridLengthConverter();
-                    foreach (DataAnnotations.ColumnDefinition column in columns)
+                    foreach (Column column in columns)
                     {
                         var cd = new ColumnDefinition
                         {

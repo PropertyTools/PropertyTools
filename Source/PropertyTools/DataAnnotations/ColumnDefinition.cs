@@ -12,13 +12,13 @@ namespace PropertyTools.DataAnnotations
     /// <summary>
     /// Defines a column for displaying an item collection. Typically used with <see cref="ColumnsPropertyAttribute"/>.
     /// </summary>
-    public class ColumnDefinition
+    public class Column
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnDefinition" /> class.
+        /// Initializes a new instance of the <see cref="Column" /> class.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        public ColumnDefinition(string propertyName)
+        public Column(string propertyName)
         {
             this.PropertyName = propertyName;
             this.Width = "Auto";
@@ -27,18 +27,18 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnDefinition" /> class.
+        /// Initializes a new instance of the <see cref="Column" /> class.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="header">The header.</param>
-        public ColumnDefinition(string propertyName, string header)
+        public Column(string propertyName, string header)
             : this(propertyName)
         {
             this.Header = header;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnDefinition" /> class.
+        /// Initializes a new instance of the <see cref="Column" /> class.
         /// </summary>
         /// <param name="propertyName">The property name.</param>
         /// <param name="header">The header.</param>
@@ -46,7 +46,7 @@ namespace PropertyTools.DataAnnotations
         /// <param name="width">The width.</param>
         /// <param name="alignment">The alignment.</param>
         /// <param name="isReadOnly">The columns is read only if set to <c>true</c>.</param>
-        public ColumnDefinition(
+        public Column(
             string propertyName,
             string header,
             string formatString,

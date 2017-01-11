@@ -15,9 +15,9 @@ namespace ExampleLibrary
     public class CollectionsExample : Example
     {
         [Browsable(false)]
-        public IEnumerable<ColumnDefinition> StringColumns { get; } = new[]
+        public IEnumerable<Column> StringColumns { get; } = new[]
         {
-            new ColumnDefinition("", "String", null, "*", 'L')
+            new Column("", "String", null, "*", 'L')
         };
 
         [Category("Arrays|Array")]
@@ -51,10 +51,10 @@ namespace ExampleLibrary
         public Collection<Item> Collection { get; set; }
 
         [Browsable(false)]
-        public IEnumerable<ColumnDefinition> Collection2Columns { get; } = new[]
+        public IEnumerable<Column> Collection2Columns { get; } = new[]
         {
-            new ColumnDefinition("Name", "Name", null, "2*", 'L'),
-            new ColumnDefinition("Fraction", "%", "P2", "1*", 'R')
+            new Column("Name", "Name", null, "2*", 'L'),
+            new Column("Fraction", "%", "P2", "1*", 'R')
         };
 
         [Category("Custom|Specified columns")]
@@ -67,9 +67,9 @@ namespace ExampleLibrary
         public ObservableCollection<Item> ObservableCollection { get; set; }
 
         [Browsable(false)]
-        public IEnumerable<ColumnDefinition> CityColumns { get; } = new[]
+        public IEnumerable<Column> CityColumns { get; } = new[]
         {
-            new ColumnDefinition("", "City")
+            new Column("", "City")
         };
 
         [Category("ItemsSource at each item")]

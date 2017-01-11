@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestCollections.cs" company="PropertyTools">
+// <copyright file="CollectionsExample.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -8,15 +8,20 @@ namespace ExampleLibrary
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-
     using PropertyTools;
     using PropertyTools.DataAnnotations;
 
     [PropertyGridExample]
     public class CollectionsExample : Example
     {
+        [Browsable(false)]
+        public IEnumerable<Column> StringColumns { get; } = new[]
+        {
+            new Column("", "String", null, "*", 'L')
+        };
+
         [Category("Arrays|Array")]
-        [Column(0, "", "String", null, "*", 'L')]
+        [ColumnsProperty(nameof(StringColumns))]
         [HeaderPlacement(HeaderPlacement.Above)]
         public string[] StringArray1 { get; set; }
 
@@ -37,7 +42,7 @@ namespace ExampleLibrary
         public List<Item> List { get; set; }
 
         [Category("Lists|List of strings")]
-        [Column(0, "", "String", null, "*", 'L')]
+        [ColumnsProperty(nameof(StringColumns))]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         public List<string> StringList { get; set; }
 
@@ -45,9 +50,15 @@ namespace ExampleLibrary
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         public Collection<Item> Collection { get; set; }
 
+        [Browsable(false)]
+        public IEnumerable<Column> Collection2Columns { get; } = new[]
+        {
+            new Column("Name", "Name", null, "2*", 'L'),
+            new Column("Fraction", "%", "P2", "1*", 'R')
+        };
+
         [Category("Custom|Specified columns")]
-        [Column(1, "Fraction", "%", "P2", "1*", 'R')]
-        [Column(0, "Name", "Name", null, "2*", 'L')]
+        [ColumnsProperty(nameof(Collection2Columns))]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         public Collection<Item> Collection2 { get; set; }
 
@@ -55,10 +66,16 @@ namespace ExampleLibrary
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         public ObservableCollection<Item> ObservableCollection { get; set; }
 
+        [Browsable(false)]
+        public IEnumerable<Column> CityColumns { get; } = new[]
+        {
+            new Column("", "City")
+        };
+
         [Category("ItemsSource at each item")]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         [ListItemItemsSourceProperty("Cities")]
-        [Column(0, "", "City")]
+        [ColumnsProperty(nameof(CityColumns))]
         public ObservableCollection<string> ListOfCities { get; set; }
 
         [Browsable(false)]
@@ -71,7 +88,7 @@ namespace ExampleLibrary
             this.IntArray1 = new int[5];
             this.IntArray2 = new int[4];
             
-            this.ItemArray1 = new Item[10];
+            this.ItemArray1 = new Item[10]; 
             for (int i = 0; i < this.ItemArray1.Length; i++)
             {
                 this.ItemArray1[i] = new Item();

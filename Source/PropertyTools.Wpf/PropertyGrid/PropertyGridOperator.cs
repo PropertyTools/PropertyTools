@@ -497,22 +497,30 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            var ca = attribute as ColumnAttribute;
-            if (ca != null)
+            var cpa = attribute as ColumnsPropertyAttribute;
+            if (cpa != null)
             {
-                var glc = new GridLengthConverter();
-                var cd = new ColumnDefinition
-                {
-                    PropertyName = ca.PropertyName,
-                    Header = ca.Header,
-                    FormatString = ca.FormatString,
-                    Width = (GridLength)(glc.ConvertFromInvariantString(ca.Width) ?? GridLength.Auto),
-                    IsReadOnly = ca.IsReadOnly,
-                    HorizontalAlignment = StringUtilities.ToHorizontalAlignment(ca.Alignment.ToString(CultureInfo.InvariantCulture))
-                };
+                var descriptor = pi.GetDescriptor(cpa.PropertyName);
+                var columns = descriptor?.GetValue(instance) as IEnumerable<Column>;
 
-                // TODO: sort by index
-                pi.Columns.Add(cd);
+                if (columns != null)
+                {
+                    var glc = new GridLengthConverter();
+                    foreach (Column column in columns)
+                    {
+                        var cd = new ColumnDefinition
+                        {
+                            PropertyName = column.PropertyName,
+                            Header = column.Header,
+                            FormatString = column.FormatString,
+                            Width = (GridLength)(glc.ConvertFromInvariantString(column.Width) ?? GridLength.Auto),
+                            IsReadOnly = column.IsReadOnly,
+                            HorizontalAlignment = StringUtilities.ToHorizontalAlignment(column.Alignment.ToString(CultureInfo.InvariantCulture))
+                        };
+
+                        pi.Columns.Add(cd);
+                    }
+                }
             }
 
             var la = attribute as ListAttribute;

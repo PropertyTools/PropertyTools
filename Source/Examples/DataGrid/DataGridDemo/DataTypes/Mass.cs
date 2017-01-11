@@ -9,7 +9,7 @@ namespace DataGridDemo
     using System;
     using System.Text.RegularExpressions;
 
-    public struct Mass
+    public struct Mass : IComparable<Mass>, IComparable
     {
         public static Mass Kilogram = new Mass(1);
         public static Mass Gram = new Mass(1e-3);
@@ -26,6 +26,20 @@ namespace DataGridDemo
         public override string ToString()
         {
             return value + " kg";
+        }
+
+        public int CompareTo(Mass that)
+        {
+            return this.value.CompareTo(that.value);
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj != null && obj is Mass)
+            {
+                return CompareTo((Mass)obj);
+            }
+            throw new ArgumentException("Object is not of type Mass");
         }
 
         public static Mass operator +(Mass x, Mass y)

@@ -512,6 +512,9 @@ namespace PropertyTools.Wpf
             {
                 this.childrenToItemMap.Add(hierarchySource, this.rootNode);
                 this.itemToChildrenMap.Add(this.rootNode, hierarchySource);
+                this.itemLevelMap[this.rootNode] = -1;
+                this.isExpandedMap[this.rootNode] = true;
+
                 this.SubscribeForCollectionChanges(hierarchySource);
 
                 foreach (var item in hierarchySource)
@@ -727,7 +730,7 @@ namespace PropertyTools.Wpf
             this.childrenToItemMap[children] = item;
 
             this.SubscribeForCollectionChanges(children);
-            this.itemLevelMap[item] = (parent == this.rootNode ? -1 : this.itemLevelMap[parent]) + 1;
+            this.itemLevelMap[item] = this.itemLevelMap[parent] + 1;
             this.isExpandedMap[item] = false;
             this.Items.Insert(index, item);
         }
@@ -749,7 +752,7 @@ namespace PropertyTools.Wpf
         private IList GetChildrenCollectionByReflection(object item)
         {
             var pi = item.GetType().GetProperty(this.ChildrenPath);
-            var children = (IList)pi.GetValue(item, null);
+            var children = pi?.GetValue(item, null) as IList ?? new List<object>();
             return children;
         }
     }

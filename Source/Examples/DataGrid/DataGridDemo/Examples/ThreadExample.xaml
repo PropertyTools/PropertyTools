@@ -12,7 +12,10 @@
             <RowDefinition Height="45"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Content="Update" Click="BtnUpdate_OnClick" HorizontalAlignment="Left" Margin="3"></Button>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Content="Replace" Click="BtnReplace_OnClick" Margin="3"/>
+            <Button Content="Add 25" Click="BtnAdd_OnClick" Margin="3"/>
+        </StackPanel>
         <p:DataGrid Grid.Row="1" ItemsSource="{Binding ItemsSource}">
             <p:DataGrid.ColumnDefinitions>
                 <p:ColumnDefinition PropertyName="String" Header="string"/>

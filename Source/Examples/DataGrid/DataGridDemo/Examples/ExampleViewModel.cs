@@ -32,21 +32,9 @@
 
         private static void CreateObjects(ICollection<ExampleObject> list, int n = 10)
         {
-            var r = new Random(0);
             for (int i = 0; i < n; i++)
             {
-                list.Add(
-                    new ExampleObject
-                    {
-                        Boolean = r.Next(2) == 0,
-                        DateTime = DateTime.Now.AddDays(r.Next(365)),
-                        Color = Color.FromArgb((byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255), (byte)r.Next(255)),
-                        Number = r.Next(),
-                        Fruit = (Fruit)r.Next(5),
-                        Integer = r.Next(1024),
-                        Selector = null,
-                        String = StandardCollections.GenerateName()
-                    });
+                list.Add(ExampleObject.CreateRandom());
             }
         }
 

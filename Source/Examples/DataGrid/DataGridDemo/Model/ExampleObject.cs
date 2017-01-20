@@ -173,5 +173,27 @@ namespace DataGridDemo
 
         [Browsable(false)]
         public IEnumerable<string> Items => StandardCollections.Cities;
+
+        private static readonly Random r = new Random(0);
+
+        public static ExampleObject CreateRandom()
+        {
+            return new ExampleObject
+                       {
+                           Boolean = r.Next(2) == 0,
+                           DateTime = DateTime.Now.AddDays(r.Next(365)),
+                           Color =
+                               Color.FromArgb(
+                                   (byte)r.Next(255),
+                                   (byte)r.Next(255),
+                                   (byte)r.Next(255),
+                                   (byte)r.Next(255)),
+                           Number = r.Next(),
+                           Fruit = (Fruit)r.Next(5),
+                           Integer = r.Next(1024),
+                           Selector = null,
+                           String = StandardCollections.GenerateName()
+                       };
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace PropertyTools.Wpf
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Globalization;
+    using System.Linq;
     using System.Windows;
 
     using PropertyTools.DataAnnotations;
@@ -191,6 +192,16 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the number of items.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <returns>The number.</returns>
+        public virtual int GetItemCount(DataGrid owner)
+        {
+            return owner.CollectionView.Cast<object>().Count();
+        }
+
+        /// <summary>
         /// Gets the number of rows.
         /// </summary>
         /// <param name="owner">The data grid.</param>
@@ -200,7 +211,7 @@ namespace PropertyTools.Wpf
         /// <exception cref="System.NotImplementedException"></exception>
         public virtual int GetRowCount(DataGrid owner)
         {
-            return owner.ItemsInRows ? owner.ItemsSource.Count : owner.PropertyDefinitions.Count;
+            return owner.ItemsInRows ? this.GetItemCount(owner) : owner.PropertyDefinitions.Count;
         }
 
         /// <summary>
@@ -213,7 +224,7 @@ namespace PropertyTools.Wpf
         /// <exception cref="System.NotImplementedException"></exception>
         public virtual int GetColumnCount(DataGrid owner)
         {
-            return owner.ItemsInRows ? owner.PropertyDefinitions.Count : owner.ItemsSource.Count;
+            return owner.ItemsInRows ? owner.PropertyDefinitions.Count : this.GetItemCount(owner);
         }
 
         /// <summary>
@@ -295,8 +306,13 @@ namespace PropertyTools.Wpf
             }
 
             // TODO: find a better way to do this
-            owner.CollectionView.MoveCurrentToPosition(index);
-            return owner.ItemsSource.IndexOf(owner.CollectionView.CurrentItem);
+            object item;
+            if (!TryGetByIndex(owner.CollectionView, index, out item))
+            {
+                throw new InvalidOperationException("The collection view is probably out of sync. (GetItemsSourceIndex)");
+            }
+
+            return owner.ItemsSource.IndexOf(item);
         }
 
         /// <summary>
@@ -312,10 +328,20 @@ namespace PropertyTools.Wpf
                 return index;
             }
 
+            if (index < 0 || index >= owner.ItemsSource.Count)
+            {
+                throw new InvalidOperationException("The collection view is probably out of sync. (GetCollectionViewIndex)");
+            }
+
             // TODO: find a better way to do this
-            var current = owner.ItemsSource[index];
-            owner.CollectionView.MoveCurrentTo(current);
-            return owner.CollectionView.CurrentPosition;
+            var item = owner.ItemsSource[index];
+            int index2;
+            if (!TryGetIndex(owner.CollectionView, item, out index2))
+            {
+                throw new InvalidOperationException("The collection view is probably out of sync. (GetCollectionViewIndex)");
+            }
+
+            return index2;
         }
 
         /// <summary>
@@ -653,6 +679,58 @@ namespace PropertyTools.Wpf
             var pd = owner.GetPropertyDefinition(cell);
             var item = this.GetItem(owner, cell);
             return pd.PropertyName != null ? item : owner.ItemsSource;
+        }
+
+        /// <summary>
+        /// Tries to get the item of the specified index.
+        /// </summary>
+        /// <param name="sequence">The sequence.</param>
+        /// <param name="index">The index.</param>
+        /// <param name="item">The item.</param>
+        /// <returns>
+        ///   <c>false</c> if the index was not found in the sequence; otherwise <c>true</c>.
+        /// </returns>
+        private bool TryGetByIndex(IEnumerable sequence, int index, out object item)
+        {
+            var i = 0;
+            foreach (var current in sequence)
+            {
+                if (i == index)
+                {
+                    item = current;
+                    return true;
+                }
+
+                i++;
+            }
+
+            item = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to get the index of the specified item.
+        /// </summary>
+        /// <param name="sequence">The sequence.</param>
+        /// <param name="item">The item.</param>
+        /// <param name="index">The index.</param>
+        /// <returns><c>false</c> if the item was not found in the sequence; otherwise <c>true</c>.</returns>
+        private bool TryGetIndex(IEnumerable sequence, object item, out int index)
+        {
+            var i = 0;
+            foreach (var current in sequence)
+            {
+                if (current == item)
+                {
+                    index = i;
+                    return true;
+                }
+
+                i++;
+            }
+
+            index = -1;
+            return false;
         }
     }
 }

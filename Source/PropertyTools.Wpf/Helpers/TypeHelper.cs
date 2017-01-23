@@ -260,6 +260,11 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
+            if (listElementType == typeof(string))
+            {
+                return false;
+            }
+
             if (listElementType.IsGenericType && listElementType.GetGenericTypeDefinition() == typeof(IList<>))
             {
                 return true;

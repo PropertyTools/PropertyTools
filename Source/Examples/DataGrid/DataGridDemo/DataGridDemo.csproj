@@ -60,11 +60,17 @@
     <Compile Include="Examples\AutoFillDisabledExample.xaml.cs">
       <DependentUpon>AutoFillDisabledExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\ListOfStringExample.xaml.cs">
+      <DependentUpon>ListOfStringExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\NaturalSortingExample.xaml.cs">
       <DependentUpon>NaturalSortingExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\InputDirectionExample.xaml.cs">
       <DependentUpon>InputDirectionExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Examples\ObservableCollectionOfStringExample.xaml.cs">
+      <DependentUpon>ObservableCollectionOfStringExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\StandardDataGrid\GettingStartedExample.xaml.cs">
       <DependentUpon>GettingStartedExample.xaml</DependentUpon>
@@ -201,11 +207,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Examples\ListOfStringExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Examples\NaturalSortingExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\InputDirectionExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ObservableCollectionOfStringExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

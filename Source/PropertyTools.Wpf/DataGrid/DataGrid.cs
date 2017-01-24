@@ -1385,25 +1385,25 @@ namespace PropertyTools.Wpf
         /// Gets a value indicating whether this instance can delete columns.
         /// </summary>
         /// <value><c>true</c> if this instance can delete columns; otherwise, <c>false</c> .</value>
-        protected virtual bool CanDeleteColumns => this.Operator.CanDeleteColumns(this);
+        protected virtual bool CanDeleteColumns => this.Operator?.CanDeleteColumns(this) ?? false;
 
         /// <summary>
         /// Gets a value indicating whether this instance can delete rows.
         /// </summary>
         /// <value><c>true</c> if this instance can delete rows; otherwise, <c>false</c> .</value>
-        protected virtual bool CanDeleteRows => this.Operator.CanDeleteRows(this);
+        protected virtual bool CanDeleteRows => this.Operator?.CanDeleteRows(this) ?? false;
 
         /// <summary>
         /// Gets a value indicating whether this instance can insert columns.
         /// </summary>
         /// <value><c>true</c> if this instance can insert columns; otherwise, <c>false</c> .</value>
-        protected virtual bool CanInsertColumns => this.Operator.CanInsertColumns(this);
+        protected virtual bool CanInsertColumns => this.Operator?.CanInsertColumns(this) ?? false;
 
         /// <summary>
         /// Gets a value indicating whether this instance can insert rows.
         /// </summary>
         /// <value><c>true</c> if this instance can insert rows; otherwise, <c>false</c> .</value>
-        private bool CanInsertRows => this.Operator.CanInsertRows(this);
+        protected virtual bool CanInsertRows => this.Operator?.CanInsertRows(this) ?? false;
 
         /// <summary>
         /// Gets a value indicating whether to use columns for the items.
@@ -3024,6 +3024,7 @@ namespace PropertyTools.Wpf
         {
             this.Focus();
             var actualIndex = this.InsertItem(-1);
+            this.CollectionView.Refresh();
             if (actualIndex != -1)
             {
                 var viewIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
@@ -3296,23 +3297,29 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void UpdateCollectionView()
         {
+            if (!this.Dispatcher.CheckAccess())
+            {
+                Debug.WriteLine("Updating collection view on non-dispatcher thread.");
+            }
+
+            var lcv = this.CollectionView as ListCollectionView;
+            if (lcv != null)
+            {
+                lcv.CustomSort = this.CustomSort;
+            }
+
             var sortDescriptionCollection = this.CollectionView.SortDescriptions;
             var sdc = this.CustomSort as ISortDescriptionComparer;
             if (sdc != null)
             {
                 sortDescriptionCollection = sdc.SortDescriptions;
+                this.CollectionView.SortDescriptions.Clear();
             }
 
             sortDescriptionCollection.Clear();
             foreach (var sd in this.sortDescriptions)
             {
                 sortDescriptionCollection.Add(sd);
-            }
-
-            var lcv = this.CollectionView as ListCollectionView;
-            if (lcv != null && this.CustomSort != null)
-            {
-                lcv.CustomSort = this.CustomSort;
             }
 
             this.CollectionView.Refresh();
@@ -4076,6 +4083,7 @@ namespace PropertyTools.Wpf
                 var actualIndex = this.InsertItem(-1);
                 if (actualIndex != -1)
                 {
+                    this.CollectionView.Refresh();
                     actualIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
                     var actualCell = this.ItemsInRows ? new CellRef(actualIndex, cell.Column) : new CellRef(cell.Row, actualIndex);
                     this.SelectionCell = actualCell;

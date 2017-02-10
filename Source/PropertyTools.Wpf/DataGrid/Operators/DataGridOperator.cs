@@ -13,6 +13,7 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Windows;
@@ -305,6 +306,22 @@ namespace PropertyTools.Wpf
                 return index;
             }
 
+            // if not using custom sort, and not sorting
+            if (owner.CustomSort == null && owner.CollectionView.SortDescriptions.Count == 0)
+            {
+                // return the same index
+                return index;
+            }
+
+            // if using custom sort, and not sorting
+            var sdc = owner.CustomSort as ISortDescriptionComparer;
+            if (sdc != null && sdc.SortDescriptions.Count == 0)
+            {
+                // return the same index
+                return index;
+            }
+
+            // get the item at the specified index in the collection view
             // TODO: find a better way to do this
             object item;
             if (!TryGetByIndex(owner.CollectionView, index, out item))
@@ -312,7 +329,11 @@ namespace PropertyTools.Wpf
                 throw new InvalidOperationException("The collection view is probably out of sync. (GetItemsSourceIndex)");
             }
 
-            return owner.ItemsSource.IndexOf(item);
+            // get the index of the item in the items source
+            var i = owner.ItemsSource.IndexOf(item);
+            
+            // Debug.WriteLine(index + " -> " + i);
+            return i;
         }
 
         /// <summary>
@@ -328,13 +349,31 @@ namespace PropertyTools.Wpf
                 return index;
             }
 
+            // if not using custom sort, and not sorting
+            if (owner.CustomSort == null && owner.CollectionView.SortDescriptions.Count == 0)
+            {
+                // return the same index
+                return index;
+            }
+
+            // if using custom sort, and not sorting
+            var sdc = owner.CustomSort as ISortDescriptionComparer;
+            if (sdc != null && sdc.SortDescriptions.Count == 0)
+            {
+                // return the same index
+                return index;
+            }
+
             if (index < 0 || index >= owner.ItemsSource.Count)
             {
                 throw new InvalidOperationException("The collection view is probably out of sync. (GetCollectionViewIndex)");
             }
 
-            // TODO: find a better way to do this
+            // get the item at the specified index in the items source
             var item = owner.ItemsSource[index];
+
+            // get the index of the item in the collection view
+            // TODO: find a better way to do this
             int index2;
             if (!TryGetIndex(owner.CollectionView, item, out index2))
             {
@@ -720,7 +759,7 @@ namespace PropertyTools.Wpf
             var i = 0;
             foreach (var current in sequence)
             {
-                if (current == item)
+                if (current == item || (current?.Equals(item) ?? false))
                 {
                     index = i;
                     return true;

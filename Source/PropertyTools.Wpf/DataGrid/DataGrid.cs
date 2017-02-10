@@ -3344,6 +3344,12 @@ namespace PropertyTools.Wpf
         {
             var index = this.ItemsInRows ? this.CurrentCell.Column : this.CurrentCell.Row;
             var propertyName = this.PropertyDefinitions[index].PropertyName;
+            var descriptor = this.Operator.GetPropertyDescriptor(this.PropertyDefinitions[index]);
+            var isComparable = descriptor != null && typeof(IComparable).IsAssignableFrom(descriptor.PropertyType);
+            if (!isComparable)
+            {
+                return;
+            }
 
             SortDescription? current = null;
             if (this.sortDescriptions.Any(s => s.PropertyName == propertyName))

@@ -309,15 +309,6 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(null));
 
         /// <summary>
-        /// Identifies the <see cref="ItemsInColumns"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ItemsInColumnsProperty = DependencyProperty.Register(
-            nameof(ItemsInColumns),
-            typeof(bool),
-            typeof(DataGrid),
-            new UIPropertyMetadata(false, (d, e) => ((DataGrid)d).UpdateGridContent()));
-
-        /// <summary>
         /// Identifies the <see cref="ItemsSource"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(

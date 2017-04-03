@@ -291,6 +291,15 @@ namespace PropertyTools.Wpf
             new PropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="IsMoveAfterEnterEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsMoveAfterEnterEnabledProperty = DependencyProperty.Register(
+            nameof(IsMoveAfterEnterEnabled),
+            typeof(bool),
+            typeof(DataGrid),
+            new PropertyMetadata(true));
+
+        /// <summary>
         /// Identifies the <see cref="ItemHeaderPropertyPath"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemHeaderPropertyPathProperty = DependencyProperty.Register(
@@ -298,15 +307,6 @@ namespace PropertyTools.Wpf
                 typeof(string),
                 typeof(DataGrid),
                 new UIPropertyMetadata(null));
-
-        /// <summary>
-        /// Identifies the <see cref="ItemsInColumns"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ItemsInColumnsProperty = DependencyProperty.Register(
-            nameof(ItemsInColumns),
-            typeof(bool),
-            typeof(DataGrid),
-            new UIPropertyMetadata(false, (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
         /// Identifies the <see cref="ItemsSource"/> dependency property.
@@ -1139,6 +1139,23 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(IsAutoFillEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the current cell will change after the user has pressed Enter.
+        /// </summary>
+        /// <value>If the feature is enabled, <c>true</c>; otherwise <c>false</c>.</value>
+        public bool IsMoveAfterEnterEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsMoveAfterEnterEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsMoveAfterEnterEnabledProperty, value);
             }
         }
 
@@ -3920,13 +3937,16 @@ namespace PropertyTools.Wpf
                     break;
                 case Key.Enter:
                     this.RemoveEditControl();
-                    if (this.InputDirection == InputDirection.Vertical)
+                    if (this.IsMoveAfterEnterEnabled)
                     {
-                        this.ChangeCurrentCell(shift ? -1 : 1, 0);
-                    }
-                    else
-                    {
-                        this.ChangeCurrentCell(0, shift ? -1 : 1);
+                        if (this.InputDirection == InputDirection.Vertical)
+                        {
+                            this.ChangeCurrentCell(shift ? -1 : 1, 0);
+                        }
+                        else
+                        {
+                            this.ChangeCurrentCell(0, shift ? -1 : 1);
+                        }
                     }
 
                     e.Handled = true;

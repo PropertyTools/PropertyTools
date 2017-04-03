@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - EditableAttribute
 - DataGrid: sorting commands #124
+- DataGrid: IsMoveAfterEnterEnabled property #158
 - PropertyGrid: support nullable enums #129
 - PropertyGrid: option to disable auto fill #143
 

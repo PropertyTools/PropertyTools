@@ -2321,13 +2321,16 @@ namespace PropertyTools.Wpf
             switch (e.Key)
             {
                 case Key.Enter:
-                    if (this.InputDirection == InputDirection.Vertical)
+                    if (this.IsMoveAfterEnterEnabled)
                     {
-                        this.ChangeCurrentCell(shift ? -1 : 1, 0);
-                    }
-                    else
-                    {
-                        this.ChangeCurrentCell(0, shift ? -1 : 1);
+                        if (this.InputDirection == InputDirection.Vertical)
+                        {
+                            this.ChangeCurrentCell(shift ? -1 : 1, 0);
+                        }
+                        else
+                        {
+                            this.ChangeCurrentCell(0, shift ? -1 : 1);
+                        }
                     }
 
                     e.Handled = true;
@@ -3900,7 +3903,6 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         private void TextEditorPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
             var textEditor = sender as TextBox;
             if (textEditor == null)
             {
@@ -3937,18 +3939,7 @@ namespace PropertyTools.Wpf
                     break;
                 case Key.Enter:
                     this.RemoveEditControl();
-                    if (this.IsMoveAfterEnterEnabled)
-                    {
-                        if (this.InputDirection == InputDirection.Vertical)
-                        {
-                            this.ChangeCurrentCell(shift ? -1 : 1, 0);
-                        }
-                        else
-                        {
-                            this.ChangeCurrentCell(0, shift ? -1 : 1);
-                        }
-                    }
-
+                    this.OnKeyDown(e);
                     e.Handled = true;
                     break;
                 case Key.Escape:

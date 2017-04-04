@@ -8,8 +8,13 @@
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var v = (Mass)value;
-            return v.ToString();
+            if (value is Mass)
+            {
+                var v = (Mass)value;
+                return v.ToString();
+            }
+
+            throw new InvalidOperationException($"Cannot convert {value?.GetType()} to {targetType}");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

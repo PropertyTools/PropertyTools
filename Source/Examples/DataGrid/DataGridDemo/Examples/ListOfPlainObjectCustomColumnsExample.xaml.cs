@@ -14,12 +14,12 @@ namespace DataGridDemo
     /// <summary>
     /// Interaction logic for PlainObjectCustomColumnsExample.
     /// </summary>
-    public partial class PlainObjectCustomColumnsExample
+    public partial class ListOfPlainObjectCustomColumnsExample
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlainObjectCustomColumnsExample" /> class.
+        /// Initializes a new instance of the <see cref="ListOfPlainObjectCustomColumnsExample" /> class.
         /// </summary>
-        public PlainObjectCustomColumnsExample()
+        public ListOfPlainObjectCustomColumnsExample()
         {
             this.InitializeComponent();
             this.ItemsSource = new List<PlainOldObject>();

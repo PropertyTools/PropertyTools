@@ -1,9 +1,9 @@
-﻿<Window x:Class="DataGridDemo.PlainObjectExample"
+﻿<Window x:Class="DataGridDemo.ListOfPlainObjectExample"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         Title="List&lt;PlainObject&gt;" Height="450" Width="900">
     <Grid>
-        <p:DataGrid ItemsSource="{Binding ItemsSource}"/>
+        <p:DataGrid ItemsSource="{Binding ItemsSource}" CellDefinitionFactory="{Binding CellDefinitionFactory}"/>
     </Grid>
 </Window>

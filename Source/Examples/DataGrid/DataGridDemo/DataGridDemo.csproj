@@ -69,6 +69,9 @@
     <Compile Include="Examples\InputDirectionExample.xaml.cs">
       <DependentUpon>InputDirectionExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\ObservableCollectionOfMassExample.xaml.cs">
+      <DependentUpon>ObservableCollectionOfMassExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ObservableCollectionOfStringExample.xaml.cs">
       <DependentUpon>ObservableCollectionOfStringExample.xaml</DependentUpon>
     </Compile>
@@ -142,11 +145,11 @@
     <Compile Include="Examples\CustomRowsExample.xaml.cs">
       <DependentUpon>CustomRowsExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\PlainObjectExample.xaml.cs">
-      <DependentUpon>PlainObjectExample.xaml</DependentUpon>
+    <Compile Include="Examples\ListOfPlainObjectExample.xaml.cs">
+      <DependentUpon>ListOfPlainObjectExample.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Examples\PlainObjectCustomColumnsExample.xaml.cs">
-      <DependentUpon>PlainObjectCustomColumnsExample.xaml</DependentUpon>
+    <Compile Include="Examples\ListOfPlainObjectCustomColumnsExample.xaml.cs">
+      <DependentUpon>ListOfPlainObjectCustomColumnsExample.xaml</DependentUpon>
     </Compile>
     <Compile Include="Examples\ListOfIntExample.xaml.cs">
       <DependentUpon>ListOfIntExample.xaml</DependentUpon>
@@ -216,6 +219,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\InputDirectionExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ObservableCollectionOfMassExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -329,11 +336,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\PlainObjectCustomColumnsExample.xaml">
+    <Page Include="Examples\ListOfPlainObjectCustomColumnsExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Examples\PlainObjectExample.xaml">
+    <Page Include="Examples\ListOfPlainObjectExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

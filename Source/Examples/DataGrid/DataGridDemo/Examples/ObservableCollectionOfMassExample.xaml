@@ -1,0 +1,15 @@
+﻿<Window x:Class="DataGridDemo.ObservableCollectionOfMassExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:dataGridDemo="clr-namespace:DataGridDemo"
+        Title="ObservableCollection&lt;Mass&gt;" Height="450" Width="300">
+    <Grid>
+        <!--<p:DataGrid ItemsSource="{Binding Items}" CellDefinitionFactory="{Binding CellDefinitionFactory}"/>-->
+        <p:DataGrid ItemsSource="{Binding Items}" CellDefinitionFactory="{Binding CellDefinitionFactory}">
+            <p:DataGrid.ColumnDefinitions>
+                <p:ColumnDefinition PropertyName="" Header="Mass" />
+            </p:DataGrid.ColumnDefinitions>
+        </p:DataGrid>
+    </Grid>
+</Window>

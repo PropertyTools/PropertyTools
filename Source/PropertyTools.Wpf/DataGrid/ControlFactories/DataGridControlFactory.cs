@@ -166,7 +166,9 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected Binding CreateBinding(CellDefinition d)
         {
+            // two-way binding requires a path...
             var bindingMode = d.IsReadOnly || string.IsNullOrEmpty(d.BindingPath) ? BindingMode.OneWay : BindingMode.TwoWay;
+
             var formatString = d.FormatString;
             if (formatString != null && !formatString.StartsWith("{"))
             {
@@ -183,6 +185,7 @@ namespace PropertyTools.Wpf
                 ValidatesOnExceptions = true,
                 NotifyOnSourceUpdated = true
             };
+
             if (d.ConverterCulture != null)
             {
                 binding.ConverterCulture = d.ConverterCulture;
@@ -443,9 +446,14 @@ namespace PropertyTools.Wpf
                     tb.SelectAll();
                 };
 
-            c.SetBinding(TextBox.TextProperty, this.CreateBinding(d));
+            var binding = this.CreateBinding(d);
+            c.SetBinding(TextBox.TextProperty, binding);
             this.SetIsEnabledBinding(d, c);
             this.SetBackgroundBinding(d, c);
+
+#if DATAGRID_DEBUG_INFO
+            c.ToolTip = $"Binding: {binding.Path.Path} {binding.Mode} {binding.Source}\nConverter: {d.Converter} {d.ConverterParameter}\nBindingSource: {d.BindingSource}";
+#endif
             return c;
         }
 

@@ -13,17 +13,21 @@ namespace DataGridDemo
     using System.Collections.Generic;
     using System.Windows.Media;
 
+    using PropertyTools.Wpf;
+
     /// <summary>
     /// Interaction logic for PlainObjectExample.
     /// </summary>
-    public partial class PlainObjectExample
+    public partial class ListOfPlainObjectExample
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlainObjectExample" /> class.
+        /// Initializes a new instance of the <see cref="ListOfPlainObjectExample" /> class.
         /// </summary>
-        public PlainObjectExample()
+        public ListOfPlainObjectExample()
         {
             this.InitializeComponent();
+
+            this.CellDefinitionFactory.RegisterValueConverter(typeof(Mass), new MassValueConverter());
 
             this.ItemsSource = new List<PlainOldObject>
                                 {
@@ -58,5 +62,7 @@ namespace DataGridDemo
         /// Gets or sets the items.
         /// </summary>
         public IList<PlainOldObject> ItemsSource { get; set; }
+
+        public CellDefinitionFactory CellDefinitionFactory { get; } = new CellDefinitionFactory();
     }
 }

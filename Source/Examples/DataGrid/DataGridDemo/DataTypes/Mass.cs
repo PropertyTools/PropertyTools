@@ -16,7 +16,9 @@ namespace DataGridDemo
         public static Mass Tonne = new Mass(1000);
         public static Mass Pound = new Mass(0.45359237);
 
-        private double value;
+        private static readonly Regex ParseExpression = new Regex(@"^\s*(?<value>[\d\.\,]+)*\s*(?<unit>.*)\s*$");
+
+        private readonly double value;
 
         public Mass(double value)
         {
@@ -25,7 +27,7 @@ namespace DataGridDemo
 
         public override string ToString()
         {
-            return value + " kg";
+            return this.value + " kg";
         }
 
         public int CompareTo(Mass that)
@@ -35,10 +37,11 @@ namespace DataGridDemo
 
         public int CompareTo(object obj)
         {
-            if (obj != null && obj is Mass)
+            if (obj is Mass)
             {
-                return CompareTo((Mass)obj);
+                return this.CompareTo((Mass)obj);
             }
+
             throw new ArgumentException("Object is not of type Mass");
         }
 
@@ -67,18 +70,16 @@ namespace DataGridDemo
             return new Mass(x.value / y);
         }
 
-        private static Regex parseExpression = new Regex(@"^\s*(?<value>[\d\.\,]+)*\s*(?<unit>.*)\s*$");
-
         public static Mass Parse(string s, IFormatProvider formatProvider)
         {
-            Match m = parseExpression.Match(s);
+            var m = ParseExpression.Match(s);
             if (!m.Success)
             {
                 throw new FormatException();
             }
 
-            double value = double.Parse(m.Groups["value"].Value, formatProvider);
-            string unit = m.Groups["unit"].Value;
+            var value = double.Parse(m.Groups["value"].Value, formatProvider);
+            var unit = m.Groups["unit"].Value;
             switch (unit)
             {
                 case "tonne":

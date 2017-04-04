@@ -18,6 +18,8 @@
 
         public ExampleViewModel()
         {
+            this.CellDefinitionFactory.RegisterValueConverter(typeof(Mass), new MassValueConverter());
+
             this.ClearCommand = new DelegateCommand(this.Clear);
             this.ResetCommand = new DelegateCommand(this.Reset);
         }
@@ -25,6 +27,8 @@
         public static ObservableCollection<ExampleObject> StaticItemsSource { get; }
 
         public ObservableCollection<ExampleObject> ItemsSource => StaticItemsSource;
+
+        public CellDefinitionFactory CellDefinitionFactory { get; } = new CellDefinitionFactory();
 
         public ICommand ClearCommand { get; }
 

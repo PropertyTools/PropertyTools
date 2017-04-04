@@ -1,4 +1,4 @@
-﻿<Window x:Class="DataGridDemo.PlainObjectCustomColumnsExample"
+﻿<Window x:Class="DataGridDemo.ListOfPlainObjectCustomColumnsExample"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"

@@ -10,7 +10,9 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Windows.Data;
     using System.Windows.Media;
 
     /// <summary>
@@ -18,6 +20,18 @@ namespace PropertyTools.Wpf
     /// </summary>
     public class CellDefinitionFactory : ICellDefinitionFactory
     {
+        private readonly Dictionary<Type, IValueConverter> valueConverters = new Dictionary<Type, IValueConverter>();
+
+        /// <summary>
+        /// Registers the value converter for the specified type.
+        /// </summary>
+        /// <param name="forInstancesOf">The type of instances the converter is applied to.</param>
+        /// <param name="converter">The converter.</param>
+        public void RegisterValueConverter(Type forInstancesOf, IValueConverter converter)
+        {
+            this.valueConverters[forInstancesOf] = converter;
+        }
+
         /// <summary>
         /// Creates the cell definition for the specified cell.
         /// </summary>
@@ -107,6 +121,20 @@ namespace PropertyTools.Wpf
             if (pd.Converter != null)
             {
                 cd.Converter = pd.Converter;
+            }
+
+            if (cd.Converter == null)
+            {
+                IValueConverter converter = null;
+                foreach (var type in this.valueConverters.Keys)
+                {
+                    if (d.PropertyType.IsAssignableFrom(type))
+                    {
+                        converter = this.valueConverters[type];
+                    }
+                }
+
+                cd.Converter = converter;
             }
 
             cd.ConverterParameter = pd.ConverterParameter;

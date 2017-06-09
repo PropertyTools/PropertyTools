@@ -694,17 +694,24 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            var descriptor = this.GetPropertyDescriptor(pd);
-            if (descriptor != null)
+            try
             {
-                descriptor.SetValue(current, convertedValue);
-            }
-            else
-            {
-                this.SetValue(owner, cell, convertedValue);
-            }
+                var descriptor = this.GetPropertyDescriptor(pd);
+                if (descriptor != null)
+                {
+                    descriptor.SetValue(current, convertedValue);
+                }
+                else
+                {
+                    this.SetValue(owner, cell, convertedValue);
+                }
 
-            return true;
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>

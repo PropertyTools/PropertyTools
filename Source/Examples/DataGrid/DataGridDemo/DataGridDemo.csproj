@@ -69,6 +69,9 @@
     <Compile Include="Examples\InputDirectionExample.xaml.cs">
       <DependentUpon>InputDirectionExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\ExceptionExample.xaml.cs">
+      <DependentUpon>ExceptionExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ObservableCollectionOfMassExample.xaml.cs">
       <DependentUpon>ObservableCollectionOfMassExample.xaml</DependentUpon>
     </Compile>
@@ -219,6 +222,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\InputDirectionExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ExceptionExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

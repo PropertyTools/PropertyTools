@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: auto column width
 - DataGrid: scrolling row headers with horizontal scroll bar
 - DataGrid: set correct row when sorting rows and adding a new row 
+- DataGrid: handle exception when pressing Delete #163
 - PropertyGrid: support BrowsableAttribute on enum items when shown as ComboBox or ListBox #133
 
 ### Added

@@ -72,6 +72,9 @@
     <Compile Include="Examples\ExceptionExample.xaml.cs">
       <DependentUpon>ExceptionExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\VectorExample.xaml.cs">
+      <DependentUpon>VectorExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ObservableCollectionOfMassExample.xaml.cs">
       <DependentUpon>ObservableCollectionOfMassExample.xaml</DependentUpon>
     </Compile>
@@ -226,6 +229,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\ExceptionExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\VectorExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

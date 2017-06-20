@@ -63,28 +63,28 @@ namespace DataGridDemo
 
             public bool? Boolean
             {
-                get { return this.boolean; }
-                set { this.SetValue(ref this.boolean, value); }
+                get => this.boolean;
+                set => this.SetValue(ref this.boolean, value);
             }
             public int? Integer
             {
-                get { return this.integer; }
-                set { this.SetValue(ref this.integer, value); }
+                get => this.integer;
+                set => this.SetValue(ref this.integer, value);
             }
             public double? Double
             {
-                get { return this.@double; }
-                set { this.SetValue(ref this.@double, value); }
+                get => this.@double;
+                set => this.SetValue(ref this.@double, value);
             }
             public Color? Color
             {
-                get { return this.color; }
-                set { this.SetValue(ref this.color, value); }
+                get => this.color;
+                set => this.SetValue(ref this.color, value);
             }
             public Fruit? Fruit
             {
-                get { return this.fruit; }
-                set { this.SetValue(ref this.fruit, value); }
+                get => this.fruit;
+                set => this.SetValue(ref this.fruit, value);
             }
         }
     }

@@ -1,9 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [3.0.0]
+## [Unreleased]
 ### Changed
 - DataGrid commands moved to DataGridCommands
+- DataGrid: DeleteOverride renamed to ClearOverride
 
 ### Removed
 - DataGrid: AutoSizeColumns property
@@ -15,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: scrolling row headers with horizontal scroll bar
 - DataGrid: set correct row when sorting rows and adding a new row 
 - DataGrid: handle exception when pressing Delete #163
+- DataGrid: clear enum values when pressing Delete #165
 - PropertyGrid: support BrowsableAttribute on enum items when shown as ComboBox or ListBox #133
 
 ### Added
@@ -24,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGrid: support nullable enums #129
 - PropertyGrid: option to disable auto fill #143
 - DataGrid: register converters in cell definition factory #160
+- DataGrid: CanClear property
 
 ## [2.0.1]
 ### Changed

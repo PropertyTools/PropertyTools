@@ -1,3 +1,5 @@
+image: Visual Studio 2017
+
 install:
   - cinst gitversion.portable -pre -y
   - cinst gitlink -y

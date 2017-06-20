@@ -115,6 +115,15 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="CanClear"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CanClearProperty = DependencyProperty.Register(
+            nameof(CanClear),
+            typeof(bool),
+            typeof(DataGrid),
+            new UIPropertyMetadata(true));
+
+        /// <summary>
         /// Identifies the <see cref="CanDelete"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanDeleteProperty = DependencyProperty.Register(
@@ -479,11 +488,6 @@ namespace PropertyTools.Wpf
         private const string PartTopLeft = "PART_TopLeft";
 
         /// <summary>
-        /// The column definitions.
-        /// </summary>
-        private readonly Collection<PropertyDefinition> propertyDefinitions = new Collection<PropertyDefinition>();
-
-        /// <summary>
         /// The cell map.
         /// </summary>
         private readonly Dictionary<int, FrameworkElement> cellMap = new Dictionary<int, FrameworkElement>();
@@ -687,15 +691,8 @@ namespace PropertyTools.Wpf
         /// <value>The add item header.</value>
         public string AddItemHeader
         {
-            get
-            {
-                return (string)this.GetValue(AddItemHeaderProperty);
-            }
-
-            set
-            {
-                this.SetValue(AddItemHeaderProperty, value);
-            }
+            get => (string)this.GetValue(AddItemHeaderProperty);
+            set => this.SetValue(AddItemHeaderProperty, value);
         }
 
         /// <summary>
@@ -704,15 +701,8 @@ namespace PropertyTools.Wpf
         /// <value>The alternating rows background.</value>
         public Brush AlternatingRowsBackground
         {
-            get
-            {
-                return (Brush)this.GetValue(AlternatingRowsBackgroundProperty);
-            }
-
-            set
-            {
-                this.SetValue(AlternatingRowsBackgroundProperty, value);
-            }
+            get => (Brush)this.GetValue(AlternatingRowsBackgroundProperty);
+            set => this.SetValue(AlternatingRowsBackgroundProperty, value);
         }
 
         /// <summary>
@@ -721,11 +711,7 @@ namespace PropertyTools.Wpf
         /// <value>The auto fill cell.</value>
         public CellRef AutoFillCell
         {
-            get
-            {
-                return this.autoFillCell;
-            }
-
+            get => this.autoFillCell;
             set
             {
                 this.autoFillCell = (CellRef)CoerceSelectionCell(this, value);
@@ -738,15 +724,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         public bool AutoGenerateColumns
         {
-            get
-            {
-                return (bool)this.GetValue(AutoGenerateColumnsProperty);
-            }
-
-            set
-            {
-                this.SetValue(AutoGenerateColumnsProperty, value);
-            }
+            get => (bool)this.GetValue(AutoGenerateColumnsProperty);
+            set => this.SetValue(AutoGenerateColumnsProperty, value);
         }
 
         /// <summary>
@@ -754,15 +733,18 @@ namespace PropertyTools.Wpf
         /// </summary>
         public bool AutoInsert
         {
-            get
-            {
-                return (bool)this.GetValue(AutoInsertProperty);
-            }
+            get => (bool)this.GetValue(AutoInsertProperty);
+            set => this.SetValue(AutoInsertProperty, value);
+        }
 
-            set
-            {
-                this.SetValue(AutoInsertProperty, value);
-            }
+        /// <summary>
+        /// Gets or sets a value indicating whether this grid can clear cells.
+        /// </summary>
+        /// <value><c>true</c> if this instance can clear; otherwise, <c>false</c> .</value>
+        public bool CanClear
+        {
+            get => (bool)this.GetValue(CanClearProperty);
+            set => this.SetValue(CanClearProperty, value);
         }
 
         /// <summary>
@@ -771,15 +753,8 @@ namespace PropertyTools.Wpf
         /// <value><c>true</c> if this instance can delete; otherwise, <c>false</c> .</value>
         public bool CanDelete
         {
-            get
-            {
-                return (bool)this.GetValue(CanDeleteProperty);
-            }
-
-            set
-            {
-                this.SetValue(CanDeleteProperty, value);
-            }
+            get => (bool)this.GetValue(CanDeleteProperty);
+            set => this.SetValue(CanDeleteProperty, value);
         }
 
         /// <summary>
@@ -788,15 +763,8 @@ namespace PropertyTools.Wpf
         /// <value><c>true</c> if this instance can insert; otherwise, <c>false</c> .</value>
         public bool CanInsert
         {
-            get
-            {
-                return (bool)this.GetValue(CanInsertProperty);
-            }
-
-            set
-            {
-                this.SetValue(CanInsertProperty, value);
-            }
+            get => (bool)this.GetValue(CanInsertProperty);
+            set => this.SetValue(CanInsertProperty, value);
         }
 
         /// <summary>
@@ -805,15 +773,8 @@ namespace PropertyTools.Wpf
         /// <value><c>true</c> if this instance can resize columns; otherwise, <c>false</c> .</value>
         public bool CanResizeColumns
         {
-            get
-            {
-                return (bool)this.GetValue(CanResizeColumnsProperty);
-            }
-
-            set
-            {
-                this.SetValue(CanResizeColumnsProperty, value);
-            }
+            get => (bool)this.GetValue(CanResizeColumnsProperty);
+            set => this.SetValue(CanResizeColumnsProperty, value);
         }
 
         /// <summary>
@@ -822,15 +783,8 @@ namespace PropertyTools.Wpf
         /// <value><c>true</c> if this instance can resize rows; otherwise, <c>false</c> .</value>
         public bool CanResizeRows
         {
-            get
-            {
-                return (bool)this.GetValue(CanResizeRowsProperty);
-            }
-
-            set
-            {
-                this.SetValue(CanResizeRowsProperty, value);
-            }
+            get => (bool)this.GetValue(CanResizeRowsProperty);
+            set => this.SetValue(CanResizeRowsProperty, value);
         }
 
         /// <summary>
@@ -839,22 +793,15 @@ namespace PropertyTools.Wpf
         /// <value><c>true</c> if only cells in the current column should be changed; otherwise, <c>false</c> .</value>
         public bool MultiChangeInChangedColumnOnly
         {
-            get
-            {
-                return (bool)this.GetValue(MultiChangeInChangedColumnOnlyProperty);
-            }
-
-            set
-            {
-                this.SetValue(MultiChangeInChangedColumnOnlyProperty, value);
-            }
+            get => (bool)this.GetValue(MultiChangeInChangedColumnOnlyProperty);
+            set => this.SetValue(MultiChangeInChangedColumnOnlyProperty, value);
         }
 
         /// <summary>
         /// Gets the column definitions.
         /// </summary>
         /// <value>The column definitions.</value>
-        public Collection<PropertyDefinition> ColumnDefinitions => this.propertyDefinitions;
+        public Collection<PropertyDefinition> ColumnDefinitions => this.PropertyDefinitions;
 
         /// <summary>
         /// Gets or sets the height of the column headers.
@@ -862,15 +809,8 @@ namespace PropertyTools.Wpf
         /// <value>The height of the column header.</value>
         public GridLength ColumnHeaderHeight
         {
-            get
-            {
-                return (GridLength)this.GetValue(ColumnHeaderHeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(ColumnHeaderHeightProperty, value);
-            }
+            get => (GridLength)this.GetValue(ColumnHeaderHeightProperty);
+            set => this.SetValue(ColumnHeaderHeightProperty, value);
         }
 
         /// <summary>
@@ -879,15 +819,8 @@ namespace PropertyTools.Wpf
         /// <value>The columns context menu.</value>
         public ContextMenu ColumnsContextMenu
         {
-            get
-            {
-                return (ContextMenu)this.GetValue(ColumnsContextMenuProperty);
-            }
-
-            set
-            {
-                this.SetValue(ColumnsContextMenuProperty, value);
-            }
+            get => (ContextMenu)this.GetValue(ColumnsContextMenuProperty);
+            set => this.SetValue(ColumnsContextMenuProperty, value);
         }
 
         /// <summary>
@@ -896,15 +829,8 @@ namespace PropertyTools.Wpf
         /// <value>The columns context menu.</value>
         public ContextMenu SheetContextMenu
         {
-            get
-            {
-                return (ContextMenu)this.GetValue(SheetContextMenuProperty);
-            }
-
-            set
-            {
-                this.SetValue(SheetContextMenuProperty, value);
-            }
+            get => (ContextMenu)this.GetValue(SheetContextMenuProperty);
+            set => this.SetValue(SheetContextMenuProperty, value);
         }
 
         /// <summary>
@@ -912,15 +838,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         public IDataGridControlFactory ControlFactory
         {
-            get
-            {
-                return (IDataGridControlFactory)this.GetValue(ControlFactoryProperty);
-            }
-
-            set
-            {
-                this.SetValue(ControlFactoryProperty, value);
-            }
+            get => (IDataGridControlFactory)this.GetValue(ControlFactoryProperty);
+            set => this.SetValue(ControlFactoryProperty, value);
         }
 
         /// <summary>
@@ -928,15 +847,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         public ICellDefinitionFactory CellDefinitionFactory
         {
-            get
-            {
-                return (ICellDefinitionFactory)this.GetValue(CellDefinitionFactoryProperty);
-            }
-
-            set
-            {
-                this.SetValue(CellDefinitionFactoryProperty, value);
-            }
+            get => (ICellDefinitionFactory)this.GetValue(CellDefinitionFactoryProperty);
+            set => this.SetValue(CellDefinitionFactoryProperty, value);
         }
 
         /// <summary>
@@ -945,15 +857,8 @@ namespace PropertyTools.Wpf
         /// <value>The create item.</value>
         public Func<object> CreateItem
         {
-            get
-            {
-                return (Func<object>)this.GetValue(CreateItemProperty);
-            }
-
-            set
-            {
-                this.SetValue(CreateItemProperty, value);
-            }
+            get => (Func<object>)this.GetValue(CreateItemProperty);
+            set => this.SetValue(CreateItemProperty, value);
         }
 
         /// <summary>
@@ -962,15 +867,8 @@ namespace PropertyTools.Wpf
         /// <value>The custom sort comparer.</value>
         public IComparer CustomSort
         {
-            get
-            {
-                return (IComparer)this.GetValue(CustomSortProperty);
-            }
-
-            set
-            {
-                this.SetValue(CustomSortProperty, value);
-            }
+            get => (IComparer)this.GetValue(CustomSortProperty);
+            set => this.SetValue(CustomSortProperty, value);
         }
 
         /// <summary>
@@ -979,15 +877,8 @@ namespace PropertyTools.Wpf
         /// <value>The create column header.</value>
         public Func<int, object> CreateColumnHeader
         {
-            get
-            {
-                return (Func<int, object>)this.GetValue(CreateColumnHeaderProperty);
-            }
-
-            set
-            {
-                this.SetValue(CreateColumnHeaderProperty, value);
-            }
+            get => (Func<int, object>)this.GetValue(CreateColumnHeaderProperty);
+            set => this.SetValue(CreateColumnHeaderProperty, value);
         }
 
         /// <summary>
@@ -995,15 +886,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         public CellRef CurrentCell
         {
-            get
-            {
-                return (CellRef)this.GetValue(CurrentCellProperty);
-            }
-
-            set
-            {
-                this.SetValue(CurrentCellProperty, value);
-            }
+            get => (CellRef)this.GetValue(CurrentCellProperty);
+            set => this.SetValue(CurrentCellProperty, value);
         }
 
         /// <summary>
@@ -1012,15 +896,8 @@ namespace PropertyTools.Wpf
         /// <value>The default width of the column.</value>
         public GridLength DefaultColumnWidth
         {
-            get
-            {
-                return (GridLength)this.GetValue(DefaultColumnWidthProperty);
-            }
-
-            set
-            {
-                this.SetValue(DefaultColumnWidthProperty, value);
-            }
+            get => (GridLength)this.GetValue(DefaultColumnWidthProperty);
+            set => this.SetValue(DefaultColumnWidthProperty, value);
         }
 
         /// <summary>
@@ -1029,15 +906,8 @@ namespace PropertyTools.Wpf
         /// <value>The default horizontal alignment.</value>
         public System.Windows.HorizontalAlignment DefaultHorizontalAlignment
         {
-            get
-            {
-                return (System.Windows.HorizontalAlignment)this.GetValue(DefaultHorizontalAlignmentProperty);
-            }
-
-            set
-            {
-                this.SetValue(DefaultHorizontalAlignmentProperty, value);
-            }
+            get => (System.Windows.HorizontalAlignment)this.GetValue(DefaultHorizontalAlignmentProperty);
+            set => this.SetValue(DefaultHorizontalAlignmentProperty, value);
         }
 
         /// <summary>
@@ -1046,15 +916,8 @@ namespace PropertyTools.Wpf
         /// <value>The default height of the row.</value>
         public GridLength DefaultRowHeight
         {
-            get
-            {
-                return (GridLength)this.GetValue(DefaultRowHeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(DefaultRowHeightProperty, value);
-            }
+            get => (GridLength)this.GetValue(DefaultRowHeightProperty);
+            set => this.SetValue(DefaultRowHeightProperty, value);
         }
 
         /// <summary>
@@ -1063,15 +926,8 @@ namespace PropertyTools.Wpf
         /// <value><c>true</c> if easy insert is enabled; otherwise, <c>false</c>.</value>
         public bool EasyInsert
         {
-            get
-            {
-                return (bool)this.GetValue(EasyInsertProperty);
-            }
-
-            set
-            {
-                this.SetValue(EasyInsertProperty, value);
-            }
+            get => (bool)this.GetValue(EasyInsertProperty);
+            set => this.SetValue(EasyInsertProperty, value);
         }
 
         /// <summary>
@@ -1080,15 +936,8 @@ namespace PropertyTools.Wpf
         /// <value>The grid line brush.</value>
         public Brush GridLineBrush
         {
-            get
-            {
-                return (Brush)this.GetValue(GridLineBrushProperty);
-            }
-
-            set
-            {
-                this.SetValue(GridLineBrushProperty, value);
-            }
+            get => (Brush)this.GetValue(GridLineBrushProperty);
+            set => this.SetValue(GridLineBrushProperty, value);
         }
 
         /// <summary>
@@ -1097,15 +946,8 @@ namespace PropertyTools.Wpf
         /// <value>The header border brush.</value>
         public Brush HeaderBorderBrush
         {
-            get
-            {
-                return (Brush)this.GetValue(HeaderBorderBrushProperty);
-            }
-
-            set
-            {
-                this.SetValue(HeaderBorderBrushProperty, value);
-            }
+            get => (Brush)this.GetValue(HeaderBorderBrushProperty);
+            set => this.SetValue(HeaderBorderBrushProperty, value);
         }
 
         /// <summary>
@@ -1114,15 +956,8 @@ namespace PropertyTools.Wpf
         /// <value>The input direction.</value>
         public InputDirection InputDirection
         {
-            get
-            {
-                return (InputDirection)this.GetValue(InputDirectionProperty);
-            }
-
-            set
-            {
-                this.SetValue(InputDirectionProperty, value);
-            }
+            get => (InputDirection)this.GetValue(InputDirectionProperty);
+            set => this.SetValue(InputDirectionProperty, value);
         }
 
         /// <summary>
@@ -1131,15 +966,8 @@ namespace PropertyTools.Wpf
         /// <value>If auto fill is enabled, <c>true</c>; otherwise <c>false</c>.</value>
         public bool IsAutoFillEnabled
         {
-            get
-            {
-                return (bool)this.GetValue(IsAutoFillEnabledProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsAutoFillEnabledProperty, value);
-            }
+            get => (bool)this.GetValue(IsAutoFillEnabledProperty);
+            set => this.SetValue(IsAutoFillEnabledProperty, value);
         }
 
         /// <summary>
@@ -1148,15 +976,8 @@ namespace PropertyTools.Wpf
         /// <value>If the feature is enabled, <c>true</c>; otherwise <c>false</c>.</value>
         public bool IsMoveAfterEnterEnabled
         {
-            get
-            {
-                return (bool)this.GetValue(IsMoveAfterEnterEnabledProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsMoveAfterEnterEnabledProperty, value);
-            }
+            get => (bool)this.GetValue(IsMoveAfterEnterEnabledProperty);
+            set => this.SetValue(IsMoveAfterEnterEnabledProperty, value);
         }
 
         /// <summary>
@@ -1164,15 +985,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         public string ItemHeaderPropertyPath
         {
-            get
-            {
-                return (string)this.GetValue(ItemHeaderPropertyPathProperty);
-            }
-
-            set
-            {
-                this.SetValue(ItemHeaderPropertyPathProperty, value);
-            }
+            get => (string)this.GetValue(ItemHeaderPropertyPathProperty);
+            set => this.SetValue(ItemHeaderPropertyPathProperty, value);
         }
 
         /// <summary>
@@ -1181,15 +995,8 @@ namespace PropertyTools.Wpf
         /// <value>The items source.</value>
         public IList ItemsSource
         {
-            get
-            {
-                return (IList)this.GetValue(ItemsSourceProperty);
-            }
-
-            set
-            {
-                this.SetValue(ItemsSourceProperty, value);
-            }
+            get => (IList)this.GetValue(ItemsSourceProperty);
+            set => this.SetValue(ItemsSourceProperty, value);
         }
 
         /// <summary>
@@ -1198,15 +1005,8 @@ namespace PropertyTools.Wpf
         /// <value>The row headers source.</value>
         public IList RowHeadersSource
         {
-            get
-            {
-                return (IList)this.GetValue(RowHeadersSourceProperty);
-            }
-
-            set
-            {
-                this.SetValue(RowHeadersSourceProperty, value);
-            }
+            get => (IList)this.GetValue(RowHeadersSourceProperty);
+            set => this.SetValue(RowHeadersSourceProperty, value);
         }
 
         /// <summary>
@@ -1215,15 +1015,8 @@ namespace PropertyTools.Wpf
         /// <value>The column headers source.</value>
         public IList ColumnHeadersSource
         {
-            get
-            {
-                return (IList)this.GetValue(ColumnHeadersSourceProperty);
-            }
-
-            set
-            {
-                this.SetValue(ColumnHeadersSourceProperty, value);
-            }
+            get => (IList)this.GetValue(ColumnHeadersSourceProperty);
+            set => this.SetValue(ColumnHeadersSourceProperty, value);
         }
 
         /// <summary>
@@ -1232,15 +1025,8 @@ namespace PropertyTools.Wpf
         /// <value>The row headers format string.</value>
         public string RowHeadersFormatString
         {
-            get
-            {
-                return (string)this.GetValue(RowHeadersFormatStringProperty);
-            }
-
-            set
-            {
-                this.SetValue(RowHeadersFormatStringProperty, value);
-            }
+            get => (string)this.GetValue(RowHeadersFormatStringProperty);
+            set => this.SetValue(RowHeadersFormatStringProperty, value);
         }
 
         /// <summary>
@@ -1249,22 +1035,15 @@ namespace PropertyTools.Wpf
         /// <value>The column headers format string.</value>
         public string ColumnHeadersFormatString
         {
-            get
-            {
-                return (string)this.GetValue(ColumnHeadersFormatStringProperty);
-            }
-
-            set
-            {
-                this.SetValue(ColumnHeadersFormatStringProperty, value);
-            }
+            get => (string)this.GetValue(ColumnHeadersFormatStringProperty);
+            set => this.SetValue(ColumnHeadersFormatStringProperty, value);
         }
 
         /// <summary>
         /// Gets the row definitions.
         /// </summary>
         /// <value>The row definitions.</value>
-        public Collection<PropertyDefinition> RowDefinitions => this.propertyDefinitions;
+        public Collection<PropertyDefinition> RowDefinitions => this.PropertyDefinitions;
 
         /// <summary>
         /// Gets or sets the width of the row headers.
@@ -1272,15 +1051,8 @@ namespace PropertyTools.Wpf
         /// <value>The width of the row header.</value>
         public GridLength RowHeaderWidth
         {
-            get
-            {
-                return (GridLength)this.GetValue(RowHeaderWidthProperty);
-            }
-
-            set
-            {
-                this.SetValue(RowHeaderWidthProperty, value);
-            }
+            get => (GridLength)this.GetValue(RowHeaderWidthProperty);
+            set => this.SetValue(RowHeaderWidthProperty, value);
         }
 
         /// <summary>
@@ -1289,15 +1061,8 @@ namespace PropertyTools.Wpf
         /// <value>The rows context menu.</value>
         public ContextMenu RowsContextMenu
         {
-            get
-            {
-                return (ContextMenu)this.GetValue(RowsContextMenuProperty);
-            }
-
-            set
-            {
-                this.SetValue(RowsContextMenuProperty, value);
-            }
+            get => (ContextMenu)this.GetValue(RowsContextMenuProperty);
+            set => this.SetValue(RowsContextMenuProperty, value);
         }
 
         /// <summary>
@@ -1329,15 +1094,8 @@ namespace PropertyTools.Wpf
         /// <value>The selected items.</value>
         public IEnumerable SelectedItems
         {
-            get
-            {
-                return (IEnumerable)this.GetValue(SelectedItemsProperty);
-            }
-
-            set
-            {
-                this.SetValue(SelectedItemsProperty, value);
-            }
+            get => (IEnumerable)this.GetValue(SelectedItemsProperty);
+            set => this.SetValue(SelectedItemsProperty, value);
         }
 
         /// <summary>
@@ -1345,15 +1103,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         public CellRef SelectionCell
         {
-            get
-            {
-                return (CellRef)this.GetValue(SelectionCellProperty);
-            }
-
-            set
-            {
-                this.SetValue(SelectionCellProperty, value);
-            }
+            get => (CellRef)this.GetValue(SelectionCellProperty);
+            set => this.SetValue(SelectionCellProperty, value);
         }
 
         /// <summary>
@@ -1362,15 +1113,8 @@ namespace PropertyTools.Wpf
         /// <value><c>true</c> if items should be wrapped; otherwise, <c>false</c> .</value>
         public bool WrapItems
         {
-            get
-            {
-                return (bool)this.GetValue(WrapItemsProperty);
-            }
-
-            set
-            {
-                this.SetValue(WrapItemsProperty, value);
-            }
+            get => (bool)this.GetValue(WrapItemsProperty);
+            set => this.SetValue(WrapItemsProperty, value);
         }
 
         /// <summary>
@@ -1436,7 +1180,7 @@ namespace PropertyTools.Wpf
         /// Gets the row/column definitions.
         /// </summary>
         /// <value>The row/column definitions.</value>
-        public Collection<PropertyDefinition> PropertyDefinitions => this.propertyDefinitions;
+        public Collection<PropertyDefinition> PropertyDefinitions { get; } = new Collection<PropertyDefinition>();
 
         /// <summary>
         /// Autosizes all columns.
@@ -1549,7 +1293,7 @@ namespace PropertyTools.Wpf
         protected virtual void CutOverride()
         {
             this.Copy();
-            this.Delete();
+            this.Clear();
         }
 
         /// <summary>
@@ -1680,8 +1424,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private FrameworkElement GetCellElement(CellRef cellRef)
         {
-            FrameworkElement e;
-            if (this.cellMap.TryGetValue(cellRef.GetHashCode(), out e))
+            if (this.cellMap.TryGetValue(cellRef.GetHashCode(), out var e))
             {
                 // check if the element is wrapped in a border container
                 var border = e as Border;
@@ -1955,7 +1698,7 @@ namespace PropertyTools.Wpf
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, (s, e) => this.Copy()));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, (s, e) => this.Cut()));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, (s, e) => this.Paste()));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, (s, e) => this.Delete()));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, (s, e) => this.Clear(), (s, e) => e.CanExecute = this.CanClear));
         }
 
         /// <summary>
@@ -2416,8 +2159,11 @@ namespace PropertyTools.Wpf
                     break;
                 case Key.Back:
                 case Key.Delete:
-                    this.Delete();
-                    e.Handled = true;
+                    if (this.CanClear)
+                    {
+                        this.Clear();
+                        e.Handled = true;
+                    }
                     return;
                 case Key.F2:
                     if (this.ShowTextBoxEditControl())
@@ -2610,13 +2356,12 @@ namespace PropertyTools.Wpf
             if (isInAutoFillMode)
             {
                 this.AutoFillCell = cellRef;
-                object result;
                 if (this.autoFiller.TryExtrapolate(
                     cellRef,
                     this.CurrentCell,
                     this.SelectionCell,
                     this.AutoFillCell,
-                    out result))
+                    out var result))
                 {
                     var formatString = this.GetFormatString(cellRef);
                     this.autoFillToolTip.Content = FormatValue(result, formatString);
@@ -3210,22 +2955,55 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Deletes the content in the selected cells.
+        /// Clears the content in the selected cells.
         /// </summary>
-        private void Delete()
+        private void Clear()
         {
-            this.DeleteOverride();
+            this.ClearOverride();
         }
 
         /// <summary>
-        /// Implements the delete operation.
+        /// Implements the clear operation.
         /// </summary>
-        protected virtual void DeleteOverride()
+        protected virtual void ClearOverride()
         {
             foreach (var cell in this.SelectedCells)
             {
-                this.TrySetCellValue(cell, null);
+                var defaultValue = this.GetDefaultValue(cell);
+                this.TrySetCellValue(cell, defaultValue);
             }
+        }
+
+        /// <summary>
+        /// Gets the default value for the specified cell.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <returns>The default value.</returns>
+        protected virtual object GetDefaultValue(CellRef cell)
+        {
+            var value = this.GetCellValue(cell);
+            if (value == null)
+            {
+                return null;
+            }
+
+            var pd = this.GetPropertyDefinition(cell);
+            var type = this.Operator.GetPropertyType(pd, cell, value);
+            var isNullable = Nullable.GetUnderlyingType(type) != null;
+            if (type.IsValueType && !isNullable)
+            {
+                try
+                {
+                    return Activator.CreateInstance(type);
+                }
+                catch
+                {
+                    // could not call default ctor?
+                    return null;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -3493,8 +3271,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private FrameworkElement GetColumnElement(int column)
         {
-            FrameworkElement headerElement;
-            if (this.columnHeaderMap.TryGetValue(column, out headerElement))
+            if (this.columnHeaderMap.TryGetValue(column, out var headerElement))
             {
                 return headerElement;
             }
@@ -3511,8 +3288,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private FrameworkElement GetRowElement(int row)
         {
-            FrameworkElement headerElement;
-            if (this.rowHeaderMap.TryGetValue(row, out headerElement))
+            if (this.rowHeaderMap.TryGetValue(row, out var headerElement))
             {
                 return headerElement;
             }

@@ -13,7 +13,6 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Windows;
@@ -103,33 +102,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Deletes the item at the specified index.
-        /// </summary>
-        /// <param name="owner">The data grid.</param>
-        /// <param name="index">The index.</param>
-        /// <returns>
-        ///   <c>true</c> if rows can be inserted; otherwise <c>false</c>.
-        /// </returns>
-        protected virtual bool DeleteItem(DataGrid owner, int index)
-        {
-            var list = owner.ItemsSource;
-            index = this.GetItemsSourceIndex(owner, index);
-            if (list == null)
-            {
-                return false;
-            }
-
-            if (index < 0 || index >= list.Count)
-            {
-                return false;
-            }
-
-            list.RemoveAt(index);
-
-            return true;
-        }
-
-        /// <summary>
         /// Deletes the columns.
         /// </summary>
         /// <param name="owner">The data grid.</param>
@@ -170,7 +142,10 @@ namespace PropertyTools.Wpf
         /// <param name="n">The number of columns to insert.</param>
         public virtual void InsertColumns(DataGrid owner, int index, int n)
         {
-            if (!owner.ItemsInColumns) return;
+            if (!owner.ItemsInColumns)
+            {
+                return;
+            }
 
             for (var i = 0; i < n; i++)
             {
@@ -209,7 +184,6 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The number.
         /// </returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public virtual int GetRowCount(DataGrid owner)
         {
             return owner.ItemsInRows ? this.GetItemCount(owner) : owner.PropertyDefinitions.Count;
@@ -222,7 +196,6 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The number.
         /// </returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public virtual int GetColumnCount(DataGrid owner)
         {
             return owner.ItemsInRows ? owner.PropertyDefinitions.Count : this.GetItemCount(owner);
@@ -301,21 +274,21 @@ namespace PropertyTools.Wpf
         /// <returns>The index in the items source</returns>
         public virtual int GetItemsSourceIndex(DataGrid owner, int index)
         {
-            if (owner.CollectionView == null)
+            var collectionView = owner.CollectionView;
+            if (collectionView == null)
             {
                 return index;
             }
 
             // if not using custom sort, and not sorting
-            if (owner.CustomSort == null && owner.CollectionView.SortDescriptions.Count == 0)
+            if (owner.CustomSort == null && collectionView.SortDescriptions.Count == 0)
             {
                 // return the same index
                 return index;
             }
 
             // if using custom sort, and not sorting
-            var sdc = owner.CustomSort as ISortDescriptionComparer;
-            if (sdc != null && sdc.SortDescriptions.Count == 0)
+            if (owner.CustomSort is ISortDescriptionComparer sdc && sdc.SortDescriptions.Count == 0)
             {
                 // return the same index
                 return index;
@@ -323,16 +296,14 @@ namespace PropertyTools.Wpf
 
             // get the item at the specified index in the collection view
             // TODO: find a better way to do this
-            object item;
-            if (!TryGetByIndex(owner.CollectionView, index, out item))
+            if (!this.TryGetByIndex(collectionView, index, out var item))
             {
                 throw new InvalidOperationException("The collection view is probably out of sync. (GetItemsSourceIndex)");
             }
 
             // get the index of the item in the items source
             var i = owner.ItemsSource.IndexOf(item);
-            
-            // Debug.WriteLine(index + " -> " + i);
+
             return i;
         }
 
@@ -357,8 +328,7 @@ namespace PropertyTools.Wpf
             }
 
             // if using custom sort, and not sorting
-            var sdc = owner.CustomSort as ISortDescriptionComparer;
-            if (sdc != null && sdc.SortDescriptions.Count == 0)
+            if (owner.CustomSort is ISortDescriptionComparer sdc && sdc.SortDescriptions.Count == 0)
             {
                 // return the same index
                 return index;
@@ -374,42 +344,13 @@ namespace PropertyTools.Wpf
 
             // get the index of the item in the collection view
             // TODO: find a better way to do this
-            int index2;
-            if (!TryGetIndex(owner.CollectionView, item, out index2))
+            if (!this.TryGetIndex(owner.CollectionView, item, out var index2))
             {
                 throw new InvalidOperationException("The collection view is probably out of sync. (GetCollectionViewIndex)");
             }
 
             return index2;
         }
-
-        /// <summary>
-        /// Gets the item in the specified cell.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="cell">The cell reference.</param>
-        /// <returns>
-        /// The <see cref="object" />.
-        /// </returns>au
-        public abstract object GetItem(DataGrid owner, CellRef cell);
-
-        /// <summary>
-        /// Inserts an item to <see cref="DataGrid" /> at the specified index.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="index">The index.</param>
-        /// <returns>
-        /// The index of the inserted item if insertion is successful, <c>-1</c> otherwise.
-        /// </returns>
-        public abstract int InsertItem(DataGrid owner, int index);
-
-        /// <summary>
-        /// Sets value of the specified cell to the specified value.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="cell">The cell to change.</param>
-        /// <param name="value">The value.</param>
-        public abstract void SetValue(DataGrid owner, CellRef cell, object value);
 
         /// <summary>
         /// Auto-generates the columns.
@@ -443,6 +384,147 @@ namespace PropertyTools.Wpf
                     this.descriptors[pd] = descriptor;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the property descriptor.
+        /// </summary>
+        /// <param name="pd">The property definition.</param>
+        /// <returns>The property descriptor.</returns>
+        public virtual PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd)
+        {
+            return this.descriptors.TryGetValue(pd, out var descriptor) ? descriptor : null;
+        }
+
+        /// <summary>
+        /// Tries to set cell value in the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <param name="value">The value.</param>
+        /// <returns><c>true</c> if the cell value was set.</returns>
+        public virtual bool TrySetCellValue(DataGrid owner, CellRef cell, object value)
+        {
+            if (owner.ItemsSource == null)
+            {
+                return false;
+            }
+
+            var current = this.GetItem(owner, cell);
+
+            var pd = owner.GetPropertyDefinition(cell);
+            if (pd == null)
+            {
+                return false;
+            }
+
+            if (current == null || pd.IsReadOnly)
+            {
+                return false;
+            }
+
+            var targetType = this.GetPropertyType(pd, cell, current);
+            if (!TryConvert(value, targetType, out var convertedValue))
+            {
+                return false;
+            }
+
+            try
+            {
+                var descriptor = this.GetPropertyDescriptor(pd);
+                if (descriptor != null)
+                {
+                    descriptor.SetValue(current, convertedValue);
+                }
+                else
+                {
+                    this.SetValue(owner, cell, convertedValue);
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the data context for the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <returns>The context object.</returns>
+        public object GetDataContext(DataGrid owner, CellRef cell)
+        {
+            var pd = owner.GetPropertyDefinition(cell);
+            var item = this.GetItem(owner, cell);
+            return pd.PropertyName != null ? item : owner.ItemsSource;
+        }
+
+        /// <summary>
+        /// Gets the item in the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell reference.</param>
+        /// <returns>
+        /// The <see cref="object" />.
+        /// </returns>au
+        public abstract object GetItem(DataGrid owner, CellRef cell);
+
+        /// <summary>
+        /// Inserts an item to <see cref="DataGrid" /> at the specified index.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="index">The index.</param>
+        /// <returns>
+        /// The index of the inserted item if insertion is successful, <c>-1</c> otherwise.
+        /// </returns>
+        public abstract int InsertItem(DataGrid owner, int index);
+
+        /// <summary>
+        /// Gets the binding path for the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <returns>
+        /// The binding path
+        /// </returns>
+        public abstract string GetBindingPath(DataGrid owner, CellRef cell);
+
+        /// <summary>
+        /// Sets value of the specified cell to the specified value.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell to change.</param>
+        /// <param name="value">The value.</param>
+        public abstract void SetValue(DataGrid owner, CellRef cell, object value);
+
+        /// <summary>
+        /// Deletes the item at the specified index.
+        /// </summary>
+        /// <param name="owner">The data grid.</param>
+        /// <param name="index">The index.</param>
+        /// <returns>
+        ///   <c>true</c> if rows can be inserted; otherwise <c>false</c>.
+        /// </returns>
+        protected virtual bool DeleteItem(DataGrid owner, int index)
+        {
+            var list = owner.ItemsSource;
+            index = this.GetItemsSourceIndex(owner, index);
+            if (list == null)
+            {
+                return false;
+            }
+
+            if (index < 0 || index >= list.Count)
+            {
+                return false;
+            }
+
+            list.RemoveAt(index);
+
+            return true;
         }
 
         /// <summary>
@@ -487,22 +569,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the property descriptor.
-        /// </summary>
-        /// <param name="pd">The property definition.</param>
-        /// <returns>The property descriptor.</returns>
-        public virtual PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd)
-        {
-            PropertyDescriptor descriptor;
-            return this.descriptors.TryGetValue(pd, out descriptor) ? descriptor : null;
-        }
-
-        /// <summary>
         /// Sets the properties from descriptor.
         /// </summary>
         /// <param name="pd">The property definition.</param>
         /// <param name="descriptor">The descriptor.</param>
-        /// <exception cref="System.ArgumentException"></exception>
         protected virtual void SetPropertiesFromDescriptor(PropertyDefinition pd, PropertyDescriptor descriptor)
         {
             if (descriptor == null)
@@ -518,7 +588,7 @@ namespace PropertyTools.Wpf
             }
 
             if (descriptor.GetAttributeValue<System.ComponentModel.DataAnnotations.EditableAttribute, bool>(a => a.AllowEdit)
-                || descriptor.GetAttributeValue<DataAnnotations.EditableAttribute, bool>(a => a.AllowEdit))
+                || descriptor.GetAttributeValue<EditableAttribute, bool>(a => a.AllowEdit))
             {
                 pd.IsEditable = true;
             }
@@ -555,16 +625,6 @@ namespace PropertyTools.Wpf
         /// <param name="list">The list.</param>
         /// <returns>A sequence of column definitions.</returns>
         protected abstract IEnumerable<ColumnDefinition> GenerateColumnDefinitions(IList list);
-
-        /// <summary>
-        /// Gets the binding path for the specified cell.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="cell">The cell.</param>
-        /// <returns>
-        /// The binding path
-        /// </returns>
-        public abstract string GetBindingPath(DataGrid owner, CellRef cell);
 
         /// <summary>
         /// Tries to convert an object to the specified type.
@@ -658,73 +718,6 @@ namespace PropertyTools.Wpf
                 convertedValue = null;
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Tries to set cell value in the specified cell.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="cell">The cell.</param>
-        /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if the cell value was set.</returns>
-        public virtual bool TrySetCellValue(DataGrid owner, CellRef cell, object value)
-        {
-            if (owner.ItemsSource == null)
-            {
-                return false;
-            }
-
-            var current = this.GetItem(owner, cell);
-
-            var pd = owner.GetPropertyDefinition(cell);
-            if (pd == null)
-            {
-                return false;
-            }
-
-            if (current == null || pd.IsReadOnly)
-            {
-                return false;
-            }
-
-            object convertedValue;
-            var targetType = this.GetPropertyType(pd, cell, current);
-            if (!TryConvert(value, targetType, out convertedValue))
-            {
-                return false;
-            }
-
-            try
-            {
-                var descriptor = this.GetPropertyDescriptor(pd);
-                if (descriptor != null)
-                {
-                    descriptor.SetValue(current, convertedValue);
-                }
-                else
-                {
-                    this.SetValue(owner, cell, convertedValue);
-                }
-
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Gets the data context for the specified cell.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="cell">The cell.</param>
-        /// <returns>The context object.</returns>
-        public object GetDataContext(DataGrid owner, CellRef cell)
-        {
-            var pd = owner.GetPropertyDefinition(cell);
-            var item = this.GetItem(owner, cell);
-            return pd.PropertyName != null ? item : owner.ItemsSource;
         }
 
         /// <summary>

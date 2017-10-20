@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: set correct row when sorting rows and adding a new row 
 - DataGrid: handle exception when pressing Delete #163
 - DataGrid: clear enum values when pressing Delete #165
+- DataGrid: null ref checks on CollectionView
 - PropertyGrid: support BrowsableAttribute on enum items when shown as ComboBox or ListBox #133
 
 ### Added

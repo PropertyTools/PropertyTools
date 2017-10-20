@@ -2789,7 +2789,7 @@ namespace PropertyTools.Wpf
         {
             this.Focus();
             var actualIndex = this.InsertItem(-1);
-            this.CollectionView.Refresh();
+            this.CollectionView?.Refresh();
             if (actualIndex != -1)
             {
                 var viewIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
@@ -3100,18 +3100,22 @@ namespace PropertyTools.Wpf
                 Debug.WriteLine("Updating collection view on non-dispatcher thread.");
             }
 
-            var lcv = this.CollectionView as ListCollectionView;
-            if (lcv != null)
+            var cv = this.CollectionView;
+            if (cv == null)
+            {
+                return;
+            }
+
+            if (cv is ListCollectionView lcv)
             {
                 lcv.CustomSort = this.CustomSort;
             }
 
-            var sortDescriptionCollection = this.CollectionView.SortDescriptions;
-            var sdc = this.CustomSort as ISortDescriptionComparer;
-            if (sdc != null)
+            var sortDescriptionCollection = cv.SortDescriptions;
+            if (this.CustomSort is ISortDescriptionComparer sdc)
             {
                 sortDescriptionCollection = sdc.SortDescriptions;
-                this.CollectionView.SortDescriptions.Clear();
+                cv.SortDescriptions.Clear();
             }
 
             sortDescriptionCollection.Clear();
@@ -3120,7 +3124,7 @@ namespace PropertyTools.Wpf
                 sortDescriptionCollection.Add(sd);
             }
 
-            this.CollectionView.Refresh();
+            cv.Refresh();
             this.UpdateSortDescriptionMarkers();
         }
 
@@ -3447,7 +3451,7 @@ namespace PropertyTools.Wpf
         {
             if (!(this.ItemsSource is INotifyCollectionChanged))
             {
-                this.CollectionView.Refresh();
+                this.CollectionView?.Refresh();
             }
         }
 
@@ -3876,7 +3880,7 @@ namespace PropertyTools.Wpf
                 var actualIndex = this.InsertItem(-1);
                 if (actualIndex != -1)
                 {
-                    this.CollectionView.Refresh();
+                    this.CollectionView?.Refresh();
                     actualIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
                     var actualCell = this.ItemsInRows ? new CellRef(actualIndex, cell.Column) : new CellRef(cell.Row, actualIndex);
                     this.SelectionCell = actualCell;

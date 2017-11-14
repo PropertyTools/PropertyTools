@@ -23,6 +23,19 @@ namespace PropertyTools.Wpf.Tests
     public class TypeHelperTests
     {
         [Test]
+        public void FindBiggestCommonType_Null()
+        {
+            Assert.AreEqual(null, TypeHelper.FindBiggestCommonType(null));
+        }
+
+        [Test]
+        public void FindBiggestCommonType_EmptyList_ReturnsCorrectType()
+        {
+            var brushes = new Brush[] { };
+            Assert.AreEqual(typeof(Brush), TypeHelper.FindBiggestCommonType(brushes));
+        }
+
+        [Test]
         public void FindBiggestCommonType_UniformList_ReturnsCorrectType()
         {
             var brushes = new[] { new SolidColorBrush(), new SolidColorBrush() };
@@ -65,9 +78,29 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void GetItemType_ListInt_ReturnsInt()
+        public void GetItemType_Integers()
         {
-            Assert.AreEqual(typeof(int), TypeHelper.GetItemType(new List<int>()));
+            Assert.AreEqual(typeof(int), TypeHelper.GetItemType(new List<int>()), "List<int>");
+            Assert.AreEqual(typeof(int), TypeHelper.GetItemType(new[] { 1, 2, 3 }), "int[]");
+            Assert.AreEqual(typeof(int), TypeHelper.GetItemType(this.GetIntegers()));
+        }
+
+        [Test]
+        public void GetItemType_CustomItemType()
+        {
+            Assert.AreEqual(typeof(CustomItemType), TypeHelper.GetItemType(new List<CustomItemType>()), "List<CustomItemType>");
+            Assert.AreEqual(typeof(CustomItemType), TypeHelper.GetItemType(new List<CustomItemType> { new DerivedCustomItemType() }), "List<CustomItemType> (containing only DerivedCustomItemType)");
+            Assert.AreEqual(typeof(CustomItemType), TypeHelper.GetItemType(new[] { new CustomItemType() }), "CustomItemType[]");
+            Assert.AreEqual(typeof(CustomItemType), TypeHelper.GetItemType(new[] { new CustomItemType(), new DerivedCustomItemType() }), "CustomItemType[]");
+            Assert.AreEqual(typeof(CustomItemType), TypeHelper.GetItemType(this.GetItems()));
+        }
+
+        [Test]
+        public void GetItemType_Objects()
+        {
+            Assert.AreEqual(typeof(object), TypeHelper.GetItemType(this.GetObjects()), "IEnumerable");
+            Assert.AreEqual(typeof(object), TypeHelper.GetItemType(new object[] { new CustomItemType() }), "object[] (CustomItemType)");
+            Assert.AreEqual(typeof(object), TypeHelper.GetItemType(new object[] { 1 }), "object[] (integers)");
         }
 
         [Test]
@@ -115,6 +148,32 @@ namespace PropertyTools.Wpf.Tests
         {
             var dt = new DataTable();
             Assert.IsFalse(TypeHelper.IsIListIList(dt.DefaultView.GetType()));
+        }
+
+        private class CustomItemType
+        {
+        }
+
+        private class DerivedCustomItemType : CustomItemType
+        {
+        }
+
+        private IEnumerable GetObjects()
+        {
+            yield return 1;
+            yield return 1d;
+            yield return new CustomItemType();
+        }
+
+        private IEnumerable<int> GetIntegers()
+        {
+            yield return 1;
+        }
+
+        private IEnumerable<CustomItemType> GetItems()
+        {
+            yield return new CustomItemType();
+            yield return new DerivedCustomItemType();
         }
 
         /// <summary>

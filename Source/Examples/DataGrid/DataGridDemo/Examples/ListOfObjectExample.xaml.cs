@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ListOfObjectExample.xaml.cs" company="PropertyTools">
+// <copyright file="PlainObjectExample.xaml.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
@@ -10,26 +10,23 @@
 namespace DataGridDemo
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Windows.Media;
-
-    using PropertyTools.Wpf;
 
     /// <summary>
     /// Interaction logic for ListOfObjectExample.
     /// </summary>
-    public partial class ListOfPlainObjectExample
+    public partial class ListOfObjectExample
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListOfPlainObjectExample" /> class.
+        /// Initializes a new instance of the <see cref="ListOfObjectExample" /> class.
         /// </summary>
-        public ListOfPlainObjectExample()
+        public ListOfObjectExample()
         {
             this.InitializeComponent();
 
-            this.CellDefinitionFactory.RegisterValueConverter(typeof(Mass), new MassValueConverter());
-
-            this.ItemsSource = new List<PlainOldObject>
+            this.ItemsSource = new List<object>
                                 {
                                     new PlainOldObject
                                         {
@@ -42,7 +39,7 @@ namespace DataGridDemo
                                             Selector = null,
                                             String = "Hello"
                                         },
-                                    new PlainOldObject
+                                    new PlainOldObject2
                                         {
                                             Boolean = true,
                                             DateTime = DateTime.Now.AddDays(-1),
@@ -61,8 +58,11 @@ namespace DataGridDemo
         /// <summary>
         /// Gets or sets the items.
         /// </summary>
-        public IList<PlainOldObject> ItemsSource { get; set; }
+        public IList ItemsSource { get; set; }
+    }
 
-        public CellDefinitionFactory CellDefinitionFactory { get; } = new CellDefinitionFactory();
+    public class PlainOldObject2 : PlainOldObject
+    {
+        public string Location { get; set; }
     }
 }

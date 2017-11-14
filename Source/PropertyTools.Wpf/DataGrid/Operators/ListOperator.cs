@@ -65,7 +65,7 @@ namespace PropertyTools.Wpf
             }
 
             // Strategy 2: get properties from type descriptor
-            var itemType = TypeHelper.FindBiggestCommonType(list);
+            var itemType = this.GetItemType(list);
             var properties = TypeDescriptor.GetProperties(itemType);
             if (properties.Count == 0)
             {
@@ -97,7 +97,7 @@ namespace PropertyTools.Wpf
             }
 
             // Strategy 3: create a single column
-            var itemsType = TypeHelper.GetItemType(list);
+            var itemsType = this.GetItemType(list);
             yield return
                 new ColumnDefinition
                 {
@@ -148,7 +148,7 @@ namespace PropertyTools.Wpf
                 return -1;
             }
 
-            var itemType = TypeHelper.GetItemType(list);
+            var itemType = this.GetItemType(list);
 
             try
             {

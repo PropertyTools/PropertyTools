@@ -207,7 +207,7 @@ namespace PropertyTools.Wpf
                 return -1;
             }
 
-            var itemType = TypeHelper.GetItemType(list);
+            var itemType = this.GetItemType(list);
 
             var newList = this.CreateItem(owner, itemType) as IList;
 

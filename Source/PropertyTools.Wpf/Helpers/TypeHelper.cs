@@ -46,7 +46,7 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                Type itemType = item.GetType();
+                var itemType = item.GetType();
                 if (type == null)
                 {
                     type = itemType;
@@ -61,6 +61,7 @@ namespace PropertyTools.Wpf
 
             if (type == null && items is IList)
             {
+                // it is safe to enumerate items again here
                 type = items.AsQueryable().ElementType;
             }
 
@@ -104,14 +105,23 @@ namespace PropertyTools.Wpf
         /// </returns>
         public static Type GetItemType(IEnumerable enumerable)
         {
-            if (enumerable != null && !GenericEnumerableType.IsInstanceOfType(enumerable))
+            if (enumerable == null)
             {
-                var ifs = enumerable.GetType().GetInterfaces().ToArray();
-                var i = ifs.First(it => it.IsGenericType && it.GetGenericTypeDefinition() == GenericEnumerableType);
-                return i.GetGenericArguments()[0];
+                return null;
             }
 
-            return enumerable?.AsQueryable().ElementType;
+            try
+            {
+                // If enumerable is queryable, get the type from the expression tree of the queryable is executed
+                return enumerable.AsQueryable().ElementType;
+            }
+            catch (ArgumentException)
+            {
+                // otherwise try to get the type from the IEnumerable<> interface
+                var ifs = enumerable.GetType().GetInterfaces();
+                var i = ifs.FirstOrDefault(it => it.IsGenericType && it.GetGenericTypeDefinition() == GenericEnumerableType);
+                return i?.GetGenericArguments()[0];
+            }
         }
 
         /// <summary>

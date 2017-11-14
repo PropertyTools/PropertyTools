@@ -373,7 +373,7 @@ namespace PropertyTools.Wpf
             this.descriptors.Clear();
 
             // Set the property descriptors.
-            var itemType = TypeHelper.GetItemType(owner.ItemsSource);
+            var itemType = this.GetItemType(owner.ItemsSource);
             var properties = TypeDescriptor.GetProperties(itemType);
             foreach (var pd in owner.PropertyDefinitions)
             {
@@ -525,6 +525,17 @@ namespace PropertyTools.Wpf
             list.RemoveAt(index);
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets the type of the items in the items source.
+        /// </summary>
+        /// <param name="itemsSource">The items source.</param>
+        /// <returns>The type.</returns>
+        protected Type GetItemType(IList itemsSource)
+        {
+            // iterate to find the biggest common type
+            return TypeHelper.FindBiggestCommonType(itemsSource);
         }
 
         /// <summary>

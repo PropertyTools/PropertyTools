@@ -234,7 +234,6 @@
       <DependentUpon>WizardDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\PasswordHelper.cs" />
-    <Compile Include="Helpers\PropertyInfoHelper.cs" />
     <Compile Include="Helpers\TimeSpanFormatter.cs" />
     <Compile Include="Helpers\TimeSpanParser.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />

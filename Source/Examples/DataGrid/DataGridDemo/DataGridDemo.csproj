@@ -60,6 +60,9 @@
     <Compile Include="Examples\AutoFillDisabledExample.xaml.cs">
       <DependentUpon>AutoFillDisabledExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\ArrayOfArrayExample.xaml.cs">
+      <DependentUpon>ArrayOfArrayExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ListOfObjectExample.xaml.cs">
       <DependentUpon>ListOfObjectExample.xaml</DependentUpon>
     </Compile>
@@ -216,6 +219,10 @@
     <Compile Include="Model\Fruit.cs" />
     <Compile Include="Model\PlainOldObject.cs" />
     <Page Include="Examples\AutoFillDisabledExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ArrayOfArrayExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -1739,8 +1739,7 @@ namespace PropertyTools.Wpf
             var rows = values.GetUpperBound(0) + 1;
             var columns = values.GetUpperBound(1) + 1;
 
-            var bottomRight = new CellRef(Math.Max(range.BottomRow, range.TopRow + rows - 1),
-                Math.Max(range.BottomRight.Column, range.LeftColumn + columns - 1));
+            var bottomRight = new CellRef(Math.Max(range.BottomRow, range.TopRow + rows - 1), Math.Max(range.BottomRight.Column, range.LeftColumn + columns - 1));
             var outputRange = new CellRange(range.TopLeft, bottomRight);
 
             this.suspendCollectionChangedNotifications = true;
@@ -1749,14 +1748,26 @@ namespace PropertyTools.Wpf
             {
                 if (i >= this.Rows)
                 {
-                    if (this.InsertItem(-1, false) == -1)
+                    if (!this.CanInsertRows)
                     {
                         break;
                     }
+
+                    this.Operator.InsertRows(this, i, 1);
                 }
 
                 for (var j = range.LeftColumn; j <= outputRange.RightColumn; j++)
                 {
+                    if (j >= this.Columns)
+                    {
+                        if (!this.CanInsertColumns)
+                        {
+                            break;
+                        }
+
+                        this.Operator.InsertColumns(this, i, 1);
+                    }
+
                     var value = values[(i - outputRange.TopRow) % rows, (j - outputRange.LeftColumn) % columns];
                     this.TrySetCellValue(new CellRef(i, j), value);
                 }
@@ -3875,19 +3886,36 @@ namespace PropertyTools.Wpf
         /// <returns><c>true</c> if an item was inserted; otherwise <c>false</c>.</returns>
         private bool HandleAutoInsert(CellRef cell)
         {
-            if (this.AutoInsert && (cell.Row >= this.Rows || cell.Column >= this.Columns))
+            if (!this.AutoInsert || !this.CanInsert)
             {
-                var actualIndex = this.InsertItem(-1);
-                if (actualIndex != -1)
+                return false;
+            }
+
+            if (cell.Row >= this.Rows || cell.Column >= this.Columns)
+            {
+                var actualCell = cell;
+                if (cell.Row >= this.Rows)
                 {
+                    var actualIndex = this.Rows;
+                    this.Operator.InsertRows(this, actualIndex, 1);
                     this.CollectionView?.Refresh();
                     actualIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
-                    var actualCell = this.ItemsInRows ? new CellRef(actualIndex, cell.Column) : new CellRef(cell.Row, actualIndex);
-                    this.SelectionCell = actualCell;
-                    this.CurrentCell = actualCell;
-                    this.ScrollIntoView(actualCell);
-                    return true;
+                    actualCell = new CellRef(actualIndex, cell.Column);
                 }
+
+                if (cell.Column >= this.Columns)
+                {
+                    var actualIndex = this.Columns;
+                    this.Operator.InsertColumns(this, actualIndex, 1);
+                    this.CollectionView?.Refresh();
+                    actualIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
+                    actualCell = new CellRef(cell.Row, actualIndex);
+                }
+
+                this.SelectionCell = actualCell;
+                this.CurrentCell = actualCell;
+                this.ScrollIntoView(actualCell);
+                return true;
             }
 
             return false;

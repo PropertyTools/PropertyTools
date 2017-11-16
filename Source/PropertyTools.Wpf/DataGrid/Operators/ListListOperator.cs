@@ -208,52 +208,58 @@ namespace PropertyTools.Wpf
             }
 
             var itemType = this.GetItemType(list);
+            try
+            {
+                var newList = this.CreateItem(owner, itemType) as IList;
 
-            var newList = this.CreateItem(owner, itemType) as IList;
+                var innerType = TypeHelper.GetInnerTypeOfList(list);
+                if (innerType == null)
+                {
+                    return -1;
+                }
 
-            var innerType = TypeHelper.GetInnerTypeOfList(list);
-            if (innerType == null)
+                if (owner.ItemsInRows)
+                {
+                    if (newList != null)
+                    {
+                        for (var ii = 0; ii < owner.Columns; ii++)
+                        {
+                            newList.Add(this.CreateItem(owner, innerType));
+                        }
+
+                        if (index < 0)
+                        {
+                            index = list.Add(newList);
+                        }
+                        else
+                        {
+                            list.Insert(index, newList);
+                        }
+                    }
+                }
+                else
+                {
+                    // insert/append one new element to each list.
+                    foreach (var row in list.OfType<IList>())
+                    {
+                        var newItem = this.CreateItem(owner, innerType);
+                        if (index < 0)
+                        {
+                            index = row.Add(newItem);
+                        }
+                        else
+                        {
+                            row.Insert(index, newItem);
+                        }
+                    }
+                }
+
+                return index;
+            }
+            catch
             {
                 return -1;
             }
-
-            if (owner.ItemsInRows)
-            {
-                if (newList != null)
-                {
-                    for (var ii = 0; ii < owner.Columns; ii++)
-                    {
-                        newList.Add(this.CreateItem(owner, innerType));
-                    }
-
-                    if (index < 0)
-                    {
-                        index = list.Add(newList);
-                    }
-                    else
-                    {
-                        list.Insert(index, newList);
-                    }
-                }
-            }
-            else
-            {
-                // insert/append one new element to each list.
-                foreach (var row in list.OfType<IList>())
-                {
-                    var newItem = this.CreateItem(owner, innerType);
-                    if (index < 0)
-                    {
-                        index = row.Add(newItem);
-                    }
-                    else
-                    {
-                        row.Insert(index, newItem);
-                    }
-                }
-            }
-
-            return index;
         }
 
         /// <summary>

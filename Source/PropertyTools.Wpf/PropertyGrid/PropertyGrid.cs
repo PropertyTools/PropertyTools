@@ -1704,7 +1704,7 @@ namespace PropertyTools.Wpf
             {
                 if (e.OldValue is INotifyCollectionChanged notifyCollectionChanged)
                 {
-                    notifyCollectionChanged.CollectionChanged -= OnSelectedObjectsCollectionChanged;
+                    CollectionChangedEventManager.RemoveHandler(notifyCollectionChanged, OnSelectedObjectsCollectionChanged);
                 }
             }
 
@@ -1712,7 +1712,7 @@ namespace PropertyTools.Wpf
             {
                 if (e.NewValue is INotifyCollectionChanged notifyCollectionChanged)
                 {
-                    notifyCollectionChanged.CollectionChanged += OnSelectedObjectsCollectionChanged;
+                    CollectionChangedEventManager.AddHandler(notifyCollectionChanged, OnSelectedObjectsCollectionChanged);
                 }
                 else if (e.NewValue is IEnumerable enumerable)
                 {

@@ -12,6 +12,7 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -1699,33 +1700,62 @@ namespace PropertyTools.Wpf
         /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private void SelectedObjectsChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue == null)
+            if (e.OldValue != null)
             {
-                this.CurrentObject = null;
+                if (e.OldValue is INotifyCollectionChanged notifyCollectionChanged)
+                {
+                    CollectionChangedEventManager.RemoveHandler(notifyCollectionChanged, OnSelectedObjectsCollectionChanged);
+                }
+            }
+
+            if (e.NewValue != null)
+            {
+                if (e.NewValue is INotifyCollectionChanged notifyCollectionChanged)
+                {
+                    CollectionChangedEventManager.AddHandler(notifyCollectionChanged, OnSelectedObjectsCollectionChanged);
+                }
+                else if (e.NewValue is IEnumerable enumerable)
+                {
+                    this.SetCurrentObjectFromSelectedObjects(enumerable);
+                }
             }
             else
             {
-                var enumerable = e.NewValue as IEnumerable;
-                if (enumerable != null)
-                {
-                    var list = enumerable.Cast<object>().ToList();
-                    if (list.Count == 0)
-                    {
-                        this.CurrentObject = null;
-                    }
-                    else if (list.Count == 1)
-                    {
-                        this.CurrentObject = list[0];
-                    }
-                    else
-                    {
-                        this.CurrentObject = new ItemsBag(list);
-                    }
-                }
-                else
-                {
-                    this.CurrentObject = null;
-                }
+                this.CurrentObject = null;
+                this.UpdateControls();
+            }
+        }
+
+        /// <summary>
+        /// Called when the selected objects collection is changed.
+        /// </summary>
+        /// <param name="e">The e.</param>
+        private void OnSelectedObjectsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (sender is IEnumerable enumerable)
+            {
+                this.SetCurrentObjectFromSelectedObjects(enumerable);
+            }
+        }
+
+        /// <summary>
+        /// Set CurrentObject when SelectedObjects is changed.
+        /// </summary>
+        /// <param name="enumerable">SelectedObjects.</param>
+        private void SetCurrentObjectFromSelectedObjects(IEnumerable enumerable)
+        {
+            var list = enumerable.Cast<object>().ToList();
+            if (list.Count == 0)
+            {
+                this.CurrentObject = null;
+            }
+            else if (list.Count == 1)
+            {
+                this.CurrentObject = list[0];
+            }
+            else
+            {
+                this.CurrentObject = new ItemsBag(list);
             }
 
             this.UpdateControls();

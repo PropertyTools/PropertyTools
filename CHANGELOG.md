@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: IsMoveAfterEnterEnabled property #158
 - PropertyGrid: support nullable enums #129
 - PropertyGrid: option to disable auto fill #143
+- PropertyGrid: Update SelectedObjects to be bindable when collection changes #175
 - DataGrid: register converters in cell definition factory #160
 - DataGrid: CanClear property
 

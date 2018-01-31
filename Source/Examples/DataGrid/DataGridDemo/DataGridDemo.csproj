@@ -63,6 +63,9 @@
     <Compile Include="Examples\ArrayOfArrayExample.xaml.cs">
       <DependentUpon>ArrayOfArrayExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\ScrollViewerExample.xaml.cs">
+      <DependentUpon>ScrollViewerExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ListOfObjectExample.xaml.cs">
       <DependentUpon>ListOfObjectExample.xaml</DependentUpon>
     </Compile>
@@ -223,6 +226,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\ArrayOfArrayExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\ScrollViewerExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -66,6 +66,9 @@
     <Compile Include="Examples\ScrollViewerExample.xaml.cs">
       <DependentUpon>ScrollViewerExample.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Examples\DisabledExample.xaml.cs">
+      <DependentUpon>DisabledExample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Examples\ListOfObjectExample.xaml.cs">
       <DependentUpon>ListOfObjectExample.xaml</DependentUpon>
     </Compile>
@@ -230,6 +233,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Examples\ScrollViewerExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Examples\DisabledExample.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

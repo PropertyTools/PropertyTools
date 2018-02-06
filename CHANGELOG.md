@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - DataGrid commands moved to DataGridCommands
 - DataGrid: DeleteOverride renamed to ClearOverride
+- DataGrid: The EasyInsert property is replaced by IsEasyInsertByKeyboardEnabled and IsEasyInsertByMouseEnabled #179
 
 ### Removed
 - DataGrid: AutoSizeColumns property
@@ -21,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: item type when binding to lists of object
 - DataGrid: paste values outside grid boundaries #171
 - DataGrid: auto-insert for IList<IList<>> sources
+- DataGrid: hide selection when disabled #178
 - PropertyGrid: support BrowsableAttribute on enum items when shown as ComboBox or ListBox #133
 
 ### Added

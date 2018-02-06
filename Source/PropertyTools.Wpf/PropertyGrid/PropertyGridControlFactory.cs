@@ -653,7 +653,8 @@ namespace PropertyTools.Wpf
                 CanDelete = property.ListCanRemove,
                 CanInsert = property.ListCanAdd,
                 InputDirection = property.InputDirection,
-                EasyInsert = property.EasyInsert,
+                IsEasyInsertByMouseEnabled = property.IsEasyInsertByMouseEnabled,
+                IsEasyInsertByKeyboardEnabled = property.IsEasyInsertByKeyboardEnabled,
                 AutoGenerateColumns = property.Columns.Count == 0
             };
 

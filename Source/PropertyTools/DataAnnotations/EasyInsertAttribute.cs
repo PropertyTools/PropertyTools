@@ -12,7 +12,7 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    /// Specifies that it should be easy to insert new items in a List property. When the DataGrid control is used, the EasyInsert property will be set.
+    /// Specifies that it should be easy to insert new items in a List property. When the DataGrid control is used, the easy insert properties will be set.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class EasyInsertAttribute : Attribute
@@ -23,13 +23,31 @@ namespace PropertyTools.DataAnnotations
         /// <param name="easyInsert">if set to <c>true</c> [easy insert].</param>
         public EasyInsertAttribute(bool easyInsert)
         {
-            this.EasyInsert = easyInsert;
+            this.EasyInsertByKeyboard = easyInsert;
+            this.EasyInsertByMouse = easyInsert;
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether easy insert is enabled.
+        /// Initializes a new instance of the <see cref="EasyInsertAttribute" /> class.
         /// </summary>
-        /// <value><c>true</c> if [easy insert]; otherwise, <c>false</c>.</value>
-        public bool EasyInsert { get; set; }
+        /// <param name="easyInsertByKeyboard">enable easy insert by keyboard if set to <c>true</c>.</param>
+        /// <param name="easyInsertByMouse">enable easy insert by mouse if set to <c>true</c>.</param>
+        public EasyInsertAttribute(bool easyInsertByKeyboard, bool easyInsertByMouse)
+        {
+            this.EasyInsertByKeyboard = easyInsertByKeyboard;
+            this.EasyInsertByMouse = easyInsertByMouse;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether easy insert by keyboard is enabled.
+        /// </summary>
+        /// <value><c>true</c> if easy insert is enabled; otherwise, <c>false</c>.</value>
+        public bool EasyInsertByKeyboard { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether easy insert by mouse is enabled.
+        /// </summary>
+        /// <value><c>true</c> if easy insert is enabled; otherwise, <c>false</c>.</value>
+        public bool EasyInsertByMouse { get; }
     }
 }

@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - DataGrid commands moved to DataGridCommands
 - DataGrid: DeleteOverride renamed to ClearOverride
+- DataGrid: The EasyInsert property is replaced by IsEasyInsertByKeyboardEnabled and IsEasyInsertByMouseEnabled #179
 
 ### Removed
 - DataGrid: AutoSizeColumns property

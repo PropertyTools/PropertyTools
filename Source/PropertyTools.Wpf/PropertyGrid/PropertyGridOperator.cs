@@ -540,7 +540,8 @@ namespace PropertyTools.Wpf
             var eia = attribute as EasyInsertAttribute;
             if (eia != null)
             {
-                pi.EasyInsert = eia.EasyInsert;
+                pi.IsEasyInsertByKeyboardEnabled = eia.EasyInsertByKeyboard;
+                pi.IsEasyInsertByMouseEnabled = eia.EasyInsertByMouse;
             }
 
             var sia = attribute as SortIndexAttribute;

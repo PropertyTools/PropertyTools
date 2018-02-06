@@ -7,7 +7,11 @@
     <Window.DataContext>
         <dataGridDemo:ExampleViewModel/>
     </Window.DataContext>
-    <Grid>
-        <p:DataGrid ItemsSource="{Binding ItemsSource}" EasyInsert="True"/>
-    </Grid>
+    <DockPanel>
+        <CheckBox Name="CheckBox1" IsChecked="True" Content="IsEasyInsertByKeyboardEnabled" DockPanel.Dock="Top" Margin="8"/>
+        <CheckBox Name="CheckBox2" IsChecked="True" Content="IsEasyInsertByMouseEnabled" DockPanel.Dock="Top" Margin="8"/>
+        <p:DataGrid ItemsSource="{Binding ItemsSource}" 
+                    IsEasyInsertByKeyboardEnabled="{Binding IsChecked, ElementName=CheckBox1}"
+                    IsEasyInsertByMouseEnabled="{Binding IsChecked, ElementName=CheckBox2}"/>
+    </DockPanel>
 </Window>

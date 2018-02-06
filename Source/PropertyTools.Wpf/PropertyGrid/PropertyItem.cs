@@ -66,10 +66,16 @@ namespace PropertyTools.Wpf
         public InputDirection InputDirection { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether 'easy insert' is enabled in an DataGrid control.
+        /// Gets or sets a value indicating whether 'easy insert' by keyboard is enabled in a DataGrid control.
         /// </summary>
         /// <value><c>true</c> if easy insert is enabled; otherwise, <c>false</c>.</value>
-        public bool EasyInsert { get; set; }
+        public bool IsEasyInsertByKeyboardEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether 'easy insert' by mouse is enabled in a DataGrid control.
+        /// </summary>
+        /// <value><c>true</c> if easy insert is enabled; otherwise, <c>false</c>.</value>
+        public bool IsEasyInsertByMouseEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to accept return.
@@ -80,13 +86,7 @@ namespace PropertyTools.Wpf
         /// Gets the actual type of the property.
         /// </summary>
         /// <remarks>If a converter is defined, the target type will be set.</remarks>
-        public Type ActualPropertyType
-        {
-            get
-            {
-                return this.GetConverterTargetType() ?? this.Descriptor.PropertyType;
-            }
-        }
+        public Type ActualPropertyType => this.GetConverterTargetType() ?? this.Descriptor.PropertyType;
 
         /// <summary>
         /// Gets or sets a value indicating whether to auto update text.

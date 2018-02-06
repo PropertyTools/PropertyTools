@@ -254,10 +254,19 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(new GridLength(20)));
 
         /// <summary>
-        /// Identifies the <see cref="EasyInsert"/> dependency property.
+        /// Identifies the <see cref="IsEasyInsertByKeyboardEnabled"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty EasyInsertProperty = DependencyProperty.Register(
-            nameof(EasyInsert),
+        public static readonly DependencyProperty IsEasyInsertByKeyboardEnabledProperty = DependencyProperty.Register(
+            nameof(IsEasyInsertByKeyboardEnabled),
+            typeof(bool),
+            typeof(DataGrid),
+            new UIPropertyMetadata(true));
+
+        /// <summary>
+        /// Identifies the <see cref="IsEasyInsertByMouseEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsEasyInsertByMouseEnabledProperty = DependencyProperty.Register(
+            nameof(IsEasyInsertByMouseEnabled),
             typeof(bool),
             typeof(DataGrid),
             new UIPropertyMetadata(true));
@@ -923,13 +932,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether easy insert (press enter/down/right to add new rows/columns) is enabled.
+        /// Gets or sets a value indicating whether easy insert by keyboard (press enter/down/right to add new rows/columns) is enabled.
         /// </summary>
         /// <value><c>true</c> if easy insert is enabled; otherwise, <c>false</c>.</value>
-        public bool EasyInsert
+        public bool IsEasyInsertByKeyboardEnabled
         {
-            get => (bool)this.GetValue(EasyInsertProperty);
-            set => this.SetValue(EasyInsertProperty, value);
+            get => (bool)this.GetValue(IsEasyInsertByKeyboardEnabledProperty);
+            set => this.SetValue(IsEasyInsertByKeyboardEnabledProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether easy insert by mouse (mouse down outside existing rows/columns) is enabled.
+        /// </summary>
+        /// <value><c>true</c> if easy insert is enabled; otherwise, <c>false</c>.</value>
+        public bool IsEasyInsertByMouseEnabled
+        {
+            get => (bool)this.GetValue(IsEasyInsertByMouseEnabledProperty);
+            set => this.SetValue(IsEasyInsertByMouseEnabledProperty, value);
         }
 
         /// <summary>
@@ -1595,12 +1614,12 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            if (cellRef.Row >= this.Rows && (!this.CanInsertRows || !this.EasyInsert))
+            if (cellRef.Row >= this.Rows && (!this.CanInsertRows || !this.IsEasyInsertByMouseEnabled))
             {
                 return;
             }
 
-            if (cellRef.Column > this.Columns && (!this.CanInsertColumns || !this.EasyInsert))
+            if (cellRef.Column > this.Columns && (!this.CanInsertColumns || !this.IsEasyInsertByMouseEnabled))
             {
                 return;
             }
@@ -1675,12 +1694,12 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            if (cellRef.Row >= this.Rows && (!this.CanInsertRows || !this.EasyInsert))
+            if (cellRef.Row >= this.Rows && (!this.CanInsertRows || !this.IsEasyInsertByMouseEnabled))
             {
                 return;
             }
 
-            if (cellRef.Column > this.Columns && (!this.CanInsertColumns || !this.EasyInsert))
+            if (cellRef.Column > this.Columns && (!this.CanInsertColumns || !this.IsEasyInsertByMouseEnabled))
             {
                 return;
             }
@@ -1824,7 +1843,7 @@ namespace PropertyTools.Wpf
 
                     break;
                 case Key.Down:
-                    if (row < this.Rows - 1 || (this.CanInsertRows && this.EasyInsert))
+                    if (row < this.Rows - 1 || (this.CanInsertRows && this.IsEasyInsertByKeyboardEnabled))
                     {
                         row++;
                     }
@@ -1858,7 +1877,7 @@ namespace PropertyTools.Wpf
 
                     break;
                 case Key.Right:
-                    if (column < this.Columns - 1 || (this.CanInsertColumns && this.EasyInsert))
+                    if (column < this.Columns - 1 || (this.CanInsertColumns && this.IsEasyInsertByKeyboardEnabled))
                     {
                         column++;
                     }
@@ -2493,7 +2512,7 @@ namespace PropertyTools.Wpf
                 column--;
             }
 
-            if (row >= this.Rows && (!this.CanInsertRows || !this.EasyInsert))
+            if (row >= this.Rows && (!this.CanInsertRows || !this.IsEasyInsertByKeyboardEnabled))
             {
                 column++;
                 row = 0;
@@ -2513,11 +2532,11 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            if (column >= this.Columns && (!this.CanInsertColumns || !this.EasyInsert))
+            if (column >= this.Columns && (!this.CanInsertColumns || !this.IsEasyInsertByKeyboardEnabled))
             {
                 column = 0;
                 row++;
-                if (row >= this.Rows && (!this.CanInsertRows || !this.EasyInsert))
+                if (row >= this.Rows && (!this.CanInsertRows || !this.IsEasyInsertByKeyboardEnabled))
                 {
                     row = 0;
                 }

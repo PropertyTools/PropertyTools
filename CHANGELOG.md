@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: paste values outside grid boundaries #171
 - DataGrid: auto-insert for IList<IList<>> sources
 - DataGrid: hide selection when disabled #178
+- DataGrid: exception in AddDisplayControl #181
 - PropertyGrid: support BrowsableAttribute on enum items when shown as ComboBox or ListBox #133
 
 ### Added

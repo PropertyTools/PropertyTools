@@ -1785,7 +1785,7 @@ namespace PropertyTools.Wpf
                         // make sure this code is executed after the textbox has been loaded (and bindings updated)
                         textEditor.Text = e.Text;
                         textEditor.CaretIndex = textEditor.Text.Length;
-                    }), 
+                    }),
                     DispatcherPriority.Loaded);
             }
 
@@ -2768,10 +2768,10 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Adds the display control for the specified cell.
+        /// Inserts the display control for the specified cell.
         /// </summary>
         /// <param name="cellRef">The cell reference.</param>
-        private void AddDisplayControl(CellRef cellRef)
+        private void InsertDisplayControl(CellRef cellRef)
         {
             var e = this.CreateDisplayControl(cellRef);
             if (e == null)
@@ -2780,7 +2780,14 @@ namespace PropertyTools.Wpf
             }
 
             SetElementPosition(e, cellRef);
-            this.sheetGrid.Children.Add(e);
+
+            if (this.cellInsertionIndex > this.sheetGrid.Children.Count)
+            {
+                throw new InvalidOperationException("Error in DataGrid");
+            }
+
+            this.sheetGrid.Children.Insert(this.cellInsertionIndex, e);
+            this.cellInsertionIndex++;
             this.cellMap.Add(cellRef.GetHashCode(), e);
         }
 
@@ -2803,19 +2810,6 @@ namespace PropertyTools.Wpf
                 BindingSource = this.Operator.GetDataContext(this, cell)
             };
             return d;
-        }
-
-        /// <summary>
-        /// Inserts the display control for the specified cell.
-        /// </summary>
-        /// <param name="cellRef">The cell reference.</param>
-        private void InsertDisplayControl(CellRef cellRef)
-        {
-            var e = this.CreateDisplayControl(cellRef);
-            SetElementPosition(e, cellRef);
-            this.sheetGrid.Children.Insert(this.cellInsertionIndex, e);
-            this.cellInsertionIndex++;
-            this.cellMap.Add(cellRef.GetHashCode(), e);
         }
 
         /// <summary>
@@ -3955,6 +3949,7 @@ namespace PropertyTools.Wpf
             this.sheetGrid.RowDefinitions.Clear();
             this.sheetGrid.ColumnDefinitions.Clear();
             this.sheetGrid.Children.Clear();
+            this.cellInsertionIndex = 0;
             this.cellMap.Clear();
         }
 
@@ -4025,7 +4020,7 @@ namespace PropertyTools.Wpf
             {
                 for (var j = 0; j < columns; j++)
                 {
-                    this.AddDisplayControl(new CellRef(i, j));
+                    this.InsertDisplayControl(new CellRef(i, j));
                 }
             }
 

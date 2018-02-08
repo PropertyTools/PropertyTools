@@ -1156,12 +1156,12 @@ namespace PropertyTools.Wpf
         /// Gets the number of columns.
         /// </summary>
         /// <value>The number of columns.</value>
-        public int Columns => this.sheetGrid.ColumnDefinitions.Count;
+        public int Columns => this.sheetGrid != null ? this.sheetGrid.ColumnDefinitions.Count : 0;
 
         /// <summary>
         /// Gets the number of rows.</summary>
         /// <value>The number of rows.</value>
-        public int Rows => this.sheetGrid.RowDefinitions.Count - 1;
+        public int Rows => this.sheetGrid != null ? this.sheetGrid.RowDefinitions.Count - 1 : 0;
 
         /// <summary>
         /// Gets a value indicating whether to use columns for the items.
@@ -3902,31 +3902,65 @@ namespace PropertyTools.Wpf
         private void UpdateSelectionVisibility()
         {
             var isEnabled = this.IsEnabled;
-            this.currentBackground.Visibility = isEnabled && this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
-                                                    ? Visibility.Visible
-                                                    : Visibility.Hidden;
-            this.autoFillBox.Visibility = isEnabled && this.IsAutoFillEnabled && this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
-                                              ? Visibility.Visible
-                                              : Visibility.Hidden;
-            this.selectionBackground.Visibility = isEnabled && this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
-                                                      ? Visibility.Visible
-                                                      : Visibility.Hidden;
-            this.columnSelectionBackground.Visibility = isEnabled && this.CurrentCell.Column < this.Columns
-                                                            ? Visibility.Visible
-                                                            : Visibility.Hidden;
-            this.rowSelectionBackground.Visibility = isEnabled && this.CurrentCell.Row < this.Rows ? Visibility.Visible : Visibility.Hidden;
-            this.selection.Visibility = isEnabled && this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
-                                            ? Visibility.Visible
-                                            : Visibility.Hidden;
+            if (this.currentBackground != null)
+            {
+                this.currentBackground.Visibility =
+                    isEnabled && this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
+                        ? Visibility.Visible
+                        : Visibility.Hidden;
+            }
 
-            var rowspan = Math.Abs(this.CurrentCell.Row - this.SelectionCell.Row) + 1;
-            var columnspan = Math.Abs(this.CurrentCell.Column - this.SelectionCell.Column) + 1;
-            var allSelected = rowspan == this.Rows && columnspan == this.Columns;
-            this.topLeft.Background = isEnabled && allSelected ? this.rowSelectionBackground.Background : this.rowGrid.Background;
+            if (this.autoFillBox != null)
+            {
+                this.autoFillBox.Visibility =
+                    isEnabled && this.IsAutoFillEnabled && this.CurrentCell.Row < this.Rows
+                    && this.CurrentCell.Column < this.Columns
+                        ? Visibility.Visible
+                        : Visibility.Hidden;
+            }
+
+            if (this.selectionBackground != null)
+            {
+                this.selectionBackground.Visibility =
+                    isEnabled && this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
+                        ? Visibility.Visible
+                        : Visibility.Hidden;
+            }
+
+            if (this.columnSelectionBackground != null)
+            {
+                this.columnSelectionBackground.Visibility = isEnabled && this.CurrentCell.Column < this.Columns
+                                                                ? Visibility.Visible
+                                                                : Visibility.Hidden;
+            }
+
+            if (this.rowSelectionBackground != null)
+            {
+                this.rowSelectionBackground.Visibility =
+                    isEnabled && this.CurrentCell.Row < this.Rows ? Visibility.Visible : Visibility.Hidden;
+            }
+
+            if (this.selection != null)
+            {
+                this.selection.Visibility =
+                    isEnabled && this.CurrentCell.Row < this.Rows && this.CurrentCell.Column < this.Columns
+                        ? Visibility.Visible
+                        : Visibility.Hidden;
+            }
+
+            if (this.topLeft != null && this.rowSelectionBackground != null && this.rowGrid != null)
+            {
+                var rowspan = Math.Abs(this.CurrentCell.Row - this.SelectionCell.Row) + 1;
+                var columnspan = Math.Abs(this.CurrentCell.Column - this.SelectionCell.Column) + 1;
+                var allSelected = rowspan == this.Rows && columnspan == this.Columns;
+                this.topLeft.Background = isEnabled && allSelected
+                                              ? this.rowSelectionBackground.Background
+                                              : this.rowGrid.Background;
+            }
         }
 
         /// <summary>
-        /// Handles change in selection cell.
+        /// Handles changes in the <see cref="P:SelectionCell" /> property.
         /// </summary>
         private void SelectionCellChanged()
         {

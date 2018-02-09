@@ -1704,7 +1704,7 @@ namespace PropertyTools.Wpf
             {
                 if (e.OldValue is INotifyCollectionChanged notifyCollectionChanged)
                 {
-                    CollectionChangedEventManager.RemoveHandler(notifyCollectionChanged, OnSelectedObjectsCollectionChanged);
+                    CollectionChangedEventManager.RemoveHandler(notifyCollectionChanged, this.OnSelectedObjectsCollectionChanged);
                 }
             }
 
@@ -1712,7 +1712,7 @@ namespace PropertyTools.Wpf
             {
                 if (e.NewValue is INotifyCollectionChanged notifyCollectionChanged)
                 {
-                    CollectionChangedEventManager.AddHandler(notifyCollectionChanged, OnSelectedObjectsCollectionChanged);
+                    CollectionChangedEventManager.AddHandler(notifyCollectionChanged, this.OnSelectedObjectsCollectionChanged);
                 }
                 else if (e.NewValue is IEnumerable enumerable)
                 {
@@ -1729,7 +1729,8 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Called when the selected objects collection is changed.
         /// </summary>
-        /// <param name="e">The e.</param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
         private void OnSelectedObjectsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (sender is IEnumerable enumerable)

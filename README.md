@@ -1,13 +1,8 @@
-[![Build status](https://img.shields.io/appveyor/ci/objorke/propertytools/master.svg)](https://ci.appveyor.com/project/objorke/propertytools) 
-[![Gitter](https://img.shields.io/gitter/room/objorke/propertytools.svg)](https://gitter.im/objorke/propertytools?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-```
-License:          The MIT License (MIT)
-Project page:     https://github.com/objorke/PropertyTools/
-NuGet:            https://www.nuget.org/packages/PropertyTools.Wpf/
-Gitter chat:      https://gitter.im/objorke/PropertyTools
-Build artifacts:  https://ci.appveyor.com/project/objorke/propertytools
-```
+[![License](https://img.shields.io/github/license/objorke/propertytools.svg)](https://github.com/objorke/PropertyTools/blob/develop/LICENSE) 
+[![Project page](https://img.shields.io/website-up-down-green-red/https/github.com/objorke/PropertyTools.svg?label=Project%20page)](https://github.com/objorke/PropertyTools) 
+[![NuGet](https://img.shields.io/nuget/v/PropertyTools.Wpf.svg)](https://nuget.org/packages/PropertyTools.Wpf) 
+[![Gitter chat](https://img.shields.io/gitter/room/objorke/propertytools.svg)](https://gitter.im/objorke/propertytools?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build artifacts](https://img.shields.io/appveyor/ci/objorke/propertytools/master.svg)](https://ci.appveyor.com/project/objorke/propertytools) 
 
 | Control           | Description                                                                              | Status |
 |-------------------|------------------------------------------------------------------------------------------|--------|

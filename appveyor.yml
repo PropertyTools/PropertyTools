@@ -12,16 +12,10 @@ assembly_info:
 
 before_build:
   - nuget restore Source/PropertyTools.AppVeyor.sln
-  - ps: gitversion /l console /output buildserver /updateAssemblyInfo
+  - ps: gitversion /l console /output buildserver
   
-build:
-  project: Source/PropertyTools.AppVeyor.sln
-  verbosity: minimal
-
-after_build:
-  - cmd: NuGet pack Source\PropertyTools.Wpf\PropertyTools.Wpf.nuspec -version "%GitVersion_NuGetVersion%" -prop "target=%CONFIGURATION%"
+build_script:
+  - msbuild Source/PropertyTools.AppVeyor.sln /p:Version=%GitVersion_NuGetVersion%
 
 artifacts:
-  - path: '*.nupkg'
-    name: PropertyTools.Wpf-$(GitVersion_SemVer)
-    type: zip
+  - path: '**/*.nupkg'

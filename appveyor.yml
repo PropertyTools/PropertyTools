@@ -14,20 +14,8 @@ before_build:
   - nuget restore Source/PropertyTools.AppVeyor.sln
   - ps: gitversion /l console /output buildserver
   
-dotnet_csproj:
-  patch: true
-  file: '**\*.csproj'
-  version: '%GitVersion_NuGetVersion%'
-  package_version: '%GitVersion_NuGetVersion%'
-  assembly_version: '%GitVersion_NuGetVersion%'
-  file_version: '%GitVersion_NuGetVersion%'
-  informational_version: '%GitVersion_NuGetVersion%'
-
-build:
-  project: Source/PropertyTools.AppVeyor.sln
-  verbosity: minimal
+build_script:
+  - msbuild Source/PropertyTools.AppVeyor.sln /p:Version=%GitVersion_NuGetVersion%
 
 artifacts:
-  - path: '*.nupkg'
-    name: PropertyTools.Wpf-$(GitVersion_SemVer)
-    type: zip
+  - path: '**/*.nupkg'

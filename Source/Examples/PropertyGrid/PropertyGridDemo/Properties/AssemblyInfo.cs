@@ -4,10 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
 using System.Windows;
-
-[assembly: AssemblyTitle("TreeListBox add/remove demo")]
-[assembly: AssemblyDescription("")]
 
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]

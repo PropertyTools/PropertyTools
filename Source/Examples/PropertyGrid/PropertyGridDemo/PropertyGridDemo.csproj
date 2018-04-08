@@ -1,192 +1,60 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B9B8A606-963F-414A-9365-24F5BEF21225}</ProjectGuid>
+    <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
+    <TargetFramework>net462</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PropertyGridDemo</RootNamespace>
-    <AssemblyName>PropertyGridDemo</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PropertyChanged, Version=1.52.1.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\PropertyChanged.Fody.1.52.1\Lib\netstandard10\PropertyChanged.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
+    <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj" />
+    <ProjectReference Include="..\..\..\PropertyTools\PropertyTools.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="..\..\..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Converters\BigIntegerConverter.cs" />
-    <Compile Include="Converters\ComplexConverter.cs" />
-    <Compile Include="Converters\MassConverter.cs" />
-    <Compile Include="DataTypes\Length.cs" />
-    <Compile Include="DataTypes\Mass.cs" />
-    <Compile Include="DataTypes\TestEnumeration.cs" />
-    <Compile Include="DataTypes\UnitUtilities.cs" />
-    <Compile Include="Example.cs" />
-    <Compile Include="Examples.cs" />
-    <Compile Include="Examples\AdvancedTypesExample.cs" />
-    <Compile Include="Examples\AutomaticDisplayNamesExample.cs" />
-    <Compile Include="Examples\AutoUpdateTextAttributeExample.cs" />
-    <Compile Include="Examples\BrowsableAttributeExample.cs" />
-    <Compile Include="Examples\CategoryAttributeExample.cs" />
-    <Compile Include="Examples\CheckableItemsAttributeExample.cs" />
-    <Compile Include="Examples\CollectionsExample.cs" />
-    <Compile Include="Examples\CommentAttributeExample.cs" />
-    <Compile Include="Examples\ContentAttributeExample.cs" />
-    <Compile Include="Examples\ConverterAttributeExample.cs" />
-    <Compile Include="Examples\DataAnnotationsExample.cs" />
-    <Compile Include="Examples\DataErrorInfoExample.cs" />
-    <Compile Include="Examples\DataTypeAttributeExample.cs" />
-    <Compile Include="Examples\DescriptionAttributeExample.cs" />
-    <Compile Include="Examples\DictionaryExample.cs" />
-    <Compile Include="Examples\DirectoryPathAttributeExample.cs" />
-    <Compile Include="Examples\DisplayNameAttributeExample.cs" />
-    <Compile Include="Examples\EditableAttributeExample.cs" />
-    <Compile Include="Examples\EnableByRadioButtonAttributeExample.cs" />
-    <Compile Include="Examples\EnabledByAttributeExample.cs" />
-    <Compile Include="Examples\EnumsExample.cs" />
-    <Compile Include="Examples\ExceptionExample.cs" />
-    <Compile Include="Examples\FilePathAttributeExample.cs" />
-    <Compile Include="Examples\FillTabAttributeExample.cs" />
-    <Compile Include="Examples\FormatStringAttributeExample.cs" />
-    <Compile Include="Examples\HeaderPlacementAttributeExample.cs" />
-    <Compile Include="Examples\ImageSourceExample.cs" />
-    <Compile Include="Examples\IndentationLevelAttributeExample.cs" />
-    <Compile Include="Examples\ItemsSourcePropertyExample.cs" />
-    <Compile Include="Examples\MetaDataTypeExample.cs" />
-    <Compile Include="Examples\NotifyDataErrorInfoExample.cs" />
-    <Compile Include="Examples\OptionalAttributeExample.cs" />
-    <Compile Include="Examples\PasswordExample.cs" />
-    <Compile Include="Examples\PerformanceExample.cs" />
-    <Compile Include="Examples\ReadOnlyAttributeExample.cs" />
-    <Compile Include="Examples\SimpleTypesExample.cs" />
-    <Compile Include="Examples\SlidableAttributeExample.cs" />
-    <Compile Include="Examples\SpinnableAttributeExample.cs" />
-    <Compile Include="Examples\SubClassExample.cs" />
-    <Compile Include="Examples\VisibleByAttributeExample.cs" />
-    <Compile Include="LengthConverter.cs" />
-    <Compile Include="CustomOperator.cs" />
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="CustomControlFactory.cs" />
-    <Compile Include="PropertyGridExampleAttribute.cs" />
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <PackageReference Include="Fody" Version="3.0.3" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyDescription.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <None Include="app.config" />
-    <AppDesigner Include="Properties\" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj">
-      <Project>{7168F82F-288A-42C4-9EB1-FBBE5112F211}</Project>
-      <Name>PropertyTools.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\PropertyTools\PropertyTools.csproj">
-      <Project>{c365cbc8-fb8c-439d-87a4-fafbb25852ea}</Project>
-      <Name>PropertyTools</Name>
-    </ProjectReference>
+    <!-- App.xaml -->
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </ApplicationDefinition>
+
+    <!-- XAML elements -->
+    <Page Include="**\*.xaml" Exclude="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </Page>
+    <Compile Remove="Examples\TestValuesPropertyAttribute.cs" />
+    <Compile Update="**\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
+
+    <!-- Resources -->
+    <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+    <Compile Update="Properties\Resources.Designer.cs" AutoGen="True" DependentUpon="Resources.resx" DesignTime="True" />
+
+    <!-- Settings -->
+    <None Update="Properties\Settings.settings" Generator="SettingsSingleFileGenerator" LastGenOutput="Settings.Designer.cs" />
+    <Compile Update="Properties\Settings.Designer.cs" AutoGen="True" DependentUpon="Settings.settings" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\lightbulb1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\lightbulb.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\category.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\home.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\home2.png" />
     <Resource Include="Images\home3.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\chart.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\error.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Examples\sheep.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\..\..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Fody.1.29.2\build\dotnet\Fody.targets'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid commands moved to DataGridCommands
 - DataGrid: DeleteOverride renamed to ClearOverride
 - DataGrid: The EasyInsert property is replaced by IsEasyInsertByKeyboardEnabled and IsEasyInsertByMouseEnabled #179
+- PropertyTools NuGet package targets NET45 and .NET Standard 2.0
 
 ### Removed
 - DataGrid: AutoSizeColumns property

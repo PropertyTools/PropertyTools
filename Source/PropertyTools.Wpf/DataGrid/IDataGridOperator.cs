@@ -85,13 +85,6 @@ namespace PropertyTools.Wpf
         object GetItem(CellRef cell);
 
         /// <summary>
-        /// Sets value of the specified cell to the specified value.
-        /// </summary>
-        /// <param name="cell">The cell to change.</param>
-        /// <param name="value">The value.</param>
-        void SetValue(CellRef cell, object value);
-
-        /// <summary>
         /// Tries to set cell value in the specified cell.
         /// </summary>
         /// <param name="cell">The cell.</param>

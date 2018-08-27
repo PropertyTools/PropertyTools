@@ -124,7 +124,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public override object GetItem(CellRef cell)
         {
-            var list = this.owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null)
             {
                 return null;
@@ -148,7 +148,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public override int InsertItem(int index)
         {
-            var list = this.owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null)
             {
                 return -1;
@@ -183,7 +183,7 @@ namespace PropertyTools.Wpf
         /// <param name="value">The value.</param>
         public override void SetValue(CellRef cell, object value)
         {
-            var list = this.owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null || cell.Column < 0 || cell.Row < 0)
             {
                 return;
@@ -202,7 +202,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual int GetItemIndex(CellRef cell)
         {
-            var index = this.owner.ItemsInRows ? cell.Row : cell.Column;
+            var index = this.Owner.ItemsInRows ? cell.Row : cell.Column;
             return this.GetItemsSourceIndex(index);
         }
 

@@ -30,9 +30,9 @@ namespace PropertyTools.Wpf
         /// </returns>
         public override int GetRowCount()
         {
-            var m = this.owner.PropertyDefinitions.Count;
-            var n = this.owner.ItemsSource.Count / m;
-            return this.owner.ItemsInRows ? n : m;
+            var m = this.Owner.PropertyDefinitions.Count;
+            var n = this.Owner.ItemsSource.Count / m;
+            return this.Owner.ItemsInRows ? n : m;
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace PropertyTools.Wpf
         /// </returns>
         public override int GetColumnCount()
         {
-            var m = this.owner.PropertyDefinitions.Count;
-            var n = this.owner.ItemsSource.Count / m;
-            return this.owner.ItemsInRows ? m : n;
+            var m = this.Owner.PropertyDefinitions.Count;
+            var n = this.Owner.ItemsSource.Count / m;
+            return this.Owner.ItemsInRows ? m : n;
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected override int GetItemIndex(CellRef cell)
         {
-            return this.owner.ItemsInRows ? (cell.Row * this.owner.Columns) + cell.Column : (cell.Column * this.owner.Rows) + cell.Row;
+            return this.Owner.ItemsInRows ? (cell.Row * this.Owner.Columns) + cell.Column : (cell.Column * this.Owner.Rows) + cell.Row;
         }
     }
 }

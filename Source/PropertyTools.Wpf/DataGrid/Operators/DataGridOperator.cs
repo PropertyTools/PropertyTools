@@ -39,7 +39,7 @@ namespace PropertyTools.Wpf
         /// <param name="owner">The owner.</param>
         protected DataGridOperator(DataGrid owner)
         {
-            this.owner = owner;
+            this.Owner = owner;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the this.owner datagrid.
         /// </summary>
-        protected DataGrid owner { get; }
+        protected DataGrid Owner { get; }
 
         /// <summary>
         /// Determines whether columns can be deleted.
@@ -71,8 +71,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual bool CanDeleteColumns()
         {
-            var list = this.owner.ItemsSource;
-            return this.owner.CanDelete && this.owner.ItemsInColumns && list != null && !list.IsFixedSize;
+            var list = this.Owner.ItemsSource;
+            return this.Owner.CanDelete && this.Owner.ItemsInColumns && list != null && !list.IsFixedSize;
         }
 
         /// <summary>
@@ -83,8 +83,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual bool CanDeleteRows()
         {
-            var list = this.owner.ItemsSource;
-            return this.owner.CanDelete && this.owner.ItemsInRows && list != null && !list.IsFixedSize;
+            var list = this.Owner.ItemsSource;
+            return this.Owner.CanDelete && this.Owner.ItemsInRows && list != null && !list.IsFixedSize;
         }
 
         /// <summary>
@@ -95,8 +95,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual bool CanInsertColumns()
         {
-            var list = this.owner.ItemsSource;
-            return this.owner.ItemsInColumns && this.owner.CanInsert && list != null && !list.IsFixedSize;
+            var list = this.Owner.ItemsSource;
+            return this.Owner.ItemsInColumns && this.Owner.CanInsert && list != null && !list.IsFixedSize;
         }
 
         /// <summary>
@@ -108,8 +108,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual bool CanInsertRows()
         {
-            var list = this.owner.ItemsSource;
-            return this.owner.ItemsInRows && this.owner.CanInsert && list != null && !list.IsFixedSize;
+            var list = this.Owner.ItemsSource;
+            return this.Owner.ItemsInRows && this.Owner.CanInsert && list != null && !list.IsFixedSize;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace PropertyTools.Wpf
         /// <param name="n">The number of columns to delete.</param>
         public virtual void DeleteColumns(int index, int n)
         {
-            if (!this.owner.ItemsInColumns)
+            if (!this.Owner.ItemsInColumns)
             {
                 return;
             }
@@ -150,7 +150,7 @@ namespace PropertyTools.Wpf
         /// <param name="n">The number of columns to insert.</param>
         public virtual void InsertColumns(int index, int n)
         {
-            if (!this.owner.ItemsInColumns)
+            if (!this.Owner.ItemsInColumns)
             {
                 return;
             }
@@ -180,7 +180,7 @@ namespace PropertyTools.Wpf
         /// <returns>The number.</returns>
         public virtual int GetItemCount()
         {
-            return this.owner.CollectionView.Cast<object>().Count();
+            return this.Owner.CollectionView.Cast<object>().Count();
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual int GetRowCount()
         {
-            return this.owner.ItemsInRows ? this.GetItemCount() : this.owner.PropertyDefinitions.Count;
+            return this.Owner.ItemsInRows ? this.GetItemCount() : this.Owner.PropertyDefinitions.Count;
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual int GetColumnCount()
         {
-            return this.owner.ItemsInRows ? this.owner.PropertyDefinitions.Count : this.GetItemCount();
+            return this.Owner.ItemsInRows ? this.Owner.PropertyDefinitions.Count : this.GetItemCount();
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual bool CanSort(int index)
         {
-            return this.owner.PropertyDefinitions[index].CanSort;
+            return this.Owner.PropertyDefinitions[index].CanSort;
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace PropertyTools.Wpf
         /// <returns>The value</returns>
         public virtual object GetCellValue(CellRef cell)
         {
-            if (cell.Column < 0 || cell.Column >= this.owner.Columns || cell.Row < 0 || cell.Row >= this.owner.Rows)
+            if (cell.Column < 0 || cell.Column >= this.Owner.Columns || cell.Row < 0 || cell.Row >= this.Owner.Rows)
             {
                 return null;
             }
@@ -287,21 +287,21 @@ namespace PropertyTools.Wpf
         /// <returns>The index in the items source</returns>
         public virtual int GetItemsSourceIndex(int index)
         {
-            var collectionView = this.owner.CollectionView;
+            var collectionView = this.Owner.CollectionView;
             if (collectionView == null)
             {
                 return index;
             }
 
             // if not using custom sort, and not sorting
-            if (this.owner.CustomSort == null && collectionView.SortDescriptions.Count == 0)
+            if (this.Owner.CustomSort == null && collectionView.SortDescriptions.Count == 0)
             {
                 // return the same index
                 return index;
             }
 
             // if using custom sort, and not sorting
-            if (this.owner.CustomSort is ISortDescriptionComparer sdc && sdc.SortDescriptions.Count == 0)
+            if (this.Owner.CustomSort is ISortDescriptionComparer sdc && sdc.SortDescriptions.Count == 0)
             {
                 // return the same index
                 return index;
@@ -315,7 +315,7 @@ namespace PropertyTools.Wpf
             }
 
             // get the index of the item in the items source
-            var i = this.owner.ItemsSource.IndexOf(item);
+            var i = this.Owner.ItemsSource.IndexOf(item);
 
             return i;
         }
@@ -327,36 +327,36 @@ namespace PropertyTools.Wpf
         /// <returns>The index in the collection view</returns>
         public virtual int GetCollectionViewIndex(int index)
         {
-            if (this.owner.CollectionView == null)
+            if (this.Owner.CollectionView == null)
             {
                 return index;
             }
 
             // if not using custom sort, and not sorting
-            if (this.owner.CustomSort == null && this.owner.CollectionView.SortDescriptions.Count == 0)
+            if (this.Owner.CustomSort == null && this.Owner.CollectionView.SortDescriptions.Count == 0)
             {
                 // return the same index
                 return index;
             }
 
             // if using custom sort, and not sorting
-            if (this.owner.CustomSort is ISortDescriptionComparer sdc && sdc.SortDescriptions.Count == 0)
+            if (this.Owner.CustomSort is ISortDescriptionComparer sdc && sdc.SortDescriptions.Count == 0)
             {
                 // return the same index
                 return index;
             }
 
-            if (index < 0 || index >= this.owner.ItemsSource.Count)
+            if (index < 0 || index >= this.Owner.ItemsSource.Count)
             {
                 throw new InvalidOperationException("The collection view is probably out of sync. (GetCollectionViewIndex)");
             }
 
             // get the item at the specified index in the items source
-            var item = this.owner.ItemsSource[index];
+            var item = this.Owner.ItemsSource[index];
 
             // get the index of the item in the collection view
             // TODO: find a better way to do this
-            if (!this.TryGetIndex(this.owner.CollectionView, item, out var index2))
+            if (!this.TryGetIndex(this.Owner.CollectionView, item, out var index2))
             {
                 throw new InvalidOperationException("The collection view is probably out of sync. (GetCollectionViewIndex)");
             }
@@ -369,9 +369,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         public virtual void AutoGenerateColumns()
         {
-            foreach (var cd in this.GenerateColumnDefinitions(this.owner.ItemsSource))
+            foreach (var cd in this.GenerateColumnDefinitions(this.Owner.ItemsSource))
             {
-                this.owner.ColumnDefinitions.Add(cd);
+                this.Owner.ColumnDefinitions.Add(cd);
             }
         }
 
@@ -383,9 +383,9 @@ namespace PropertyTools.Wpf
             this.descriptors.Clear();
 
             // Set the property descriptors.
-            var itemType = this.GetItemType(this.owner.ItemsSource);
+            var itemType = this.GetItemType(this.Owner.ItemsSource);
             var properties = TypeDescriptor.GetProperties(itemType);
-            foreach (var pd in this.owner.PropertyDefinitions)
+            foreach (var pd in this.Owner.PropertyDefinitions)
             {
                 if (!string.IsNullOrEmpty(pd.PropertyName))
                 {
@@ -413,7 +413,7 @@ namespace PropertyTools.Wpf
         /// <returns>The property definition.</returns>
         public virtual PropertyDefinition GetPropertyDefinition(CellRef cell)
         {
-            return this.owner.GetPropertyDefinition(cell);
+            return this.Owner.GetPropertyDefinition(cell);
         }
 
         /// <summary>
@@ -424,7 +424,7 @@ namespace PropertyTools.Wpf
         /// <returns><c>true</c> if the cell value was set.</returns>
         public virtual bool TrySetCellValue(CellRef cell, object value)
         {
-            if (this.owner.ItemsSource == null)
+            if (this.Owner.ItemsSource == null)
             {
                 return false;
             }
@@ -477,7 +477,7 @@ namespace PropertyTools.Wpf
         {
             var pd = this.GetPropertyDefinition(cell);
             var item = this.GetItem(cell);
-            return pd.PropertyName != null ? item : this.owner.ItemsSource;
+            return pd.PropertyName != null ? item : this.Owner.ItemsSource;
         }
 
         /// <summary>
@@ -523,7 +523,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual bool DeleteItem(int index)
         {
-            var list = this.owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             index = this.GetItemsSourceIndex(index);
             if (list == null)
             {
@@ -575,9 +575,9 @@ namespace PropertyTools.Wpf
                 return 0;
             }
 
-            if (this.owner.CreateItem != null)
+            if (this.Owner.CreateItem != null)
             {
-                return this.owner.CreateItem();
+                return this.Owner.CreateItem();
             }
 
             // TODO: the item type may not have a parameterless constructor!

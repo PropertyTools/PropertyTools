@@ -57,7 +57,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected override bool DeleteItem(int index)
         {
-            var list = this.owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null)
             {
                 return false;
@@ -68,9 +68,9 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            if (this.owner.ItemsInColumns)
+            if (this.Owner.ItemsInColumns)
             {
-                foreach (var row in this.owner.ItemsSource.OfType<IList>().Where(row => index < row.Count))
+                foreach (var row in this.Owner.ItemsSource.OfType<IList>().Where(row => index < row.Count))
                 {
                     row.RemoveAt(index);
                 }
@@ -90,11 +90,11 @@ namespace PropertyTools.Wpf
         /// <param name="n">The number of columns to delete.</param>
         public override void DeleteColumns(int index, int n)
         {
-            if (this.owner.ColumnHeadersSource != null)
+            if (this.Owner.ColumnHeadersSource != null)
             {
                 for (var i = index + n - 1; i >= index; i--)
                 {
-                    this.owner.ColumnHeadersSource.RemoveAt(i);
+                    this.Owner.ColumnHeadersSource.RemoveAt(i);
                 }
             }
 
@@ -122,19 +122,19 @@ namespace PropertyTools.Wpf
         /// <param name="index">The position.</param>
         private void InsertColumnHeader(int index)
         {
-            if (this.owner.ColumnHeadersSource == null)
+            if (this.Owner.ColumnHeadersSource == null)
             {
                 return;
             }
 
-            var newItem = this.owner.CreateColumnHeader(index);
-            if (index >= 0 && index < this.owner.ColumnHeadersSource.Count)
+            var newItem = this.Owner.CreateColumnHeader(index);
+            if (index >= 0 && index < this.Owner.ColumnHeadersSource.Count)
             {
-                this.owner.ColumnHeadersSource.Insert(index, newItem);
+                this.Owner.ColumnHeadersSource.Insert(index, newItem);
             }
             else
             {
-                this.owner.ColumnHeadersSource.Add(newItem);
+                this.Owner.ColumnHeadersSource.Add(newItem);
             }
         }
 
@@ -170,7 +170,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public override object GetItem(CellRef cell)
         {
-            var list = this.owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             var rowIndex = cell.Row;
             var columnIndex = cell.Column;
             if (list == null || rowIndex < 0 || columnIndex < 0)
@@ -201,7 +201,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public override int InsertItem(int index)
         {
-            var list = this.owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null)
             {
                 return -1;
@@ -218,11 +218,11 @@ namespace PropertyTools.Wpf
                     return -1;
                 }
 
-                if (this.owner.ItemsInRows)
+                if (this.Owner.ItemsInRows)
                 {
                     if (newList != null)
                     {
-                        for (var ii = 0; ii < this.owner.Columns; ii++)
+                        for (var ii = 0; ii < this.Owner.Columns; ii++)
                         {
                             newList.Add(this.CreateItem(innerType));
                         }
@@ -269,7 +269,7 @@ namespace PropertyTools.Wpf
         /// <param name="value">The value.</param>
         public override void SetValue(CellRef cell, object value)
         {
-            var list = this.owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null || cell.Row < 0 || cell.Column < 0 || cell.Row >= list.Count)
             {
                 return;

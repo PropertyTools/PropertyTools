@@ -67,13 +67,6 @@ namespace PropertyTools.Wpf
         int GetCollectionViewIndex(int index);
 
         /// <summary>
-        /// Converts the collection view index to an items source index.
-        /// </summary>
-        /// <param name="index">The index in the collection view.</param>
-        /// <returns>The index in the items source</returns>
-        int GetItemsSourceIndex(int index);
-
-        /// <summary>
         /// Inserts an item at the specified index.
         /// </summary>
         /// <param name="index">The index.</param>

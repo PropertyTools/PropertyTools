@@ -32,13 +32,12 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the type of the property in the specified cell.
         /// </summary>
-        /// <param name="definition">The definition.</param>
+        /// <param name="owner">The data grid.</param>
         /// <param name="cell">The cell.</param>
-        /// <param name="currentValue">The current value.</param>
         /// <returns>
         /// The type of the property.
         /// </returns>
-        Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue);
+        Type GetPropertyType(DataGrid owner, CellRef cell);
 
         /// <summary>
         /// Gets the property descriptor.

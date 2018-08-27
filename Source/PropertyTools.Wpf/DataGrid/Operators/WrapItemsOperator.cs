@@ -43,19 +43,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the item index for the specified cell.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
-        /// <param name="cell">The cell.</param>
-        /// <returns>
-        /// The get item index.
-        /// </returns>
-        protected override int GetItemIndex(DataGrid owner, CellRef cell)
-        {
-            return owner.ItemsInRows ? (cell.Row * owner.Columns) + cell.Column : (cell.Column * owner.Rows) + cell.Row;
-        }
-
-        /// <summary>
         /// Determines whether items can be sorted by the specified column/row index.
         /// </summary>
         /// <param name="owner">The data grid.</param>
@@ -66,6 +53,19 @@ namespace PropertyTools.Wpf
         public override bool CanSort(DataGrid owner, int index)
         {
             return false;
+        }
+
+        /// <summary>
+        /// Gets the item index for the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <returns>
+        /// The get item index.
+        /// </returns>
+        protected override int GetItemIndex(DataGrid owner, CellRef cell)
+        {
+            return owner.ItemsInRows ? (cell.Row * owner.Columns) + cell.Column : (cell.Column * owner.Rows) + cell.Row;
         }
     }
 }

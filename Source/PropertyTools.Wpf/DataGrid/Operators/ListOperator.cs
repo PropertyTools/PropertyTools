@@ -212,7 +212,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public override string GetBindingPath(DataGrid owner, CellRef cell)
         {
-            var pd = owner.GetPropertyDefinition(cell);
+            var pd = this.GetPropertyDefinition(owner, cell);
             if (pd?.PropertyName != null)
             {
                 return pd.PropertyName;

@@ -230,7 +230,7 @@ namespace PropertyTools.Wpf
             var item = this.GetItem(owner, cell);
             if (item != null)
             {
-                var pd = owner.GetPropertyDefinition(cell);
+                var pd = this.GetPropertyDefinition(owner, cell);
                 if (pd != null)
                 {
                     var descriptor = this.GetPropertyDescriptor(pd);
@@ -244,6 +244,19 @@ namespace PropertyTools.Wpf
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the type of the property in the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <returns>The type of the property.</returns>
+        public virtual Type GetPropertyType(DataGrid owner, CellRef cell)
+        {
+            var definition = this.GetPropertyDefinition(owner, cell);
+            var currentValue = this.GetCellValue(owner, cell);
+            return this.GetPropertyType(definition, cell, currentValue);
         }
 
         /// <summary>
@@ -397,6 +410,17 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets the property definition for the specified cell.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        /// <param name="cell">The cell.</param>
+        /// <returns>The property definition.</returns>
+        public virtual PropertyDefinition GetPropertyDefinition(DataGrid owner, CellRef cell)
+        {
+            return owner.GetPropertyDefinition(cell);
+        }
+
+        /// <summary>
         /// Tries to set cell value in the specified cell.
         /// </summary>
         /// <param name="owner">The owner.</param>
@@ -412,7 +436,7 @@ namespace PropertyTools.Wpf
 
             var current = this.GetItem(owner, cell);
 
-            var pd = owner.GetPropertyDefinition(cell);
+            var pd = this.GetPropertyDefinition(owner, cell);
             if (pd == null)
             {
                 return false;
@@ -423,7 +447,7 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            var targetType = this.GetPropertyType(pd, cell, current);
+            var targetType = this.GetPropertyType(owner, cell);
             if (!TryConvert(value, targetType, out var convertedValue))
             {
                 return false;
@@ -457,7 +481,7 @@ namespace PropertyTools.Wpf
         /// <returns>The context object.</returns>
         public object GetDataContext(DataGrid owner, CellRef cell)
         {
-            var pd = owner.GetPropertyDefinition(cell);
+            var pd = this.GetPropertyDefinition(owner, cell);
             var item = this.GetItem(owner, cell);
             return pd.PropertyName != null ? item : owner.ItemsSource;
         }

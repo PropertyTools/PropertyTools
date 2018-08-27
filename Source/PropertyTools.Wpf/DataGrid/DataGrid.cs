@@ -2071,8 +2071,7 @@ namespace PropertyTools.Wpf
                 return null;
             }
 
-            var pd = this.GetPropertyDefinition(cell);
-            var type = this.Operator.GetPropertyType(pd, cell, value);
+            var type = this.Operator.GetPropertyType(this, cell);
             var isNullable = Nullable.GetUnderlyingType(type) != null;
             if (type.IsValueType && !isNullable)
             {
@@ -2133,6 +2132,25 @@ namespace PropertyTools.Wpf
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Tries to set the value in the specified cell.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// True if the value was set.
+        /// </returns>
+        protected bool TrySetCellValue(CellRef cell, object value)
+        {
+            var cellWasSet = this.Operator.TrySetCellValue(this, cell, value);
+            if (cellWasSet && !(this.ItemsSource is INotifyCollectionChanged))
+            {
+                this.UpdateCellContent(cell);
+            }
+
+            return cellWasSet;
         }
 
         /// <summary>
@@ -2500,7 +2518,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="deltaRows">The change in rows.</param>
         /// <param name="deltaColumns">The change in columns.</param>
-        private void ChangeCurrentCell(int deltaRows, int deltaColumns)
+        protected void ChangeCurrentCell(int deltaRows, int deltaColumns)
         {
             var row = this.CurrentCell.Row;
             var column = this.CurrentCell.Column;
@@ -2594,25 +2612,6 @@ namespace PropertyTools.Wpf
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Tries to set the value in the specified cell.
-        /// </summary>
-        /// <param name="cell">The cell.</param>
-        /// <param name="value">The value.</param>
-        /// <returns>
-        /// True if the value was set.
-        /// </returns>
-        private bool TrySetCellValue(CellRef cell, object value)
-        {
-            var cellWasSet = this.Operator.TrySetCellValue(this, cell, value);
-            if (cellWasSet && !(this.ItemsSource is INotifyCollectionChanged))
-            {
-                this.UpdateCellContent(cell);
-            }
-
-            return cellWasSet;
         }
 
         /// <summary>
@@ -2799,13 +2798,12 @@ namespace PropertyTools.Wpf
         private CellDescriptor CreateCellDescriptor(CellRef cell)
         {
             var pd = this.GetPropertyDefinition(cell);
-            var item = this.Operator.GetItem(this, cell);
             var d = new CellDescriptor
             {
                 PropertyDefinition = pd,
-                Item = item,
+                Item = this.Operator.GetItem(this, cell),
                 Descriptor = this.Operator.GetPropertyDescriptor(pd),
-                PropertyType = this.Operator.GetPropertyType(pd, cell, item),
+                PropertyType = this.Operator.GetPropertyType(this, cell),
                 BindingPath = this.Operator.GetBindingPath(this, cell),
                 BindingSource = this.Operator.GetDataContext(this, cell)
             };
@@ -3134,9 +3132,9 @@ namespace PropertyTools.Wpf
         /// <param name="append">Append the sort description if set to <c>true</c>.</param>
         private void ToggleSort(bool append = false)
         {
-            var index = this.ItemsInRows ? this.CurrentCell.Column : this.CurrentCell.Row;
-            var propertyName = this.PropertyDefinitions[index].PropertyName;
-            var descriptor = this.Operator.GetPropertyDescriptor(this.PropertyDefinitions[index]);
+            var propertyDefinition = this.GetPropertyDefinition(this.CurrentCell);
+            var propertyName = propertyDefinition.PropertyName;
+            var descriptor = this.Operator.GetPropertyDescriptor(propertyDefinition);
             var isComparable = descriptor != null && typeof(IComparable).IsAssignableFrom(descriptor.PropertyType);
             if (!isComparable)
             {

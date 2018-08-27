@@ -433,6 +433,7 @@ namespace PropertyTools.Wpf
             }
 
             c.SetBinding(TextBox.TextProperty, binding);
+
             return c;
         }
 

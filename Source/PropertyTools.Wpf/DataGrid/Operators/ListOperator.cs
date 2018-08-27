@@ -21,6 +21,14 @@ namespace PropertyTools.Wpf
     public class ListOperator : DataGridOperator
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ListOperator"/> class.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        public ListOperator(DataGrid owner) : base(owner)
+        {
+        }
+
+        /// <summary>
         /// Generate column definitions based on a list of items.
         /// </summary>
         /// <param name="list">The list of items.</param>
@@ -110,20 +118,19 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the item in cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
         /// The item <see cref="object" />.
         /// </returns>
-        public override object GetItem(DataGrid owner, CellRef cell)
+        public override object GetItem(CellRef cell)
         {
-            var list = owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null)
             {
                 return null;
             }
 
-            var index = this.GetItemIndex(owner, cell);
+            var index = this.GetItemIndex(cell);
             if (index >= 0 && index < list.Count)
             {
                 return list[index];
@@ -135,14 +142,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Inserts item to <see cref="DataGrid" />.
         /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="index">The index.</param>
         /// <returns>
         /// The index of the inserted item if insertion is successful, <c>-1</c> otherwise.
         /// </returns>
-        public override int InsertItem(DataGrid owner, int index)
+        public override int InsertItem(int index)
         {
-            var list = owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null)
             {
                 return -1;
@@ -152,7 +158,7 @@ namespace PropertyTools.Wpf
 
             try
             {
-                var newItem = this.CreateItem(owner, itemType);
+                var newItem = this.CreateItem(itemType);
                 if (index < 0)
                 {
                     index = list.Add(newItem);
@@ -173,52 +179,49 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets value to item in cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell reference.</param>
         /// <param name="value">The value.</param>
-        public override void SetValue(DataGrid owner, CellRef cell, object value)
+        public override void SetValue(CellRef cell, object value)
         {
-            var list = owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null || cell.Column < 0 || cell.Row < 0)
             {
                 return;
             }
 
-            var index = this.GetItemIndex(owner, cell);
+            var index = this.GetItemIndex(cell);
             list[index] = value;
         }
 
         /// <summary>
         /// Gets the item index for the specified cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell.</param>
         /// <returns>
         /// The get item index.
         /// </returns>
-        protected virtual int GetItemIndex(DataGrid owner, CellRef cell)
+        protected virtual int GetItemIndex(CellRef cell)
         {
-            var index = owner.ItemsInRows ? cell.Row : cell.Column;
-            return GetItemsSourceIndex(owner, index);
+            var index = this.Owner.ItemsInRows ? cell.Row : cell.Column;
+            return this.GetItemsSourceIndex(index);
         }
 
         /// <summary>
         /// Gets the binding path for the specified cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell.</param>
         /// <returns>
         /// The binding path
         /// </returns>
-        public override string GetBindingPath(DataGrid owner, CellRef cell)
+        public override string GetBindingPath(CellRef cell)
         {
-            var pd = owner.GetPropertyDefinition(cell);
+            var pd = this.GetPropertyDefinition(cell);
             if (pd?.PropertyName != null)
             {
                 return pd.PropertyName;
             }
 
-            var index = this.GetItemIndex(owner, cell);
+            var index = this.GetItemIndex(cell);
             return $"[{index}]";
         }
 

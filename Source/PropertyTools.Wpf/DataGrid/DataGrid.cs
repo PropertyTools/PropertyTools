@@ -1183,25 +1183,25 @@ namespace PropertyTools.Wpf
         /// Gets a value indicating whether this instance can delete columns.
         /// </summary>
         /// <value><c>true</c> if this instance can delete columns; otherwise, <c>false</c> .</value>
-        protected virtual bool CanDeleteColumns => this.Operator?.CanDeleteColumns(this) ?? false;
+        protected virtual bool CanDeleteColumns => this.Operator?.CanDeleteColumns() ?? false;
 
         /// <summary>
         /// Gets a value indicating whether this instance can delete rows.
         /// </summary>
         /// <value><c>true</c> if this instance can delete rows; otherwise, <c>false</c> .</value>
-        protected virtual bool CanDeleteRows => this.Operator?.CanDeleteRows(this) ?? false;
+        protected virtual bool CanDeleteRows => this.Operator?.CanDeleteRows() ?? false;
 
         /// <summary>
         /// Gets a value indicating whether this instance can insert columns.
         /// </summary>
         /// <value><c>true</c> if this instance can insert columns; otherwise, <c>false</c> .</value>
-        protected virtual bool CanInsertColumns => this.Operator?.CanInsertColumns(this) ?? false;
+        protected virtual bool CanInsertColumns => this.Operator?.CanInsertColumns() ?? false;
 
         /// <summary>
         /// Gets a value indicating whether this instance can insert rows.
         /// </summary>
         /// <value><c>true</c> if this instance can insert rows; otherwise, <c>false</c> .</value>
-        protected virtual bool CanInsertRows => this.Operator?.CanInsertRows(this) ?? false;
+        protected virtual bool CanInsertRows => this.Operator?.CanInsertRows() ?? false;
 
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see
@@ -1390,7 +1390,7 @@ namespace PropertyTools.Wpf
                         break;
                     }
 
-                    this.Operator.InsertRows(this, i, 1);
+                    this.Operator.InsertRows(i, 1);
                 }
 
                 for (var j = range.LeftColumn; j <= outputRange.RightColumn; j++)
@@ -1402,7 +1402,7 @@ namespace PropertyTools.Wpf
                             break;
                         }
 
-                        this.Operator.InsertColumns(this, i, 1);
+                        this.Operator.InsertColumns(i, 1);
                     }
 
                     var value = values[(i - outputRange.TopRow) % rows, (j - outputRange.LeftColumn) % columns];
@@ -1989,15 +1989,15 @@ namespace PropertyTools.Wpf
 
             if (TypeHelper.IsIListIList(list.GetType()))
             {
-                return new ListListOperator();
+                return new ListListOperator(this);
             }
 
             if (this.WrapItems)
             {
-                return new WrapItemsOperator();
+                return new WrapItemsOperator(this);
             }
 
-            return new ListOperator();
+            return new ListOperator(this);
         }
 
         /// <summary>
@@ -2071,8 +2071,7 @@ namespace PropertyTools.Wpf
                 return null;
             }
 
-            var pd = this.GetPropertyDefinition(cell);
-            var type = this.Operator.GetPropertyType(pd, cell, value);
+            var type = this.Operator.GetPropertyType(cell);
             var isNullable = Nullable.GetUnderlyingType(type) != null;
             if (type.IsValueType && !isNullable)
             {
@@ -2133,6 +2132,25 @@ namespace PropertyTools.Wpf
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Tries to set the value in the specified cell.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// True if the value was set.
+        /// </returns>
+        protected bool TrySetCellValue(CellRef cell, object value)
+        {
+            var cellWasSet = this.Operator.TrySetCellValue(cell, value);
+            if (cellWasSet && !(this.ItemsSource is INotifyCollectionChanged))
+            {
+                this.UpdateCellContent(cell);
+            }
+
+            return cellWasSet;
         }
 
         /// <summary>
@@ -2407,7 +2425,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private object GetCellValue(CellRef cell)
         {
-            return this.Operator.GetCellValue(this, cell);
+            return this.Operator.GetCellValue(cell);
         }
 
         /// <summary>
@@ -2481,7 +2499,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private int InsertItem(int index, bool updateGrid = true)
         {
-            var actualIndex = this.Operator.InsertItem(this, index);
+            var actualIndex = this.Operator.InsertItem(index);
             if (actualIndex != -1)
             {
                 if (updateGrid)
@@ -2500,7 +2518,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="deltaRows">The change in rows.</param>
         /// <param name="deltaColumns">The change in columns.</param>
-        private void ChangeCurrentCell(int deltaRows, int deltaColumns)
+        protected void ChangeCurrentCell(int deltaRows, int deltaColumns)
         {
             var row = this.CurrentCell.Row;
             var column = this.CurrentCell.Column;
@@ -2594,25 +2612,6 @@ namespace PropertyTools.Wpf
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Tries to set the value in the specified cell.
-        /// </summary>
-        /// <param name="cell">The cell.</param>
-        /// <param name="value">The value.</param>
-        /// <returns>
-        /// True if the value was set.
-        /// </returns>
-        private bool TrySetCellValue(CellRef cell, object value)
-        {
-            var cellWasSet = this.Operator.TrySetCellValue(this, cell, value);
-            if (cellWasSet && !(this.ItemsSource is INotifyCollectionChanged))
-            {
-                this.UpdateCellContent(cell);
-            }
-
-            return cellWasSet;
         }
 
         /// <summary>
@@ -2799,15 +2798,14 @@ namespace PropertyTools.Wpf
         private CellDescriptor CreateCellDescriptor(CellRef cell)
         {
             var pd = this.GetPropertyDefinition(cell);
-            var item = this.Operator.GetItem(this, cell);
             var d = new CellDescriptor
             {
                 PropertyDefinition = pd,
-                Item = item,
+                Item = this.Operator.GetItem(cell),
                 Descriptor = this.Operator.GetPropertyDescriptor(pd),
-                PropertyType = this.Operator.GetPropertyType(pd, cell, item),
-                BindingPath = this.Operator.GetBindingPath(this, cell),
-                BindingSource = this.Operator.GetDataContext(this, cell)
+                PropertyType = this.Operator.GetPropertyType(cell),
+                BindingPath = this.Operator.GetBindingPath(cell),
+                BindingSource = this.Operator.GetDataContext(cell)
             };
             return d;
         }
@@ -2824,7 +2822,7 @@ namespace PropertyTools.Wpf
             this.CollectionView?.Refresh();
             if (actualIndex != -1)
             {
-                var viewIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
+                var viewIndex = this.Operator.GetCollectionViewIndex(actualIndex);
 
                 var cell = this.ItemsInRows
                                ? new CellRef(viewIndex, 0)
@@ -3001,7 +2999,7 @@ namespace PropertyTools.Wpf
         {
             var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
             var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
-            this.Operator.DeleteColumns(this, from, to - from + 1);
+            this.Operator.DeleteColumns(from, to - from + 1);
             this.RefreshIfRequired();
 
             var maxColumn = this.Columns > 0 ? this.Columns - 1 : 0;
@@ -3025,7 +3023,7 @@ namespace PropertyTools.Wpf
         {
             var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
             var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
-            this.Operator.DeleteRows(this, from, to - from + 1);
+            this.Operator.DeleteRows(from, to - from + 1);
             this.RefreshIfRequired();
 
             var maxRow = this.Rows > 0 ? this.Rows - 1 : 0;
@@ -3125,7 +3123,7 @@ namespace PropertyTools.Wpf
         private bool CanSort()
         {
             var index = this.ItemsInRows ? this.CurrentCell.Column : this.CurrentCell.Row;
-            return this.CollectionView != null && this.Operator.CanSort(this, index);
+            return this.CollectionView != null && this.Operator.CanSort(index);
         }
 
         /// <summary>
@@ -3134,9 +3132,9 @@ namespace PropertyTools.Wpf
         /// <param name="append">Append the sort description if set to <c>true</c>.</param>
         private void ToggleSort(bool append = false)
         {
-            var index = this.ItemsInRows ? this.CurrentCell.Column : this.CurrentCell.Row;
-            var propertyName = this.PropertyDefinitions[index].PropertyName;
-            var descriptor = this.Operator.GetPropertyDescriptor(this.PropertyDefinitions[index]);
+            var propertyDefinition = this.GetPropertyDefinition(this.CurrentCell);
+            var propertyName = propertyDefinition.PropertyName;
+            var descriptor = this.Operator.GetPropertyDescriptor(propertyDefinition);
             var isComparable = descriptor != null && typeof(IComparable).IsAssignableFrom(descriptor.PropertyType);
             if (!isComparable)
             {
@@ -3400,7 +3398,7 @@ namespace PropertyTools.Wpf
             var from = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
             var to = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
 
-            this.Operator.InsertColumns(this, from, to - from + 1);
+            this.Operator.InsertColumns(from, to - from + 1);
             this.RefreshIfRequired();
         }
 
@@ -3411,7 +3409,7 @@ namespace PropertyTools.Wpf
         {
             var from = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
             var to = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
-            this.Operator.InsertRows(this, from, to - from + 1);
+            this.Operator.InsertRows(from, to - from + 1);
             this.RefreshIfRequired();
         }
 
@@ -3811,18 +3809,18 @@ namespace PropertyTools.Wpf
                 if (cell.Row >= this.Rows)
                 {
                     var actualIndex = this.Rows;
-                    this.Operator.InsertRows(this, actualIndex, 1);
+                    this.Operator.InsertRows(actualIndex, 1);
                     this.CollectionView?.Refresh();
-                    actualIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
+                    actualIndex = this.Operator.GetCollectionViewIndex(actualIndex);
                     actualCell = new CellRef(actualIndex, cell.Column);
                 }
 
                 if (cell.Column >= this.Columns)
                 {
                     var actualIndex = this.Columns;
-                    this.Operator.InsertColumns(this, actualIndex, 1);
+                    this.Operator.InsertColumns(actualIndex, 1);
                     this.CollectionView?.Refresh();
-                    actualIndex = this.Operator.GetCollectionViewIndex(this, actualIndex);
+                    actualIndex = this.Operator.GetCollectionViewIndex(actualIndex);
                     actualCell = new CellRef(cell.Row, actualIndex);
                 }
 
@@ -4330,16 +4328,16 @@ namespace PropertyTools.Wpf
 
             if (this.AutoGenerateColumns && this.ColumnDefinitions.Count == 0)
             {
-                this.Operator.AutoGenerateColumns(this);
+                this.Operator.AutoGenerateColumns();
             }
 
-            this.Operator.UpdatePropertyDefinitions(this);
+            this.Operator.UpdatePropertyDefinitions();
 
             // Determine if columns or rows are defined
             this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
 
-            var rows = this.Operator.GetRowCount(this);
-            var columns = this.Operator.GetColumnCount(this);
+            var rows = this.Operator.GetRowCount();
+            var columns = this.Operator.GetColumnCount();
 
             var visibility = rows >= 0 ? Visibility.Visible : Visibility.Hidden;
 
@@ -4408,7 +4406,7 @@ namespace PropertyTools.Wpf
 
                 if (this.ItemHeaderPropertyPath != null && this.ItemsInRows)
                 {
-                    cell.DataContext = this.Operator.GetItem(this, new CellRef(i, -1));
+                    cell.DataContext = this.Operator.GetItem(new CellRef(i, -1));
                     cell.SetBinding(TextBlock.TextProperty, new Binding(this.ItemHeaderPropertyPath));
                 }
 

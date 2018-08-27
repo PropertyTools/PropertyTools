@@ -19,13 +19,20 @@ namespace PropertyTools.Wpf
     public class ListListOperator : DataGridOperator
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ListListOperator"/> class.
+        /// </summary>
+        /// <param name="owner">The owner.</param>
+        public ListListOperator(DataGrid owner) : base(owner)
+        {
+        }
+
+        /// <summary>
         /// Determines whether columns can be deleted.
         /// </summary>
-        /// <param name="owner">The data grid.</param>
         /// <returns>
         /// <c>true</c> if columns can be deleted; otherwise <c>false</c>.
         /// </returns>
-        public override bool CanDeleteColumns(DataGrid owner)
+        public override bool CanDeleteColumns()
         {
             return true;
         }
@@ -33,11 +40,10 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether columns can be inserted.
         /// </summary>
-        /// <param name="owner">The data grid.</param>
         /// <returns>
         /// <c>true</c> if columns can be inserted; otherwise <c>false</c>.
         /// </returns>
-        public override bool CanInsertColumns(DataGrid owner)
+        public override bool CanInsertColumns()
         {
             return true;
         }
@@ -45,14 +51,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Deletes the item at the specified index.
         /// </summary>
-        /// <param name="owner">The data grid.</param>
         /// <param name="index">The index.</param>
         /// <returns>
         /// <c>true</c> if rows can be inserted; otherwise <c>false</c>.
         /// </returns>
-        protected override bool DeleteItem(DataGrid owner, int index)
+        protected override bool DeleteItem(int index)
         {
-            var list = owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null)
             {
                 return false;
@@ -63,9 +68,9 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            if (owner.ItemsInColumns)
+            if (this.Owner.ItemsInColumns)
             {
-                foreach (var row in owner.ItemsSource.OfType<IList>().Where(row => index < row.Count))
+                foreach (var row in this.Owner.ItemsSource.OfType<IList>().Where(row => index < row.Count))
                 {
                     row.RemoveAt(index);
                 }
@@ -81,58 +86,55 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Deletes the columns.
         /// </summary>
-        /// <param name="owner">The data grid.</param>
         /// <param name="index">The index.</param>
         /// <param name="n">The number of columns to delete.</param>
-        public override void DeleteColumns(DataGrid owner, int index, int n)
+        public override void DeleteColumns(int index, int n)
         {
-            if (owner.ColumnHeadersSource != null)
+            if (this.Owner.ColumnHeadersSource != null)
             {
                 for (var i = index + n - 1; i >= index; i--)
                 {
-                    owner.ColumnHeadersSource.RemoveAt(i);
+                    this.Owner.ColumnHeadersSource.RemoveAt(i);
                 }
             }
 
-            base.DeleteColumns(owner, index, n);
+            base.DeleteColumns(index, n);
         }
 
         /// <summary>
         /// Inserts the columns.
         /// </summary>
-        /// <param name="owner">The data grid.</param>
         /// <param name="index">The index.</param>
         /// <param name="n">The number of columns to insert.</param>
-        public override void InsertColumns(DataGrid owner, int index, int n)
+        public override void InsertColumns(int index, int n)
         {
             for (var i = 0; i < n; i++)
             {
-                this.InsertColumnHeader(owner, index + i);
+                this.InsertColumnHeader(index + i);
             }
 
-            base.InsertColumns(owner, index, n);
+            base.InsertColumns(index, n);
         }
 
         /// <summary>
         /// Insert column header to ColumnHeadersSource.
         /// </summary>
-        /// <param name="owner">The data grid.</param>
         /// <param name="index">The position.</param>
-        private void InsertColumnHeader(DataGrid owner, int index)
+        private void InsertColumnHeader(int index)
         {
-            if (owner.ColumnHeadersSource == null)
+            if (this.Owner.ColumnHeadersSource == null)
             {
                 return;
             }
 
-            var newItem = owner.CreateColumnHeader(index);
-            if (index >= 0 && index < owner.ColumnHeadersSource.Count)
+            var newItem = this.Owner.CreateColumnHeader(index);
+            if (index >= 0 && index < this.Owner.ColumnHeadersSource.Count)
             {
-                owner.ColumnHeadersSource.Insert(index, newItem);
+                this.Owner.ColumnHeadersSource.Insert(index, newItem);
             }
             else
             {
-                owner.ColumnHeadersSource.Add(newItem);
+                this.Owner.ColumnHeadersSource.Add(newItem);
             }
         }
 
@@ -162,14 +164,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the item in cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell reference.</param>
         /// <returns>
         /// The <see cref="object" />.
         /// </returns>
-        public override object GetItem(DataGrid owner, CellRef cell)
+        public override object GetItem(CellRef cell)
         {
-            var list = owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             var rowIndex = cell.Row;
             var columnIndex = cell.Column;
             if (list == null || rowIndex < 0 || columnIndex < 0)
@@ -194,14 +195,13 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Inserts item to <see cref="DataGrid" />.
         /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="index">The index.</param>
         /// <returns>
         /// The index of the inserted item if insertion is successful, <c>-1</c> otherwise.
         /// </returns>
-        public override int InsertItem(DataGrid owner, int index)
+        public override int InsertItem(int index)
         {
-            var list = owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null)
             {
                 return -1;
@@ -210,7 +210,7 @@ namespace PropertyTools.Wpf
             var itemType = this.GetItemType(list);
             try
             {
-                var newList = this.CreateItem(owner, itemType) as IList;
+                var newList = this.CreateItem(itemType) as IList;
 
                 var innerType = TypeHelper.GetInnerTypeOfList(list);
                 if (innerType == null)
@@ -218,13 +218,13 @@ namespace PropertyTools.Wpf
                     return -1;
                 }
 
-                if (owner.ItemsInRows)
+                if (this.Owner.ItemsInRows)
                 {
                     if (newList != null)
                     {
-                        for (var ii = 0; ii < owner.Columns; ii++)
+                        for (var ii = 0; ii < this.Owner.Columns; ii++)
                         {
-                            newList.Add(this.CreateItem(owner, innerType));
+                            newList.Add(this.CreateItem(innerType));
                         }
 
                         if (index < 0)
@@ -242,7 +242,7 @@ namespace PropertyTools.Wpf
                     // insert/append one new element to each list.
                     foreach (var row in list.OfType<IList>())
                     {
-                        var newItem = this.CreateItem(owner, innerType);
+                        var newItem = this.CreateItem(innerType);
                         if (index < 0)
                         {
                             index = row.Add(newItem);
@@ -265,12 +265,11 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Sets value to item in cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell reference.</param>
         /// <param name="value">The value.</param>
-        public override void SetValue(DataGrid owner, CellRef cell, object value)
+        public override void SetValue(CellRef cell, object value)
         {
-            var list = owner.ItemsSource;
+            var list = this.Owner.ItemsSource;
             if (list == null || cell.Row < 0 || cell.Column < 0 || cell.Row >= list.Count)
             {
                 return;
@@ -288,12 +287,11 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Gets the binding path for the specified cell.
         /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="cell">The cell.</param>
         /// <returns>
         /// The binding path
         /// </returns>
-        public override string GetBindingPath(DataGrid owner, CellRef cell)
+        public override string GetBindingPath(CellRef cell)
         {
             return $"[{cell.Row}][{cell.Column}]";
         }
@@ -301,12 +299,11 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether items can be sorted by the specified column/row index.
         /// </summary>
-        /// <param name="owner">The data grid.</param>
         /// <param name="index">The column index if items are in rows, otherwise the row index.</param>
         /// <returns>
         ///   <c>true</c> if the items can be sorted; <c>false</c> otherwise.
         /// </returns>
-        public override bool CanSort(DataGrid owner, int index)
+        public override bool CanSort(int index)
         {
             return false;
         }

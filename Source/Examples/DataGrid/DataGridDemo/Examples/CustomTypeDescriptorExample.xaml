@@ -1,0 +1,14 @@
+﻿<Window x:Class="DataGridDemo.CustomTypeDescriptorExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="CustomTypeDescriptor" Height="450" Width="900">
+    <Grid>
+        <p:DataGrid ItemsSource="{Binding Items}" >
+            <p:DataGrid.ColumnDefinitions>
+                <p:ColumnDefinition PropertyName="Name" Header="Name" />
+                <p:ColumnDefinition PropertyName="Value" Header="Value"/>
+            </p:DataGrid.ColumnDefinitions>
+        </p:DataGrid>
+    </Grid>
+</Window>

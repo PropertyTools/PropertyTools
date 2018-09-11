@@ -37,12 +37,12 @@ namespace PropertyTools.Wpf
         Type GetPropertyType(CellRef cell);
 
         /// <summary>
-        /// Gets the property descriptor.
+        /// Creates the cell descriptor for the specified cell.
         /// </summary>
-        /// <param name="pd">The property definition.</param>
-        /// <returns>The property descriptor.</returns>
-        PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd);
-
+        /// <param name="cell">The cell.</param>
+        /// <returns>A cell descriptor.</returns>
+        CellDescriptor CreateCellDescriptor(CellRef cell);
+ 
         /// <summary>
         /// Gets the binding path for the specified cell.
         /// </summary>

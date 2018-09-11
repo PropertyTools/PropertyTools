@@ -3,10 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Changed
-- DataGrid commands moved to DataGridCommands
+- DataGrid: Commands moved to DataGridCommands
 - DataGrid: DeleteOverride renamed to ClearOverride
 - DataGrid: The EasyInsert property is replaced by IsEasyInsertByKeyboardEnabled and IsEasyInsertByMouseEnabled #179
-- DataGrid: Removed DataGrid parameter from the IDataGridOperator interface
+- DataGrid: Changed the IDataGridOperator interface
 - PropertyTools NuGet package targets NET45 and .NET Standard 2.0
 
 ### Removed
@@ -15,27 +15,28 @@ All notable changes to this project will be documented in this file.
 - ExpressionUtilities class
 
 ### Fixed
-- DataGrid: auto column width
-- DataGrid: scrolling row headers with horizontal scroll bar
-- DataGrid: set correct row when sorting rows and adding a new row 
-- DataGrid: handle exception when pressing Delete #163
-- DataGrid: clear enum values when pressing Delete #165
-- DataGrid: null ref checks on CollectionView
-- DataGrid: item type when binding to lists of object
-- DataGrid: paste values outside grid boundaries #171
-- DataGrid: auto-insert for IList<IList<>> sources
-- DataGrid: hide selection when disabled #178
-- DataGrid: exception in AddDisplayControl #181
-- PropertyGrid: support BrowsableAttribute on enum items when shown as ComboBox or ListBox #133
+- DataGrid: Auto column width
+- DataGrid: Scrolling row headers with horizontal scroll bar
+- DataGrid: Set correct row when sorting rows and adding a new row 
+- DataGrid: Handle exception when pressing Delete #163
+- DataGrid: Clear enum values when pressing Delete #165
+- DataGrid: Null ref checks on CollectionView
+- DataGrid: Item type when binding to lists of object
+- DataGrid: Paste values outside grid boundaries #171
+- DataGrid: Auto-insert for IList<IList<>> sources
+- DataGrid: Hide selection when disabled #178
+- DataGrid: Exception in AddDisplayControl #181
+- DataGrid: Support for custom type descriptors #200
+- PropertyGrid: Support BrowsableAttribute on enum items when shown as ComboBox or ListBox #133
 
 ### Added
 - EditableAttribute
-- DataGrid: sorting commands #124
+- DataGrid: Sorting commands #124
 - DataGrid: IsMoveAfterEnterEnabled property #158
-- PropertyGrid: support nullable enums #129
-- PropertyGrid: option to disable auto fill #143
+- PropertyGrid: Support nullable enums #129
+- PropertyGrid: Option to disable auto fill #143
 - PropertyGrid: Update SelectedObjects to be bindable when collection changes #175
-- DataGrid: register converters in cell definition factory #160
+- DataGrid: Register converters in cell definition factory #160
 - DataGrid: CanClear property
 
 ## [2.0.1]

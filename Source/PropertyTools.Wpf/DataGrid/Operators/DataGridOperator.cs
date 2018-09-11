@@ -235,7 +235,7 @@ namespace PropertyTools.Wpf
                 var pd = this.GetPropertyDefinition(cell);
                 if (pd != null)
                 {
-                    var descriptor = this.GetPropertyDescriptor(pd);
+                    var descriptor = this.GetPropertyDescriptor(pd, item, null);
                     if (descriptor != null)
                     {
                         return descriptor.GetValue(item);
@@ -271,7 +271,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual Type GetPropertyType(PropertyDefinition definition, CellRef cell, object currentValue)
         {
-            var descriptor = this.GetPropertyDescriptor(definition);
+            var descriptor = this.GetPropertyDescriptor(definition, null, cell);
             if (descriptor?.PropertyType == null)
             {
                 return currentValue?.GetType() ?? typeof(object);
@@ -397,13 +397,58 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Creates the cell descriptor for the specified cell.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        /// <returns>A cell descriptor.</returns>
+        public CellDescriptor CreateCellDescriptor(CellRef cell)
+        {
+            var pd = this.GetPropertyDefinition(cell);
+            var d = new CellDescriptor
+            {
+                PropertyDefinition = pd,
+                Item = this.GetItem(cell),
+                Descriptor = this.GetPropertyDescriptor(pd, null, cell),
+                PropertyType = this.GetPropertyType(cell),
+                BindingPath = this.GetBindingPath(cell),
+                BindingSource = this.GetDataContext(cell)
+            };
+            return d;
+        }
+
+        /// <summary>
         /// Gets the property descriptor.
         /// </summary>
         /// <param name="pd">The property definition.</param>
-        /// <returns>The property descriptor.</returns>
-        public virtual PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd)
+        /// <param name="item">The item.</param>
+        /// <param name="cell">The cell.</param>
+        /// <returns>
+        /// The property descriptor.
+        /// </returns>
+        protected virtual PropertyDescriptor GetPropertyDescriptor(PropertyDefinition pd, object item, CellRef? cell)
         {
-            return this.descriptors.TryGetValue(pd, out var descriptor) ? descriptor : null;
+            if (this.descriptors.TryGetValue(pd, out var descriptor) && descriptor != null)
+            {
+                return descriptor;
+            }
+
+            if (cell != null)
+            {
+                item = this.GetItem(cell.Value);
+            }
+
+            if (item != null)
+            {
+                // Get the property descriptor by the instance (item), this works with objects implementing ICustomTypeDescriptor 
+                descriptor = TypeDescriptor.GetProperties(item).OfType<PropertyDescriptor>()
+                    .FirstOrDefault(pi => pi.Name == pd.PropertyName);
+                if (descriptor != null)
+                {
+                    return descriptor;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -429,7 +474,7 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            var current = this.GetItem(cell);
+            var item = this.GetItem(cell);
 
             var pd = this.GetPropertyDefinition(cell);
             if (pd == null)
@@ -437,7 +482,7 @@ namespace PropertyTools.Wpf
                 return false;
             }
 
-            if (current == null || pd.IsReadOnly)
+            if (item == null || pd.IsReadOnly)
             {
                 return false;
             }
@@ -450,10 +495,10 @@ namespace PropertyTools.Wpf
 
             try
             {
-                var descriptor = this.GetPropertyDescriptor(pd);
+                var descriptor = this.GetPropertyDescriptor(pd, item, null);
                 if (descriptor != null)
                 {
-                    descriptor.SetValue(current, convertedValue);
+                    descriptor.SetValue(item, convertedValue);
                 }
                 else
                 {

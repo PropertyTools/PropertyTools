@@ -1094,14 +1094,14 @@ namespace PropertyTools.Wpf
         {
             get
             {
-                int rowMin = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
-                int columnMin = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
-                int rowMax = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
-                int columnMax = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
+                var rowMin = Math.Min(this.CurrentCell.Row, this.SelectionCell.Row);
+                var columnMin = Math.Min(this.CurrentCell.Column, this.SelectionCell.Column);
+                var rowMax = Math.Max(this.CurrentCell.Row, this.SelectionCell.Row);
+                var columnMax = Math.Max(this.CurrentCell.Column, this.SelectionCell.Column);
 
-                for (int i = rowMin; i <= rowMax; i++)
+                for (var i = rowMin; i <= rowMax; i++)
                 {
-                    for (int j = columnMin; j <= columnMax; j++)
+                    for (var j = columnMin; j <= columnMax; j++)
                     {
                         yield return new CellRef(i, j);
                     }
@@ -1742,7 +1742,7 @@ namespace PropertyTools.Wpf
             var control = Keyboard.IsKeyDown(Key.LeftCtrl);
             if (control)
             {
-                double s = 1 + (e.Delta * 0.0004);
+                var s = 1 + (e.Delta * 0.0004);
                 var tg = new TransformGroup();
                 if (this.LayoutTransform != null)
                 {
@@ -2099,9 +2099,9 @@ namespace PropertyTools.Wpf
         protected object[,] GetCellValues(CellRange range)
         {
             var result = new object[range.Rows, range.Columns];
-            for (int i = 0; i < range.Rows; i++)
+            for (var i = 0; i < range.Rows; i++)
             {
-                for (int j = 0; j < range.Columns; j++)
+                for (var j = 0; j < range.Columns; j++)
                 {
                     result[i, j] = this.GetCellValue(new CellRef(range.TopRow + i, range.LeftColumn + j));
                 }
@@ -2121,9 +2121,9 @@ namespace PropertyTools.Wpf
         protected string[,] GetCellStrings(CellRange range, object[,] values = null)
         {
             var result = new string[range.Rows, range.Columns];
-            for (int i = 0; i < range.Rows; i++)
+            for (var i = 0; i < range.Rows; i++)
             {
-                for (int j = 0; j < range.Columns; j++)
+                for (var j = 0; j < range.Columns; j++)
                 {
                     var cell = new CellRef(range.TopRow + i, range.LeftColumn + j);
                     var value = values != null ? values[i, j] : this.GetCellValue(cell);
@@ -2162,11 +2162,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         private static bool AreAllElementsSerializable(object[,] array)
         {
-            int m = array.GetLength(0);
-            int n = array.GetLength(1);
-            for (int i = 0; i < m; i++)
+            var m = array.GetLength(0);
+            var n = array.GetLength(1);
+            for (var i = 0; i < m; i++)
             {
-                for (int j = 0; j < n; j++)
+                for (var j = 0; j < n; j++)
                 {
                     if (array[i, j] == null)
                     {
@@ -2368,7 +2368,7 @@ namespace PropertyTools.Wpf
             }
 
             var h = 0d;
-            for (int i = 0; i < this.sheetGrid.RowDefinitions.Count; i++)
+            for (var i = 0; i < this.sheetGrid.RowDefinitions.Count; i++)
             {
                 var ah = this.sheetGrid.RowDefinitions[i].ActualHeight;
                 if (position.Y < h + ah)
@@ -2623,7 +2623,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private FrameworkElement CreateDisplayControl(CellRef cell)
         {
-            var d = this.CreateCellDescriptor(cell);
+            var d = this.Operator.CreateCellDescriptor(cell);
             var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
             var element = this.ControlFactory.CreateDisplayControl(cd);
             if (element == null)
@@ -2650,7 +2650,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         private FrameworkElement CreateEditControl(CellRef cell)
         {
-            var d = this.CreateCellDescriptor(cell);
+            var d = this.Operator.CreateCellDescriptor(cell);
             var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
             var element = this.ControlFactory.CreateEditControl(cd);
             if (element == null)
@@ -2788,26 +2788,6 @@ namespace PropertyTools.Wpf
             this.sheetGrid.Children.Insert(this.cellInsertionIndex, e);
             this.cellInsertionIndex++;
             this.cellMap.Add(cellRef.GetHashCode(), e);
-        }
-
-        /// <summary>
-        /// Creates the cell descriptor for the specified cell.
-        /// </summary>
-        /// <param name="cell">The cell.</param>
-        /// <returns>A cell descriptor.</returns>
-        private CellDescriptor CreateCellDescriptor(CellRef cell)
-        {
-            var pd = this.GetPropertyDefinition(cell);
-            var d = new CellDescriptor
-            {
-                PropertyDefinition = pd,
-                Item = this.Operator.GetItem(cell),
-                Descriptor = this.Operator.GetPropertyDescriptor(pd),
-                PropertyType = this.Operator.GetPropertyType(cell),
-                BindingPath = this.Operator.GetBindingPath(cell),
-                BindingSource = this.Operator.GetDataContext(cell)
-            };
-            return d;
         }
 
         /// <summary>
@@ -3133,13 +3113,18 @@ namespace PropertyTools.Wpf
         private void ToggleSort(bool append = false)
         {
             var propertyDefinition = this.GetPropertyDefinition(this.CurrentCell);
-            var propertyName = propertyDefinition.PropertyName;
-            var descriptor = this.Operator.GetPropertyDescriptor(propertyDefinition);
-            var isComparable = descriptor != null && typeof(IComparable).IsAssignableFrom(descriptor.PropertyType);
-            if (!isComparable)
+            if (!propertyDefinition.CanSort)
             {
                 return;
             }
+
+            var propertyName = propertyDefinition.PropertyName;
+            //var descriptor = this.Operator.GetPropertyDescriptor(propertyDefinition);
+            //var isComparable = descriptor != null && typeof(IComparable).IsAssignableFrom(descriptor.PropertyType);
+            //if (!isComparable)
+            //{
+            //    return;
+            //}
 
             SortDescription? current = null;
             if (this.sortDescriptions.Any(s => s.PropertyName == propertyName))
@@ -3709,8 +3694,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         private string ConvertToCsv(string[,] input, string separator, bool encode = false)
         {
-            int m = input.GetLength(0);
-            int n = input.GetLength(1);
+            var m = input.GetLength(0);
+            var n = input.GetLength(1);
 
             var sb = new StringBuilder();
 
@@ -4143,8 +4128,8 @@ namespace PropertyTools.Wpf
 
             foreach (var sd in this.sortDescriptions)
             {
-                int index = -1;
-                for (int i = 0; i < this.PropertyDefinitions.Count; i++)
+                var index = -1;
+                for (var i = 0; i < this.PropertyDefinitions.Count; i++)
                 {
                     if (this.PropertyDefinitions[i].PropertyName == sd.PropertyName)
                     {
@@ -4524,7 +4509,7 @@ namespace PropertyTools.Wpf
         {
             this.sheetGrid.UpdateLayout();
             this.columnGrid.UpdateLayout();
-            for (int i = 0; i < this.Columns; i++)
+            for (var i = 0; i < this.Columns; i++)
             {
                 this.AutoSizeColumn(i);
             }
@@ -4537,7 +4522,7 @@ namespace PropertyTools.Wpf
         {
             this.sheetGrid.UpdateLayout();
             this.rowGrid.UpdateLayout();
-            for (int i = 0; i < this.Rows; i++)
+            for (var i = 0; i < this.Rows; i++)
             {
                 this.AutoSizeRow(i);
             }

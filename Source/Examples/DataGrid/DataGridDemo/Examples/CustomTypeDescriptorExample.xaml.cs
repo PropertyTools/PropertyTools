@@ -16,8 +16,6 @@ namespace DataGridDemo
     using System.Linq;
     using System.Runtime.CompilerServices;
 
-    using DataGridDemo.Annotations;
-
     /// <summary>
     /// Interaction logic for CustomTypeDescriptorExample.xaml
     /// </summary>
@@ -45,7 +43,13 @@ namespace DataGridDemo
 
     public class CustomModel : ICustomTypeDescriptor, INotifyPropertyChanged
     {
-        public Dictionary<string, object> Properties { get; set; } = new Dictionary<string, object>();
+        /// <inheritdoc />
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Gets the properties of the model.
+        /// </summary>
+        public Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
 
         /// <inheritdoc />
         public AttributeCollection GetAttributes() => throw new NotImplementedException();
@@ -78,8 +82,6 @@ namespace DataGridDemo
         public PropertyDescriptorCollection GetProperties()
         {
             var propertyDescriptors = new List<PropertyDescriptor>();
-            //var pdc = TypeDescriptor.GetProperties(this.GetType(), attributes);
-            //propertyDescriptors.AddRange(pdc.Cast<PropertyDescriptor>());
             propertyDescriptors.AddRange(this.Properties.Keys.Select(key => new CustomPropertyDescriptor(key, this.Properties[key].GetType())));
 
             return new PropertyDescriptorCollection(propertyDescriptors.ToArray());
@@ -91,18 +93,15 @@ namespace DataGridDemo
         /// <inheritdoc />
         public object GetPropertyOwner(PropertyDescriptor pd) => throw new NotImplementedException();
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public void SetValue(string name, object value)
         {
             this.Properties[name] = value;
             this.OnPropertyChanged(name);
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
@@ -128,7 +127,7 @@ namespace DataGridDemo
         /// <inheritdoc />
         public override void SetValue(object component, object value)
         {
-            ((CustomModel)component).SetValue(this.Name,value);
+            ((CustomModel)component).SetValue(this.Name, value);
         }
 
         /// <inheritdoc />

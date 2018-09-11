@@ -1,3 +1,4 @@
+skip_branch_with_pr: true
 image: Visual Studio 2017
 
 install:
@@ -6,6 +7,9 @@ install:
 platform: Any CPU
 
 configuration: Release
+
+pull_requests:
+  do_not_increment_build_number: true
 
 assembly_info:
   patch: false

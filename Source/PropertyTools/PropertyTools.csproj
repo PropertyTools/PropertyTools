@@ -3,10 +3,10 @@
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>PropertyTools.snk</AssemblyOriginatorKeyFile>
-    <PackageIconUrl>https://raw.githubusercontent.com/objorke/PropertyTools/master/Images/icon.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/PropertyTools/PropertyTools/master/Images/icon.png</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/objorke/PropertyTools/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/objorke/PropertyTools/</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/PropertyTools/PropertyTools/</PackageProjectUrl>
     <Version>0.0.1</Version>
   </PropertyGroup>
   <ItemGroup>

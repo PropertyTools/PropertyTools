@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
+    <!--<LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>-->
     <TargetFramework>net45</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>PropertyTools.snk</AssemblyOriginatorKeyFile>
     <Description>Custom controls for WPF: PropertyGrid, DataGrid, multi-select TreeView, ColorPicker and more</Description>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/objorke/PropertyTools/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/objorke/PropertyTools/</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/objorke/PropertyTools/master/Images/icon.png</PackageIconUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/PropertyTools/PropertyTools/</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/PropertyTools/PropertyTools/master/Images/icon.png</PackageIconUrl>
     <PackageTags>wpf controls propertygrid dataform datagrid treeview colorpicker</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>0.0.1</Version>

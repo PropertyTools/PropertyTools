@@ -17,11 +17,11 @@ namespace ExampleLibrary
     {
         [AutoUpdateText]
         [Description("Should not be empty.")]
-        public string Name { get; set; } = "Mike";
+        public string Name { get; set; }
 
         [AutoUpdateText]
         [Description("Should be larger or equal to zero.")]
-        public int Age { get; set; } = 3;
+        public int Age { get; set; }
 
         [DependsOn(nameof(Honey))]
         [Description("You cannot select both.")]
@@ -33,7 +33,7 @@ namespace ExampleLibrary
 
         [ItemsSourceProperty(nameof(Countries))]
         [Description("Required field.")]
-        public string Country { get; set; } = "Norway";
+        public string Country { get; set; }
 
         [Category("HeaderPlacement = Above")]
         [AutoUpdateText]

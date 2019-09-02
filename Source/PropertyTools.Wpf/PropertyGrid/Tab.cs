@@ -37,7 +37,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The description.</value>
         public string Description { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -108,6 +108,16 @@ namespace PropertyTools.Wpf
         {
             // validate all properties in this tab
             this.HasErrors = this.Groups.Any(g => g.Properties.Any(p => !string.IsNullOrEmpty(dei[p.PropertyName])));
+        }
+
+        /// <summary>
+        /// Updates the has errors property.
+        /// </summary>
+        /// <param name="dei">The instance.</param>
+        public void UpdateHasErrors(INotifyDataErrorInfo ndei)
+        {
+            // validate all properties in this tab
+            this.HasErrors = this.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));
         }
     }
 }

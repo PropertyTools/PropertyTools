@@ -15,7 +15,6 @@ assembly_info:
   patch: false
 
 before_build:
-  - git fetch --all
   - nuget restore Source/PropertyTools.AppVeyor.sln
   - ps: gitversion /l console /output buildserver
   

@@ -1358,6 +1358,7 @@ namespace PropertyTools.Wpf
 
             var propertyLabel = this.CreateLabel(pi);
             var propertyControl = this.CreatePropertyControl(pi);
+            ContentControl errorControl = null;
             if (propertyControl != null)
             {
                 if (!double.IsNaN(pi.Width))
@@ -1408,7 +1409,7 @@ namespace PropertyTools.Wpf
                         propertyControl.Style = this.ValidationErrorStyle;
                     }
 
-                    var errorControl = new ContentControl
+                    errorControl = new ContentControl
                     {
                         ContentTemplate = this.ValidationErrorTemplate,
                         Focusable = false
@@ -1502,6 +1503,12 @@ namespace PropertyTools.Wpf
                                 Grid.SetRow(propertyControl, 1);
                                 Grid.SetColumn(propertyControl, 0);
                                 Grid.SetColumnSpan(propertyControl, 2);
+                                if (errorControl != null)
+                                {
+                                    Grid.SetRow(errorControl, 2);
+                                    Grid.SetColumn(errorControl, 0);
+                                    Grid.SetColumnSpan(errorControl, 2);
+                                }
                             }
                         }
 

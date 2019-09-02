@@ -8,6 +8,7 @@ namespace ExampleLibrary
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
     using PropertyTools;
     using PropertyTools.DataAnnotations;
 
@@ -23,32 +24,36 @@ namespace ExampleLibrary
         [Category("Arrays|Array")]
         [ColumnsProperty(nameof(StringColumns))]
         [HeaderPlacement(HeaderPlacement.Above)]
-        public string[] StringArray1 { get; set; }
+        public string[] StringArray1 { get; } = new string[10];
 
         [HeaderPlacement(HeaderPlacement.Above)]
-        public string[] StringArray2 { get; set; }
+        public string[] StringArray2 { get; } = new string[9];
 
         [HeaderPlacement(HeaderPlacement.Above)]
-        public int[] IntArray1 { get; set; }
+        public int[] IntArray1 { get; } = new int[5];
 
         [HeaderPlacement(HeaderPlacement.Above)]
-        public int[] IntArray2 { get; set; }
+        public int[] IntArray2 { get; } = new int[4];
 
         [HeaderPlacement(HeaderPlacement.Above)]
         public Item[] ItemArray1 { get; set; }
 
         [Category("Lists|List of items")]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
-        public List<Item> List { get; set; }
+        public List<Item> List { get; } = new List<Item>();
 
         [Category("Lists|List of strings")]
         [ColumnsProperty(nameof(StringColumns))]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
-        public List<string> StringList { get; set; }
+        public List<string> StringList { get; } = new List<string>();
 
-        [Category("Lists|Collection")]
+        [Category("Collection|Collection of items")]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
-        public Collection<Item> Collection { get; set; }
+        public Collection<Item> Collection { get; } = new Collection<Item>();
+
+        [Category("Collection|Collection of strings")]
+        [HeaderPlacement(HeaderPlacement.Collapsed)]
+        public Collection<string> StringCollection { get; } = new Collection<string>();
 
         [Browsable(false)]
         public IEnumerable<Column> Collection2Columns { get; } = new[]
@@ -60,11 +65,11 @@ namespace ExampleLibrary
         [Category("Custom|Specified columns")]
         [ColumnsProperty(nameof(Collection2Columns))]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
-        public Collection<Item> Collection2 { get; set; }
+        public Collection<Item> Collection2 { get; } = new Collection<Item>();
 
         [Category("Observable|ObservableCollection")]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
-        public ObservableCollection<Item> ObservableCollection { get; set; }
+        public ObservableCollection<Item> ObservableCollection { get; } = new ObservableCollection<Item>();
 
         [Browsable(false)]
         public IEnumerable<Column> CityColumns { get; } = new[]
@@ -76,30 +81,18 @@ namespace ExampleLibrary
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         [ListItemItemsSourceProperty("Cities")]
         [ColumnsProperty(nameof(CityColumns))]
-        public ObservableCollection<string> ListOfCities { get; set; }
+        public ObservableCollection<string> ListOfCities { get; } = new ObservableCollection<string>();
 
         [Browsable(false)]
         public IEnumerable<string> Cities => new[] { "Oslo", "Reykjavik", "New York" };
 
         public CollectionsExample()
         {
-            this.StringArray1 = new string[10];
-            this.StringArray2 = new string[9];
-            this.IntArray1 = new int[5];
-            this.IntArray2 = new int[4];
-            
-            this.ItemArray1 = new Item[10]; 
+            this.ItemArray1 = new Item[10];
             for (int i = 0; i < this.ItemArray1.Length; i++)
             {
                 this.ItemArray1[i] = new Item();
             }
-
-            this.List = new List<Item>();
-            this.StringList = new List<string>();
-            this.Collection = new Collection<Item>();
-            this.Collection2 = new Collection<Item>();
-            this.ObservableCollection = new ObservableCollection<Item>();
-            this.ListOfCities = new ObservableCollection<string>();
         }
     }
 

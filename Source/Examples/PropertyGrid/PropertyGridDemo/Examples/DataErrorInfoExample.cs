@@ -7,6 +7,7 @@
 namespace ExampleLibrary
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Windows.Markup;
 
     using PropertyTools.DataAnnotations;
@@ -16,45 +17,57 @@ namespace ExampleLibrary
     {
         [AutoUpdateText]
         [Description("Should not be empty.")]
-        public string Name { get; set; }
+        public string Name { get; set; } = "Mike";
 
         [AutoUpdateText]
         [Description("Should be larger or equal to zero.")]
-        public int Age { get; set; }
+        public int Age { get; set; } = 3;
 
-        [DependsOn("Honey")]
+        [DependsOn(nameof(Honey))]
         [Description("You cannot select both.")]
         public bool CondensedMilk { get; set; }
 
-        [DependsOn("CondensedMilk")]
+        [DependsOn(nameof(CondensedMilk))]
         [Description("You cannot select both.")]
         public bool Honey { get; set; }
 
-        [ItemsSourceProperty("Countries")]
+        [ItemsSourceProperty(nameof(Countries))]
         [Description("Required field.")]
-        public string Country { get; set; }
+        public string Country { get; set; } = "Norway";
+
+        [Category("HeaderPlacement = Above")]
+        [AutoUpdateText]
+        [Description("Should not be empty.")]
+        [HeaderPlacement(HeaderPlacement.Above)]
+        public string Name2 { get; set; }
+
+        [Description("This property contains a collection of `Item`s")]
+        [HeaderPlacement(HeaderPlacement.Above)]
+        public Collection<Item> Collection1 { get; set; } = new Collection<Item>();
 
         [Browsable(false)]
         public IEnumerable<string> Countries => new[] { "Norway", "Sweden", "Denmark", "Finland", string.Empty };
 
         [Browsable(false)]
-        public string this[string columnName]
+        string System.ComponentModel.IDataErrorInfo.this[string columnName]
         {
             get
             {
                 switch (columnName)
                 {
-                    case "Name": return string.IsNullOrEmpty(this.Name) ? "The name should be specified." : null;
-                    case "Age":
+                    case nameof(Name): return string.IsNullOrEmpty(this.Name) ? "The name should be specified." : null;
+                    case nameof(Name2): return string.IsNullOrEmpty(this.Name2) ? "The name should be specified." : null;
+                    case nameof(Age):
                         {
                             if (this.Age > 130) return "The age is probably too large";
                             if (this.Age < 0) return "The age should not be less than 0.";
                             return null;
                         }
-                    case "CondensedMilk":
-                    case "Honey":
+                    case nameof(CondensedMilk):
+                    case nameof(Honey):
                         return this.CondensedMilk && this.Honey ? "You cannot have both condensed milk and honey!" : null;
-                    case "Country": return string.IsNullOrEmpty(this.Country) ? "The country should be specified." : null;
+                    case nameof(Country): return string.IsNullOrEmpty(this.Country) ? "The country should be specified." : null;
+                    case nameof(Collection1): return this.Collection1.Count == 0 ? "The collection cannot be empty" : null;
                 }
 
                 return null;
@@ -62,13 +75,13 @@ namespace ExampleLibrary
         }
 
         [Browsable(false)]
-        string System.ComponentModel.IDataErrorInfo.Error => this[nameof(this.Name)] ?? this[nameof(this.Age)] ?? this[nameof(this.Honey)] ?? this[nameof(this.Country)];
-
-        public DataErrorInfoExample()
+        string System.ComponentModel.IDataErrorInfo.Error
         {
-            this.Name = "Mike";
-            this.Age = 3;
-            this.Country = "Norway";
+            get
+            {
+                var o = (System.ComponentModel.IDataErrorInfo)this;
+                return o[nameof(this.Name)] ?? o[nameof(this.Age)] ?? o[nameof(this.Honey)] ?? o[nameof(this.Country)];
+            }
         }
     }
 }

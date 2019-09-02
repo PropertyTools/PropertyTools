@@ -20,11 +20,6 @@ namespace ExampleLibrary
 
         private string name;
 
-        public NotifyDataErrorInfoExample()
-        {
-            this.Name = "Anna";
-        }
-
         [AutoUpdateText]
         [Description("Should not be empty.")]
         public string Name
@@ -77,27 +72,5 @@ namespace ExampleLibrary
         }
 
         public event EventHandler<System.ComponentModel.DataErrorsChangedEventArgs> ErrorsChanged;
-
-        //string IDataErrorInfo.this[string columnName]
-        //{
-        //    get
-        //    {
-        //        ValidationResult error;
-        //        return this.errors.TryGetValue(columnName, out error) ? error.ErrorMessage : null;
-        //    }
-        //}
-
-        //string IDataErrorInfo.Error
-        //{
-        //    get
-        //    {
-        //        if (this.errors.Count > 0)
-        //        {
-        //            return this.errors.Count + " errors";
-        //        }
-
-        //        return null;
-        //    }
-        //}
     }
 }

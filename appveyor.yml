@@ -1,5 +1,5 @@
 skip_branch_with_pr: true
-image: Visual Studio 2019
+image: Visual Studio 2017
 
 install:
   - cinst gitversion.portable -pre -y
@@ -16,7 +16,7 @@ assembly_info:
 
 before_build:
   - nuget restore Source/PropertyTools.AppVeyor.sln
-  - ps: gitversion /l console /output buildserver
+  - gitversion /l console /output buildserver
   
 build_script:
   - msbuild Source/PropertyTools.AppVeyor.sln /p:Version=%GitVersion_NuGetVersion%

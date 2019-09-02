@@ -7,7 +7,7 @@
     <ProjectReference Include="..\PropertyTools\PropertyTools.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="2.6.4" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />

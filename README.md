@@ -41,5 +41,5 @@
 
 ### Build requirements
 
-- Microsoft .NET 4.5 or later
-- Visual Studio 2015 or later
+- Microsoft .NET 4.5.2 or later
+- Visual Studio 2019 or later

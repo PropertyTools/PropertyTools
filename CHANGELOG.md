@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Support for custom type descriptors #200
 - PropertyGrid: Support BrowsableAttribute on enum items when shown as ComboBox or ListBox #133
 - PropertyGrid: Hidden error info when HeaderPlacement = Above #212
+- TreeListBox: Applied workaround for "Height must be non-negative" exception #38 #142
 
 ### Added
 - EditableAttribute

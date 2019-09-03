@@ -2,7 +2,7 @@ skip_branch_with_pr: true
 image: Visual Studio 2017
 
 install:
-  - cinst gitversion.portable -pre -y
+  - cinst gitversion.portable -y
 
 platform: Any CPU
 

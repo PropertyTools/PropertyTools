@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net45</TargetFramework>
     <PackageIconUrl>https://raw.githubusercontent.com/PropertyTools/PropertyTools/master/Images/icon.png</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

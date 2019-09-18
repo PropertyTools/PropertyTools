@@ -3169,7 +3169,7 @@ namespace PropertyTools.Wpf
         private IEnumerable EnumerateItems(CellRange range)
         {
             // TODO: this should use the operator
-            var list = this.ItemsSource;
+            var list = this.CollectionView as CollectionView;
             if (list != null)
             {
                 var min = this.ItemsInRows ? range.TopRow : range.LeftColumn;
@@ -3178,7 +3178,7 @@ namespace PropertyTools.Wpf
                 {
                     if (index >= 0 && index < list.Count)
                     {
-                        yield return list[index];
+                        yield return list.GetItemAt(index);
                     }
                 }
             }

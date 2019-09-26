@@ -39,7 +39,11 @@
 
 ![ColorPicker](/Images/ColorPicker.png) ![ColorPicker](/Images/ColorPicker2.png)
 
-### Build requirements
+### Supported frameworks
 
 - Microsoft .NET 4.5.2 or later
-- Visual Studio 2019 or later
+- Microsoft .NET Core 3.0
+
+### Build requirements
+
+- Visual Studio 2019 16.3 or later

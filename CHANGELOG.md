@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+### Added
+- Support for .NET Core 3.0
+
 ## [3.0.0]
 ### Changed
 - DataGrid: Commands moved to DataGridCommands

@@ -9,13 +9,20 @@
         <p:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
         <p:ColorToStringConverter x:Key="ColorToStringConverter"/>
     </Page.Resources>
-    
+
     <StackPanel Width="250" VerticalAlignment="Center">
-        <p:ColorPicker SelectedColor="{Binding Color1}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
-        <p:ColorPicker SelectedColor="{Binding Color2}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
-        <p:ColorPicker SelectedColor="{Binding Color3}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
-        <p:ColorPicker SelectedColor="{Binding Color4}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
-        <p:ColorPicker SelectedColor="{Binding Brush, Converter={StaticResource ColorToBrushConverter}}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
+        <GroupBox Header="ColorPickers">
+            <StackPanel>
+                <p:ColorPicker SelectedColor="{Binding Color1}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
+                <p:ColorPicker SelectedColor="{Binding Color2}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
+                <p:ColorPicker SelectedColor="{Binding Color3}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
+                <p:ColorPicker SelectedColor="{Binding Color4}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
+                <p:ColorPicker SelectedColor="{Binding Brush, Converter={StaticResource ColorToBrushConverter}}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" Margin="4"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="ComboBox (for comparison of style)">
+            <ComboBox Margin="4" Text="{Binding Color1}" IsEnabled="{Binding IsChecked, ElementName=Enabled}" />
+        </GroupBox>
         <CheckBox x:Name="Enabled" Content="IsEnabled" IsChecked="True" Margin="10"/>
         <TextBox Text="{Binding Color1, Converter={StaticResource ColorToStringConverter}, UpdateSourceTrigger=PropertyChanged}" Width="160"/>
         <TextBox Text="{Binding Color1}" Width="160"/>
@@ -24,5 +31,5 @@
         <TextBox Text="{Binding Color4}" Width="160"/>
         <TextBox Text="{Binding Brush}" Width="160"/>
     </StackPanel>
-    
+
 </Page>

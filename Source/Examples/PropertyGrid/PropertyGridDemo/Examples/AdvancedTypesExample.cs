@@ -40,7 +40,7 @@ namespace ExampleLibrary
 
         [Category("System.Windows")]
         public Point Point { get; set; }
-        public Vector Vector { get; set; }
+        public System.Windows.Vector Vector { get; set; }
         public Rect Rect { get; set; }
         public Size Size { get; set; }
         public Thickness Thickness { get; set; }

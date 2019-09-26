@@ -4,13 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SpreadsheetDemo.Tests
+namespace PropertyTools.Wpf.Tests
 {
     using System;
     using System.Globalization;
     using System.Windows;
     using NUnit.Framework;
-    using PropertyTools.Wpf;
 
     [TestFixture]
     public class ReflectionMathTests

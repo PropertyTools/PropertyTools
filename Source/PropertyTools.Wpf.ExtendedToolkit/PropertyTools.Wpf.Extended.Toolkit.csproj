@@ -4,6 +4,8 @@
     <TargetFrameworks>net45;netcoreapp3.0</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <PackageIconUrl>https://raw.githubusercontent.com/PropertyTools/PropertyTools/master/Images/icon.png</PackageIconUrl>
+    <TargetFramework>net45</TargetFramework>
+    <PackageIcon>icon.png</PackageIcon>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>PropertyTools</Authors>
     <Company>PropertyTools</Company>
@@ -12,6 +14,9 @@
     <PackageProjectUrl>https://github.com/PropertyTools/PropertyTools/</PackageProjectUrl>
     <Version>0.0.1</Version>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\Images\icon.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PropertyTools.Wpf\PropertyTools.Wpf.csproj" />
   </ItemGroup>

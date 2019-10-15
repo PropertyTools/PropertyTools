@@ -3,7 +3,7 @@
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>PropertyTools.snk</AssemblyOriginatorKeyFile>
-    <PackageIconUrl>https://raw.githubusercontent.com/PropertyTools/PropertyTools/master/Images/icon.png</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/PropertyTools/PropertyTools/</PackageProjectUrl>
@@ -11,5 +11,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="PropertyTools.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Images\icon.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>

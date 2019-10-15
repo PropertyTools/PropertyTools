@@ -10,7 +10,7 @@
     <Grid>
         <p:DataGrid ItemsSource="{Binding ItemsSource}">
             <p:DataGrid.ColumnDefinitions>
-                <p:ColumnDefinition PropertyName="String" Header="string"/>
+                <p:ColumnDefinition PropertyName="String" Header="string" HorizontalAlignment="Stretch"/>
                 <p:ColumnDefinition PropertyName="Integer" Header="integer"/>
                 <p:ColumnDefinition PropertyName="Fruit" Header="enum"/>
                 <p:ColumnDefinition PropertyName="Selector" Header="selector"/>

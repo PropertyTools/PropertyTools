@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DataGrid.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
@@ -4555,7 +4555,7 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            var newWidth = (int)maximumWidth + 2;
+            var newWidth = maximumWidth;
             this.SetColumnWidth(column, new GridLength(newWidth));
             return newWidth;
         }

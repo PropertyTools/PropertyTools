@@ -3166,7 +3166,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The items enumeration.
         /// </returns>
-        private IEnumerable EnumerateItems(CellRange range)
+        private IEnumerable<object> EnumerateItems(CellRange range)
         {
             var min = this.ItemsInRows ? range.TopRow : range.LeftColumn;
             var max = this.ItemsInRows ? range.BottomRow : range.RightColumn;
@@ -3871,7 +3871,7 @@ namespace PropertyTools.Wpf
             Grid.SetColumnSpan(this.autoFillSelection, cs);
             Grid.SetRowSpan(this.autoFillSelection, rs);
 
-            this.SelectedItems = this.EnumerateItems(this.GetSelectionRange());
+            this.SelectedItems = this.EnumerateItems(this.GetSelectionRange()).ToArray();
 
             this.ShowEditControl();
         }

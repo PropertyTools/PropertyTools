@@ -195,5 +195,7 @@ namespace DataGridDemo
                            String = StandardCollections.GenerateName()
                        };
         }
+
+        public override string ToString() => this.String;
     }
 }

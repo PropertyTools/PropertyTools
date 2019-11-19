@@ -3168,19 +3168,12 @@ namespace PropertyTools.Wpf
         /// </returns>
         private IEnumerable EnumerateItems(CellRange range)
         {
-            // TODO: this should use the operator
-            var list = this.CollectionView as CollectionView;
-            if (list != null)
+            var min = this.ItemsInRows ? range.TopRow : range.LeftColumn;
+            var max = this.ItemsInRows ? range.BottomRow : range.RightColumn;
+            for (var index = min; index <= max; index++)
             {
-                var min = this.ItemsInRows ? range.TopRow : range.LeftColumn;
-                var max = this.ItemsInRows ? range.BottomRow : range.RightColumn;
-                for (var index = min; index <= max; index++)
-                {
-                    if (index >= 0 && index < list.Count)
-                    {
-                        yield return list.GetItemAt(index);
-                    }
-                }
+                var cell = this.ItemsInRows ? new CellRef(index, range.LeftColumn) : new CellRef(range.TopRow, index);
+                yield return this.Operator.GetItem(cell);
             }
         }
 

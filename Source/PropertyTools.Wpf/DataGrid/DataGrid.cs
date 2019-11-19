@@ -3166,20 +3166,17 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// The items enumeration.
         /// </returns>
-        private IEnumerable EnumerateItems(CellRange range)
+        private IEnumerable<object> EnumerateItems(CellRange range)
         {
-            // TODO: this should use the operator
-            var list = this.CollectionView as CollectionView;
-            if (list != null)
+            var min = this.ItemsInRows ? range.TopRow : range.LeftColumn;
+            var max = this.ItemsInRows ? range.BottomRow : range.RightColumn;
+            for (var index = min; index <= max; index++)
             {
-                var min = this.ItemsInRows ? range.TopRow : range.LeftColumn;
-                var max = this.ItemsInRows ? range.BottomRow : range.RightColumn;
-                for (var index = min; index <= max; index++)
+                var cell = this.ItemsInRows ? new CellRef(index, range.LeftColumn) : new CellRef(range.TopRow, index);
+                var item = this.Operator.GetItem(cell);
+                if (item != null)
                 {
-                    if (index >= 0 && index < list.Count)
-                    {
-                        yield return list.GetItemAt(index);
-                    }
+                    yield return item;
                 }
             }
         }
@@ -3874,7 +3871,7 @@ namespace PropertyTools.Wpf
             Grid.SetColumnSpan(this.autoFillSelection, cs);
             Grid.SetRowSpan(this.autoFillSelection, rs);
 
-            this.SelectedItems = this.EnumerateItems(this.GetSelectionRange());
+            this.SelectedItems = this.EnumerateItems(this.GetSelectionRange()).ToArray();
 
             this.ShowEditControl();
         }

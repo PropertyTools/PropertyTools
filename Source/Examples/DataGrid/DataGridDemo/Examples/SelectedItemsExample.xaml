@@ -1,0 +1,39 @@
+﻿<Window x:Class="DataGridDemo.SelectedItemsExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:dataGridDemo="clr-namespace:DataGridDemo"
+        Title="SelectedItems" Height="450" Width="900">
+    <Window.Resources>
+        <p:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <dataGridDemo:ExampleViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <p:DataGrid ItemsSource="{Binding ItemsSource}" Name="datagrid1">
+            <p:DataGrid.ColumnDefinitions>
+                <p:ColumnDefinition PropertyName="String" Width="2*"  Header="string"/>
+                <p:ColumnDefinition PropertyName="Integer" Width="1*" HorizontalAlignment="Center" Header="integer"/>
+                <p:ColumnDefinition PropertyName="Boolean" Width="1*" HorizontalAlignment="Center" Header="boolean"/>
+                <p:ColumnDefinition PropertyName="Fruit" Width="1*" Header="enum"/>
+                <p:ColumnDefinition PropertyName="Selector" Width="1*" Header="selector"/>
+                <p:ColumnDefinition PropertyName="Color" Width="1*" Header="Color"/>
+            </p:DataGrid.ColumnDefinitions>
+        </p:DataGrid>
+        <ListBox Grid.Column="1" ItemsSource="{Binding SelectedItems, ElementName=datagrid1}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle Width="12" Height="12" Margin="4" Fill="{Binding Color, Converter={StaticResource ColorToBrushConverter}}"/>
+                        <TextBlock Text="{Binding }" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>

@@ -3173,7 +3173,11 @@ namespace PropertyTools.Wpf
             for (var index = min; index <= max; index++)
             {
                 var cell = this.ItemsInRows ? new CellRef(index, range.LeftColumn) : new CellRef(range.TopRow, index);
-                yield return this.Operator.GetItem(cell);
+                var item = this.Operator.GetItem(cell);
+                if (item != null)
+                {
+                    yield return item;
+                }
             }
         }
 

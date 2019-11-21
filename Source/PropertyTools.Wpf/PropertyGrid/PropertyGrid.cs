@@ -1429,7 +1429,6 @@ namespace PropertyTools.Wpf
                         //propertyPath = new PropertyPath(pi.PropertyName);
                         propertyPath = pi.PropertyName;
                         source = instance;
-
                     }
                     else
                     {

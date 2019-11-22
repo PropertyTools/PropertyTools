@@ -1418,22 +1418,19 @@ namespace PropertyTools.Wpf
                         ContentTemplate = this.ValidationErrorTemplate,
                         Focusable = false
                     };
-                    //string ConvBind = pi.PropertyName;
+
                     IValueConverter errorConverter;
-                    //PropertyPath propertyPath;
                     string propertyPath;
                     object source = null;
                     if (dataErrorInfoInstance != null)
                     {
-                        errorConverter = (IValueConverter)new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
-                        //propertyPath = new PropertyPath(pi.PropertyName);
+                        errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
                         propertyPath = pi.PropertyName;
                         source = instance;
                     }
                     else
                     {
-                        errorConverter = (IValueConverter)new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
-                        //propertyPath = new PropertyPath(nameof(tab.HasErrors));
+                        errorConverter = new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
                         propertyPath = nameof(tab.HasErrors);
                         source = tab;
                         notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
@@ -1441,6 +1438,7 @@ namespace PropertyTools.Wpf
                             tab.UpdateHasErrors(notifyDataErrorInfoInstance);
                         };
                     }
+
                     var visibilityBinding = new Binding(propertyPath)
                     {
                         Converter = errorConverter,
@@ -1450,6 +1448,7 @@ namespace PropertyTools.Wpf
 #endif
                         Source = source,
                     };
+                    
                     var contentBinding = new Binding(propertyPath)
                     {
                         Converter = errorConverter,

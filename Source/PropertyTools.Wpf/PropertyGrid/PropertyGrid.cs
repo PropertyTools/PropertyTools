@@ -1399,9 +1399,7 @@ namespace PropertyTools.Wpf
                         new Binding(pi.RadioDescriptor.Name) { Converter = new EnumToBooleanConverter() { EnumType = pi.RadioDescriptor.PropertyType }, ConverterParameter = pi.RadioValue });
                 }
 
-                var dataErrorInfoInstance = instance as IDataErrorInfo;
-                var notifyDataErrorInfoInstance = instance as INotifyDataErrorInfo;
-                if (dataErrorInfoInstance != null || notifyDataErrorInfoInstance != null)
+                if (instance is IDataErrorInfo || instance is INotifyDataErrorInfo)
                 {
                     if (this.ValidationTemplate != null)
                     {
@@ -1413,62 +1411,10 @@ namespace PropertyTools.Wpf
                         propertyControl.Style = this.ValidationErrorStyle;
                     }
 
-                    errorControl = new ContentControl
-                    {
-                        ContentTemplate = this.ValidationErrorTemplate,
-                        Focusable = false
-                    };
+                    errorControl = CreateErrorControl(pi, instance, tab);
 
-                    IValueConverter errorConverter;
-                    string propertyPath;
-                    object source = null;
-                    if (dataErrorInfoInstance != null)
-                    {
-                        errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
-                        propertyPath = pi.PropertyName;
-                        source = instance;
-                    }
-                    else
-                    {
-                        errorConverter = new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
-                        propertyPath = nameof(tab.HasErrors);
-                        source = tab;
-                        notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
-                        {
-                            tab.UpdateHasErrors(notifyDataErrorInfoInstance);
-                        };
-                    }
-
-                    var visibilityBinding = new Binding(propertyPath)
-                    {
-                        Converter = errorConverter,
-                        NotifyOnTargetUpdated = true,
-#if !NET40
-                        ValidatesOnNotifyDataErrors = false,
-#endif
-                        Source = source,
-                    };
-                    
-                    var contentBinding = new Binding(propertyPath)
-                    {
-                        Converter = errorConverter,
-#if !NET40
-                        ValidatesOnNotifyDataErrors = false,
-#endif
-                        Source = source,
-                    };
-
-                    errorControl.SetBinding(VisibilityProperty, visibilityBinding);
-
-                    // When the visibility of the error control is changed, updated the HasErrors of the tab
-                    errorControl.TargetUpdated += (s, e) =>
-                    {
-                        if (dataErrorInfoInstance != null)
-                            tab.UpdateHasErrors(dataErrorInfoInstance);
-                    };
-                    errorControl.SetBinding(ContentControl.ContentProperty, contentBinding);
-
-                    // Add a row to the panel
+                    // Add a row with the error control to the panel
+                    // The error control is placed in column 1
                     propertyPanel.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
                     propertyPanel.Children.Add(errorControl);
                     Grid.SetRow(errorControl, 1);
@@ -1480,9 +1426,7 @@ namespace PropertyTools.Wpf
 
             var actualHeaderPlacement = pi.HeaderPlacement;
 
-            var checkBoxPropertyControl = propertyControl as CheckBox;
-
-            if (checkBoxPropertyControl != null)
+            if (propertyControl is CheckBox checkBoxPropertyControl)
             {
                 if (this.CheckBoxLayout != CheckBoxLayout.Header)
                 {
@@ -1557,8 +1501,7 @@ namespace PropertyTools.Wpf
                                     Stretch = Stretch.None,
                                     Margin = new Thickness(0, 4, 4, 4),
                                     VerticalAlignment = VerticalAlignment.Top,
-                                    HorizontalAlignment =
-                                                                       this.DescriptionIconAlignment
+                                    HorizontalAlignment = this.DescriptionIconAlignment
                                 };
 
                                 // RenderOptions.SetBitmapScalingMode(descriptionIconImage, BitmapScalingMode.NearestNeighbor);
@@ -1644,6 +1587,67 @@ namespace PropertyTools.Wpf
             }
 
             panel.Children.Add(propertyPanel);
+        }
+
+        private ContentControl CreateErrorControl(PropertyItem pi, object instance, Tab tab)
+        {
+            var dataErrorInfoInstance = instance as IDataErrorInfo;
+            var notifyDataErrorInfoInstance = instance as INotifyDataErrorInfo;
+
+            var errorControl = new ContentControl
+            {
+                ContentTemplate = this.ValidationErrorTemplate,
+                Focusable = false
+            };
+            IValueConverter errorConverter;
+            string propertyPath;
+            object source = null;
+            if (dataErrorInfoInstance != null)
+            {
+                errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
+                propertyPath = pi.PropertyName;
+                source = instance;
+            }
+            else
+            {
+                errorConverter = new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
+                propertyPath = nameof(tab.HasErrors);
+                source = tab;
+                notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
+                {
+                    tab.UpdateHasErrors(notifyDataErrorInfoInstance);
+                };
+            }
+
+            var visibilityBinding = new Binding(propertyPath)
+            {
+                Converter = errorConverter,
+                NotifyOnTargetUpdated = true,
+#if !NET40
+                ValidatesOnNotifyDataErrors = false,
+#endif
+                Source = source,
+            };
+
+            var contentBinding = new Binding(propertyPath)
+            {
+                Converter = errorConverter,
+#if !NET40
+                ValidatesOnNotifyDataErrors = false,
+#endif
+                Source = source,
+            };
+
+            errorControl.SetBinding(VisibilityProperty, visibilityBinding);
+
+            // When the visibility of the error control is changed, updated the HasErrors of the tab
+            errorControl.TargetUpdated += (s, e) =>
+            {
+                if (dataErrorInfoInstance != null)
+                    tab.UpdateHasErrors(dataErrorInfoInstance);
+            };
+            errorControl.SetBinding(ContentControl.ContentProperty, contentBinding);
+            return errorControl;
         }
 
         /// <summary>

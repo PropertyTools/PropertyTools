@@ -1418,19 +1418,47 @@ namespace PropertyTools.Wpf
                         ContentTemplate = this.ValidationErrorTemplate,
                         Focusable = false
                     };
-                    IValueConverter errorConverter = dataErrorInfoInstance != null ?
-                        (IValueConverter)new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName) :
-                        new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
-                    var visibilityBinding = new Binding(pi.PropertyName)
+                    //string ConvBind = pi.PropertyName;
+                    IValueConverter errorConverter;
+                    //PropertyPath propertyPath;
+                    string propertyPath;
+                    object source = null;
+                    if (dataErrorInfoInstance != null)
+                    {
+                        errorConverter = (IValueConverter)new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
+                        //propertyPath = new PropertyPath(pi.PropertyName);
+                        propertyPath = pi.PropertyName;
+                        source = instance;
+                    }
+                    else
+                    {
+                        errorConverter = (IValueConverter)new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
+                        //propertyPath = new PropertyPath(nameof(tab.HasErrors));
+                        propertyPath = nameof(tab.HasErrors);
+                        source = tab;
+                        notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
+                        {
+                            tab.UpdateHasErrors(notifyDataErrorInfoInstance);
+                        };
+                    }
+                    var visibilityBinding = new Binding(propertyPath)
                     {
                         Converter = errorConverter,
                         NotifyOnTargetUpdated = true,
 #if !NET40
                         ValidatesOnNotifyDataErrors = false,
 #endif
-                        // ValidatesOnDataErrors = false,
-                        // ValidatesOnExceptions = false
+                        Source = source,
                     };
+                    var contentBinding = new Binding(propertyPath)
+                    {
+                        Converter = errorConverter,
+#if !NET40
+                        ValidatesOnNotifyDataErrors = false,
+#endif
+                        Source = source,
+                    };
+
                     errorControl.SetBinding(VisibilityProperty, visibilityBinding);
 
                     // When the visibility of the error control is changed, updated the HasErrors of the tab
@@ -1438,18 +1466,6 @@ namespace PropertyTools.Wpf
                     {
                         if (dataErrorInfoInstance != null)
                             tab.UpdateHasErrors(dataErrorInfoInstance);
-                        else
-                            tab.UpdateHasErrors(notifyDataErrorInfoInstance);
-                    };
-
-                    var contentBinding = new Binding(pi.PropertyName)
-                    {
-                        Converter = errorConverter,
-#if !NET40
-                        ValidatesOnNotifyDataErrors = false,
-#endif
-                        // ValidatesOnDataErrors = false,
-                        // ValidatesOnExceptions = false
                     };
                     errorControl.SetBinding(ContentControl.ContentProperty, contentBinding);
 

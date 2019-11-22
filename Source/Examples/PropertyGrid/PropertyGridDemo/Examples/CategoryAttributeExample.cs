@@ -4,12 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using PropertyTools.DataAnnotations;
-
 namespace ExampleLibrary
 {
     [PropertyGridExample]
-    [TabName("Tab3")]
     public class CategoryAttributeExample : Example
     {
         [System.ComponentModel.Category("Tab1|Category1")]

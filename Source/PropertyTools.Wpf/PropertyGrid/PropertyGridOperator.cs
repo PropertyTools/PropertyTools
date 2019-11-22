@@ -374,6 +374,13 @@ namespace PropertyTools.Wpf
                     categoryName = items[0];
                 }
             }
+            var tb = (TabNameAttribute)Attribute.GetCustomAttribute(instance.GetType(), typeof(TabNameAttribute));
+            if (tb != null)
+            {
+                tabName = tb.TabName; 
+            }
+
+
 
             var displayName = this.GetDisplayName(pi.Descriptor, declaringType);
             var description = this.GetDescription(pi.Descriptor, declaringType);

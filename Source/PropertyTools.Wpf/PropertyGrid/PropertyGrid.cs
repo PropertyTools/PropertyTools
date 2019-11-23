@@ -1329,7 +1329,6 @@ namespace PropertyTools.Wpf
         [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1126:PrefixCallsCorrectly", Justification = "Reviewed. Suppression is OK here.")]
         private void AddPropertyPanel(Panel panel, PropertyItem pi, object instance, Tab tab)
         {
-            // TODO: refactor this method - too long and complex...
             var propertyPanel = new Grid();
             if (!pi.FillTab)
             {
@@ -1341,21 +1340,14 @@ namespace PropertyTools.Wpf
                 Width = GridLength.Auto,
                 MinWidth = this.MinimumLabelWidth,
                 MaxWidth = this.MaximumLabelWidth,
-                SharedSizeGroup =
-                                          this.LabelWidthSharing
-                                          != LabelWidthSharing.NotShared
-                                              ? "labelColumn"
-                                              : null
+                SharedSizeGroup = this.LabelWidthSharing != LabelWidthSharing.NotShared ? "labelColumn" : null
             };
 
             propertyPanel.ColumnDefinitions.Add(labelColumn);
             propertyPanel.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition());
             var rd = new System.Windows.Controls.RowDefinition
             {
-                Height =
-                                 pi.FillTab
-                                     ? new GridLength(1, GridUnitType.Star)
-                                     : GridLength.Auto
+                Height = pi.FillTab ? new GridLength(1, GridUnitType.Star) : GridLength.Auto
             };
             propertyPanel.RowDefinitions.Add(rd);
 
@@ -1364,44 +1356,9 @@ namespace PropertyTools.Wpf
             ContentControl errorControl = null;
             if (propertyControl != null)
             {
-                if (!double.IsNaN(pi.Width))
-                {
-                    propertyControl.Width = pi.Width;
-                    propertyControl.HorizontalAlignment = HorizontalAlignment.Left;
-                }
+                this.ConfigurePropertyControl(pi, propertyControl);
 
-                if (!double.IsNaN(pi.Height))
-                {
-                    propertyControl.Height = pi.Height;
-                }
-
-                if (!double.IsNaN(pi.MinimumHeight))
-                {
-                    propertyControl.MinHeight = pi.MinimumHeight;
-                }
-
-                if (!double.IsNaN(pi.MaximumHeight))
-                {
-                    propertyControl.MaxHeight = pi.MaximumHeight;
-                }
-
-                if (pi.IsOptional)
-                {
-                    propertyControl.SetBinding(
-                        IsEnabledProperty,
-                        pi.OptionalDescriptor != null ? new Binding(pi.OptionalDescriptor.Name) : new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
-                }
-
-                if (pi.IsEnabledByRadioButton)
-                {
-                    propertyControl.SetBinding(
-                        IsEnabledProperty,
-                        new Binding(pi.RadioDescriptor.Name) { Converter = new EnumToBooleanConverter() { EnumType = pi.RadioDescriptor.PropertyType }, ConverterParameter = pi.RadioValue });
-                }
-
-                var dataErrorInfoInstance = instance as IDataErrorInfo;
-                var notifyDataErrorInfoInstance = instance as INotifyDataErrorInfo;
-                if (dataErrorInfoInstance != null || notifyDataErrorInfoInstance != null)
+                if (instance is IDataErrorInfo || instance is INotifyDataErrorInfo)
                 {
                     if (this.ValidationTemplate != null)
                     {
@@ -1413,63 +1370,10 @@ namespace PropertyTools.Wpf
                         propertyControl.Style = this.ValidationErrorStyle;
                     }
 
-                    errorControl = new ContentControl
-                    {
-                        ContentTemplate = this.ValidationErrorTemplate,
-                        Focusable = false
-                    };
-                    //string ConvBind = pi.PropertyName;
-                    IValueConverter errorConverter;
-                    //PropertyPath propertyPath;
-                    string propertyPath;
-                    object source = null;
-                    if (dataErrorInfoInstance != null)
-                    {
-                        errorConverter = (IValueConverter)new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
-                        //propertyPath = new PropertyPath(pi.PropertyName);
-                        propertyPath = pi.PropertyName;
-                        source = instance;
-                    }
-                    else
-                    {
-                        errorConverter = (IValueConverter)new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
-                        //propertyPath = new PropertyPath(nameof(tab.HasErrors));
-                        propertyPath = nameof(tab.HasErrors);
-                        source = tab;
-                        notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
-                        {
-                            tab.UpdateHasErrors(notifyDataErrorInfoInstance);
-                        };
-                    }
-                    var visibilityBinding = new Binding(propertyPath)
-                    {
-                        Converter = errorConverter,
-                        NotifyOnTargetUpdated = true,
-#if !NET40
-                        ValidatesOnNotifyDataErrors = false,
-#endif
-                        Source = source,
-                    };
-                    var contentBinding = new Binding(propertyPath)
-                    {
-                        Converter = errorConverter,
-#if !NET40
-                        ValidatesOnNotifyDataErrors = false,
-#endif
-                        Source = source,
-                    };
+                    errorControl = CreateErrorControl(pi, instance, tab);
 
-                    errorControl.SetBinding(VisibilityProperty, visibilityBinding);
-
-                    // When the visibility of the error control is changed, updated the HasErrors of the tab
-                    errorControl.TargetUpdated += (s, e) =>
-                    {
-                        if (dataErrorInfoInstance != null)
-                            tab.UpdateHasErrors(dataErrorInfoInstance);
-                    };
-                    errorControl.SetBinding(ContentControl.ContentProperty, contentBinding);
-
-                    // Add a row to the panel
+                    // Add a row with the error control to the panel
+                    // The error control is placed in column 1
                     propertyPanel.RowDefinitions.Add(new System.Windows.Controls.RowDefinition { Height = GridLength.Auto });
                     propertyPanel.Children.Add(errorControl);
                     Grid.SetRow(errorControl, 1);
@@ -1479,11 +1383,106 @@ namespace PropertyTools.Wpf
                 Grid.SetColumn(propertyControl, 1);
             }
 
+            AddLabel(pi, propertyPanel, ref propertyLabel, propertyControl, errorControl);
+
+            // add the property control
+            if (propertyControl != null)
+            {
+                propertyPanel.Children.Add(propertyControl);
+            }
+
+            this.ConfigureLabel(pi, propertyLabel);
+            this.ConfigureControl(pi, propertyControl);
+            this.ConfigurePanel(pi, propertyPanel);
+
+            panel.Children.Add(propertyPanel);
+        }
+
+        /// <summary>
+        /// Configures the panel.
+        /// </summary>
+        private void ConfigurePanel(PropertyItem pi, Grid propertyPanel)
+        {
+            if (pi.IsVisibleDescriptor != null)
+            {
+                var isVisibleBinding = new Binding(pi.IsVisibleDescriptor.Name);
+                isVisibleBinding.ConverterParameter = pi.IsVisibleValue;
+                isVisibleBinding.Converter = ValueToVisibilityConverter;
+                propertyPanel.SetBinding(VisibilityProperty, isVisibleBinding);
+            }
+
+            if (this.EnableLabelWidthResizing && pi.HeaderPlacement == HeaderPlacement.Left)
+            {
+                propertyPanel.Children.Add(
+                    new GridSplitter
+                    {
+                        Width = 4,
+                        Background = Brushes.Transparent,
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        Focusable = false
+                    });
+            }
+        }
+
+        /// <summary>
+        /// Configures the property control
+        /// </summary>
+        private void ConfigureControl(PropertyItem pi, FrameworkElement propertyControl)
+        {
+            // Set the IsEnabled binding of the property control
+            if (pi.IsEnabledDescriptor != null && propertyControl != null)
+            {
+                var isEnabledBinding = new Binding(pi.IsEnabledDescriptor.Name);
+                if (pi.IsEnabledValue != null)
+                {
+                    isEnabledBinding.ConverterParameter = pi.IsEnabledValue;
+                    isEnabledBinding.Converter = ValueToBooleanConverter;
+                }
+
+                var currentBindingExpression = propertyControl.GetBindingExpression(IsEnabledProperty);
+                if (currentBindingExpression != null)
+                {
+                    var multiBinding = new MultiBinding();
+                    multiBinding.Bindings.Add(isEnabledBinding);
+                    multiBinding.Bindings.Add(currentBindingExpression.ParentBinding);
+                    multiBinding.Converter = AllMultiValueConverter;
+                    multiBinding.ConverterParameter = true;
+                    propertyControl.SetBinding(IsEnabledProperty, multiBinding);
+                }
+                else
+                {
+                    propertyControl.SetBinding(IsEnabledProperty, isEnabledBinding);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Configures the label.
+        /// </summary>
+        private void ConfigureLabel(PropertyItem pi, FrameworkElement propertyLabel)
+        {
+            // Set the IsEnabled binding of the label
+            if (pi.IsEnabledDescriptor != null && propertyLabel != null)
+            {
+                var isEnabledBinding = new Binding(pi.IsEnabledDescriptor.Name);
+                if (pi.IsEnabledValue != null)
+                {
+                    isEnabledBinding.ConverterParameter = pi.IsEnabledValue;
+                    isEnabledBinding.Converter = ValueToBooleanConverter;
+                }
+
+                propertyLabel.SetBinding(IsEnabledProperty, isEnabledBinding);
+            }
+        }
+
+        /// <summary>
+        /// Adds the label.
+        /// </summary>
+        private void AddLabel(PropertyItem pi, Grid propertyPanel, ref FrameworkElement propertyLabel, FrameworkElement propertyControl, ContentControl errorControl)
+        {
             var actualHeaderPlacement = pi.HeaderPlacement;
 
-            var checkBoxPropertyControl = propertyControl as CheckBox;
-
-            if (checkBoxPropertyControl != null)
+            if (propertyControl is CheckBox checkBoxPropertyControl)
             {
                 if (this.CheckBoxLayout != CheckBoxLayout.Header)
                 {
@@ -1558,8 +1557,7 @@ namespace PropertyTools.Wpf
                                     Stretch = Stretch.None,
                                     Margin = new Thickness(0, 4, 4, 4),
                                     VerticalAlignment = VerticalAlignment.Top,
-                                    HorizontalAlignment =
-                                                                       this.DescriptionIconAlignment
+                                    HorizontalAlignment = this.DescriptionIconAlignment
                                 };
 
                                 // RenderOptions.SetBitmapScalingMode(descriptionIconImage, BitmapScalingMode.NearestNeighbor);
@@ -1578,73 +1576,111 @@ namespace PropertyTools.Wpf
 
                     break;
             }
+        }
 
-            // add the property control
-            if (propertyControl != null)
+        /// <summary>
+        /// Configures the property control.
+        /// </summary>
+        private void ConfigurePropertyControl(PropertyItem pi, FrameworkElement propertyControl)
+        {
+            if (!double.IsNaN(pi.Width))
             {
-                propertyPanel.Children.Add(propertyControl);
+                propertyControl.Width = pi.Width;
+                propertyControl.HorizontalAlignment = HorizontalAlignment.Left;
             }
 
-            // Set the IsEnabled binding of the label
-            if (pi.IsEnabledDescriptor != null && propertyLabel != null)
+            if (!double.IsNaN(pi.Height))
             {
-                var isEnabledBinding = new Binding(pi.IsEnabledDescriptor.Name);
-                if (pi.IsEnabledValue != null)
+                propertyControl.Height = pi.Height;
+            }
+
+            if (!double.IsNaN(pi.MinimumHeight))
+            {
+                propertyControl.MinHeight = pi.MinimumHeight;
+            }
+
+            if (!double.IsNaN(pi.MaximumHeight))
+            {
+                propertyControl.MaxHeight = pi.MaximumHeight;
+            }
+
+            if (pi.IsOptional)
+            {
+                propertyControl.SetBinding(
+                    IsEnabledProperty,
+                    pi.OptionalDescriptor != null ? new Binding(pi.OptionalDescriptor.Name) : new Binding(pi.Descriptor.Name) { Converter = NullToBoolConverter });
+            }
+
+            if (pi.IsEnabledByRadioButton)
+            {
+                propertyControl.SetBinding(
+                    IsEnabledProperty,
+                    new Binding(pi.RadioDescriptor.Name) { Converter = new EnumToBooleanConverter() { EnumType = pi.RadioDescriptor.PropertyType }, ConverterParameter = pi.RadioValue });
+            }
+        }
+
+        /// <summary>
+        /// Creates the error control.
+        /// </summary>
+        private ContentControl CreateErrorControl(PropertyItem pi, object instance, Tab tab)
+        {
+            var dataErrorInfoInstance = instance as IDataErrorInfo;
+            var notifyDataErrorInfoInstance = instance as INotifyDataErrorInfo;
+
+            var errorControl = new ContentControl
+            {
+                ContentTemplate = this.ValidationErrorTemplate,
+                Focusable = false
+            };
+            IValueConverter errorConverter;
+            string propertyPath;
+            object source = null;
+            if (dataErrorInfoInstance != null)
+            {
+                errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
+                propertyPath = pi.PropertyName;
+                source = instance;
+            }
+            else
+            {
+                errorConverter = new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
+                propertyPath = nameof(tab.HasErrors);
+                source = tab;
+                notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
                 {
-                    isEnabledBinding.ConverterParameter = pi.IsEnabledValue;
-                    isEnabledBinding.Converter = ValueToBooleanConverter;
-                }
-
-                propertyLabel.SetBinding(IsEnabledProperty, isEnabledBinding);
+                    tab.UpdateHasErrors(notifyDataErrorInfoInstance);
+                };
             }
 
-            // Set the IsEnabled binding of the property control
-            if (pi.IsEnabledDescriptor != null && propertyControl != null)
+            var visibilityBinding = new Binding(propertyPath)
             {
-                var isEnabledBinding = new Binding(pi.IsEnabledDescriptor.Name);
-                if (pi.IsEnabledValue != null)
-                {
-                    isEnabledBinding.ConverterParameter = pi.IsEnabledValue;
-                    isEnabledBinding.Converter = ValueToBooleanConverter;
-                }
+                Converter = errorConverter,
+                NotifyOnTargetUpdated = true,
+#if !NET40
+                ValidatesOnNotifyDataErrors = false,
+#endif
+                Source = source,
+            };
 
-                var currentBindingExpression = propertyControl.GetBindingExpression(IsEnabledProperty);
-                if (currentBindingExpression != null)
-                {
-                    var multiBinding = new MultiBinding();
-                    multiBinding.Bindings.Add(isEnabledBinding);
-                    multiBinding.Bindings.Add(currentBindingExpression.ParentBinding);
-                    multiBinding.Converter = AllMultiValueConverter;
-                    multiBinding.ConverterParameter = true;
-                    propertyControl.SetBinding(IsEnabledProperty, multiBinding);
-                }
-                else
-                {
-                    propertyControl.SetBinding(IsEnabledProperty, isEnabledBinding);
-                }
-            }
-
-            if (pi.IsVisibleDescriptor != null)
+            var contentBinding = new Binding(propertyPath)
             {
-                var isVisibleBinding = new Binding(pi.IsVisibleDescriptor.Name);
-                isVisibleBinding.ConverterParameter = pi.IsVisibleValue;
-                isVisibleBinding.Converter = ValueToVisibilityConverter;
-                propertyPanel.SetBinding(VisibilityProperty, isVisibleBinding);
-            }
+                Converter = errorConverter,
+#if !NET40
+                ValidatesOnNotifyDataErrors = false,
+#endif
+                Source = source,
+            };
 
-            if (this.EnableLabelWidthResizing && pi.HeaderPlacement == HeaderPlacement.Left)
+            errorControl.SetBinding(VisibilityProperty, visibilityBinding);
+
+            // When the visibility of the error control is changed, updated the HasErrors of the tab
+            errorControl.TargetUpdated += (s, e) =>
             {
-                propertyPanel.Children.Add(
-                    new GridSplitter
-                    {
-                        Width = 4,
-                        Background = Brushes.Transparent,
-                        HorizontalAlignment = HorizontalAlignment.Right,
-                        Focusable = false
-                    });
-            }
-
-            panel.Children.Add(propertyPanel);
+                if (dataErrorInfoInstance != null)
+                    tab.UpdateHasErrors(dataErrorInfoInstance);
+            };
+            errorControl.SetBinding(ContentControl.ContentProperty, contentBinding);
+            return errorControl;
         }
 
         /// <summary>

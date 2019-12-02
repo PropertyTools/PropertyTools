@@ -3168,12 +3168,18 @@ namespace PropertyTools.Wpf
         /// </returns>
         private IEnumerable<object> EnumerateItems(CellRange range)
         {
+            var op = this.Operator;
+            if (op == null)
+            {
+                yield break;
+            }
+
             var min = this.ItemsInRows ? range.TopRow : range.LeftColumn;
             var max = this.ItemsInRows ? range.BottomRow : range.RightColumn;
             for (var index = min; index <= max; index++)
             {
                 var cell = this.ItemsInRows ? new CellRef(index, range.LeftColumn) : new CellRef(range.TopRow, index);
-                var item = this.Operator.GetItem(cell);
+                var item = op.GetItem(cell);
                 if (item != null)
                 {
                     yield return item;

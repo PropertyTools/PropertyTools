@@ -8,7 +8,6 @@ namespace ExampleLibrary
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel.DataAnnotations;
     using PropertyTools;
     using PropertyTools.DataAnnotations;
 
@@ -45,7 +44,7 @@ namespace ExampleLibrary
         [Browsable(false)]
         public IEnumerable<Column> CollectionItemsSourcePropertyColumns { get; } = new[]
         {
-            new Column("Name", "Name", null, "2*", 'L', itemSource: nameof(AvailableNames)),
+            new Column("Name", "Name", null, "2*", 'L', itemsSourcePropertyName: nameof(AvailableNames)),
             new Column("Fraction", "%", "P2", "1*", 'R')
         };
 

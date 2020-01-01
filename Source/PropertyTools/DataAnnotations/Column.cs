@@ -31,22 +31,12 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="header">The header.</param>
-        public Column(string propertyName, string header)
+        /// <param name="itemsSourcePropertyName">Name of the item source property.</param>
+        public Column(string propertyName, string header, string itemsSourcePropertyName = null)
             : this(propertyName)
         {
             this.Header = header;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Column" /> class.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <param name="header">The header.</param>
-        /// <param name="itemSource">Name of the item source property.</param>
-        public Column(string propertyName, string header, string itemSource)
-            : this(propertyName, header)
-        {
-            this.ItemsSource = itemSource;
+            this.ItemsSourcePropertyName = itemsSourcePropertyName;
         }
 
         /// <summary>
@@ -58,7 +48,7 @@ namespace PropertyTools.DataAnnotations
         /// <param name="width">The width.</param>
         /// <param name="alignment">The alignment.</param>
         /// <param name="isReadOnly">The columns is read only if set to <c>true</c>.</param>
-        /// <param name="itemSource">Name of the item source property.</param>
+        /// <param name="itemsSourcePropertyName">Name of the items source property.</param>
         public Column(
             string propertyName,
             string header,
@@ -66,8 +56,8 @@ namespace PropertyTools.DataAnnotations
             string width = "Auto",
             char alignment = 'C',
             bool isReadOnly = false,
-            string itemSource = null)
-            : this(propertyName, header, itemSource)
+            string itemsSourcePropertyName = null)
+            : this(propertyName, header, itemsSourcePropertyName)
         {
             this.FormatString = formatString;
             this.Width = width;
@@ -113,10 +103,10 @@ namespace PropertyTools.DataAnnotations
         public string PropertyName { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the items source.
+        /// Gets or sets the name of the items source property.
         /// </summary>
-        /// <value>The name of the item source.</value>
-        public string ItemsSource{ get; set; }
+        /// <value>The name of the item source property.</value>
+        public string ItemsSourcePropertyName{ get; set; }
 
         /// <summary>
         /// Gets or sets the width ("Auto", "0.5*" etc. are ok).

@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -18,6 +16,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Data;
 
@@ -520,13 +519,13 @@ namespace PropertyTools.Wpf
                             HorizontalAlignment = StringUtilities.ToHorizontalAlignment(column.Alignment.ToString(CultureInfo.InvariantCulture))
                         };
 
-                        if (column.ItemsSource != null)
+                        if (column.ItemsSourcePropertyName != null)
                         {
                             // use instance.GetType to be able to fetch static properties also
-                            PropertyInfo p = instance.GetType().GetProperties().FirstOrDefault(x => x.Name == column.ItemsSource);
-                            IEnumerable itemsSource = p != null ? p.GetValue(instance) as IEnumerable : null;
-                            cd.ItemsSource = itemsSource;
+                            var p = instance.GetType().GetProperties().FirstOrDefault(x => x.Name == column.ItemsSourcePropertyName);
+                            cd.ItemsSource = p?.GetValue(instance) as IEnumerable;
                         }
+
                         pi.Columns.Add(cd);
                     }
                 }

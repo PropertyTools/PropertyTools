@@ -40,20 +40,34 @@ namespace PropertyTools.DataAnnotations
         /// <summary>
         /// Initializes a new instance of the <see cref="Column" /> class.
         /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="header">The header.</param>
+        /// <param name="itemSource">Name of the item source property.</param>
+        public Column(string propertyName, string header, string itemSource)
+            : this(propertyName, header)
+        {
+            this.ItemsSource = itemSource;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Column" /> class.
+        /// </summary>
         /// <param name="propertyName">The property name.</param>
         /// <param name="header">The header.</param>
         /// <param name="formatString">The format string.</param>
         /// <param name="width">The width.</param>
         /// <param name="alignment">The alignment.</param>
         /// <param name="isReadOnly">The columns is read only if set to <c>true</c>.</param>
+        /// <param name="itemSource">Name of the item source property.</param>
         public Column(
             string propertyName,
             string header,
             string formatString,
             string width = "Auto",
             char alignment = 'C',
-            bool isReadOnly = false)
-            : this(propertyName, header)
+            bool isReadOnly = false,
+            string itemSource = null)
+            : this(propertyName, header, itemSource)
         {
             this.FormatString = formatString;
             this.Width = width;
@@ -97,6 +111,12 @@ namespace PropertyTools.DataAnnotations
         /// </summary>
         /// <value>The name of the property.</value>
         public string PropertyName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the items source.
+        /// </summary>
+        /// <value>The name of the item source.</value>
+        public string ItemsSource{ get; set; }
 
         /// <summary>
         /// Gets or sets the width ("Auto", "0.5*" etc. are ok).

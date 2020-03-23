@@ -1286,6 +1286,8 @@ namespace PropertyTools.Wpf
             this.sheetScrollViewer.SizeChanged += (s, e) => this.UpdateGridSize();
             this.sheetGrid.MouseDown += this.SheetGridMouseDown;
 
+            this.sheetScrollViewer.Loaded += (s, e) => this.UpdateGridSize();
+
             this.autoFiller = new AutoFiller(this.GetCellValue, this.TrySetCellValue);
 
             this.autoFillToolTip = new ToolTip

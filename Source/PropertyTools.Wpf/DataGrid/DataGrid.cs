@@ -496,6 +496,11 @@ namespace PropertyTools.Wpf
         private static readonly VisibilityConverter HorizontalScrollBarVisibilityConverter = new VisibilityConverter { CollapsedValue = 0d, HiddenValue = 0d, VisibleValue = SystemParameters.HorizontalScrollBarHeight };
 
         /// <summary>
+        /// The vertical scroll bar visibility to height converter
+        /// </summary>
+        private static readonly VisibilityConverter VerticalScrollBarVisibilityConverter = new VisibilityConverter { CollapsedValue = 0d, HiddenValue = 0d, VisibleValue = SystemParameters.VerticalScrollBarWidth };
+
+        /// <summary>
         /// The cell map.
         /// </summary>
         private readonly Dictionary<int, FrameworkElement> cellMap = new Dictionary<int, FrameworkElement>();
@@ -1280,6 +1285,8 @@ namespace PropertyTools.Wpf
             this.rowGrid.MouseUp += this.RowGridMouseUp;
             this.sheetScrollViewer.SizeChanged += (s, e) => this.UpdateGridSize();
             this.sheetGrid.MouseDown += this.SheetGridMouseDown;
+
+            this.sheetScrollViewer.Loaded += (s, e) => this.UpdateGridSize();
 
             this.autoFiller = new AutoFiller(this.GetCellValue, this.TrySetCellValue);
 
@@ -4180,8 +4187,18 @@ namespace PropertyTools.Wpf
             }
 
             // Add one empty column covering the vertical scrollbar
-            this.columnGrid.ColumnDefinitions.Add(
-                new System.Windows.Controls.ColumnDefinition { Width = new GridLength(40) });
+            var scrollBarColumnDefinition = new System.Windows.Controls.ColumnDefinition();
+            this.columnGrid.ColumnDefinitions.Add(scrollBarColumnDefinition);
+
+            // bind the width of the column definition to the visibility of the main horizontal scroll bar 
+            scrollBarColumnDefinition.SetBinding(
+                System.Windows.Controls.ColumnDefinition.WidthProperty,
+                new Binding(nameof(ScrollViewer.ComputedVerticalScrollBarVisibility))
+                {
+                    Source = this.sheetScrollViewer,
+                    Converter = VerticalScrollBarVisibilityConverter,
+                    ConverterParameter = SystemParameters.VerticalScrollBarWidth
+                });
 
             // set the context menu
             this.columnGrid.ContextMenu = this.ColumnsContextMenu;

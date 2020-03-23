@@ -5,9 +5,9 @@ DataGrid grid layout (all the background and selection elements are not included
 ```
 +-PART_Grid ---------------------------------------------------------------+
 | +- PART_TopLeft --------------------+- PART_ColumnScrollViewer --------+ |
-| |                                   |  +- PART_ColumnGrid -----------+ | |
-| |                                   |  |                             | | |
-| |                                   |  +-----------------------------+ | |
+| |                                   | +- PART_ColumnGrid ------------+ | |
+| |                                   | |                              | | |
+| |                                   | +------------------------------+ | |
 | +- PART_RowScrollViewer ------------+- PART_SheetScrollViewer ---------+ |
 | | +-PART_RowGrid -----------------+ | +- PART_SheetGrid -------------+ | |
 | | |                               | | |                              | | |

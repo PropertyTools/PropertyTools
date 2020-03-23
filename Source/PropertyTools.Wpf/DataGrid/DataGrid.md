@@ -2,6 +2,7 @@
 
 DataGrid grid layout (all the background and selection elements are not included here)
 
+```
 +-PART_Grid ---------------------------------------------------------------+
 | +- PART_TopLeft --------------------+- PART_ColumnScrollViewer --------+ |
 | |                                   |  +- PART_ColumnGrid -----------+ | |
@@ -13,6 +14,7 @@ DataGrid grid layout (all the background and selection elements are not included
 | | +-------------------------------+ | +------------------------------+ | |
 | +-----------------------------------+----------------------------------+ |
 +--------------------------------------------------------------------------+
+```
 
 - PART_SheetGrid is where all the cells are added.
 - PART_RowGrid contains the row headers

@@ -24,21 +24,21 @@ DataGrid grid layout (all the background and selection elements are not included
 
 ## DataGrid Lifetime events
 
-OnApplyTemplate
-- UpdateGridContent
-SizeChanged
-- UpdateGridSize (doing nothing size the control is not loaded!)
-ItemsSourceChanged
-- UpdateGridContent
-  - UpdateRows
-  - UpdateColumns
-  - UpdateCells
-  - Dispatcher.Invoke(UpdateGridSize)
-Loaded
-- UpdateGridSize
-Dispatcher 
-- UpdateGridSize
-  - calls UpdateLayout on child elements
+- OnApplyTemplate
+  - UpdateGridContent
+- SizeChanged
+  - UpdateGridSize (doing nothing size the control is not loaded!)
+- ItemsSourceChanged
+  - UpdateGridContent
+    - UpdateRows
+    - UpdateColumns
+    - UpdateCells
+    - Dispatcher.Invoke(UpdateGridSize)
+- Loaded
+  - UpdateGridSize
+- Dispatcher 
+  - UpdateGridSize
+    - calls UpdateLayout on child elements
 
 
 https://docs.microsoft.com/en-us/dotnet/framework/wpf/app-development/wpf-windows-overview?redirectedfrom=MSDN

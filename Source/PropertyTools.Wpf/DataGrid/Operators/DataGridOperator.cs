@@ -102,7 +102,6 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether rows can be inserted.
         /// </summary>
-
         /// <returns>
         ///   <c>true</c> if rows can be inserted; otherwise <c>false</c>.
         /// </returns>
@@ -290,6 +289,7 @@ namespace PropertyTools.Wpf
             var collectionView = this.Owner.CollectionView;
             if (collectionView == null)
             {
+                // no collection view, just return the index
                 return index;
             }
 
@@ -305,6 +305,12 @@ namespace PropertyTools.Wpf
             {
                 // return the same index
                 return index;
+            }
+
+            if (collectionView.IsEmpty)
+            {
+                // cannot find this in the collection view
+                return -1;
             }
 
             // get the item at the specified index in the collection view
@@ -569,11 +575,12 @@ namespace PropertyTools.Wpf
         protected virtual bool DeleteItem(int index)
         {
             var list = this.Owner.ItemsSource;
-            index = this.GetItemsSourceIndex(index);
-            if (list == null)
+            if (list == null || list.Count == 0)
             {
                 return false;
             }
+
+            index = this.GetItemsSourceIndex(index);
 
             if (index < 0 || index >= list.Count)
             {

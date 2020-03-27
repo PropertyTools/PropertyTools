@@ -125,7 +125,7 @@ namespace PropertyTools.Wpf
         public override object GetItem(CellRef cell)
         {
             var list = this.Owner.ItemsSource;
-            if (list == null)
+            if (list == null || list.Count == 0)
             {
                 return null;
             }

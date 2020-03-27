@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - PropertyGrid: support for INotifyDataErrorInfo #226
+- DataGrid: exception when sorting empty collection #240
 
 ## [3.0.0]
 ### Changed

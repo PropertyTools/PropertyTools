@@ -102,7 +102,6 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Determines whether rows can be inserted.
         /// </summary>
-
         /// <returns>
         ///   <c>true</c> if rows can be inserted; otherwise <c>false</c>.
         /// </returns>

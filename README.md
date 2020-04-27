@@ -25,7 +25,8 @@
 
 ### PropertyGrid
 
-![PropertyGrid](/Images/PropertyGrid.png)
+![PropertyGrid](/Images/PropertyGrid.png)[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FPropertyTools%2FPropertyTools.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FPropertyTools%2FPropertyTools?ref=badge_shield)
+
 
 ### DataGrid
 
@@ -47,3 +48,7 @@
 ### Build requirements
 
 - Visual Studio 2019 16.3 or later
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FPropertyTools%2FPropertyTools.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FPropertyTools%2FPropertyTools?ref=badge_large)

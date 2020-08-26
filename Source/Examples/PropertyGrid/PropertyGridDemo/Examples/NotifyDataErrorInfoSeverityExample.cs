@@ -63,8 +63,7 @@ namespace ExampleLibrary
         }
 
         private void Validate(string propertyName, bool isValid, string message, Severity severity = Severity.Error)
-        {
-            
+        {            
             if (!isValid == this.errors.Any(k => k.Key == propertyName && k.Value.Any(v => v.ErrorMessage.ToLower() == message.ToLower())))
             {
                 return;

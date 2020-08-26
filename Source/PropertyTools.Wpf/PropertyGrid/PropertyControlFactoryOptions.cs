@@ -22,7 +22,6 @@ namespace PropertyTools.Wpf
         /// <value>The limit. If the number of values exceeds the limit, a selector control will be used.</value>
         public int EnumAsRadioButtonsLimit { get; set; }
 
-
         /// <summary>
         /// Gets or sets the validation error template.
         /// </summary>

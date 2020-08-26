@@ -141,8 +141,7 @@ namespace PropertyTools.Wpf
         public void UpdateHasErrors(INotifyDataErrorInfo ndei)
         {
             // validate all properties in this tab
-            this.HasErrors = this.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));
-            
+            this.HasErrors = this.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));            
         }
 
         /// <summary>

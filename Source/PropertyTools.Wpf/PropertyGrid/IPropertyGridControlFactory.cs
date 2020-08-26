@@ -10,6 +10,7 @@
 namespace PropertyTools.Wpf
 {
     using System.Windows;
+    using System.Windows.Controls;
 
     /// <summary>
     /// Defines functionality to create controls for a <see cref="PropertyGrid" />.
@@ -25,5 +26,14 @@ namespace PropertyTools.Wpf
         /// A element.
         /// </returns>
         FrameworkElement CreateControl(PropertyItem propertyItem, PropertyControlFactoryOptions options);
+
+        /// <summary>
+        /// Creates the error control.
+        /// </summary>
+        /// <param name="pi">The pi.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="tab">The tab.</param>
+        /// <returns></returns>
+        ContentControl CreateErrorControl(PropertyItem pi, object instance, Tab tab, PropertyControlFactoryOptions options);
     }
 }

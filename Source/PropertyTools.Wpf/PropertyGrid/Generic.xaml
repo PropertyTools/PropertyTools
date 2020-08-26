@@ -14,7 +14,21 @@
     </Style>
 
     <DataTemplate x:Key="ValidationErrorTemplate">
-        <TextBlock TextWrapping="Wrap" Foreground="Red" Text="{Binding}" />
+        <TextBlock TextWrapping="Wrap" Text="{Binding ErrorMessage}" >
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Foreground" Value="Red"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Severity}" Value="{x:Static local:Severity.Warning}">
+                            <Setter Property="Foreground" Value="Orange"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Severity}" Value="{x:Null}">
+                            <Setter Property="Foreground" Value="Red"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
     </DataTemplate>
 
     <DataTemplate x:Key="ToolTipTemplate">
@@ -40,16 +54,19 @@
 
     <Style x:Key="TabHeaderErrorsStyle">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding HasWarnings}" Value="True">
+                <Setter Property="TextBlock.Foreground" Value="Orange"/>
+            </DataTrigger>
             <DataTrigger Binding="{Binding HasErrors}" Value="True">
                 <Setter Property="TextBlock.Foreground" Value="Red"/>
-            </DataTrigger>
+            </DataTrigger>            
         </Style.Triggers>
     </Style>
     
     <DataTemplate x:Key="TabHeaderTemplate" DataType="local:Tab">
         <StackPanel Orientation="Horizontal">
             <local:Bitmap Source="{Binding Icon}" Margin="0 0 4 0" Visibility="{Binding Icon, Converter={StaticResource NullToVisibilityConverter}}"/>
-            <TextBlock Text="{Binding Header}" Style="{StaticResource TabHeaderErrorsStyle}"/>
+            <TextBlock Text="{Binding Header}" Style="{StaticResource TabHeaderErrorsStyle}" />           
         </StackPanel>
     </DataTemplate>
 

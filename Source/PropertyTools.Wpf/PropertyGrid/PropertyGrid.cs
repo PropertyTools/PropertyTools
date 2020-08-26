@@ -1021,7 +1021,8 @@ namespace PropertyTools.Wpf
                 }
                 else if (instance is INotifyDataErrorInfo notifyDataErrorInfoInstance)
                 {
-                    tab.UpdateHasErrors(notifyDataErrorInfoInstance);
+                    //tab.UpdateHasErrors(notifyDataErrorInfoInstance);
+                    tab.UpdateTabForValidationResults(notifyDataErrorInfoInstance);
                 }
 
                 if (fillTab)
@@ -1370,7 +1371,8 @@ namespace PropertyTools.Wpf
                         propertyControl.Style = this.ValidationErrorStyle;
                     }
 
-                    errorControl = CreateErrorControl(pi, instance, tab);
+                    PropertyControlFactoryOptions options = new PropertyControlFactoryOptions { ValidationErrorTemplate = this.ValidationErrorTemplate };                    
+                    errorControl = this.ControlFactory.CreateErrorControl(pi, instance, tab, options);
 
                     // Add a row with the error control to the panel
                     // The error control is placed in column 1
@@ -1622,7 +1624,7 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Creates the error control.
         /// </summary>
-        private ContentControl CreateErrorControl(PropertyItem pi, object instance, Tab tab)
+        public virtual ContentControl CreateErrorControl(PropertyItem pi, object instance, Tab tab)
         {
             var dataErrorInfoInstance = instance as IDataErrorInfo;
             var notifyDataErrorInfoInstance = instance as INotifyDataErrorInfo;
@@ -1643,7 +1645,7 @@ namespace PropertyTools.Wpf
             }
             else
             {
-                errorConverter = new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
+                errorConverter = new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);                
                 propertyPath = nameof(tab.HasErrors);
                 source = tab;
                 notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>

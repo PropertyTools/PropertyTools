@@ -24,6 +24,9 @@
 
         <Style x:Key="TabHeaderErrorsStyle">
             <Style.Triggers>
+                <DataTrigger Binding="{Binding HasWarnings}" Value="True">
+                    <Setter Property="TextBlock.Foreground" Value="Orange"/>
+                </DataTrigger>
                 <DataTrigger Binding="{Binding HasErrors}" Value="True">
                     <Setter Property="TextBlock.Foreground" Value="Red"/>
                 </DataTrigger>

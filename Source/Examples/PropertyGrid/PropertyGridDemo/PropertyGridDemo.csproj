@@ -20,4 +20,7 @@
     <Resource Include="Examples\*.png" />
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ValidationErrorTemplate\" />
+  </ItemGroup>
 </Project>

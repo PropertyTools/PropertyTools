@@ -144,26 +144,6 @@ namespace PropertyTools.Wpf
             this.HasErrors = this.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));            
         }
 
-        /// <summary>
-        /// Updates the tab for validation results, to include Errors and Warngins both
-        /// </summary>
-        /// <param name="errorInfo">The error information.</param>
-        public void UpdateTabForValidationResults(INotifyDataErrorInfo errorInfo)
-        {
-            //if any of the properties using ValidationResultEx
-            this.HasErrors = this.Groups.Any(g => g.Properties.Any(p => errorInfo.GetErrors(p.PropertyName).Cast<object>()
-               .Any(a => a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Error)));
-
-            this.HasWarnings = this.Groups.Any(g => g.Properties.Any(p => errorInfo.GetErrors(p.PropertyName).Cast<object>()
-               .Any(a => a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));
-
-            // for properties using ValidationResult, in that case no warnings
-            //if (!this.HasErrors)
-            //{
-            //    this.HasErrors = this.Groups.Any(g => g.Properties.Any(p => errorInfo.HasErrors));
-
-            //    this.HasWarnings = false;
-            //}                                   
-        }
+        
     }
 }

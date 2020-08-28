@@ -14,21 +14,7 @@
     </Style>
 
     <DataTemplate x:Key="ValidationErrorTemplate">
-        <TextBlock TextWrapping="Wrap" Text="{Binding ErrorMessage}" >
-            <TextBlock.Style>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Foreground" Value="Red"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Severity}" Value="{x:Static local:Severity.Warning}">
-                            <Setter Property="Foreground" Value="Orange"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Severity}" Value="{x:Null}">
-                            <Setter Property="Foreground" Value="Red"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
+        <TextBlock TextWrapping="Wrap" Foreground="Red" Text="{Binding}" />
     </DataTemplate>
 
     <DataTemplate x:Key="ToolTipTemplate">

@@ -1021,8 +1021,8 @@ namespace PropertyTools.Wpf
                 }
                 else if (instance is INotifyDataErrorInfo notifyDataErrorInfoInstance)
                 {
-                    //tab.UpdateHasErrors(notifyDataErrorInfoInstance);
-                    tab.UpdateTabForValidationResults(notifyDataErrorInfoInstance);
+                    tab.UpdateHasErrors(notifyDataErrorInfoInstance);
+                    //tab.UpdateTabForValidationResults(notifyDataErrorInfoInstance);
                 }
 
                 if (fillTab)

@@ -6,13 +6,12 @@
 
 namespace ExampleLibrary
 {
+    using PropertyTools.DataAnnotations;
+    using PropertyGridDemo;
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using PropertyTools.DataAnnotations;
-    using PropertyTools.Wpf;
 
     [PropertyGridExample]
     public class NotifyDataErrorInfoSeverityExample : Example, System.ComponentModel.INotifyDataErrorInfo
@@ -42,7 +41,6 @@ namespace ExampleLibrary
             {
                 this.firstName = value;
                 this.Validate("FirstName", !string.IsNullOrEmpty(this.firstName), "First Name should be specified.",Severity.Error);
-                this.Validate("FirstName", !string.IsNullOrEmpty(this.firstName), "First Name should not be numeric.", Severity.Warning);
             }
         }
 

@@ -11,6 +11,7 @@ namespace PropertyTools.Wpf
 {
     using System.Windows;
     using System.Windows.Controls;
+    using System.ComponentModel;
 
     /// <summary>
     /// Defines functionality to create controls for a <see cref="PropertyGrid" />.

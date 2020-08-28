@@ -16,7 +16,7 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class NotifyDataErrorInfoSeverityExample : Example, System.ComponentModel.INotifyDataErrorInfo
     {
-        private readonly Dictionary<string, List<ValidationResultEx>> errors = new Dictionary<string, List<ValidationResultEx>>();
+        private readonly Dictionary<string, ValidationResultEx> errors = new Dictionary<string, ValidationResultEx>();
 
         private string firstName;
 
@@ -40,7 +40,7 @@ namespace ExampleLibrary
             set
             {
                 this.firstName = value;
-                this.Validate("FirstName", !string.IsNullOrEmpty(this.firstName), "First Name should be specified.",Severity.Error);
+                this.Validate("FirstName", !string.IsNullOrEmpty(this.firstName), "First Name should be specified.", Severity.Error);
             }
         }
 
@@ -56,27 +56,20 @@ namespace ExampleLibrary
             set
             {
                 this.lastName = value;
-                this.Validate("LastName", !string.IsNullOrEmpty(this.lastName), "Last Name should be specified.",Severity.Warning);
+                this.Validate("LastName", !string.IsNullOrEmpty(this.lastName), "Last Name should be specified.", Severity.Warning);
             }
         }
 
         private void Validate(string propertyName, bool isValid, string message, Severity severity = Severity.Error)
-        {            
-            if (!isValid == this.errors.Any(k => k.Key == propertyName && k.Value.Any(v => v.ErrorMessage.ToLower() == message.ToLower())))
+        {
+            if (!isValid == this.errors.ContainsKey(propertyName))
             {
                 return;
             }
 
             if (!isValid)
-            {                
-                if(this.errors.ContainsKey(propertyName))
-                {                                 
-                    this.errors[propertyName].Add(new ValidationResultEx(message));
-                }
-                else
-                {
-                    this.errors.Add(propertyName, new List<ValidationResultEx> { new ValidationResultEx(message, severity) });                    
-                }
+            {
+                this.errors.Add(propertyName, new ValidationResultEx(message, severity));
             }
             else
             {
@@ -88,15 +81,10 @@ namespace ExampleLibrary
 
         IEnumerable System.ComponentModel.INotifyDataErrorInfo.GetErrors(string propertyName)
         {
-            var results = new List<ValidationResultEx>();
             if (this.errors.ContainsKey(propertyName))
-            {                
-                foreach (var r in this.errors[propertyName])
-                {
-                    results.Add(r);
-                }
+            {
+                yield return this.errors[propertyName];
             }
-            return results;
         }
 
         bool System.ComponentModel.INotifyDataErrorInfo.HasErrors

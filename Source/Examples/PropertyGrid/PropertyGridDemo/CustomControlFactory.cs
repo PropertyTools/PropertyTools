@@ -82,8 +82,7 @@ namespace PropertyGridDemo
                 source = tab;
                 notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
                 {
-                    tab.UpdateHasErrors(notifyDataErrorInfoInstance);
-                    //UpdateTabForValidationResults(notifyDataErrorInfoInstance);
+                    UpdateTabForValidationResults(tab, notifyDataErrorInfoInstance);
                 };
             }
 
@@ -106,6 +105,15 @@ namespace PropertyGridDemo
                 Source = source,
             };
 
+            var warningBinding = new Binding(nameof(tab.HasWarnings))
+            {
+                Converter = errorConverter,
+#if !NET40
+                ValidatesOnNotifyDataErrors = false,
+#endif
+                Source = source,
+            };
+
             errorControl.SetBinding(UIElement.VisibilityProperty, visibilityBinding);
 
             // When the visibility of the error control is changed, updated the HasErrors of the tab
@@ -115,6 +123,8 @@ namespace PropertyGridDemo
                     tab.UpdateHasErrors(dataErrorInfoInstance);
             };
             errorControl.SetBinding(ContentControl.ContentProperty, contentBinding);
+
+            errorControl.SetBinding(ContentControl.ContentProperty, warningBinding);
             return errorControl;
         }
 
@@ -122,14 +132,14 @@ namespace PropertyGridDemo
         /// Updates the tab for validation results, to include Errors and Warngins both
         /// </summary>
         /// <param name="errorInfo">The error information.</param>
-        private void UpdateTabForValidationResults(Tab tab,INotifyDataErrorInfo errorInfo)
+        private void UpdateTabForValidationResults(Tab tab, INotifyDataErrorInfo errorInfo)
         {
             //properties using ValidationResultEx
             tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => errorInfo.GetErrors(p.PropertyName).Cast<object>()
                .Any(a => a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Error)));
 
             tab.HasWarnings = tab.Groups.Any(g => g.Properties.Any(p => errorInfo.GetErrors(p.PropertyName).Cast<object>()
-               .Any(a => a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));           
+               .Any(a => a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));
         }
     }
 }

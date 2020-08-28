@@ -97,7 +97,6 @@ namespace PropertyGridDemo
                 Source = source,
             };
 
-
             var contentBinding = new Binding(propertyPath)
             {
                 Converter = errorConverter,

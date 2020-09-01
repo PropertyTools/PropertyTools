@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Support for .NET Core 3.0
 - PropertyGrid: Support for items source in columns #232
+- PropertyGrid: Make PropertyGrid extendable to support warning messages #248
 
 ### Fixed
 - PropertyGrid: support for INotifyDataErrorInfo #226

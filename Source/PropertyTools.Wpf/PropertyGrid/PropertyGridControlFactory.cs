@@ -12,6 +12,7 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.IO;
@@ -207,6 +208,70 @@ namespace PropertyTools.Wpf
             }
 
             return this.CreateDefaultControl(property);
+        }
+
+        /// <summary>
+        /// Creates the error control.
+        /// </summary>
+        public virtual ContentControl CreateErrorControl(PropertyItem pi, object instance, Tab tab, PropertyControlFactoryOptions options)
+        {
+            var dataErrorInfoInstance = instance as IDataErrorInfo;
+            var notifyDataErrorInfoInstance = instance as INotifyDataErrorInfo;
+
+            var errorControl = new ContentControl
+            {
+                ContentTemplate = options.ValidationErrorTemplate,
+                Focusable = false
+            };
+            IValueConverter errorConverter;
+            string propertyPath;
+            object source = null;
+            if (dataErrorInfoInstance != null)
+            {
+                errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
+                propertyPath = pi.PropertyName;
+                source = instance;
+            }
+            else
+            {
+                errorConverter = new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
+                propertyPath = nameof(tab.HasErrors);
+                source = tab;
+                notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
+                {
+                    tab.UpdateHasErrors(notifyDataErrorInfoInstance);
+                };
+            }
+
+            var visibilityBinding = new Binding(propertyPath)
+            {
+                Converter = errorConverter,
+                NotifyOnTargetUpdated = true,
+#if !NET40
+                ValidatesOnNotifyDataErrors = false,
+#endif
+                Source = source,
+            };
+
+            var contentBinding = new Binding(propertyPath)
+            {
+                Converter = errorConverter,
+#if !NET40
+                ValidatesOnNotifyDataErrors = false,
+#endif
+                Source = source,
+            };
+
+            errorControl.SetBinding(UIElement.VisibilityProperty, visibilityBinding);
+
+            // When the visibility of the error control is changed, updated the HasErrors of the tab
+            errorControl.TargetUpdated += (s, e) =>
+            {
+                if (dataErrorInfoInstance != null)
+                    tab.UpdateHasErrors(dataErrorInfoInstance);
+            };
+            errorControl.SetBinding(ContentControl.ContentProperty, contentBinding);
+            return errorControl;
         }
 
         /// <summary>

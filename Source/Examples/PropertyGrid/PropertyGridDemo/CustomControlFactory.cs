@@ -38,8 +38,7 @@ namespace PropertyGridDemo
             //    dp.SetBinding(DatePicker.SelectedDateProperty,
             //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
             //    return dp;
-            //}
-
+            //}            
             return base.CreateControl(pi, options);
         }
 
@@ -63,9 +62,10 @@ namespace PropertyGridDemo
 
             var errorControl = new ContentControl
             {
-                ContentTemplate = options.ValidationErrorTemplate,
+                ContentTemplate = options.ValidationErrorTemplate,                
                 Focusable = false
             };
+
             IValueConverter errorConverter;
             string propertyPath;
             object source = null;
@@ -129,6 +129,22 @@ namespace PropertyGridDemo
         }
 
         /// <summary>
+        /// Sets the validation error style.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="options">The options.</param>
+        /// <returns></returns>
+        public override FrameworkElement SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options)
+        {            
+            if (Application.Current.TryFindResource("ErrorInToolTipStyleEx") != null)
+            {
+                options.ValidationErrorStyle = (Style)Application.Current.TryFindResource("ErrorInToolTipStyleEx");
+                control.Style = options.ValidationErrorStyle;
+            }            
+            return control;            
+        }
+
+        /// <summary>
         /// Updates the tab for validation results, to include Errors and Warngins both
         /// </summary>
         /// <param name="errorInfo">The error information.</param>
@@ -136,10 +152,10 @@ namespace PropertyGridDemo
         {
             //properties using ValidationResultEx
             tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => errorInfo.GetErrors(p.PropertyName).Cast<object>()
-               .Any(a => a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Error)));
+               .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Error)));
 
             tab.HasWarnings = tab.Groups.Any(g => g.Properties.Any(p => errorInfo.GetErrors(p.PropertyName).Cast<object>()
-               .Any(a => a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));
+               .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));
         }
     }
 }

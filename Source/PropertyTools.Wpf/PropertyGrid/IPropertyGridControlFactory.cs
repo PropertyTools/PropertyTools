@@ -36,5 +36,7 @@ namespace PropertyTools.Wpf
         /// <param name="tab">The tab.</param>
         /// <returns></returns>
         ContentControl CreateErrorControl(PropertyItem pi, object instance, Tab tab, PropertyControlFactoryOptions options);
+
+        FrameworkElement SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options);
     }
 }

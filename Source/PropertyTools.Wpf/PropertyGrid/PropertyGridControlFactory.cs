@@ -274,6 +274,15 @@ namespace PropertyTools.Wpf
             return errorControl;
         }
 
+        public virtual FrameworkElement SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options)
+        {
+            if (options.ValidationErrorStyle != null)
+            {
+                control.Style = options.ValidationErrorStyle;
+            }
+            return control;
+        }
+
         /// <summary>
         /// Converts the horizontal alignment.
         /// </summary>

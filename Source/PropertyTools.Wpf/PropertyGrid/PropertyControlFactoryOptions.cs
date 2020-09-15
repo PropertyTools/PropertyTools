@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PropertyTools.Wpf
 {
@@ -29,5 +30,7 @@ namespace PropertyTools.Wpf
         /// The validation error template.
         /// </value>
         public DataTemplate ValidationErrorTemplate { get; set; }
+
+        public Style ValidationErrorStyle { get; set; }
     }
 }

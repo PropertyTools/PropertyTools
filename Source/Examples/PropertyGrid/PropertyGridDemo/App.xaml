@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:PropertyGridDemo"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <local:MultiValueToStringConverter x:Key="MultiValueToStringConverter" />
+        
         <DataTemplate x:Key="ValidationErrorTemplateEx">            
             <TextBlock TextWrapping="Wrap" Text="{Binding ErrorMessage}" >
                 <TextBlock.Style>
@@ -21,5 +23,20 @@
                 </TextBlock.Style>
             </TextBlock>
         </DataTemplate>
+
+        <Style x:Key="ErrorInToolTipStyleEx" TargetType="{x:Type FrameworkElement}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource MultiValueToStringConverter}">
+                                <Binding RelativeSource="{RelativeSource Self}" Path="(Validation.Errors)" />
+                                <Binding RelativeSource="{RelativeSource Self}" Path="(Validation.Errors).Count" />
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

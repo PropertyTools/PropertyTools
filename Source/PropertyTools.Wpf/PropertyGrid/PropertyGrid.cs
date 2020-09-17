@@ -1361,17 +1361,19 @@ namespace PropertyTools.Wpf
 
                 if (instance is IDataErrorInfo || instance is INotifyDataErrorInfo)
                 {
+                    PropertyControlFactoryOptions options = new PropertyControlFactoryOptions
+                    {
+                        ValidationErrorTemplate = this.ValidationErrorTemplate,
+                        ValidationErrorStyle = this.ValidationErrorStyle
+                    };
+
                     if (this.ValidationTemplate != null)
                     {
                         Validation.SetErrorTemplate(propertyControl, this.ValidationTemplate);
                     }
 
-                    if (this.ValidationErrorStyle != null)
-                    {
-                        propertyControl.Style = this.ValidationErrorStyle;
-                    }
-
-                    PropertyControlFactoryOptions options = new PropertyControlFactoryOptions { ValidationErrorTemplate = this.ValidationErrorTemplate };                    
+                    this.ControlFactory.SetValidationErrorStyle(propertyControl, options);     
+                    
                     errorControl = this.ControlFactory.CreateErrorControl(pi, instance, tab, options);
 
                     // Add a row with the error control to the panel

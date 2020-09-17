@@ -71,6 +71,11 @@ namespace ExampleLibrary
             {
                 this.errors.Add(propertyName, new ValidationResultEx(message, severity));
             }
+            else if (!string.IsNullOrEmpty(this.FirstName) && !System.Text.RegularExpressions.Regex.IsMatch(this.FirstName, "^[a-zA-Z]+$"))
+            {
+                this.errors.Remove(propertyName);
+                this.errors.Add(propertyName, new ValidationResultEx("It should be string.", Severity.Warning));
+            }
             else
             {
                 this.errors.Remove(propertyName);
@@ -85,6 +90,7 @@ namespace ExampleLibrary
             {
                 yield return this.errors[propertyName];
             }
+            yield return null;
         }
 
         bool System.ComponentModel.INotifyDataErrorInfo.HasErrors

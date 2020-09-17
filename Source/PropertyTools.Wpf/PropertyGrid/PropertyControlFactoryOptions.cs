@@ -31,6 +31,12 @@ namespace PropertyTools.Wpf
         /// </value>
         public DataTemplate ValidationErrorTemplate { get; set; }
 
+        /// <summary>
+        /// Gets or sets the validation error style.
+        /// </summary>
+        /// <value>
+        /// The validation error style.
+        /// </value>
         public Style ValidationErrorStyle { get; set; }
     }
 }

@@ -274,13 +274,18 @@ namespace PropertyTools.Wpf
             return errorControl;
         }
 
-        public virtual FrameworkElement SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options)
+        /// <summary>
+        /// sets error style for control
+        /// </summary>
+        /// <param name="control"></param>
+        /// <param name="options"></param>
+        public virtual void SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options)
         {
             if (options.ValidationErrorStyle != null)
             {
                 control.Style = options.ValidationErrorStyle;
             }
-            return control;
+            //return control;
         }
 
         /// <summary>

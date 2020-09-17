@@ -134,14 +134,14 @@ namespace PropertyGridDemo
         /// <param name="control">The control.</param>
         /// <param name="options">The options.</param>
         /// <returns></returns>
-        public override FrameworkElement SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options)
+        public override void SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options)
         {            
             if (Application.Current.TryFindResource("ErrorInToolTipStyleEx") != null)
             {
                 options.ValidationErrorStyle = (Style)Application.Current.TryFindResource("ErrorInToolTipStyleEx");
                 control.Style = options.ValidationErrorStyle;
             }            
-            return control;            
+            //return control;            
         }
 
         /// <summary>

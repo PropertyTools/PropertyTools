@@ -1372,7 +1372,7 @@ namespace PropertyTools.Wpf
                         Validation.SetErrorTemplate(propertyControl, this.ValidationTemplate);
                     }
 
-                    propertyControl = this.ControlFactory.SetValidationErrorStyle(propertyControl, options);     
+                    this.ControlFactory.SetValidationErrorStyle(propertyControl, options);     
                     
                     errorControl = this.ControlFactory.CreateErrorControl(pi, instance, tab, options);
 

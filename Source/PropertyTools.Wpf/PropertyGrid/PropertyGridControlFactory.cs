@@ -289,13 +289,24 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Converts the horizontal alignment.
+        /// Updates tab for errors.
         /// </summary>
-        /// <param name="a">The alignment to convert.</param>
-        /// <returns>
-        /// A <see cref="HorizontalAlignment" />.
-        /// </returns>
-        protected static HorizontalAlignment ConvertHorizontalAlignment(DataAnnotations.HorizontalAlignment a)
+        /// <param name="tab">The tab.</param>
+        /// <param name="ndei">The INotifyDataErrorInfo instance</param>
+        public virtual void UpdateHasErrors(Tab tab, INotifyDataErrorInfo ndei)
+        {
+            // validate all properties in this tab
+            tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));
+        }
+
+    /// <summary>
+    /// Converts the horizontal alignment.
+    /// </summary>
+    /// <param name="a">The alignment to convert.</param>
+    /// <returns>
+    /// A <see cref="HorizontalAlignment" />.
+    /// </returns>
+    protected static HorizontalAlignment ConvertHorizontalAlignment(DataAnnotations.HorizontalAlignment a)
         {
             switch (a)
             {

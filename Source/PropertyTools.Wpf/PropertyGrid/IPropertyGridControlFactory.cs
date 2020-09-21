@@ -44,5 +44,12 @@ namespace PropertyTools.Wpf
         /// <param name="options"></param>
         /// <returns></returns>
         void SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options);
+
+        /// <summary>
+        /// Updates tab for errors.
+        /// </summary>
+        /// <param name="tab">The tab.</param>
+        /// <param name="ndei">The INotifyDataErrorInfo instance</param>
+        void UpdateHasErrors(Tab tab, INotifyDataErrorInfo ndei);
     }
 }

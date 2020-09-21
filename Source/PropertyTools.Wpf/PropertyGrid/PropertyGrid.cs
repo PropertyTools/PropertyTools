@@ -1015,14 +1015,14 @@ namespace PropertyTools.Wpf
 
                 var tabItem = new TabItem { Header = tab, Padding = new Thickness(4), Name = tab.Id ?? string.Empty };
 
-                if (instance is IDataErrorInfo dataErrorInfoInstance)
-                {
-                    tab.UpdateHasErrors(dataErrorInfoInstance);
-                }
-                else if (instance is INotifyDataErrorInfo notifyDataErrorInfoInstance)
+                if (instance is INotifyDataErrorInfo notifyDataErrorInfoInstance)
                 {
                     this.ControlFactory.UpdateHasErrors(tab, instance as INotifyDataErrorInfo);
                 }
+                else if (instance is IDataErrorInfo dataErrorInfoInstance)
+                {
+                    tab.UpdateHasErrors(dataErrorInfoInstance);
+                } 
 
                 if (fillTab)
                 {

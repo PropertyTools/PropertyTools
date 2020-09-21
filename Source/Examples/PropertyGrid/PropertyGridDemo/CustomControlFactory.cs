@@ -143,13 +143,13 @@ namespace PropertyGridDemo
                .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));
         }
 
-    /// <summary>
-    /// Sets the validation error style.
-    /// </summary>
-    /// <param name="control">The control.</param>
-    /// <param name="options">The options.</param>
-    /// <returns></returns>
-    public override void SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options)
+        /// <summary>
+        /// Sets the validation error style.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="options">The options.</param>
+        /// <returns></returns>
+        public override void SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options)
         {            
             if (Application.Current.TryFindResource("ErrorInToolTipStyleEx") != null)
             {
@@ -158,6 +158,5 @@ namespace PropertyGridDemo
             }            
             //return control;            
         }
-
     }
 }

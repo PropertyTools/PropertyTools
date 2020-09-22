@@ -1017,11 +1017,11 @@ namespace PropertyTools.Wpf
 
                 if (instance is INotifyDataErrorInfo notifyDataErrorInfoInstance)
                 {
-                    this.ControlFactory.UpdateHasErrors(tab, instance as INotifyDataErrorInfo);
+                    this.ControlFactory.UpdateHasErrors(tab, notifyDataErrorInfoInstance);
                 }
                 else if (instance is IDataErrorInfo dataErrorInfoInstance)
                 {
-                    tab.UpdateHasErrors(dataErrorInfoInstance);
+                    this.ControlFactory.UpdateHasErrors(tab, dataErrorInfoInstance);
                 } 
 
                 if (fillTab)

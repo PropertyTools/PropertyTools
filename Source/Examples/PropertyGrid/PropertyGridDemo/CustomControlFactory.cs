@@ -144,6 +144,16 @@ namespace PropertyGridDemo
         }
 
         /// <summary>
+        /// Updates tab for errors.
+        /// </summary>
+        /// <param name="tab">The tab.</param>
+        /// <param name="ndei">The INotifyDataErrorInfo instance</param>
+        public override void UpdateHasErrors(Tab tab, IDataErrorInfo dei)
+        {
+            base.UpdateHasErrors(tab, dei);
+        }
+
+        /// <summary>
         /// Sets the validation error style.
         /// </summary>
         /// <param name="control">The control.</param>

@@ -51,5 +51,12 @@ namespace PropertyTools.Wpf
         /// <param name="tab">The tab.</param>
         /// <param name="ndei">The INotifyDataErrorInfo instance</param>
         void UpdateHasErrors(Tab tab, INotifyDataErrorInfo ndei);
+
+        /// <summary>
+        /// Updates the has errors.
+        /// </summary>
+        /// <param name="tab">The tab.</param>
+        /// <param name="ndei">The ndei.</param>
+        void UpdateHasErrors(Tab tab, IDataErrorInfo ndei);
     }
 }

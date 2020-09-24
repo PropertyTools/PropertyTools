@@ -289,6 +289,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Updates the tab for validation results.
+        /// </summary>
+        /// <param name="tab">The tab.</param>
+        /// <param name="errorInfo">The error information.</param>
+        public virtual void UpdateTabForValidationResults(Tab tab, object errorInfo)
+        {            
+            if(errorInfo is INotifyDataErrorInfo ndei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));
+            }
+            else if(errorInfo is IDataErrorInfo dei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => !string.IsNullOrEmpty(dei[p.PropertyName])));
+            }            
+        }
+
+        /// <summary>
         /// Converts the horizontal alignment.
         /// </summary>
         /// <param name="a">The alignment to convert.</param>

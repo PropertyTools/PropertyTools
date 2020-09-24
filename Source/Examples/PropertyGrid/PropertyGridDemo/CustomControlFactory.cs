@@ -73,7 +73,7 @@ namespace PropertyGridDemo
             {
                 errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
                 propertyPath = pi.PropertyName;
-                source = instance;
+                source = instance;                
             }
             else
             {
@@ -83,7 +83,10 @@ namespace PropertyGridDemo
                 notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
                 {
                     UpdateTabForValidationResults(tab, notifyDataErrorInfoInstance);
+                    //needed to refresh error control's binding also when error changes (i.e from Error to Warning)
+                    errorControl.GetBindingExpression(ContentControl.ContentProperty).UpdateTarget();
                 };
+                
             }
 
             var visibilityBinding = new Binding(propertyPath)
@@ -129,6 +132,27 @@ namespace PropertyGridDemo
         }
 
         /// <summary>
+        /// Update tab for validation results
+        /// </summary>
+        /// <param name="tab"></param>
+        /// <param name="errorInfo"></param>
+        public override void UpdateTabForValidationResults(Tab tab, object errorInfo)
+        {
+            if (errorInfo is INotifyDataErrorInfo ndei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.GetErrors(p.PropertyName).Cast<object>()
+                   .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Error)));
+
+                tab.HasWarnings = tab.Groups.Any(g => g.Properties.Any(p => ndei.GetErrors(p.PropertyName).Cast<object>()
+                   .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));
+            }
+            else if (errorInfo is IDataErrorInfo dei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => !string.IsNullOrEmpty(dei[p.PropertyName])));
+            }
+        }
+
+        /// <summary>
         /// Sets the validation error style.
         /// </summary>
         /// <param name="control">The control.</param>
@@ -140,22 +164,7 @@ namespace PropertyGridDemo
             {
                 options.ValidationErrorStyle = (Style)Application.Current.TryFindResource("ErrorInToolTipStyleEx");
                 control.Style = options.ValidationErrorStyle;
-            }            
-            //return control;            
-        }
-
-        /// <summary>
-        /// Updates the tab for validation results, to include Errors and Warngins both
-        /// </summary>
-        /// <param name="errorInfo">The error information.</param>
-        private void UpdateTabForValidationResults(Tab tab, INotifyDataErrorInfo errorInfo)
-        {
-            //properties using ValidationResultEx
-            tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => errorInfo.GetErrors(p.PropertyName).Cast<object>()
-               .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Error)));
-
-            tab.HasWarnings = tab.Groups.Any(g => g.Properties.Any(p => errorInfo.GetErrors(p.PropertyName).Cast<object>()
-               .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));
+            }        
         }
     }
 }

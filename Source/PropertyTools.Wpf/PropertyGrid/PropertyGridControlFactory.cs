@@ -289,25 +289,20 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Updates tab for errors.
+        /// Updates the tab for validation results.
         /// </summary>
         /// <param name="tab">The tab.</param>
-        /// <param name="ndei">The INotifyDataErrorInfo instance</param>
-        public virtual void UpdateHasErrors(Tab tab, INotifyDataErrorInfo ndei)
-        {
-            // validate all properties in this tab
-            tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));
-        }
-
-        /// <summary>
-        /// Updates tab for errors.
-        /// </summary>
-        /// <param name="tab">The tab.</param>
-        /// <param name="ndei">The INotifyDataErrorInfo instance</param>
-        public virtual void UpdateHasErrors(Tab tab, IDataErrorInfo dei)
-        {
-            // validate all properties in this tab
-            tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => !string.IsNullOrEmpty(dei[p.PropertyName])));
+        /// <param name="errorInfo">The error information.</param>
+        public virtual void UpdateTabForValidationResults(Tab tab, object errorInfo)
+        {            
+            if(errorInfo is INotifyDataErrorInfo ndei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));
+            }
+            else if(errorInfo is IDataErrorInfo dei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => !string.IsNullOrEmpty(dei[p.PropertyName])));
+            }            
         }
 
         /// <summary>

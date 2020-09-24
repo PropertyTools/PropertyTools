@@ -73,7 +73,7 @@ namespace PropertyGridDemo
             {
                 errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
                 propertyPath = pi.PropertyName;
-                source = instance;
+                source = instance;                
             }
             else
             {
@@ -82,8 +82,11 @@ namespace PropertyGridDemo
                 source = tab;
                 notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
                 {
-                    UpdateHasErrors(tab, notifyDataErrorInfoInstance);
+                    UpdateTabForValidationResults(tab, notifyDataErrorInfoInstance);
+                    //needed to refresh error control's binding also when error changes (i.e from Error to Warning)
+                    errorControl.GetBindingExpression(ContentControl.ContentProperty).UpdateTarget();
                 };
+                
             }
 
             var visibilityBinding = new Binding(propertyPath)
@@ -129,28 +132,24 @@ namespace PropertyGridDemo
         }
 
         /// <summary>
-        /// Updates tab for errors.
+        /// Update tab for validation results
         /// </summary>
-        /// <param name="tab">The tab.</param>
-        /// <param name="ndei">The INotifyDataErrorInfo instance</param>
-        public override void UpdateHasErrors(Tab tab, INotifyDataErrorInfo ndei)
+        /// <param name="tab"></param>
+        /// <param name="errorInfo"></param>
+        public override void UpdateTabForValidationResults(Tab tab, object errorInfo)
         {
-            // validate all properties in this tab
-            tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.GetErrors(p.PropertyName).Cast<object>()
-               .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Error)));
+            if (errorInfo is INotifyDataErrorInfo ndei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.GetErrors(p.PropertyName).Cast<object>()
+                   .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Error)));
 
-            tab.HasWarnings = tab.Groups.Any(g => g.Properties.Any(p => ndei.GetErrors(p.PropertyName).Cast<object>()
-               .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));
-        }
-
-        /// <summary>
-        /// Updates tab for errors.
-        /// </summary>
-        /// <param name="tab">The tab.</param>
-        /// <param name="ndei">The INotifyDataErrorInfo instance</param>
-        public override void UpdateHasErrors(Tab tab, IDataErrorInfo dei)
-        {
-            base.UpdateHasErrors(tab, dei);
+                tab.HasWarnings = tab.Groups.Any(g => g.Properties.Any(p => ndei.GetErrors(p.PropertyName).Cast<object>()
+                   .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));
+            }
+            else if (errorInfo is IDataErrorInfo dei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => !string.IsNullOrEmpty(dei[p.PropertyName])));
+            }
         }
 
         /// <summary>
@@ -165,8 +164,7 @@ namespace PropertyGridDemo
             {
                 options.ValidationErrorStyle = (Style)Application.Current.TryFindResource("ErrorInToolTipStyleEx");
                 control.Style = options.ValidationErrorStyle;
-            }            
-            //return control;            
+            }        
         }
     }
 }

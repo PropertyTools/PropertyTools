@@ -1012,17 +1012,9 @@ namespace PropertyTools.Wpf
                 {
                     Grid.SetIsSharedSizeScope(tabPanel, true);
                 }
-
                 var tabItem = new TabItem { Header = tab, Padding = new Thickness(4), Name = tab.Id ?? string.Empty };
 
-                if (instance is INotifyDataErrorInfo notifyDataErrorInfoInstance)
-                {
-                    this.ControlFactory.UpdateHasErrors(tab, notifyDataErrorInfoInstance);
-                }
-                else if (instance is IDataErrorInfo dataErrorInfoInstance)
-                {
-                    this.ControlFactory.UpdateHasErrors(tab, dataErrorInfoInstance);
-                } 
+                this.ControlFactory.UpdateTabForValidationResults(tab, instance);
 
                 if (fillTab)
                 {

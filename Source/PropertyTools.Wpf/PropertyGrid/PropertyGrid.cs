@@ -203,6 +203,15 @@ namespace PropertyTools.Wpf
             typeof(PropertyGrid),
             new UIPropertyMetadata(false));
 
+        /// <summary> 
+        /// Identifies the <see cref="ToolTipDuration"/> dependency property. 
+        /// </summary> 
+        public static readonly DependencyProperty ToolTipDurationProperty = DependencyProperty.Register( 
+            nameof(ToolTipDuration), 
+            typeof(int), 
+            typeof(PropertyGrid), 
+            new UIPropertyMetadata(5000)); 
+            
         /// <summary>
         /// Identifies the <see cref="ControlFactory"/> dependency property.
         /// </summary>
@@ -651,6 +660,25 @@ namespace PropertyTools.Wpf
                 this.SetValue(MoveFocusOnEnterProperty, value);
             }
         }
+
+        /// <summary> 
+        /// Gets or sets the duration of the tool tip. 
+        /// </summary> 
+        /// <value> 
+        /// The duration of the tool tip. 
+        /// </value> 
+        public int ToolTipDuration 
+        { 
+            get 
+            { 
+                return (int)this.GetValue(ToolTipDurationProperty); 
+            } 
+ 
+            set 
+            { 
+                this.SetValue(ToolTipDurationProperty, value); 
+            } 
+        } 
 
         /// <summary>
         /// Gets or sets the control factory.
@@ -1560,6 +1588,7 @@ namespace PropertyTools.Wpf
                                 if (!string.IsNullOrWhiteSpace(pi.Description))
                                 {
                                     descriptionIconImage.ToolTip = this.CreateToolTip(pi.Description);
+                                    ToolTipService.SetShowDuration(descriptionIconImage, this.ToolTipDuration);
                                 }
                             }
                         }

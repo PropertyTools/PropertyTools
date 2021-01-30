@@ -26,6 +26,16 @@ namespace PropertyTools.Wpf
         {
         }
 
+
+        //Fixing columns change not taking effect
+        public override int GetColumnCount()
+        {
+            Owner.ColumnDefinitions.Clear();
+            AutoGenerateColumns();
+            return Owner.ColumnDefinitions.Count;
+        }
+
+
         /// <summary>
         /// Determines whether columns can be deleted.
         /// </summary>

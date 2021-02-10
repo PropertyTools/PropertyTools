@@ -34,17 +34,17 @@ namespace PropertyTools.Wpf
     public enum LabelWidthSharing
     {
         /// <summary>
-        /// The shared in tab.
+        /// Label widths are shared in each tab.
         /// </summary>
         SharedInTab,
 
         /// <summary>
-        /// The shared in group.
+        /// Label widths are shared in each group.
         /// </summary>
         SharedInGroup,
 
         /// <summary>
-        /// The not shared.
+        /// Label widths are not shared.
         /// </summary>
         NotShared
     }

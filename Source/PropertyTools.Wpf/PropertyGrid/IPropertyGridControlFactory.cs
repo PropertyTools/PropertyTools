@@ -34,15 +34,15 @@ namespace PropertyTools.Wpf
         /// <param name="pi">The pi.</param>
         /// <param name="instance">The instance.</param>
         /// <param name="tab">The tab.</param>
-        /// <returns></returns>
+        /// <param name="options">The options for the control factory.</param>
+        /// <returns>The created error control.</returns>
         ContentControl CreateErrorControl(PropertyItem pi, object instance, Tab tab, PropertyControlFactoryOptions options);
 
         /// <summary>
-        /// Sets validation error style for tooltips
+        /// Sets the validation error style for tooltips
         /// </summary>
-        /// <param name="control"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
+        /// <param name="control">The control whre the validation error style should be applied.</param>
+        /// <param name="options">The options for the control factory.</param>
         void SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options);
 
         /// <summary>

@@ -7,11 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows;
-using System.Windows.Controls;
-
 namespace PropertyTools.Wpf
 {
+    using System.Windows;
+
     /// <summary>
     /// Represents options for the property control factory.
     /// </summary>

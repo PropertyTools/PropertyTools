@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [3.1.0]
 ### Added
 - Support for .NET Core 3.0 #221
 - DataGrid: Support for items source in columns #232

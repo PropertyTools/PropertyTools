@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CheckMarkPage.xaml.cs" company="PropertyTools">
+// <copyright file="LinkBlockPage.xaml.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for CheckMarkPage
+//   Interaction logic for LinkBlockPage
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,12 +12,12 @@ namespace ControlDemos
     /// <summary>
     /// Interaction logic for CheckMarkPage
     /// </summary>
-    public partial class CheckMarkPage
+    public partial class LinkBlockPage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CheckMarkPage" /> class.
+        /// Initializes a new instance of the <see cref="LinkBlockPage" /> class.
         /// </summary>
-        public CheckMarkPage()
+        public LinkBlockPage()
         {
             this.InitializeComponent();
         }

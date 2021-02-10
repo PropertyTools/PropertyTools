@@ -24,9 +24,9 @@ namespace PropertyTools.Wpf
         /// Identifies the <see cref="NavigateUri"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty NavigateUriProperty = DependencyProperty.Register(
-            nameof(NavigateUri), 
-            typeof(Uri), 
-            typeof(LinkBlock), 
+            nameof(NavigateUri),
+            typeof(Uri),
+            typeof(LinkBlock),
             new UIPropertyMetadata(null));
 
         /// <summary>
@@ -63,7 +63,10 @@ namespace PropertyTools.Wpf
             base.OnMouseDown(e);
             if (this.NavigateUri != null)
             {
-                var psi = new ProcessStartInfo(this.NavigateUri.ToString());
+                var psi = new ProcessStartInfo(this.NavigateUri.ToString())
+                {
+                    UseShellExecute = true
+                };
                 Process.Start(psi);
                 e.Handled = true;
             }

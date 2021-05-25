@@ -34,17 +34,17 @@ namespace PropertyTools.Wpf
     public enum LabelWidthSharing
     {
         /// <summary>
-        /// The shared in tab.
+        /// Label widths are shared in each tab.
         /// </summary>
         SharedInTab,
 
         /// <summary>
-        /// The shared in group.
+        /// Label widths are shared in each group.
         /// </summary>
         SharedInGroup,
 
         /// <summary>
-        /// The not shared.
+        /// Label widths are not shared.
         /// </summary>
         NotShared
     }
@@ -203,6 +203,15 @@ namespace PropertyTools.Wpf
             typeof(PropertyGrid),
             new UIPropertyMetadata(false));
 
+        /// <summary> 
+        /// Identifies the <see cref="ToolTipDuration"/> dependency property. 
+        /// </summary> 
+        public static readonly DependencyProperty ToolTipDurationProperty = DependencyProperty.Register( 
+            nameof(ToolTipDuration), 
+            typeof(int), 
+            typeof(PropertyGrid), 
+            new UIPropertyMetadata(5000)); 
+            
         /// <summary>
         /// Identifies the <see cref="ControlFactory"/> dependency property.
         /// </summary>
@@ -652,6 +661,25 @@ namespace PropertyTools.Wpf
             }
         }
 
+        /// <summary> 
+        /// Gets or sets the duration of the tool tip. 
+        /// </summary> 
+        /// <value> 
+        /// The duration of the tool tip. 
+        /// </value> 
+        public int ToolTipDuration 
+        { 
+            get 
+            { 
+                return (int)this.GetValue(ToolTipDurationProperty); 
+            } 
+ 
+            set 
+            { 
+                this.SetValue(ToolTipDurationProperty, value); 
+            } 
+        } 
+
         /// <summary>
         /// Gets or sets the control factory.
         /// </summary>
@@ -1012,18 +1040,9 @@ namespace PropertyTools.Wpf
                 {
                     Grid.SetIsSharedSizeScope(tabPanel, true);
                 }
-
                 var tabItem = new TabItem { Header = tab, Padding = new Thickness(4), Name = tab.Id ?? string.Empty };
 
-                if (instance is IDataErrorInfo dataErrorInfoInstance)
-                {
-                    tab.UpdateHasErrors(dataErrorInfoInstance);
-                }
-                else if (instance is INotifyDataErrorInfo notifyDataErrorInfoInstance)
-                {
-                    tab.UpdateHasErrors(notifyDataErrorInfoInstance);
-                    //tab.UpdateTabForValidationResults(notifyDataErrorInfoInstance);
-                }
+                this.ControlFactory.UpdateTabForValidationResults(tab, instance);
 
                 if (fillTab)
                 {
@@ -1569,6 +1588,7 @@ namespace PropertyTools.Wpf
                                 if (!string.IsNullOrWhiteSpace(pi.Description))
                                 {
                                     descriptionIconImage.ToolTip = this.CreateToolTip(pi.Description);
+                                    ToolTipService.SetShowDuration(descriptionIconImage, this.ToolTipDuration);
                                 }
                             }
                         }

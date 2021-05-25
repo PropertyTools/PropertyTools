@@ -1,15 +1,20 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [3.1.0]
 ### Added
-- Support for .NET Core 3.0
-- PropertyGrid: Support for items source in columns #232
+- Support for .NET Core 3.0 #221
+- DataGrid: Support for items source in columns #232
 - PropertyGrid: Make PropertyGrid extendable to support warning messages #248
+- PropertyGrid: Added property to set duration of tooltip #259
 
 ### Fixed
-- PropertyGrid: support for INotifyDataErrorInfo #226
-- DataGrid: exception when sorting empty collection #240
+- DataGrid: Returning incorrect 'SelectedItems' when sorted #217
+- DataGrid: Fix auto width issue #224
+- PropertyGrid: Support for INotifyDataErrorInfo #226
+- DataGrid: Align DataGrid scrollbar code #238
+- DataGrid: Exception when sorting empty collection #240
+- LinkBlock: Fix exception #261
 
 ## [3.0.0]
 ### Changed

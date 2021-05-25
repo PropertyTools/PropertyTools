@@ -71,7 +71,7 @@ namespace ExampleLibrary
             {
                 this.errors.Add(propertyName, new ValidationResultEx(message, severity));
             }
-            else if (!string.IsNullOrEmpty(this.FirstName) && !System.Text.RegularExpressions.Regex.IsMatch(this.FirstName, "^[a-zA-Z]+$"))
+            else if (!string.IsNullOrEmpty(this.FirstName) && propertyName == nameof(this.FirstName) && !System.Text.RegularExpressions.Regex.IsMatch(this.FirstName, "^[a-zA-Z]+$"))
             {
                 this.errors.Remove(propertyName);
                 this.errors.Add(propertyName, new ValidationResultEx("It should be string.", Severity.Warning));

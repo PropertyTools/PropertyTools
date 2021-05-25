@@ -6,12 +6,15 @@
 
 namespace PropertyGridDemo
 {
+    using System;
     using System.ComponentModel;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
+
     using ExampleLibrary;
+
     using PropertyTools.Wpf;
 
     public class CustomControlFactory : PropertyGridControlFactory
@@ -24,45 +27,34 @@ namespace PropertyGridDemo
             this.Converters.Add(new PropertyConverter(typeof(Length), new LengthConverter()));
         }
 
-        /// <summary>
-        /// Creates the control.
-        /// </summary>
-        /// <param name="pi">The pi.</param>
-        /// <param name="options">The options.</param>
-        /// <returns></returns>
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        /// <inheritdoc />
+        public override FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options)
         {
-            //if (property.Is(typeof(DateTime)))
-            //{
-            //    var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
-            //    dp.SetBinding(DatePicker.SelectedDateProperty,
-            //        new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
-            //    return dp;
-            //}            
-            return base.CreateControl(pi, options);
+            if (property.Is(typeof(DateTime)))
+            {
+                var dp = new DatePicker() { SelectedDateFormat = DatePickerFormat.Long, DisplayDateStart = DateTime.Now.AddDays(-7) };
+                dp.SetBinding(DatePicker.SelectedDateProperty,
+                    new Binding(property.Descriptor.Name) { ValidatesOnDataErrors = true });
+                return dp;
+            }
+
+            return base.CreateControl(property, options);
         }
 
-        /// <summary>
-        /// Creates the error control.
-        /// </summary>
-        /// <param name="pi"></param>
-        /// <param name="instance"></param>
-        /// <param name="tab"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override ContentControl CreateErrorControl(PropertyItem pi, object instance, Tab tab, PropertyControlFactoryOptions options)
         {
             var dataErrorInfoInstance = instance as IDataErrorInfo;
             var notifyDataErrorInfoInstance = instance as INotifyDataErrorInfo;
 
-            if(Application.Current.TryFindResource("ValidationErrorTemplateEx")!=null)
+            if (Application.Current.TryFindResource("ValidationErrorTemplateEx") != null)
             {
                 options.ValidationErrorTemplate = (DataTemplate)Application.Current.TryFindResource("ValidationErrorTemplateEx");
             }
 
             var errorControl = new ContentControl
             {
-                ContentTemplate = options.ValidationErrorTemplate,                
+                ContentTemplate = options.ValidationErrorTemplate,
                 Focusable = false
             };
 
@@ -83,7 +75,10 @@ namespace PropertyGridDemo
                 notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
                 {
                     UpdateTabForValidationResults(tab, notifyDataErrorInfoInstance);
+                    //needed to refresh error control's binding also when error changes (i.e from Error to Warning)
+                    errorControl.GetBindingExpression(ContentControl.ContentProperty).UpdateTarget();
                 };
+
             }
 
             var visibilityBinding = new Binding(propertyPath)
@@ -128,34 +123,31 @@ namespace PropertyGridDemo
             return errorControl;
         }
 
-        /// <summary>
-        /// Sets the validation error style.
-        /// </summary>
-        /// <param name="control">The control.</param>
-        /// <param name="options">The options.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
+        public override void UpdateTabForValidationResults(Tab tab, object errorInfo)
+        {
+            if (errorInfo is INotifyDataErrorInfo ndei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.GetErrors(p.PropertyName).Cast<object>()
+                   .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Error)));
+
+                tab.HasWarnings = tab.Groups.Any(g => g.Properties.Any(p => ndei.GetErrors(p.PropertyName).Cast<object>()
+                   .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));
+            }
+            else if (errorInfo is IDataErrorInfo dei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => !string.IsNullOrEmpty(dei[p.PropertyName])));
+            }
+        }
+
+        /// <inheritdoc />
         public override void SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options)
-        {            
+        {
             if (Application.Current.TryFindResource("ErrorInToolTipStyleEx") != null)
             {
                 options.ValidationErrorStyle = (Style)Application.Current.TryFindResource("ErrorInToolTipStyleEx");
                 control.Style = options.ValidationErrorStyle;
-            }            
-            //return control;            
-        }
-
-        /// <summary>
-        /// Updates the tab for validation results, to include Errors and Warngins both
-        /// </summary>
-        /// <param name="errorInfo">The error information.</param>
-        private void UpdateTabForValidationResults(Tab tab, INotifyDataErrorInfo errorInfo)
-        {
-            //properties using ValidationResultEx
-            tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => errorInfo.GetErrors(p.PropertyName).Cast<object>()
-               .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Error)));
-
-            tab.HasWarnings = tab.Groups.Any(g => g.Properties.Any(p => errorInfo.GetErrors(p.PropertyName).Cast<object>()
-               .Any(a => a != null && a.GetType() == typeof(ValidationResultEx) && ((ValidationResultEx)a).Severity == Severity.Warning)));
+            }
         }
     }
 }

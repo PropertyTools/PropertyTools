@@ -289,6 +289,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Updates the tab for validation results.
+        /// </summary>
+        /// <param name="tab">The tab.</param>
+        /// <param name="errorInfo">The error information.</param>
+        public virtual void UpdateTabForValidationResults(Tab tab, object errorInfo)
+        {            
+            if(errorInfo is INotifyDataErrorInfo ndei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));
+            }
+            else if(errorInfo is IDataErrorInfo dei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => !string.IsNullOrEmpty(dei[p.PropertyName])));
+            }            
+        }
+
+        /// <summary>
         /// Converts the horizontal alignment.
         /// </summary>
         /// <param name="a">The alignment to convert.</param>
@@ -467,7 +484,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates the default control.
+        /// Creates the default control (text box).
         /// </summary>
         /// <param name="property">The property.</param>
         /// <returns>
@@ -475,7 +492,6 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateDefaultControl(PropertyItem property)
         {
-            // TextBox is the default control
             var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
             var c = new TextBoxEx
             {
@@ -499,7 +515,6 @@ namespace PropertyTools.Wpf
 
             if (property.IsReadOnly)
             {
-                // c.Opacity = 0.8;
                 c.Foreground = Brushes.RoyalBlue;
             }
 
@@ -525,7 +540,6 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateDictionaryControl(PropertyItem property)
         {
-            // todo
             var c = new ComboBox();
             c.SetBinding(ItemsControl.ItemsSourceProperty, property.CreateBinding());
             return c;
@@ -636,6 +650,7 @@ namespace PropertyTools.Wpf
                 UseOpenDialog = property.IsFileOpenDialog,
                 FileDialogService = this.FileDialogService
             };
+
             if (property.RelativePathDescriptor != null)
             {
                 c.SetBinding(FilePicker.BasePathProperty, new Binding(property.RelativePathDescriptor.Name));
@@ -819,11 +834,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateSecurePasswordControl(PropertyItem property)
         {
-            // todoox
             var c = new PasswordBox();
 
             // PasswordHelper.SetAttach(b, true);
             // b.SetBinding(PasswordHelper.PasswordProperty, pi.CreateBinding());
+
             return c;
         }
 

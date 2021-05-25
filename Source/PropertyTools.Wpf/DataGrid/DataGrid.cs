@@ -1415,12 +1415,11 @@ namespace PropertyTools.Wpf
                     var value = values[(i - outputRange.TopRow) % rows, (j - outputRange.LeftColumn) % columns];
                     this.TrySetCellValue(new CellRef(i, j), value);
                 }
+                // TODO: only update changed cells (or rely on bindings)
+                this.UpdateGridContent();
             }
 
-            // TODO: only update changed cells (or rely on bindings)
-            this.UpdateGridContent();
             this.suspendCollectionChangedNotifications = false;
-
             return outputRange;
         }
 

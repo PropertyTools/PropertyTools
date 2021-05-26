@@ -223,11 +223,6 @@ namespace PropertyTools.Wpf
         /// <returns>The value</returns>
         public virtual object GetCellValue(CellRef cell)
         {
-            if (cell.Column < 0 || cell.Column >= this.Owner.Columns || cell.Row < 0 || cell.Row >= this.Owner.Rows)
-            {
-                return null;
-            }
-
             var item = this.GetItem(cell);
             if (item != null)
             {

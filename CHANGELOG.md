@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+### Fixed
+- DataGrid: Update after pasting values #269
+
 ## [3.1.0]
 ### Added
 - Support for .NET Core 3.0 #221

@@ -1417,6 +1417,9 @@ namespace PropertyTools.Wpf
                 }
             }
 
+            // Update the collection view in case items has been added
+            this.UpdateCollectionView();
+
             // TODO: only update changed cells (or rely on bindings)
             this.UpdateGridContent();
             this.suspendCollectionChangedNotifications = false;

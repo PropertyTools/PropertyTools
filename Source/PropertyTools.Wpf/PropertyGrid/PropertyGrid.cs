@@ -206,12 +206,12 @@ namespace PropertyTools.Wpf
         /// <summary> 
         /// Identifies the <see cref="ToolTipDuration"/> dependency property. 
         /// </summary> 
-        public static readonly DependencyProperty ToolTipDurationProperty = DependencyProperty.Register( 
-            nameof(ToolTipDuration), 
-            typeof(int), 
-            typeof(PropertyGrid), 
-            new UIPropertyMetadata(5000)); 
-            
+        public static readonly DependencyProperty ToolTipDurationProperty = DependencyProperty.Register(
+            nameof(ToolTipDuration),
+            typeof(int),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(5000));
+
         /// <summary>
         /// Identifies the <see cref="ControlFactory"/> dependency property.
         /// </summary>
@@ -381,6 +381,15 @@ namespace PropertyTools.Wpf
             typeof(ControlTemplate),
             typeof(PropertyGrid),
             new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// Identifies the <see cref="VerticalPropertySpacing"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty VerticalPropertySpacingProperty = DependencyProperty.Register(
+            nameof(VerticalPropertySpacing),
+            typeof(int),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(2, AppearanceChanged));
 
         /// <summary>
         /// The panel part name.
@@ -667,18 +676,18 @@ namespace PropertyTools.Wpf
         /// <value> 
         /// The duration of the tool tip. 
         /// </value> 
-        public int ToolTipDuration 
-        { 
-            get 
-            { 
-                return (int)this.GetValue(ToolTipDurationProperty); 
-            } 
- 
-            set 
-            { 
-                this.SetValue(ToolTipDurationProperty, value); 
-            } 
-        } 
+        public int ToolTipDuration
+        {
+            get
+            {
+                return (int)this.GetValue(ToolTipDurationProperty);
+            }
+
+            set
+            {
+                this.SetValue(ToolTipDurationProperty, value);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the control factory.
@@ -1001,6 +1010,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value of the vertical spacing between property items.
+        /// </summary>
+        /// <value><c>true</c> if read only properties should be shown; otherwise, <c>false</c> .</value>
+        public int VerticalPropertySpacing
+        {
+            get
+            {
+                return (int)this.GetValue(VerticalPropertySpacingProperty);
+            }
+
+            set
+            {
+                this.SetValue(VerticalPropertySpacingProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Creates the controls.
         /// </summary>
         /// <param name="instance">The instance.</param>
@@ -1263,7 +1289,7 @@ namespace PropertyTools.Wpf
 
             var propertyPanel = new StackPanelEx();
 
-            HeaderedContentControl groupContentControl = null;
+            ContentControl groupContentControl = null;
             switch (this.CategoryControlType)
             {
                 case CategoryControlType.GroupBox:
@@ -1279,19 +1305,23 @@ namespace PropertyTools.Wpf
                         Focusable = false
                     };
                     break;
+                case CategoryControlType.None:
+                    groupContentControl = new ContentControl();
+                    break;
             }
 
             if (groupContentControl != null)
             {
-                if (this.CategoryHeaderTemplate != null)
-                {
-                    groupContentControl.HeaderTemplate = this.CategoryHeaderTemplate;
-                    groupContentControl.Header = g;
-                }
-                else
-                {
-                    groupContentControl.Header = g.Header;
-                }
+                if (groupContentControl is HeaderedContentControl headeredContentControl)
+                    if (this.CategoryHeaderTemplate != null)
+                    {
+                        headeredContentControl.HeaderTemplate = this.CategoryHeaderTemplate;
+                        headeredContentControl.Header = g;
+                    }
+                    else
+                    {
+                        headeredContentControl.Header = g.Header;
+                    }
 
                 // Hide the group control if all child properties are invisible.
                 groupContentControl.SetBinding(
@@ -1352,7 +1382,7 @@ namespace PropertyTools.Wpf
             var propertyPanel = new Grid();
             if (!pi.FillTab)
             {
-                propertyPanel.Margin = new Thickness(2);
+                propertyPanel.Margin = new Thickness(VerticalPropertySpacing);
             }
 
             var labelColumn = new System.Windows.Controls.ColumnDefinition
@@ -1391,8 +1421,8 @@ namespace PropertyTools.Wpf
                         Validation.SetErrorTemplate(propertyControl, this.ValidationTemplate);
                     }
 
-                    this.ControlFactory.SetValidationErrorStyle(propertyControl, options);     
-                    
+                    this.ControlFactory.SetValidationErrorStyle(propertyControl, options);
+
                     errorControl = this.ControlFactory.CreateErrorControl(pi, instance, tab, options);
 
                     // Add a row with the error control to the panel
@@ -1642,7 +1672,7 @@ namespace PropertyTools.Wpf
                     new Binding(pi.RadioDescriptor.Name) { Converter = new EnumToBooleanConverter() { EnumType = pi.RadioDescriptor.PropertyType }, ConverterParameter = pi.RadioValue });
             }
         }
-        
+
         /// <summary>
         /// Creates the label control.
         /// </summary>
@@ -1725,10 +1755,6 @@ namespace PropertyTools.Wpf
             return control;
         }
 
-        /// <summary>
-        /// Handles changes in SelectedObjects.
-        /// </summary>
-        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private void SelectedObjectsChanged(DependencyPropertyChangedEventArgs e)
         {
             if (e.OldValue != null)

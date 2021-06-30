@@ -1755,6 +1755,10 @@ namespace PropertyTools.Wpf
             return control;
         }
 
+        /// <summary>
+        /// Handles changes in SelectedObjects.
+        /// </summary>
+        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
         private void SelectedObjectsChanged(DependencyPropertyChangedEventArgs e)
         {
             if (e.OldValue != null)

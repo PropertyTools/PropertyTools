@@ -1,9 +1,28 @@
 ﻿<Window x:Class="SimpleDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:pt="http://propertytools.org/wpf"
-        Title="PropertyGrid" Height="400" Width="300">
-    <Grid>
-        <pt:PropertyGrid Margin="8" SelectedObject="{Binding SelectedPerson}"/>
-    </Grid>
+        xmlns:pt="http://propertytools.org/wpf" 
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        Title="PropertyGrid" Height="400" Width="500">
+
+    <DockPanel>
+        <ToolBar DockPanel.Dock="Top" Height="100">
+            <pt:RadioButtonList x:Name="TabVisibilityRadioButtonList" EnumType="{x:Type pt:TabVisibility}" Margin="10,0"></pt:RadioButtonList>
+            <pt:RadioButtonList x:Name="CategoryControlTypeRadioButtonList" EnumType="{x:Type pt:CategoryControlType}"  Margin="10,0"></pt:RadioButtonList>
+            <pt:SpinControl x:Name="SpinControl"  Minimum="0" Maximum="100"  Height="30" Width="50"  Margin="10,0">
+                <pt:SpinControl.Value>
+                    <system:Int32>2</system:Int32>
+                </pt:SpinControl.Value>
+
+                <TextBox Text="{Binding ElementName=SpinControl, Path=Value}"></TextBox>
+            </pt:SpinControl>
+        </ToolBar>
+
+        <pt:PropertyGrid Margin="8" SelectedObject="{Binding SelectedPerson}" 
+                         TabVisibility="{Binding ElementName=TabVisibilityRadioButtonList, Path=Value}"
+                         CategoryControlType="{Binding ElementName=CategoryControlTypeRadioButtonList, Path=Value}"
+                         VerticalPropertySpacing="{Binding ElementName=SpinControl, Path=Value}"/>
+
+
+    </DockPanel>
 </Window>

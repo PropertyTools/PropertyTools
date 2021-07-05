@@ -11,7 +11,6 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class BrowsableTrueAttributeExample : Example
     {
-
         [Category("System.ComponentModel (not portable)")]
         [System.ComponentModel.Browsable(true)]
         public string Browsable1 { get; set; }

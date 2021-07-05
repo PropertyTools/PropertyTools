@@ -5,7 +5,6 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - DataGrid: Update after pasting values #269
 - TreeListBox: Fix items being added under collapsed nodes #264
-- Only show properties that are adorned with Browsable(true) if Browsable(false) not used #278
 
 ## [3.1.0]
 ### Added

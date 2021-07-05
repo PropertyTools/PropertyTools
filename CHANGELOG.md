@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 - TreeListBox: Fix items being added under collapsed nodes #264
 
 ### Added 
-- Only show properties that are adorned with Browsable(true) if Browsable(false) not used #278
+- PropertyGrid: Only show properties that are adorned with Browsable(true) if Browsable(false) not used #278
 
 ## [3.1.0]
 ### Added

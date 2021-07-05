@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>WinExe</OutputType>
+    <Description>PropertyGrid simple demo</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="SizeConfigurationDemo - Copy\**" />
+    <EmbeddedResource Remove="SizeConfigurationDemo - Copy\**" />
+    <None Remove="SizeConfigurationDemo - Copy\**" />
+    <Page Remove="SizeConfigurationDemo - Copy\**" />
+  </ItemGroup>
+ <ItemGroup>
+    <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj" />
+  </ItemGroup>
+</Project>

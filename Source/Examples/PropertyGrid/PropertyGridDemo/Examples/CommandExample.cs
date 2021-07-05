@@ -22,7 +22,6 @@ namespace ExampleLibrary
 
         public ICommand Command { get; }
 
-        public bool CanExecute { get; set; }
-    
+        public bool CanExecute { get; set; }    
     }
 }

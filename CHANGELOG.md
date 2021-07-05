@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - DataGrid: Update after pasting values #269
 - TreeListBox: Fix items being added under collapsed nodes #264
+- PropertyGrid: Fix PropertyGrid size #277
 
 ## [3.1.0]
 ### Added

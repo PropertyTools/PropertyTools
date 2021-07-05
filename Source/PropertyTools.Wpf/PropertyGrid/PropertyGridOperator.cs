@@ -193,6 +193,14 @@ namespace PropertyTools.Wpf
             {
                 properties = TypeDescriptor.GetProperties(instance);
             }
+            var attributes = properties.OfType<PropertyDescriptor>()
+                .Select(pd => Tuple.Create(pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>(), pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>()))
+                .ToArray();
+
+            bool isAnyFalse = attributes.Any(a => (a.Item1 != null && a.Item1.Browsable == false) || (a.Item2 != null && a.Item2.Browsable == false));
+            bool isAnyTrue = attributes.Any(a => (a.Item1 != null && a.Item1.Browsable) || (a.Item2 != null && a.Item2.Browsable));
+
+            var justTrue = isAnyTrue && !isAnyFalse;
 
             foreach (PropertyDescriptor pd in properties)
             {
@@ -201,17 +209,35 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                // Skip properties marked with [PropertyTools.DataAnnotations.Browsable(false)]
                 var ba = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
-                if (ba != null && !ba.Browsable)
-                {
-                    continue;
-                }
+                var ba2 = pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>();
 
-                // Skip properties marked with [System.ComponentModel.Browsable(false)]
-                if (!pd.IsBrowsable)
+                if (justTrue)
                 {
-                    continue;
+                    // Skip properties not marked with [Browsable()]
+                    if (ba == null && ba2 == null)
+                    {
+                        continue;
+                    }
+                    // Skip properties not marked with [Browsable(true)]
+                    if ((ba != null && !ba.Browsable) || (ba2 != null && !ba2.Browsable))
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    // Skip properties marked with [PropertyTools.DataAnnotations.Browsable(false)]
+                    if (ba != null && !ba.Browsable)
+                    {
+                        continue;
+                    }
+
+                    // Skip properties marked with [System.ComponentModel.Browsable(false)]
+                    if (!pd.IsBrowsable)
+                    {
+                        continue;
+                    }
                 }
 
                 // Read-only properties

@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Update after pasting values #269
 - TreeListBox: Fix items being added under collapsed nodes #264
 
+### Added
+- PropertyGrid: Add Button Control for properties inheriting from ICommand #279
+
 ## [3.1.0]
 ### Added
 - Support for .NET Core 3.0 #221

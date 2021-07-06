@@ -15,6 +15,11 @@ namespace PropertyTools.Wpf
     public enum CategoryControlType
     {
         /// <summary>
+        /// No surrounding control
+        /// </summary>
+        None,
+
+        /// <summary>
         /// Group boxes.
         /// </summary>
         GroupBox,

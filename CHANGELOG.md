@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - PropertyGrid: Add Button Control for properties inheriting from ICommand #279
+- PropertyGrid: Enhances options for PropertyGrid size #277
 
 ## [3.1.0]
 ### Added

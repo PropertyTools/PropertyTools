@@ -193,14 +193,8 @@ namespace PropertyTools.Wpf
             {
                 properties = TypeDescriptor.GetProperties(instance);
             }
-            var attributes = properties.OfType<PropertyDescriptor>()
-                .Select(pd => Tuple.Create(pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>(), pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>()))
-                .ToArray();
 
-            bool isAnyFalse = attributes.Any(a => (a.Item1 != null && a.Item1.Browsable == false) || (a.Item2 != null && a.Item2.Browsable == false));
-            bool isAnyTrue = attributes.Any(a => (a.Item1 != null && a.Item1.Browsable) || (a.Item2 != null && a.Item2.Browsable));
-
-            var justTrue = isAnyTrue && !isAnyFalse;
+            bool justTrue = AreBrowsableAttributesJustTrue(properties);
 
             foreach (PropertyDescriptor pd in properties)
             {
@@ -209,18 +203,18 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                var ba = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
-                var ba2 = pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>();
+                var browsableAttribute = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
+                var browsableAttributeTwo = pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>();
 
                 if (justTrue)
                 {
                     // Skip properties not marked with [Browsable()]
-                    if (ba == null && ba2 == null)
+                    if (browsableAttribute == null && browsableAttributeTwo == null)
                     {
                         continue;
                     }
                     // Skip properties not marked with [Browsable(true)]
-                    if ((ba != null && !ba.Browsable) || (ba2 != null && !ba2.Browsable))
+                    if ((browsableAttribute != null && !browsableAttribute.Browsable) || (browsableAttributeTwo != null && !browsableAttributeTwo.Browsable))
                     {
                         continue;
                     }
@@ -228,7 +222,7 @@ namespace PropertyTools.Wpf
                 else
                 {
                     // Skip properties marked with [PropertyTools.DataAnnotations.Browsable(false)]
-                    if (ba != null && !ba.Browsable)
+                    if (browsableAttribute != null && !browsableAttribute.Browsable)
                     {
                         continue;
                     }
@@ -254,6 +248,26 @@ namespace PropertyTools.Wpf
 
                 yield return this.CreatePropertyItem(pd, properties, instance);
             }
+        }
+
+        /// <summary>
+        /// Iterates over <see cref="PropertyDescriptorCollection"/> and determines whether the value of <see cref="System.ComponentModel.BrowsableAttribute"/>
+        /// or <see cref="DataAnnotations.BrowsableAttribute"/>, for those <see cref="PropertyDescriptor"/>s with such Attributes, is exclusively <see cref="true"/>
+        /// </summary>
+        /// <param name="propertyDescriptors">The collection of property descriptors.</param>
+        /// <returns>
+        /// A boolean
+        /// </returns>
+        protected bool AreBrowsableAttributesJustTrue(PropertyDescriptorCollection propertyDescriptors)
+        {
+            var attributes = propertyDescriptors.OfType<PropertyDescriptor>()
+              .Select(pd => Tuple.Create(pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>(), pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>()))
+              .ToArray();
+
+            bool isAnyFalse = attributes.Any(a => (a.Item1 != null && a.Item1.Browsable == false) || (a.Item2 != null && a.Item2.Browsable == false));
+            bool isAnyTrue = attributes.Any(a => (a.Item1 != null && a.Item1.Browsable) || (a.Item2 != null && a.Item2.Browsable));
+
+            return isAnyTrue && !isAnyFalse;
         }
 
         /// <summary>

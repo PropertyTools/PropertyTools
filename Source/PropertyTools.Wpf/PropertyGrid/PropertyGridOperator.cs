@@ -194,6 +194,8 @@ namespace PropertyTools.Wpf
                 properties = TypeDescriptor.GetProperties(instance);
             }
 
+            bool justTrue = AreBrowsableAttributesJustTrue(properties);
+
             foreach (PropertyDescriptor pd in properties)
             {
                 if (options.ShowDeclaredOnly && pd.ComponentType != instanceType)
@@ -201,17 +203,35 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                // Skip properties marked with [PropertyTools.DataAnnotations.Browsable(false)]
-                var ba = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
-                if (ba != null && !ba.Browsable)
-                {
-                    continue;
-                }
+                var browsableAttribute = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
+                var browsableAttributeTwo = pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>();
 
-                // Skip properties marked with [System.ComponentModel.Browsable(false)]
-                if (!pd.IsBrowsable)
+                if (justTrue)
                 {
-                    continue;
+                    // Skip properties not marked with [Browsable()]
+                    if (browsableAttribute == null && browsableAttributeTwo == null)
+                    {
+                        continue;
+                    }
+                    // Skip properties not marked with [Browsable(true)]
+                    if ((browsableAttribute != null && !browsableAttribute.Browsable) || (browsableAttributeTwo != null && !browsableAttributeTwo.Browsable))
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    // Skip properties marked with [PropertyTools.DataAnnotations.Browsable(false)]
+                    if (browsableAttribute != null && !browsableAttribute.Browsable)
+                    {
+                        continue;
+                    }
+
+                    // Skip properties marked with [System.ComponentModel.Browsable(false)]
+                    if (!pd.IsBrowsable)
+                    {
+                        continue;
+                    }
                 }
 
                 // Read-only properties
@@ -228,6 +248,26 @@ namespace PropertyTools.Wpf
 
                 yield return this.CreatePropertyItem(pd, properties, instance);
             }
+        }
+
+        /// <summary>
+        /// Iterates over <see cref="PropertyDescriptorCollection"/> and determines whether the value of <see cref="System.ComponentModel.BrowsableAttribute"/>
+        /// or <see cref="DataAnnotations.BrowsableAttribute"/>, for those <see cref="PropertyDescriptor"/>s with such Attributes, is exclusively <see cref="true"/>
+        /// </summary>
+        /// <param name="propertyDescriptors">The collection of property descriptors.</param>
+        /// <returns>
+        /// A boolean
+        /// </returns>
+        protected bool AreBrowsableAttributesJustTrue(PropertyDescriptorCollection propertyDescriptors)
+        {
+            var attributes = propertyDescriptors.OfType<PropertyDescriptor>()
+              .Select(pd => Tuple.Create(pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>(), pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>()))
+              .ToArray();
+
+            bool isAnyFalse = attributes.Any(a => (a.Item1 != null && a.Item1.Browsable == false) || (a.Item2 != null && a.Item2.Browsable == false));
+            bool isAnyTrue = attributes.Any(a => (a.Item1 != null && a.Item1.Browsable) || (a.Item2 != null && a.Item2.Browsable));
+
+            return isAnyTrue && !isAnyFalse;
         }
 
         /// <summary>

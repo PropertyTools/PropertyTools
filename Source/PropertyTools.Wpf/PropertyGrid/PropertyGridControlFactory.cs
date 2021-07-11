@@ -22,6 +22,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
+    using System.Windows.Input;
     using System.Windows.Media;
 
     /// <summary>
@@ -125,6 +126,11 @@ namespace PropertyTools.Wpf
             if (property.Is(typeof(ImageSource)) || property.DataTypes.Contains(DataType.ImageUrl))
             {
                 return this.CreateImageControl(property);
+            }
+
+            if (property.Is(typeof(ICommand)))
+            {
+                return this.CreateCommandControl(property);
             }
 
             if (property.DataTypes.Contains(DataType.Html))
@@ -294,15 +300,15 @@ namespace PropertyTools.Wpf
         /// <param name="tab">The tab.</param>
         /// <param name="errorInfo">The error information.</param>
         public virtual void UpdateTabForValidationResults(Tab tab, object errorInfo)
-        {            
-            if(errorInfo is INotifyDataErrorInfo ndei)
+        {
+            if (errorInfo is INotifyDataErrorInfo ndei)
             {
                 tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));
             }
-            else if(errorInfo is IDataErrorInfo dei)
+            else if (errorInfo is IDataErrorInfo dei)
             {
                 tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => !string.IsNullOrEmpty(dei[p.PropertyName])));
-            }            
+            }
         }
 
         /// <summary>
@@ -353,6 +359,29 @@ namespace PropertyTools.Wpf
 
             c.SetBinding(ToggleButton.IsCheckedProperty, property.CreateBinding());
             return c;
+        }
+
+        /// <summary>
+        /// Creates the checkbox control.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        protected virtual FrameworkElement CreateCommandControl(PropertyItem property)
+        {
+            int i = 0;
+            var button = new Button
+            {
+                Content = "Click",
+                Width = 100,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            button.Click += (s, e) => button.Content = ++i;
+            button.SetBinding(Button.CommandProperty, property.CreateOneWayBinding());
+            return button;
         }
 
         /// <summary>

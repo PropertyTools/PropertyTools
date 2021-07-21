@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows.Controls;
+
 namespace PropertyTools.Wpf
 {
     using System;
@@ -509,6 +511,40 @@ namespace PropertyTools.Wpf
                     var glc = new GridLengthConverter();
                     foreach (Column column in columns)
                     {
+                        IValueConverter converter = null;
+                        Type elementType = null;
+                        object toolTip = null;
+                        if (pi.ActualPropertyType.HasElementType)
+                            elementType = pi.ActualPropertyType.GetElementType();
+                        else if (typeof(ICollection).IsAssignableFrom(pi.ActualPropertyType))
+                        {
+                            try
+                            {
+                                Type[] genericArguments = pi.ActualPropertyType.GetGenericArguments();
+                                if (genericArguments.Length > 0)
+                                    elementType = genericArguments[0];
+                            }
+                            catch
+                            {
+                            }
+
+                        }
+
+                        if (elementType != null)
+                        {
+                            Type converterType = elementType.GetProperty(column.PropertyName)?.GetCustomAttribute<ConverterAttribute>()?.ConverterType;
+                            if (converterType != null)
+                            {
+                                converter = Activator.CreateInstance(converterType) as IValueConverter;
+                            }
+                            DataAnnotations.DescriptionAttribute descriptionAttribute = elementType.GetProperty(column.PropertyName)?.GetCustomAttribute<DataAnnotations.DescriptionAttribute>();
+                            if (descriptionAttribute != null)
+                            {
+                                toolTip = descriptionAttribute.Description;
+                            }
+
+                        }
+
                         var cd = new ColumnDefinition
                         {
                             PropertyName = column.PropertyName,
@@ -516,7 +552,9 @@ namespace PropertyTools.Wpf
                             FormatString = column.FormatString,
                             Width = (GridLength)(glc.ConvertFromInvariantString(column.Width) ?? GridLength.Auto),
                             IsReadOnly = column.IsReadOnly,
-                            HorizontalAlignment = StringUtilities.ToHorizontalAlignment(column.Alignment.ToString(CultureInfo.InvariantCulture))
+                            HorizontalAlignment = StringUtilities.ToHorizontalAlignment(column.Alignment.ToString(CultureInfo.InvariantCulture)),
+                            Converter = converter,
+                            Tooltip = toolTip,
                         };
 
                         if (column.ItemsSourcePropertyName != null)

@@ -527,7 +527,6 @@ namespace PropertyTools.Wpf
                             catch
                             {
                             }
-
                         }
 
                         if (elementType != null)
@@ -542,7 +541,6 @@ namespace PropertyTools.Wpf
                             {
                                 toolTip = descriptionAttribute.Description;
                             }
-
                         }
 
                         var cd = new ColumnDefinition

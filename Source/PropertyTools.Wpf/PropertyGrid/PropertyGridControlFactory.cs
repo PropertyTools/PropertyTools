@@ -362,7 +362,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates the checkbox control.
+        /// Creates the command control.
         /// </summary>
         /// <param name="property">The property.</param>
         /// <returns>
@@ -370,16 +370,14 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateCommandControl(PropertyItem property)
         {
-            int i = 0;
             var button = new Button
             {
-                Content = "Click",
+                Content = "Execute",
                 Width = 100,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Left
             };
 
-            button.Click += (s, e) => button.Content = ++i;
             button.SetBinding(Button.CommandProperty, property.CreateOneWayBinding());
             return button;
         }

@@ -539,12 +539,12 @@ namespace PropertyTools.Wpf
                                 {
                                     converter = Activator.CreateInstance(converterType) as IValueConverter;
                                 }
+                            }
 
-                                DataAnnotations.DescriptionAttribute descriptionAttribute = elementType.GetProperty(column.PropertyName)?.GetCustomAttribute<DataAnnotations.DescriptionAttribute>();
-                                if (descriptionAttribute != null)
-                                {
-                                    toolTip = descriptionAttribute.Description;
-                                }
+                            object[] descriptionAttributes = elementType.GetProperty(column.PropertyName)?.GetCustomAttributes(typeof(PropertyTools.DataAnnotations.DescriptionAttribute), true);
+                            if (descriptionAttributes != null && descriptionAttributes.Length > 0)
+                            {
+                                toolTip = ((DataAnnotations.DescriptionAttribute)descriptionAttributes[0]).Description;
                             }
                         }
 

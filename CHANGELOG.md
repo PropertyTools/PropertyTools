@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - DataGrid: Update after pasting values #269
 - TreeListBox: Fix items being added under collapsed nodes #264
+- PropertyGrid: Add IValueConverter and ToolTip lookups for property grid array/collection elements #285
 
 ### Added
 - PropertyGrid: Enhances options for PropertyGrid size #277

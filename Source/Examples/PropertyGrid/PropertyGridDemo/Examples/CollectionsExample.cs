@@ -118,6 +118,7 @@ namespace ExampleLibrary
 
         private double fraction;
 
+        [Description("Column header ToolTip for 'Name' column")]
         public string Name
         {
             get
@@ -130,6 +131,7 @@ namespace ExampleLibrary
             }
         }
 
+        [Description("Column header ToolTip for 'Number' column")]
         public int Number
         {
             get
@@ -142,6 +144,7 @@ namespace ExampleLibrary
             }
         }
 
+        [Description("Column header ToolTip for 'Fraction' column")]
         public double Fraction
         {
             get

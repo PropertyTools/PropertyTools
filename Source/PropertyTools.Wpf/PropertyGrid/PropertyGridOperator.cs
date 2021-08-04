@@ -531,15 +531,20 @@ namespace PropertyTools.Wpf
 
                         if (elementType != null)
                         {
-                            Type converterType = elementType.GetProperty(column.PropertyName)?.GetCustomAttribute<ConverterAttribute>()?.ConverterType;
-                            if (converterType != null)
+                            object[] converterAttributes = elementType.GetProperty(column.PropertyName)?.GetCustomAttributes(typeof(ConverterAttribute), true);
+                            if (converterAttributes != null && converterAttributes.Length > 0)
                             {
-                                converter = Activator.CreateInstance(converterType) as IValueConverter;
-                            }
-                            DataAnnotations.DescriptionAttribute descriptionAttribute = elementType.GetProperty(column.PropertyName)?.GetCustomAttribute<DataAnnotations.DescriptionAttribute>();
-                            if (descriptionAttribute != null)
-                            {
-                                toolTip = descriptionAttribute.Description;
+                                Type converterType = ((ConverterAttribute)converterAttributes[0]).ConverterType;
+                                if (converterType != null)
+                                {
+                                    converter = Activator.CreateInstance(converterType) as IValueConverter;
+                                }
+
+                                DataAnnotations.DescriptionAttribute descriptionAttribute = elementType.GetProperty(column.PropertyName)?.GetCustomAttribute<DataAnnotations.DescriptionAttribute>();
+                                if (descriptionAttribute != null)
+                                {
+                                    toolTip = descriptionAttribute.Description;
+                                }
                             }
                         }
 

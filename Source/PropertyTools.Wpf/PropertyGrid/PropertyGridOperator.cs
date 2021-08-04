@@ -16,7 +16,6 @@ namespace PropertyTools.Wpf
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using System.Linq;
-    using System.Reflection;
     using System.Windows;
     using System.Windows.Data;
 
@@ -177,6 +176,20 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual IEnumerable<PropertyItem> CreatePropertyItems(object instance, IPropertyGridOptions options)
         {
+            var properties = this.GetPropertyCollection(instance);
+            foreach (var pd in this.GetVisibleProperties(properties, instance, options))
+            {
+                yield return this.CreatePropertyItem(pd, properties, instance);
+            }
+        }
+
+        /// <summary>
+        /// Gets the property descriptor collection for the specified object.
+        /// </summary>
+        /// <param name="instance">The object instance.</param>
+        /// <returns>The property collection</returns>
+        protected virtual PropertyDescriptorCollection GetPropertyCollection(object instance)
+        {
             var instanceType = instance.GetType();
 
             // check if the MetadataTypeAttribute is set
@@ -194,44 +207,25 @@ namespace PropertyTools.Wpf
                 properties = TypeDescriptor.GetProperties(instance);
             }
 
-            bool justTrue = AreBrowsableAttributesJustTrue(properties);
+            return properties;
+        }
 
-            foreach (PropertyDescriptor pd in properties)
+        /// <summary>
+        /// Gets the visible properties from the specified property descriptor collection.
+        /// </summary>
+        /// <param name="properties">The property descriptor collection.</param>
+        /// <param name="instance">The object instance.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>A sequence of property descriptors.</returns>
+        protected IEnumerable<PropertyDescriptor> GetVisibleProperties(PropertyDescriptorCollection properties, object instance, IPropertyGridOptions options)
+        {
+            var instanceType = instance.GetType();
+
+            foreach (PropertyDescriptor pd in this.GetBrowsableProperties(properties))
             {
                 if (options.ShowDeclaredOnly && pd.ComponentType != instanceType)
                 {
                     continue;
-                }
-
-                var browsableAttribute = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
-                var browsableAttributeTwo = pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>();
-
-                if (justTrue)
-                {
-                    // Skip properties not marked with [Browsable()]
-                    if (browsableAttribute == null && browsableAttributeTwo == null)
-                    {
-                        continue;
-                    }
-                    // Skip properties not marked with [Browsable(true)]
-                    if ((browsableAttribute != null && !browsableAttribute.Browsable) || (browsableAttributeTwo != null && !browsableAttributeTwo.Browsable))
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    // Skip properties marked with [PropertyTools.DataAnnotations.Browsable(false)]
-                    if (browsableAttribute != null && !browsableAttribute.Browsable)
-                    {
-                        continue;
-                    }
-
-                    // Skip properties marked with [System.ComponentModel.Browsable(false)]
-                    if (!pd.IsBrowsable)
-                    {
-                        continue;
-                    }
                 }
 
                 // Read-only properties
@@ -246,7 +240,62 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                yield return this.CreatePropertyItem(pd, properties, instance);
+                yield return pd;
+            }
+        }
+
+        /// <summary>
+        /// Gets the visible properties from the specified property descriptor collection.
+        /// </summary>
+        /// <param name="properties">The property descriptor collection.</param>
+        /// <returns>A sequence of property descriptors.</returns>
+        protected IEnumerable<PropertyDescriptor> GetBrowsableProperties(PropertyDescriptorCollection properties)
+        {
+            bool justTrue = AreBrowsableAttributesJustTrue(properties);
+
+            foreach (PropertyDescriptor pd in properties)
+            {
+                var portableBrowsableAttribute = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
+                var systemBrowsableAttribute = pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>();
+
+                // If all BrowsableAttributes in the properties are set to true, the default will be changed to false, e.g. you need to opt-in.
+                if (justTrue)
+                {
+                    // Skip properties not marked with [Browsable()]
+                    if (portableBrowsableAttribute == null && systemBrowsableAttribute == null)
+                    {
+                        continue;
+                    }
+
+                    // Skip properties not marked with [Browsable(true)]
+                    if (portableBrowsableAttribute != null && !portableBrowsableAttribute.Browsable)
+                    {
+                        continue;
+                    }
+
+                    // Skip properties not marked with [Browsable(true)]
+                    if (systemBrowsableAttribute != null && !systemBrowsableAttribute.Browsable)
+                    {
+                        continue;
+                    }
+                }
+                // if any BrowsableAttribute in the properties are set to false, the default is true, e.g. you need to opt-out.
+                else
+                {
+                    // Skip properties marked with [PropertyTools.DataAnnotations.Browsable(false)]
+                    if (portableBrowsableAttribute != null && !portableBrowsableAttribute.Browsable)
+                    {
+                        continue;
+                    }
+
+                    // Skip properties marked with [System.ComponentModel.Browsable(false)]
+                    if (!pd.IsBrowsable)
+                    {
+                        continue;
+                    }
+                }
+
+                yield return pd;
             }
         }
 

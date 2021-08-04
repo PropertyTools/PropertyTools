@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Windows.Controls;
-
 namespace PropertyTools.Wpf
 {
     using System;
@@ -18,7 +16,6 @@ namespace PropertyTools.Wpf
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using System.Linq;
-    using System.Reflection;
     using System.Windows;
     using System.Windows.Data;
 

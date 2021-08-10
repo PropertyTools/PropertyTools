@@ -40,16 +40,19 @@
 
     <Style x:Key="TabHeaderErrorsStyle">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding HasWarnings}" Value="True">
+                <Setter Property="TextBlock.Foreground" Value="Orange"/>
+            </DataTrigger>
             <DataTrigger Binding="{Binding HasErrors}" Value="True">
                 <Setter Property="TextBlock.Foreground" Value="Red"/>
-            </DataTrigger>
+            </DataTrigger>            
         </Style.Triggers>
     </Style>
     
     <DataTemplate x:Key="TabHeaderTemplate" DataType="local:Tab">
         <StackPanel Orientation="Horizontal">
             <local:Bitmap Source="{Binding Icon}" Margin="0 0 4 0" Visibility="{Binding Icon, Converter={StaticResource NullToVisibilityConverter}}"/>
-            <TextBlock Text="{Binding Header}" Style="{StaticResource TabHeaderErrorsStyle}"/>
+            <TextBlock Text="{Binding Header}" Style="{StaticResource TabHeaderErrorsStyle}" />           
         </StackPanel>
     </DataTemplate>
 

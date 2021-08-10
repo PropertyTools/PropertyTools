@@ -16,7 +16,6 @@ namespace PropertyTools.Wpf
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using System.Linq;
-    using System.Reflection;
     using System.Windows;
     using System.Windows.Data;
 
@@ -177,6 +176,20 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual IEnumerable<PropertyItem> CreatePropertyItems(object instance, IPropertyGridOptions options)
         {
+            var properties = this.GetPropertyCollection(instance);
+            foreach (var pd in this.GetVisibleProperties(properties, instance, options))
+            {
+                yield return this.CreatePropertyItem(pd, properties, instance);
+            }
+        }
+
+        /// <summary>
+        /// Gets the property descriptor collection for the specified object.
+        /// </summary>
+        /// <param name="instance">The object instance.</param>
+        /// <returns>The property collection</returns>
+        protected virtual PropertyDescriptorCollection GetPropertyCollection(object instance)
+        {
             var instanceType = instance.GetType();
 
             // check if the MetadataTypeAttribute is set
@@ -194,22 +207,23 @@ namespace PropertyTools.Wpf
                 properties = TypeDescriptor.GetProperties(instance);
             }
 
-            foreach (PropertyDescriptor pd in properties)
+            return properties;
+        }
+
+        /// <summary>
+        /// Gets the visible properties from the specified property descriptor collection.
+        /// </summary>
+        /// <param name="properties">The property descriptor collection.</param>
+        /// <param name="instance">The object instance.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>A sequence of property descriptors.</returns>
+        protected IEnumerable<PropertyDescriptor> GetVisibleProperties(PropertyDescriptorCollection properties, object instance, IPropertyGridOptions options)
+        {
+            var instanceType = instance.GetType();
+
+            foreach (PropertyDescriptor pd in this.GetBrowsableProperties(properties))
             {
                 if (options.ShowDeclaredOnly && pd.ComponentType != instanceType)
-                {
-                    continue;
-                }
-
-                // Skip properties marked with [PropertyTools.DataAnnotations.Browsable(false)]
-                var ba = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
-                if (ba != null && !ba.Browsable)
-                {
-                    continue;
-                }
-
-                // Skip properties marked with [System.ComponentModel.Browsable(false)]
-                if (!pd.IsBrowsable)
                 {
                     continue;
                 }
@@ -226,8 +240,83 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                yield return this.CreatePropertyItem(pd, properties, instance);
+                yield return pd;
             }
+        }
+
+        /// <summary>
+        /// Gets the visible properties from the specified property descriptor collection.
+        /// </summary>
+        /// <param name="properties">The property descriptor collection.</param>
+        /// <returns>A sequence of property descriptors.</returns>
+        protected IEnumerable<PropertyDescriptor> GetBrowsableProperties(PropertyDescriptorCollection properties)
+        {
+            bool justTrue = AreBrowsableAttributesJustTrue(properties);
+
+            foreach (PropertyDescriptor pd in properties)
+            {
+                var portableBrowsableAttribute = pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>();
+                var systemBrowsableAttribute = pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>();
+
+                // If all BrowsableAttributes in the properties are set to true, the default will be changed to false, e.g. you need to opt-in.
+                if (justTrue)
+                {
+                    // Skip properties not marked with [Browsable()]
+                    if (portableBrowsableAttribute == null && systemBrowsableAttribute == null)
+                    {
+                        continue;
+                    }
+
+                    // Skip properties not marked with [Browsable(true)]
+                    if (portableBrowsableAttribute != null && !portableBrowsableAttribute.Browsable)
+                    {
+                        continue;
+                    }
+
+                    // Skip properties not marked with [Browsable(true)]
+                    if (systemBrowsableAttribute != null && !systemBrowsableAttribute.Browsable)
+                    {
+                        continue;
+                    }
+                }
+                // if any BrowsableAttribute in the properties are set to false, the default is true, e.g. you need to opt-out.
+                else
+                {
+                    // Skip properties marked with [PropertyTools.DataAnnotations.Browsable(false)]
+                    if (portableBrowsableAttribute != null && !portableBrowsableAttribute.Browsable)
+                    {
+                        continue;
+                    }
+
+                    // Skip properties marked with [System.ComponentModel.Browsable(false)]
+                    if (!pd.IsBrowsable)
+                    {
+                        continue;
+                    }
+                }
+
+                yield return pd;
+            }
+        }
+
+        /// <summary>
+        /// Iterates over <see cref="PropertyDescriptorCollection"/> and determines whether the value of <see cref="System.ComponentModel.BrowsableAttribute"/>
+        /// or <see cref="DataAnnotations.BrowsableAttribute"/>, for those <see cref="PropertyDescriptor"/>s with such Attributes, is exclusively <see cref="true"/>
+        /// </summary>
+        /// <param name="propertyDescriptors">The collection of property descriptors.</param>
+        /// <returns>
+        /// A boolean
+        /// </returns>
+        protected bool AreBrowsableAttributesJustTrue(PropertyDescriptorCollection propertyDescriptors)
+        {
+            var attributes = propertyDescriptors.OfType<PropertyDescriptor>()
+              .Select(pd => Tuple.Create(pd.GetFirstAttributeOrDefault<DataAnnotations.BrowsableAttribute>(), pd.GetFirstAttributeOrDefault<System.ComponentModel.BrowsableAttribute>()))
+              .ToArray();
+
+            bool isAnyFalse = attributes.Any(a => (a.Item1 != null && a.Item1.Browsable == false) || (a.Item2 != null && a.Item2.Browsable == false));
+            bool isAnyTrue = attributes.Any(a => (a.Item1 != null && a.Item1.Browsable) || (a.Item2 != null && a.Item2.Browsable));
+
+            return isAnyTrue && !isAnyFalse;
         }
 
         /// <summary>
@@ -509,6 +598,43 @@ namespace PropertyTools.Wpf
                     var glc = new GridLengthConverter();
                     foreach (Column column in columns)
                     {
+                        IValueConverter converter = null;
+                        Type elementType = null;
+                        object toolTip = null;
+                        if (pi.ActualPropertyType.HasElementType)
+                            elementType = pi.ActualPropertyType.GetElementType();
+                        else if (typeof(ICollection).IsAssignableFrom(pi.ActualPropertyType))
+                        {
+                            try
+                            {
+                                Type[] genericArguments = pi.ActualPropertyType.GetGenericArguments();
+                                if (genericArguments.Length > 0)
+                                    elementType = genericArguments[0];
+                            }
+                            catch
+                            {
+                            }
+                        }
+
+                        if (elementType != null)
+                        {
+                            object[] converterAttributes = elementType.GetProperty(column.PropertyName)?.GetCustomAttributes(typeof(ConverterAttribute), true);
+                            if (converterAttributes != null && converterAttributes.Length > 0)
+                            {
+                                Type converterType = ((ConverterAttribute)converterAttributes[0]).ConverterType;
+                                if (converterType != null)
+                                {
+                                    converter = Activator.CreateInstance(converterType) as IValueConverter;
+                                }
+                            }
+
+                            object[] descriptionAttributes = elementType.GetProperty(column.PropertyName)?.GetCustomAttributes(typeof(PropertyTools.DataAnnotations.DescriptionAttribute), true);
+                            if (descriptionAttributes != null && descriptionAttributes.Length > 0)
+                            {
+                                toolTip = ((DataAnnotations.DescriptionAttribute)descriptionAttributes[0]).Description;
+                            }
+                        }
+
                         var cd = new ColumnDefinition
                         {
                             PropertyName = column.PropertyName,
@@ -516,7 +642,9 @@ namespace PropertyTools.Wpf
                             FormatString = column.FormatString,
                             Width = (GridLength)(glc.ConvertFromInvariantString(column.Width) ?? GridLength.Auto),
                             IsReadOnly = column.IsReadOnly,
-                            HorizontalAlignment = StringUtilities.ToHorizontalAlignment(column.Alignment.ToString(CultureInfo.InvariantCulture))
+                            HorizontalAlignment = StringUtilities.ToHorizontalAlignment(column.Alignment.ToString(CultureInfo.InvariantCulture)),
+                            Converter = converter,
+                            Tooltip = toolTip,
                         };
 
                         if (column.ItemsSourcePropertyName != null)

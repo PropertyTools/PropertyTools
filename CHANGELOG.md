@@ -1,13 +1,31 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## Unreleased
+### Fixed
+- DataGrid: Update after pasting values #269
+- TreeListBox: Fix items being added under collapsed nodes #264
+
+### Added 
+- PropertyGrid: Only show properties that are adorned with Browsable(true) if Browsable(false) not used #278
+- PropertyGrid: Add Button Control for properties inheriting from ICommand #279
+- PropertyGrid: Enhances options for PropertyGrid size #277
+- PropertyGrid: Add IValueConverter and ToolTip lookups for property grid array/collection elements #285
+
+## [3.1.0]
 ### Added
-- Support for .NET Core 3.0
-- PropertyGrid: Support for items source in columns #232
+- Support for .NET Core 3.0 #221
+- DataGrid: Support for items source in columns #232
+- PropertyGrid: Make PropertyGrid extendable to support warning messages #248
+- PropertyGrid: Added property to set duration of tooltip #259
 
 ### Fixed
-- PropertyGrid: support for INotifyDataErrorInfo #226
+- DataGrid: Returning incorrect 'SelectedItems' when sorted #217
+- DataGrid: Fix auto width issue #224
+- PropertyGrid: Support for INotifyDataErrorInfo #226
+- DataGrid: Align DataGrid scrollbar code #238
+- DataGrid: Exception when sorting empty collection #240
+- LinkBlock: Fix exception #261
 
 ## [3.0.0]
 ### Changed

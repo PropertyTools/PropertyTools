@@ -34,17 +34,17 @@ namespace PropertyTools.Wpf
     public enum LabelWidthSharing
     {
         /// <summary>
-        /// The shared in tab.
+        /// Label widths are shared in each tab.
         /// </summary>
         SharedInTab,
 
         /// <summary>
-        /// The shared in group.
+        /// Label widths are shared in each group.
         /// </summary>
         SharedInGroup,
 
         /// <summary>
-        /// The not shared.
+        /// Label widths are not shared.
         /// </summary>
         NotShared
     }
@@ -202,6 +202,15 @@ namespace PropertyTools.Wpf
             typeof(bool),
             typeof(PropertyGrid),
             new UIPropertyMetadata(false));
+
+        /// <summary> 
+        /// Identifies the <see cref="ToolTipDuration"/> dependency property. 
+        /// </summary> 
+        public static readonly DependencyProperty ToolTipDurationProperty = DependencyProperty.Register(
+            nameof(ToolTipDuration),
+            typeof(int),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(5000));
 
         /// <summary>
         /// Identifies the <see cref="ControlFactory"/> dependency property.
@@ -372,6 +381,15 @@ namespace PropertyTools.Wpf
             typeof(ControlTemplate),
             typeof(PropertyGrid),
             new UIPropertyMetadata(null));
+
+        /// <summary>
+        /// Identifies the <see cref="VerticalPropertySpacing"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty VerticalPropertySpacingProperty = DependencyProperty.Register(
+            nameof(VerticalPropertySpacing),
+            typeof(int),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(2, AppearanceChanged));
 
         /// <summary>
         /// The panel part name.
@@ -649,6 +667,25 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(MoveFocusOnEnterProperty, value);
+            }
+        }
+
+        /// <summary> 
+        /// Gets or sets the duration of the tool tip. 
+        /// </summary> 
+        /// <value> 
+        /// The duration of the tool tip. 
+        /// </value> 
+        public int ToolTipDuration
+        {
+            get
+            {
+                return (int)this.GetValue(ToolTipDurationProperty);
+            }
+
+            set
+            {
+                this.SetValue(ToolTipDurationProperty, value);
             }
         }
 
@@ -973,6 +1010,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value of the vertical spacing between property items.
+        /// </summary>
+        /// <value><c>true</c> if read only properties should be shown; otherwise, <c>false</c> .</value>
+        public int VerticalPropertySpacing
+        {
+            get
+            {
+                return (int)this.GetValue(VerticalPropertySpacingProperty);
+            }
+
+            set
+            {
+                this.SetValue(VerticalPropertySpacingProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Creates the controls.
         /// </summary>
         /// <param name="instance">The instance.</param>
@@ -1012,17 +1066,9 @@ namespace PropertyTools.Wpf
                 {
                     Grid.SetIsSharedSizeScope(tabPanel, true);
                 }
-
                 var tabItem = new TabItem { Header = tab, Padding = new Thickness(4), Name = tab.Id ?? string.Empty };
 
-                if (instance is IDataErrorInfo dataErrorInfoInstance)
-                {
-                    tab.UpdateHasErrors(dataErrorInfoInstance);
-                }
-                else if (instance is INotifyDataErrorInfo notifyDataErrorInfoInstance)
-                {
-                    tab.UpdateHasErrors(notifyDataErrorInfoInstance);
-                }
+                this.ControlFactory.UpdateTabForValidationResults(tab, instance);
 
                 if (fillTab)
                 {
@@ -1243,7 +1289,7 @@ namespace PropertyTools.Wpf
 
             var propertyPanel = new StackPanelEx();
 
-            HeaderedContentControl groupContentControl = null;
+            ContentControl groupContentControl = null;
             switch (this.CategoryControlType)
             {
                 case CategoryControlType.GroupBox:
@@ -1259,19 +1305,23 @@ namespace PropertyTools.Wpf
                         Focusable = false
                     };
                     break;
+                case CategoryControlType.None:
+                    groupContentControl = new ContentControl();
+                    break;
             }
 
             if (groupContentControl != null)
             {
-                if (this.CategoryHeaderTemplate != null)
-                {
-                    groupContentControl.HeaderTemplate = this.CategoryHeaderTemplate;
-                    groupContentControl.Header = g;
-                }
-                else
-                {
-                    groupContentControl.Header = g.Header;
-                }
+                if (groupContentControl is HeaderedContentControl headeredContentControl)
+                    if (this.CategoryHeaderTemplate != null)
+                    {
+                        headeredContentControl.HeaderTemplate = this.CategoryHeaderTemplate;
+                        headeredContentControl.Header = g;
+                    }
+                    else
+                    {
+                        headeredContentControl.Header = g.Header;
+                    }
 
                 // Hide the group control if all child properties are invisible.
                 groupContentControl.SetBinding(
@@ -1332,7 +1382,7 @@ namespace PropertyTools.Wpf
             var propertyPanel = new Grid();
             if (!pi.FillTab)
             {
-                propertyPanel.Margin = new Thickness(2);
+                propertyPanel.Margin = new Thickness(VerticalPropertySpacing);
             }
 
             var labelColumn = new System.Windows.Controls.ColumnDefinition
@@ -1360,17 +1410,20 @@ namespace PropertyTools.Wpf
 
                 if (instance is IDataErrorInfo || instance is INotifyDataErrorInfo)
                 {
+                    PropertyControlFactoryOptions options = new PropertyControlFactoryOptions
+                    {
+                        ValidationErrorTemplate = this.ValidationErrorTemplate,
+                        ValidationErrorStyle = this.ValidationErrorStyle
+                    };
+
                     if (this.ValidationTemplate != null)
                     {
                         Validation.SetErrorTemplate(propertyControl, this.ValidationTemplate);
                     }
 
-                    if (this.ValidationErrorStyle != null)
-                    {
-                        propertyControl.Style = this.ValidationErrorStyle;
-                    }
+                    this.ControlFactory.SetValidationErrorStyle(propertyControl, options);
 
-                    errorControl = CreateErrorControl(pi, instance, tab);
+                    errorControl = this.ControlFactory.CreateErrorControl(pi, instance, tab, options);
 
                     // Add a row with the error control to the panel
                     // The error control is placed in column 1
@@ -1565,6 +1618,7 @@ namespace PropertyTools.Wpf
                                 if (!string.IsNullOrWhiteSpace(pi.Description))
                                 {
                                     descriptionIconImage.ToolTip = this.CreateToolTip(pi.Description);
+                                    ToolTipService.SetShowDuration(descriptionIconImage, this.ToolTipDuration);
                                 }
                             }
                         }
@@ -1617,70 +1671,6 @@ namespace PropertyTools.Wpf
                     IsEnabledProperty,
                     new Binding(pi.RadioDescriptor.Name) { Converter = new EnumToBooleanConverter() { EnumType = pi.RadioDescriptor.PropertyType }, ConverterParameter = pi.RadioValue });
             }
-        }
-
-        /// <summary>
-        /// Creates the error control.
-        /// </summary>
-        private ContentControl CreateErrorControl(PropertyItem pi, object instance, Tab tab)
-        {
-            var dataErrorInfoInstance = instance as IDataErrorInfo;
-            var notifyDataErrorInfoInstance = instance as INotifyDataErrorInfo;
-
-            var errorControl = new ContentControl
-            {
-                ContentTemplate = this.ValidationErrorTemplate,
-                Focusable = false
-            };
-            IValueConverter errorConverter;
-            string propertyPath;
-            object source = null;
-            if (dataErrorInfoInstance != null)
-            {
-                errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
-                propertyPath = pi.PropertyName;
-                source = instance;
-            }
-            else
-            {
-                errorConverter = new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
-                propertyPath = nameof(tab.HasErrors);
-                source = tab;
-                notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
-                {
-                    tab.UpdateHasErrors(notifyDataErrorInfoInstance);
-                };
-            }
-
-            var visibilityBinding = new Binding(propertyPath)
-            {
-                Converter = errorConverter,
-                NotifyOnTargetUpdated = true,
-#if !NET40
-                ValidatesOnNotifyDataErrors = false,
-#endif
-                Source = source,
-            };
-
-            var contentBinding = new Binding(propertyPath)
-            {
-                Converter = errorConverter,
-#if !NET40
-                ValidatesOnNotifyDataErrors = false,
-#endif
-                Source = source,
-            };
-
-            errorControl.SetBinding(VisibilityProperty, visibilityBinding);
-
-            // When the visibility of the error control is changed, updated the HasErrors of the tab
-            errorControl.TargetUpdated += (s, e) =>
-            {
-                if (dataErrorInfoInstance != null)
-                    tab.UpdateHasErrors(dataErrorInfoInstance);
-            };
-            errorControl.SetBinding(ContentControl.ContentProperty, contentBinding);
-            return errorControl;
         }
 
         /// <summary>

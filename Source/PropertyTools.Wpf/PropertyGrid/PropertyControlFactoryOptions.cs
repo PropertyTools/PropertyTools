@@ -9,6 +9,8 @@
 
 namespace PropertyTools.Wpf
 {
+    using System.Windows;
+
     /// <summary>
     /// Represents options for the property control factory.
     /// </summary>
@@ -19,5 +21,21 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The limit. If the number of values exceeds the limit, a selector control will be used.</value>
         public int EnumAsRadioButtonsLimit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the validation error template.
+        /// </summary>
+        /// <value>
+        /// The validation error template.
+        /// </value>
+        public DataTemplate ValidationErrorTemplate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the validation error style.
+        /// </summary>
+        /// <value>
+        /// The validation error style.
+        /// </value>
+        public Style ValidationErrorStyle { get; set; }
     }
 }

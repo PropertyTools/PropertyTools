@@ -225,7 +225,10 @@ namespace PropertyTools.Wpf
                     // lookup the items that has been cleared from the item
                     var items = this.itemToParentMap.Where(kvp => kvp.Value == item).Select(kvp => kvp.Key).ToList();
                     this.RemoveItems(items);
-                    this.InsertItems(item, children, 0);
+                    if (this.isExpandedMap[item])
+                    {
+                        this.InsertItems(item, children, 0);
+                    }
                     break;
             }
 
@@ -282,6 +285,11 @@ namespace PropertyTools.Wpf
             if (children == null)
             {
                 throw new InvalidOperationException();
+            }
+
+            if (children.Count == 0)
+            {
+                return;
             }
 
             this.RemoveItems(children);

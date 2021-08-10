@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PropertyGridDemo"
         xmlns:pt="http://propertytools.org/wpf"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
         Title="PropertyGrid Demo" Height="720" Width="960">
     <Window.DataContext>
         <local:MainViewModel/>
@@ -24,6 +25,9 @@
 
         <Style x:Key="TabHeaderErrorsStyle">
             <Style.Triggers>
+                <DataTrigger Binding="{Binding HasWarnings}" Value="True">
+                    <Setter Property="TextBlock.Foreground" Value="Orange"/>
+                </DataTrigger>
                 <DataTrigger Binding="{Binding HasErrors}" Value="True">
                     <Setter Property="TextBlock.Foreground" Value="Red"/>
                 </DataTrigger>
@@ -106,7 +110,25 @@
         </ControlTemplate>
 
         <pt:ValidationErrorsToStringConverter x:Key="ValiationErrorsToStringConverter" />
-
+        
+        <DataTemplate x:Key="ValidationErrorTemplate">
+            <TextBlock TextWrapping="Wrap" Text="{Binding ErrorMessage}" >
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="Red"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Severity}" Value="{x:Static local:Severity.Warning}">
+                                <Setter Property="Foreground" Value="Orange"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Severity}" Value="{x:Null}">
+                                <Setter Property="Foreground" Value="Red"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </DataTemplate>
+        
         <DataTemplate x:Key="ValidationErrorTemplate1">
             <Grid Margin="0 4 0 4">
                 <Grid.ColumnDefinitions>
@@ -133,6 +155,20 @@
                 <pt:EnumMenuItem Header="CategoryControlType" SelectedValue="{Binding CategoryControlType, ElementName=PropertyGrid1}"/>
                 <pt:EnumMenuItem Header="TabStripPlacement" SelectedValue="{Binding TabStripPlacement, ElementName=PropertyGrid1}"/>
                 <pt:EnumMenuItem Header="DescriptionIconAlignment" SelectedValue="{Binding DescriptionIconAlignment, ElementName=PropertyGrid1}"/>
+                <Label>Vertical Spacing</Label>
+                <pt:SpinControl x:Name="VerticalPropertySpacing"   Minimum="0" Maximum="100"  Height="30" Width="50"  Margin="20,0">
+                    <pt:SpinControl.Value>
+                        <system:Int32>2</system:Int32>
+                    </pt:SpinControl.Value>
+                    <TextBox Text="{Binding ElementName=VerticalPropertySpacing, Path=Value}"></TextBox>
+                </pt:SpinControl>
+                <Label>Font Size</Label>
+                <pt:SpinControl x:Name="FontSizeControl"  Minimum="1.0" Maximum="40.0"  Height="30" Width="50"  Margin="20,0">
+                    <pt:SpinControl.Value>
+                        <system:Double>10.0</system:Double>
+                    </pt:SpinControl.Value>
+                    <TextBox Text="{Binding ElementName=FontSizeControl, Path=Value}"></TextBox>
+                </pt:SpinControl>
             </MenuItem>
         </Menu>
         <Grid>
@@ -154,7 +190,10 @@
                 CategoryHeaderTemplate="{StaticResource HeaderTemplate1}"
                 TabHeaderTemplate="{StaticResource HeaderTemplate2}"
                 TabPageHeaderTemplate="{StaticResource PageHeaderTemplate1}"
-                SelectedObject="{Binding SelectedItem}" Margin="8" DescriptionIcon="Images\lightbulb.png">
+                SelectedObject="{Binding SelectedItem}" Margin="8" DescriptionIcon="Images\lightbulb.png"
+                FontSize="{Binding ElementName=FontSizeControl, Path=Value}"
+                VerticalPropertySpacing="{Binding ElementName=VerticalPropertySpacing, Path=Value}">
+       
             </pt:PropertyGrid>
             <TextBox AcceptsReturn="True" IsReadOnly="True" Grid.Column="2" Padding="8" Text="{Binding Output, Mode=OneWay}" BorderThickness="1 0 0 0"/>
             <GridSplitter Grid.Column="0" ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="8" Margin="-4,0,0,0" Background="Transparent"/>

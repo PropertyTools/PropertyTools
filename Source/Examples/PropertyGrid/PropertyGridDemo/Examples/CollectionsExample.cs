@@ -45,7 +45,8 @@ namespace ExampleLibrary
         public IEnumerable<Column> CollectionItemsSourcePropertyColumns { get; } = new[]
         {
             new Column("Name", "Name", null, "2*", 'L', itemsSourcePropertyName: nameof(AvailableNames)),
-            new Column("Fraction", "%", "P2", "1*", 'R')
+            new Column("Fraction", "%", "P2", "1*", 'R'),
+            new Column("Number", "Number As Hex", null, "1*", 'R')
         };
 
         [Category("Lists|List of items with ItemsSource at property")]
@@ -73,7 +74,8 @@ namespace ExampleLibrary
         public IEnumerable<Column> Collection2Columns { get; } = new[]
         {
             new Column("Name", "Name", null, "2*", 'L'),
-            new Column("Fraction", "%", "P2", "1*", 'R')
+            new Column("Fraction", "%", "P2", "1*", 'R'),
+            new Column("Number", "Number As Hex", null, "1*", 'R')
         };
 
         [Category("Custom|Specified columns")]
@@ -118,6 +120,7 @@ namespace ExampleLibrary
 
         private double fraction;
 
+        [Description("Column header ToolTip for 'Name' column")]
         public string Name
         {
             get
@@ -130,6 +133,8 @@ namespace ExampleLibrary
             }
         }
 
+        [Description("Column header ToolTip for 'Number' column")]
+        [Converter(typeof(HexConverter))]
         public int Number
         {
             get
@@ -142,6 +147,7 @@ namespace ExampleLibrary
             }
         }
 
+        [Description("Column header ToolTip for 'Fraction' column")]
         public double Fraction
         {
             get

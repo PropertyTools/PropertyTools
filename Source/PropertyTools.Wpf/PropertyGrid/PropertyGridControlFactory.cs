@@ -12,6 +12,7 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.IO;
@@ -21,6 +22,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
+    using System.Windows.Input;
     using System.Windows.Media;
 
     /// <summary>
@@ -126,6 +128,11 @@ namespace PropertyTools.Wpf
                 return this.CreateImageControl(property);
             }
 
+            if (property.Is(typeof(ICommand)))
+            {
+                return this.CreateCommandControl(property);
+            }
+
             if (property.DataTypes.Contains(DataType.Html))
             {
                 return this.CreateHtmlControl(property);
@@ -210,6 +217,101 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Creates the error control.
+        /// </summary>
+        public virtual ContentControl CreateErrorControl(PropertyItem pi, object instance, Tab tab, PropertyControlFactoryOptions options)
+        {
+            var dataErrorInfoInstance = instance as IDataErrorInfo;
+            var notifyDataErrorInfoInstance = instance as INotifyDataErrorInfo;
+
+            var errorControl = new ContentControl
+            {
+                ContentTemplate = options.ValidationErrorTemplate,
+                Focusable = false
+            };
+            IValueConverter errorConverter;
+            string propertyPath;
+            object source = null;
+            if (dataErrorInfoInstance != null)
+            {
+                errorConverter = new DataErrorInfoConverter(dataErrorInfoInstance, pi.PropertyName);
+                propertyPath = pi.PropertyName;
+                source = instance;
+            }
+            else
+            {
+                errorConverter = new NotifyDataErrorInfoConverter(notifyDataErrorInfoInstance, pi.PropertyName);
+                propertyPath = nameof(tab.HasErrors);
+                source = tab;
+                notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
+                {
+                    tab.UpdateHasErrors(notifyDataErrorInfoInstance);
+                };
+            }
+
+            var visibilityBinding = new Binding(propertyPath)
+            {
+                Converter = errorConverter,
+                NotifyOnTargetUpdated = true,
+#if !NET40
+                ValidatesOnNotifyDataErrors = false,
+#endif
+                Source = source,
+            };
+
+            var contentBinding = new Binding(propertyPath)
+            {
+                Converter = errorConverter,
+#if !NET40
+                ValidatesOnNotifyDataErrors = false,
+#endif
+                Source = source,
+            };
+
+            errorControl.SetBinding(UIElement.VisibilityProperty, visibilityBinding);
+
+            // When the visibility of the error control is changed, updated the HasErrors of the tab
+            errorControl.TargetUpdated += (s, e) =>
+            {
+                if (dataErrorInfoInstance != null)
+                    tab.UpdateHasErrors(dataErrorInfoInstance);
+            };
+            errorControl.SetBinding(ContentControl.ContentProperty, contentBinding);
+            return errorControl;
+        }
+
+        /// <summary>
+        /// sets error style for control
+        /// </summary>
+        /// <param name="control"></param>
+        /// <param name="options"></param>
+        public virtual void SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options)
+        {
+            if (options.ValidationErrorStyle != null)
+            {
+                control.Style = options.ValidationErrorStyle;
+            }
+            //return control;
+        }
+
+        /// <summary>
+        /// Updates the tab for validation results.
+        /// </summary>
+        /// <param name="tab">The tab.</param>
+        /// <param name="errorInfo">The error information.</param>
+        public virtual void UpdateTabForValidationResults(Tab tab, object errorInfo)
+        {
+            if (errorInfo is INotifyDataErrorInfo ndei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));
+            }
+            else if (errorInfo is IDataErrorInfo dei)
+            {
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => !string.IsNullOrEmpty(dei[p.PropertyName])));
+            }
+        }
+
+        /// <summary>
         /// Converts the horizontal alignment.
         /// </summary>
         /// <param name="a">The alignment to convert.</param>
@@ -257,6 +359,27 @@ namespace PropertyTools.Wpf
 
             c.SetBinding(ToggleButton.IsCheckedProperty, property.CreateBinding());
             return c;
+        }
+
+        /// <summary>
+        /// Creates the command control.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        protected virtual FrameworkElement CreateCommandControl(PropertyItem property)
+        {
+            var button = new Button
+            {
+                Content = "Execute",
+                Width = 100,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            button.SetBinding(Button.CommandProperty, property.CreateOneWayBinding());
+            return button;
         }
 
         /// <summary>
@@ -388,7 +511,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates the default control.
+        /// Creates the default control (text box).
         /// </summary>
         /// <param name="property">The property.</param>
         /// <returns>
@@ -396,7 +519,6 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateDefaultControl(PropertyItem property)
         {
-            // TextBox is the default control
             var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
             var c = new TextBoxEx
             {
@@ -420,7 +542,6 @@ namespace PropertyTools.Wpf
 
             if (property.IsReadOnly)
             {
-                // c.Opacity = 0.8;
                 c.Foreground = Brushes.RoyalBlue;
             }
 
@@ -446,7 +567,6 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateDictionaryControl(PropertyItem property)
         {
-            // todo
             var c = new ComboBox();
             c.SetBinding(ItemsControl.ItemsSourceProperty, property.CreateBinding());
             return c;
@@ -557,6 +677,7 @@ namespace PropertyTools.Wpf
                 UseOpenDialog = property.IsFileOpenDialog,
                 FileDialogService = this.FileDialogService
             };
+
             if (property.RelativePathDescriptor != null)
             {
                 c.SetBinding(FilePicker.BasePathProperty, new Binding(property.RelativePathDescriptor.Name));
@@ -740,11 +861,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateSecurePasswordControl(PropertyItem property)
         {
-            // todoox
             var c = new PasswordBox();
 
             // PasswordHelper.SetAttach(b, true);
             // b.SetBinding(PasswordHelper.PasswordProperty, pi.CreateBinding());
+
             return c;
         }
 

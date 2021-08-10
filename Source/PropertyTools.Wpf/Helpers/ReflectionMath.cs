@@ -10,7 +10,9 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Addition, subtraction and multiplication for all kinds of objects (by reflection to invoke the operators).
@@ -90,7 +92,68 @@ namespace PropertyTools.Wpf
                 return true;
             }
 
+            if (o1 is string && o2 is double)
+            {
+                var o11 = Regex.Match((string)o1, @"\d+$").Value;
+                var o22 = Regex.Match(o2.ToString(), @"\d+$").Value;
+
+                if (int.TryParse(o11, out int o111) && double.TryParse(o22, out double o222))
+                {
+                    return TryAdd(o111, o222, out result);
+                }
+
+            }
+
+
+
             return TryInvoke("op_Addition", o1, o2, out result);
+        }
+
+        public static bool GetString_and_numbers(string input, out string str, out double num)
+        {
+            str = string.Empty;
+            num = 0;
+            bool boolresult = false;
+
+            var stack = new Stack<char>();
+
+            for (var i = input.Length - 1; i >= 0; i--)
+            {
+                if (!char.IsNumber(input[i]))
+                {
+                    break;
+                }
+
+                stack.Push(input[i]);
+            }
+
+
+            var list = new List<char>();
+
+            for (var i = 0; i < input.Length - stack.Count; i++)
+            {
+                list.Add(input[i]);
+            }
+
+            var result = new string(stack.ToArray());
+            if (result.Length > 0)
+            {
+                boolresult = true;
+                num = double.Parse(result);
+            }
+
+            str = new string(list.ToArray());
+
+            return boolresult;
+        }
+
+        //return TryAdd(o111, o222, out result);
+
+        public static object trySomething(object o1, object o2, Func<object, object, object> action)
+        {
+
+
+            return null;
         }
 
         /// <summary>
@@ -136,6 +199,19 @@ namespace PropertyTools.Wpf
                 return true;
             }
 
+
+            if (o1 is string && o2 is string)
+            {
+                var o11 = Regex.Match((string)o1, @"\d+$").Value;
+                var o22 = Regex.Match((string)o2, @"\d+$").Value;
+
+                if (int.TryParse(o11, out int o111) && int.TryParse(o22, out int o222))
+                {
+                    return TryMultiply(o111, o222, out result);
+                }
+
+            }
+
             return TryInvoke("op_Multiply", o1, o2, out result);
         }
 
@@ -160,6 +236,20 @@ namespace PropertyTools.Wpf
             {
                 result = (int)o1 - (int)o2;
                 return true;
+            }
+
+
+
+            if (o1 is string && o2 is string)
+            {
+                var o11 = Regex.Match((string)o1, @"\d+$").Value;
+                var o22 = Regex.Match((string)o2, @"\d+$").Value;
+
+                if (int.TryParse(o11, out int o111) && int.TryParse(o22, out int o222))
+                {
+                    return TrySubtract(o111, o222, out result);
+                }
+
             }
 
             return TryInvoke("op_Subtraction", o1, o2, out result);

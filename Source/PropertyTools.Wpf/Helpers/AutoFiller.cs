@@ -207,6 +207,59 @@ namespace PropertyTools.Wpf
                 }
 
                 object tmp1, tmp2, tmp3;
+
+
+                if (v1 is string && v2 is string)
+                {
+                    if (ReflectionMath.GetString_and_numbers((string)v1, out string v1str, out double v1double) && ReflectionMath.GetString_and_numbers((string)v2, out string v2str, out double v2double))
+                    {
+                        if (v1str.Equals(v2str))
+                        {
+                            
+                            ReflectionMath.TrySubtract(v2, v1, out tmp1);
+                            if (tmp1 == null)
+                            {
+                                result = null;
+                                return false;
+                            }
+
+                            ReflectionMath.TryMultiply(tmp1, f, out tmp2);
+                            if (tmp2 == null)
+                            {
+                                result = null;
+                                return false;
+                            }
+
+                            ReflectionMath.TryAdd(v1, tmp2, out tmp3);
+
+                            result = v2str + tmp3.ToString();
+
+                            return true;
+                        }
+                    }
+                }
+
+                
+
+
+                //if (o1 is string && o2 is double)
+                //{
+                //    var o11 = Regex.Match((string)o1, @"\d+$").Value;
+                //    var o22 = Regex.Match(o2.ToString(), @"\d+$").Value;
+
+                //    GetString_and_numbers((string)o1, out string outstr, out double outdouble);
+
+
+
+                //    if (int.TryParse(o11, out int o111) && double.TryParse(o22, out double o222))
+                //    {
+                //        return TryAdd(o111, o222, out result);
+                //    }
+
+                //}
+
+
+                
                 ReflectionMath.TrySubtract(v2, v1, out tmp1);
                 if (tmp1 == null)
                 {

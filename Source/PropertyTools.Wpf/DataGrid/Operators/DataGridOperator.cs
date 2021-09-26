@@ -519,7 +519,6 @@ namespace PropertyTools.Wpf
 
                         return true;
                     }
-
                     catch (Exception)
                     {
                     }

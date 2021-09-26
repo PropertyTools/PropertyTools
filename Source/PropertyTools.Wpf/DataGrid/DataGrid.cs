@@ -2137,7 +2137,34 @@ namespace PropertyTools.Wpf
                 {
                     var cell = new CellRef(range.TopRow + i, range.LeftColumn + j);
                     var value = values != null ? values[i, j] : this.GetCellValue(cell);
-                    result[i, j] = this.FormatCellString(cell, value);
+
+                    var pd = this.GetPropertyDefinition(cell);
+                    try
+                    {
+                        if (pd?.Converter != null && value != null)
+                        {
+                            bool canUseConverter = false;
+                            object[] supportedConversions = pd.Converter.GetType().GetCustomAttributes(typeof(System.Windows.Data.ValueConversionAttribute), true);
+                            foreach (var supportedConversion in supportedConversions)
+                            {
+                                if (((System.Windows.Data.ValueConversionAttribute)supportedConversion).SourceType != value.GetType() ||
+                                    ((System.Windows.Data.ValueConversionAttribute)supportedConversion).TargetType != typeof(string)) continue;
+                                canUseConverter = true;
+                                break;
+                            }
+
+                            if (canUseConverter)
+                            {
+                                result[i, j] = (string) pd.Converter.Convert(value, typeof(string), null, System.Globalization.CultureInfo.CurrentCulture);
+                                continue;
+                            }
+                        }
+                        result[i, j] = this.FormatCellString(cell, value);
+                    }
+                    catch
+                    {
+                        result[i, j] = this.FormatCellString(cell, value);
+                    }
                 }
             }
 

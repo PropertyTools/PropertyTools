@@ -476,6 +476,7 @@ namespace PropertyTools.Wpf
             }
 
             var item = this.GetItem(cell);
+            object convertedValue;
 
             var pd = this.GetPropertyDefinition(cell);
             if (pd == null)
@@ -489,7 +490,42 @@ namespace PropertyTools.Wpf
             }
 
             var targetType = this.GetPropertyType(cell);
-            if (!TryConvert(value, targetType, out var convertedValue))
+            if (pd.Converter != null && value != null && targetType != value.GetType())
+            {
+                bool canUseConverter = false;
+                object[] supportedConversions = pd.Converter.GetType().GetCustomAttributes(typeof(System.Windows.Data.ValueConversionAttribute), true);
+                foreach (var supportedConversion in supportedConversions)
+                {
+                    if (((System.Windows.Data.ValueConversionAttribute) supportedConversion).SourceType != targetType || 
+                        ((System.Windows.Data.ValueConversionAttribute) supportedConversion).TargetType != value.GetType()) continue;
+                    canUseConverter = true;
+                    break;
+                }
+                try
+                {
+                    if (canUseConverter)
+                    {
+                        convertedValue = pd.Converter.ConvertBack(value, targetType, null, CultureInfo.CurrentCulture);
+                        var descriptor = this.GetPropertyDescriptor(pd, item, null);
+                        if (descriptor != null)
+                        {
+                            descriptor.SetValue(item, convertedValue);
+                        }
+                        else
+                        {
+                            this.SetValue(cell, convertedValue);
+                        }
+
+                        return true;
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+
+            if (!TryConvert(value, targetType, out convertedValue))
             {
                 return false;
             }

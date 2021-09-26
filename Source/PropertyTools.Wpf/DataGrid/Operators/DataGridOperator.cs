@@ -496,14 +496,15 @@ namespace PropertyTools.Wpf
                 object[] supportedConversions = pd.Converter.GetType().GetCustomAttributes(typeof(System.Windows.Data.ValueConversionAttribute), true);
                 foreach (var supportedConversion in supportedConversions)
                 {
-                    if (((System.Windows.Data.ValueConversionAttribute) supportedConversion).SourceType != targetType || 
+                    if (((System.Windows.Data.ValueConversionAttribute) supportedConversion).SourceType != targetType ||
                         ((System.Windows.Data.ValueConversionAttribute) supportedConversion).TargetType != value.GetType()) continue;
                     canUseConverter = true;
                     break;
                 }
-                try
+
+                if (canUseConverter)
                 {
-                    if (canUseConverter)
+                    try
                     {
                         convertedValue = pd.Converter.ConvertBack(value, targetType, null, CultureInfo.CurrentCulture);
                         var descriptor = this.GetPropertyDescriptor(pd, item, null);
@@ -518,10 +519,10 @@ namespace PropertyTools.Wpf
 
                         return true;
                     }
-                }
-                catch
-                {
 
+                    catch (Exception)
+                    {
+                    }
                 }
             }
 

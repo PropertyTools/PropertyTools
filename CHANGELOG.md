@@ -6,7 +6,9 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Update after pasting values #269
 - TreeListBox: Fix items being added under collapsed nodes #264
 
-### Added
+### Added 
+- PropertyGrid: Only show properties that are adorned with Browsable(true) if Browsable(false) not used #278
+- PropertyGrid: Add Button Control for properties inheriting from ICommand #279
 - PropertyGrid: Enhances options for PropertyGrid size #277
 - PropertyGrid: Add IValueConverter and ToolTip lookups for property grid array/collection elements #285
 

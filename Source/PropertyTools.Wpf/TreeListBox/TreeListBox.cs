@@ -510,7 +510,19 @@ namespace PropertyTools.Wpf
             var oldTreeSource = e.OldValue as IEnumerable;
             if (oldTreeSource != null)
             {
-                this.SelectedItems.Clear();
+                foreach (var item in oldTreeSource)
+                {
+                    var container = this.GetContainerFromItem(item);
+                    if (container == null)
+                    {
+                        continue;
+                    }
+
+                    if (container.IsSelected)
+                    {
+                        this.SelectedItems.Remove(item);
+                    }
+                }
             }
 
             this.ClearItems();

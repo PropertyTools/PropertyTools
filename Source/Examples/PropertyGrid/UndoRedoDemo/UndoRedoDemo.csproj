@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.Net.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
     <Description>PropertyGrid undo/redo demo</Description>
@@ -10,7 +10,7 @@
     <ProjectReference Include="..\..\..\PropertyTools\PropertyTools.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Caliburn.Micro" Version="3.2.0" />
-    <PackageReference Include="Expression.Blend.Sdk" Version="1.0.2" />
+    <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
+    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.103" />
   </ItemGroup>
 </Project>

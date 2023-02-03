@@ -43,6 +43,7 @@
 
 - Microsoft .NET 4.5.2 or later
 - Microsoft .NET Core 3.0
+- Microsoft .NET 6
 
 ### Build requirements
 

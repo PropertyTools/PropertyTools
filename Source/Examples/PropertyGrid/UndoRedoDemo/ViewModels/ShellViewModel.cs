@@ -215,9 +215,9 @@ namespace UndoRedoDemo
         /// <summary>
         /// Exits the application.
         /// </summary>
-        public void Exit()
+        public async void Exit()
         {
-            this.TryClose();
+            await this.TryCloseAsync();
         }
 
         /// <summary>

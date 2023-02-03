@@ -16,9 +16,9 @@ namespace UndoRedoDemo
             this.Initialize();
         }
 
-        protected override void OnStartup(object sender, StartupEventArgs e)
+        protected override async void OnStartup(object sender, StartupEventArgs e)
         {
-            this.DisplayRootViewForAsync<ShellViewModel>();
+            await this.DisplayRootViewForAsync<ShellViewModel>();
         }
     }
 }

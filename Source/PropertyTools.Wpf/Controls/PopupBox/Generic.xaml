@@ -37,7 +37,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <themes:ButtonChrome Name="Chrome" Background="{TemplateBinding Background}"
+                    <local:ButtonChrome Name="Chrome" Background="{TemplateBinding Background}"
                               BorderBrush="{TemplateBinding BorderBrush}" RenderMouseOver="{TemplateBinding IsMouseOver}"
                               RenderPressed="{TemplateBinding IsPressed}" SnapsToDevicePixels="true">
                         <Grid Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"
@@ -45,7 +45,7 @@
                             <Path Name="Arrow" Margin="3,1,0,0" Fill="Black" Data="{StaticResource DownArrowGeometry}"
                     HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
-                    </themes:ButtonChrome>
+                    </local:ButtonChrome>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
                             <Setter TargetName="Chrome" Property="RenderPressed" Value="true" />
@@ -87,7 +87,7 @@
                         <Popup Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" Placement="Bottom" Margin="1"
                    IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                    PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                            <themes:SystemDropShadowChrome Name="Shdw" Color="Transparent"
+                            <local:SystemDropShadowChrome Name="Shdw" Color="Transparent"
                                             MinWidth="{Binding ElementName=MainGrid,Path=ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                 <Border x:Name="DropDownBorder" BorderThickness="1"
                         BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
@@ -106,7 +106,7 @@
                                       ContentTemplate="{TemplateBinding PopupTemplate}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                     </Grid>
                                 </Border>
-                            </themes:SystemDropShadowChrome>
+                            </local:SystemDropShadowChrome>
                         </Popup>
                         <ToggleButton Grid.ColumnSpan="2" Background="{TemplateBinding Background}"
                           BorderBrush="{TemplateBinding BorderBrush}" Style="{StaticResource ComboBoxReadonlyToggleButton}"

@@ -138,7 +138,7 @@ SnapsToDevicePixels="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <themes:ButtonChrome Name="Chrome" Background="{TemplateBinding Background}"
+                    <local:ButtonChrome Name="Chrome" Background="{TemplateBinding Background}"
                               BorderBrush="{TemplateBinding BorderBrush}" RenderMouseOver="{TemplateBinding IsMouseOver}"
                               RenderPressed="{TemplateBinding IsPressed}" SnapsToDevicePixels="true">
                         <Grid Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"
@@ -146,7 +146,7 @@ SnapsToDevicePixels="True" />
                             <Path Name="Arrow" Margin="3,1,0,0" Fill="Black" Data="{StaticResource DownArrowGeometry}"
                     HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
-                    </themes:ButtonChrome>
+                    </local:ButtonChrome>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
                             <Setter TargetName="Chrome" Property="RenderPressed" Value="true" />
@@ -559,7 +559,7 @@ Color="{Binding RightColor,RelativeSource={RelativeSource TemplatedParent}}" Off
                         <Popup Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" Placement="Bottom"
                    Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                    PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                            <themes:SystemDropShadowChrome Name="Shdw" Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
+                            <local:SystemDropShadowChrome Name="Shdw" Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
                             <Border x:Name="DropDownBorder" BorderThickness="1"
                         BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
                         Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
@@ -568,7 +568,7 @@ Color="{Binding RightColor,RelativeSource={RelativeSource TemplatedParent}}" Off
                                           SelectedColor="{Binding SelectedColor, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
 
                             </Border>
-                            </themes:SystemDropShadowChrome>
+                            </local:SystemDropShadowChrome>
                         </Popup>
 
                         <!-- The Popup dropdown button (arrow) -->

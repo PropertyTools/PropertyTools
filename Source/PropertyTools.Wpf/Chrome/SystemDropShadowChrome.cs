@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // https://github.com/dotnet/wpf
 
-namespace Microsoft.Windows.Themes
+namespace PropertyTools.Wpf
 {
     using System;
     using System.Windows;
@@ -14,6 +14,10 @@ namespace Microsoft.Windows.Themes
     /// This element is a theme-specific type that is used as an optimization
     /// for a common complex rendering used in Aero
     /// </summary>
+    /// <remarks>
+    /// This sealed class is copied from Microsoft.Windows.Themes to be used
+    /// in the <see cref="ColorPicker"/> and <see cref="PopupBox"/> controls.
+    /// </remarks>
     public sealed class SystemDropShadowChrome : Decorator
     {
         /// <summary>

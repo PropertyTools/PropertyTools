@@ -11,10 +11,4 @@
   <ItemGroup>
     <Resource Include="Examples.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\LinkBlockPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>PropertyTools.snk</AssemblyOriginatorKeyFile>
     <PackageIcon>icon.png</PackageIcon>
@@ -13,6 +13,6 @@
     <None Include="PropertyTools.snk" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Images\icon.png" Pack="true" PackagePath="\"/>
+    <None Include="..\..\Images\icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

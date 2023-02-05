@@ -41,10 +41,9 @@
 
 ### Supported frameworks
 
-- Microsoft .NET 4.5.2 or later
-- Microsoft .NET Core 3.0
+- Microsoft .NET 4.6.2 or later
 - Microsoft .NET 6
 
-### Build requirements
+### Supported build environments
 
-- Visual Studio 2019 16.3 or later
+- Visual Studio 2022

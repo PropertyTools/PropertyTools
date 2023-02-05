@@ -1,0 +1,38 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Execute unit tests
+      run: dotnet test Source\PropertyTools.sln
+
+    - name: Restore the application
+      run: msbuild Source\PropertyTools.sln /t:Restore /p:Configuration=Release
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: nupkgs
+        path: Source/**/*.nupkg

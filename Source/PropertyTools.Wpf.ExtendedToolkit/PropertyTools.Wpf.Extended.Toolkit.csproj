@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.Net.Sdk">
   <PropertyGroup>
     <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
-    <TargetFrameworks>net45;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net6.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <PackageIconUrl>https://raw.githubusercontent.com/PropertyTools/PropertyTools/master/Images/icon.png</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>
@@ -14,7 +14,7 @@
     <Version>0.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\Images\icon.png" Pack="true" PackagePath="\"/>
+    <None Include="..\..\Images\icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PropertyTools.Wpf\PropertyTools.Wpf.csproj" />

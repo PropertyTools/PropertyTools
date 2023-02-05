@@ -8,10 +8,16 @@ All notable changes to this project will be documented in this file.
 - Update namespace for ButtonChrome and SystemDropShadowChrome controls #316
 
 ### Added 
+- Support for .NET 6 - Windows #317
+- Support for .NET 4.6.2 #317
 - PropertyGrid: Only show properties that are adorned with Browsable(true) if Browsable(false) not used #278
 - PropertyGrid: Add Button Control for properties inheriting from ICommand #279
 - PropertyGrid: Enhances options for PropertyGrid size #277
 - PropertyGrid: Add IValueConverter and ToolTip lookups for property grid array/collection elements #285
+
+### Removed
+- Support for .NET 4.5.2 #317
+- Support for .NET Core App 3.0 #317
 
 ## [3.1.0]
 ### Added

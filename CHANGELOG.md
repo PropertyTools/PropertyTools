@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 ### Fixed
 - DataGrid: Update after pasting values #269
+- DataGrid: Deleting last item in a sorted data grid causes an exception #321
 - TreeListBox: Fix items being added under collapsed nodes #264
 - Update namespace for ButtonChrome and SystemDropShadowChrome controls #316
 

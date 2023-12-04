@@ -38,7 +38,7 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Build using dotnet
-      run: dotnet build Source\PropertyTools.Wpf\PropertyTools.Wpf.csproj -c Release
+      run: dotnet build Source/PropertyTools.Wpf/PropertyTools.Wpf.csproj -c Release
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2

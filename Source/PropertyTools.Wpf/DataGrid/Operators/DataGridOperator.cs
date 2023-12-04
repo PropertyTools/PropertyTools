@@ -309,10 +309,9 @@ namespace PropertyTools.Wpf
             }
 
             // get the item at the specified index in the collection view
-            // TODO: find a better way to do this
             if (!this.TryGetByIndex(collectionView, index, out var item))
             {
-                throw new InvalidOperationException("The collection view is probably out of sync. (GetItemsSourceIndex)");
+                return -1;
             }
 
             // get the index of the item in the items source

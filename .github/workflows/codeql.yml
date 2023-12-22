@@ -11,7 +11,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: 'ubuntu-latest'
+    runs-on: windows-latest
     timeout-minutes: 360
     permissions:
       actions: read
@@ -37,8 +37,13 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
+    - name: Restore using dotnet
+      working-directory: ./Source
+      run: dotnet restore PropertyTools.Wpf
+
     - name: Build using dotnet
-      run: dotnet build Source/PropertyTools.Wpf/PropertyTools.Wpf.csproj -c Release
+      working-directory: ./Source
+      run: dotnet build --no-restore PropertyTools.Wpf -c Release -f net6.0-windows
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2

@@ -41,7 +41,7 @@
 ### Supported frameworks
 
 - Microsoft .NET 4.6.2 or later
-- Microsoft .NET 6
+- Microsoft .NET 8
 
 ### Supported build environments
 

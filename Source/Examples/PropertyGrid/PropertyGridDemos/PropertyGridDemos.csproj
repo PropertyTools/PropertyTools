@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.Net.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PropertyTools.Wpf.ExtendedToolkit\PropertyTools.Wpf.Extended.Toolkit.csproj" />
+    <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj" />
+    <ProjectReference Include="..\..\..\PropertyTools\PropertyTools.csproj" />
+  </ItemGroup>
+</Project>

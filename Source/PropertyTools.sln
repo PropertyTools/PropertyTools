@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf", "PropertyTools.Wpf\PropertyTools.Wpf.csproj", "{7168F82F-288A-42C4-9EB1-FBBE5112F211}"
 EndProject
@@ -55,6 +55,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 Solution Items", "1 Solut
 		..\LICENSE = ..\LICENSE
 		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyGridDemos", "Examples\PropertyGrid\PropertyGridDemos\PropertyGridDemos.csproj", "{5D3A347A-FB11-4B2E-9473-BB67D00923A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -122,6 +124,10 @@ Global
 		{E8093378-7B09-4210-91EA-BDE29A2570A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8093378-7B09-4210-91EA-BDE29A2570A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8093378-7B09-4210-91EA-BDE29A2570A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D3A347A-FB11-4B2E-9473-BB67D00923A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3A347A-FB11-4B2E-9473-BB67D00923A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3A347A-FB11-4B2E-9473-BB67D00923A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3A347A-FB11-4B2E-9473-BB67D00923A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,5 +149,6 @@ Global
 		{CDBBC579-4958-42DB-9BD6-F0D0EC441106} = {495DE1C6-8AD0-4119-9279-02B5C2499D1F}
 		{E81E0120-1158-4EFE-B443-CF8B70C4F190} = {B179EEDB-BEBB-417C-A870-782A4B66F522}
 		{E8093378-7B09-4210-91EA-BDE29A2570A8} = {6E342E58-E11E-4C26-819D-4D0328920770}
+		{5D3A347A-FB11-4B2E-9473-BB67D00923A5} = {495DE1C6-8AD0-4119-9279-02B5C2499D1F}
 	EndGlobalSection
 EndGlobal

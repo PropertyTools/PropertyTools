@@ -39,5 +39,4 @@
 ### Supported frameworks
 
 - Microsoft .NET Framework 4.6.2
-- Microsoft .NET 6
 - Microsoft .NET 8

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.Net.Sdk">
   <PropertyGroup>
     <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
-    <TargetFrameworks>net462;net6.0-windows;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net8.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <PackageIconUrl>https://raw.githubusercontent.com/PropertyTools/PropertyTools/master/Images/icon.png</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>

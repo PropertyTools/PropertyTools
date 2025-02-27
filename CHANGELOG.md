@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 - Support for .NET 4.5.2 #317
 - Support for .NET Core App 3.0 #317
 - AppVeyor build #362
+- Support for .NET 6 #368
 
 ## [3.1.0]
 ### Added

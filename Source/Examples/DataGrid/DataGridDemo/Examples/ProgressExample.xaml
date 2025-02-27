@@ -1,0 +1,47 @@
+﻿<Window x:Class="DataGridDemo.ProgressExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:dataGridDemo="clr-namespace:DataGridDemo"
+        Title="Progress bar and status" Height="450" Width="450">
+    <Window.DataContext>
+        <dataGridDemo:ProgressExampleViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Command="{Binding StartCommand}" Margin="4" Padding="4">Start</Button>
+            <Button Command="{Binding StopCommand}" Margin="4" Padding="4">Stop</Button>
+            <Button Command="{Binding AddCommand}" Margin="4" Padding="4">Add 10</Button>
+        </StackPanel>
+        <p:DataGrid Grid.Row="1" ItemsSource="{Binding Items}" ControlFactory="{Binding ControlFactory}" CellDefinitionFactory="{Binding CellDefinitionFactory}">
+            <p:DataGrid.ColumnDefinitions>
+
+                <!-- using the "ProgressAttribute", easy to use in many places. Implemented in the "factories" -->
+                <p:ColumnDefinition PropertyName="Progress" Header="Progress"/>
+
+                <!-- no attribute on this one, it is just a double -->
+                <p:ColumnDefinition PropertyName="ProgressValue" FormatString="P1" Header="Progress (value)"/>
+
+                <!-- using a template column, avoiding all the factories... -->
+                <p:TemplateColumnDefinition PropertyName="ProgressValue" Header="Progress (by template)">
+                    <p:TemplateColumnDefinition.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <ProgressBar Value="{Binding Mode=OneWay}" Minimum="0" Maximum="1" Margin="4,2,4,2"/>
+                                <TextBlock Text="{Binding Mode=OneWay, StringFormat={}{0:p1}}" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </p:TemplateColumnDefinition.CellTemplate>
+                </p:TemplateColumnDefinition>
+
+                <!-- just a status message -->
+                <p:ColumnDefinition PropertyName="Status" Header="Status"/>
+
+            </p:DataGrid.ColumnDefinitions>
+        </p:DataGrid>
+    </Grid>
+</Window>

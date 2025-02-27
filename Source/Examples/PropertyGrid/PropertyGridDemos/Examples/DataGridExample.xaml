@@ -1,0 +1,14 @@
+﻿<Window x:Class="PropertyGridDemos.DataGridExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:d="clr-namespace:PropertyGridDemos"
+        Title="Observable collection" Height="600" Width="600">
+    <Window.DataContext>
+        <d:DataGridExampleViewModel/>
+    </Window.DataContext>
+    <Grid Margin="4">
+        <p:PropertyGrid SelectedObject="{Binding SelectedObject}">
+        </p:PropertyGrid>
+    </Grid>
+</Window>

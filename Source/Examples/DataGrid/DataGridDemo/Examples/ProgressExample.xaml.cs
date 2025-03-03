@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using PropertyTools;
+using PropertyTools.DataAnnotations;
 using PropertyTools.Wpf;
 
 using System;
@@ -50,8 +51,8 @@ namespace DataGridDemo
             new ProgressItem() { Progress = 1 } ,
         };
 
-        public ProgressControlFactory ControlFactory { get; } = new ProgressControlFactory();
-        public ProgressCellDefinitionFactory CellDefinitionFactory { get; } = new ProgressCellDefinitionFactory();
+        public MyProgressControlFactory ControlFactory { get; } = new MyProgressControlFactory();
+        public MyProgressCellDefinitionFactory CellDefinitionFactory { get; } = new MyProgressCellDefinitionFactory();
 
         public ProgressExampleViewModel()
         {
@@ -78,11 +79,12 @@ namespace DataGridDemo
 
             this.timer = new System.Windows.Threading.DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(0.3);
+            var r = new Random();
             timer.Tick += (s, e) =>
             {
                 foreach (var item in this.Items)
                 {
-                    item.Progress = Math.Min(1, item.Progress + 0.01);
+                    item.Progress = Math.Min(1, item.Progress + r.NextDouble() * 0.02);
                 }
             };
 
@@ -100,28 +102,28 @@ namespace DataGridDemo
             this.timer = null;
         }
 
-        public class ProgressCellDefinitionFactory : CellDefinitionFactory
+        public class MyProgressCellDefinitionFactory : CellDefinitionFactory
         {
-            public ProgressCellDefinitionFactory()
+            public MyProgressCellDefinitionFactory()
             {
             }
 
             protected override CellDefinition CreateCellDefinitionOverride(CellDescriptor d)
             {
-                if (d.Attributes.OfType<ProgressAttribute>().Any())
+                if (d.Attributes.OfType<MyProgressAttribute>().Any())
                 {
-                    return new ProgressCellDefinition();
+                    return new MyProgressCellDefinition();
                 }
 
                 return base.CreateCellDefinitionOverride(d);
             }
         }
 
-        public class ProgressControlFactory : DataGridControlFactory
+        public class MyProgressControlFactory : DataGridControlFactory
         {
             protected override FrameworkElement CreateDisplayControlOverride(CellDefinition d)
             {
-                if (d is ProgressCellDefinition)
+                if (d is MyProgressCellDefinition)
                 {
                     return CreateProgressControl(d);
                 }
@@ -134,14 +136,21 @@ namespace DataGridDemo
                 var c = new ProgressBar
                 {
                     Minimum = 0,
-                    Maximum = 1
+                    Maximum = 1,
+                    Margin = new Thickness(4),
+                    Foreground = System.Windows.Media.Brushes.OrangeRed
                 };
                 c.SetBinding(ProgressBar.ValueProperty, this.CreateBinding(d));
                 return c;
             }
         }
 
-        public class ProgressCellDefinition : CellDefinition
+        public class MyProgressCellDefinition : CellDefinition
+        {
+        }
+
+        [AttributeUsage(AttributeTargets.Property)]
+        public class MyProgressAttribute : Attribute
         {
         }
 
@@ -150,7 +159,7 @@ namespace DataGridDemo
             private double progress;
             private string status;
 
-            [Progress]
+            [Progress] // PropertyTools data annotation attribute
             public double Progress
             {
                 get => this.progress;
@@ -159,9 +168,17 @@ namespace DataGridDemo
                     if (this.SetValue(ref this.progress, value))
                     {
                         this.RaisePropertyChanged(nameof(ProgressValue));
+                        this.RaisePropertyChanged(nameof(MyProgress));
                         this.Status = GetStatusText(this.progress);
                     }
                 }
+            }
+
+            [MyProgress] // custom attribute
+            public double MyProgress
+            {
+                get => this.Progress;
+                set => this.Progress = value;
             }
 
             public double ProgressValue { get => this.progress; set => this.Progress = value; }
@@ -180,11 +197,6 @@ namespace DataGridDemo
                 if (progress > 0) return "Just started";
                 return "Not started";
             }
-        }
-
-        [AttributeUsage(AttributeTargets.Property)]
-        public class ProgressAttribute : Attribute
-        {
         }
     }
 }

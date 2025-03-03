@@ -20,8 +20,11 @@
         <p:DataGrid Grid.Row="1" ItemsSource="{Binding Items}" ControlFactory="{Binding ControlFactory}" CellDefinitionFactory="{Binding CellDefinitionFactory}">
             <p:DataGrid.ColumnDefinitions>
 
-                <!-- using the "ProgressAttribute", easy to use in many places. Implemented in the "factories" -->
+                <!-- using the "ProgressAttribute", Implemented in the DataGrid default "factories" -->
                 <p:ColumnDefinition PropertyName="Progress" Header="Progress"/>
+
+                <!-- using your own custom "MyProgressAttribute". Must be implemented in the custom "factories" -->
+                <p:ColumnDefinition PropertyName="MyProgress" Header="MyProgress"/>
 
                 <!-- no attribute on this one, it is just a double -->
                 <p:ColumnDefinition PropertyName="ProgressValue" FormatString="P1" Header="Progress (value)"/>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyTools.Wpf", "PropertyTools.Wpf\PropertyTools.Wpf.csproj", "{7168F82F-288A-42C4-9EB1-FBBE5112F211}"
 EndProject
@@ -51,12 +51,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 Solution Items", "1 Solut
 		..\.gitignore = ..\.gitignore
 		..\AUTHORS = ..\AUTHORS
 		..\CHANGELOG.md = ..\CHANGELOG.md
+		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
 		..\CONTRIBUTORS = ..\CONTRIBUTORS
 		..\LICENSE = ..\LICENSE
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PropertyGridDemos", "Examples\PropertyGrid\PropertyGridDemos\PropertyGridDemos.csproj", "{5D3A347A-FB11-4B2E-9473-BB67D00923A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 Actions", "1 Actions", "{2595E8B4-76BC-4918-B7EB-E29F21098158}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
+		..\.github\workflows\codeql.yml = ..\.github\workflows\codeql.yml
+		..\.github\workflows\devskim.yml = ..\.github\workflows\devskim.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

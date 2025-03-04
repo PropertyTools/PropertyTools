@@ -35,7 +35,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
 
     - name: Restore using dotnet
       working-directory: ./Source
@@ -43,7 +43,7 @@ jobs:
 
     - name: Build using dotnet
       working-directory: ./Source
-      run: dotnet build --no-restore PropertyTools.Wpf -c Release -f net6.0-windows
+      run: dotnet build --no-restore PropertyTools.Wpf -c Release -f net8.0-windows
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2

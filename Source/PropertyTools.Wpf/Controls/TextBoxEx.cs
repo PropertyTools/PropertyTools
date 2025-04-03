@@ -137,7 +137,8 @@ namespace PropertyTools.Wpf
                             if (b != null)
                             {
                                 // update the source (do not update the target)
-                                b.UpdateSource();
+                                if (!PropertyGridControlFactory.CanDiscard)
+                                    b.UpdateSource();
                             }
                         }
 

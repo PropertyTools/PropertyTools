@@ -31,6 +31,11 @@ namespace PropertyTools.Wpf
     public class PropertyGridControlFactory : IPropertyGridControlFactory
     {
         /// <summary>
+        /// Can discard changes of PropertyGrid
+        /// </summary>
+        public static bool CanDiscard = false;
+
+        /// <summary>
         /// The font family converter
         /// </summary>
         private static readonly FontFamilyConverter FontFamilyConverter = new FontFamilyConverter();
@@ -525,6 +530,7 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateDefaultControl(PropertyItem property)
         {
             var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
+            if (CanDiscard) trigger = UpdateSourceTrigger.Explicit;
             var c = new TextBoxEx
             {
                 AcceptsReturn = property.AcceptsReturn,
@@ -588,6 +594,7 @@ namespace PropertyTools.Wpf
         {
             var c = new DirectoryPicker { FolderBrowserDialogService = this.FolderBrowserDialogService };
             var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
+            if (CanDiscard) trigger = UpdateSourceTrigger.Explicit;
             c.SetBinding(DirectoryPicker.DirectoryProperty, property.CreateBinding(trigger));
             return c;
         }
@@ -698,6 +705,7 @@ namespace PropertyTools.Wpf
             }
 
             var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
+            if (CanDiscard) trigger = UpdateSourceTrigger.Explicit;
             c.SetBinding(FilePicker.FilePathProperty, property.CreateBinding(trigger));
             return c;
         }
@@ -919,6 +927,7 @@ namespace PropertyTools.Wpf
             g.Children.Add(s);
 
             var trigger = property.AutoUpdateText ? UpdateSourceTrigger.PropertyChanged : UpdateSourceTrigger.Default;
+            if (CanDiscard) trigger = UpdateSourceTrigger.Explicit;
             var c = new TextBoxEx { IsReadOnly = property.Descriptor.IsReadOnly };
 
             var formatString = property.FormatString;

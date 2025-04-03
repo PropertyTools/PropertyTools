@@ -975,6 +975,42 @@ namespace PropertyTools.Wpf
             }
         }
 
+
+        /// <summary>
+        /// Save changes of the PropertyGrid
+        /// </summary>
+        public void SaveChanges()
+        {
+            if (PropertyGridControlFactory.CanDiscard)
+            {
+                var tabItems = this.tabControl.Items.Cast<TabItem>().ToArray();
+                foreach (var tabItem in tabItems)
+                {
+                    if (tabItem.Content is DependencyObject dependencyObj)
+                    {
+                        SaveOrDiscarcChanges(dependencyObj, true);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Discard changes of the PropertyGrid
+        /// </summary>
+        public void DiscardChanges()
+        {
+            if (PropertyGridControlFactory.CanDiscard)
+            {
+                var tabItems = this.tabControl.Items.Cast<TabItem>().ToArray();
+                foreach (var tabItem in tabItems)
+                {
+                    if (tabItem.Content is DependencyObject dependencyObj)
+                    {
+                        SaveOrDiscarcChanges(dependencyObj, false);
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Gets or sets a value indicating whether to show declared properties only.
         /// </summary>
@@ -1916,6 +1952,40 @@ namespace PropertyTools.Wpf
                 {
                     this.SelectedTabId = tabItems[tabIndex].Name;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Save or Discard changes of the PropertyGrid
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="saveChanges"></param>
+        private void SaveOrDiscarcChanges(DependencyObject obj, bool saveChanges)
+        {
+            var localValueEnumerator = obj.GetLocalValueEnumerator();
+
+            while (localValueEnumerator.MoveNext())
+            {
+                var entry = localValueEnumerator.Current;
+
+                var binding = BindingOperations.GetBindingExpression(obj, entry.Property);
+
+                if (binding != null && binding.ParentBinding is Binding bind)
+                {
+                    if (bind.UpdateSourceTrigger == UpdateSourceTrigger.Explicit)
+                    {
+                        if (saveChanges)
+                            binding.UpdateSource();
+                        else
+                            binding.UpdateTarget();
+                    }
+                }
+            }
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                SaveOrDiscarcChanges(child, saveChanges); 
             }
         }
     }

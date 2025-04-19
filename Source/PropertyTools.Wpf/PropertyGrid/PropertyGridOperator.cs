@@ -16,6 +16,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Data;
 
@@ -499,6 +500,31 @@ namespace PropertyTools.Wpf
                 pi.Converter = new TimeSpanToStringConverter();
                 pi.ConverterParameter = pi.FormatString;
             }
+
+            if (pi.Descriptor.PropertyType.IsEnum)
+            {
+                pi.EnumDisplayNames = Enum.GetValues(pi.Descriptor.PropertyType).Cast<object>()
+                   .ToDictionary(x => x,
+                    x =>
+                    {
+                        var memberInfo = pi.Descriptor.PropertyType.GetMember(x.ToString(), BindingFlags.Public | BindingFlags.Static)
+                            .First();
+
+                        var displayNameAttribute1 = memberInfo.GetCustomAttribute(typeof(System.ComponentModel.DisplayNameAttribute))
+                               as System.ComponentModel.DisplayNameAttribute;
+                        var displayNameAttribute2 = memberInfo.GetCustomAttribute(typeof(PropertyTools.DataAnnotations.DisplayNameAttribute))
+                               as PropertyTools.DataAnnotations.DisplayNameAttribute;
+                        var descriptionAttribute1 = memberInfo.GetCustomAttribute(typeof(System.ComponentModel.DescriptionAttribute))
+                               as System.ComponentModel.DescriptionAttribute;
+
+                        var enumMemberDisplayName = displayNameAttribute1?.DisplayName
+                           ?? displayNameAttribute2?.DisplayName
+                           ?? descriptionAttribute1?.Description
+                           ?? x.ToString();
+
+                        return GetLocalizedString(enumMemberDisplayName, pi.Descriptor.PropertyType);
+                    });
+            }
         }
 
         /// <summary>
@@ -638,7 +664,7 @@ namespace PropertyTools.Wpf
                         var cd = new ColumnDefinition
                         {
                             PropertyName = column.PropertyName,
-                            Header = column.Header,
+                            Header = this.GetLocalizedString(column.Header, declaringType: null),
                             FormatString = column.FormatString,
                             Width = (GridLength)(glc.ConvertFromInvariantString(column.Width) ?? GridLength.Auto),
                             IsReadOnly = column.IsReadOnly,

@@ -648,14 +648,16 @@ namespace PropertyTools.Wpf
 
                 case DataAnnotations.SelectorStyle.ComboBox:
                     {
-                        var c = new ComboBox { ItemsSource = values };
+                        var c = new ComboBox();
+                        InitEnumSelector(c, property, values);
                         c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
                         return c;
                     }
 
                 case DataAnnotations.SelectorStyle.ListBox:
                     {
-                        var c = new ListBox { ItemsSource = values };
+                        var c = new ListBox();
+                        InitEnumSelector(c, property, values);
                         c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
                         return c;
                     }
@@ -663,6 +665,29 @@ namespace PropertyTools.Wpf
                 default:
                     return null;
             }
+        }
+
+        protected virtual void InitEnumSelector(Selector c, PropertyItem property, object[] values)
+        {
+            c.ItemsSource = values.Select(x =>
+            {
+                return new ItemsControlItem
+                {
+                    Value = x,
+                    Text = property.EnumDisplayNames?.TryGetValue(x, out string enumMemberDisplayText) == true 
+                        ? enumMemberDisplayText 
+                        : x.ToString()
+                };
+            }).ToList();
+
+            c.DisplayMemberPath = nameof(ItemsControlItem.Text);
+            c.SelectedValuePath = nameof(ItemsControlItem.Value);
+        }
+
+        public class ItemsControlItem
+        {
+            public string Text { get; set; }
+            public object Value { get; set; }
         }
 
         /// <summary>

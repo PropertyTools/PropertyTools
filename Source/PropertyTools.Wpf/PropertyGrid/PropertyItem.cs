@@ -162,6 +162,11 @@ namespace PropertyTools.Wpf
         public string DisplayName { get; set; }
 
         /// <summary>
+        /// Gets or sets the dictionary of Enum values to display names
+        /// </summary>
+        public Dictionary<object, string> EnumDisplayNames { get; set; }
+
+        /// <summary>
         /// Gets or sets the file path default extension.
         /// </summary>
         /// <value>The file path default extension.</value>

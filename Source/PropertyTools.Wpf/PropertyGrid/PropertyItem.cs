@@ -167,6 +167,14 @@ namespace PropertyTools.Wpf
         public Dictionary<object, string> EnumDisplayNames { get; set; }
 
         /// <summary>
+        /// Gets or sets the display text for NULL item in Combobox and Listbox
+        /// </summary>
+        /// <remarks>
+        /// Applicable for Nullable&lt;EnumType&gt; property only
+        /// </remarks>
+        public string EnumDisplayNull { get; set; }
+
+        /// <summary>
         /// Gets or sets the file path default extension.
         /// </summary>
         /// <value>The file path default extension.</value>

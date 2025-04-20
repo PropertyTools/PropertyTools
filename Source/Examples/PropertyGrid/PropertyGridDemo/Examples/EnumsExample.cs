@@ -23,6 +23,8 @@ namespace ExampleLibrary
     [Flags]
     public enum Fruit6 { All = Apple | Pear | Banana, Apple = 1, Pear = 2, Banana = 4 }
 
+    public enum Fruit7 { [Description("Apple")] Apple, [DisplayName("Pear")] Pear, [System.ComponentModel.DescriptionAttribute("Banana")] Banana }
+
     [PropertyGridExample]
     public class EnumsExample : Example
     {
@@ -81,6 +83,9 @@ namespace ExampleLibrary
         [SelectorStyle(SelectorStyle.ComboBox)]
         public Fruit1? NullableFruit1C { get; set; }
 
+        [Description("With translations (see CustomOperator)")]
+        [SelectorStyle(SelectorStyle.ComboBox)]
+        public Fruit7? Fruit7C { get; set; }
 
 
         [Category("ListBox|")]
@@ -111,5 +116,9 @@ namespace ExampleLibrary
         [Description("Nullable enum")]
         [SelectorStyle(SelectorStyle.ListBox)]
         public Fruit1? NullableFruit1L { get; set; }
+        
+        [Description("With translations (see CustomOperator)")]
+        [SelectorStyle(SelectorStyle.ListBox)]
+        public Fruit7? Fruit7L { get; set; }
     }
 }

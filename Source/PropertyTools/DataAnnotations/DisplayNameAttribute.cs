@@ -12,9 +12,9 @@ namespace PropertyTools.DataAnnotations
     using System;
 
     /// <summary>
-    /// Specifies the display name for a property, event, or public void method which takes no arguments.
+    /// Specifies the display name for a property or field (enum member).
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class DisplayNameAttribute : Attribute
     {
         /// <summary>

@@ -501,30 +501,64 @@ namespace PropertyTools.Wpf
                 pi.ConverterParameter = pi.FormatString;
             }
 
-            if (pi.Descriptor.PropertyType.IsEnum)
+            if (pi.Descriptor.PropertyType.IsEnum || IsNullableEnum(pi.Descriptor.PropertyType))
             {
-                pi.EnumDisplayNames = Enum.GetValues(pi.Descriptor.PropertyType).Cast<object>()
+                var enumType = pi.Descriptor.PropertyType.IsEnum
+                    ? pi.Descriptor.PropertyType
+                    : GetNullableEnum(pi.Descriptor.PropertyType);
+
+                pi.EnumDisplayNames = Enum.GetValues(enumType).Cast<object>()
                    .ToDictionary(x => x,
                     x =>
                     {
-                        var memberInfo = pi.Descriptor.PropertyType.GetMember(x.ToString(), BindingFlags.Public | BindingFlags.Static)
+                        var memberInfo = enumType.GetMember(x.ToString(), BindingFlags.Public | BindingFlags.Static)
                             .First();
 
-                        var displayNameAttribute1 = memberInfo.GetCustomAttribute(typeof(System.ComponentModel.DisplayNameAttribute))
-                               as System.ComponentModel.DisplayNameAttribute;
-                        var displayNameAttribute2 = memberInfo.GetCustomAttribute(typeof(PropertyTools.DataAnnotations.DisplayNameAttribute))
+                        // System.ComponentModel.DisplayNameAttribute is not supported for fields (enum members)                           
+                        var displayNameAttribute = memberInfo.GetCustomAttribute(typeof(PropertyTools.DataAnnotations.DisplayNameAttribute))
                                as PropertyTools.DataAnnotations.DisplayNameAttribute;
+
                         var descriptionAttribute1 = memberInfo.GetCustomAttribute(typeof(System.ComponentModel.DescriptionAttribute))
                                as System.ComponentModel.DescriptionAttribute;
+                        var descriptionAttribute2 = memberInfo.GetCustomAttribute(typeof(PropertyTools.DataAnnotations.DescriptionAttribute))
+                               as PropertyTools.DataAnnotations.DescriptionAttribute;
 
-                        var enumMemberDisplayName = displayNameAttribute1?.DisplayName
-                           ?? displayNameAttribute2?.DisplayName
+                        var enumMemberDisplayName = displayNameAttribute?.DisplayName
                            ?? descriptionAttribute1?.Description
+                           ?? descriptionAttribute2?.Description
                            ?? x.ToString();
 
-                        return GetLocalizedString(enumMemberDisplayName, pi.Descriptor.PropertyType);
+                        return GetLocalizedString(enumMemberDisplayName, enumType);
                     });
+
+                if (IsNullableEnum(pi.Descriptor.PropertyType))
+                {
+                    pi.EnumDisplayNull = GetLocalizedString(null, enumType);
+                }                
             }
+        }
+
+        protected static Type GetNullableEnum(Type declaringType)
+        {
+            if (Nullable.GetUnderlyingType(declaringType) != null && declaringType.IsGenericType)
+            {
+                var genericArguments = declaringType.GetGenericArguments();
+                if (genericArguments.Length == 1)
+                {
+                    var singleGenericArgument = genericArguments.Single();
+                    if (singleGenericArgument.IsEnum)
+                    {
+                        return singleGenericArgument;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        protected static bool IsNullableEnum(Type declaringType)
+        {
+            return GetNullableEnum(declaringType) != null;
         }
 
         /// <summary>

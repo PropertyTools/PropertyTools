@@ -671,12 +671,22 @@ namespace PropertyTools.Wpf
         {
             c.ItemsSource = values.Select(x =>
             {
+                string displayText;
+                if (x == null) // in case it is NULL in Nullable<EnumType>
+                {
+                    displayText = property.EnumDisplayNull ?? "-"; 
+                }
+                else
+                {
+                    displayText = property.EnumDisplayNames?.TryGetValue(x, out string enumMemberDisplayText) == true
+                        ? enumMemberDisplayText
+                        : x.ToString();
+                }
+
                 return new ItemsControlItem
                 {
                     Value = x,
-                    Text = property.EnumDisplayNames?.TryGetValue(x, out string enumMemberDisplayText) == true 
-                        ? enumMemberDisplayText 
-                        : x.ToString()
+                    Text = displayText
                 };
             }).ToList();
 

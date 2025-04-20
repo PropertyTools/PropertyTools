@@ -505,7 +505,7 @@ namespace PropertyTools.Wpf
             {
                 var enumType = pi.Descriptor.PropertyType.IsEnum
                     ? pi.Descriptor.PropertyType
-                    : GetNullableEnum(pi.Descriptor.PropertyType);
+                    : Nullable.GetUnderlyingType(pi.Descriptor.PropertyType);
 
                 pi.EnumDisplayNames = Enum.GetValues(enumType).Cast<object>()
                    .ToDictionary(x => x,
@@ -538,27 +538,10 @@ namespace PropertyTools.Wpf
             }
         }
 
-        protected static Type GetNullableEnum(Type declaringType)
-        {
-            if (Nullable.GetUnderlyingType(declaringType) != null && declaringType.IsGenericType)
-            {
-                var genericArguments = declaringType.GetGenericArguments();
-                if (genericArguments.Length == 1)
-                {
-                    var singleGenericArgument = genericArguments.Single();
-                    if (singleGenericArgument.IsEnum)
-                    {
-                        return singleGenericArgument;
-                    }
-                }
-            }
-
-            return null;
-        }
-
         protected static bool IsNullableEnum(Type declaringType)
         {
-            return GetNullableEnum(declaringType) != null;
+            var underlyingType = Nullable.GetUnderlyingType(declaringType);
+            return underlyingType != null && underlyingType.IsEnum;
         }
 
         /// <summary>

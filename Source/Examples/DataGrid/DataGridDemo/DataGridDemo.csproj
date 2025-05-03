@@ -9,4 +9,17 @@
     <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj" />
     <ProjectReference Include="..\..\..\PropertyTools\PropertyTools.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resources\Translations.Designer.cs">
+      <DependentUpon>Translations.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Translations.resx">
+      <LastGenOutput>Translations.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

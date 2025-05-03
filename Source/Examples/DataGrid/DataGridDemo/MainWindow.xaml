@@ -4,6 +4,7 @@
         Title="DataGrid demos"
         SizeToContent="WidthAndHeight"
         MinWidth="300" MinHeight="300">
+    
     <Grid>
         <ListBox ItemsSource="{Binding Examples}" MouseDoubleClick="OpenExample" BorderThickness="0"/>
     </Grid>

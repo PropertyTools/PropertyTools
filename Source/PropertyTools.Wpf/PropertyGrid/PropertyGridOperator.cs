@@ -13,19 +13,20 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;    
     using System.Globalization;
     using System.Linq;
-    using System.Reflection;
     using System.Windows;
     using System.Windows.Data;
 
     using PropertyTools.DataAnnotations;
+    using PropertyTools.Wpf.Extensions;
+    using PropertyTools.Wpf.Operators;
 
     /// <summary>
     /// Creates a model for the <see cref="PropertyGrid" /> control.
     /// </summary>
-    public class PropertyGridOperator : IPropertyGridOperator
+    public class PropertyGridOperator : DefaultLocalizableOperator, IPropertyGridOperator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyGridOperator" /> class.
@@ -380,32 +381,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the localized description.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="declaringType">Type of the declaring.</param>
-        /// <returns>
-        /// The localized description.
-        /// </returns>
-        protected virtual string GetLocalizedDescription(string key, Type declaringType)
-        {
-            return key;
-        }
-
-        /// <summary>
-        /// Gets the localized string.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="declaringType">The declaring type.</param>
-        /// <returns>
-        /// The localized string.
-        /// </returns>
-        protected virtual string GetLocalizedString(string key, Type declaringType)
-        {
-            return key;
-        }
-
-        /// <summary>
         /// Sets the properties.
         /// </summary>
         /// <param name="pi">The property item.</param>
@@ -501,48 +476,11 @@ namespace PropertyTools.Wpf
                 pi.ConverterParameter = pi.FormatString;
             }
 
-            if (pi.Descriptor.PropertyType.IsEnum || IsNullableEnum(pi.Descriptor.PropertyType))
-            {
-                var enumType = pi.Descriptor.PropertyType.IsEnum
-                    ? pi.Descriptor.PropertyType
-                    : Nullable.GetUnderlyingType(pi.Descriptor.PropertyType);
 
-                pi.EnumDisplayNames = Enum.GetValues(enumType).Cast<object>()
-                   .ToDictionary(x => x,
-                    x =>
-                    {
-                        var memberInfo = enumType.GetMember(x.ToString(), BindingFlags.Public | BindingFlags.Static)
-                            .First();
-
-                        // System.ComponentModel.DisplayNameAttribute is not supported for fields (enum members)                           
-                        var displayNameAttribute = memberInfo.GetCustomAttribute(typeof(PropertyTools.DataAnnotations.DisplayNameAttribute))
-                               as PropertyTools.DataAnnotations.DisplayNameAttribute;
-
-                        var descriptionAttribute1 = memberInfo.GetCustomAttribute(typeof(System.ComponentModel.DescriptionAttribute))
-                               as System.ComponentModel.DescriptionAttribute;
-                        var descriptionAttribute2 = memberInfo.GetCustomAttribute(typeof(PropertyTools.DataAnnotations.DescriptionAttribute))
-                               as PropertyTools.DataAnnotations.DescriptionAttribute;
-
-                        var enumMemberDisplayName = displayNameAttribute?.DisplayName
-                           ?? descriptionAttribute1?.Description
-                           ?? descriptionAttribute2?.Description
-                           ?? x.ToString();
-
-                        return GetLocalizedString(enumMemberDisplayName, enumType);
-                    });
-
-                if (IsNullableEnum(pi.Descriptor.PropertyType))
-                {
-                    pi.EnumDisplayNull = GetLocalizedString(null, enumType);
-                }                
-            }
+            pi.TrySetEnumMetadata(this);            
         }
 
-        protected static bool IsNullableEnum(Type declaringType)
-        {
-            var underlyingType = Nullable.GetUnderlyingType(declaringType);
-            return underlyingType != null && underlyingType.IsEnum;
-        }
+      
 
         /// <summary>
         /// Sets the attribute.

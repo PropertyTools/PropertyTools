@@ -9,6 +9,8 @@
 
 namespace PropertyTools.Wpf
 {
+    using PropertyTools.Wpf.Common;
+    using PropertyTools.Wpf.Extensions;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -597,22 +599,9 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="enumType">The enumeration type.</param>
         /// <returns>A sequence of values.</returns>
-        protected virtual IEnumerable<object> GetEnumValues(Type enumType)
+        protected virtual IEnumerable<object> GetEnumValues(PropertyItem property)
         {
-            var ult = Nullable.GetUnderlyingType(enumType);
-            var isNullable = ult != null;
-            if (isNullable)
-            {
-                enumType = ult;
-            }
-
-            var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute().ToList();
-            if (isNullable)
-            {
-                enumValues.Add(null);
-            }
-
-            return enumValues;
+            return property.GetEnumValues(nullAtStart: false);           
         }
 
         /// <summary>
@@ -628,7 +617,7 @@ namespace PropertyTools.Wpf
         {
             //// var isBitField = property.Descriptor.PropertyType.GetTypeInfo().GetCustomAttributes<FlagsAttribute>().Any();
 
-            var values = this.GetEnumValues(property.Descriptor.PropertyType).ToArray();
+            var values = this.GetEnumValues(property).ToArray();
             var style = property.SelectorStyle;
             if (style == DataAnnotations.SelectorStyle.Auto)
             {
@@ -669,35 +658,7 @@ namespace PropertyTools.Wpf
 
         protected virtual void InitEnumSelector(Selector c, PropertyItem property, object[] values)
         {
-            c.ItemsSource = values.Select(x =>
-            {
-                string displayText;
-                if (x == null) // in case it is NULL in Nullable<EnumType>
-                {
-                    displayText = property.EnumDisplayNull ?? "-"; 
-                }
-                else
-                {
-                    displayText = property.EnumDisplayNames?.TryGetValue(x, out string enumMemberDisplayText) == true
-                        ? enumMemberDisplayText
-                        : x.ToString();
-                }
-
-                return new ItemsControlItem
-                {
-                    Value = x,
-                    Text = displayText
-                };
-            }).ToList();
-
-            c.DisplayMemberPath = nameof(ItemsControlItem.Text);
-            c.SelectedValuePath = nameof(ItemsControlItem.Value);
-        }
-
-        public class ItemsControlItem
-        {
-            public string Text { get; set; }
-            public object Value { get; set; }
+            property.ConfigureSelectorDefinition(new SelectorWrapper(c), values);
         }
 
         /// <summary>

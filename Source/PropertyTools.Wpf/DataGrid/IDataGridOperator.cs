@@ -9,13 +9,13 @@
 
 namespace PropertyTools.Wpf
 {
+    using PropertyTools.Wpf.Operators;
     using System;
-    using System.ComponentModel;
 
     /// <summary>
     /// Specifies DataGrid functionality that depends on the type of items source.
     /// </summary>
-    public interface IDataGridOperator
+    public interface IDataGridOperator : ILocalizableOperator, ICustomLocalizableOperator
     {
         /// <summary>
         /// Auto-generates the columns.

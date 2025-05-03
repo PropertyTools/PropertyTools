@@ -199,6 +199,29 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Determines whether the declaringType type is enumerable or nullable enumerable type.
+        /// </summary>
+        /// <returns>
+        /// True <paramref name="declaringType"/> is enumerable or nullable enumerable type.
+        /// </returns>
+        public static bool IsEnumOrNullableEnum(this Type declaringType)
+        {
+            return declaringType.Is(typeof(Enum));            
+        }
+
+        /// <summary>
+        /// Determines whether the declaringType type is nullable enumerable type.
+        /// </summary>
+        /// <returns>
+        /// True <paramref name="declaringType"/> is nullable enumerable type.
+        /// </returns>
+        public static bool IsNullableEnum(this Type declaringType)
+        {
+            var underlyingType = Nullable.GetUnderlyingType(declaringType);
+            return underlyingType != null && underlyingType.IsEnum;
+        }
+
+        /// <summary>
         /// Gets inner generic type of an IList&gt;IList&lt;
         /// </summary>
         /// <param name="list">The list.</param>

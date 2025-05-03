@@ -10,7 +10,7 @@
 namespace PropertyTools.Wpf
 {
     using PropertyTools.DataAnnotations;
-
+    using PropertyTools.Wpf.Extensions;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -85,21 +85,6 @@ namespace PropertyTools.Wpf
                 return new ColorCellDefinition();
             }
 
-            if (d.PropertyType.Is(typeof(Enum)))
-            {
-                var enumType = Nullable.GetUnderlyingType(d.PropertyType) ?? d.PropertyType;
-                var values = Enum.GetValues(enumType).Cast<object>().ToList();
-                if (Nullable.GetUnderlyingType(d.PropertyType) != null)
-                {
-                    values.Insert(0, null);
-                }
-
-                return new SelectorCellDefinition
-                {
-                    ItemsSource = values
-                };
-            }
-
             if (d.PropertyDefinition.ItemsSourceProperty != null || d.PropertyDefinition.ItemsSource != null)
             {
                 return new SelectorCellDefinition
@@ -108,8 +93,20 @@ namespace PropertyTools.Wpf
                     ItemsSourceProperty = d.PropertyDefinition.ItemsSourceProperty,
                     SelectedValuePath = d.PropertyDefinition.SelectedValuePath,
                     DisplayMemberPath = d.PropertyDefinition.DisplayMemberPath,
+                    DisplayTextForNullItem = d.PropertyDefinition.DisplayTextForNullItem,
                     IsEditable = d.PropertyDefinition.IsEditable
                 };
+            }
+            else if (d.PropertyType.IsEnumOrNullableEnum())
+            {
+                var enumValues = d.GetEnumValues(nullAtStart: true);
+                var selectorCellDefinition = new SelectorCellDefinition()
+                {
+                    IsEditable = d.PropertyDefinition.IsEditable,
+                    DisplayTextForNullItem = d.PropertyDefinition.DisplayTextForNullItem,
+                };
+                d.ConfigureSelectorDefinition(selectorCellDefinition, enumValues);
+                return selectorCellDefinition;
             }
 
             return new TextCellDefinition();

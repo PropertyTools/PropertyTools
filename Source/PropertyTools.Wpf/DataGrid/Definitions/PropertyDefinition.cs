@@ -9,6 +9,7 @@
 
 namespace PropertyTools.Wpf
 {
+    using PropertyTools.Wpf.Common;
     using System.Collections;
     using System.Globalization;
     using System.Windows.Data;
@@ -17,7 +18,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Provides a base class for column and row definitions in a <see cref="DataGrid" />.
     /// </summary>
-    public abstract class PropertyDefinition
+    public abstract class PropertyDefinition : ISelectorDefinition
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyDefinition" /> class.
@@ -80,6 +81,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         public bool IsReadOnly { get; set; }
 
+        #region ISelectorDefinition
+
         /// <summary>
         /// Gets or sets the items source (for ComboBox).
         /// </summary>
@@ -107,6 +110,11 @@ namespace PropertyTools.Wpf
         /// The display member path.
         /// </value>
         public string DisplayMemberPath { get; set; }
+
+        /// <inheritdoc/>        
+        public bool DisplayTextForNullItem { get; set; }
+
+        #endregion
 
         /// <summary>
         /// Gets or sets the max length (for TextBox).

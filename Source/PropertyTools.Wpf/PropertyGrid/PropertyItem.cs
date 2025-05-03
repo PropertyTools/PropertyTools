@@ -21,13 +21,13 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     using PropertyTools.DataAnnotations;
-
+    using PropertyTools.Wpf.Common;
     using HorizontalAlignment = PropertyTools.DataAnnotations.HorizontalAlignment;
 
     /// <summary>
     /// Represents a property in a <see cref="PropertyGrid" />.
     /// </summary>
-    public class PropertyItem : Observable
+    public class PropertyItem : Observable, IPropertyItem
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyItem" /> class.
@@ -57,6 +57,11 @@ namespace PropertyTools.Wpf
             this.SelectedValuePath = string.Empty;
 
             this.FontSize = double.NaN;
+
+            if (PropertyType.IsEnumOrNullableEnum())
+            {
+                EnumMetadata = new EnumPropertyMetadata();
+            }
         }
 
         /// <summary>
@@ -143,11 +148,49 @@ namespace PropertyTools.Wpf
         /// <value>The tool tip.</value>
         public string Description { get; set; }
 
+        #region IPropertyItem implementation
+
         /// <summary>
         /// Gets or sets the property descriptor.
         /// </summary>
         /// <value>The descriptor.</value>
         public PropertyDescriptor Descriptor { get; set; }
+
+        /// <summary>
+        /// Gets the name of the property.
+        /// </summary>
+        /// <value>The name of the property.</value>
+        public string PropertyName
+        {
+            get
+            {
+                return this.Descriptor.Name;
+            }
+        }
+
+        /// <summary>
+        /// Gets the type of the property.
+        /// </summary>
+        /// <value>
+        /// The type of the property.
+        /// </value>
+        public Type PropertyType
+        {
+            get
+            {
+                return this.Descriptor.PropertyType;
+            }
+        }
+
+        /// <summary>
+        /// Enum property's metadata
+        /// </summary>
+        /// <remarks>
+        /// Available only when <see cref="PropertyType"/> is Enum or Nullable enum
+        /// </remarks>
+        public EnumPropertyMetadata EnumMetadata { get; private set; }
+
+        #endregion
 
         /// <summary>
         /// Gets or sets a value indicating whether this property is read only.
@@ -161,18 +204,7 @@ namespace PropertyTools.Wpf
         /// <value>The display name.</value>
         public string DisplayName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the dictionary of Enum values to display names
-        /// </summary>
-        public Dictionary<object, string> EnumDisplayNames { get; set; }
-
-        /// <summary>
-        /// Gets or sets the display text for NULL item in Combobox and Listbox
-        /// </summary>
-        /// <remarks>
-        /// Applicable for Nullable&lt;EnumType&gt; property only
-        /// </remarks>
-        public string EnumDisplayNull { get; set; }
+       
 
         /// <summary>
         /// Gets or sets the file path default extension.
@@ -562,18 +594,6 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The width.</value>
         public double Width { get; set; }
-
-        /// <summary>
-        /// Gets the name of the property.
-        /// </summary>
-        /// <value>The name of the property.</value>
-        public string PropertyName
-        {
-            get
-            {
-                return this.Descriptor.Name;
-            }
-        }
 
         /// <summary>
         /// Gets or sets the name of the Content property for a property of checkable items.

@@ -9,13 +9,15 @@
 
 namespace PropertyTools.Wpf
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
     using System.Windows.Media;
     using System.Windows.Shapes;
-
+    using static PropertyTools.Wpf.Extensions.EnumPropertyExtensions;
     using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
     /// <summary>
@@ -380,6 +382,16 @@ namespace PropertyTools.Wpf
 
             var binding = this.CreateBinding(d);
             binding.NotifyOnSourceUpdated = true;
+
+            if (d.IsEditable && d.ItemsSource != null
+               && !string.IsNullOrEmpty(d.DisplayMemberPath)
+               && !string.IsNullOrEmpty(d.SelectedValuePath)
+               && binding.Converter == null
+               )
+            {
+                binding.Converter = new SelectorDefinitionTranslationConverter(d);
+            }
+
             c.SetBinding(d.IsEditable ? ComboBox.TextProperty : Selector.SelectedValueProperty, binding);
             c.SelectedValuePath = d.SelectedValuePath;
             c.DisplayMemberPath = d.DisplayMemberPath;
@@ -436,9 +448,21 @@ namespace PropertyTools.Wpf
 
             var binding = this.CreateOneWayBinding(d);
 
-            if (!string.IsNullOrEmpty(d.DisplayMemberPath) && string.IsNullOrEmpty(d.SelectedValuePath))
+           
+
+            if (!string.IsNullOrEmpty(d.DisplayMemberPath))
             {
-                binding.Path.Path += "." + d.DisplayMemberPath;
+                if (string.IsNullOrEmpty(d.SelectedValuePath))
+                {
+                    binding.Path.Path += "." + d.DisplayMemberPath;
+                }
+                else
+                {
+                    if (d.ItemsSource != null)
+                    {
+                        binding.Converter = new SelectorDefinitionTranslationConverter(d);
+                    }
+                }
             }
 
             c.SetBinding(TextBlock.TextProperty, binding);

@@ -25,7 +25,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Media;
 
     using PropertyTools.DataAnnotations;
-
+    using PropertyTools.Wpf.Operators;
     using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
     /// <summary>
@@ -222,13 +222,40 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(new PropertyGridControlFactory()));
 
         /// <summary>
+        /// Identifies the <see cref="LocalizableOperator"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LocalizableOperatorProperty = DependencyProperty.Register(
+            nameof(LocalizableOperator),
+            typeof(ILocalizableOperator),
+            typeof(PropertyGrid),
+            new PropertyMetadata(null, (d, e) => 
+                {
+                    var newLocalizableOperator = (ILocalizableOperator)e.NewValue;
+                    var operatorValue = (IPropertyGridOperator)d.GetValue(OperatorProperty);
+                    if (operatorValue != null)
+                    {
+                        operatorValue.UseLocalizableOperator(newLocalizableOperator);
+                    }
+                })
+            );
+
+        /// <summary>
         /// Identifies the <see cref="PropertyItem"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OperatorProperty = DependencyProperty.Register(
             nameof(Operator),
             typeof(IPropertyGridOperator),
             typeof(PropertyGrid),
-            new UIPropertyMetadata(new PropertyGridOperator()));
+            new UIPropertyMetadata(new PropertyGridOperator(), (d,e) => 
+                {
+                    var operatorValue = (IPropertyGridOperator)e.NewValue;
+                    var newLocalizableOperator = (ILocalizableOperator)d.GetValue(LocalizableOperatorProperty);
+                    if (operatorValue != null)
+                    {
+                        operatorValue.UseLocalizableOperator(newLocalizableOperator);
+                    }
+                })
+            );
 
         /// <summary>
         /// Identifies the <see cref="RequiredAttribute"/> dependency property.
@@ -703,6 +730,15 @@ namespace PropertyTools.Wpf
             {
                 this.SetValue(ControlFactoryProperty, value);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the localizable operator.
+        /// </summary>        
+        public ILocalizableOperator LocalizableOperator
+        {
+            get => (ILocalizableOperator)this.GetValue(LocalizableOperatorProperty);
+            set => this.SetValue(LocalizableOperatorProperty, value);
         }
 
         /// <summary>

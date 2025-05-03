@@ -26,7 +26,7 @@ namespace PropertyTools.Wpf
         /// <typeparam name="T">The enumeration type.</typeparam>
         /// <param name="arr">The array.</param>
         /// <returns>
-        /// The filtered values.
+        /// A list with filtered values.
         /// </returns>
         public static List<object> FilterOnBrowsableAttribute<T>(this T arr) where T : IEnumerable
         {
@@ -194,6 +194,43 @@ namespace PropertyTools.Wpf
             }
 
             return pd.DisplayName;
+        }
+
+        /// <summary>
+        /// Tries to get value matching field or property for target object.
+        /// </summary>
+        /// <param name="target">The target object</param>
+        /// <param name="memberName">Field or property name</param>
+        /// <param name="value">The output value of matching field or property</param>
+        /// <returns>TRUE if matching field or property has been found. Otherwise returns FALSE</returns>
+        public static bool TryGetFieldOrPropertyValue(object target, string memberName, out object value)
+        {
+            value = null;
+
+            if (target != null)
+            {
+                var targetType = target.GetType();
+
+                var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+                var propertyInfo = targetType.GetProperty(memberName, flags);
+                if (propertyInfo != null)
+                {
+                    value = propertyInfo.GetValue(target, null);
+                    return true;
+                }
+                else
+                {
+                    var fieldInfo = targetType.GetField(memberName, flags);
+                    if (fieldInfo != null)
+                    {
+                        value = fieldInfo.GetValue(target);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

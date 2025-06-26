@@ -15,6 +15,7 @@
             <MenuItem Header="Tools">
                 <MenuItem Header="Options..." Click="Options_Click"/>
                 <MenuItem Header="Wizard..." Click="Wizard_Click"/>
+                <MenuItem Header="Data Error Aware..." Click="DataErrorAware_Click"/>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="About..." Click="About_Click"/>

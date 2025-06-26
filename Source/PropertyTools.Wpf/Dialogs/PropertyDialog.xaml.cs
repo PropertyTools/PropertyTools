@@ -66,6 +66,16 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the OK button is data error aware.
+        /// </summary>
+        public bool OkButtonDataErrorAware { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the Apply button is data error aware.
+        /// </summary>
+        public bool ApplyButtonDataErrorAware { get; set; }
+
+        /// <summary>
         /// This stores the current "copy" of the object.
         /// If it is non-<c>null</c>, then we are in the middle of an
         /// editable operation.
@@ -153,6 +163,13 @@ namespace PropertyTools.Wpf
             else
             {
                 this.PropertyControl.DataContext = MemberwiseClone(this.DataContext);
+            }
+
+            
+            if (PropertyControl.DataContext is INotifyDataErrorInfo nde)
+            {
+                nde.ErrorsChanged += Nde_ErrorsChanged;
+                setDataErrorAwareButtons();
             }
         }
 
@@ -269,6 +286,27 @@ namespace PropertyTools.Wpf
         private void PropertyDialogDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             this.BeginEdit();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (DataContext is INotifyDataErrorInfo nde)
+            {
+                nde.ErrorsChanged -= Nde_ErrorsChanged; ;
+            }
+        }
+        private void Nde_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+        {
+            setDataErrorAwareButtons();
+        }
+
+        private void setDataErrorAwareButtons()
+        {
+            if (PropertyControl.DataContext is INotifyDataErrorInfo nde)
+            {
+                this.OkButton.IsEnabled = !OkButtonDataErrorAware || !nde.HasErrors;
+                this.ApplyButton.IsEnabled = !ApplyButtonDataErrorAware || !nde.HasErrors;
+            }
         }
     }
 }

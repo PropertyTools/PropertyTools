@@ -61,6 +61,17 @@ namespace DialogDemos
             dlg.Image = new BitmapImage(new Uri(@"pack://application:,,,/DialogDemos;component/pt.png"));
             dlg.ShowDialog();
         }
+
+        private void DataErrorAware_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new PropertyDialog() { Owner = this , OkButtonDataErrorAware = true};
+            var options = new DataErrorAwareViewModel();
+
+            dlg.DataContext = options;
+            dlg.Title = "Options";
+
+            dlg.ShowDialog();
+        }
     }
 
     public enum StartupAction

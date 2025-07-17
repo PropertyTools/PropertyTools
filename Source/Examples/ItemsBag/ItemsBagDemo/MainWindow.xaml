@@ -5,6 +5,7 @@
         xmlns:pt="http://propertytools.org/wpf"
         Title="ItemsBagDemo" Height="350" Width="960">
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <pt:NullToVisibilityConverter x:Key="NullToVisibilityConverter" NullVisibility="Visible" NotNullVisibility="Hidden"/>
         <Style x:Key="IndeterminateTextBoxStyle" TargetType="TextBox">
             <Style.Triggers>
@@ -40,7 +41,7 @@
                             <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
                             <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" Margin="4"/>
                             <CheckBox IsChecked="{Binding IsChecked}" Margin="4" VerticalAlignment="Center"/>
-                            <pt:RadioButtonList Value="{Binding Color}" Orientation="Horizontal" ItemPadding="4 0 4 0"/>
+                            <pt:RadioButtonList Visibility="{Binding IsChecked, Converter={StaticResource BoolToVis}}" Value="{Binding Color}" Orientation="Horizontal" ItemPadding="4 0 4 0"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

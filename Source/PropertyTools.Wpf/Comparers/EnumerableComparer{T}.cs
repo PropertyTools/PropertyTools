@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EnumerableComparer{T}.cs" company="PropertyTools">
-//   http://www.interact-sw.co.uk/iangblog/2007/12/13/natural-sorting
+//   https://www.interact-sw.co.uk/iangblog/2007/12/13/natural-sorting
 // </copyright>
 // <summary>
 //   Compares two sequences.

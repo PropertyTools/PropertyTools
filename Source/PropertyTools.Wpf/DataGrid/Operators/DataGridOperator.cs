@@ -355,7 +355,6 @@ namespace PropertyTools.Wpf
             var item = this.Owner.ItemsSource[index];
 
             // get the index of the item in the collection view
-            // TODO: find a better way to do this
             if (!this.TryGetIndex(this.Owner.CollectionView, item, out var index2))
             {
                 throw new InvalidOperationException("The collection view is probably out of sync. (GetCollectionViewIndex)");
@@ -626,13 +625,13 @@ namespace PropertyTools.Wpf
                 return this.Owner.CreateItem();
             }
 
-            // TODO: the item type may not have a parameterless constructor!
             try
             {
                 return Activator.CreateInstance(itemType);
             }
             catch
             {
+                // if the item type does not have a parameterless constructor
                 return null;
             }
         }

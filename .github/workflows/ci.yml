@@ -32,7 +32,7 @@ jobs:
     - name: Restore the application
       run: msbuild Source\PropertyTools.sln /t:Restore /p:Configuration=Release
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: nupkgs
         path: Source/**/*.nupkg

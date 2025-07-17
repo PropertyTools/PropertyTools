@@ -12,8 +12,6 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class DataTypeAttributeExample : Example
     {
-        //// http://msdn.microsoft.com/en-us/library/dd901590(v=vs.95).aspx
-
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
@@ -56,14 +54,14 @@ namespace ExampleLibrary
             this.DateTime = DateTime.Now;
             this.Duration = new TimeSpan(0, 0, 0, 9, 580);
             this.EmailAddress = "email@address.org";
-            this.ImageUrl = new Uri("http://www.google.com/images/srpr/logo3w.png");
-            this.Html = @"<html><body><h1>Title</h1><p>Paragrapgh</p><p><a href=""http://www.google.com"">google.com</a></body></html>";
+            this.ImageUrl = new Uri("https://www.google.com/images/srpr/logo3w.png");
+            this.Html = @"<html><body><h1>Title</h1><p>Paragrapgh</p><p><a href=""https://www.google.com"">google.com</a></body></html>";
             this.MultilineText = "Line1\nLine2";
             this.Password = "S3cr3t";
             this.PhoneNumber = "510-123-4567";
             this.Text = "A text, within literary theory, is a coherent set of symbols that transmits some kind of informative message.[citation needed] This set of symbols is considered in terms of the informative message's content, rather than in terms of its physical form or the medium in which it is represented. In the most basic terms established by structuralist criticism, therefore, a text is any object that can be read, whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.";
             this.Time = DateTime.Now;
-            this.Url = new Uri("http://www.google.com");
+            this.Url = new Uri("https://www.google.com");
         }
     }
 }

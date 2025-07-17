@@ -163,8 +163,6 @@ namespace PropertyTools.Wpf
         /// <param name="e">The e.</param>
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            // RestoreFieldValues(_savedState, DataContext);
-            // todo: only if modal dialog
             this.DialogResult = false;
             this.CancelEdit();
             this.Close();

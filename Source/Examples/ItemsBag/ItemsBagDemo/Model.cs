@@ -10,10 +10,13 @@ namespace ItemsBagDemo
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
 
+    using PropertyTools.DataAnnotations;
+
     public enum Colors { Red, Green, Blue }
 
     public class Model : INotifyPropertyChanged
     {
+        public bool ShowColor => IsChecked;
 
         private bool isChecked;
 
@@ -25,8 +28,12 @@ namespace ItemsBagDemo
             }
             set
             {
-                this.isChecked = value;
-                RaisePropertyChanged("IsChecked");
+                if (this.isChecked != value)
+                {
+                    this.isChecked = value;
+                    RaisePropertyChanged(nameof(IsChecked));
+                    RaisePropertyChanged(nameof(ShowColor));
+                }
             }
         }
 
@@ -61,6 +68,7 @@ namespace ItemsBagDemo
 
         private Colors color;
 
+        [VisibleBy(nameof(ShowColor))]
         public Colors Color
         {
             get
@@ -69,7 +77,8 @@ namespace ItemsBagDemo
             }
             set
             {
-                this.color = value; RaisePropertyChanged("Color");
+                this.color = value;
+                RaisePropertyChanged("Color");
             }
         }
 
@@ -85,6 +94,5 @@ namespace ItemsBagDemo
                 handler(this, new PropertyChangedEventArgs(property));
             }
         }
-
     }
 }

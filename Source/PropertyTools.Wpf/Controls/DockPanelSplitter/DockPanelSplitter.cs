@@ -387,7 +387,7 @@ namespace PropertyTools.Wpf
                 newHeight = this.element.MaxHeight;
             }
 
-            // todo - constrain the height of the element to the available client area
+            // the height of the element is not constrained to the available client area
             var dp = this.Parent as Panel;
             Dock dock = DockPanel.GetDock(this);
             var t = this.element.TransformToAncestor(dp) as MatrixTransform;
@@ -415,7 +415,7 @@ namespace PropertyTools.Wpf
                 newWidth = this.element.MaxWidth;
             }
 
-            // todo - constrain the width of the element to the available client area
+            // the height of the element is not constrained to the available client area
             var dp = this.Parent as Panel;
             Dock dock = DockPanel.GetDock(this);
             var t = this.element.TransformToAncestor(dp) as MatrixTransform;

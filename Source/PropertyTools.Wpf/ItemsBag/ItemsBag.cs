@@ -49,12 +49,6 @@ namespace PropertyTools.Wpf
         public object[] Objects { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to suspend property changed notifications.
-        /// </summary>
-        /// <value><c>true</c> if notifications are suspended; otherwise, <c>false</c> .</value>
-        public bool SuspendNotifications { get; set; }
-
-        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
@@ -82,11 +76,6 @@ namespace PropertyTools.Wpf
         /// <param name="e">The e.</param>
         private void RelayPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (this.SuspendNotifications)
-            {
-                return;
-            }
-
             var handler = this.PropertyChanged;
             if (handler != null)
             {

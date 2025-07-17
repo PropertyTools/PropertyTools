@@ -15,6 +15,11 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Provides a property descriptor for an object in the <see cref="ItemsBag" />.
     /// </summary>
+    /// <remarks>
+    /// In order to support "indeterminate values" of the objects in the bag (at least one object have a 
+    /// value that is different from the others), this property descriptor returns nullable types for value 
+    /// types. Such indeterminate values are represented by <c>null</c> values.
+    /// </remarks>
     public class ItemsBagPropertyDescriptor : PropertyDescriptor
     {
         /// <summary>
@@ -67,7 +72,7 @@ namespace PropertyTools.Wpf
         {
             get
             {
-                return false;
+                return this.defaultDescriptor.IsReadOnly;
             }
         }
 
@@ -82,6 +87,12 @@ namespace PropertyTools.Wpf
         {
             get
             {
+                if (this.defaultDescriptor.PropertyType.IsValueType)
+                {
+                    var nt = TypeHelper.GetNullableType(this.defaultDescriptor.PropertyType);
+                    return nt;
+                }
+
                 return this.defaultDescriptor.PropertyType;
             }
         }
@@ -151,7 +162,7 @@ namespace PropertyTools.Wpf
         public override void SetValue(object component, object value)
         {
             var bag = (ItemsBag)component;
-            bag.SuspendNotifications = true;
+
             foreach (var obj in bag.Objects)
             {
                 var type = obj.GetType();
@@ -160,7 +171,6 @@ namespace PropertyTools.Wpf
             }
 
             bag.RaisePropertyChanged(this.Name);
-            bag.SuspendNotifications = false;
         }
 
         /// <summary>

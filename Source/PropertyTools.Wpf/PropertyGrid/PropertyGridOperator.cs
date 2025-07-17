@@ -801,6 +801,14 @@ namespace PropertyTools.Wpf
                 pi.Converter = Activator.CreateInstance(coa.ConverterType) as IValueConverter;
             }
 
+            var pa = attribute as ProgressAttribute;
+            if (pa != null)
+            {
+                pi.IsProgress = true;
+                pi.ProgressMinimum = pa.Minimum;
+                pi.ProgressMaximum = pa.Maximum;
+            }
+
             var sa = attribute as SlidableAttribute;
             if (sa != null)
             {

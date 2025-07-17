@@ -18,8 +18,7 @@ namespace PropertyTools.Wpf
     /// Represents an image that avoids blurring over pixel boundaries.
     /// </summary>
     /// <remarks>The Bitmap element is using the ActualWidth/Height of the image for the control size.
-    /// It also offsets the image to avoid blurring over pixel boundaries.
-    /// http://blogs.msdn.com/b/dwayneneed/archive/2007/10/05/blurry-bitmaps.aspx</remarks>
+    /// It also offsets the image to avoid blurring over pixel boundaries.</remarks>
     public class Bitmap : FrameworkElement
     {
         /// <summary>

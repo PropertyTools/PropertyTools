@@ -17,8 +17,6 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class DataAnnotationsExample : Example, IDataErrorInfo
     {
-        //// http://msdn.microsoft.com/en-us/library/dd901590(v=vs.95).aspx
-
         [Category("Required")]
         [Required(AllowEmptyStrings = true, ErrorMessage = "A value is required.")]
         public string AllowEmptyStrings { get; set; }
@@ -83,7 +81,6 @@ namespace ExampleLibrary
 
     public class AWValidation
     {
-        // http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.customvalidationattribute(v=vs.95).aspx
         public static ValidationResult ValidateSalesPerson(string salesPerson)
         {
             var isValid = salesPerson.Contains("Joe");

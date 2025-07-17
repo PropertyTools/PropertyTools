@@ -22,7 +22,7 @@ namespace ExampleLibrary
     {
         public AdvancedTypesExample()
         {
-            this.Uri = new Uri("http://www.google.com");
+            this.Uri = new Uri("https://www.google.com");
             this.FontFamily = new FontFamily("Arial");
             this.FontFamilySelector = "Times New Roman";
         }

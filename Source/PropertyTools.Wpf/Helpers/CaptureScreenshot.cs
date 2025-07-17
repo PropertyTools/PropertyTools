@@ -19,7 +19,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Captures a screen shot using gdi32 functions.
     /// </summary>
-    /// <remarks>See http://stackoverflow.com/questions/1736287/capturing-a-window-with-wpf</remarks>
+    /// <remarks>See https://stackoverflow.com/questions/1736287/capturing-a-window-with-wpf</remarks>
     public static class CaptureScreenshot
     {
         /// <summary>
@@ -120,7 +120,6 @@ namespace PropertyTools.Wpf
             var bitmapHandle = CreateCompatibleBitmap(screenDeviceContext, (int)area.Width, (int)area.Height);
             SelectObject(memoryDeviceContext, bitmapHandle); // Select bitmap from compatible bitmap to memDC
 
-            // TODO: BitBlt may fail horribly
             BitBlt(
                 memoryDeviceContext,
                 0,

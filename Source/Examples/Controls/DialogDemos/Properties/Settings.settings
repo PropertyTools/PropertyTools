@@ -6,7 +6,7 @@
       <Value Profile="(Default)">C:\temp</Value>
     </Setting>
     <Setting Name="NewsChannel" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://go.microsoft.com/fwlink/?linkid=84795&amp;clcid=409</Value>
+      <Value Profile="(Default)">https://go.microsoft.com/fwlink/?linkid=84795&amp;clcid=409</Value>
     </Setting>
     <Setting Name="ShowStartPage" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

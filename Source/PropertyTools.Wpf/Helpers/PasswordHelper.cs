@@ -13,8 +13,6 @@ namespace PropertyTools.Wpf
     using System.Windows;
     using System.Windows.Controls;
 
-    // from http://www.wpftutorial.net/PasswordBox.html
-
     /// <summary>
     /// The password helper.
     /// </summary>

@@ -758,8 +758,12 @@ namespace PropertyTools.Wpf
             }
             catch (ArgumentException e)
             {
-                // Workaround for #38 and #142 - it seems to kind of work if we handle this exception
-                if (e.Message == "Height must be non-negative.")
+                if (e.TargetSite?.Name == "set_Height")
+                {
+                    return;
+                }
+
+                if (e.TargetSite?.Name == "ExtendViewport")
                 {
                     return;
                 }

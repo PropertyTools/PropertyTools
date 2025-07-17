@@ -23,6 +23,17 @@ namespace PropertyTools.Wpf.Tests
     public class TypeHelperTests
     {
         [Test]
+        public void GetNullableType()
+        {
+            Assert.AreEqual(typeof(bool?), TypeHelper.GetNullableType(typeof(bool)));
+            Assert.AreEqual(typeof(Nullable<bool>), TypeHelper.GetNullableType(typeof(bool)));
+            Assert.AreEqual(typeof(Nullable<Guid>), TypeHelper.GetNullableType(typeof(Guid)));
+            Assert.AreEqual(typeof(Nullable<Guid>), TypeHelper.GetNullableType(typeof(Guid?)));
+            Assert.AreEqual(typeof(string), TypeHelper.GetNullableType(typeof(string)));
+            Assert.AreEqual(typeof(PropertyGrid), TypeHelper.GetNullableType(typeof(PropertyGrid)));
+        }
+
+        [Test]
         public void FindBiggestCommonType_Null()
         {
             Assert.AreEqual(null, TypeHelper.FindBiggestCommonType(null));

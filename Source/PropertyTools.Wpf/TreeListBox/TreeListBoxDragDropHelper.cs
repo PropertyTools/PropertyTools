@@ -21,7 +21,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Drag/drop helper class for the <see cref="TreeListBox"/>.
     /// </summary>
-    /// <remarks>Based on <a href="http://bea.stollnitz.com/blog/?p=53">blog post</a>.</remarks>
+    /// <remarks>Based on <a href="https://bea.stollnitz.com/blog/?p=53">blog post</a>.</remarks>
     public class TreeListBoxDragDropHelper
     {
         /// <summary>
@@ -414,7 +414,7 @@ namespace PropertyTools.Wpf
                 this.draggedData = new List<IDragSource>();
                 this.draggedData.Add(this.sourceItemContainer.DataContext);
 
-                // todo: how to drag multiple items?
+                // drag multiple items?
                 // must set e.Handled = true to avoid items being deselected
                 // foreach (var si in sourceItemsControl.SelectedItems) this.draggedData.Add(si);
             }

@@ -15,7 +15,6 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Formats the TimeSpan to a string.
     /// </summary>
-    /// <remarks>See http://www.java2s.com/Open-Source/CSharp/Sound-Mp3/stamp/Microsoft/Office/PowerPoint/STAMP/Core/TimeSpanFormatter.cs.htm</remarks>
     public class TimeSpanFormatter : IFormatProvider, ICustomFormatter
     {
         /// <summary>

@@ -34,7 +34,6 @@ namespace PropertyTools.Wpf
         /// </returns>
         public static TimeSpan Parse(string value, string formatString = null)
         {
-            // todo: parse the formatstring and evaluate the timespan
             // Examples
             // FormatString = MM:ss, value = "91:12" => 91 minutes 12seconds
             // FormatString = HH:mm, value = "91:12" => 91 hours 12minutes

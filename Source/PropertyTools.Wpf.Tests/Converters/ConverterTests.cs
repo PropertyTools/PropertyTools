@@ -7,6 +7,7 @@
 namespace PropertyTools.Wpf.Tests
 {
     using System.Windows;
+    using System.Windows.Media;
 
     using NUnit.Framework;
 
@@ -16,7 +17,9 @@ namespace PropertyTools.Wpf.Tests
         [Test]
         public void ColorToBrush_ValidColor_ReturnsCorrectBrush()
         {
-            // todo
+            var c = new ColorToBrushConverter();
+            var b = c.Convert(Colors.Blue, typeof(Brush), null, null);
+            Assert.AreEqual(Brushes.Blue.ToString(), b.ToString());
         }
 
         [Test]

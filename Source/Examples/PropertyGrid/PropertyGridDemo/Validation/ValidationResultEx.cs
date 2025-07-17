@@ -95,6 +95,6 @@ namespace PropertyGridDemo
         /// <summary>
         /// The information
         /// </summary>
-        Information //TODO: can be removed if not needed
+        Information
     }
 }

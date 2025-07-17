@@ -188,6 +188,11 @@ namespace PropertyTools.Wpf
                 return this.CreatePasswordControl(property);
             }
 
+            if (property.IsProgress)
+            {
+                return this.CreateProgressControl(property);
+            }
+
             if (property.IsSlidable)
             {
                 return this.CreateSliderControl(property);
@@ -621,7 +626,6 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateEnumControl(
             PropertyItem property, PropertyControlFactoryOptions options)
         {
-            // TODO: use check boxes for bit fields
             //// var isBitField = property.Descriptor.PropertyType.GetTypeInfo().GetCustomAttributes<FlagsAttribute>().Any();
 
             var values = this.GetEnumValues(property.Descriptor.PropertyType).ToArray();
@@ -866,6 +870,25 @@ namespace PropertyTools.Wpf
             // PasswordHelper.SetAttach(b, true);
             // b.SetBinding(PasswordHelper.PasswordProperty, pi.CreateBinding());
 
+            return c;
+        }
+
+        /// <summary>
+        /// Creates the progress control.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        protected virtual FrameworkElement CreateProgressControl(PropertyItem property)
+        {
+            var c = new ProgressBar
+            {
+                Minimum = property.ProgressMinimum,
+                Maximum = property.ProgressMaximum,
+                Margin = new Thickness(2)
+            };
+            c.SetBinding(RangeBase.ValueProperty, property.CreateBinding());
             return c;
         }
 

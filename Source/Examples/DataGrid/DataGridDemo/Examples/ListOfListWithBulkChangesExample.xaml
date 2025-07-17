@@ -1,0 +1,25 @@
+﻿<Window x:Class="DataGridDemo.ListOfListWithBulkChangesExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="List&lt;List&gt; with bulk changes" Height="450" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
+            <TextBox Width="100" Text="{Binding RowCount, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Content="Add (BeginEdit/EndEdit)" Command="{Binding CreateRowsCommand1}" Margin="5,0,5,0"/>
+            <Button Content="Add (AddRange)" Command="{Binding CreateRowsCommand2}" Margin="5,0,5,0"/>
+            <Button Content="Add (internal list Add)" Command="{Binding CreateRowsCommand3}" Margin="5,0,5,0"/>
+        </StackPanel>
+        <p:DataGrid ItemsSource="{Binding ObservableItemsSource}" Grid.Row="1">
+            <p:DataGrid.ColumnDefinitions>
+                <p:ColumnDefinition Header="A" HorizontalAlignment="Center" Width="*"/>
+                <p:ColumnDefinition Header="B" HorizontalAlignment="Center" Width="*"/>
+                <p:ColumnDefinition Header="C" HorizontalAlignment="Center" Width="*"/>
+            </p:DataGrid.ColumnDefinitions>
+        </p:DataGrid>
+    </Grid>
+</Window>

@@ -16,9 +16,7 @@ namespace PropertyTools.Wpf
     /// Represents a color slider.
     /// </summary>
     /// <remarks>Original code by Ury Jamshy, 21 July 2011.
-    /// See http://www.codeproject.com/KB/WPF/ColorPicker010.aspx
-    /// The Code Project Open License (CPOL)
-    /// http://www.codeproject.com/info/cpol10.aspx</remarks>
+    /// The Code Project Open License (CPOL)</remarks>
     public class ColorSlider : SliderEx
     {
         /// <summary>

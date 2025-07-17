@@ -9,6 +9,8 @@
 
 namespace PropertyTools.Wpf
 {
+    using PropertyTools.DataAnnotations;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -65,6 +67,12 @@ namespace PropertyTools.Wpf
                     DisplayTemplate = tcd.CellTemplate,
                     EditTemplate = tcd.CellEditingTemplate
                 };
+            }
+
+            if (d.Attributes.OfType<ProgressAttribute>().Any())
+            {
+                var pa = d.Attributes.OfType<ProgressAttribute>().First();
+                return new ProgressCellDefinition() { Minimum = pa.Minimum, Maximum = pa.Maximum };
             }
 
             if (d.PropertyType.Is(typeof(bool)))

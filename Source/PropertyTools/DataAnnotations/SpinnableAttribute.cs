@@ -14,7 +14,6 @@ namespace PropertyTools.DataAnnotations
     /// <summary>
     /// Specifies that the property can be edited by a spin control.
     /// </summary>
-    /// <remarks>See <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa511491.aspx">MSDN</a>.</remarks>
     [AttributeUsage(AttributeTargets.All)]
     public class SpinnableAttribute : Attribute
     {

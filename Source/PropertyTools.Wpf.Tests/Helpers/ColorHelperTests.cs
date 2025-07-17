@@ -28,7 +28,7 @@ namespace PropertyTools.Wpf.Tests
         [Test]
         public void Complementary_ValidColors_ReturnsCorrectValue()
         {
-            // http://en.wikipedia.org/wiki/Complementary_color
+            // https://en.wikipedia.org/wiki/Complementary_color
             /*   Assert.AreEqual(Colors.Green, ColorHelper.Complementary(Colors.Red),"Red");
                Assert.AreEqual(Colors.Red, ColorHelper.Complementary(Colors.Green),"Green");
                Assert.AreEqual(Colors.Orange, ColorHelper.Complementary(Colors.Blue),"Blue");

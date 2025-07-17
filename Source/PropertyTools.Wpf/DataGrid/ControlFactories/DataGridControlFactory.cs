@@ -75,6 +75,12 @@ namespace PropertyTools.Wpf
                 return this.CreateTextBlockControl(scd);
             }
 
+            var pcd = d as ProgressCellDefinition;
+            if (pcd != null)
+            {
+                return this.CreateProgressControl(pcd);
+            }
+
             var cb = d as CheckCellDefinition;
             if (cb != null)
             {
@@ -206,6 +212,26 @@ namespace PropertyTools.Wpf
             var b = this.CreateBinding(cd);
             b.Mode = BindingMode.OneWay;
             return b;
+        }
+
+
+        /// <summary>
+        /// Creates a progress bar control with data binding.
+        /// </summary>
+        /// <param name="d">The cell definition.</param>
+        /// <returns>
+        /// A progress bar.
+        /// </returns>
+        protected virtual FrameworkElement CreateProgressControl(ProgressCellDefinition d)
+        {
+            var c = new ProgressBar
+            {
+                Minimum = d.Minimum,
+                Maximum = d.Maximum,
+                Margin = new Thickness(2)
+            };
+            c.SetBinding(ProgressBar.ValueProperty, this.CreateBinding(d));
+            return c;
         }
 
         /// <summary>

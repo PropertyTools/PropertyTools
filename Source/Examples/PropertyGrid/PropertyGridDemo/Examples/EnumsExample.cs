@@ -84,7 +84,6 @@ namespace ExampleLibrary
 
 
         [Category("ListBox|")]
-
         [Description("Normal enum")]
         [SelectorStyle(SelectorStyle.ListBox)]
         public Fruit1 Fruit1L { get; set; }

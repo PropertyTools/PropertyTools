@@ -66,7 +66,7 @@ namespace ExampleLibrary
                 throw new FormatException("Invalid format.");
             }
 
-            // TODO: handle unit
+            // note, unit is not handled...
             return new Length(value);
         }
     }

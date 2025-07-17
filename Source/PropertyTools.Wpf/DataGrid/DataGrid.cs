@@ -1419,8 +1419,6 @@ namespace PropertyTools.Wpf
 
             // Update the collection view in case items has been added
             this.UpdateCollectionView();
-
-            // TODO: only update changed cells (or rely on bindings)
             this.UpdateGridContent();
             this.suspendCollectionChangedNotifications = false;
 
@@ -2700,7 +2698,6 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            // TODO: refactor this special case
             if (this.currentEditControl is TextBox textEditor)
             {
                 this.currentEditControl.Visibility = Visibility.Hidden;
@@ -3438,7 +3435,6 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            // TODO: update only changed rows/columns
             this.Dispatcher.Invoke(this.UpdateGridContent);
         }
 
@@ -4069,7 +4065,6 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            // TODO: this call may cause infinite recursion
             this.sheetGrid.UpdateLayout();
             this.columnGrid.UpdateLayout();
             this.rowGrid.UpdateLayout();

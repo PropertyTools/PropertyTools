@@ -59,9 +59,6 @@ namespace DialogDemos
             dlg.Title = "About the application";
             dlg.UpdateStatus = "The application is updated.";
             dlg.Image = new BitmapImage(new Uri(@"pack://application:,,,/DialogDemos;component/pt.png"));
-
-            // var uri = "http://opensource.linux-mirror.org/trademarks/opensource/web/opensource-400x345.png";
-            // dlg.Image = new BitmapImage(new Uri(uri, UriKind.Absolute));
             dlg.ShowDialog();
         }
     }

@@ -78,8 +78,8 @@ namespace PropertyTools.Wpf
         /// </returns>
         public static double ColorDifference(Color c1, Color c2)
         {
-            // http://en.wikipedia.org/wiki/Color_difference
-            // http://mathworld.wolfram.com/L2-Norm.html
+            // https://en.wikipedia.org/wiki/Color_difference
+            // https://mathworld.wolfram.com/L2-Norm.html
             double dr = (c1.R - c2.R) / 255.0;
             double dg = (c1.G - c2.G) / 255.0;
             double db = (c1.B - c2.B) / 255.0;
@@ -235,7 +235,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public static Color Complementary(this Color c)
         {
-            // http://en.wikipedia.org/wiki/Complementary_color
+            // https://en.wikipedia.org/wiki/Complementary_color
             double[] hsv = ColorToHsv(c);
             double newHue = hsv[0] - 0.5;
 
@@ -382,7 +382,7 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// Convert from HSV to <see cref="Color" />.
-        /// http://en.wikipedia.org/wiki/HSL_color_space
+        /// https://en.wikipedia.org/wiki/HSL_color_space
         /// </summary>
         /// <param name="hue">The Hue value [0,1].</param>
         /// <param name="sat">The saturation value [0,1].</param>

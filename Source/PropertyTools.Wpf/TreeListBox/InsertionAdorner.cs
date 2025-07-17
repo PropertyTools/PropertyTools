@@ -16,7 +16,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Provides an insertion bar adorner.
     /// </summary>
-    /// <remarks>See also <a href="http://bea.stollnitz.com/blog/?p=53">blog post</a>.</remarks>
+    /// <remarks>See also <a href="https://bea.stollnitz.com/blog/?p=53">blog post</a>.</remarks>
     public class InsertionAdorner : Adorner
     {
         /// <summary>

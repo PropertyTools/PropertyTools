@@ -37,7 +37,7 @@ namespace DialogDemos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://go.microsoft.com/fwlink/?linkid=84795&clcid=409")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://go.microsoft.com/fwlink/?linkid=84795&clcid=409")]
         public string NewsChannel {
             get {
                 return ((string)(this["NewsChannel"]));

@@ -6,37 +6,44 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DialogDemos
 {
-    internal class DataErrorAwareViewModel : INotifyDataErrorInfo
+    internal class DataErrorAwareViewModel : Observable, INotifyDataErrorInfo
     {
-        private readonly Dictionary<string, ValidationResult> m_errors = new Dictionary<string, ValidationResult>();
-        private          string                               m_name;
+        private readonly Dictionary<string, ValidationResult> errors = [];
+        private string name;
 
         [Category("Configuration|General")]
+        [DisplayName("Name*")]
         [Required(AllowEmptyStrings = false)]
         public string Name
         {
-            get => m_name;
+            get => this.name;
             set
             {
-                m_name = value;
-                validate("Name", !string.IsNullOrEmpty(m_name), "Name should be specified");
+                this.name = value;
+                this.Validate(nameof(this.Name), !string.IsNullOrEmpty(this.name), "Name should be specified");
             }
         }
 
-        private void validate(string propertyName, bool isValid, string message)
+        public string Address { get; set; }
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
+        bool INotifyDataErrorInfo.HasErrors => errors.Count > 0;
+
+        private void Validate(string propertyName, bool isValid, string message)
         {
-            if (!isValid == m_errors.ContainsKey(propertyName))
+            if (!isValid == errors.ContainsKey(propertyName))
             {
                 return;
             }
 
             if (!isValid)
             {
-                m_errors.Add(propertyName, new ValidationResult(message));
+                errors.Add(propertyName, new ValidationResult(message));
             }
             else
             {
-                m_errors.Remove(propertyName);
+                errors.Remove(propertyName);
             }
 
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
@@ -44,14 +51,11 @@ namespace DialogDemos
 
         IEnumerable INotifyDataErrorInfo.GetErrors(string propertyName)
         {
-            if (m_errors.ContainsKey(propertyName))
+            if (propertyName != null && errors.ContainsKey(propertyName))
             {
-                yield return m_errors[propertyName];
+                yield return errors[propertyName];
             }
         }
 
-        bool INotifyDataErrorInfo.HasErrors => m_errors.Count > 0;
-
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
     }
 }

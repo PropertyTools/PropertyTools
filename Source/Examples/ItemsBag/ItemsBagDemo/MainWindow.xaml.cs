@@ -44,7 +44,7 @@ namespace ItemsBagDemo
                 Name = "Joe",
                 Value = 41,
                 NullableDouble = null,
-                NullableColor = Colors.Blue,
+                NullableColor = null,
                 GenericInt = new R<int>(99),
                 GenericString = new R<string>("World"),
                 NullableGenericDouble = null,

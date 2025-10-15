@@ -31,14 +31,57 @@ PropertyTools is a collection of custom controls for WPF applications that provi
      // --------------------------------------------------------------------------------------------------------------------
      ```
 
-3. **XML Documentation**
+3. **Naming Conventions**
+   
+   - **Classes and Interfaces**
+     - Use PascalCase for class names
+     - Test classes: `{ClassUnderTest}Tests` (e.g., `ColorHelperTests`, `NaturalStringComparerTests`)
+     - Helper classes: `{Purpose}Helper` (e.g., `ColorHelper`, `TypeHelper`)
+     - Converters: `{Type}Converter` or `{Type}To{Type}Converter` (e.g., `EnumValuesConverter`, `BrushToColorConverter`)
+     - Controls: Descriptive PascalCase names (e.g., `ColorPicker`, `EditableTextBlock`)
+   
+   - **Methods**
+     - Use PascalCase for method names
+     - Use descriptive, action-oriented names (e.g., `ChangeAlpha`, `Interpolate`, `Parse`)
+   
+   - **Unit Test Methods**
+     - **Follow the pattern: `MethodName_StateUnderTest_ExpectedBehavior`**
+     - Examples:
+       - `Parse_Days_ReturnsCorrectValue`
+       - `ChangeAlpha_ValidColor_ReturnsCorrectValue`
+       - `HexToColor_InvalidColors_ReturnsUndefined`
+     - Reference: [Roy Osherove's naming standards](https://osherove.com/blog/2005/4/3/naming-standards-for-unit-tests.html)
+   
+   - **Fields**
+     - Private fields: Use camelCase (e.g., `colorPickerPanel`, `selectedColor`)
+     - Private const fields: Use PascalCase (e.g., `PartColorPickerPanel`)
+     - Static readonly fields: Use PascalCase (e.g., `SelectedColorProperty` for dependency properties)
+   
+   - **Properties**
+     - Use PascalCase for property names (e.g., `SelectedColor`, `UndefinedColor`)
+   
+   - **Parameters and Local Variables**
+     - Use camelCase (e.g., `color`, `alpha`, `targetType`)
+
+4. **XML Documentation**
    - Use XML documentation comments (`///`) for public APIs
    - Include `<summary>`, `<param>`, and `<returns>` tags as appropriate
+   - Example:
+     ```csharp
+     /// <summary>
+     /// Change the alpha value of a color.
+     /// </summary>
+     /// <param name="c">The source color.</param>
+     /// <param name="alpha">The new alpha value.</param>
+     /// <returns>The new color.</returns>
+     public static Color ChangeAlpha(this Color c, byte alpha)
+     ```
 
-4. **Code Formatting**
+5. **Code Formatting**
    - Follow existing code style in the repository
    - Use meaningful variable and method names
    - Keep methods focused and concise
+   - Use `this.` prefix for instance members in WPF controls
 
 ### Building and Testing
 

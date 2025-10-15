@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - TypeHelper.IsIListIList(Type) method changed to private #343
+- DataGrid: Remove legacy Type.IsSerializable checks for clipboard operations
 
 ### Added 
 - Support for .NET 6 - Windows #317

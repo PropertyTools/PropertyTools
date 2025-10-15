@@ -14,7 +14,7 @@ namespace PropertyTools.Wpf.Tests
     public class ItemsBagTests
     {
         [Test]
-        public void SetValue_ReadOnlyProperty()
+        public void SetValue_ReadOnlyProperty_ThrowsArgumentException()
         {
 
             var t0 = new TestObject();
@@ -37,7 +37,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void GetValue_ValueTypeWithMultipleValues()
+        public void GetValue_ValueTypeWithDifferentValues_ReturnsNull()
         {
             var t0 = new TestObject() { Checked = true };
             var t1 = new TestObject() { Checked = false };
@@ -49,7 +49,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void GetValue_ValueTypeWithEqualValues()
+        public void GetValue_ValueTypeWithEqualValues_ReturnsValue()
         {
             var t0 = new TestObject() { Checked = true };
             var t1 = new TestObject() { Checked = true };
@@ -61,7 +61,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void GetValue_ReferenceTypeWithDifferentValues()
+        public void GetValue_ReferenceTypeWithDifferentValues_ReturnsNull()
         {
             var t0 = new TestObject() { Name = "John" };
             var t1 = new TestObject() { Name = "James" };
@@ -73,7 +73,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void GetValue_ReferenceTypeWithEqualValues()
+        public void GetValue_ReferenceTypeWithEqualValues_ReturnsValue()
         {
             var t0 = new TestObject() { Name = "John" };
             var t1 = new TestObject() { Name = "John" };
@@ -210,7 +210,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void PropertyChanged_WhenPropertySet_IsRaised()
+        public void PropertyChanged_WhenPropertySet_RaisesEvent()
         {
             var t0 = new TestObject();
             var bag = new ItemsBag(new[] { t0 });
@@ -233,7 +233,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void PropertyChanged_WhenObjectPropertyChanges_IsRelayed()
+        public void PropertyChanged_WhenObjectPropertyChanges_RelaysEvent()
         {
             var t0 = new ObservableTestObject();
             var bag = new ItemsBag(new[] { t0 });
@@ -253,7 +253,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void Dispose_UnsubscribesFromPropertyChangedEvents()
+        public void Dispose_AfterCreation_UnsubscribesFromPropertyChangedEvents()
         {
             var t0 = new ObservableTestObject();
             var bag = new ItemsBag(new[] { t0 });
@@ -293,7 +293,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void GetProperties_ReturnsAllPublicProperties()
+        public void GetProperties_ForItemsBag_ReturnsAllPublicProperties()
         {
             var t0 = new TestObject();
             var bag = new ItemsBag(new[] { t0 });
@@ -307,7 +307,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void CanResetValue_ReturnsFalse()
+        public void CanResetValue_ForAnyProperty_ReturnsFalse()
         {
             var t0 = new TestObject();
             var bag = new ItemsBag(new[] { t0 });
@@ -319,7 +319,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void ShouldSerializeValue_ReturnsFalse()
+        public void ShouldSerializeValue_ForAnyProperty_ReturnsFalse()
         {
             var t0 = new TestObject();
             var bag = new ItemsBag(new[] { t0 });

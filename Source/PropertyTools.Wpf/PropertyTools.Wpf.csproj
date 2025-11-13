@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.Net.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFrameworks>net462;net8.0-windows;net9.0-windows</TargetFrameworks>

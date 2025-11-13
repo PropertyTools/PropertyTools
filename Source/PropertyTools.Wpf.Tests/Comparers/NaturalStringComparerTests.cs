@@ -15,19 +15,19 @@ namespace PropertyTools.Wpf.Tests
         public void Compare()
         {
             var nsc = new NaturalStringComparer();
-            Assert.AreEqual(0, nsc.Compare(null, null));
-            Assert.AreEqual(-1, nsc.Compare(null, "X"));
-            Assert.AreEqual(1, nsc.Compare("X", null));
-            Assert.AreEqual(0, nsc.Compare("X", "X"));
-            Assert.AreEqual(-1, nsc.Compare("X", "Y"));
-            Assert.AreEqual(-1, nsc.Compare("2", "10"));
-            Assert.AreEqual(-1, nsc.Compare("X2", "X10"));
-            Assert.AreEqual(1, nsc.Compare("X2", "X1"));
-            Assert.AreEqual(-1, nsc.Compare("v1.0.2", "v1.0.10"));
-            Assert.AreEqual(-1, nsc.Compare("1.2", "1.10"));
-            Assert.AreEqual(-1, nsc.Compare("1 2", "1 10"));
-            Assert.AreEqual(-1, nsc.Compare("1.2", "1 10"));
-            Assert.AreEqual(-1, nsc.Compare("1-2", "1/10"));
+            Assert.That(nsc.Compare(null, null), Is.EqualTo(0));
+            Assert.That(nsc.Compare(null, "X"), Is.EqualTo(-1));
+            Assert.That(nsc.Compare("X", null), Is.EqualTo(1));
+            Assert.That(nsc.Compare("X", "X"), Is.EqualTo(0));
+            Assert.That(nsc.Compare("X", "Y"), Is.EqualTo(-1));
+            Assert.That(nsc.Compare("2", "10"), Is.EqualTo(-1));
+            Assert.That(nsc.Compare("X2", "X10"), Is.EqualTo(-1));
+            Assert.That(nsc.Compare("X2", "X1"), Is.EqualTo(1));
+            Assert.That(nsc.Compare("v1.0.2", "v1.0.10"), Is.EqualTo(-1));
+            Assert.That(nsc.Compare("1.2", "1.10"), Is.EqualTo(-1));
+            Assert.That(nsc.Compare("1 2", "1 10"), Is.EqualTo(-1));
+            Assert.That(nsc.Compare("1.2", "1 10"), Is.EqualTo(-1));
+            Assert.That(nsc.Compare("1-2", "1/10"), Is.EqualTo(-1));
         }
     }
 }

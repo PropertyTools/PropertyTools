@@ -18,28 +18,28 @@ namespace PropertyTools.Wpf.Tests
         public void TryAdd_Numbers_ReturnsVector()
         {
             object r;
-            Assert.IsTrue(ReflectionMath.TryAdd(1, 1, out r));
-            Assert.AreEqual(2, r);
-            Assert.IsTrue(ReflectionMath.TryAdd(1d, 1d, out r));
-            Assert.AreEqual(2, r);
-            Assert.IsTrue(ReflectionMath.TryAdd(1, 1d, out r));
-            Assert.AreEqual(2, r);
-            Assert.IsTrue(ReflectionMath.TryAdd(1d, 1, out r));
-            Assert.AreEqual(2, r);
+            Assert.That(ReflectionMath.TryAdd(1, 1, out r), Is.True);
+            Assert.That(r, Is.EqualTo(2));
+            Assert.That(ReflectionMath.TryAdd(1d, 1d, out r), Is.True);
+            Assert.That(r, Is.EqualTo(2));
+            Assert.That(ReflectionMath.TryAdd(1, 1d, out r), Is.True);
+            Assert.That(r, Is.EqualTo(2));
+            Assert.That(ReflectionMath.TryAdd(1d, 1, out r), Is.True);
+            Assert.That(r, Is.EqualTo(2));
         }
 
         [Test]
         public void TryMultiply_Numbers_ReturnsVector()
         {
             object r;
-            Assert.IsTrue(ReflectionMath.TryMultiply(2, 1, out r));
-            Assert.AreEqual(2, r);
-            Assert.IsTrue(ReflectionMath.TryMultiply(2d, 1d, out r));
-            Assert.AreEqual(2, r);
-            Assert.IsTrue(ReflectionMath.TryMultiply(2, 1d, out r));
-            Assert.AreEqual(2, r);
-            Assert.IsTrue(ReflectionMath.TryMultiply(2d, 1, out r));
-            Assert.AreEqual(2, r);
+            Assert.That(ReflectionMath.TryMultiply(2, 1, out r), Is.True);
+            Assert.That(r, Is.EqualTo(2));
+            Assert.That(ReflectionMath.TryMultiply(2d, 1d, out r), Is.True);
+            Assert.That(r, Is.EqualTo(2));
+            Assert.That(ReflectionMath.TryMultiply(2, 1d, out r), Is.True);
+            Assert.That(r, Is.EqualTo(2));
+            Assert.That(ReflectionMath.TryMultiply(2d, 1, out r), Is.True);
+            Assert.That(r, Is.EqualTo(2));
         }
         [Test]
         public void TryMultiply_Vector_ReturnsVector()
@@ -47,8 +47,8 @@ namespace PropertyTools.Wpf.Tests
             var v1 = new Vector(10, 10);
             var v2 = v1 * 4;
             object v3;
-            Assert.IsTrue(ReflectionMath.TryMultiply(v1, 4.0, out v3));
-            Assert.AreEqual(v2, v3);
+            Assert.That(ReflectionMath.TryMultiply(v1, 4.0, out v3), Is.True);
+            Assert.That(v3, Is.EqualTo(v2));
         }
 
         [Test]
@@ -57,9 +57,9 @@ namespace PropertyTools.Wpf.Tests
             var t1 = DateTime.Now;
             var t2 = t1.AddDays(2);
             object d;
-            Assert.IsTrue(ReflectionMath.TrySubtract(t2, t1, out d));
-            Assert.IsTrue(d is TimeSpan);
-            Assert.AreEqual(2, ((TimeSpan)d).TotalDays);
+            Assert.That(ReflectionMath.TrySubtract(t2, t1, out d), Is.True);
+            Assert.That(d, Is.InstanceOf<TimeSpan>());
+            Assert.That(((TimeSpan)d).TotalDays, Is.EqualTo(2));
         }
 
         [Test]
@@ -68,9 +68,9 @@ namespace PropertyTools.Wpf.Tests
             double n1 = 10;
             double n2 = 12;
             object d;
-            Assert.IsTrue(ReflectionMath.TrySubtract(n2, n1, out d));
-            Assert.IsTrue(d is double);
-            Assert.AreEqual(2, (double)d);
+            Assert.That(ReflectionMath.TrySubtract(n2, n1, out d), Is.True);
+            Assert.That(d, Is.InstanceOf<double>());
+            Assert.That((double)d, Is.EqualTo(2));
         }
 
         [Test]
@@ -79,16 +79,16 @@ namespace PropertyTools.Wpf.Tests
             int n1 = 10;
             int n2 = 12;
             object d;
-            Assert.IsTrue(ReflectionMath.TrySubtract(n2, n1, out d));
-            Assert.IsTrue(d is int);
-            Assert.AreEqual(2, (int)d);
+            Assert.That(ReflectionMath.TrySubtract(n2, n1, out d), Is.True);
+            Assert.That(d, Is.InstanceOf<int>());
+            Assert.That((int)d, Is.EqualTo(2));
         }
 
         [Test]
         public void TrySubtract_PointFromVector_Fails()
         {
             object r;
-            Assert.IsFalse(ReflectionMath.TrySubtract(new Vector(0, 0), new Point(1, 1), out r));
+            Assert.That(ReflectionMath.TrySubtract(new Vector(0, 0), new Point(1, 1), out r), Is.False);
         }
 
         [Test]
@@ -101,16 +101,16 @@ namespace PropertyTools.Wpf.Tests
             object o1 = p1;
             object o2 = p2;
             object d2;
-            Assert.IsTrue(ReflectionMath.TrySubtract(o2, o1, out d2));
-            Assert.AreEqual(d, d2);
+            Assert.That(ReflectionMath.TrySubtract(o2, o1, out d2), Is.True);
+            Assert.That(d2, Is.EqualTo(d));
         }
 
         [Test]
         public void TryParse_Double_ReturnsCorrectValue()
         {
             object pi;
-            Assert.IsTrue(ReflectionMath.TryParse(typeof(double), "3.14", CultureInfo.InvariantCulture, out pi));
-            Assert.AreEqual(3.14, pi);
+            Assert.That(ReflectionMath.TryParse(typeof(double), "3.14", CultureInfo.InvariantCulture, out pi), Is.True);
+            Assert.That(pi, Is.EqualTo(3.14));
         }
     }
 }

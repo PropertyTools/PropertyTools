@@ -19,39 +19,39 @@ namespace PropertyTools.Wpf.Tests
         {
             var c = new ColorToBrushConverter();
             var b = c.Convert(Colors.Blue, typeof(Brush), null, null);
-            Assert.AreEqual(Brushes.Blue.ToString(), b.ToString());
+            Assert.That(b.ToString(), Is.EqualTo(Brushes.Blue.ToString()));
         }
 
         [Test]
         public void BoolToVisibility_NotInverted_ReturnsCorrectResult()
         {
             var btv = new BoolToVisibilityConverter();
-            Assert.AreEqual(Visibility.Visible, btv.Convert(true, typeof(Visibility), null, null));
-            Assert.AreEqual(Visibility.Collapsed, btv.Convert(false, typeof(Visibility), null, null));
-            Assert.AreEqual(true, btv.ConvertBack(Visibility.Visible, typeof(bool), null, null));
-            Assert.AreEqual(false, btv.ConvertBack(Visibility.Hidden, typeof(bool), null, null));
-            Assert.AreEqual(false, btv.ConvertBack(Visibility.Collapsed, typeof(bool), null, null));
+            Assert.That(btv.Convert(true, typeof(Visibility), null, null), Is.EqualTo(Visibility.Visible));
+            Assert.That(btv.Convert(false, typeof(Visibility), null, null), Is.EqualTo(Visibility.Collapsed));
+            Assert.That(btv.ConvertBack(Visibility.Visible, typeof(bool), null, null), Is.EqualTo(true));
+            Assert.That(btv.ConvertBack(Visibility.Hidden, typeof(bool), null, null), Is.EqualTo(false));
+            Assert.That(btv.ConvertBack(Visibility.Collapsed, typeof(bool), null, null), Is.EqualTo(false));
 
             btv.NotVisibleValue = Visibility.Hidden;
-            Assert.AreEqual(Visibility.Hidden, btv.Convert(false, typeof(Visibility), null, null));
-            Assert.AreEqual(true, btv.ConvertBack(Visibility.Visible, typeof(bool), null, null));
-            Assert.AreEqual(false, btv.ConvertBack(Visibility.Hidden, typeof(bool), null, null));
-            Assert.AreEqual(false, btv.ConvertBack(Visibility.Collapsed, typeof(bool), null, null));
+            Assert.That(btv.Convert(false, typeof(Visibility), null, null), Is.EqualTo(Visibility.Hidden));
+            Assert.That(btv.ConvertBack(Visibility.Visible, typeof(bool), null, null), Is.EqualTo(true));
+            Assert.That(btv.ConvertBack(Visibility.Hidden, typeof(bool), null, null), Is.EqualTo(false));
+            Assert.That(btv.ConvertBack(Visibility.Collapsed, typeof(bool), null, null), Is.EqualTo(false));
         }
 
         [Test]
         public void BoolToVisibility_Inverted_ReturnsCorrectResult()
         {
             var btv = new BoolToVisibilityConverter { InvertVisibility = true };
-            Assert.AreEqual(Visibility.Visible, btv.Convert(false, typeof(Visibility), null, null));
-            Assert.AreEqual(Visibility.Collapsed, btv.Convert(true, typeof(Visibility), null, null));
-            Assert.AreEqual(false, btv.ConvertBack(Visibility.Visible, typeof(bool), null, null));
-            Assert.AreEqual(true, btv.ConvertBack(Visibility.Hidden, typeof(bool), null, null));
+            Assert.That(btv.Convert(false, typeof(Visibility), null, null), Is.EqualTo(Visibility.Visible));
+            Assert.That(btv.Convert(true, typeof(Visibility), null, null), Is.EqualTo(Visibility.Collapsed));
+            Assert.That(btv.ConvertBack(Visibility.Visible, typeof(bool), null, null), Is.EqualTo(false));
+            Assert.That(btv.ConvertBack(Visibility.Hidden, typeof(bool), null, null), Is.EqualTo(true));
 
             btv.NotVisibleValue = Visibility.Hidden;
-            Assert.AreEqual(Visibility.Hidden, btv.Convert(true, typeof(Visibility), null, null));
-            Assert.AreEqual(false, btv.ConvertBack(Visibility.Visible, typeof(bool), null, null));
-            Assert.AreEqual(true, btv.ConvertBack(Visibility.Hidden, typeof(bool), null, null));
+            Assert.That(btv.Convert(true, typeof(Visibility), null, null), Is.EqualTo(Visibility.Hidden));
+            Assert.That(btv.ConvertBack(Visibility.Visible, typeof(bool), null, null), Is.EqualTo(false));
+            Assert.That(btv.ConvertBack(Visibility.Hidden, typeof(bool), null, null), Is.EqualTo(true));
         }
     }
 }

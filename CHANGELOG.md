@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### Changed
+- Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual)
+- Fixed incorrect SDK casing in project files (Microsoft.Net.Sdk to Microsoft.NET.Sdk)
+
 ### Added
 - Support for .NET 8 - Windows #367
 - ProgressAttribute #391

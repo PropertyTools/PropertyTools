@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) https://github.com/PropertyTools/PropertyTools/issues/417
 
 ### Added
+- Support for .NET 10 - Windows #416
 - Support for .NET 8 - Windows #367
 - ProgressAttribute #391
 - DataDialog supporting INotifyDataErrorInfo #405

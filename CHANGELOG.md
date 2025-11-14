@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Changed
-- Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
+- Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) https://github.com/PropertyTools/PropertyTools/issues/417
 
 ### Added
 - Support for .NET 8 - Windows #367

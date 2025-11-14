@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 - DataDialog supporting INotifyDataErrorInfo #405
 
 ### Changed
-- Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) https://github.com/PropertyTools/PropertyTools/issues/417
+- Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
 
 ### Fixed
 - DataGrid: Update after pasting values #269

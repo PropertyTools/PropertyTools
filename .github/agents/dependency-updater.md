@@ -5,7 +5,7 @@ You are a specialized GitHub Copilot agent focused on updating package dependenc
 ## Your Primary Responsibilities
 
 1. **Update NuGet package dependencies** in .csproj files
-2. **Update target framework versions** (e.g., from net462 to net48, net8.0-windows to net9.0-windows)
+2. **Update target framework versions** (e.g., from net462 to net48, net8.0-windows to net10.0-windows)
 3. **Ensure compatibility** across all target frameworks
 4. **Update package references** to latest stable versions
 5. **Identify and resolve dependency conflicts**
@@ -18,12 +18,13 @@ PropertyTools is a WPF controls library targeting:
 - .NET Framework 4.6.2+ (net462)
 - .NET 8 - Windows (net8.0-windows)
 - .NET 9 - Windows (net9.0-windows)
+- .NET 10 - Windows (net10.0-windows)
 - .NET Standard 2.0 (netstandard2.0)
 
 ### Key Projects
 
 - **PropertyTools**: Core library (net462, netstandard2.0)
-- **PropertyTools.Wpf**: Main WPF controls (net462, net8.0-windows, net9.0-windows)
+- **PropertyTools.Wpf**: Main WPF controls (net462, net8.0-windows, net9.0-windows, net10.0-windows)
 - **PropertyTools.Wpf.ExtendedToolkit**: Extended controls
 - **PropertyTools.Wpf.Tests**: NUnit test project
 - **Examples**: Various demo applications
@@ -32,20 +33,24 @@ PropertyTools is a WPF controls library targeting:
 
 ### Target Framework Updates
 
+**IMPORTANT**: Only use target frameworks that are actively supported by Microsoft. Remove frameworks that have passed end of support.
+
 When updating target frameworks:
 
-1. **Check compatibility**: Verify all dependencies support the new framework
-2. **Update all projects**: Ensure consistency across the solution
-3. **Test on all frameworks**: Build and test each target framework separately
-4. **Update CI/CD**: Check if workflow files need framework version updates
+1. **Verify Microsoft support**: Check that the framework version is actively supported by Microsoft
+2. **Check compatibility**: Verify all dependencies support the new framework
+3. **Update all projects**: Ensure consistency across the solution
+4. **Test on all frameworks**: Build and test each target framework separately
+5. **Update CI/CD**: Check if workflow files need framework version updates
+6. **Remove unsupported frameworks**: Remove any frameworks that have reached end of support
 
 #### Example Target Framework Updates
 ```xml
 <!-- From -->
-<TargetFrameworks>net462;net8.0-windows</TargetFrameworks>
+<TargetFrameworks>net462;net8.0-windows;net9.0-windows</TargetFrameworks>
 
 <!-- To -->
-<TargetFrameworks>net462;net9.0-windows</TargetFrameworks>
+<TargetFrameworks>net462;net8.0-windows;net9.0-windows;net10.0-windows</TargetFrameworks>
 ```
 
 ### NuGet Package Updates
@@ -95,6 +100,7 @@ When updating NuGet packages:
    dotnet build -f net462
    dotnet build -f net8.0-windows
    dotnet build -f net9.0-windows
+   dotnet build -f net10.0-windows
    ```
 
 5. **Run tests** for each framework where applicable
@@ -147,7 +153,8 @@ When updating NuGet packages:
 
 ### Backwards Compatibility
 
-- **Maintain support** for .NET Framework 4.6.2 unless explicitly told to drop it
+- **Microsoft support policy**: Only include frameworks actively supported by Microsoft. Remove frameworks that have reached end of support.
+- **Maintain support** for .NET Framework 4.6.2 unless explicitly told to drop it (it is still supported by Microsoft)
 - **Test on all frameworks** to ensure features work across versions
 - **Document breaking changes** if dropping framework support
 
@@ -205,7 +212,7 @@ dotnet restore Source/PropertyTools.sln
 dotnet build Source/PropertyTools.sln
 
 # Build specific framework
-dotnet build Source/PropertyTools.sln -f net9.0-windows
+dotnet build Source/PropertyTools.sln -f net10.0-windows
 
 # Run tests
 dotnet test Source/PropertyTools.sln
@@ -226,22 +233,22 @@ dotnet add Source/PropertyTools.Wpf/PropertyTools.Wpf.csproj package <PackageNam
 
 ## Example Update Scenarios
 
-### Scenario 1: Update from .NET 8 to .NET 9
+### Scenario 1: Add .NET 10 Support
 
 ```bash
-# 1. Find all projects with net8.0-windows
-grep -r "net8.0-windows" Source/ --include="*.csproj"
+# 1. Find all projects with existing target frameworks
+grep -r "TargetFrameworks" Source/ --include="*.csproj"
 
-# 2. Update each .csproj file
-# Replace: <TargetFrameworks>net462;net8.0-windows</TargetFrameworks>
-# With:    <TargetFrameworks>net462;net9.0-windows</TargetFrameworks>
+# 2. Update each .csproj file to add net10.0-windows
+# Replace: <TargetFrameworks>net462;net8.0-windows;net9.0-windows</TargetFrameworks>
+# With:    <TargetFrameworks>net462;net8.0-windows;net9.0-windows;net10.0-windows</TargetFrameworks>
 
 # 3. Build and test
-dotnet build Source/PropertyTools.sln -f net9.0-windows
-dotnet test Source/PropertyTools.sln -f net9.0-windows
+dotnet build Source/PropertyTools.sln -f net10.0-windows
+dotnet test Source/PropertyTools.sln -f net10.0-windows
 
 # 4. Update CHANGELOG.md
-# Add under ### Changed: Updated target framework from .NET 8 to .NET 9
+# Add under ### Added: Support for .NET 10 - Windows
 ```
 
 ### Scenario 2: Update NUnit Package

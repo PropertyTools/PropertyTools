@@ -71,7 +71,7 @@ namespace PropertyTools.Wpf.Tests
         {
             var ftsp = new FormattedTimeSpanParser(formatString);
             var result = ftsp.Parse(input);
-            Assert.AreEqual(expectedValue, result);
+            Assert.That(result, Is.EqualTo(expectedValue));
         }
     }
 }

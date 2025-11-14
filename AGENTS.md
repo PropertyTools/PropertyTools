@@ -496,7 +496,9 @@ Organize demos in the `Source/Examples` folder:
 
 #### Location and Format
 
-Update the `## Unreleased` section at the top of `CHANGELOG.md`:
+Update the `## Unreleased` section at the top of `CHANGELOG.md`.
+
+**Format**: Each entry must end with a GitHub issue reference using `#IssueNumber`:
 
 ```markdown
 ## Unreleased
@@ -524,7 +526,7 @@ Update the `## Unreleased` section at the top of `CHANGELOG.md`:
 #### Guidelines
 
 - Use clear, concise descriptions
-- Include issue/PR number when applicable (e.g., `#123`)
+- **Each item must reference a GitHub issue number at the end of the line** (e.g., `#123`)
 - Place entries in the most appropriate category
 - If multiple categories apply, add entries to all relevant sections
 - Maintain logical ordering within categories

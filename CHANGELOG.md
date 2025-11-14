@@ -4,8 +4,8 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
-- Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements
-- Documentation: Added CLAUDE.md as a quick reference guide for Claude AI that refers to AGENTS.md
+- Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420
+- Documentation: Added CLAUDE.md as a quick reference guide for Claude AI that refers to AGENTS.md #420
 - Support for .NET 8 - Windows #367
 - ProgressAttribute #391
 - DataDialog supporting INotifyDataErrorInfo #405

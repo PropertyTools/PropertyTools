@@ -23,6 +23,7 @@ jobs:
           6.0.x
           8.0.x
           9.0.x
+          10.0.x
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2

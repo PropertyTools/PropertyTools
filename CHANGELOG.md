@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - DataDialog supporting INotifyDataErrorInfo #405
 
 ### Changed
+- Documentation: Updated README.md supported frameworks section to include .NET 9 and .NET 10 - Windows
 - Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
 
 ### Fixed

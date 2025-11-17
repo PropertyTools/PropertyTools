@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
 - Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420
 - Documentation: Added CLAUDE.md as a quick reference guide for Claude AI that refers to AGENTS.md #420
 - Support for .NET 10 - Windows #416

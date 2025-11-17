@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
 
 ### Fixed
+- GitHub Actions: Fix CodeQL workflow failure by upgrading to CodeQL action v3
 - DataGrid: Update after pasting values #269
 - DataGrid: Deleting last item in a sorted data grid causes an exception #321
 - TreeListBox: Fix items being added under collapsed nodes #264

@@ -12,7 +12,7 @@ namespace PropertyTools.Wpf.Operators
         {
             if (value == this)
             {
-                throw new ArgumentException("Can not use itself as custom operator");
+                throw new ArgumentException("Cannot use itself as custom operator");
             }
 
             _customLocalizableOperator = value;

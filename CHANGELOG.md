@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
-- GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows
+- GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424
 - Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420
 - Documentation: Added CLAUDE.md as a quick reference guide for Claude AI that refers to AGENTS.md #420
 - Support for .NET 10 - Windows #416
@@ -14,7 +14,6 @@ All notable changes to this project will be documented in this file.
 - DataDialog supporting INotifyDataErrorInfo #405
 
 ### Changed
-- Documentation: Updated README.md supported frameworks section to include .NET 9 and .NET 10 - Windows
 - Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
 
 ### Fixed

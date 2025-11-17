@@ -4,9 +4,16 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
+- Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420
+- Documentation: Added CLAUDE.md as a quick reference guide for Claude AI that refers to AGENTS.md #420
+- Support for .NET 10 - Windows #416
 - Support for .NET 8 - Windows #367
 - ProgressAttribute #391
 - DataDialog supporting INotifyDataErrorInfo #405
+
+### Changed
+- Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
 
 ### Fixed
 - DataGrid: Update after pasting values #269
@@ -19,23 +26,6 @@ All notable changes to this project will be documented in this file.
 - ItemsBag: Ensure that the ItemsBag Property Descriptor does not suppress the property change notifications #354
 - ItemsBag: Propagation of IsReadOnly property to the ItemsBag Property Descriptor #369
 - TreeListBox: Catching the ArgumentException by message title, fails in non english regions #38 #142
-
-### Changed
-- TypeHelper.IsIListIList(Type) method changed to private #343
-
-### Added 
-- Support for .NET 6 - Windows #317
-- Support for .NET 4.6.2 #317
-- PropertyGrid: Only show properties that are adorned with Browsable(true) if Browsable(false) not used #278
-- PropertyGrid: Add Button Control for properties inheriting from ICommand #279
-- PropertyGrid: Enhances options for PropertyGrid size #277
-- PropertyGrid: Add IValueConverter and ToolTip lookups for property grid array/collection elements #285
-
-### Removed
-- Support for .NET 4.5.2 #317
-- Support for .NET Core App 3.0 #317
-- AppVeyor build #362
-- Support for .NET 6 #368
 
 ## [3.1.0]
 ### Added

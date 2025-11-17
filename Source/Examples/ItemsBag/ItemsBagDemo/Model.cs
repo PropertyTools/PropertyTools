@@ -17,6 +17,7 @@ namespace ItemsBagDemo
     /// <summary>
     /// Generic value type struct example
     /// </summary>
+    /// <typeparam name="T">The type of value stored in the struct.</typeparam>
     public struct R<T>
     {
         public T Value { get; set; }

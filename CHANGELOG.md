@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
+- GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows
 - Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420
 - Documentation: Added CLAUDE.md as a quick reference guide for Claude AI that refers to AGENTS.md #420
 - Support for .NET 10 - Windows #416

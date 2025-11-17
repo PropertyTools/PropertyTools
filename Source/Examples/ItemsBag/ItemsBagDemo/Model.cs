@@ -14,6 +14,25 @@ namespace ItemsBagDemo
 
     public enum Colors { Red, Green, Blue }
 
+    /// <summary>
+    /// Generic value type struct example
+    /// </summary>
+    /// <typeparam name="T">The type of value stored in the struct.</typeparam>
+    public struct R<T>
+    {
+        public T Value { get; set; }
+
+        public R(T value)
+        {
+            Value = value;
+        }
+
+        public override string ToString()
+        {
+            return Value?.ToString() ?? "null";
+        }
+    }
+
     public class Model : INotifyPropertyChanged
     {
         public bool ShowColor => IsChecked;
@@ -79,6 +98,91 @@ namespace ItemsBagDemo
             {
                 this.color = value;
                 RaisePropertyChanged("Color");
+            }
+        }
+
+        private double? nullableDouble;
+
+        [Category("Nullable Types")]
+        [Description("Nullable double value")]
+        public double? NullableDouble
+        {
+            get
+            {
+                return this.nullableDouble;
+            }
+            set
+            {
+                this.nullableDouble = value;
+                RaisePropertyChanged(nameof(NullableDouble));
+            }
+        }
+
+        private Colors? nullableColor;
+
+        [Category("Nullable Types")]
+        [Description("Nullable enum value")]
+        public Colors? NullableColor
+        {
+            get
+            {
+                return this.nullableColor;
+            }
+            set
+            {
+                this.nullableColor = value;
+                RaisePropertyChanged(nameof(NullableColor));
+            }
+        }
+
+        private R<int> genericInt;
+
+        [Category("Generic Value Types")]
+        [Description("Generic struct with int")]
+        public R<int> GenericInt
+        {
+            get
+            {
+                return this.genericInt;
+            }
+            set
+            {
+                this.genericInt = value;
+                RaisePropertyChanged(nameof(GenericInt));
+            }
+        }
+
+        private R<string> genericString;
+
+        [Category("Generic Value Types")]
+        [Description("Generic struct with string")]
+        public R<string> GenericString
+        {
+            get
+            {
+                return this.genericString;
+            }
+            set
+            {
+                this.genericString = value;
+                RaisePropertyChanged(nameof(GenericString));
+            }
+        }
+
+        private R<double>? nullableGenericDouble;
+
+        [Category("Generic Value Types")]
+        [Description("Nullable generic struct with double")]
+        public R<double>? NullableGenericDouble
+        {
+            get
+            {
+                return this.nullableGenericDouble;
+            }
+            set
+            {
+                this.nullableGenericDouble = value;
+                RaisePropertyChanged(nameof(NullableGenericDouble));
             }
         }
 

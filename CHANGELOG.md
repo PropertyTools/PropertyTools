@@ -16,6 +16,9 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
 
+### Removed
+- AboutDialog: Removed from PropertyTools.Wpf library and moved to DialogDemos example
+
 ### Fixed
 - AboutDialog: Use full system path for msinfo32.exe to prevent PATH-based security vulnerabilities
 - GitHub Actions: Fix CodeQL workflow failure by upgrading to CodeQL action v3 #426

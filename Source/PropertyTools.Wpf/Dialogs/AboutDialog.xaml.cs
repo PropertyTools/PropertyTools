@@ -95,7 +95,10 @@ namespace PropertyTools.Wpf
         {
             var systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
             var msinfo32Path = Path.Combine(systemPath, "msinfo32.exe");
-            Process.Start(msinfo32Path);
+            if (File.Exists(msinfo32Path))
+            {
+                Process.Start(msinfo32Path);
+            }
         }
     }
 }

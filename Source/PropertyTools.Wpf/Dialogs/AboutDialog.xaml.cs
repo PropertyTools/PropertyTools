@@ -9,7 +9,9 @@
 
 namespace PropertyTools.Wpf
 {
+    using System;
     using System.Diagnostics;
+    using System.IO;
     using System.Reflection;
     using System.Windows;
     using System.Windows.Media;
@@ -91,7 +93,9 @@ namespace PropertyTools.Wpf
         /// <param name="e">The e.</param>
         private void SystemInfoClick(object sender, RoutedEventArgs e)
         {
-            Process.Start("MsInfo32.exe");
+            var systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            var msinfo32Path = Path.Combine(systemPath, "msinfo32.exe");
+            Process.Start(msinfo32Path);
         }
     }
 }

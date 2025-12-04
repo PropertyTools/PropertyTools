@@ -9,6 +9,8 @@
 
 namespace PropertyTools.Wpf
 {
+    using System;
+    using System.IO;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -201,7 +203,8 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void Explore()
         {
-            System.Diagnostics.Process.Start("explorer.exe", this.Directory);
+            var explorerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
+            System.Diagnostics.Process.Start(explorerPath, this.Directory);
         }
     }
 }

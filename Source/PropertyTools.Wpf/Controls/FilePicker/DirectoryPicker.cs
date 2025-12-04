@@ -201,7 +201,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void Explore()
         {
-            System.Diagnostics.Process.Start("explorer.exe", this.Directory);
+            System.Diagnostics.Process.Start("explorer.exe", "\"" + this.Directory + "\"");
         }
     }
 }

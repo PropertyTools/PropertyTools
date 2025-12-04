@@ -516,7 +516,7 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void Explore()
         {
-            System.Diagnostics.Process.Start("explorer.exe", "/select," + this.FilePath);
+            System.Diagnostics.Process.Start("explorer.exe", "/select,\"" + this.FilePath + "\"");
         }
 
         /// <summary>

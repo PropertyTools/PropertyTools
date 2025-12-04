@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - DataDialog supporting INotifyDataErrorInfo #405
 
 ### Changed
+- GitHub Actions: Configure CodeQL workflow to use security-extended query suite for more comprehensive security scanning #437
 - Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
 
 ### Removed

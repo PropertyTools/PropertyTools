@@ -533,7 +533,11 @@ namespace PropertyTools.Wpf
             var filePath = this.SelectedFilePaths.FirstOrDefault();
             if (filePath != null)
             {
-                System.Diagnostics.Process.Start(filePath);
+                var psi = new System.Diagnostics.ProcessStartInfo(filePath)
+                {
+                    UseShellExecute = true
+                };
+                System.Diagnostics.Process.Start(psi);
             }
         }
 

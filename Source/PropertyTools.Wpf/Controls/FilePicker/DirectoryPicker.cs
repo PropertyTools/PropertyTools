@@ -204,7 +204,12 @@ namespace PropertyTools.Wpf
         private void Explore()
         {
             var explorerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
-            System.Diagnostics.Process.Start(explorerPath, this.Directory);
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = explorerPath,
+                Arguments = "\"" + this.Directory + "\"",
+                UseShellExecute = true
+            });
         }
     }
 }

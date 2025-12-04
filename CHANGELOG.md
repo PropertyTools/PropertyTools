@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - AboutDialog: Removed from PropertyTools.Wpf library and moved to DialogDemos example #431
 
 ### Fixed
+- FilePicker: Fix Open button not opening files with associated applications on .NET Core/.NET 5+
 - AboutDialog: Use full system path for msinfo32.exe to prevent PATH-based security vulnerabilities
 - GitHub Actions: Fix CodeQL workflow failure by upgrading to CodeQL action v3 #426
 - DataGrid: Update after pasting values #269

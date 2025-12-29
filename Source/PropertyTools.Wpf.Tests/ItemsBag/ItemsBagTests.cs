@@ -256,6 +256,45 @@ namespace PropertyTools.Wpf.Tests
             {
                 Value = value;
             }
+
+            public static implicit operator GenericStruct<T>(T value)
+            {
+                return new GenericStruct<T>(value);
+            }
+
+            public static implicit operator T(GenericStruct<T> gs)
+            {
+                return gs.Value;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is GenericStruct<T> other)
+                {
+                    return object.Equals(Value, other.Value);
+                }
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                return Value?.GetHashCode() ?? 0;
+            }
+        }
+
+        [Test]
+        public void GenericStruct_ImplicitConversionFromValue_WorksCorrectly()
+        {
+            GenericStruct<int> gs = 42;
+            Assert.That(gs.Value, Is.EqualTo(42));
+        }
+
+        [Test]
+        public void GenericStruct_ImplicitConversionToValue_WorksCorrectly()
+        {
+            var gs = new GenericStruct<int>(42);
+            int value = gs;
+            Assert.That(value, Is.EqualTo(42));
         }
       
         [Test]

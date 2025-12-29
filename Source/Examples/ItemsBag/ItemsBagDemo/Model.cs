@@ -6,18 +6,22 @@
 
 namespace ItemsBagDemo
 {
+    using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
 
     using PropertyTools.DataAnnotations;
+    using Category = System.ComponentModel.CategoryAttribute;
+    using Description = System.ComponentModel.DescriptionAttribute;
 
     public enum Colors { Red, Green, Blue }
 
     /// <summary>
-    /// Generic value type struct example
+    /// Generic value type struct example with string conversion support.
     /// </summary>
     /// <typeparam name="T">The type of value stored in the struct.</typeparam>
+    [TypeConverter(typeof(RTypeConverter))]
     public struct R<T>
     {
         public T Value { get; set; }
@@ -27,9 +31,100 @@ namespace ItemsBagDemo
             Value = value;
         }
 
+        /// <summary>
+        /// Implicit conversion from T to R&lt;T&gt;.
+        /// Allows assignment like: R&lt;int&gt; x = 3;
+        /// </summary>
+        public static implicit operator R<T>(T value)
+        {
+            return new R<T>(value);
+        }
+
+        /// <summary>
+        /// Implicit conversion from R&lt;T&gt; to T.
+        /// Allows retrieval like: int x = myR;
+        /// </summary>
+        public static implicit operator T(R<T> r)
+        {
+            return r.Value;
+        }
+
         public override string ToString()
         {
             return Value?.ToString() ?? "null";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is R<T> other)
+            {
+                return object.Equals(Value, other.Value);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Value?.GetHashCode() ?? 0;
+        }
+    }
+
+    /// <summary>
+    /// TypeConverter for R&lt;T&gt; that supports conversion to/from string.
+    /// </summary>
+    public class RTypeConverter : TypeConverter
+    {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            if (sourceType == typeof(string))
+            {
+                return true;
+            }
+            return base.CanConvertFrom(context, sourceType);
+        }
+
+        public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+        {
+            if (value is string str)
+            {
+                // Get the generic type argument T from the target type
+                var targetType = context?.PropertyDescriptor?.PropertyType;
+                if (targetType != null && targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(R<>))
+                {
+                    var innerType = targetType.GetGenericArguments()[0];
+                    
+                    // Use TypeDescriptor to convert the string to the inner type
+                    var converter = TypeDescriptor.GetConverter(innerType);
+                    if (converter != null && converter.CanConvertFrom(typeof(string)))
+                    {
+                        var innerValue = converter.ConvertFromString(str);
+                        
+                        // Create R<T> instance using reflection
+                        var rType = typeof(R<>).MakeGenericType(innerType);
+                        return Activator.CreateInstance(rType, innerValue);
+                    }
+                }
+            }
+            return base.ConvertFrom(context, culture, value);
+        }
+
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            if (destinationType == typeof(string))
+            {
+                return true;
+            }
+            return base.CanConvertTo(context, destinationType);
+        }
+
+        public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+        {
+            if (destinationType == typeof(string) && value != null)
+            {
+                // Use the ToString method of R<T>
+                return value.ToString();
+            }
+            return base.ConvertTo(context, culture, value, destinationType);
         }
     }
 

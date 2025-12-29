@@ -16,6 +16,9 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - GitHub Actions: Configure CodeQL workflow to use security-extended query suite for more comprehensive security scanning #437
 - Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
+- Tests: Upgraded NUnit from 3.12.0 to 4.4.0 for latest features and improvements
+- Tests: Upgraded Microsoft.NET.Test.SDK from 16.3.0 to 18.0.1 for improved test execution
+- Tests: Upgraded NUnit3TestAdapter from 3.15.1 to 6.0.1 for compatibility with NUnit 4
 
 ### Removed
 - AboutDialog: Removed from PropertyTools.Wpf library and moved to DialogDemos example #431

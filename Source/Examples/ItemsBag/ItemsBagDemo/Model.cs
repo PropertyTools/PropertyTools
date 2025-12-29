@@ -87,22 +87,31 @@ namespace ItemsBagDemo
         {
             if (value is string str)
             {
-                // Get the generic type argument T from the target type
-                var targetType = context?.PropertyDescriptor?.PropertyType;
-                if (targetType != null && targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(R<>))
+                try
                 {
-                    var innerType = targetType.GetGenericArguments()[0];
-                    
-                    // Use TypeDescriptor to convert the string to the inner type
-                    var converter = TypeDescriptor.GetConverter(innerType);
-                    if (converter != null && converter.CanConvertFrom(typeof(string)))
+                    // Get the generic type argument T from the target type
+                    var targetType = context?.PropertyDescriptor?.PropertyType;
+                    if (targetType != null && targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(R<>))
                     {
-                        var innerValue = converter.ConvertFromString(str);
+                        var innerType = targetType.GetGenericArguments()[0];
                         
-                        // Create R<T> instance using reflection
-                        var rType = typeof(R<>).MakeGenericType(innerType);
-                        return Activator.CreateInstance(rType, innerValue);
+                        // Use TypeDescriptor to convert the string to the inner type
+                        var converter = TypeDescriptor.GetConverter(innerType);
+                        if (converter != null && converter.CanConvertFrom(typeof(string)))
+                        {
+                            var innerValue = converter.ConvertFromString(str);
+                            
+                            // Create R<T> instance using reflection since we don't know T at compile time
+                            // This constructs the appropriate R<T> type (e.g., R<int>, R<double>) dynamically
+                            var rType = typeof(R<>).MakeGenericType(innerType);
+                            return Activator.CreateInstance(rType, innerValue);
+                        }
                     }
+                }
+                catch (Exception ex) when (ex is FormatException || ex is InvalidCastException || ex is NotSupportedException)
+                {
+                    // Let the base converter handle invalid format errors
+                    throw new FormatException($"Cannot convert '{str}' to the target type.", ex);
                 }
             }
             return base.ConvertFrom(context, culture, value);

@@ -623,7 +623,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void SetValue_NullOnNonNullableIntValue_ThrowsTargetException()
+        public void SetValue_NullOnNonNullableIntValue_ThrowsArgumentException()
         {
             var t0 = new TestObject() { IntValue = 10 };
             var bag = new ItemsBag(new[] { t0 });
@@ -632,13 +632,13 @@ namespace PropertyTools.Wpf.Tests
             var p1 = td.GetProperties().Find("IntValue", false);
 
             // Setting null on a non-nullable value type should throw
-            Assert.Throws<System.Reflection.TargetException>(() => p1.SetValue(bag, null));
+            Assert.Throws<ArgumentException>(() => p1.SetValue(bag, null));
             // Original value should remain unchanged
             Assert.That(t0.IntValue, Is.EqualTo(10));
         }
 
         [Test]
-        public void SetValue_NullOnNonNullableDoubleValue_ThrowsTargetException()
+        public void SetValue_NullOnNonNullableDoubleValue_ThrowsArgumentException()
         {
             var t0 = new TestObject() { DoubleValue = 1.5 };
             var bag = new ItemsBag(new[] { t0 });
@@ -647,13 +647,13 @@ namespace PropertyTools.Wpf.Tests
             var p1 = td.GetProperties().Find("DoubleValue", false);
 
             // Setting null on a non-nullable value type should throw
-            Assert.Throws<System.Reflection.TargetException>(() => p1.SetValue(bag, null));
+            Assert.Throws<ArgumentException>(() => p1.SetValue(bag, null));
             // Original value should remain unchanged
             Assert.That(t0.DoubleValue, Is.EqualTo(1.5));
         }
 
         [Test]
-        public void SetValue_NullOnNonNullableEnumValue_ThrowsTargetException()
+        public void SetValue_NullOnNonNullableEnumValue_ThrowsArgumentException()
         {
             var t0 = new TestObject() { EnumValue = TestEnum.First };
             var bag = new ItemsBag(new[] { t0 });
@@ -662,13 +662,13 @@ namespace PropertyTools.Wpf.Tests
             var p1 = td.GetProperties().Find("EnumValue", false);
 
             // Setting null on a non-nullable value type should throw
-            Assert.Throws<System.Reflection.TargetException>(() => p1.SetValue(bag, null));
+            Assert.Throws<ArgumentException>(() => p1.SetValue(bag, null));
             // Original value should remain unchanged
             Assert.That(t0.EnumValue, Is.EqualTo(TestEnum.First));
         }
 
         [Test]
-        public void SetValue_NullOnNonNullableGenericStructValue_ThrowsTargetException()
+        public void SetValue_NullOnNonNullableGenericStructValue_ThrowsArgumentException()
         {
             var t0 = new TestObject() { GenericValue = new GenericStruct<int>(42) };
             var bag = new ItemsBag(new[] { t0 });
@@ -677,7 +677,7 @@ namespace PropertyTools.Wpf.Tests
             var p1 = td.GetProperties().Find("GenericValue", false);
 
             // Setting null on a non-nullable value type should throw
-            Assert.Throws<System.Reflection.TargetException>(() => p1.SetValue(bag, null));
+            Assert.Throws<ArgumentException>(() => p1.SetValue(bag, null));
             // Original value should remain unchanged
             Assert.That(t0.GenericValue, Is.EqualTo(new GenericStruct<int>(42)));
         }

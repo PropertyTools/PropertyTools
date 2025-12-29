@@ -429,6 +429,18 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void PropertyType_ForGenericStructValueType_ReturnsNullableGenericStruct()
+        {
+            var t0 = new TestObject();
+            var bag = new ItemsBag(new[] { t0 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("GenericValue", false);
+
+            Assert.That(p1.PropertyType, Is.EqualTo(typeof(GenericStruct<int>?)));
+        }
+
+        [Test]
         public void GetValue_IntValueWithDifferentValues_ReturnsNull()
         {
             var t0 = new TestObject() { IntValue = 10 };
@@ -555,6 +567,23 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void SetValue_GenericStructValueWithMultipleObjects_SetsAllValues()
+        {
+            var t0 = new TestObject() { GenericValue = new GenericStruct<int>(10) };
+            var t1 = new TestObject() { GenericValue = new GenericStruct<int>(20) };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("GenericValue", false);
+
+            var newValue = new GenericStruct<int>(100);
+            p1.SetValue(bag, newValue);
+
+            Assert.That(t0.GenericValue, Is.EqualTo(newValue));
+            Assert.That(t1.GenericValue, Is.EqualTo(newValue));
+        }
+
+        [Test]
         public void SetValue_NullOnNonNullableIntValue_ThrowsTargetException()
         {
             var t0 = new TestObject() { IntValue = 10 };
@@ -597,6 +626,21 @@ namespace PropertyTools.Wpf.Tests
             Assert.Throws<System.Reflection.TargetException>(() => p1.SetValue(bag, null));
             // Original value should remain unchanged
             Assert.That(t0.EnumValue, Is.EqualTo(TestEnum.First));
+        }
+
+        [Test]
+        public void SetValue_NullOnNonNullableGenericStructValue_ThrowsTargetException()
+        {
+            var t0 = new TestObject() { GenericValue = new GenericStruct<int>(42) };
+            var bag = new ItemsBag(new[] { t0 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("GenericValue", false);
+
+            // Setting null on a non-nullable value type should throw
+            Assert.Throws<System.Reflection.TargetException>(() => p1.SetValue(bag, null));
+            // Original value should remain unchanged
+            Assert.That(t0.GenericValue, Is.EqualTo(new GenericStruct<int>(42)));
         }
 
         private class TestObject

@@ -256,6 +256,45 @@ namespace PropertyTools.Wpf.Tests
             {
                 Value = value;
             }
+
+            public static implicit operator GenericStruct<T>(T value)
+            {
+                return new GenericStruct<T>(value);
+            }
+
+            public static implicit operator T(GenericStruct<T> gs)
+            {
+                return gs.Value;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is GenericStruct<T> other)
+                {
+                    return object.Equals(Value, other.Value);
+                }
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                return Value?.GetHashCode() ?? 0;
+            }
+        }
+
+        [Test]
+        public void GenericStruct_ImplicitConversionFromValue_WorksCorrectly()
+        {
+            GenericStruct<int> gs = 42;
+            Assert.That(gs.Value, Is.EqualTo(42));
+        }
+
+        [Test]
+        public void GenericStruct_ImplicitConversionToValue_WorksCorrectly()
+        {
+            var gs = new GenericStruct<int>(42);
+            int value = gs;
+            Assert.That(value, Is.EqualTo(42));
         }
       
         [Test]
@@ -392,6 +431,197 @@ namespace PropertyTools.Wpf.Tests
             Assert.That(p1.ShouldSerializeValue(bag), Is.False);
         }
 
+        [Test]
+        public void PropertyType_ForIntValueType_ReturnsNullableInt()
+        {
+            var t0 = new TestObject();
+            var bag = new ItemsBag(new[] { t0 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("IntValue", false);
+
+            Assert.That(p1.PropertyType, Is.EqualTo(typeof(int?)));
+        }
+
+        [Test]
+        public void PropertyType_ForDoubleValueType_ReturnsNullableDouble()
+        {
+            var t0 = new TestObject();
+            var bag = new ItemsBag(new[] { t0 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("DoubleValue", false);
+
+            Assert.That(p1.PropertyType, Is.EqualTo(typeof(double?)));
+        }
+
+        [Test]
+        public void PropertyType_ForEnumValueType_ReturnsNullableEnum()
+        {
+            var t0 = new TestObject();
+            var bag = new ItemsBag(new[] { t0 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("EnumValue", false);
+
+            Assert.That(p1.PropertyType, Is.EqualTo(typeof(TestEnum?)));
+        }
+
+        [Test]
+        public void PropertyType_ForGenericStructValueType_ReturnsNullableGenericStruct()
+        {
+            var t0 = new TestObject();
+            var bag = new ItemsBag(new[] { t0 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("GenericValue", false);
+
+            Assert.That(p1.PropertyType, Is.EqualTo(typeof(GenericStruct<int>?)));
+        }
+
+        [Test]
+        public void GetValue_IntValueWithDifferentValues_ReturnsNull()
+        {
+            var t0 = new TestObject() { IntValue = 10 };
+            var t1 = new TestObject() { IntValue = 20 };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("IntValue", false);
+
+            Assert.That(p1.GetValue(bag), Is.EqualTo(null));
+        }
+
+        [Test]
+        public void GetValue_IntValueWithEqualValues_ReturnsValue()
+        {
+            var t0 = new TestObject() { IntValue = 42 };
+            var t1 = new TestObject() { IntValue = 42 };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("IntValue", false);
+
+            Assert.That(p1.GetValue(bag), Is.EqualTo(42));
+        }
+
+        [Test]
+        public void GetValue_DoubleValueWithDifferentValues_ReturnsNull()
+        {
+            var t0 = new TestObject() { DoubleValue = 1.5 };
+            var t1 = new TestObject() { DoubleValue = 2.5 };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("DoubleValue", false);
+
+            Assert.That(p1.GetValue(bag), Is.EqualTo(null));
+        }
+
+        [Test]
+        public void GetValue_DoubleValueWithEqualValues_ReturnsValue()
+        {
+            var t0 = new TestObject() { DoubleValue = 3.14 };
+            var t1 = new TestObject() { DoubleValue = 3.14 };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("DoubleValue", false);
+
+            Assert.That(p1.GetValue(bag), Is.EqualTo(3.14));
+        }
+
+        [Test]
+        public void GetValue_EnumValueWithDifferentValues_ReturnsNull()
+        {
+            var t0 = new TestObject() { EnumValue = TestEnum.First };
+            var t1 = new TestObject() { EnumValue = TestEnum.Second };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("EnumValue", false);
+
+            Assert.That(p1.GetValue(bag), Is.EqualTo(null));
+        }
+
+        [Test]
+        public void GetValue_EnumValueWithEqualValues_ReturnsValue()
+        {
+            var t0 = new TestObject() { EnumValue = TestEnum.Third };
+            var t1 = new TestObject() { EnumValue = TestEnum.Third };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("EnumValue", false);
+
+            Assert.That(p1.GetValue(bag), Is.EqualTo(TestEnum.Third));
+        }
+
+        [Test]
+        public void SetValue_IntValueWithMultipleObjects_SetsAllValues()
+        {
+            var t0 = new TestObject() { IntValue = 10 };
+            var t1 = new TestObject() { IntValue = 20 };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("IntValue", false);
+
+            p1.SetValue(bag, 100);
+
+            Assert.That(t0.IntValue, Is.EqualTo(100));
+            Assert.That(t1.IntValue, Is.EqualTo(100));
+        }
+
+        [Test]
+        public void SetValue_DoubleValueWithMultipleObjects_SetsAllValues()
+        {
+            var t0 = new TestObject() { DoubleValue = 1.5 };
+            var t1 = new TestObject() { DoubleValue = 2.5 };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("DoubleValue", false);
+
+            p1.SetValue(bag, 9.99);
+
+            Assert.That(t0.DoubleValue, Is.EqualTo(9.99));
+            Assert.That(t1.DoubleValue, Is.EqualTo(9.99));
+        }
+
+        [Test]
+        public void SetValue_EnumValueWithMultipleObjects_SetsAllValues()
+        {
+            var t0 = new TestObject() { EnumValue = TestEnum.First };
+            var t1 = new TestObject() { EnumValue = TestEnum.Second };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("EnumValue", false);
+
+            p1.SetValue(bag, TestEnum.Third);
+
+            Assert.That(t0.EnumValue, Is.EqualTo(TestEnum.Third));
+            Assert.That(t1.EnumValue, Is.EqualTo(TestEnum.Third));
+        }
+
+        [Test]
+        public void SetValue_GenericStructValueWithMultipleObjects_SetsAllValues()
+        {
+            var t0 = new TestObject() { GenericValue = new GenericStruct<int>(10) };
+            var t1 = new TestObject() { GenericValue = new GenericStruct<int>(20) };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("GenericValue", false);
+
+            var newValue = new GenericStruct<int>(100);
+            p1.SetValue(bag, newValue);
+
+            Assert.That(t0.GenericValue, Is.EqualTo(newValue));
+            Assert.That(t1.GenericValue, Is.EqualTo(newValue));
+        }
+
         private class TestObject
         {
             public bool IsChecked => this.Checked;
@@ -399,6 +629,17 @@ namespace PropertyTools.Wpf.Tests
             public string Name { get; set; }
             public int? NullableInt { get; set; }
             public GenericStruct<int> GenericValue { get; set; }
+            public int IntValue { get; set; }
+            public double DoubleValue { get; set; }
+            public TestEnum EnumValue { get; set; }
+        }
+
+        private enum TestEnum
+        {
+            None,
+            First,
+            Second,
+            Third
         }
 
         private class ObservableTestObject : System.ComponentModel.INotifyPropertyChanged

@@ -11,8 +11,10 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class DirectoryPathAttributeExample : Example
     {
+        private string directoryPath;
+
         [DirectoryPath]
         [AutoUpdateText]
-        public string DirectoryPath { get; set; }
+        public string DirectoryPath { get => this.directoryPath; set { this.directoryPath = value; this.RaisePropertyChanged(nameof(DirectoryPath)); } }
     }
 }

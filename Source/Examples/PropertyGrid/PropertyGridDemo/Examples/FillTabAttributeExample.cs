@@ -11,13 +11,16 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class FillTabAttributeExample : Example
     {
+        private string text;
+        private string text2;
+
         [Category("Header|Group category is not shown!")]
         [FillTab]
-        public string Text { get; set; }
+        public string Text { get => this.text; set { this.text = value; this.RaisePropertyChanged(nameof(Text)); } }
 
         [Category("No header|Group category is not shown!")]
         [FillTab]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
-        public string Text2 { get; set; }
+        public string Text2 { get => this.text2; set { this.text2 = value; this.RaisePropertyChanged(nameof(Text2)); } }
     }
 }

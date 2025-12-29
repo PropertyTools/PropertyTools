@@ -11,19 +11,23 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class HeaderPlacementAttributeExample : Example
     {
+        private string headerAbove;
+        private string headerCollapsed;
+        private string headerLeft;
+
         [Category("HeaderPlacement.Above")]
         [HeaderPlacement(HeaderPlacement.Above)]
         [Height(100)]
-        public string HeaderAbove { get; set; }
+        public string HeaderAbove { get => this.headerAbove; set { this.headerAbove = value; this.RaisePropertyChanged(nameof(HeaderAbove)); } }
 
         [Category("HeaderPlacement.Collapsed")]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         [Height(100)]
-        public string HeaderCollapsed { get; set; }
+        public string HeaderCollapsed { get => this.headerCollapsed; set { this.headerCollapsed = value; this.RaisePropertyChanged(nameof(HeaderCollapsed)); } }
 
         [Category("HeaderPlacement.Left")]
         [HeaderPlacement(HeaderPlacement.Left)]
         [Height(100)]
-        public string HeaderLeft { get; set; }        
+        public string HeaderLeft { get => this.headerLeft; set { this.headerLeft = value; this.RaisePropertyChanged(nameof(HeaderLeft)); } }        
     }
 }

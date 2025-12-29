@@ -19,6 +19,14 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class ItemsSourcePropertyExample : Example
     {
+        private List<string> items;
+        private string selectedItem;
+        private string editableItem;
+        private List<Employee> employees;
+        private int selectedEmployeeNumber;
+        private int selectedEmployeeNumber2;
+        private Employee selectedEmployee;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TestItemsSourcePropertyAttribute" /> class.
         /// </summary>
@@ -40,34 +48,34 @@ namespace ExampleLibrary
         }
 
         [Browsable(false)]
-        public List<string> Items { get; set; }
+        public List<string> Items { get => this.items; set { this.items = value; this.RaisePropertyChanged(nameof(Items)); } }
 
         [Category("Default SelectedValuePath")]
         [ItemsSourceProperty("Items")]
-        public string SelectedItem { get; set; }
+        public string SelectedItem { get => this.selectedItem; set { this.selectedItem = value; this.RaisePropertyChanged(nameof(SelectedItem)); } }
 
         [ItemsSourceProperty("Items")]
         [System.ComponentModel.DataAnnotations.Editable(true)]
-        public string EditableItem { get; set; }
+        public string EditableItem { get => this.editableItem; set { this.editableItem = value; this.RaisePropertyChanged(nameof(EditableItem)); } }
 
         [Browsable(false)]
-        public List<Employee> Employees { get; set; }
+        public List<Employee> Employees { get => this.employees; set { this.employees = value; this.RaisePropertyChanged(nameof(Employees)); } }
 
         [Category("SelectedValuePath")]
         [ItemsSourceProperty("Employees")]
         [SelectedValuePath("EmployeeNumber")]
-        public int SelectedEmployeeNumber { get; set; }
+        public int SelectedEmployeeNumber { get => this.selectedEmployeeNumber; set { this.selectedEmployeeNumber = value; this.RaisePropertyChanged(nameof(SelectedEmployeeNumber)); } }
 
         [Category("SelectedValuePath / DisplayMemberPath")]
         [ItemsSourceProperty("Employees")]
         [DisplayMemberPath("Name")]
         [SelectedValuePath("EmployeeNumber")]
-        public int SelectedEmployeeNumber2 { get; set; }
+        public int SelectedEmployeeNumber2 { get => this.selectedEmployeeNumber2; set { this.selectedEmployeeNumber2 = value; this.RaisePropertyChanged(nameof(SelectedEmployeeNumber2)); } }
 
         [Category("DisplayMemberPath")]
         [ItemsSourceProperty("Employees")]
         [DisplayMemberPath("EmployeeNumber")]
-        public Employee SelectedEmployee { get; set; }
+        public Employee SelectedEmployee { get => this.selectedEmployee; set { this.selectedEmployee = value; this.RaisePropertyChanged(nameof(SelectedEmployee)); } }
 
         public class Employee
         {

@@ -37,6 +37,7 @@ namespace ExampleLibrary
             set
             {
                 this.name = value;
+                this.RaisePropertyChanged(nameof(Name));
                 this.Validate("Name", !string.IsNullOrEmpty(this.name), "Name should be specified");
             }
         }

@@ -15,6 +15,8 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class ContentAttributeExample : Example
     {
+        private StackPanel content1;
+
         public ContentAttributeExample()
         {
             var pfcc = new PathFigureCollectionConverter();
@@ -39,6 +41,6 @@ namespace ExampleLibrary
 
         [Content]
         [Description("This property contains a StackPanel")]
-        public StackPanel Content1 { get; private set; }
+        public StackPanel Content1 { get => this.content1; private set { this.content1 = value; this.RaisePropertyChanged(nameof(Content1)); } }
     }
 }

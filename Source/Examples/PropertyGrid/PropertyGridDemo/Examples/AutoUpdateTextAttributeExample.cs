@@ -11,10 +11,13 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class AutoUpdateTextAttributeExample : Example
     {
-        [AutoUpdateText]
-        public string Text { get; set; }
+        private string text;
+        private double number;
 
         [AutoUpdateText]
-        public double Number { get; set; }
+        public string Text { get => this.text; set { this.text = value; this.RaisePropertyChanged(nameof(Text)); } }
+
+        [AutoUpdateText]
+        public double Number { get => this.number; set { this.number = value; this.RaisePropertyChanged(nameof(Number)); } }
     }
 }

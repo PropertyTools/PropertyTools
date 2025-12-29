@@ -7,11 +7,15 @@
     [MetadataType(typeof(PersonMetadata))]
     public class MetaDataTypeExample : Example
     {
-        public string FirstName { get; set; }
+        private string firstName;
+        private string lastName;
+        private int age;
 
-        public string LastName { get; set; }
+        public string FirstName { get => this.firstName; set { this.firstName = value; this.RaisePropertyChanged(nameof(FirstName)); } }
 
-        public int Age { get; set; }
+        public string LastName { get => this.lastName; set { this.lastName = value; this.RaisePropertyChanged(nameof(LastName)); } }
+
+        public int Age { get => this.age; set { this.age = value; this.RaisePropertyChanged(nameof(Age)); } }
     }
 
     public class PersonMetadata

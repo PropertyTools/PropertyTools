@@ -13,25 +13,32 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class FilePathAttributeExample : Example
     {
+        private string openFilePath;
+        private string saveFilePath;
+        private string inputFilePath;
+        private string outputFilePath;
+        private string testPath;
+        private string relativePath;
+
         [InputFilePath(".txt")]
         [FilterProperty("Filter")]
         [AutoUpdateText]
-        public string OpenFilePath { get; set; }
+        public string OpenFilePath { get => this.openFilePath; set { this.openFilePath = value; this.RaisePropertyChanged(nameof(OpenFilePath)); } }
 
         [OutputFilePath(".txt")]
         [FilterProperty("Filter")]
-        public string SaveFilePath { get; set; }
+        public string SaveFilePath { get => this.saveFilePath; set { this.saveFilePath = value; this.RaisePropertyChanged(nameof(SaveFilePath)); } }
 
         [InputFilePath(".txt")]
-        public string InputFilePath { get; set; }
+        public string InputFilePath { get => this.inputFilePath; set { this.inputFilePath = value; this.RaisePropertyChanged(nameof(InputFilePath)); } }
 
         [OutputFilePath(".html")]
-        public string OutputFilePath { get; set; }
+        public string OutputFilePath { get => this.outputFilePath; set { this.outputFilePath = value; this.RaisePropertyChanged(nameof(OutputFilePath)); } }
 
         [InputFilePath]
         [DefaultExtensionProperty("TestPathExtension")]
         [FilterProperty("TestPathFilter")]
-        public string TestPath { get; set; }
+        public string TestPath { get => this.testPath; set { this.testPath = value; this.RaisePropertyChanged(nameof(TestPath)); } }
         [Browsable(false)]
         public string TestPathFilter { get { return "CSV files (*.csv)|*.csv"; } }
         [Browsable(false)]
@@ -39,7 +46,7 @@ namespace ExampleLibrary
 
         [InputFilePath(".txt")]
         [BasePathProperty("BasePath")]
-        public string RelativePath { get; set; }
+        public string RelativePath { get => this.relativePath; set { this.relativePath = value; this.RaisePropertyChanged(nameof(RelativePath)); } }
 
         public string BasePath { get; private set; }
 

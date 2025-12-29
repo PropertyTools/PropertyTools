@@ -14,13 +14,22 @@ namespace ExampleLibrary
     /// <summary>
     /// Base class for examples.
     /// </summary>
-    /// <remarks>This class depends on the NotifyPropertyWeaver task.
-    /// All INotifyPropertyChanged events will be weaved into the code as a post-compile build step.</remarks>
+    /// <remarks>This class implements INotifyPropertyChanged to notify the UI when properties change.</remarks>
     public class Example : INotifyPropertyChanged
     {
-#pragma warning disable 67
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-#pragma warning restore 67
+
+        /// <summary>
+        /// Raises the PropertyChanged event.
+        /// </summary>
+        /// <param name="propertyName">Name of the property that changed.</param>
+        protected virtual void RaisePropertyChanged(string propertyName)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public override string ToString()
         {

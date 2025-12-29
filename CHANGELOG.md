@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - GitHub Actions: Configure CodeQL workflow to use security-extended query suite for more comprehensive security scanning #437
+- PropertyGridDemo: Implemented INotifyPropertyChanged in Example base class and all Example classes, removed Fody dependency #TBD
 - Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
 - Updated DotNetProjects.Extended.Wpf.Toolkit package from version 5.0.103 to 5.0.129
 - Tests: Upgraded NUnit from 3.12.0 to 4.4.0 for latest features and improvements
@@ -23,6 +24,7 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 - AboutDialog: Removed from PropertyTools.Wpf library and moved to DialogDemos example #431
+- PropertyGridDemo: Removed Fody and PropertyChanged.Fody package dependencies #TBD
 
 ### Fixed
 - FilePicker: Fix Open button not opening files with associated applications on .NET Core/.NET 5+ #435

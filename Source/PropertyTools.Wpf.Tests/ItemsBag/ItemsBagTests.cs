@@ -91,10 +91,10 @@ namespace PropertyTools.Wpf.Tests
             var t1 = new TestObject();
             var bag = new ItemsBag(new[] { t0, t1 });
 
-            Assert.IsNotNull(bag);
-            Assert.AreEqual(2, bag.Objects.Length);
-            Assert.AreSame(t0, bag.Objects[0]);
-            Assert.AreSame(t1, bag.Objects[1]);
+            Assert.That(bag, Is.Not.Null);
+            Assert.That(bag.Objects.Length, Is.EqualTo(2));
+            Assert.That(bag.Objects[0], Is.SameAs(t0));
+            Assert.That(bag.Objects[1], Is.SameAs(t1));
         }
 
         [Test]
@@ -105,10 +105,10 @@ namespace PropertyTools.Wpf.Tests
             var list = new System.Collections.Generic.List<TestObject> { t0, t1 };
             var bag = new ItemsBag(list);
 
-            Assert.IsNotNull(bag);
-            Assert.AreEqual(2, bag.Objects.Length);
-            Assert.AreSame(t0, bag.Objects[0]);
-            Assert.AreSame(t1, bag.Objects[1]);
+            Assert.That(bag, Is.Not.Null);
+            Assert.That(bag.Objects.Length, Is.EqualTo(2));
+            Assert.That(bag.Objects[0], Is.SameAs(t0));
+            Assert.That(bag.Objects[1], Is.SameAs(t1));
         }
 
         [Test]
@@ -117,9 +117,9 @@ namespace PropertyTools.Wpf.Tests
             var t0 = new TestObject();
             var bag = new ItemsBag(new[] { t0 });
 
-            Assert.IsNotNull(bag);
-            Assert.AreEqual(1, bag.Objects.Length);
-            Assert.AreSame(t0, bag.Objects[0]);
+            Assert.That(bag, Is.Not.Null);
+            Assert.That(bag.Objects.Length, Is.EqualTo(1));
+            Assert.That(bag.Objects[0], Is.SameAs(t0));
         }
 
         [Test]
@@ -127,8 +127,8 @@ namespace PropertyTools.Wpf.Tests
         {
             var bag = new ItemsBag(new TestObject[0]);
 
-            Assert.IsNotNull(bag);
-            Assert.AreEqual(0, bag.Objects.Length);
+            Assert.That(bag, Is.Not.Null);
+            Assert.That(bag.Objects.Length, Is.EqualTo(0));
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace PropertyTools.Wpf.Tests
             var t1 = new TestObject();
             var bag = new ItemsBag(new[] { t0, t1 });
 
-            Assert.AreEqual(typeof(TestObject), bag.BiggestType);
+            Assert.That(bag.BiggestType, Is.EqualTo(typeof(TestObject)));
         }
 
         [Test]
@@ -153,8 +153,8 @@ namespace PropertyTools.Wpf.Tests
 
             p1.SetValue(bag, "Bob");
 
-            Assert.AreEqual("Bob", t0.Name);
-            Assert.AreEqual("Bob", t1.Name);
+            Assert.That(t0.Name, Is.EqualTo("Bob"));
+            Assert.That(t1.Name, Is.EqualTo("Bob"));
         }
 
         [Test]
@@ -168,7 +168,7 @@ namespace PropertyTools.Wpf.Tests
 
             p1.SetValue(bag, true);
 
-            Assert.AreEqual(true, t0.Checked);
+            Assert.That(t0.Checked, Is.EqualTo(true));
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace PropertyTools.Wpf.Tests
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var p1 = td.GetProperties().Find("Name", false);
 
-            Assert.AreEqual("John", p1.GetValue(bag));
+            Assert.That(p1.GetValue(bag), Is.EqualTo("John"));
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace PropertyTools.Wpf.Tests
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var p1 = td.GetProperties().Find("NullableInt", false);
 
-            Assert.AreEqual(null, p1.GetValue(bag));
+            Assert.That(p1.GetValue(bag), Is.EqualTo(null));
         }
 
         [Test]
@@ -206,7 +206,7 @@ namespace PropertyTools.Wpf.Tests
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var p1 = td.GetProperties().Find("Name", false);
 
-            Assert.AreEqual(null, p1.GetValue(bag));
+            Assert.That(p1.GetValue(bag), Is.EqualTo(null));
         }
 
         [Test]
@@ -218,7 +218,7 @@ namespace PropertyTools.Wpf.Tests
             var provider = new ItemsBagTypeDescriptionProvider();
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var p1 = td.GetProperties().Find("NullableInt", false);
-            Assert.AreEqual(10, p1.GetValue(bag));
+            Assert.That(p1.GetValue(bag), Is.EqualTo(10));
         }
 
         [Test]
@@ -230,7 +230,7 @@ namespace PropertyTools.Wpf.Tests
             var provider = new ItemsBagTypeDescriptionProvider();
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var p1 = td.GetProperties().Find("GenericValue", false);
-            Assert.AreEqual(null, p1.GetValue(bag));
+            Assert.That(p1.GetValue(bag), Is.EqualTo(null));
         }
 
         [Test]
@@ -244,8 +244,8 @@ namespace PropertyTools.Wpf.Tests
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var p1 = td.GetProperties().Find("GenericValue", false);
             var result = p1.GetValue(bag);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(value, result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo(value));
         }
 
         public struct GenericStruct<T>
@@ -268,7 +268,7 @@ namespace PropertyTools.Wpf.Tests
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var p1 = td.GetProperties().Find("Name", false);
 
-            Assert.AreEqual(null, p1.GetValue(bag));
+            Assert.That(p1.GetValue(bag), Is.EqualTo(null));
         }
 
         [Test]
@@ -290,8 +290,8 @@ namespace PropertyTools.Wpf.Tests
 
             p1.SetValue(bag, true);
 
-            Assert.IsTrue(eventRaised);
-            Assert.AreEqual("Checked", propertyName);
+            Assert.That(eventRaised, Is.True);
+            Assert.That(propertyName, Is.EqualTo("Checked"));
         }
 
         [Test]
@@ -310,8 +310,8 @@ namespace PropertyTools.Wpf.Tests
 
             t0.Name = "NewName";
 
-            Assert.IsTrue(eventRaised);
-            Assert.AreEqual("Name", propertyName);
+            Assert.That(eventRaised, Is.True);
+            Assert.That(propertyName, Is.EqualTo("Name"));
         }
 
         [Test]
@@ -327,7 +327,7 @@ namespace PropertyTools.Wpf.Tests
 
             t0.Name = "NewName";
 
-            Assert.IsFalse(eventRaised);
+            Assert.That(eventRaised, Is.False);
         }
 
         [Test]
@@ -339,7 +339,7 @@ namespace PropertyTools.Wpf.Tests
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var p1 = td.GetProperties().Find("Checked", false);
 
-            Assert.AreEqual(typeof(bool?), p1.PropertyType);
+            Assert.That(p1.PropertyType, Is.EqualTo(typeof(bool?)));
         }
 
         [Test]
@@ -351,7 +351,7 @@ namespace PropertyTools.Wpf.Tests
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var p1 = td.GetProperties().Find("Name", false);
 
-            Assert.AreEqual(typeof(string), p1.PropertyType);
+            Assert.That(p1.PropertyType, Is.EqualTo(typeof(string)));
         }
 
         [Test]
@@ -363,9 +363,9 @@ namespace PropertyTools.Wpf.Tests
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var props = td.GetProperties();
 
-            Assert.IsNotNull(props.Find("Checked", false));
-            Assert.IsNotNull(props.Find("Name", false));
-            Assert.IsNotNull(props.Find("IsChecked", false));
+            Assert.That(props.Find("Checked", false), Is.Not.Null);
+            Assert.That(props.Find("Name", false), Is.Not.Null);
+            Assert.That(props.Find("IsChecked", false), Is.Not.Null);
         }
 
         [Test]
@@ -377,7 +377,7 @@ namespace PropertyTools.Wpf.Tests
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var p1 = td.GetProperties().Find("Name", false);
 
-            Assert.IsFalse(p1.CanResetValue(bag));
+            Assert.That(p1.CanResetValue(bag), Is.False);
         }
 
         [Test]
@@ -389,7 +389,7 @@ namespace PropertyTools.Wpf.Tests
             var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
             var p1 = td.GetProperties().Find("Name", false);
 
-            Assert.IsFalse(p1.ShouldSerializeValue(bag));
+            Assert.That(p1.ShouldSerializeValue(bag), Is.False);
         }
 
         private class TestObject

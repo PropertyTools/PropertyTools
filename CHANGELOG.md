@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Support for .NET 8 - Windows #367
 - ProgressAttribute #391
 - DataDialog supporting INotifyDataErrorInfo #405
+- ItemsBag: Added comprehensive unit tests for value type properties (int, double, enum) #355
 
 ### Changed
 - GitHub Actions: Configure CodeQL workflow to use security-extended query suite for more comprehensive security scanning #437
@@ -21,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Tests: Upgraded NUnit from 3.12.0 to 4.4.0 for latest features and improvements
 - Tests: Upgraded Microsoft.NET.Test.SDK from 16.3.0 to 18.0.1 for improved test execution
 - Tests: Upgraded NUnit3TestAdapter from 3.15.1 to 6.0.1 for compatibility with NUnit 4
+- ItemsBag: Improved documentation explaining how it works with type descriptors and property descriptors #355
 
 ### Removed
 - AboutDialog: Removed from PropertyTools.Wpf library and moved to DialogDemos example #431

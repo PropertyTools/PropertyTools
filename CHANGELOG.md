@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Support for .NET 8 - Windows #367
 - ProgressAttribute #391
+- DataGrid/PropertyGrid: ILocalizableOperator and ICustomLocalizableOperator interfaces #389
 
 ### Fixed
 - DataGrid: Update after pasting values #269

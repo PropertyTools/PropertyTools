@@ -19,7 +19,7 @@ namespace PropertyTools.Wpf
 
     using PropertyTools.DataAnnotations;
 
-	using PropertyTools.Wpf.Operators;
+    using PropertyTools.Wpf.Operators;
     using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
     /// <summary>

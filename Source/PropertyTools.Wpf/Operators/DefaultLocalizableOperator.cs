@@ -1,11 +1,23 @@
-﻿using System;
-using System.Windows;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DefaultLocalizableOperator.cs" company="PropertyTools">
+//   Copyright (c) 2014 PropertyTools contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace PropertyTools.Wpf.Operators
 {
+    using System;
+
+    /// <summary>
+    /// Provides a default implementation of a localizable operator that supports customizable localization of strings
+    /// and descriptions.
+    /// </summary>
+    /// <remarks>This class allows for the delegation of localization logic to a custom operator by calling
+    /// <see cref="UseLocalizableOperator"/>. If no custom operator is set, it returns the provided key as the localized
+    /// value. This is useful as a fallback or base implementation for localization scenarios.</remarks>
     public class DefaultLocalizableOperator : ILocalizableOperator, ICustomLocalizableOperator
     {
-        private ILocalizableOperator _customLocalizableOperator;
+        private ILocalizableOperator customLocalizableOperator;
 
         /// <inheritdoc/>        
         public void UseLocalizableOperator(ILocalizableOperator value)
@@ -15,7 +27,7 @@ namespace PropertyTools.Wpf.Operators
                 throw new ArgumentException("Cannot use itself as custom operator");
             }
 
-            _customLocalizableOperator = value;
+            this.customLocalizableOperator = value;
         }
 
         /// <summary>
@@ -28,9 +40,9 @@ namespace PropertyTools.Wpf.Operators
         /// </returns>
         public virtual string GetLocalizedDescription(string key, Type declaringType)
         {
-            if (_customLocalizableOperator != null)
+            if (this.customLocalizableOperator != null)
             {
-                return _customLocalizableOperator.GetLocalizedDescription(key, declaringType);
+                return this.customLocalizableOperator.GetLocalizedDescription(key, declaringType);
             }
 
             return key;
@@ -46,9 +58,9 @@ namespace PropertyTools.Wpf.Operators
         /// </returns>
         public virtual string GetLocalizedString(string key, Type declaringType)
         {
-            if (_customLocalizableOperator != null)
+            if (this.customLocalizableOperator != null)
             {
-                return _customLocalizableOperator.GetLocalizedString(key, declaringType);
+                return this.customLocalizableOperator.GetLocalizedString(key, declaringType);
             }
 
             return key;

@@ -19,7 +19,7 @@ namespace PropertyTools.Wpf
     using System.Windows;
     using System.Windows.Data;
 
-    using PropertyTools.DataAnnotations;    
+    using PropertyTools.DataAnnotations;
     using PropertyTools.Wpf.Operators;
 
     /// <summary>
@@ -613,7 +613,7 @@ namespace PropertyTools.Wpf
                         var cd = new ColumnDefinition
                         {
                             PropertyName = column.PropertyName,
-                            Header = this.GetLocalizedString(column.Header, declaringType: null),
+                            Header = this.GetLocalizedString(column.Header, declaringType: elementType),
                             FormatString = column.FormatString,
                             Width = (GridLength)(glc.ConvertFromInvariantString(column.Width) ?? GridLength.Auto),
                             IsReadOnly = column.IsReadOnly,

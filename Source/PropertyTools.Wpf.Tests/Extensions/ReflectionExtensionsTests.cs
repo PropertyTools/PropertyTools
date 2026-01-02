@@ -31,8 +31,8 @@ namespace PropertyTools.Wpf.Tests
         [Test]
         public void FilterOnBrowsableAttribute()
         {
-            Assert.AreEqual(5, Enum.GetValues(typeof(Enum1)).Length);
-            Assert.AreEqual(3, Enum.GetValues(typeof(Enum1)).FilterOnBrowsableAttribute().Count());
+            Assert.That(Enum.GetValues(typeof(Enum1)).Length, Is.EqualTo(5));
+            Assert.That(Enum.GetValues(typeof(Enum1)).FilterOnBrowsableAttribute().Count(), Is.EqualTo(3));
         }
     }
 }

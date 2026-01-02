@@ -12,6 +12,9 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class CommandExample : Example
     {
+        private bool canExecute;
+        private int executeCount;
+
         public CommandExample()
         {
             BasicCommand = new DelegateCommand(() => { this.ExecuteCount++; });
@@ -22,8 +25,8 @@ namespace ExampleLibrary
 
         public ICommand Command { get; }
 
-        public bool CanExecute { get; set; }
+        public bool CanExecute { get => this.canExecute; set { this.canExecute = value; this.RaisePropertyChanged(nameof(CanExecute)); } }
 
-        public int ExecuteCount { get; set; }
+        public int ExecuteCount { get => this.executeCount; set { this.executeCount = value; this.RaisePropertyChanged(nameof(ExecuteCount)); } }
     }
 }

@@ -58,6 +58,7 @@ namespace ExampleLibrary
         public class CheckableItem : PropertyTools.Observable
         {
             private bool isChecked;
+            private string name;
 
             public bool IsChecked
             {
@@ -72,7 +73,7 @@ namespace ExampleLibrary
                 }
             }
 
-            public string Name { get; set; }
+            public string Name { get => this.name; set { this.SetValue(ref this.name, value); } }
         }
     }
 }

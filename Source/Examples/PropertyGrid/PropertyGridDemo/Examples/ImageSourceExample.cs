@@ -16,10 +16,11 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class ImageSourceExample : Example
     {
-        [Height(double.NaN, 0, 160)]
-        public ImageSource Image { get; set; }
-
+        private ImageSource image;
         private string path;
+
+        [Height(double.NaN, 0, 160)]
+        public ImageSource Image { get => this.image; set { this.image = value; this.RaisePropertyChanged(nameof(Image)); } }
 
         [InputFilePath(".png", "Images files|*.png;*.jpg")]
         public string Path
@@ -31,6 +32,7 @@ namespace ExampleLibrary
             set
             {
                 this.path = value;
+                this.RaisePropertyChanged(nameof(Path));
                 this.Image = new BitmapImage(new Uri(this.Path, UriKind.Absolute));
             }
         }

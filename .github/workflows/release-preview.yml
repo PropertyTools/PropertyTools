@@ -1,0 +1,87 @@
+name: Release preview (build and publish preview package)
+
+on:
+  push:
+    tags:
+    - "v[0-9]+.[0-9]+.[0-9]+-preview[0-9][0-9][0-9]"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: |
+          6.0.x
+          8.0.x
+          9.0.x
+          10.0.x
+
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Extract release notes from CHANGELOG
+      shell: pwsh
+      run: |
+        $changelog = Get-Content CHANGELOG.md -Raw
+        $match = $changelog -match '(?s)## Unreleased(.*?)(?=## \[|$)'
+        if ($match) {
+          $releaseNotes = $Matches[1].Trim()
+          $releaseNotes | Out-File -FilePath RELEASE-NOTES.txt -Encoding utf8
+          Write-Host "Release notes extracted from CHANGELOG.md"
+        } else {
+          "Preview release" | Out-File -FilePath RELEASE-NOTES.txt -Encoding utf8
+          Write-Host "No unreleased section found in CHANGELOG.md"
+        }
+
+    - name: Set VERSION variable from tag
+      shell: pwsh
+      run: |
+        $version = "${{ github.ref }}" -replace 'refs/tags/v', ''
+        Write-Host "VERSION=$version"
+        "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+    - name: Restore dependencies
+      run: msbuild Source\PropertyTools.sln /t:Restore /p:Configuration=Release
+
+    - name: Build
+      run: msbuild Source\PropertyTools.sln /p:Configuration=Release /p:Version=${{ env.VERSION }}
+
+    - name: Test
+      run: dotnet test Source\PropertyTools.sln --configuration Release --no-build --verbosity normal
+
+    - name: Pack PropertyTools
+      working-directory: Source/PropertyTools
+      run: dotnet pack --configuration Release /p:Version=${{ env.VERSION }} --no-build --output ../../Packages
+
+    - name: Pack PropertyTools.Wpf
+      working-directory: Source/PropertyTools.Wpf
+      run: dotnet pack --configuration Release /p:Version=${{ env.VERSION }} --no-build --output ../../Packages
+
+    - name: Pack PropertyTools.Wpf.Extended.Toolkit
+      working-directory: Source/PropertyTools.Wpf.ExtendedToolkit
+      run: dotnet pack --configuration Release /p:Version=${{ env.VERSION }} --no-build --output ../../Packages
+
+    - name: Push to GitHub Packages
+      run: dotnet nuget push ./Packages/*.nupkg --source https://nuget.pkg.github.com/PropertyTools/index.json --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Pre-release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Pre-release ${{ github.ref_name }}
+        body_path: RELEASE-NOTES.txt
+        draft: false
+        prerelease: true
+        files: |
+          Packages/*.nupkg
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

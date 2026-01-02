@@ -40,6 +40,7 @@ namespace ExampleLibrary
             set
             {
                 this.firstName = value;
+                this.RaisePropertyChanged(nameof(FirstName));
                 this.Validate("FirstName", !string.IsNullOrEmpty(this.firstName), "First Name should be specified.", Severity.Error);
             }
         }
@@ -56,6 +57,7 @@ namespace ExampleLibrary
             set
             {
                 this.lastName = value;
+                this.RaisePropertyChanged(nameof(LastName));
                 this.Validate("LastName", !string.IsNullOrEmpty(this.lastName), "Last Name should be specified.", Severity.Warning);
             }
         }

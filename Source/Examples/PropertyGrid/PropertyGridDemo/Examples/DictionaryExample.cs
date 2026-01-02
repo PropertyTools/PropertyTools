@@ -12,7 +12,9 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class DictionaryExample : Example
     {
+        private Dictionary<int, Item> dictionary = new Dictionary<int, Item>();
+
         [Description("This is not yet working.")]
-        public Dictionary<int, Item> Dictionary { get; set; } = new Dictionary<int, Item>();
+        public Dictionary<int, Item> Dictionary { get => this.dictionary; set { this.dictionary = value; this.RaisePropertyChanged(nameof(Dictionary)); } }
     }
 }

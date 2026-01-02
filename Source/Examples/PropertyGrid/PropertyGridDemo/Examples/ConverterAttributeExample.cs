@@ -16,6 +16,12 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class ConverterAttributeExample : Example
     {
+        private double angle;
+        private int value;
+        private System.Drawing.Color color;
+        private Length length;
+        private Mass mass;
+
         public ConverterAttributeExample()
         {
             this.Angle = Math.PI;
@@ -23,21 +29,21 @@ namespace ExampleLibrary
 
         [Category("IValueConverter")]
         [Converter(typeof(RadiansToDegreesConverter))]
-        public double Angle { get; set; }
+        public double Angle { get => this.angle; set { this.angle = value; this.RaisePropertyChanged(nameof(Angle)); } }
 
         [Converter(typeof(IntToBoolConverter))]
-        public int Value { get; set; }
+        public int Value { get => this.value; set { this.value = value; this.RaisePropertyChanged(nameof(Value)); } }
 
         [Converter(typeof(ColorConverter))]
         [Description("System.Drawing.Color")]
-        public System.Drawing.Color Color { get; set; }
+        public System.Drawing.Color Color { get => this.color; set { this.color = value; this.RaisePropertyChanged(nameof(Color)); } }
 
         [Description("The value converter is registered in the property control factory.")]
-        public Length Length { get; set; }
+        public Length Length { get => this.length; set { this.length = value; this.RaisePropertyChanged(nameof(Length)); } }
 
         [Category("TypeConverter")]
         [Description("The type converter is registered by the TypeConverterAttribute on the Mass type.")]
-        public Mass Mass { get; set; }
+        public Mass Mass { get => this.mass; set { this.mass = value; this.RaisePropertyChanged(nameof(Mass)); } }
     }
 
     [ValueConversion(typeof(System.Drawing.Color), typeof(System.Windows.Media.Color))]

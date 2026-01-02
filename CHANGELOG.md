@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 - Support for .NET 10 - Windows #416
 - Support for .NET 8 - Windows #367
 - ProgressAttribute #391
-- DataGrid/PropertyGrid: ILocalizableOperator and ICustomLocalizableOperator interfaces #389
+- DataGrid/PropertyGrid: ILocalizableOperator and ICustomLocalizableOperator interfaces #398
 - DataDialog supporting INotifyDataErrorInfo #405
 - ItemsBag: Added comprehensive unit tests for value type properties (int, double, enum) #355
 

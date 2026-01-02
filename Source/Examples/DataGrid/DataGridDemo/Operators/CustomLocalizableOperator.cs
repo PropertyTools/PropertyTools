@@ -1,14 +1,16 @@
-﻿using DataGridDemo.Resources;
-using PropertyTools.Wpf.Operators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CustomLocalizableOperator.cs" company="PropertyTools">
+//   Copyright (c) 2014 PropertyTools contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace DataGridDemo.Operators
 {
-    public class CustomDataGridLocalizableOperator : DefaultLocalizableOperator
+    using DataGridDemo.Resources;
+    using PropertyTools.Wpf.Operators;
+    using System;
+
+    public class CustomLocalizableOperator : DefaultLocalizableOperator
     {
         public override string GetLocalizedString(string key, Type declaringType)
         {

@@ -4,6 +4,6 @@
              xmlns:operators="clr-namespace:DataGridDemo.Operators"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <operators:CustomDataGridLocalizableOperator x:Key="CustomDataGridLocalizableOperator" />
+        <operators:CustomLocalizableOperator x:Key="CustomLocalizableOperator" />
     </Application.Resources>
 </Application>

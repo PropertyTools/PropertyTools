@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObservableObjectExample.xaml.cs" company="PropertyTools">
+// <copyright file="ObservableCollectionOfExampleObjectTranslatedExample.xaml.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for ObservableObjectExample.
+//   Interaction logic for ObservableCollectionOfExampleObjectTranslatedExample.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

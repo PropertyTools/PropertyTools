@@ -15,6 +15,6 @@
             </MenuItem>
         </Menu>
         <p:DataGrid ItemsSource="{Binding ItemsSource}" CellDefinitionFactory="{Binding CellDefinitionFactory}"
-                    LocalizableOperator="{StaticResource CustomDataGridLocalizableOperator}" />
+                    LocalizableOperator="{StaticResource CustomLocalizableOperator}" />
     </DockPanel>
 </Window>

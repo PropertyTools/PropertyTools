@@ -1,8 +1,9 @@
 ﻿<Application x:Class="PropertyGridDemos.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:operators="clr-namespace:PropertyGridDemos.Operators"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <operators:CustomLocalizableOperator x:Key="CustomLocalizableOperator" />
     </Application.Resources>
 </Application>

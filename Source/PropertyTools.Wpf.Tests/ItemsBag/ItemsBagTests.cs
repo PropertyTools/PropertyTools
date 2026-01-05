@@ -480,6 +480,89 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void PropertyType_ForAlreadyNullableInt_ReturnsOriginalNullableType()
+        {
+            var t0 = new TestObject();
+            var bag = new ItemsBag(new[] { t0 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("NullableInt", false);
+
+            Assert.That(p1.PropertyType, Is.EqualTo(typeof(int?)));
+        }
+
+        [Test]
+        public void GetValue_AlreadyNullableIntWithEqualValues_ReturnsValue()
+        {
+            var t0 = new TestObject() { NullableInt = 42 };
+            var t1 = new TestObject() { NullableInt = 42 };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("NullableInt", false);
+
+            Assert.That(p1.GetValue(bag), Is.EqualTo(42));
+        }
+
+        [Test]
+        public void GetValue_AlreadyNullableIntWithDifferentValues_ReturnsNull()
+        {
+            var t0 = new TestObject() { NullableInt = 10 };
+            var t1 = new TestObject() { NullableInt = 20 };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("NullableInt", false);
+
+            Assert.That(p1.GetValue(bag), Is.EqualTo(null));
+        }
+
+        [Test]
+        public void GetValue_AlreadyNullableIntWithNullValues_ReturnsNull()
+        {
+            var t0 = new TestObject() { NullableInt = null };
+            var t1 = new TestObject() { NullableInt = null };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("NullableInt", false);
+
+            Assert.That(p1.GetValue(bag), Is.EqualTo(null));
+        }
+
+        [Test]
+        public void SetValue_AlreadyNullableIntWithMultipleObjects_SetsAllValues()
+        {
+            var t0 = new TestObject() { NullableInt = 10 };
+            var t1 = new TestObject() { NullableInt = 20 };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("NullableInt", false);
+
+            p1.SetValue(bag, 100);
+
+            Assert.That(t0.NullableInt, Is.EqualTo(100));
+            Assert.That(t1.NullableInt, Is.EqualTo(100));
+        }
+
+        [Test]
+        public void SetValue_AlreadyNullableIntWithNull_SetsAllValuesToNull()
+        {
+            var t0 = new TestObject() { NullableInt = 10 };
+            var t1 = new TestObject() { NullableInt = 20 };
+            var bag = new ItemsBag(new[] { t0, t1 });
+            var provider = new ItemsBagTypeDescriptionProvider();
+            var td = provider.GetTypeDescriptor(typeof(ItemsBag), bag);
+            var p1 = td.GetProperties().Find("NullableInt", false);
+
+            p1.SetValue(bag, null);
+
+            Assert.That(t0.NullableInt, Is.EqualTo(null));
+            Assert.That(t1.NullableInt, Is.EqualTo(null));
+        }
+
+        [Test]
         public void GetValue_IntValueWithDifferentValues_ReturnsNull()
         {
             var t0 = new TestObject() { IntValue = 10 };

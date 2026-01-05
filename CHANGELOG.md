@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid/PropertyGrid: ILocalizableOperator and ICustomLocalizableOperator interfaces #398
 - DataDialog supporting INotifyDataErrorInfo #405
 - ItemsBag: Added comprehensive unit tests for value type properties (int, double, enum) #355
+- ItemsBag: Added comprehensive unit tests for already-nullable value types to verify PropertyType behavior #TBD
 
 ### Changed
 - GitHub Actions: Configure CodeQL workflow to use security-extended query suite for more comprehensive security scanning #437

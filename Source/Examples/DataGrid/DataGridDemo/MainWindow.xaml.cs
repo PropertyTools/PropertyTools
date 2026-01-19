@@ -30,6 +30,20 @@ namespace DataGridDemo
                 .Where(t => t.Name.EndsWith("Example") && windowType.IsAssignableFrom(t))
                 .Select(t => new ExampleWindow(t))
                 .OrderBy(e => e.Title));
+
+            this.Loaded += this.MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // get argument from command line
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length > 1)
+            {
+                var exampleName = args[1];
+                var example = this.Examples.FirstOrDefault(ex => ex.Type.Name.Equals(exampleName, StringComparison.OrdinalIgnoreCase));
+                example?.Show();
+            }
         }
 
         public List<ExampleWindow> Examples { get; } = new List<ExampleWindow>();

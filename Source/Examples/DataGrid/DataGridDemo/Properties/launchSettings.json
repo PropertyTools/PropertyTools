@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DataGridDemo": {
+      "commandName": "Project",
+      "commandLineArgs": "SpreadsheetExample"
+    }
+  }
+}

@@ -1365,6 +1365,11 @@ namespace PropertyTools.Wpf
                 return;
             }
 
+            // Clear any active sorting before paste to ensure correct row indexing.
+            // When sorting is active, view indices differ from source indices,
+            // which causes values to be written to wrong rows during paste operations.
+            this.ClearSort();
+
             var range = this.SetValues(values, this.GetSelectionRange());
 
             this.SelectionCell = range.BottomRight;

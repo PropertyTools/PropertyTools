@@ -81,9 +81,9 @@ namespace PropertyTools.Wpf.Tests.DataGrid
             // Arrange: Create collection with items out of natural sort order
             var items = new ObservableCollection<TestItem>
             {
-                new TestItem { X = 30, Y = 0, Z = 0 }, // Source index 0
-                new TestItem { X = 10, Y = 0, Z = 0 }, // Source index 1
-                new TestItem { X = 20, Y = 0, Z = 0 }, // Source index 2
+                new() { X = 30, Y = 0, Z = 0 }, // Source index 0
+                new() { X = 10, Y = 0, Z = 0 }, // Source index 1
+                new() { X = 20, Y = 0, Z = 0 }, // Source index 2
             };
 
             var collectionView = CollectionViewSource.GetDefaultView(items);
@@ -96,13 +96,13 @@ namespace PropertyTools.Wpf.Tests.DataGrid
             var viewItems = collectionView.Cast<TestItem>().ToList();
 
             // View index 0 shows X=10 (source index 1)
-            Assert.AreEqual(10, viewItems[0].X, "View index 0 should show item with X=10");
+            Assert.That(viewItems[0].X, Is.EqualTo(10), "View index 0 should show item with X=10");
 
             // View index 1 shows X=20 (source index 2)
-            Assert.AreEqual(20, viewItems[1].X, "View index 1 should show item with X=20");
+            Assert.That(viewItems[1].X, Is.EqualTo(20), "View index 1 should show item with X=20");
 
             // View index 2 shows X=30 (source index 0)
-            Assert.AreEqual(30, viewItems[2].X, "View index 2 should show item with X=30");
+            Assert.That(viewItems[2].X, Is.EqualTo(30), "View index 2 should show item with X=30");
 
             // This demonstrates the bug: If paste uses view indices to access source collection,
             // values will be written to wrong items.
@@ -119,9 +119,9 @@ namespace PropertyTools.Wpf.Tests.DataGrid
             // Arrange
             var items = new ObservableCollection<TestItem>
             {
-                new TestItem { X = 30, Y = 0, Z = 0 },
-                new TestItem { X = 10, Y = 0, Z = 0 },
-                new TestItem { X = 20, Y = 0, Z = 0 },
+                new() { X = 30, Y = 0, Z = 0 },
+                new() { X = 10, Y = 0, Z = 0 },
+                new() { X = 20, Y = 0, Z = 0 },
             };
 
             var collectionView = CollectionViewSource.GetDefaultView(items);
@@ -137,21 +137,21 @@ namespace PropertyTools.Wpf.Tests.DataGrid
             // Assert: View order matches source order again
             var viewItems = collectionView.Cast<TestItem>().ToList();
 
-            Assert.AreEqual(items[0], viewItems[0], "After clearing sort, view index 0 should match source index 0");
-            Assert.AreEqual(items[1], viewItems[1], "After clearing sort, view index 1 should match source index 1");
-            Assert.AreEqual(items[2], viewItems[2], "After clearing sort, view index 2 should match source index 2");
+            Assert.That(viewItems[0], Is.EqualTo(items[0]), "After clearing sort, view index 0 should match source index 0");
+            Assert.That(viewItems[1], Is.EqualTo(items[1]), "After clearing sort, view index 1 should match source index 1");
+            Assert.That(viewItems[2], Is.EqualTo(items[2]), "After clearing sort, view index 2 should match source index 2");
         }
 
         /// <summary>
-        /// Simulates the paste bug scenario with multiple values.
+        /// Demonstrates that clearing sort before paste ensures correct value assignment.
         /// </summary>
         [Test]
-        public void PasteScenario_WithActiveSorting_CausesIncorrectValueAssignment()
+        public void PasteScenario_AfterClearingSort_AssignsValuesCorrectly()
         {
             // Arrange: Create an empty collection and add initial items
             var items = new ObservableCollection<TestItem>
             {
-                new TestItem { X = 0, Y = 0, Z = 0 }
+                new() { X = 0, Y = 0, Z = 0 }
             };
 
             var collectionView = CollectionViewSource.GetDefaultView(items);
@@ -162,17 +162,16 @@ namespace PropertyTools.Wpf.Tests.DataGrid
 
             // Simulate pasting 3 new values: 1.0, 2.0, 3.0
             // This would add rows and set values using view indices
-            var valuesToPaste = new double[] { 1.0, 2.0, 3.0 };
+            var valuesToPaste = new[] { 1.0, 2.0, 3.0 };
 
             // Add items for the paste operation
-            for (int i = 0; i < valuesToPaste.Length; i++)
+            for (var i = 0; i < valuesToPaste.Length; i++)
             {
                 items.Add(new TestItem { X = 0, Y = 0, Z = 0 });
             }
 
             // Bug scenario: Using view index to set values in source collection
             // When sort is active, this writes to wrong items
-            var viewItems = collectionView.Cast<TestItem>().ToList();
 
             // If we write to source using view index (the bug), we get wrong results
             // Correct behavior requires either:
@@ -184,15 +183,15 @@ namespace PropertyTools.Wpf.Tests.DataGrid
             collectionView.Refresh();
 
             // Now paste using source indices (correct after clearing sort)
-            for (int viewIndex = 1; viewIndex < valuesToPaste.Length + 1; viewIndex++)
+            for (var viewIndex = 1; viewIndex < valuesToPaste.Length + 1; viewIndex++)
             {
                 items[viewIndex].X = valuesToPaste[viewIndex - 1];
             }
 
             // Assert: Values are in correct source positions
-            Assert.AreEqual(1.0, items[1].X, "Item at source index 1 should have X=1.0");
-            Assert.AreEqual(2.0, items[2].X, "Item at source index 2 should have X=2.0");
-            Assert.AreEqual(3.0, items[3].X, "Item at source index 3 should have X=3.0");
+            Assert.That(items[1].X, Is.EqualTo(1.0), "Item at source index 1 should have X=1.0");
+            Assert.That(items[2].X, Is.EqualTo(2.0), "Item at source index 2 should have X=2.0");
+            Assert.That(items[3].X, Is.EqualTo(3.0), "Item at source index 3 should have X=3.0");
         }
 
         /// <summary>
@@ -205,22 +204,22 @@ namespace PropertyTools.Wpf.Tests.DataGrid
             var sortDescriptions = new List<SortDescription>();
 
             // Initial state: no sorting
-            Assert.AreEqual(0, sortDescriptions.Count, "Initial state should have no sort");
+            Assert.That(sortDescriptions.Count, Is.EqualTo(0), "Initial state should have no sort");
 
             // First click: Ascending
             sortDescriptions.Add(new SortDescription("X", ListSortDirection.Ascending));
-            Assert.AreEqual(1, sortDescriptions.Count);
-            Assert.AreEqual(ListSortDirection.Ascending, sortDescriptions[0].Direction);
+            Assert.That(sortDescriptions.Count, Is.EqualTo(1));
+            Assert.That(sortDescriptions[0].Direction, Is.EqualTo(ListSortDirection.Ascending));
 
             // Second click: Descending
             sortDescriptions.Clear();
             sortDescriptions.Add(new SortDescription("X", ListSortDirection.Descending));
-            Assert.AreEqual(1, sortDescriptions.Count);
-            Assert.AreEqual(ListSortDirection.Descending, sortDescriptions[0].Direction);
+            Assert.That(sortDescriptions.Count, Is.EqualTo(1));
+            Assert.That(sortDescriptions[0].Direction, Is.EqualTo(ListSortDirection.Descending));
 
             // Third click: Clear (back to none)
             sortDescriptions.Clear();
-            Assert.AreEqual(0, sortDescriptions.Count, "Third toggle should clear sort");
+            Assert.That(sortDescriptions.Count, Is.EqualTo(0), "Third toggle should clear sort");
         }
     }
 }

@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Support for .NET 8 - Windows #367
 
 ### Fixed
+- DataGrid: Fix paste bug with active sorting writing values to incorrect rows #444
 - DataGrid: Update after pasting values #269
 - DataGrid: Deleting last item in a sorted data grid causes an exception #321
 - TreeListBox: Fix items being added under collapsed nodes #264

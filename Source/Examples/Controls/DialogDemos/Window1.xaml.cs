@@ -22,7 +22,7 @@ namespace DialogDemos
         public Window1()
         {
             InitializeComponent();
-            DataContext = new Person { FirstName = "Johnny", LastName = "Cash" };
+            DataContext = new Person { FirstName = "John", LastName = "Doe" };
         }
 
         private void FileExit_Click(object sender, RoutedEventArgs e)
@@ -38,11 +38,13 @@ namespace DialogDemos
 
         private void Options_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new PropertyDialog() { Owner = this };
             var options = new OptionsViewModel();
-
-            dlg.DataContext = options;
-            dlg.Title = "Options";
+            var dlg = new PropertyDialog
+            {
+                Owner = this,
+                DataContext = options,
+                Title = "Options"
+            };
             if (dlg.ShowDialog().Value)
                 options.Save();
         }
@@ -55,10 +57,26 @@ namespace DialogDemos
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new AboutDialog(this);
-            dlg.Title = "About the application";
-            dlg.UpdateStatus = "The application is updated.";
-            dlg.Image = new BitmapImage(new Uri(@"pack://application:,,,/DialogDemos;component/pt.png"));
+            var dlg = new AboutDialog(this)
+            {
+                Title = "About the application",
+                UpdateStatus = "The application is updated.",
+                Image = new BitmapImage(new Uri(@"pack://application:,,,/DialogDemos;component/pt.png"))
+            };
+            dlg.ShowDialog();
+        }
+
+        private void DataErrorAware_Click(object sender, RoutedEventArgs e)
+        {
+            var options = new DataErrorAwareViewModel();
+            var dlg = new PropertyDialog
+            {
+                Owner = this,
+                OkButtonDataErrorAware = true,
+                DataContext = options,
+                Title = "Options"
+            };
+
             dlg.ShowDialog();
         }
     }

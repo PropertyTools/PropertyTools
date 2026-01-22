@@ -28,6 +28,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Threading;
 
     using PropertyTools.DataAnnotations;
+    using PropertyTools.Wpf.Operators;
 
     /// <summary>
     /// Displays enumerable data in a customizable grid.
@@ -414,6 +415,25 @@ namespace PropertyTools.Wpf
             typeof(bool),
             typeof(DataGrid),
             new UIPropertyMetadata(false));
+
+
+        /// <summary>
+        /// Identifies the <see cref="LocalizableOperator"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LocalizableOperatorProperty = DependencyProperty.Register(
+            nameof(LocalizableOperator),
+            typeof(ILocalizableOperator),
+            typeof(DataGrid),
+            new PropertyMetadata(null, (d, e) => 
+                {
+                    var newLocalizableOperator = (ILocalizableOperator)e.NewValue;
+                    var operatorValue =  ((DataGrid)d).Operator;
+                    if (operatorValue != null)
+                    {
+                        operatorValue.UseLocalizableOperator(newLocalizableOperator);
+                    }
+                })
+            );
 
         /// <summary>
         /// The auto fill box.
@@ -1174,9 +1194,37 @@ namespace PropertyTools.Wpf
         public bool ItemsInColumns { get; private set; }
 
         /// <summary>
+        /// Gets or sets the localizable operator.
+        /// </summary>        
+        public ILocalizableOperator LocalizableOperator
+        {
+            get => (ILocalizableOperator)this.GetValue(LocalizableOperatorProperty);
+            set => this.SetValue(LocalizableOperatorProperty, value);
+        }
+
+        private IDataGridOperator _operator;
+        /// <summary>
         /// Gets the operator.
         /// </summary>
-        public IDataGridOperator Operator { get; private set; }
+        public IDataGridOperator Operator
+        {
+            get
+            {
+                return _operator;
+            }
+            private set
+            {
+                if (_operator != value)
+                {
+                    _operator = value;
+
+                    if (_operator != null && LocalizableOperator != null)
+                    {
+                        _operator.UseLocalizableOperator(LocalizableOperator);
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the row/column definitions.
@@ -1527,17 +1575,14 @@ namespace PropertyTools.Wpf
             var dataObject = new DataObject();
             dataObject.SetText(text);
 
-            if (AreAllElementsSerializable(valueArray))
+            try
             {
-                try
-                {
-                    dataObject.SetData(typeof(DataGrid), valueArray);
-                }
-                catch (Exception e)
-                {
-                    // nonserializable values?
-                    Debug.WriteLine(e);
-                }
+                dataObject.SetData(typeof(DataGrid), valueArray);
+            }
+            catch (Exception e)
+            {
+                // Could not set data on clipboard (e.g., non-serializable values)
+                Debug.WriteLine(e);
             }
 
             Clipboard.SetDataObject(dataObject);
@@ -2166,36 +2211,7 @@ namespace PropertyTools.Wpf
             return cellWasSet;
         }
 
-        /// <summary>
-        /// Determines whether all elements in the specified array are serializable.
-        /// </summary>
-        /// <param name="array">The array.</param>
-        /// <returns>
-        /// <c>true</c> if all elements of the array are serializable, <c>false</c> otherwise.
-        /// </returns>
-        private static bool AreAllElementsSerializable(object[,] array)
-        {
-            var m = array.GetLength(0);
-            var n = array.GetLength(1);
-            for (var i = 0; i < m; i++)
-            {
-                for (var j = 0; j < n; j++)
-                {
-                    if (array[i, j] == null)
-                    {
-                        continue;
-                    }
 
-                    var type = array[i, j].GetType();
-                    if (!type.IsSerializable)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
 
         /// <summary>
         /// Clamps a value between a minimum and maximum limit.

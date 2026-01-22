@@ -20,11 +20,12 @@ namespace PropertyTools.Wpf
     using System.Windows.Data;
 
     using PropertyTools.DataAnnotations;
+    using PropertyTools.Wpf.Operators;
 
     /// <summary>
     /// Creates a model for the <see cref="PropertyGrid" /> control.
     /// </summary>
-    public class PropertyGridOperator : IPropertyGridOperator
+    public class PropertyGridOperator : DefaultLocalizableOperator, IPropertyGridOperator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyGridOperator" /> class.
@@ -379,32 +380,6 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets the localized description.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="declaringType">Type of the declaring.</param>
-        /// <returns>
-        /// The localized description.
-        /// </returns>
-        protected virtual string GetLocalizedDescription(string key, Type declaringType)
-        {
-            return key;
-        }
-
-        /// <summary>
-        /// Gets the localized string.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="declaringType">The declaring type.</param>
-        /// <returns>
-        /// The localized string.
-        /// </returns>
-        protected virtual string GetLocalizedString(string key, Type declaringType)
-        {
-            return key;
-        }
-
-        /// <summary>
         /// Sets the properties.
         /// </summary>
         /// <param name="pi">The property item.</param>
@@ -638,7 +613,7 @@ namespace PropertyTools.Wpf
                         var cd = new ColumnDefinition
                         {
                             PropertyName = column.PropertyName,
-                            Header = column.Header,
+                            Header = this.GetLocalizedString(column.Header, declaringType: elementType),
                             FormatString = column.FormatString,
                             Width = (GridLength)(glc.ConvertFromInvariantString(column.Width) ?? GridLength.Auto),
                             IsReadOnly = column.IsReadOnly,
@@ -799,6 +774,14 @@ namespace PropertyTools.Wpf
             if (coa != null)
             {
                 pi.Converter = Activator.CreateInstance(coa.ConverterType) as IValueConverter;
+            }
+
+            var pa = attribute as ProgressAttribute;
+            if (pa != null)
+            {
+                pi.IsProgress = true;
+                pi.ProgressMinimum = pa.Minimum;
+                pi.ProgressMaximum = pa.Maximum;
             }
 
             var sa = attribute as SlidableAttribute;

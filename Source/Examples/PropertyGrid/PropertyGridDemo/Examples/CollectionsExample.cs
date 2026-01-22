@@ -14,6 +14,9 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class CollectionsExample : Example
     {
+        private Item[] itemArray1;
+        private List<Item> itemsSourceAtPropertyList = new List<Item>();
+
         [Browsable(false)]
         public IEnumerable<Column> StringColumns { get; } = new[]
         {
@@ -35,7 +38,7 @@ namespace ExampleLibrary
         public int[] IntArray2 { get; } = new int[4];
 
         [HeaderPlacement(HeaderPlacement.Above)]
-        public Item[] ItemArray1 { get; set; }
+        public Item[] ItemArray1 { get => this.itemArray1; set { this.itemArray1 = value; this.RaisePropertyChanged(nameof(ItemArray1)); } }
 
         [Category("Lists|List of items")]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
@@ -52,7 +55,7 @@ namespace ExampleLibrary
         [Category("Lists|List of items with ItemsSource at property")]
         [ColumnsProperty(nameof(CollectionItemsSourcePropertyColumns))]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
-        public List<Item> ItemsSourceAtPropertyList { get; set; } = new List<Item>();
+        public List<Item> ItemsSourceAtPropertyList { get => this.itemsSourceAtPropertyList; set { this.itemsSourceAtPropertyList = value; this.RaisePropertyChanged(nameof(ItemsSourceAtPropertyList)); } }
 
         [Browsable(false)]
         public List<string> AvailableNames => new List<string>{"Carl", "Hugo", "Fred"};

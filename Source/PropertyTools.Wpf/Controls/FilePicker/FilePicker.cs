@@ -516,7 +516,13 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void Explore()
         {
-            System.Diagnostics.Process.Start("explorer.exe", "/select," + this.FilePath);
+            var explorerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = explorerPath,
+                Arguments = "/select,\"" + this.FilePath + "\"",
+                UseShellExecute = true
+            });
         }
 
         /// <summary>
@@ -527,7 +533,11 @@ namespace PropertyTools.Wpf
             var filePath = this.SelectedFilePaths.FirstOrDefault();
             if (filePath != null)
             {
-                System.Diagnostics.Process.Start(filePath);
+                var psi = new System.Diagnostics.ProcessStartInfo(filePath)
+                {
+                    UseShellExecute = true
+                };
+                System.Diagnostics.Process.Start(psi);
             }
         }
 

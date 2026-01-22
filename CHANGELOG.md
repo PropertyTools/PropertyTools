@@ -4,10 +4,39 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
+- GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424
+- Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420
+- Documentation: Added CLAUDE.md as a quick reference guide for Claude AI that refers to AGENTS.md #420
+- Support for .NET 10 - Windows #416
 - Support for .NET 8 - Windows #367
+- ProgressAttribute #391
+- DataGrid/PropertyGrid: ILocalizableOperator and ICustomLocalizableOperator interfaces #398
+- DataDialog supporting INotifyDataErrorInfo #405
+- ItemsBag: Added comprehensive unit tests for value type properties (int, double, enum) #355
+- ItemsBag: Added comprehensive unit tests for already-nullable value types to verify PropertyType behavior #355
+
+### Changed
+- GitHub Actions: Configure CodeQL workflow to use security-extended query suite for more comprehensive security scanning #437
+- PropertyGridDemo: Implemented INotifyPropertyChanged in Example base class and all Example classes, removed Fody dependency #TBD
+- Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
+- Updated DotNetProjects.Extended.Wpf.Toolkit package from version 5.0.103 to 5.0.129
+- Tests: Upgraded NUnit from 3.12.0 to 4.4.0 for latest features and improvements
+- Tests: Upgraded Microsoft.NET.Test.SDK from 16.3.0 to 18.0.1 for improved test execution
+- Tests: Upgraded NUnit3TestAdapter from 3.15.1 to 6.0.1 for compatibility with NUnit 4
+- ItemsBag: Improved documentation explaining how it works with type descriptors and property descriptors #355
+
+### Removed
+- AboutDialog: Removed from PropertyTools.Wpf library and moved to DialogDemos example #431
+- PropertyGridDemo: Removed Fody and PropertyChanged.Fody package dependencies #TBD
 
 ### Fixed
 - DataGrid: Fix paste bug with active sorting writing values to incorrect rows #444
+- FilePicker: Fix Open button not opening files with associated applications on .NET Core/.NET 5+ #435
+- DirectoryPicker: Use full system path for explorer.exe to prevent PATH-based security vulnerabilities #433
+- FilePicker: Use full system path for explorer.exe to prevent PATH-based security vulnerabilities #433
+- AboutDialog: Use full system path for msinfo32.exe to prevent PATH-based security vulnerabilities #429
+- GitHub Actions: Fix CodeQL workflow failure by upgrading to CodeQL action v3 #426
 - DataGrid: Update after pasting values #269
 - DataGrid: Deleting last item in a sorted data grid causes an exception #321
 - TreeListBox: Fix items being added under collapsed nodes #264
@@ -17,22 +46,7 @@ All notable changes to this project will be documented in this file.
 - RadioButtonList: Enhance RadioButton Control with Individual Button Enable/Disable Capability #350
 - ItemsBag: Ensure that the ItemsBag Property Descriptor does not suppress the property change notifications #354
 - ItemsBag: Propagation of IsReadOnly property to the ItemsBag Property Descriptor #369
-
-### Changed
-- TypeHelper.IsIListIList(Type) method changed to private #343
-
-### Added 
-- Support for .NET 6 - Windows #317
-- Support for .NET 4.6.2 #317
-- PropertyGrid: Only show properties that are adorned with Browsable(true) if Browsable(false) not used #278
-- PropertyGrid: Add Button Control for properties inheriting from ICommand #279
-- PropertyGrid: Enhances options for PropertyGrid size #277
-- PropertyGrid: Add IValueConverter and ToolTip lookups for property grid array/collection elements #285
-
-### Removed
-- Support for .NET 4.5.2 #317
-- Support for .NET Core App 3.0 #317
-- AppVeyor build #362
+- TreeListBox: Catching the ArgumentException by message title, fails in non english regions #38 #142
 
 ## [3.1.0]
 ### Added

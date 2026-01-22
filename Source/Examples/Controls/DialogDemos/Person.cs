@@ -4,12 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.ComponentModel;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Windows.Media;
-using PropertyTools.Wpf;
 
 namespace DialogDemos
 {
@@ -20,14 +15,14 @@ namespace DialogDemos
         public string FirstName
         {
             get { return _firstName; }
-            set { _firstName = value; OnPropertyChanged("FirstName"); }
+            set { _firstName = value; OnPropertyChanged(nameof(FirstName)); }
         }
 
         private string _lastName;
         public string LastName
         {
             get { return _lastName; }
-            set { _lastName = value; OnPropertyChanged("LastName"); }
+            set { _lastName = value; OnPropertyChanged(nameof(LastName)); }
         }
 
         public override string ToString()

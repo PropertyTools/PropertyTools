@@ -15,35 +15,43 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class DataErrorInfoExample : Example, System.ComponentModel.IDataErrorInfo
     {
+        private string name;
+        private int age;
+        private bool condensedMilk;
+        private bool honey;
+        private string country;
+        private string name2;
+        private Collection<Item> collection1 = new Collection<Item>();
+
         [AutoUpdateText]
         [Description("Should not be empty.")]
-        public string Name { get; set; }
+        public string Name { get => this.name; set { this.name = value; this.RaisePropertyChanged(nameof(Name)); } }
 
         [AutoUpdateText]
         [Description("Should be larger or equal to zero.")]
-        public int Age { get; set; }
+        public int Age { get => this.age; set { this.age = value; this.RaisePropertyChanged(nameof(Age)); } }
 
         [DependsOn(nameof(Honey))]
         [Description("You cannot select both.")]
-        public bool CondensedMilk { get; set; }
+        public bool CondensedMilk { get => this.condensedMilk; set { this.condensedMilk = value; this.RaisePropertyChanged(nameof(CondensedMilk)); } }
 
         [DependsOn(nameof(CondensedMilk))]
         [Description("You cannot select both.")]
-        public bool Honey { get; set; }
+        public bool Honey { get => this.honey; set { this.honey = value; this.RaisePropertyChanged(nameof(Honey)); } }
 
         [ItemsSourceProperty(nameof(Countries))]
         [Description("Required field.")]
-        public string Country { get; set; }
+        public string Country { get => this.country; set { this.country = value; this.RaisePropertyChanged(nameof(Country)); } }
 
         [Category("HeaderPlacement = Above")]
         [AutoUpdateText]
         [Description("Should not be empty.")]
         [HeaderPlacement(HeaderPlacement.Above)]
-        public string Name2 { get; set; }
+        public string Name2 { get => this.name2; set { this.name2 = value; this.RaisePropertyChanged(nameof(Name2)); } }
 
         [Description("This property contains a collection of `Item`s")]
         [HeaderPlacement(HeaderPlacement.Above)]
-        public Collection<Item> Collection1 { get; set; } = new Collection<Item>();
+        public Collection<Item> Collection1 { get => this.collection1; set { this.collection1 = value; this.RaisePropertyChanged(nameof(Collection1)); } }
 
         [Browsable(false)]
         public IEnumerable<string> Countries => new[] { "Norway", "Sweden", "Denmark", "Finland", string.Empty };

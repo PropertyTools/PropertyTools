@@ -20,7 +20,11 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: |
+          6.0.x
+          8.0.x
+          9.0.x
+          10.0.x
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
@@ -32,7 +36,7 @@ jobs:
     - name: Restore the application
       run: msbuild Source\PropertyTools.sln /t:Restore /p:Configuration=Release
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: nupkgs
         path: Source/**/*.nupkg

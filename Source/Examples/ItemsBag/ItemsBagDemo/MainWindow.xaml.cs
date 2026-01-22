@@ -31,6 +31,11 @@ namespace ItemsBagDemo
                 IsChecked = false,
                 Name = "Jim",
                 Value = 13,
+                NullableDouble = 3.14,
+                NullableColor = Colors.Red,
+                GenericInt = new R<int>(42),
+                GenericString = new R<string>("Hello"),
+                NullableGenericDouble = new R<double>(2.718),
             };
 
             models[1] = new Model()
@@ -38,6 +43,11 @@ namespace ItemsBagDemo
                 IsChecked = false,
                 Name = "Joe",
                 Value = 41,
+                NullableDouble = null,
+                NullableColor = null,
+                GenericInt = new R<int>(99),
+                GenericString = new R<string>("World"),
+                NullableGenericDouble = null,
             };
 
             Bag = new ItemsBag(models);

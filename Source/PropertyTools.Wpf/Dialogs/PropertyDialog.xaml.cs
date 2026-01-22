@@ -66,6 +66,16 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the OK button is data error aware.
+        /// </summary>
+        public bool OkButtonDataErrorAware { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the Apply button is data error aware.
+        /// </summary>
+        public bool ApplyButtonDataErrorAware { get; set; }
+
+        /// <summary>
         /// This stores the current "copy" of the object.
         /// If it is non-<c>null</c>, then we are in the middle of an
         /// editable operation.
@@ -154,18 +164,13 @@ namespace PropertyTools.Wpf
             {
                 this.PropertyControl.DataContext = MemberwiseClone(this.DataContext);
             }
-        }
 
-        /// <summary>
-        /// The cancel button click.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The e.</param>
-        private void CancelButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult = false;
-            this.CancelEdit();
-            this.Close();
+            
+            if (PropertyControl.DataContext is INotifyDataErrorInfo nde)
+            {
+                nde.ErrorsChanged += DataErrorsChanged;
+                this.SetDataErrorAwareButtons();
+            }
         }
 
         /// <summary>
@@ -179,16 +184,6 @@ namespace PropertyTools.Wpf
             {
                 editableDataContext.CancelEdit();
             }
-        }
-
-        /// <summary>
-        /// The close button click.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The e.</param>
-        private void CloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
 
         /// <summary>
@@ -241,19 +236,41 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The help button click.
+        /// Handles the Click event of the Cancel button.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The e.</param>
+        private void CancelButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
+            this.CancelEdit();
+            this.Close();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the Close button.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void CloseButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the Help button.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event arguments.</param>
         private void HelpButtonClick(object sender, RoutedEventArgs e)
         {
         }
 
         /// <summary>
-        /// The ok button click.
+        /// Handles the Click event of the Ok button.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The e.</param>
+        /// <param name="e">The event arguments.</param>
         private void OkButtonClick(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
@@ -262,13 +279,47 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// The property dialog data context changed.
+        /// Handles the Changed event of the DataContext.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The e.</param>
+        /// <param name="e">The event arguments.</param>
         private void PropertyDialogDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             this.BeginEdit();
+        }
+
+        /// <summary>
+        /// Handles the Closing event of the PropertyDialog control.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (DataContext is INotifyDataErrorInfo nde)
+            {
+                nde.ErrorsChanged -= DataErrorsChanged; ;
+            }
+        }
+
+        /// <summary>
+        /// Handles the DataErrorsChanged event to update the state of the data error aware buttons.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void DataErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+        {
+            SetDataErrorAwareButtons();
+        }
+
+        /// <summary>
+        /// Sets the data error aware buttons based on the current state of the DataContext.
+        /// </summary>
+        private void SetDataErrorAwareButtons()
+        {
+            if (PropertyControl.DataContext is INotifyDataErrorInfo nde)
+            {
+                this.OkButton.IsEnabled = !this.OkButtonDataErrorAware || !nde.HasErrors;
+                this.ApplyButton.IsEnabled = !this.ApplyButtonDataErrorAware || !nde.HasErrors;
+            }
         }
     }
 }

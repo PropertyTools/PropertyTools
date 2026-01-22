@@ -17,31 +17,39 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class DataAnnotationsExample : Example, IDataErrorInfo
     {
+        private string allowEmptyStrings;
+        private string requiredString;
+        private int angleInDegrees;
+        private double angleInRadians;
+        private string cityName;
+        private string firstName;
+        private string salesPerson;
+
         [Category("Required")]
         [Required(AllowEmptyStrings = true, ErrorMessage = "A value is required.")]
-        public string AllowEmptyStrings { get; set; }
+        public string AllowEmptyStrings { get => this.allowEmptyStrings; set { this.allowEmptyStrings = value; this.RaisePropertyChanged(nameof(AllowEmptyStrings)); } }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "A value is required.")]
-        public string RequiredString { get; set; }
+        public string RequiredString { get => this.requiredString; set { this.requiredString = value; this.RaisePropertyChanged(nameof(RequiredString)); } }
 
         [Category("Range")]
         [Range(0, 360, ErrorMessage = "The angle must be in the interval [0,360].")]
-        public int AngleInDegrees { get; set; }
+        public int AngleInDegrees { get => this.angleInDegrees; set { this.angleInDegrees = value; this.RaisePropertyChanged(nameof(AngleInDegrees)); } }
 
         [Range(-Math.PI, Math.PI, ErrorMessage = "Angle must be in the interval [-pi,pi].")]
-        public double AngleInRadians { get; set; }
+        public double AngleInRadians { get => this.angleInRadians; set { this.angleInRadians = value; this.RaisePropertyChanged(nameof(AngleInRadians)); } }
 
         [Category("StringLength")]
         [StringLength(20, MinimumLength = 1, ErrorMessage = "Maximum length is 20. Minimum length is 1.")]
-        public string CityName { get; set; }
+        public string CityName { get => this.cityName; set { this.cityName = value; this.RaisePropertyChanged(nameof(CityName)); } }
 
         [Category("RegularExpression")]
         [RegularExpression(@"^[a-zA-Z''-'\s]{2,40}$", ErrorMessage = "Invalid name.")]
-        public string FirstName { get; set; }
+        public string FirstName { get => this.firstName; set { this.firstName = value; this.RaisePropertyChanged(nameof(FirstName)); } }
 
         [Category("CustomValidation")]
         [CustomValidation(typeof(AWValidation), "ValidateSalesPerson")]
-        public string SalesPerson { get; set; }
+        public string SalesPerson { get => this.salesPerson; set { this.salesPerson = value; this.RaisePropertyChanged(nameof(SalesPerson)); } }
 
         public DataAnnotationsExample()
         {

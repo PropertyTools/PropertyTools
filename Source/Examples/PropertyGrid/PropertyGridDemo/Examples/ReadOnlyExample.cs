@@ -11,7 +11,9 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class ReadOnlyExample : Example
     {
+        private bool boolean;
+
         public bool ReadOnlyBoolean => this.Boolean;
-        public bool Boolean { get; set; }
+        public bool Boolean { get => this.boolean; set { this.boolean = value; this.RaisePropertyChanged(nameof(Boolean)); this.RaisePropertyChanged(nameof(ReadOnlyBoolean)); } }
     }
 }

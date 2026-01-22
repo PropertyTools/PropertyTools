@@ -38,7 +38,7 @@ namespace CustomFactoryDemo
             return pd.Name;
         }
 
-        protected override string GetLocalizedString(string key, Type declaringType)
+        public override string GetLocalizedString(string key, Type declaringType)
         {
             // Add a star to show that we have handled this
             // A localization mechanism can be used to localize the strings

@@ -25,46 +25,46 @@ namespace PropertyTools.Wpf.Tests
         [Test]
         public void GetNullableType()
         {
-            Assert.AreEqual(typeof(bool?), TypeHelper.GetNullableType(typeof(bool)));
-            Assert.AreEqual(typeof(Nullable<bool>), TypeHelper.GetNullableType(typeof(bool)));
-            Assert.AreEqual(typeof(Nullable<Guid>), TypeHelper.GetNullableType(typeof(Guid)));
-            Assert.AreEqual(typeof(Nullable<Guid>), TypeHelper.GetNullableType(typeof(Guid?)));
-            Assert.AreEqual(typeof(string), TypeHelper.GetNullableType(typeof(string)));
-            Assert.AreEqual(typeof(PropertyGrid), TypeHelper.GetNullableType(typeof(PropertyGrid)));
+            Assert.That(TypeHelper.GetNullableType(typeof(bool)), Is.EqualTo(typeof(bool?)));
+            Assert.That(TypeHelper.GetNullableType(typeof(bool)), Is.EqualTo(typeof(Nullable<bool>)));
+            Assert.That(TypeHelper.GetNullableType(typeof(Guid)), Is.EqualTo(typeof(Nullable<Guid>)));
+            Assert.That(TypeHelper.GetNullableType(typeof(Guid?)), Is.EqualTo(typeof(Nullable<Guid>)));
+            Assert.That(TypeHelper.GetNullableType(typeof(string)), Is.EqualTo(typeof(string)));
+            Assert.That(TypeHelper.GetNullableType(typeof(PropertyGrid)), Is.EqualTo(typeof(PropertyGrid)));
         }
 
         [Test]
         public void FindBiggestCommonType_Null()
         {
-            Assert.AreEqual(null, TypeHelper.FindBiggestCommonType(null));
+            Assert.That(TypeHelper.FindBiggestCommonType(null), Is.EqualTo(null));
         }
 
         [Test]
         public void FindBiggestCommonType_EmptyList_ReturnsCorrectType()
         {
             var brushes = Array.Empty<Brush>();
-            Assert.AreEqual(typeof(Brush), TypeHelper.FindBiggestCommonType(brushes));
+            Assert.That(TypeHelper.FindBiggestCommonType(brushes), Is.EqualTo(typeof(Brush)));
         }
 
         [Test]
         public void FindBiggestCommonType_UniformList_ReturnsCorrectType()
         {
             var brushes = new[] { new SolidColorBrush(), new SolidColorBrush() };
-            Assert.AreEqual(typeof(SolidColorBrush), TypeHelper.FindBiggestCommonType(brushes));
+            Assert.That(TypeHelper.FindBiggestCommonType(brushes), Is.EqualTo(typeof(SolidColorBrush)));
         }
 
         [Test]
         public void FindBiggestCommonType_MixedList_ReturnsBaseType()
         {
             var brushes = new Brush[] { new SolidColorBrush(), new LinearGradientBrush() };
-            Assert.AreEqual(typeof(Brush), TypeHelper.FindBiggestCommonType(brushes));
+            Assert.That(TypeHelper.FindBiggestCommonType(brushes), Is.EqualTo(typeof(Brush)));
         }
 
         [Test]
         public void FindBiggestCommonType_ListOfObjects_ReturnsBaseType()
         {
             var brushes = new object[] { new SolidColorBrush(), new LinearGradientBrush() };
-            Assert.AreEqual(typeof(Brush), TypeHelper.FindBiggestCommonType(brushes));
+            Assert.That(TypeHelper.FindBiggestCommonType(brushes), Is.EqualTo(typeof(Brush)));
         }
 
         private enum TestEnum
@@ -79,88 +79,88 @@ namespace PropertyTools.Wpf.Tests
         [Test]
         public void GetEnumType_Enum_ReturnsInt()
         {
-            Assert.AreEqual(typeof(TestEnum), TypeHelper.GetEnumType(typeof(TestEnum)));
+            Assert.That(TypeHelper.GetEnumType(typeof(TestEnum)), Is.EqualTo(typeof(TestEnum)));
         }
 
         [Test]
         public void GetEnumType_NullableEnum_ReturnsInt()
         {
-            Assert.AreEqual(typeof(TestEnum), TypeHelper.GetEnumType(typeof(TestEnum?)));
+            Assert.That(TypeHelper.GetEnumType(typeof(TestEnum?)), Is.EqualTo(typeof(TestEnum)));
         }
 
         [Test]
         public void GetItemType_Integers()
         {
-            Assert.AreEqual(typeof(int), TypeHelper.GetItemType(new List<int>()), "List<int>");
-            Assert.AreEqual(typeof(int), TypeHelper.GetItemType(new[] { 1, 2, 3 }), "int[]");
-            Assert.AreEqual(typeof(int), TypeHelper.GetItemType(GetIntegersAsEnumerable()));
+            Assert.That(TypeHelper.GetItemType(new List<int>()), Is.EqualTo(typeof(int)), "List<int>");
+            Assert.That(TypeHelper.GetItemType(new[] { 1, 2, 3 }), Is.EqualTo(typeof(int)), "int[]");
+            Assert.That(TypeHelper.GetItemType(GetIntegersAsEnumerable()), Is.EqualTo(typeof(int)));
         }
 
         [Test]
         public void GetItemType_CustomItemType()
         {
-            Assert.AreEqual(typeof(CustomItemType), TypeHelper.GetItemType(new List<CustomItemType>()), "List<CustomItemType>");
-            Assert.AreEqual(typeof(CustomItemType), TypeHelper.GetItemType(new List<CustomItemType> { new DerivedCustomItemType() }), "List<CustomItemType> (containing only DerivedCustomItemType)");
-            Assert.AreEqual(typeof(CustomItemType), TypeHelper.GetItemType(new[] { new CustomItemType() }), "CustomItemType[]");
-            Assert.AreEqual(typeof(CustomItemType), TypeHelper.GetItemType(new[] { new CustomItemType(), new DerivedCustomItemType() }), "CustomItemType[]");
-            Assert.AreEqual(typeof(CustomItemType), TypeHelper.GetItemType(GetItemsAsEnumerable()), "IEnumerable");
+            Assert.That(TypeHelper.GetItemType(new List<CustomItemType>()), Is.EqualTo(typeof(CustomItemType)), "List<CustomItemType>");
+            Assert.That(TypeHelper.GetItemType(new List<CustomItemType> { new DerivedCustomItemType() }), Is.EqualTo(typeof(CustomItemType)), "List<CustomItemType> (containing only DerivedCustomItemType)");
+            Assert.That(TypeHelper.GetItemType(new[] { new CustomItemType() }), Is.EqualTo(typeof(CustomItemType)), "CustomItemType[]");
+            Assert.That(TypeHelper.GetItemType(new[] { new CustomItemType(), new DerivedCustomItemType() }), Is.EqualTo(typeof(CustomItemType)), "CustomItemType[]");
+            Assert.That(TypeHelper.GetItemType(GetItemsAsEnumerable()), Is.EqualTo(typeof(CustomItemType)), "IEnumerable");
         }
 
         [Test]
         public void GetItemType_Objects()
         {
-            Assert.AreEqual(typeof(object), TypeHelper.GetItemType(GetObjectsAsEnumerable()), "IEnumerable");
-            Assert.AreEqual(typeof(object), TypeHelper.GetItemType(new object[] { new CustomItemType() }), "object[] (CustomItemType)");
-            Assert.AreEqual(typeof(object), TypeHelper.GetItemType(new object[] { 1 }), "object[] (integers)");
+            Assert.That(TypeHelper.GetItemType(GetObjectsAsEnumerable()), Is.EqualTo(typeof(object)), "IEnumerable");
+            Assert.That(TypeHelper.GetItemType(new object[] { new CustomItemType() }), Is.EqualTo(typeof(object)), "object[] (CustomItemType)");
+            Assert.That(TypeHelper.GetItemType(new object[] { 1 }), Is.EqualTo(typeof(object)), "object[] (integers)");
         }
 
         [Test]
         public void GetItemType_ArrayOfNullableDouble_ReturnsNullableDouble()
         {
-            Assert.AreEqual(typeof(double?), TypeHelper.GetItemType(new double?[5]));
+            Assert.That(TypeHelper.GetItemType(new double?[5]), Is.EqualTo(typeof(double?)));
         }
 
         [Test]
         public void GetItemType_Dictionary_ReturnsKeyValuePair()
         {
-            Assert.AreEqual(typeof(KeyValuePair<int, double>), TypeHelper.GetItemType(new Dictionary<int, double>()));
+            Assert.That(TypeHelper.GetItemType(new Dictionary<int, double>()), Is.EqualTo(typeof(KeyValuePair<int, double>)));
         }
 
         [Test]
         public void GetItemType_Null_ReturnsNull()
         {
-            Assert.AreEqual(null, TypeHelper.GetItemType(null));
+            Assert.That(TypeHelper.GetItemType(null), Is.EqualTo(null));
         }
 
         [Test]
         public void GetListElementType()
         {
             var intArray = new[] { 1, 2 };
-            Assert.AreEqual(typeof(int), TypeHelper.GetListElementType(intArray.GetType()), "int array");
-            Assert.AreEqual(typeof(int), TypeHelper.GetListElementType(intArray.ToList().GetType()), "list of int");
-            Assert.AreEqual(typeof(int), TypeHelper.GetListElementType(new Collection<int>(intArray).GetType()), "collection of int");
-            Assert.AreEqual(typeof(int), TypeHelper.GetListElementType(intArray.Select(x => x).GetType()), "sequence of int");
+            Assert.That(TypeHelper.GetListElementType(intArray.GetType()), Is.EqualTo(typeof(int)), "int array");
+            Assert.That(TypeHelper.GetListElementType(intArray.ToList().GetType()), Is.EqualTo(typeof(int)), "list of int");
+            Assert.That(TypeHelper.GetListElementType(new Collection<int>(intArray).GetType()), Is.EqualTo(typeof(int)), "collection of int");
+            Assert.That(TypeHelper.GetListElementType(intArray.Select(x => x).GetType()), Is.EqualTo(typeof(int)), "sequence of int");
         }
 
         [Test]
         public void IsIListIList_ObservableCollectionObservableCollection_ReturnTrue()
         {
             var instance = new List<List<double>>();
-            Assert.IsTrue(TypeHelper.IsIListIList(instance));
+            Assert.That(TypeHelper.IsIListIList(instance), Is.True);
         }
 
         [Test]
         public void IsIListIList_SubclassOfIListIList_ReturnTrue()
         {
             var instance = new Testclass<double>();
-            Assert.IsTrue(TypeHelper.IsIListIList(instance));
+            Assert.That(TypeHelper.IsIListIList(instance), Is.True);
         }
 
         [Test]
         public void IsIListIList_DataTable_ReturnFalse()
         {
             var dt = new DataTable();
-            Assert.IsFalse(TypeHelper.IsIListIList(dt.DefaultView));
+            Assert.That(TypeHelper.IsIListIList(dt.DefaultView), Is.False);
         }
 
         [Test]
@@ -170,7 +170,7 @@ namespace PropertyTools.Wpf.Tests
             {
                 new ArrayList()
             };
-            Assert.IsTrue(TypeHelper.IsIListIList(listlist));
+            Assert.That(TypeHelper.IsIListIList(listlist), Is.True);
         }
 
         [Test]
@@ -178,7 +178,7 @@ namespace PropertyTools.Wpf.Tests
         {
             var listlist = new object[1];
             listlist[0] = new object[1];
-            Assert.IsTrue(TypeHelper.IsIListIList(listlist));
+            Assert.That(TypeHelper.IsIListIList(listlist), Is.True);
         }
 
         private class CustomItemType

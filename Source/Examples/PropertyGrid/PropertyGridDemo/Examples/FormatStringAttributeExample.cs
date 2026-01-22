@@ -13,37 +13,46 @@ namespace ExampleLibrary
     [PropertyGridExample]
     public class FormatStringAttributeExample : Example
     {
+        private double @double;
+        private int integer;
+        private TimeSpan timeSpan1;
+        private TimeSpan timeSpan2;
+        private DateTime dateTime1;
+        private DateTime dateTime2;
+        private DateTime date;
+        private DateTime time;
+
         [Category("Double")]
         [FormatString("0.00")]
-        public double Double { get; set; }
+        public double Double { get => this.@double; set { this.@double = value; this.RaisePropertyChanged(nameof(Double)); } }
 
         [Category("Int")]
         [FormatString("000")]
-        public int Integer { get; set; }
+        public int Integer { get => this.integer; set { this.integer = value; this.RaisePropertyChanged(nameof(Integer)); } }
 
         [Category("TimeSpan")]
         [FormatString("hh:mm")]
         [Description("hh:mm")]
-        public TimeSpan TimeSpan1 { get; set; }
+        public TimeSpan TimeSpan1 { get => this.timeSpan1; set { this.timeSpan1 = value; this.RaisePropertyChanged(nameof(TimeSpan1)); } }
 
         [FormatString("mm:ss")]
         [Description("mm:ss")]
-        public TimeSpan TimeSpan2 { get; set; }
+        public TimeSpan TimeSpan2 { get => this.timeSpan2; set { this.timeSpan2 = value; this.RaisePropertyChanged(nameof(TimeSpan2)); } }
 
         [Category("DateTime")]
         [FormatString("yyyy-MM-dd hh:mm")]
         [Description("yyyy-MM-dd hh:mm")]
-        public DateTime DateTime1 { get; set; }
+        public DateTime DateTime1 { get => this.dateTime1; set { this.dateTime1 = value; this.RaisePropertyChanged(nameof(DateTime1)); } }
 
         [FormatString("MM/dd/yyyy hh.mm.ss")]
         [Description("MM/dd/yyyy hh.mm.ss")]
-        public DateTime DateTime2 { get; set; }
+        public DateTime DateTime2 { get => this.dateTime2; set { this.dateTime2 = value; this.RaisePropertyChanged(nameof(DateTime2)); } }
 
         [FormatString("yyyy-MM-dd")]
-        public DateTime Date { get; set; }
+        public DateTime Date { get => this.date; set { this.date = value; this.RaisePropertyChanged(nameof(Date)); } }
 
         [FormatString("hh:MM")]
-        public DateTime Time { get; set; }
+        public DateTime Time { get => this.time; set { this.time = value; this.RaisePropertyChanged(nameof(Time)); } }
 
         public FormatStringAttributeExample()
         {

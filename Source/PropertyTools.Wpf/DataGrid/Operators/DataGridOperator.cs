@@ -19,6 +19,7 @@ namespace PropertyTools.Wpf
 
     using PropertyTools.DataAnnotations;
 
+    using PropertyTools.Wpf.Operators;
     using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
     /// <summary>
@@ -26,7 +27,7 @@ namespace PropertyTools.Wpf
     /// </summary>
     /// <remarks>An operator implements operations for a <see cref="DataGrid" /> based on the different data its 
     /// <see cref="DataGrid.ItemsSource" /> binds to.</remarks>
-    public abstract class DataGridOperator : IDataGridOperator
+    public abstract class DataGridOperator : DefaultLocalizableOperator, IDataGridOperator
     {
         /// <summary>
         /// The property descriptors.

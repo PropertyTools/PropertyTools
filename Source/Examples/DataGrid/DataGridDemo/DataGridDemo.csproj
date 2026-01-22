@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.Net.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
   </PropertyGroup>
@@ -8,5 +8,18 @@
     <ProjectReference Include="..\..\..\PropertyTools.Wpf.ExtendedToolkit\PropertyTools.Wpf.Extended.Toolkit.csproj" />
     <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj" />
     <ProjectReference Include="..\..\..\PropertyTools\PropertyTools.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resources\Translations.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Translations.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Translations.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Translations.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

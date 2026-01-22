@@ -16,13 +16,13 @@ namespace PropertyTools.Wpf.Tests
         [Test]
         public void ChangeAlpha_ValidColor_ReturnsCorrectValue()
         {
-            Assert.AreEqual("#7FE6E6FA", ColorHelper.ColorToHex(ColorHelper.ChangeAlpha(Colors.Lavender, 127)));
+            Assert.That(ColorHelper.ColorToHex(ColorHelper.ChangeAlpha(Colors.Lavender, 127)), Is.EqualTo("#7FE6E6FA"));
         }
 
         [Test]
         public void Interpolate_ValidColors_ReturnsCorrectValue()
         {
-            Assert.AreEqual("#FF00594C", ColorHelper.ColorToHex(ColorHelper.Interpolate(Colors.Green, Colors.Blue, 0.3)));
+            Assert.That(ColorHelper.ColorToHex(ColorHelper.Interpolate(Colors.Green, Colors.Blue, 0.3)), Is.EqualTo("#FF00594C"));
         }
 
         [Test]
@@ -40,68 +40,68 @@ namespace PropertyTools.Wpf.Tests
         [Test]
         public void ColorToHex_ValidColors_ReturnsCorrectString()
         {
-            Assert.AreEqual("#FF0000FF", ColorHelper.ColorToHex(Colors.Blue));
-            Assert.AreEqual("#FF008000", ColorHelper.ColorToHex(Colors.Green));
+            Assert.That(ColorHelper.ColorToHex(Colors.Blue), Is.EqualTo("#FF0000FF"));
+            Assert.That(ColorHelper.ColorToHex(Colors.Green), Is.EqualTo("#FF008000"));
         }
         [Test]
         public void HexToColor_ValidColors_ReturnsCorrectColor()
         {
-            Assert.AreEqual(Colors.Blue, ColorHelper.HexToColor("#FF0000FF"));
-            Assert.AreEqual(Colors.Green, ColorHelper.HexToColor("ff008000"));
+            Assert.That(ColorHelper.HexToColor("#FF0000FF"), Is.EqualTo(Colors.Blue));
+            Assert.That(ColorHelper.HexToColor("ff008000"), Is.EqualTo(Colors.Green));
         }
 
         [Test]
         public void HexToColor_InvalidColors_ReturnsUndefined()
         {
-            Assert.AreEqual(ColorHelper.UndefinedColor, ColorHelper.HexToColor("#FFFG00FF"));
-            Assert.AreEqual(ColorHelper.UndefinedColor, ColorHelper.HexToColor("#FFFG00F"));
-            Assert.AreEqual(ColorHelper.UndefinedColor, ColorHelper.HexToColor("-1"));
+            Assert.That(ColorHelper.HexToColor("#FFFG00FF"), Is.EqualTo(ColorHelper.UndefinedColor));
+            Assert.That(ColorHelper.HexToColor("#FFFG00F"), Is.EqualTo(ColorHelper.UndefinedColor));
+            Assert.That(ColorHelper.HexToColor("-1"), Is.EqualTo(ColorHelper.UndefinedColor));
         }
 
         [Test]
         public void ColorDifference_ValidColors_ReturnsCorrectDistance()
         {
-            Assert.AreEqual(1.08, ColorHelper.ColorDifference(Colors.Blue, Colors.LightBlue), 0.01);
+            Assert.That(ColorHelper.ColorDifference(Colors.Blue, Colors.LightBlue), Is.EqualTo(1.08).Within(0.01));
         }
 
         [Test]
         public void HueDifference_ValidColors_ReturnsCorrectDistance()
         {
-            Assert.AreEqual(0.125, ColorHelper.HueDifference(Colors.Blue, Colors.LightBlue), 0.001);
+            Assert.That(ColorHelper.HueDifference(Colors.Blue, Colors.LightBlue), Is.EqualTo(0.125).Within(0.001));
         }
 
         [Test]
         public void UIntToColor_ValidColors_Success()
         {
-            Assert.AreEqual(Colors.Red, ColorHelper.UIntToColor(0xFFFF0000));
-            Assert.AreEqual(0xFFFF0000, ColorHelper.ColorToUint(Colors.Red));
+            Assert.That(ColorHelper.UIntToColor(0xFFFF0000), Is.EqualTo(Colors.Red));
+            Assert.That(ColorHelper.ColorToUint(Colors.Red), Is.EqualTo(0xFFFF0000));
         }
 
         [Test]
         public void ColorToHsv_ValidColors_ReturnsCorrectValues()
         {
             var hsv = ColorHelper.ColorToHsvBytes(Colors.Red);
-            Assert.AreEqual(0, hsv[0]);
-            Assert.AreEqual(255, hsv[1]);
-            Assert.AreEqual(255, hsv[2]);
+            Assert.That(hsv[0], Is.EqualTo(0));
+            Assert.That(hsv[1], Is.EqualTo(255));
+            Assert.That(hsv[2], Is.EqualTo(255));
 
             hsv = ColorHelper.ColorToHsvBytes(Colors.Orange);
-            Assert.AreEqual(27, hsv[0], "hue");
-            Assert.AreEqual(255, hsv[1], "sat");
-            Assert.AreEqual(255, hsv[2], "value");
+            Assert.That(hsv[0], Is.EqualTo(27), "hue");
+            Assert.That(hsv[1], Is.EqualTo(255), "sat");
+            Assert.That(hsv[2], Is.EqualTo(255), "value");
 
             hsv = ColorHelper.ColorToHsvBytes(Colors.Brown);
-            Assert.AreEqual(0, hsv[0], "hue");
-            Assert.AreEqual(190, hsv[1], "sat");
-            Assert.AreEqual(165, hsv[2], "value");
+            Assert.That(hsv[0], Is.EqualTo(0), "hue");
+            Assert.That(hsv[1], Is.EqualTo(190), "sat");
+            Assert.That(hsv[2], Is.EqualTo(165), "value");
         }
 
         [Test]
         public void HsvToColor_ValidColors_ReturnsCorrectColor()
         {
-            Assert.AreEqual(Colors.Red, ColorHelper.HsvToColor(0, 255, 255), "Red");
-            //  Assert.AreEqual(Colors.Orange, ColorHelper.HsvToColor(27, 255, 255),"Orange");
-            Assert.AreEqual(Colors.Brown, ColorHelper.HsvToColor(0, 190, 165), "Brown");
+            Assert.That(ColorHelper.HsvToColor(0, 255, 255), Is.EqualTo(Colors.Red), "Red");
+            //  Assert.That(ColorHelper.HsvToColor(27, 255, 255), Is.EqualTo(Colors.Orange), "Orange");
+            Assert.That(ColorHelper.HsvToColor(0, 190, 165), Is.EqualTo(Colors.Brown), "Brown");
         }
 
     }

@@ -306,6 +306,11 @@ namespace PropertyTools.Wpf
         public bool IsPassword { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this property should show a progress bar.
+        /// </summary>
+        public bool IsProgress { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this property should show a slider.
         /// </summary>
         public bool IsSlidable { get; set; }
@@ -455,6 +460,16 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The reset header.</value>
         public string ResetHeader { get; set; }
+
+        /// <summary>
+        /// Gets or sets the progress bar maximum.
+        /// </summary>
+        public double ProgressMaximum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the progress bar minimum.
+        /// </summary>
+        public double ProgressMinimum { get; set; }
 
         /// <summary>
         /// Gets or sets the slider large change.

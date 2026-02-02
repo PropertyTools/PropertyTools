@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemo: Removed Fody and PropertyChanged.Fody package dependencies #TBD
 
 ### Fixed
+- DataGrid: Context menu items should be disabled when operations are not applicable #446
 - FilePicker: Fix Open button not opening files with associated applications on .NET Core/.NET 5+ #435
 - DirectoryPicker: Use full system path for explorer.exe to prevent PATH-based security vulnerabilities #433
 - FilePicker: Use full system path for explorer.exe to prevent PATH-based security vulnerabilities #433

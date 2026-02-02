@@ -125,6 +125,33 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="CanCopy"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CanCopyProperty = DependencyProperty.Register(
+            nameof(CanCopy),
+            typeof(bool),
+            typeof(DataGrid),
+            new UIPropertyMetadata(true));
+
+        /// <summary>
+        /// Identifies the <see cref="CanCut"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CanCutProperty = DependencyProperty.Register(
+            nameof(CanCut),
+            typeof(bool),
+            typeof(DataGrid),
+            new UIPropertyMetadata(true));
+
+        /// <summary>
+        /// Identifies the <see cref="CanPaste"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CanPasteProperty = DependencyProperty.Register(
+            nameof(CanPaste),
+            typeof(bool),
+            typeof(DataGrid),
+            new UIPropertyMetadata(true));
+
+        /// <summary>
         /// Identifies the <see cref="CanDelete"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CanDeleteProperty = DependencyProperty.Register(
@@ -424,15 +451,15 @@ namespace PropertyTools.Wpf
             nameof(LocalizableOperator),
             typeof(ILocalizableOperator),
             typeof(DataGrid),
-            new PropertyMetadata(null, (d, e) => 
+            new PropertyMetadata(null, (d, e) =>
+            {
+                var newLocalizableOperator = (ILocalizableOperator)e.NewValue;
+                var operatorValue = ((DataGrid)d).Operator;
+                if (operatorValue != null)
                 {
-                    var newLocalizableOperator = (ILocalizableOperator)e.NewValue;
-                    var operatorValue =  ((DataGrid)d).Operator;
-                    if (operatorValue != null)
-                    {
-                        operatorValue.UseLocalizableOperator(newLocalizableOperator);
-                    }
-                })
+                    operatorValue.UseLocalizableOperator(newLocalizableOperator);
+                }
+            })
             );
 
         /// <summary>
@@ -781,6 +808,36 @@ namespace PropertyTools.Wpf
         {
             get => (bool)this.GetValue(CanClearProperty);
             set => this.SetValue(CanClearProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this grid can copy cells.
+        /// </summary>
+        /// <value><c>true</c> if this instance can copy; otherwise, <c>false</c> .</value>
+        public bool CanCopy
+        {
+            get => (bool)this.GetValue(CanCopyProperty);
+            set => this.SetValue(CanCopyProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this grid can cut cells.
+        /// </summary>
+        /// <value><c>true</c> if this instance can cut; otherwise, <c>false</c> .</value>
+        public bool CanCut
+        {
+            get => (bool)this.GetValue(CanCutProperty);
+            set => this.SetValue(CanCutProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this grid can paste cells.
+        /// </summary>
+        /// <value><c>true</c> if this instance can paste; otherwise, <c>false</c> .</value>
+        public bool CanPaste
+        {
+            get => (bool)this.GetValue(CanPasteProperty);
+            set => this.SetValue(CanPasteProperty, value);
         }
 
         /// <summary>
@@ -1347,10 +1404,10 @@ namespace PropertyTools.Wpf
             this.UpdateGridContent();
             this.SelectedCellsChanged();
 
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, (s, e) => this.Copy()));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, (s, e) => this.Cut()));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, (s, e) => this.Paste()));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, (s, e) => this.Clear(), (s, e) => e.CanExecute = this.CanClear));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, (s, e) => this.Copy(), (s, e) => e.CanExecute = this.CanCopy && this.HasValidSelection()));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, (s, e) => this.Cut(), (s, e) => e.CanExecute = this.CanCut && this.CanModifySelection()));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, (s, e) => this.Paste(), (s, e) => e.CanExecute = this.CanPaste && this.CanModifySelection() && this.ClipboardContainsText()));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, (s, e) => this.Clear(), (s, e) => e.CanExecute = this.CanClear && this.CanModifySelection()));
         }
 
         /// <summary>
@@ -1380,6 +1437,62 @@ namespace PropertyTools.Wpf
         public void Paste()
         {
             this.PasteOverride();
+        }
+
+        /// <summary>
+        /// Determines whether there is a valid cell selection.
+        /// </summary>
+        /// <returns><c>true</c> if there is a valid selection; otherwise, <c>false</c>.</returns>
+        protected virtual bool HasValidSelection()
+        {
+            var range = this.GetSelectionRange();
+            return range.TopRow >= 0 && range.LeftColumn >= 0;
+        }
+
+        /// <summary>
+        /// Determines whether the current selection can be modified (not read-only).
+        /// Checks column-level IsReadOnly for all columns in the selection.
+        /// </summary>
+        /// <returns><c>true</c> if at least one cell in selection is editable; otherwise, <c>false</c>.</returns>
+        protected virtual bool CanModifySelection()
+        {
+            var range = this.GetSelectionRange();
+            if (range.TopRow < 0 || range.LeftColumn < 0)
+            {
+                return false;
+            }
+
+            // Check if any column in the selection is editable
+            for (var col = range.LeftColumn; col <= range.RightColumn; col++)
+            {
+                if (col < this.PropertyDefinitions.Count)
+                {
+                    var colDef = this.PropertyDefinitions[col];
+                    if (colDef != null && colDef.IsReadOnly == false)
+                    {
+                        return true; // At least one column is editable
+                    }
+                }
+            }
+
+            return false; // All columns in selection are read-only
+        }
+
+        /// <summary>
+        /// Determines whether the clipboard contains text.
+        /// </summary>
+        /// <returns><c>true</c> if clipboard contains text; otherwise, <c>false</c>.</returns>
+        protected virtual bool ClipboardContainsText()
+        {
+            try
+            {
+                return Clipboard.ContainsText();
+            }
+            catch
+            {
+                // Clipboard may be locked by another process
+                return false;
+            }
         }
 
         /// <summary>

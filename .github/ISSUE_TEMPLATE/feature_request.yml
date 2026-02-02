@@ -1,0 +1,113 @@
+name: Feature Request
+description: Suggest an idea or enhancement for PropertyTools
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest a new feature! Please fill out the information below to help us understand your request.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear and concise description of what the problem is.
+      placeholder: I'm always frustrated when...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen.
+      placeholder: I would like to be able to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: A clear and concise description of any alternative solutions or features you've considered.
+      placeholder: I've considered...
+
+  - type: dropdown
+    id: control
+    attributes:
+      label: Affected Control
+      description: Which PropertyTools control would this feature affect?
+      options:
+        - PropertyGrid
+        - DataGrid
+        - TreeListBox
+        - ColorPicker
+        - RadioButtonList
+        - EnumMenuItem
+        - EditableTextBlock
+        - FilePicker
+        - DirectoryPicker
+        - DockPanelSplitter
+        - SpinControl
+        - LinkBlock
+        - SliderEx
+        - TextBlockEx
+        - PopupBox
+        - FormattingTextBox
+        - New Control
+        - Other/Multiple
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe the use case or scenario where this feature would be helpful.
+      placeholder: This would be useful for...
+    validations:
+      required: true
+
+  - type: textarea
+    id: code-example
+    attributes:
+      label: Proposed API/Usage Example
+      description: If applicable, provide an example of how you'd like to use this feature in code.
+      render: csharp
+      placeholder: |
+        // Example usage
+        var grid = new DataGrid();
+        grid.NewFeature = true;
+        // ...
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or examples about the feature request here.
+      placeholder: Any other information that might be helpful...
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Nice to have
+        - Important
+        - Critical
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this feature request, you agree to follow our contribution guidelines.
+      options:
+        - label: I have checked the [documentation](https://github.com/PropertyTools/PropertyTools) and existing issues to ensure this hasn't been requested before
+          required: true
+        - label: I understand that not all feature requests can be implemented
+          required: true

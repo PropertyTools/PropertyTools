@@ -1468,7 +1468,7 @@ namespace PropertyTools.Wpf
                 if (col < this.PropertyDefinitions.Count)
                 {
                     var colDef = this.PropertyDefinitions[col];
-                    if (colDef != null && colDef.IsReadOnly == false)
+                    if (colDef != null && !colDef.IsReadOnly)
                     {
                         return true; // At least one column is editable
                     }

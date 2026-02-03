@@ -1445,6 +1445,12 @@ namespace PropertyTools.Wpf
         /// <returns><c>true</c> if there is a valid selection; otherwise, <c>false</c>.</returns>
         protected virtual bool HasValidSelection()
         {
+            // Check if grid has data
+            if (this.ItemsSource == null || this.ItemsSource.Count == 0)
+            {
+                return false;
+            }
+
             var range = this.GetSelectionRange();
             return range.TopRow >= 0 && range.LeftColumn >= 0;
         }
@@ -1456,6 +1462,12 @@ namespace PropertyTools.Wpf
         /// <returns><c>true</c> if at least one cell in selection is editable; otherwise, <c>false</c>.</returns>
         protected virtual bool CanModifySelection()
         {
+            // Check if grid has data
+            if (this.ItemsSource == null || this.ItemsSource.Count == 0)
+            {
+                return false;
+            }
+
             var range = this.GetSelectionRange();
             if (range.TopRow < 0 || range.LeftColumn < 0)
             {

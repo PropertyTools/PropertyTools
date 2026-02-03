@@ -4,12 +4,9 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
-- Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448
+- Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
 
 ### Changed
-- Issue templates: Simplified bug report template by removing version, .NET framework, and OS fields #TBD
-- Issue templates: Simplified feature request template by removing alternatives and use case sections #TBD
-- Issue templates: Removed "[Bug]:" and "[Feature]:" prefixes from issue titles (labels are used instead) #TBD
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
 - GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424
 - Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420

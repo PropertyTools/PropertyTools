@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
-- Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448
+- Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
+
+### Changed
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
 - GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424
 - Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420

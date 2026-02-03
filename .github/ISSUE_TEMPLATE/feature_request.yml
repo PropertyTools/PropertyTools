@@ -1,6 +1,6 @@
 name: Feature Request
 description: Suggest an idea or enhancement for PropertyTools
-title: "[Feature]: "
+title: ""
 labels: ["enhancement"]
 body:
   - type: markdown
@@ -11,7 +11,7 @@ body:
   - type: textarea
     id: problem
     attributes:
-      label: Is your feature request related to a problem?
+      label: Describe the problem to solve
       description: A clear and concise description of what the problem is.
       placeholder: I'm always frustrated when...
     validations:
@@ -21,17 +21,10 @@ body:
     id: solution
     attributes:
       label: Describe the solution you'd like
-      description: A clear and concise description of what you want to happen.
+      description: A clear and concise description in words (not code) of what you want to happen.
       placeholder: I would like to be able to...
     validations:
       required: true
-
-  - type: textarea
-    id: alternatives
-    attributes:
-      label: Describe alternatives you've considered
-      description: A clear and concise description of any alternative solutions or features you've considered.
-      placeholder: I've considered...
 
   - type: dropdown
     id: control
@@ -62,18 +55,9 @@ body:
       required: true
 
   - type: textarea
-    id: use-case
-    attributes:
-      label: Use Case
-      description: Describe the use case or scenario where this feature would be helpful.
-      placeholder: This would be useful for...
-    validations:
-      required: true
-
-  - type: textarea
     id: code-example
     attributes:
-      label: Proposed API/Usage Example
+      label: Usage example
       description: If applicable, provide an example of how you'd like to use this feature in code.
       render: csharp
       placeholder: |

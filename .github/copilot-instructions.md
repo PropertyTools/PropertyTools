@@ -119,8 +119,9 @@ Ensure changes are compatible with both target frameworks unless explicitly targ
 
 3. **Format**: Use the following format:
    ```markdown
-   - Brief description of change #IssueNumber
+   - Brief description of change #123
    ```
+   Here "#123" is an example. Make sure to use the reference for the issue, and not "#TBD".
 
 4. **Example**:
    ```markdown

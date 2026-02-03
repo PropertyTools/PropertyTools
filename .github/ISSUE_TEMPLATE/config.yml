@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/PropertyTools/PropertyTools/blob/develop/README.md
+    about: Read the PropertyTools documentation
+  - name: 💬 Discussions
+    url: https://github.com/PropertyTools/PropertyTools/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: ❓ Questions
+    url: https://github.com/PropertyTools/PropertyTools/discussions/categories/q-a
+    about: Ask questions about using PropertyTools

@@ -34,10 +34,10 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemo: Removed Fody and PropertyChanged.Fody package dependencies #TBD
 
 ### Fixed
-- Security: FilePicker.Explore() - Validate and escape file paths to prevent command injection attacks #TBD
-- Security: FilePicker.Open() - Validate file paths before opening to prevent path traversal attacks #TBD
-- Security: DirectoryPicker.Explore() - Validate and escape directory paths to prevent command injection attacks #TBD
-- Security: LinkBlock - Restrict URI schemes to safe protocols (http, https, mailto, ftp) to prevent malicious URI execution #TBD
+- Security: FilePicker.Explore() - Validate and escape file paths to prevent command injection attacks #459
+- Security: FilePicker.Open() - Validate file paths before opening to prevent path traversal attacks #459
+- Security: DirectoryPicker.Explore() - Validate and escape directory paths to prevent command injection attacks #459
+- Security: LinkBlock - Restrict URI schemes to safe protocols (http, https, mailto, ftp) to prevent malicious URI execution #459
 - DataGrid: Clipboard commands remain enabled when grid is empty (no rows) #450
 - DataGrid: Context menu items should be disabled when operations are not applicable #446
 - FilePicker: Fix Open button not opening files with associated applications on .NET Core/.NET 5+ #435

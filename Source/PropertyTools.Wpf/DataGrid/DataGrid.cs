@@ -1585,10 +1585,11 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            // Phase 3: Update the collection view if we added items
+            // Phase 3: Update the collection view and grid content if we added items
             if (newRowsNeeded > 0)
             {
                 this.UpdateCollectionView();
+                this.UpdateGridContent();
             }
 
             // Phase 4: Set values for all cells (both existing and new rows)

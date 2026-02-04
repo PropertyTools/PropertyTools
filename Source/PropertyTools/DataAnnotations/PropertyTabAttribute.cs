@@ -46,12 +46,12 @@ namespace PropertyTools.DataAnnotations
         /// Gets the name of the tab.
         /// </summary>
         /// <value>The name of the tab.</value>
-        public string TabName { get; private set; }
+        public string TabName { get; init; }
 
         /// <summary>
         /// Gets the scope of the tab.
         /// </summary>
         /// <value>The scope of the tab.</value>
-        public PropertyTabScope Scope { get; private set; }
+        public PropertyTabScope Scope { get; init; }
     }
 }

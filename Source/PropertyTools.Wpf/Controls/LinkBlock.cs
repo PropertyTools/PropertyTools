@@ -63,12 +63,34 @@ namespace PropertyTools.Wpf
             base.OnMouseDown(e);
             if (this.NavigateUri != null)
             {
-                var psi = new ProcessStartInfo(this.NavigateUri.ToString())
+                // Security: Validate URI scheme to prevent execution of dangerous protocols
+                var uri = this.NavigateUri;
+                var scheme = uri.Scheme?.ToLowerInvariant();
+                
+                // Only allow safe URI schemes
+                if (scheme == "http" || scheme == "https" || scheme == "mailto" || scheme == "ftp")
                 {
-                    UseShellExecute = true
-                };
-                Process.Start(psi);
-                e.Handled = true;
+                    try
+                    {
+                        var psi = new ProcessStartInfo(uri.ToString())
+                        {
+                            UseShellExecute = true
+                        };
+                        Process.Start(psi);
+                        e.Handled = true;
+                    }
+                    catch (System.ComponentModel.Win32Exception)
+                    {
+                        // Process.Start failed (e.g., no default handler)
+                        // Silently ignore - don't expose error to user
+                    }
+                    catch (System.Security.SecurityException)
+                    {
+                        // Caller does not have the required permission
+                        // Silently ignore - don't expose error to user
+                    }
+                }
+                // For any other scheme (file://, javascript:, etc.), ignore the click for security
             }
         }
     }

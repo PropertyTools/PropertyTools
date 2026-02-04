@@ -1591,6 +1591,7 @@ namespace PropertyTools.Wpf
             if (newRowsNeeded > 0)
             {
                 this.UpdateCollectionView();
+                this.UpdateGridContent();
             }
 
             // Phase 4: Set values for all cells (both existing and new rows)

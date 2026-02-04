@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- PropertyGrid: Support for PropertyTabAttribute to organize properties into tabs #TBD
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
 
 ### Changed

@@ -423,6 +423,13 @@ namespace PropertyTools.Wpf
                 this.CurrentCategoryDeclaringType = declaringType;
             }
 
+            // Check for PropertyTabAttribute
+            var pta = pi.GetAttribute<DataAnnotations.PropertyTabAttribute>();
+            if (pta != null)
+            {
+                tabName = pta.TabName;
+            }
+
             var category = this.CurrentCategory ?? (this.DefaultCategoryName ?? this.GetCategory(pi.Descriptor, declaringType));
 
             if (category != null)

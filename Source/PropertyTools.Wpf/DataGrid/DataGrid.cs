@@ -1561,16 +1561,48 @@ namespace PropertyTools.Wpf
 
             this.suspendCollectionChangedNotifications = true;
 
+            // When sorting is active, we need to handle insertions carefully:
+            // 1. For existing rows, TrySetCellValue already handles view-to-source index conversion correctly
+            // 2. For new rows, we must add them at the END of the source collection first,
+            //    then set their values using the updated view indices
+
+            // Phase 1: Count how many new rows we need to add
+            // Use Operator.GetRowCount() instead of this.Rows to work in test environments
+            var currentRowCount = this.Operator?.GetRowCount() ?? 0;
+            var newRowsNeeded = Math.Max(0, outputRange.BottomRow - currentRowCount + 1);
+            
+            // Phase 2: Add new rows at the end of the source collection
+            for (var rowIndex = 0; rowIndex < newRowsNeeded; rowIndex++)
+            {
+                if (!this.CanInsertRows)
+                {
+                    break;
+                }
+
+                // Insert at the end (-1 means append to end)
+                var insertedIndex = this.Operator.InsertItem(-1);
+                if (insertedIndex < 0)
+                {
+                    break;
+                }
+            }
+
+            // Phase 3: Update the collection view if we added items
+            if (newRowsNeeded > 0)
+            {
+                this.UpdateCollectionView();
+                this.UpdateGridContent();
+            }
+
+            // Phase 4: Set values for all cells (both existing and new rows)
+            // TrySetCellValue handles view-to-source index conversion via GetItem -> GetItemsSourceIndex
+            var updatedRowCount = this.Operator?.GetRowCount() ?? 0;
             for (var i = range.TopRow; i <= outputRange.BottomRow; i++)
             {
-                if (i >= this.Rows)
+                // Check if row exists after potential insertions
+                if (i >= updatedRowCount)
                 {
-                    if (!this.CanInsertRows)
-                    {
-                        break;
-                    }
-
-                    this.Operator.InsertRows(i, 1);
+                    break;
                 }
 
                 for (var j = range.LeftColumn; j <= outputRange.RightColumn; j++)
@@ -1582,7 +1614,7 @@ namespace PropertyTools.Wpf
                             break;
                         }
 
-                        this.Operator.InsertColumns(i, 1);
+                        this.Operator.InsertColumns(j, 1);
                     }
 
                     var value = values[(i - outputRange.TopRow) % rows, (j - outputRange.LeftColumn) % columns];

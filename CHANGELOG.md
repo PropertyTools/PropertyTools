@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
 
+### Fixed
+- PropertyGrid: Fixed style application issue where implicit styles from Style.Resources were not applied to controls when bound to objects implementing IDataErrorInfo or INotifyDataErrorInfo #TBD
+
 ### Changed
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
 - GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424

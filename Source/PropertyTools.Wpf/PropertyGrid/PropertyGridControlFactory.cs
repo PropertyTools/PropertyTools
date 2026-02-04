@@ -292,7 +292,9 @@ namespace PropertyTools.Wpf
         /// <param name="options"></param>
         public virtual void SetValidationErrorStyle(FrameworkElement control, PropertyControlFactoryOptions options)
         {
-            if (options.ValidationErrorStyle != null)
+            // Only apply ValidationErrorStyle if the control doesn't already have a style applied.
+            // This allows implicit styles from Style.Resources to take precedence.
+            if (options.ValidationErrorStyle != null && control.Style == null)
             {
                 control.Style = options.ValidationErrorStyle;
             }

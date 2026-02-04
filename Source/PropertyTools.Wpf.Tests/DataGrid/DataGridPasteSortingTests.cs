@@ -63,7 +63,11 @@ namespace PropertyTools.Wpf.Tests
         public void SetValues_WithSortingActive_SetsCorrectItemsInSourceCollection()
         {
             // Arrange
-            var dataGrid = new TestableDataGrid();
+            var dataGrid = new TestableDataGrid
+            {
+                CanInsert = true
+            };
+            
             var items = new ObservableCollection<TestDataItem>
             {
                 new TestDataItem { Value = 30 },
@@ -72,12 +76,11 @@ namespace PropertyTools.Wpf.Tests
             };
 
             dataGrid.ItemsSource = items;
-            dataGrid.ItemsInRows = true;
-            dataGrid.CanInsert = true;
             
             // Force the DataGrid to initialize
+            dataGrid.Measure(new System.Windows.Size(400, 400));
+            dataGrid.Arrange(new System.Windows.Rect(0, 0, 400, 400));
             dataGrid.UpdateLayout();
-            dataGrid.ApplyTemplate();
 
             // Apply ascending sort on the Value property
             var view = CollectionViewSource.GetDefaultView(items);
@@ -119,7 +122,12 @@ namespace PropertyTools.Wpf.Tests
         public void SetValues_WithSortingActive_AddsNewItemsAtEnd()
         {
             // Arrange
-            var dataGrid = new TestableDataGrid();
+            var dataGrid = new TestableDataGrid
+            {
+                CanInsert = true,
+                CreateItem = () => new TestDataItem()
+            };
+            
             var items = new ObservableCollection<TestDataItem>
             {
                 new TestDataItem { Value = 30 },
@@ -128,13 +136,11 @@ namespace PropertyTools.Wpf.Tests
             };
 
             dataGrid.ItemsSource = items;
-            dataGrid.ItemsInRows = true;
-            dataGrid.CanInsert = true;
-            dataGrid.CreateItem = () => new TestDataItem();
             
             // Force the DataGrid to initialize
+            dataGrid.Measure(new System.Windows.Size(400, 400));
+            dataGrid.Arrange(new System.Windows.Rect(0, 0, 400, 400));
             dataGrid.UpdateLayout();
-            dataGrid.ApplyTemplate();
 
             // Apply ascending sort on the Value property
             var view = CollectionViewSource.GetDefaultView(items);
@@ -190,7 +196,11 @@ namespace PropertyTools.Wpf.Tests
         public void SetValues_WithoutSorting_WorksAsExpected()
         {
             // Arrange
-            var dataGrid = new TestableDataGrid();
+            var dataGrid = new TestableDataGrid
+            {
+                CanInsert = true
+            };
+            
             var items = new ObservableCollection<TestDataItem>
             {
                 new TestDataItem { Value = 30 },
@@ -199,12 +209,11 @@ namespace PropertyTools.Wpf.Tests
             };
 
             dataGrid.ItemsSource = items;
-            dataGrid.ItemsInRows = true;
-            dataGrid.CanInsert = true;
             
             // Force the DataGrid to initialize
+            dataGrid.Measure(new System.Windows.Size(400, 400));
+            dataGrid.Arrange(new System.Windows.Rect(0, 0, 400, 400));
             dataGrid.UpdateLayout();
-            dataGrid.ApplyTemplate();
 
             // No sorting applied - view order is the same as source order
 

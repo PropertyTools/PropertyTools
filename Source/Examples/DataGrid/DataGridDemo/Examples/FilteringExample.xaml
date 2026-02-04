@@ -51,7 +51,8 @@
             </Grid>
         </GroupBox>
         
-        <!-- DataGrid -->
+        <!-- DataGrid bound to FilteredItems which is the ICollectionView from CollectionViewSource -->
+        <!-- This enables automatic filtering without modifying the underlying collection -->
         <p:DataGrid ItemsSource="{Binding FilteredItems}" Grid.Row="1" Margin="0,10,0,0">
             <p:DataGrid.ColumnDefinitions>
                 <p:ColumnDefinition PropertyName="String" Width="2*" Header="Name"/>

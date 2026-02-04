@@ -16,6 +16,12 @@ namespace DataGridDemo
 
     /// <summary>
     /// ViewModel for the filtering example demonstrating how to filter DataGrid items using CollectionViewSource.
+    /// This example shows how to implement dynamic filtering on a PropertyTools DataGrid by:
+    /// 1. Using CollectionViewSource to wrap the source collection
+    /// 2. Attaching a filter event handler to CollectionViewSource
+    /// 3. Refreshing the view whenever filter criteria change
+    /// 4. Binding the DataGrid to the CollectionViewSource.View instead of the raw collection
+    /// The filter supports multiple criteria: text search, enum selection, and boolean filtering.
     /// </summary>
     public class FilteringViewModel : INotifyPropertyChanged
     {

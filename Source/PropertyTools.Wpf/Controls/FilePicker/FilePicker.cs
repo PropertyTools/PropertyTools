@@ -516,13 +516,59 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void Explore()
         {
-            var explorerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            // Security: Validate and sanitize the file path before using it in Process.Start
+            var filePath = this.FilePath;
+            if (string.IsNullOrWhiteSpace(filePath))
             {
-                FileName = explorerPath,
-                Arguments = "/select,\"" + this.FilePath + "\"",
-                UseShellExecute = true
-            });
+                return;
+            }
+
+            try
+            {
+                // Get the full path to validate it's a real path and normalize it
+                var fullPath = Path.GetFullPath(filePath);
+                
+                // Verify the file exists
+                if (!File.Exists(fullPath))
+                {
+                    return;
+                }
+
+                var explorerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
+                
+                // Security: Properly escape the path argument to prevent command injection
+                // The path must be enclosed in quotes and any quotes in the path must be escaped
+                var escapedPath = fullPath.Replace("\"", "\\\"");
+                
+                var psi = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = explorerPath,
+                    Arguments = "/select,\"" + escapedPath + "\"",
+                    UseShellExecute = false
+                };
+                
+                System.Diagnostics.Process.Start(psi);
+            }
+            catch (ArgumentException)
+            {
+                // Invalid path characters or path format
+                return;
+            }
+            catch (System.Security.SecurityException)
+            {
+                // Caller does not have the required permission
+                return;
+            }
+            catch (NotSupportedException)
+            {
+                // Path contains a colon character (:) that is not part of a drive label
+                return;
+            }
+            catch (PathTooLongException)
+            {
+                // Path is too long
+                return;
+            }
         }
 
         /// <summary>
@@ -533,11 +579,44 @@ namespace PropertyTools.Wpf
             var filePath = this.SelectedFilePaths.FirstOrDefault();
             if (filePath != null)
             {
-                var psi = new System.Diagnostics.ProcessStartInfo(filePath)
+                // Security: Validate and sanitize the file path before using it in Process.Start
+                try
                 {
-                    UseShellExecute = true
-                };
-                System.Diagnostics.Process.Start(psi);
+                    // Get the full path to validate it's a real path and normalize it
+                    var fullPath = Path.GetFullPath(filePath);
+                    
+                    // Verify the file exists (already checked in CanOpen, but double-check for security)
+                    if (!File.Exists(fullPath))
+                    {
+                        return;
+                    }
+
+                    var psi = new System.Diagnostics.ProcessStartInfo(fullPath)
+                    {
+                        UseShellExecute = true
+                    };
+                    System.Diagnostics.Process.Start(psi);
+                }
+                catch (ArgumentException)
+                {
+                    // Invalid path characters or path format
+                    return;
+                }
+                catch (System.Security.SecurityException)
+                {
+                    // Caller does not have the required permission
+                    return;
+                }
+                catch (NotSupportedException)
+                {
+                    // Path contains a colon character (:) that is not part of a drive label
+                    return;
+                }
+                catch (PathTooLongException)
+                {
+                    // Path is too long
+                    return;
+                }
             }
         }
 

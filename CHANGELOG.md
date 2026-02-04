@@ -26,7 +26,7 @@ All notable changes to this project will be documented in this file.
 - Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
 - Updated DotNetProjects.Extended.Wpf.Toolkit package from version 5.0.103 to 5.0.129
 - Tests: Upgraded NUnit from 3.12.0 to 4.4.0 for latest features and improvements
-- Tests: Upgraded Microsoft.NET.Test.SDK from 16.3.0 to 18.0.1 for improved test execution
+- Tests: Upgraded Microsoft.NET.Test.SDK from 16.0.1 to 18.0.1 for improved test execution
 - Tests: Upgraded NUnit3TestAdapter from 3.15.1 to 6.0.1 for compatibility with NUnit 4
 - ItemsBag: Improved documentation explaining how it works with type descriptors and property descriptors #355
 
@@ -35,6 +35,10 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemo: Removed Fody and PropertyChanged.Fody package dependencies #TBD
 
 ### Fixed
+- Security: FilePicker.Explore() - Validate and escape file paths to prevent command injection attacks #459
+- Security: FilePicker.Open() - Validate file paths before opening to prevent path traversal attacks #459
+- Security: DirectoryPicker.Explore() - Validate and escape directory paths to prevent command injection attacks #459
+- Security: LinkBlock - Restrict URI schemes to safe protocols (http, https, mailto, ftp) to prevent malicious URI execution #459
 - DataGrid: Paste operation with active sorting now correctly updates items in source collection instead of incorrect rows #444
 - DataGrid: Clipboard commands remain enabled when grid is empty (no rows) #450
 - DataGrid: Context menu items should be disabled when operations are not applicable #446

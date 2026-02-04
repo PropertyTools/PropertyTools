@@ -423,13 +423,6 @@ namespace PropertyTools.Wpf
                 this.CurrentCategoryDeclaringType = declaringType;
             }
 
-            // Check for PropertyTabAttribute
-            var pta = pi.GetAttribute<DataAnnotations.PropertyTabAttribute>();
-            if (pta != null)
-            {
-                tabName = pta.TabName;
-            }
-
             var category = this.CurrentCategory ?? (this.DefaultCategoryName ?? this.GetCategory(pi.Descriptor, declaringType));
 
             if (category != null)
@@ -445,6 +438,13 @@ namespace PropertyTools.Wpf
                 {
                     categoryName = items[0];
                 }
+            }
+
+            // Check for PropertyTabAttribute - this takes precedence over Category pipe syntax
+            var pta = pi.GetAttribute<DataAnnotations.PropertyTabAttribute>();
+            if (pta != null)
+            {
+                tabName = pta.TabName;
             }
 
             var displayName = this.GetDisplayName(pi.Descriptor, declaringType);

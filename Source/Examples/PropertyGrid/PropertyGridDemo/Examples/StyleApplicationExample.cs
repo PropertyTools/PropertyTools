@@ -6,7 +6,6 @@
 
 namespace ExampleLibrary
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
@@ -14,121 +13,94 @@ namespace ExampleLibrary
     using PropertyTools.DataAnnotations;
 
     /// <summary>
-    /// Example demonstrating style application issue with IDataErrorInfo.
-    /// Person1 (without IDataErrorInfo) should display with styled controls.
-    /// Person2 (with IDataErrorInfo) should also display with styled controls.
+    /// Example demonstrating that implicit styles from Style.Resources work correctly with IDataErrorInfo.
+    /// This demonstrates the fix for issue #455 where implicit styles were not applied to controls
+    /// when PropertyGrid was bound to objects implementing IDataErrorInfo.
     /// </summary>
     [PropertyGridExample]
     public class StyleApplicationExample : Example
     {
-        private Person person1 = new Person { Name = "", Age = 0 };
-        private Person2 person2 = new Person2 { Name = "", Age = 0 };
+        private string name1 = "John";
+        private int age1 = 30;
+        private string name2 = "Jane";
+        private int age2 = 25;
 
-        [Category("Without IDataErrorInfo")]
-        [Description("Person class without IDataErrorInfo - styles should apply")]
-        public Person Person1
+        [Category("Person (without IDataErrorInfo)")]
+        [Description("Simple property without validation")]
+        public string Name1
         {
-            get => this.person1;
+            get => this.name1;
             set
             {
-                this.person1 = value;
-                this.RaisePropertyChanged(nameof(Person1));
+                this.name1 = value;
+                this.RaisePropertyChanged(nameof(Name1));
             }
         }
 
-        [Category("With IDataErrorInfo")]
-        [Description("Person2 class with IDataErrorInfo - styles should also apply")]
-        public Person2 Person2
+        [Category("Person (without IDataErrorInfo)")]
+        [Description("Simple property without validation")]
+        public int Age1
         {
-            get => this.person2;
+            get => this.age1;
             set
             {
-                this.person2 = value;
-                this.RaisePropertyChanged(nameof(Person2));
-            }
-        }
-    }
-
-    /// <summary>
-    /// Simple Person class without IDataErrorInfo
-    /// </summary>
-    public class Person : INotifyPropertyChanged
-    {
-        private string name;
-        private int age;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public string Name
-        {
-            get => this.name;
-            set
-            {
-                if (this.name != value)
-                {
-                    this.name = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Name)));
-                }
+                this.age1 = value;
+                this.RaisePropertyChanged(nameof(Age1));
             }
         }
 
-        public int Age
+        [Category("Person2 (with IDataErrorInfo)")]
+        [Description("Property with IDataErrorInfo validation")]
+        public string Name2
         {
-            get => this.age;
+            get => this.name2;
             set
             {
-                if (this.age != value)
-                {
-                    this.age = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Age)));
-                }
+                this.name2 = value;
+                this.RaisePropertyChanged(nameof(Name2));
             }
         }
-    }
 
-    /// <summary>
-    /// Person2 class with IDataErrorInfo implementation
-    /// </summary>
-    public class Person2 : Person, IDataErrorInfo
-    {
+        [Category("Person2 (with IDataErrorInfo)")]
+        [Description("Property with IDataErrorInfo validation")]
+        public int Age2
+        {
+            get => this.age2;
+            set
+            {
+                this.age2 = value;
+                this.RaisePropertyChanged(nameof(Age2));
+            }
+        }
+
+        [Browsable(false)]
         string IDataErrorInfo.this[string columnName]
         {
             get
             {
-                var propertyInfo = this.GetType().GetProperty(columnName);
-                if (propertyInfo == null) return null;
-                var value = propertyInfo.GetValue(this, null);
-                var context = new ValidationContext(this, null, null)
+                // Only validate the "2" properties (simulating Person2 with IDataErrorInfo)
+                if (columnName == nameof(Name2))
                 {
-                    MemberName = columnName
-                };
-                var validationResults = new List<ValidationResult>();
-
-                if (Validator.TryValidateProperty(value, context, validationResults)) return null;
-                var sb = new StringBuilder();
-                foreach (var validationResult in validationResults)
-                {
-                    sb.AppendLine(validationResult.ErrorMessage);
+                    return string.IsNullOrEmpty(this.Name2) ? "Name2 should not be empty" : null;
                 }
 
-                return sb.ToString().Trim();
+                if (columnName == nameof(Age2))
+                {
+                    if (this.Age2 < 0) return "Age2 should not be negative";
+                    if (this.Age2 > 130) return "Age2 is probably too large";
+                }
+
+                return null;
             }
         }
 
+        [Browsable(false)]
         string IDataErrorInfo.Error
         {
             get
             {
-                var validationResults = new List<ValidationResult>();
-                var context = new ValidationContext(this, null, null);
-                if (Validator.TryValidateObject(this, context, validationResults, true)) return null;
-                var sb = new StringBuilder();
-                foreach (var validationResult in validationResults)
-                {
-                    sb.AppendLine(validationResult.ErrorMessage);
-                }
-
-                return sb.ToString().Trim();
+                var dei = (IDataErrorInfo)this;
+                return dei[nameof(Name2)] ?? dei[nameof(Age2)];
             }
         }
     }

@@ -1567,7 +1567,9 @@ namespace PropertyTools.Wpf
             //    then set their values using the updated view indices
 
             // Phase 1: Count how many new rows we need to add
-            var newRowsNeeded = Math.Max(0, outputRange.BottomRow - this.Rows + 1);
+            // Use Operator.GetRowCount() instead of this.Rows to work in test environments
+            var currentRowCount = this.Operator?.GetRowCount() ?? 0;
+            var newRowsNeeded = Math.Max(0, outputRange.BottomRow - currentRowCount + 1);
             
             // Phase 2: Add new rows at the end of the source collection
             for (var rowIndex = 0; rowIndex < newRowsNeeded; rowIndex++)
@@ -1585,19 +1587,19 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            // Phase 3: Update the collection view and grid content if we added items
+            // Phase 3: Update the collection view if we added items
             if (newRowsNeeded > 0)
             {
                 this.UpdateCollectionView();
-                this.UpdateGridContent();
             }
 
             // Phase 4: Set values for all cells (both existing and new rows)
             // TrySetCellValue handles view-to-source index conversion via GetItem -> GetItemsSourceIndex
+            var updatedRowCount = this.Operator?.GetRowCount() ?? 0;
             for (var i = range.TopRow; i <= outputRange.BottomRow; i++)
             {
                 // Check if row exists after potential insertions
-                if (i >= this.Rows)
+                if (i >= updatedRowCount)
                 {
                     break;
                 }

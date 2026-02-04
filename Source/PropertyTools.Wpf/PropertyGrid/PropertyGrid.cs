@@ -1479,12 +1479,10 @@ namespace PropertyTools.Wpf
             {
                 propertyPanel.Children.Add(propertyControl);
                 
-                // Apply ValidationErrorStyle after the control is added to the visual tree
-                // so that implicit styles from Style.Resources can be applied first
-                if (validationOptions != null)
-                {
-                    this.ControlFactory.SetValidationErrorStyle(propertyControl, validationOptions);
-                }
+                // NOTE: We intentionally do NOT call SetValidationErrorStyle here.
+                // Applying ValidationErrorStyle would override any implicit styles from Style.Resources,
+                // preventing custom styling (issue #455). Users can still use ValidationTemplate
+                // and the error control for validation visualization.
             }
 
             this.ConfigureLabel(pi, propertyLabel);

@@ -10,7 +10,6 @@
 namespace PropertyGridDemos
 {
     using PropertyTools;
-    using PropertyTools.DataAnnotations;
     using System.ComponentModel;
 
     /// <summary>

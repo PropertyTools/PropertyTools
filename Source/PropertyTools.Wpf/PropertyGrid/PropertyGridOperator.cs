@@ -441,10 +441,10 @@ namespace PropertyTools.Wpf
             }
 
             // Check for PropertyTabAttribute - this takes precedence over Category pipe syntax
-            var pta = pi.GetAttribute<DataAnnotations.PropertyTabAttribute>();
+            var pta = pi.GetAttribute<System.ComponentModel.PropertyTabAttribute>();
             if (pta != null)
             {
-                tabName = pta.TabName;
+                tabName = pta.TabClassName;
             }
 
             var displayName = this.GetDisplayName(pi.Descriptor, declaringType);

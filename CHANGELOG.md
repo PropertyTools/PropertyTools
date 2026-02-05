@@ -35,6 +35,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemo: Removed Fody and PropertyChanged.Fody package dependencies #TBD
 
 ### Fixed
+- DataGrid: Handle SerializationException gracefully in clipboard operations when non-serializable objects are present #TBD
 - Security: FilePicker.Explore() - Validate and escape file paths to prevent command injection attacks #459
 - Security: FilePicker.Open() - Validate file paths before opening to prevent path traversal attacks #459
 - Security: DirectoryPicker.Explore() - Validate and escape directory paths to prevent command injection attacks #459

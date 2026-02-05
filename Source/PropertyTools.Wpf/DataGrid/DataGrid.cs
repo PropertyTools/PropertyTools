@@ -17,6 +17,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
+    using System.Runtime.Serialization;
     using System.Text;
     using System.Windows;
     using System.Windows.Controls;
@@ -1640,8 +1641,16 @@ namespace PropertyTools.Wpf
             var dataObject = Clipboard.GetDataObject();
             if (dataObject != null)
             {
-                var data = dataObject.GetData(typeof(DataGrid));
-                values = data as object[,];
+                try
+                {
+                    var data = dataObject.GetData(typeof(DataGrid));
+                    values = data as object[,];
+                }
+                catch (SerializationException)
+                {
+                    // Ignore SerializationException for non-serializable clipboard data
+                    // Will fall back to text-based clipboard data below
+                }
             }
 
             if (values == null && Clipboard.ContainsText())

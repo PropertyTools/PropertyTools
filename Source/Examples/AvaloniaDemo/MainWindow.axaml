@@ -1,0 +1,15 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaDemo.MainWindow"
+        Title="PropertyTools Avalonia Demo"
+        Width="800" Height="600">
+    <StackPanel Margin="20" Spacing="10">
+        <TextBlock FontSize="24" FontWeight="Bold">PropertyTools for Avalonia</TextBlock>
+        <TextBlock>Welcome to the PropertyTools Avalonia Demo Application!</TextBlock>
+        <TextBlock>This is an example application for the PropertyTools Avalonia component library.</TextBlock>
+        <TextBlock>Controls will be added in subsequent commits.</TextBlock>
+    </StackPanel>
+</Window>

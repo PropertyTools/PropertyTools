@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Avalonia: Created empty PropertyTools.Wpf as Avalonia component library #TBD
+- Avalonia: Created AvaloniaDemo example application #TBD
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
 - Observable: Added comprehensive unit tests for VerifyProperty method including tests for inherited properties #462

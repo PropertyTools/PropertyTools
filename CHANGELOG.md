@@ -4,15 +4,11 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
-- Avalonia: Created empty PropertyTools.Wpf as Avalonia component library #TBD
-- Avalonia: Created AvaloniaDemo example application #TBD
-- Avalonia: Added ColorPicker control with example #TBD
-- Avalonia: Added EditableTextBlock control with example #TBD
-- Avalonia: Added PropertyGrid control with example #TBD
+- Avalonia: Created new PropertyTools.Avalonia library alongside PropertyTools.Wpf with PropertyGrid, DataGrid, and ColorPicker controls #TBD
+- Avalonia: Created AvaloniaExample application demonstrating all three controls #TBD
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
 
 ### Changed
-- Documentation: Updated README.md to reflect Avalonia framework migration #TBD
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
 - Observable: Added comprehensive unit tests for VerifyProperty method including tests for inherited properties #462
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455

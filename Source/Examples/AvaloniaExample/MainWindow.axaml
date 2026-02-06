@@ -1,0 +1,55 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="using:PropertyTools.Avalonia.Controls"
+        xmlns:local="using:AvaloniaExample"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="700"
+        x:Class="AvaloniaExample.MainWindow"
+        x:DataType="local:MainWindowViewModel"
+        Title="PropertyTools.Avalonia Example"
+        Width="900" Height="700">
+    <ScrollViewer>
+        <StackPanel Margin="20" Spacing="30">
+            <TextBlock FontSize="24" FontWeight="Bold">PropertyTools for Avalonia</TextBlock>
+            <TextBlock>Welcome to the PropertyTools Avalonia Example Application!</TextBlock>
+            
+            <Separator />
+            
+            <!-- PropertyGrid Example -->
+            <StackPanel Spacing="10">
+                <TextBlock FontSize="18" FontWeight="SemiBold">PropertyGrid Example</TextBlock>
+                <TextBlock>A control that displays properties of an object using reflection.</TextBlock>
+                <Border BorderBrush="Gray" BorderThickness="1" Padding="10" MaxWidth="600" HorizontalAlignment="Left">
+                    <controls:PropertyGrid SelectedObject="{Binding ExamplePerson}" Height="250" />
+                </Border>
+            </StackPanel>
+            
+            <Separator />
+            
+            <!-- DataGrid Example -->
+            <StackPanel Spacing="10">
+                <TextBlock FontSize="18" FontWeight="SemiBold">DataGrid Example</TextBlock>
+                <TextBlock>A data grid for displaying tabular data with an "Excel feel".</TextBlock>
+                <Border BorderBrush="Gray" BorderThickness="1" Padding="10" MaxWidth="600" HorizontalAlignment="Left">
+                    <controls:DataGrid ItemsSource="{Binding People}" Height="200" />
+                </Border>
+            </StackPanel>
+            
+            <Separator />
+            
+            <!-- ColorPicker Example -->
+            <StackPanel Spacing="10">
+                <TextBlock FontSize="18" FontWeight="SemiBold">ColorPicker Example</TextBlock>
+                <TextBlock>A color picker control for selecting colors.</TextBlock>
+                <Border BorderBrush="Gray" BorderThickness="1" Padding="10" MaxWidth="400" HorizontalAlignment="Left">
+                    <controls:ColorPicker SelectedColor="{Binding SelectedColor}" Height="300" />
+                </Border>
+                <TextBlock>
+                    <Run Text="Selected Color: " />
+                    <Run Text="{Binding SelectedColor}" FontWeight="Bold" />
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

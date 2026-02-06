@@ -2815,6 +2815,11 @@ namespace PropertyTools.Wpf
         {
             var d = this.Operator.CreateCellDescriptor(cell);
             var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
+            
+            // Set grid line brush and border thickness for cell borders
+            cd.GridLineBrush = this.GridLineBrush;
+            cd.BorderThickness = new Thickness(0, 1, 1, 0); // Top and left borders for grid lines
+            
             var element = this.ControlFactory.CreateDisplayControl(cd);
             if (element == null)
             {

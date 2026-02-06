@@ -119,5 +119,21 @@ namespace PropertyTools.Wpf
         /// The binding path.
         /// </value>
         public string BackgroundBindingPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the grid line brush for cell borders.
+        /// </summary>
+        /// <value>
+        /// The grid line brush.
+        /// </value>
+        public System.Windows.Media.Brush GridLineBrush { get; set; }
+
+        /// <summary>
+        /// Gets or sets the border thickness for cell borders (grid lines).
+        /// </summary>
+        /// <value>
+        /// The border thickness.
+        /// </value>
+        public Thickness BorderThickness { get; set; }
     }
 }

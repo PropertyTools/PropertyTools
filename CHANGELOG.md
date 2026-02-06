@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455
 
 ### Fixed
+- DataGrid: Fixed XAML parse exception in ObservableCollectionOfExampleObjectTranslatedExample by defining CustomLocalizableOperator resource locally in the window #TBD
 - TreeListBox: Fixed multiple root items expansion issue where children were incorrectly displayed under the last root item instead of their respective parent #282
 - DataGrid: Fixed thick borders when background is set by using z-index ordering - grid lines now render on top of cells instead of each cell drawing borders #TBD
 - DataGrid: Fixed BackgroundProperty binding not working - now correctly sets BackgroundBindingSource for property-based backgrounds #TBD
@@ -20,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGrid: Fixed style application issue where implicit styles from Style.Resources were not applied to controls when bound to objects implementing IDataErrorInfo or INotifyDataErrorInfo #455
 
 ### Changed
+- DemoLauncher: Simplified UI by removing header and buttons, repositioned filter controls for better usability #TBD
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
 - GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424
 - Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420

@@ -3,7 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         xmlns:dataGridDemo="clr-namespace:DataGridDemo"
+        xmlns:operators="clr-namespace:DataGridDemo.Operators"
         Title="ObservableCollection&lt;ExampleObject&gt; (Translated)" Height="450" Width="900">
+    <Window.Resources>
+        <operators:CustomLocalizableOperator x:Key="CustomLocalizableOperator" />
+    </Window.Resources>
     <Window.DataContext>
         <dataGridDemo:ExampleViewModel/>
     </Window.DataContext>

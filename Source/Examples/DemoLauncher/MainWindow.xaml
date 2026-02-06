@@ -29,63 +29,61 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Title -->
-        <TextBlock Grid.Row="0" 
-                   Text="PropertyTools Examples" 
-                   FontSize="24" 
-                   FontWeight="Bold" 
-                   Margin="0,0,0,20"/>
-
-        <!-- Filter TextBox -->
-        <TextBox Grid.Row="1" 
-                 x:Name="FilterTextBox"
-                 Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"
-                 Margin="0,0,0,10">
-            <TextBox.Style>
-                <Style TargetType="TextBox">
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Style.Triggers>
-                        <Trigger Property="Text" Value="">
-                            <Setter Property="Foreground" Value="Gray"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
-        </TextBox>
-        
-        <!-- Filter hint -->
-        <TextBlock Grid.Row="1" 
-                   Text="Type to filter by title, description, or tags..."
-                   Foreground="Gray"
-                   Margin="5,0,0,10"
-                   VerticalAlignment="Center"
-                   IsHitTestVisible="False">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=FilterTextBox, Path=Text}" Value="">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
-
-        <!-- Status bar -->
-        <TextBlock Grid.Row="2" 
-                   Text="{Binding StatusText}"
-                   Foreground="Gray"
-                   Margin="0,0,0,10"/>
+        <!-- Filter row with status -->
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Filter TextBox (50% width) -->
+            <Grid Grid.Column="0">
+                <TextBox x:Name="FilterTextBox"
+                         Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Foreground" Value="Gray"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                
+                <!-- Filter hint -->
+                <TextBlock Text="Type to filter by title, description, or tags..."
+                           Foreground="Gray"
+                           Margin="5,0,0,0"
+                           VerticalAlignment="Center"
+                           IsHitTestVisible="False">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=FilterTextBox, Path=Text}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+            
+            <!-- Status label (50% width, right aligned) -->
+            <TextBlock Grid.Column="1" 
+                       Text="{Binding StatusText}"
+                       Foreground="Gray"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"/>
+        </Grid>
 
         <!-- Examples ListBox -->
-        <ListBox Grid.Row="3" 
+        <ListBox Grid.Row="1" 
                  x:Name="ExamplesListBox"
                  ItemsSource="{Binding FilteredExamples}"
                  SelectedItem="{Binding SelectedExample}"
@@ -110,27 +108,5 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
-        <!-- Buttons -->
-        <StackPanel Grid.Row="4" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Right" 
-                    Margin="0,20,0,0">
-            <Button Content="Launch Example" 
-                    Width="120" 
-                    Height="30" 
-                    Click="LaunchButton_Click" 
-                    IsEnabled="{Binding SelectedExample, Converter={StaticResource NullToBooleanConverter}}"/>
-            <Button Content="Refresh" 
-                    Width="80" 
-                    Height="30" 
-                    Click="RefreshButton_Click" 
-                    Margin="10,0,0,0"/>
-            <Button Content="Close" 
-                    Width="80" 
-                    Height="30" 
-                    Click="CloseButton_Click" 
-                    Margin="10,0,0,0"/>
-        </StackPanel>
     </Grid>
 </Window>

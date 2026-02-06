@@ -43,7 +43,6 @@
     </Grid>
 
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <local:NullToBooleanConverter x:Key="NullToBooleanConverter" xmlns:local="clr-namespace:TreeListBoxDemo"/>
     </Window.Resources>
 </Window>

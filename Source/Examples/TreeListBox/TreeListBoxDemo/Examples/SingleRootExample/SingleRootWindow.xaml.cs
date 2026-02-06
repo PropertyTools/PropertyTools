@@ -55,7 +55,7 @@ namespace TreeListBoxDemo.Examples.SingleRootExample
             tree1.SelectedIndex = idx < tree1.Items.Count ? idx : idx - 1;
         }
 
-        private void tree1_KeyDown_1(object sender, KeyEventArgs e)
+        private void tree1_KeyDownForAdd(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Add)
             {

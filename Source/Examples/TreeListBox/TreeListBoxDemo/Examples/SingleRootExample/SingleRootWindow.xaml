@@ -39,7 +39,7 @@
             HierarchySource="{Binding Root}"
             BorderThickness="0"
             pt:TreeListBoxDragDropHelper.IsDragSource="True" pt:TreeListBoxDragDropHelper.IsDropTarget="True"
-            KeyDown="tree1_KeyDown_1"/>
+            KeyDown="tree1_KeyDownForAdd"/>
 
     </DockPanel>
 </Window>

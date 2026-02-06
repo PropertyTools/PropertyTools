@@ -158,11 +158,17 @@ namespace PropertyTools.Wpf
             }
 
             // If BackgroundBindingPath is empty, it means a static Background was set
-            // Set it directly on the control instead of creating a wrapping Border
             if (string.IsNullOrEmpty(d.BackgroundBindingPath) && d.BackgroundBindingSource is Brush brush)
             {
-                c.SetValue(Control.BackgroundProperty, brush);
-                return c;
+                // Check if the element supports Background property (Panel or Control)
+                if (c is Panel || c is Control)
+                {
+                    c.SetValue(Panel.BackgroundProperty, brush);
+                    return c;
+                }
+                // For elements that don't support Background (like TextBlock), use a Border container
+                var staticContainer = new Border { Child = c, Background = brush };
+                return staticContainer;
             }
 
             var container = new Border { Child = c };

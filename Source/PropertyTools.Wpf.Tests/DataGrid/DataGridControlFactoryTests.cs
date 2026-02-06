@@ -44,7 +44,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void CreateContainer_EmptyBackgroundBindingPathWithBrush_SetsBackgroundDirectly()
+        public void CreateContainer_EmptyBackgroundBindingPathWithBrush_TextBlock_WrapsInBorder()
         {
             // Arrange
             var brush = new SolidColorBrush(Colors.LightYellow);
@@ -60,10 +60,11 @@ namespace PropertyTools.Wpf.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            // The result should not be wrapped in a Border
-            Assert.That(result, Is.InstanceOf<TextBlock>());
-            // The background should be set directly on the TextBlock
-            Assert.That(result.GetValue(Control.BackgroundProperty), Is.EqualTo(brush));
+            // TextBlock doesn't support Background, so should be wrapped in a Border
+            Assert.That(result, Is.InstanceOf<Border>());
+            var border = (Border)result;
+            Assert.That(border.Background, Is.EqualTo(brush));
+            Assert.That(border.Child, Is.InstanceOf<TextBlock>());
         }
 
         [Test]
@@ -134,6 +135,33 @@ namespace PropertyTools.Wpf.Tests
 
             // Assert
             Assert.That(border.Background, Is.EqualTo(brush));
+        }
+
+        [Test]
+        public void CreateContainer_EmptyBackgroundBindingPathWithBrush_Control_SetsBackgroundDirectly()
+        {
+            // Arrange - Test with a Control (not TextBlock) to verify direct Background setting
+            var brush = new SolidColorBrush(Colors.Orange);
+            
+            // Use reflection to test CreateContainer directly with a Control
+            var method = typeof(DataGridControlFactory).GetMethod(
+                "CreateContainer",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            
+            var cellDef = new CheckCellDefinition
+            {
+                BackgroundBindingPath = string.Empty,
+                BackgroundBindingSource = brush
+            };
+            
+            var control = new CheckBox();
+
+            // Act
+            var result = (FrameworkElement)method.Invoke(this.factory, new object[] { cellDef, control });
+
+            // Assert
+            Assert.That(result, Is.SameAs(control)); // Should return the control itself, not wrap it
+            Assert.That(control.Background, Is.EqualTo(brush));
         }
     }
 }

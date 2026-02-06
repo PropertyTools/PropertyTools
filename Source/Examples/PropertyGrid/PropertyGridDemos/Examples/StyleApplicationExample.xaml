@@ -1,11 +1,3 @@
-<!-- --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StyleApplicationExample.xaml" company="PropertyTools">
-//   Copyright (c) 2014 PropertyTools contributors
-// </copyright>
-// <summary>
-//   Demonstrates that implicit styles from Style.Resources work correctly with IDataErrorInfo (issue #455).
-// </summary>
-// -------------------------------------------------------------------------------------------------------------------- -->
 <Window x:Class="PropertyGridDemos.StyleApplicationExample"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

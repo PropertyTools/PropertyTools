@@ -157,6 +157,14 @@ namespace PropertyTools.Wpf
                 return c;
             }
 
+            // If BackgroundBindingPath is empty, it means a static Background was set
+            // Set it directly on the control instead of creating a wrapping Border
+            if (string.IsNullOrEmpty(d.BackgroundBindingPath) && d.BackgroundBindingSource is Brush brush)
+            {
+                c.SetValue(Control.BackgroundProperty, brush);
+                return c;
+            }
+
             var container = new Border { Child = c };
             var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundBindingSource };
             container.SetBinding(Border.BackgroundProperty, binding);
@@ -531,6 +539,14 @@ namespace PropertyTools.Wpf
                 return;
             }
 
+            // If BackgroundBindingPath is empty, it means a static Background was set
+            // Set it directly instead of creating a binding
+            if (string.IsNullOrEmpty(d.BackgroundBindingPath) && d.BackgroundBindingSource is Brush brush)
+            {
+                c.Background = brush;
+                return;
+            }
+
             var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundBindingSource };
             c.SetBinding(Control.BackgroundProperty, binding);
         }
@@ -544,6 +560,14 @@ namespace PropertyTools.Wpf
         {
             if (d.BackgroundBindingPath == null)
             {
+                return;
+            }
+
+            // If BackgroundBindingPath is empty, it means a static Background was set
+            // Set it directly instead of creating a binding
+            if (string.IsNullOrEmpty(d.BackgroundBindingPath) && d.BackgroundBindingSource is Brush brush)
+            {
+                container.Background = brush;
                 return;
             }
 

@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455
 
 ### Fixed
+- DataGrid: Fixed border disappearing issue when background is set on column definitions - grid lines now remain visible with column backgrounds #TBD
 - PropertyGrid: Fixed style application issue where implicit styles from Style.Resources were not applied to controls when bound to objects implementing IDataErrorInfo or INotifyDataErrorInfo #455
 
 ### Changed

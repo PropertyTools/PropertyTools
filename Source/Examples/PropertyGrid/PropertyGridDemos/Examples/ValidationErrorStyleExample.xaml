@@ -8,6 +8,38 @@
         <d:ValidationErrorStyleExampleViewModel/>
     </Window.DataContext>
     <Window.Resources>
+        <!-- Red hatch pattern brush for validation errors -->
+        <DrawingBrush x:Key="RedHatchBrush" Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <!-- White background -->
+                    <GeometryDrawing Brush="White">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,8,8"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <!-- Red diagonal lines creating hatch pattern -->
+                    <GeometryDrawing>
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="Red" Thickness="1"/>
+                        </GeometryDrawing.Pen>
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <!-- Diagonal lines from top-left to bottom-right -->
+                                <LineGeometry StartPoint="0,0" EndPoint="8,8"/>
+                                <LineGeometry StartPoint="0,8" EndPoint="8,16"/>
+                                <LineGeometry StartPoint="-8,0" EndPoint="0,8"/>
+                                <!-- Diagonal lines from top-right to bottom-left -->
+                                <LineGeometry StartPoint="8,0" EndPoint="0,8"/>
+                                <LineGeometry StartPoint="8,8" EndPoint="0,16"/>
+                                <LineGeometry StartPoint="16,0" EndPoint="8,8"/>
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+        
         <!-- Custom ValidationErrorStyle that changes control appearance on validation errors -->
         <Style x:Key="CustomValidationErrorStyle" TargetType="{x:Type Control}">
             <Setter Property="BorderBrush" Value="Gray"/>
@@ -16,9 +48,8 @@
                 <Trigger Property="Validation.HasError" Value="true">
                     <!-- Show validation errors in a tooltip -->
                     <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                    <!-- Add a red border when there's an error -->
-                    <Setter Property="BorderBrush" Value="Red"/>
-                    <Setter Property="BorderThickness" Value="3"/>
+                    <!-- Apply red hatch pattern background when there's an error -->
+                    <Setter Property="Background" Value="{StaticResource RedHatchBrush}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -36,7 +67,7 @@
             <TextBlock TextWrapping="Wrap" Margin="5">
                 This example shows a custom ControlFactory that explicitly applies ValidationErrorStyle.
                 Enter invalid values (e.g., negative age or empty name) to see validation errors 
-                with red borders and tooltips.
+                with a red hatch pattern background and tooltips.
             </TextBlock>
             <TextBlock TextWrapping="Wrap" Margin="5" FontStyle="Italic">
                 Note: This uses a custom ControlFactory to apply ValidationErrorStyle without interfering

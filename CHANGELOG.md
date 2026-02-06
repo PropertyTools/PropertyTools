@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455
 
 ### Fixed
+- DemoLauncher: Fixed duplicate examples appearing by implementing proper equality comparison in ExampleInfo class #TBD
 - DataGrid: Fixed XAML parse exception in ObservableCollectionOfExampleObjectTranslatedExample by defining CustomLocalizableOperator resource locally in the window #TBD
 - TreeListBox: Fixed multiple root items expansion issue where children were incorrectly displayed under the last root item instead of their respective parent #282
 - DataGrid: Fixed thick borders when background is set by using z-index ordering - grid lines now render on top of cells instead of each cell drawing borders #TBD

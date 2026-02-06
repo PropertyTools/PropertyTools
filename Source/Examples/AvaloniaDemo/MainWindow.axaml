@@ -3,8 +3,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="using:PropertyTools.Wpf.Controls"
+        xmlns:local="using:AvaloniaDemo"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="AvaloniaDemo.MainWindow"
+        x:DataType="local:MainWindowViewModel"
         Title="PropertyTools Avalonia Demo"
         Width="800" Height="600">
     <ScrollViewer>
@@ -23,6 +25,14 @@
             <TextBlock FontSize="18" FontWeight="SemiBold">EditableTextBlock Example</TextBlock>
             <TextBlock>A TextBlock that can be edited in-place. Double-click the text below to edit it.</TextBlock>
             <controls:EditableTextBlock Text="Double-click me to edit!" Width="300" />
+            
+            <Separator />
+            
+            <TextBlock FontSize="18" FontWeight="SemiBold">PropertyGrid Example</TextBlock>
+            <TextBlock>A control that displays properties of an object.</TextBlock>
+            <Border BorderBrush="Gray" BorderThickness="1" Padding="10" MaxWidth="400" HorizontalAlignment="Left">
+                <controls:PropertyGrid SelectedObject="{Binding ExamplePerson}" Height="200" />
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </Window>

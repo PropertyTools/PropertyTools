@@ -7,14 +7,22 @@
         x:Class="AvaloniaDemo.MainWindow"
         Title="PropertyTools Avalonia Demo"
         Width="800" Height="600">
-    <StackPanel Margin="20" Spacing="20">
-        <TextBlock FontSize="24" FontWeight="Bold">PropertyTools for Avalonia</TextBlock>
-        <TextBlock>Welcome to the PropertyTools Avalonia Demo Application!</TextBlock>
-        
-        <Separator />
-        
-        <TextBlock FontSize="18" FontWeight="SemiBold">ColorPicker Example</TextBlock>
-        <TextBlock>A simple color picker control for selecting colors.</TextBlock>
-        <controls:ColorPicker Width="200" Height="100" />
-    </StackPanel>
+    <ScrollViewer>
+        <StackPanel Margin="20" Spacing="20">
+            <TextBlock FontSize="24" FontWeight="Bold">PropertyTools for Avalonia</TextBlock>
+            <TextBlock>Welcome to the PropertyTools Avalonia Demo Application!</TextBlock>
+            
+            <Separator />
+            
+            <TextBlock FontSize="18" FontWeight="SemiBold">ColorPicker Example</TextBlock>
+            <TextBlock>A simple color picker control for selecting colors.</TextBlock>
+            <controls:ColorPicker Width="200" Height="100" />
+            
+            <Separator />
+            
+            <TextBlock FontSize="18" FontWeight="SemiBold">EditableTextBlock Example</TextBlock>
+            <TextBlock>A TextBlock that can be edited in-place. Double-click the text below to edit it.</TextBlock>
+            <controls:EditableTextBlock Text="Double-click me to edit!" Width="300" />
+        </StackPanel>
+    </ScrollViewer>
 </Window>

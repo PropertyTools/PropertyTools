@@ -273,7 +273,7 @@ namespace PropertyTools.Wpf
             nameof(SelectedObject),
             typeof(object),
             typeof(PropertyGrid),
-            new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).OnSelectedObjectChanged(e)));
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (s, e) => ((PropertyGrid)s).OnSelectedObjectChanged(e)));
 
         /// <summary>
         /// Identifies the <see cref="SelectedObjects"/> dependency property.
@@ -282,7 +282,7 @@ namespace PropertyTools.Wpf
             nameof(SelectedObjects),
             typeof(IEnumerable),
             typeof(PropertyGrid),
-            new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).SelectedObjectsChanged(e)));
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (s, e) => ((PropertyGrid)s).SelectedObjectsChanged(e)));
 
         /// <summary>
         /// Identifies the <see cref="SelectedTabIndex"/> dependency property.
@@ -1814,6 +1814,11 @@ namespace PropertyTools.Wpf
                 if (e.NewValue is INotifyCollectionChanged notifyCollectionChanged)
                 {
                     CollectionChangedEventManager.AddHandler(notifyCollectionChanged, this.OnSelectedObjectsCollectionChanged);
+                    // Initialize CurrentObject with the current items
+                    if (e.NewValue is IEnumerable enumerable)
+                    {
+                        this.SetCurrentObjectFromSelectedObjects(enumerable);
+                    }
                 }
                 else if (e.NewValue is IEnumerable enumerable)
                 {

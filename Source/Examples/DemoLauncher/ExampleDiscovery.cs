@@ -43,9 +43,10 @@ namespace DemoLauncher
                 var examplesDir = FindExamplesDirectory(searchPath);
                 if (!string.IsNullOrEmpty(examplesDir) && Directory.Exists(examplesDir))
                 {
-                    // Search in all subdirectories of Examples
+                    // Search in all subdirectories of Examples for both Debug and Release builds
                     var subDirs = Directory.GetDirectories(examplesDir, "*", SearchOption.AllDirectories)
-                        .Where(d => d.Contains("\\bin\\Debug\\") || d.Contains("/bin/Debug/"))
+                        .Where(d => d.Contains("\\bin\\Debug\\") || d.Contains("/bin/Debug/") ||
+                                    d.Contains("\\bin\\Release\\") || d.Contains("/bin/Release/"))
                         .Where(d => !d.Contains("DemoLauncher"));
 
                     foreach (var dir in subDirs)
@@ -79,8 +80,8 @@ namespace DemoLauncher
             // Get all DLL files in the directory
             var assemblyFiles = Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly)
                 .Where(f => !f.Contains("\\ref\\") && !f.Contains("/ref/")) // Exclude reference assemblies
-                .Where(f => !Path.GetFileName(f).StartsWith("System."))
-                .Where(f => !Path.GetFileName(f).StartsWith("Microsoft."))
+                .Where(f => !Path.GetFileName(f).StartsWith("System.", StringComparison.OrdinalIgnoreCase))
+                .Where(f => !Path.GetFileName(f).StartsWith("Microsoft.", StringComparison.OrdinalIgnoreCase))
                 .Where(f => !Path.GetFileName(f).Equals("PropertyTools.dll", StringComparison.OrdinalIgnoreCase))
                 .Where(f => !Path.GetFileName(f).Equals("PropertyTools.Wpf.dll", StringComparison.OrdinalIgnoreCase))
                 .Where(f => !Path.GetFileName(f).Equals("DemoLauncher.dll", StringComparison.OrdinalIgnoreCase))

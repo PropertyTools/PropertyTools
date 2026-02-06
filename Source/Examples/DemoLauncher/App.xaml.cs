@@ -17,12 +17,9 @@ namespace DemoLauncher
         {
             base.OnStartup(e);
             
-            // Handle command line arguments
-            if (e.Args.Length > 0)
-            {
-                var mainWindow = new MainWindow(e.Args);
-                mainWindow.Show();
-            }
+            // Always create MainWindow with command line arguments
+            var mainWindow = new MainWindow(e.Args);
+            mainWindow.Show();
         }
     }
 }

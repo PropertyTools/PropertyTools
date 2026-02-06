@@ -246,9 +246,12 @@ namespace DemoLauncher
                     var window = example.CreateInstance();
                     window.Show();
                     
-                    // Allow window to render
+                    // Allow window to render using async/await approach
                     window.Dispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.Render);
-                    System.Threading.Thread.Sleep(500);
+                    window.Dispatcher.Invoke(async () =>
+                    {
+                        await System.Threading.Tasks.Task.Delay(500);
+                    }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
 
                     // Capture screenshot
                     var fileName = $"{example.AssemblyName}_{example.Type.Name}.png";

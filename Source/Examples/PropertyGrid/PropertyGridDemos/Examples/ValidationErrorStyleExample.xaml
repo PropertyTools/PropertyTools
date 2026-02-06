@@ -1,0 +1,87 @@
+<Window x:Class="PropertyGridDemos.ValidationErrorStyleExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:d="clr-namespace:PropertyGridDemos"
+        Title="ValidationErrorStyle Example" Height="500" Width="900">
+    <Window.DataContext>
+        <d:ValidationErrorStyleExampleViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <!-- Red hatch pattern brush for validation errors -->
+        <DrawingBrush x:Key="RedHatchBrush" Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <!-- White background -->
+                    <GeometryDrawing Brush="White">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,8,8"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <!-- Red diagonal lines creating hatch pattern -->
+                    <GeometryDrawing>
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="Red" Thickness="1"/>
+                        </GeometryDrawing.Pen>
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <!-- Diagonal lines from top-left to bottom-right -->
+                                <LineGeometry StartPoint="0,0" EndPoint="8,8"/>
+                                <LineGeometry StartPoint="0,8" EndPoint="8,16"/>
+                                <LineGeometry StartPoint="-8,0" EndPoint="0,8"/>
+                                <!-- Diagonal lines from top-right to bottom-left -->
+                                <LineGeometry StartPoint="8,0" EndPoint="0,8"/>
+                                <LineGeometry StartPoint="8,8" EndPoint="0,16"/>
+                                <LineGeometry StartPoint="16,0" EndPoint="8,8"/>
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+        
+        <!-- Custom ValidationErrorStyle that changes control appearance on validation errors -->
+        <Style x:Key="CustomValidationErrorStyle" TargetType="{x:Type Control}">
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <!-- Show validation errors in a tooltip -->
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <!-- Apply red hatch pattern background when there's an error -->
+                    <Setter Property="Background" Value="{StaticResource RedHatchBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Margin="10" Background="LightYellow">
+            <TextBlock TextWrapping="Wrap" FontWeight="Bold" Margin="5">
+                ValidationErrorStyle Example (Explicit Style Application)
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" Margin="5">
+                This example shows a custom ControlFactory that explicitly applies ValidationErrorStyle.
+                Enter invalid values (e.g., negative age or empty name) to see validation errors 
+                with a red hatch pattern background and tooltips.
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" Margin="5" FontStyle="Italic">
+                Note: This uses a custom ControlFactory to apply ValidationErrorStyle without interfering
+                with implicit styles. The default behavior now favors implicit styles over ValidationErrorStyle.
+            </TextBlock>
+        </StackPanel>
+        
+        <!-- PropertyGrid with custom control factory that applies ValidationErrorStyle -->
+        <pt:PropertyGrid Grid.Row="1" 
+                        Margin="10"
+                        SelectedObject="{Binding Person}">
+            <pt:PropertyGrid.ControlFactory>
+                <d:ValidationErrorStyleControlFactory ValidationErrorStyle="{StaticResource CustomValidationErrorStyle}"/>
+            </pt:PropertyGrid.ControlFactory>
+        </pt:PropertyGrid>
+    </Grid>
+</Window>

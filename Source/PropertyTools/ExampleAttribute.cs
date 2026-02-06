@@ -4,10 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
-namespace DemoLauncher
+namespace PropertyTools
 {
+    using System;
+
     /// <summary>
     /// Attribute to mark a class as an example with title, description, and tags.
     /// </summary>

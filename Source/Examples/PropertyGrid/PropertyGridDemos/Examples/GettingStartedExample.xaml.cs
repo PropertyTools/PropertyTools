@@ -16,6 +16,7 @@ namespace PropertyGridDemos
     /// <summary>
     /// Interaction logic for GettingStartedExample.
     /// </summary>
+    [Example("Getting Started", "A simple example showing basic PropertyGrid usage with tabs, categories, and data annotations.", Tags = new[] { "PropertyGrid", "Beginner", "Tabs" })]
     public partial class GettingStartedExample
     {
         /// <summary>

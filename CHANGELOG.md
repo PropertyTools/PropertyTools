@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
-- Observable: Added comprehensive unit tests for VerifyProperty method including tests for inherited properties #TBD
+- Observable: Added comprehensive unit tests for VerifyProperty method including tests for inherited properties #462
 
 ### Changed
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
@@ -36,7 +36,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemo: Removed Fody and PropertyChanged.Fody package dependencies #TBD
 
 ### Fixed
-- Observable: VerifyProperty now correctly accepts inherited properties in addition to declared properties #TBD
+- Observable: VerifyProperty now correctly accepts inherited properties in addition to declared properties #462
 - DataGrid: Handle SerializationException gracefully in clipboard operations when non-serializable objects are present #460
 - Security: FilePicker.Explore() - Validate and escape file paths to prevent command injection attacks #459
 - Security: FilePicker.Open() - Validate file paths before opening to prevent path traversal attacks #459

@@ -8,7 +8,42 @@
         <dataGridDemo:ExampleViewModel/>
     </Window.DataContext>
     <Grid>
-        <p:DataGrid ItemsSource="{Binding ItemsSource}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Dismissible explanation panel -->
+        <Border x:Name="ExplanationPanel" Grid.Row="0" Background="#FFF9E6" 
+                BorderBrush="#FFD700" BorderThickness="1" Padding="12" Margin="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,4">
+                        How to use BackgroundProperty
+                    </TextBlock>
+                    <TextBlock TextWrapping="Wrap" Foreground="#333">
+                        This example demonstrates <Bold>BackgroundProperty</Bold> for data-driven cell backgrounds.
+                        <LineBreak/>
+                        • <Bold>Integer column</Bold>: Background color changes based on value ranges (red &lt;300, green 300-599, blue 600-899, yellow 900+)
+                        <LineBreak/>
+                        • <Bold>Fruit column</Bold>: Background color matches the fruit type (Apple=green, Banana=yellow, Orange=salmon, etc.)
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Italic>Set BackgroundProperty="PropertyName" on ColumnDefinition to bind cell backgrounds to a property that returns a Brush.</Italic>
+                    </TextBlock>
+                </StackPanel>
+                <Button Grid.Column="1" Content="✕" VerticalAlignment="Top" 
+                        Width="24" Height="24" FontSize="14" FontWeight="Bold"
+                        Click="CloseExplanation" ToolTip="Close explanation"
+                        Background="Transparent" BorderBrush="#FFD700" Cursor="Hand"/>
+            </Grid>
+        </Border>
+        
+        <p:DataGrid Grid.Row="1" ItemsSource="{Binding ItemsSource}">
             <p:DataGrid.ColumnDefinitions>
                 <p:ColumnDefinition PropertyName="String" Width="2*" Header="String"/>
                 <p:ColumnDefinition PropertyName="Integer" Width="1*" Header="Integer" BackgroundProperty="IntegerBackground"/>

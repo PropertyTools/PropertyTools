@@ -9,6 +9,8 @@
 
 namespace DataGridDemo
 {
+    using System.Windows;
+
     /// <summary>
     /// Interaction logic for DynamicBackgroundExample.
     /// Demonstrates using BackgroundProperty to bind cell backgrounds to data properties.
@@ -21,6 +23,14 @@ namespace DataGridDemo
         public DynamicBackgroundExample()
         {
             this.InitializeComponent();
+        }
+
+        /// <summary>
+        /// Handles the close button click to dismiss the explanation panel.
+        /// </summary>
+        private void CloseExplanation(object sender, RoutedEventArgs e)
+        {
+            this.ExplanationPanel.Visibility = Visibility.Collapsed;
         }
     }
 }

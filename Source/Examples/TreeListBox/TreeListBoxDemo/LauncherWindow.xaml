@@ -3,6 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="TreeListBox Demo Launcher" Height="400" Width="500"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:NullToBooleanConverter x:Key="NullToBooleanConverter" xmlns:local="clr-namespace:TreeListBoxDemo"/>
+    </Window.Resources>
+    
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -41,8 +45,4 @@
                     Click="CloseButton_Click" Margin="10,0,0,0"/>
         </StackPanel>
     </Grid>
-
-    <Window.Resources>
-        <local:NullToBooleanConverter x:Key="NullToBooleanConverter" xmlns:local="clr-namespace:TreeListBoxDemo"/>
-    </Window.Resources>
 </Window>

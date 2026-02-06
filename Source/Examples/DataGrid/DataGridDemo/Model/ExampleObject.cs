@@ -54,7 +54,10 @@ namespace DataGridDemo
 
             set
             {
-                this.SetValue(ref this.fruit, value);
+                if (this.SetValue(ref this.fruit, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.FruitBackground));
+                }
             }
         }
 
@@ -82,7 +85,10 @@ namespace DataGridDemo
 
             set
             {
-                this.SetValue(ref this.integer, value);
+                if (this.SetValue(ref this.integer, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IntegerBackground));
+                }
             }
         }
 
@@ -173,6 +179,62 @@ namespace DataGridDemo
 
         [Browsable(false)]
         public IEnumerable<string> Items => StandardCollections.Cities;
+
+        /// <summary>
+        /// Gets the background brush based on the Integer value.
+        /// Used to demonstrate BackgroundProperty binding.
+        /// </summary>
+        [Browsable(false)]
+        public Brush IntegerBackground
+        {
+            get
+            {
+                // Return different colors based on integer value ranges
+                if (this.integer < 300)
+                {
+                    return new SolidColorBrush(Colors.LightCoral);
+                }
+                else if (this.integer < 600)
+                {
+                    return new SolidColorBrush(Colors.LightGreen);
+                }
+                else if (this.integer < 900)
+                {
+                    return new SolidColorBrush(Colors.LightBlue);
+                }
+                else
+                {
+                    return new SolidColorBrush(Colors.LightYellow);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the background brush based on the Fruit enum value.
+        /// Used to demonstrate BackgroundProperty binding.
+        /// </summary>
+        [Browsable(false)]
+        public Brush FruitBackground
+        {
+            get
+            {
+                switch (this.fruit)
+                {
+                    case Fruit.Apple:
+                        return new SolidColorBrush(Colors.LightGreen);
+                    case Fruit.Banana:
+                        return new SolidColorBrush(Colors.LightYellow);
+                    case Fruit.Orange:
+                        return new SolidColorBrush(Colors.LightSalmon);
+                    case Fruit.Pear:
+                        return new SolidColorBrush(Colors.LightGoldenrodYellow);
+                    case Fruit.Kiwi:
+                        return new SolidColorBrush(Colors.LightSeaGreen);
+                    default:
+                        return Brushes.White;
+                }
+            }
+        }
 
         private static readonly Random r = new Random(0);
 

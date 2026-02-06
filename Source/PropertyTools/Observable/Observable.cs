@@ -81,8 +81,8 @@ namespace PropertyTools
         {
             var type = this.GetType();
 
-            // Look for a public property with the specified name.
-            var propertyInfo = type.GetTypeInfo().GetDeclaredProperty(propertyName);
+            // Look for a public instance property with the specified name (including inherited properties).
+            var propertyInfo = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
 
             Debug.Assert(propertyInfo != null, string.Format(CultureInfo.InvariantCulture, "{0} is not a property of {1}", propertyName, type.FullName));
         }

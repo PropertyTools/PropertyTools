@@ -1,40 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
-    <TargetFrameworks>net462;net8.0-windows;net9.0-windows;net10.0-windows</TargetFrameworks>
-    <UseWPF>true</UseWPF>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>PropertyTools.snk</AssemblyOriginatorKeyFile>
-    <Description>Custom controls for WPF: PropertyGrid, DataGrid, multi-select TreeView, ColorPicker and more</Description>
+    <Description>Custom controls for Avalonia: PropertyGrid, DataGrid, multi-select TreeView, ColorPicker and more</Description>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/PropertyTools/PropertyTools/</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>wpf controls propertygrid dataform datagrid treeview colorpicker</PackageTags>
+    <PackageTags>avalonia controls propertygrid dataform datagrid treeview colorpicker</PackageTags>
 
     <Version>0.0.1</Version>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.0" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.0" />
+  </ItemGroup>
+  
   <ItemGroup>
     <None Include="..\..\Images\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\PropertyTools\PropertyTools.csproj" />
   </ItemGroup>
+  
   <ItemGroup>
     <None Include="PropertyTools.snk" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="DataGrid\Cursors\AutoFill.cur" />
-    <Resource Include="DataGrid\Cursors\Cross.cur" />
-    <Resource Include="DataGrid\Cursors\DownArrow.cur" />
-    <Resource Include="DataGrid\Cursors\RightArrow.cur" />
-    <Resource Include="Controls\ColorPicker\ColorPicker.png" />
-    <Resource Include="Controls\ColorPicker\Hsv.png" />
   </ItemGroup>
 </Project>

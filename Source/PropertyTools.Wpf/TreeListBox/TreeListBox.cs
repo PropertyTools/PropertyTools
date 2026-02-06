@@ -645,6 +645,13 @@ namespace PropertyTools.Wpf
                 return parentChildren[index + 1];
             }
 
+            // If the parent is the root node (multiple root items scenario),
+            // we should not recurse further as root node has no parent
+            if (parentItem == this.rootNode)
+            {
+                return null;
+            }
+
             return this.GetNextParentSibling(parentItem);
         }
 

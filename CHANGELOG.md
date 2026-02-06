@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 ### Added
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
+- PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455
+
+### Fixed
+- PropertyGrid: Fixed style application issue where implicit styles from Style.Resources were not applied to controls when bound to objects implementing IDataErrorInfo or INotifyDataErrorInfo #455
 
 ### Changed
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422

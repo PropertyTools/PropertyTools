@@ -1440,13 +1440,15 @@ namespace PropertyTools.Wpf
             var propertyLabel = this.CreateLabel(pi);
             var propertyControl = this.CreatePropertyControl(pi);
             ContentControl errorControl = null;
+            PropertyControlFactoryOptions validationOptions = null;
+            
             if (propertyControl != null)
             {
                 this.ConfigurePropertyControl(pi, propertyControl);
 
                 if (instance is IDataErrorInfo || instance is INotifyDataErrorInfo)
                 {
-                    PropertyControlFactoryOptions options = new PropertyControlFactoryOptions
+                    validationOptions = new PropertyControlFactoryOptions
                     {
                         ValidationErrorTemplate = this.ValidationErrorTemplate,
                         ValidationErrorStyle = this.ValidationErrorStyle
@@ -1457,9 +1459,7 @@ namespace PropertyTools.Wpf
                         Validation.SetErrorTemplate(propertyControl, this.ValidationTemplate);
                     }
 
-                    this.ControlFactory.SetValidationErrorStyle(propertyControl, options);
-
-                    errorControl = this.ControlFactory.CreateErrorControl(pi, instance, tab, options);
+                    errorControl = this.ControlFactory.CreateErrorControl(pi, instance, tab, validationOptions);
 
                     // Add a row with the error control to the panel
                     // The error control is placed in column 1
@@ -1478,6 +1478,11 @@ namespace PropertyTools.Wpf
             if (propertyControl != null)
             {
                 propertyPanel.Children.Add(propertyControl);
+                
+                // NOTE: We intentionally do NOT call SetValidationErrorStyle here.
+                // Applying ValidationErrorStyle would override any implicit styles from Style.Resources,
+                // preventing custom styling (issue #455). Users can still use ValidationTemplate
+                // and the error control for validation visualization.
             }
 
             this.ConfigureLabel(pi, propertyLabel);

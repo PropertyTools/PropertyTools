@@ -6,6 +6,7 @@
 
 namespace PropertyTools.Wpf.Tests
 {
+    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
 

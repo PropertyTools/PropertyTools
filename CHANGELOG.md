@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- ExampleLibrary: Created shared library for example/demo metadata (ExampleAttribute) to avoid polluting PropertyTools core library #TBD
 - DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #TBD
 - TreeListBoxDemo: Restructured to support multiple examples with a launcher window, added MultipleRootsExample demonstrating the fix for issue #282 #282
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
@@ -22,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGrid: Fixed style application issue where implicit styles from Style.Resources were not applied to controls when bound to objects implementing IDataErrorInfo or INotifyDataErrorInfo #455
 
 ### Changed
+- ExampleAttribute: Moved from PropertyTools core library to new ExampleLibrary shared library for examples/demos #TBD
 - DemoLauncher: Simplified UI by removing header and buttons, repositioned filter controls for better usability #TBD
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
 - GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424

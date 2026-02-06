@@ -10,6 +10,7 @@
 using PropertyTools;
 using PropertyTools.DataAnnotations;
 using PropertyTools.Wpf;
+using ExampleLibrary;
 
 using System;
 using System.Collections.ObjectModel;

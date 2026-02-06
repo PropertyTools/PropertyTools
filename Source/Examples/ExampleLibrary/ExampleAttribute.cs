@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyTools
+namespace ExampleLibrary
 {
     using System;
 

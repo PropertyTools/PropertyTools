@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj" />
     <ProjectReference Include="..\..\PropertyTools\PropertyTools.csproj" />
+    <ProjectReference Include="..\ExampleLibrary\ExampleLibrary.csproj" />
     <!-- Reference example projects so their assemblies are available for discovery -->
     <ProjectReference Include="..\Controls\ControlDemos\ControlDemos.csproj" />
     <ProjectReference Include="..\Controls\DialogDemos\DialogDemos.csproj" />

@@ -10,6 +10,7 @@
 namespace PropertyGridDemos
 {
     using PropertyTools;
+    using ExampleLibrary;
 
     using System.ComponentModel;
 

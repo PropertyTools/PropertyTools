@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file.
 - Avalonia: Added EditableTextBlock control with example #TBD
 - Avalonia: Added PropertyGrid control with example #TBD
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
+
+### Changed
+- Documentation: Updated README.md to reflect Avalonia framework migration #TBD
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
 - Observable: Added comprehensive unit tests for VerifyProperty method including tests for inherited properties #462
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455

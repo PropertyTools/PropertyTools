@@ -20,18 +20,39 @@ Simply run `DemoLauncher.exe` to see all available examples in a list.
 ### Launching a Specific Example
 
 ```bash
+# By example title
 DemoLauncher.exe "Example Name"
-# or
+
+# By class name
 DemoLauncher.exe ExampleClassName
+
+# By full type name (namespace.ClassName)
+DemoLauncher.exe DataGridDemo.FilteringExample
 ```
 
 ### Capturing Screenshots
 
+**Capture all examples to default folder (Screenshots):**
 ```bash
 DemoLauncher.exe --capture
 ```
 
-This will create a `Screenshots` folder with PNG images of all examples.
+**Capture all examples to a custom folder:**
+```bash
+DemoLauncher.exe --capture output
+DemoLauncher.exe --capture C:\MyScreenshots
+```
+
+**Capture a single example with default filename:**
+```bash
+DemoLauncher.exe FilteringExample --capture
+```
+
+**Capture a single example with custom filename:**
+```bash
+DemoLauncher.exe FilteringExample --capture FilteringExample.png
+DemoLauncher.exe DataGridDemo.FilteringExample --capture MyCustomName.png
+```
 
 ## Adding Examples
 

@@ -150,17 +150,30 @@ namespace DemoLauncher
 
             var firstArg = this.commandLineArgs[0];
 
-            // Check for capture mode
+            // Check for capture mode: --capture [outputFolder]
             if (firstArg.Equals("--capture", StringComparison.OrdinalIgnoreCase))
             {
-                this.CaptureAllExamples();
+                // If there's a second argument, use it as the output folder
+                var outputFolder = this.commandLineArgs.Length > 1 ? this.commandLineArgs[1] : null;
+                this.CaptureAllExamples(outputFolder);
                 return;
             }
 
-            // Try to find and launch the specified example
+            // Check for: ExampleName --capture [filename]
+            if (this.commandLineArgs.Length >= 2 && 
+                this.commandLineArgs[1].Equals("--capture", StringComparison.OrdinalIgnoreCase))
+            {
+                var exampleName = firstArg;
+                var outputFilename = this.commandLineArgs.Length > 2 ? this.commandLineArgs[2] : null;
+                this.CaptureSingleExample(exampleName, outputFilename);
+                return;
+            }
+
+            // Try to find and launch the specified example (by title, type name, or full type name)
             var example = this.allExamples?.FirstOrDefault(e => 
                 e.Title.Equals(firstArg, StringComparison.OrdinalIgnoreCase) ||
-                e.Type.Name.Equals(firstArg, StringComparison.OrdinalIgnoreCase));
+                e.Type.Name.Equals(firstArg, StringComparison.OrdinalIgnoreCase) ||
+                e.Type.FullName.Equals(firstArg, StringComparison.OrdinalIgnoreCase));
 
             if (example != null)
             {
@@ -226,7 +239,7 @@ namespace DemoLauncher
             }
         }
 
-        private void CaptureAllExamples()
+        private void CaptureAllExamples(string outputFolder = null)
         {
             if (this.allExamples == null || this.allExamples.Count == 0)
             {
@@ -235,7 +248,13 @@ namespace DemoLauncher
                 return;
             }
 
-            var outputDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Screenshots");
+            // Use provided folder or default to "Screenshots"
+            var outputDir = string.IsNullOrWhiteSpace(outputFolder)
+                ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Screenshots")
+                : Path.IsPathRooted(outputFolder)
+                    ? outputFolder
+                    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, outputFolder);
+
             Directory.CreateDirectory(outputDir);
 
             var capturedCount = 0;
@@ -268,6 +287,71 @@ namespace DemoLauncher
             }
 
             MessageBox.Show($"Captured {capturedCount} example(s) to {outputDir}", "Capture Complete", MessageBoxButton.OK, MessageBoxImage.Information);
+            this.Close();
+        }
+
+        private void CaptureSingleExample(string exampleName, string outputFilename = null)
+        {
+            // Find the example by title, type name, or full type name
+            var example = this.allExamples?.FirstOrDefault(e =>
+                e.Title.Equals(exampleName, StringComparison.OrdinalIgnoreCase) ||
+                e.Type.Name.Equals(exampleName, StringComparison.OrdinalIgnoreCase) ||
+                e.Type.FullName.Equals(exampleName, StringComparison.OrdinalIgnoreCase));
+
+            if (example == null)
+            {
+                MessageBox.Show($"Example '{exampleName}' not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                this.Close();
+                return;
+            }
+
+            try
+            {
+                var window = example.CreateInstance();
+                window.Show();
+
+                // Allow window to render
+                window.Dispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.Render);
+                window.Dispatcher.Invoke(async () =>
+                {
+                    await System.Threading.Tasks.Task.Delay(500);
+                }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+
+                // Determine output filename
+                string filePath;
+                if (string.IsNullOrWhiteSpace(outputFilename))
+                {
+                    // Default filename
+                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{example.Type.Name}.png");
+                }
+                else if (Path.IsPathRooted(outputFilename))
+                {
+                    // Absolute path provided
+                    filePath = outputFilename;
+                }
+                else
+                {
+                    // Relative path provided
+                    filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, outputFilename);
+                }
+
+                // Ensure directory exists
+                var directory = Path.GetDirectoryName(filePath);
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                CaptureWindow(window, filePath);
+                window.Close();
+
+                MessageBox.Show($"Captured example to {filePath}", "Capture Complete", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error capturing example: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
             this.Close();
         }
 

@@ -2815,11 +2815,6 @@ namespace PropertyTools.Wpf
         {
             var d = this.Operator.CreateCellDescriptor(cell);
             var cd = this.CellDefinitionFactory.CreateCellDefinition(d);
-            
-            // Set grid line brush and border thickness for cell borders
-            cd.GridLineBrush = this.GridLineBrush;
-            cd.BorderThickness = new Thickness(0, 1, 1, 0); // Top and left borders for grid lines
-            
             var element = this.ControlFactory.CreateDisplayControl(cd);
             if (element == null)
             {
@@ -4179,7 +4174,18 @@ namespace PropertyTools.Wpf
             this.sheetGrid.Children.Add(this.selectionBackground);
             this.sheetGrid.Children.Add(this.currentBackground);
 
-            // Add row lines to the sheet
+            this.cellInsertionIndex = this.sheetGrid.Children.Count;
+
+            // Add all cells to the sheet FIRST
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < columns; j++)
+                {
+                    this.InsertDisplayControl(new CellRef(i, j));
+                }
+            }
+
+            // Add row lines to the sheet AFTER cells (higher z-index)
             for (var i = 1; i <= rows; i++)
             {
                 var border = new Border
@@ -4205,7 +4211,7 @@ namespace PropertyTools.Wpf
 
             if (rows > 0)
             {
-                // Add column lines to the sheet
+                // Add column lines to the sheet AFTER cells (higher z-index)
                 for (var i = 0; i < columns; i++)
                 {
                     if (i == 0 && columns > 1)
@@ -4223,17 +4229,6 @@ namespace PropertyTools.Wpf
                     Grid.SetRowSpan(border, rows);
                     Grid.SetColumn(border, i);
                     this.sheetGrid.Children.Add(border);
-                }
-            }
-
-            this.cellInsertionIndex = this.sheetGrid.Children.Count;
-
-            // Add all cells to the sheet
-            for (var i = 0; i < rows; i++)
-            {
-                for (var j = 0; j < columns; j++)
-                {
-                    this.InsertDisplayControl(new CellRef(i, j));
                 }
             }
 

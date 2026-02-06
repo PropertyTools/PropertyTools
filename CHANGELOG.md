@@ -10,8 +10,8 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455
 
 ### Fixed
+- DataGrid: Fixed thick borders when background is set by using z-index ordering - grid lines now render on top of cells instead of each cell drawing borders #TBD
 - DataGrid: Fixed BackgroundProperty binding not working - now correctly sets BackgroundBindingSource for property-based backgrounds #TBD
-- DataGrid: Fixed grid lines missing when background colors are set - cell Border wrappers now include BorderBrush and BorderThickness to draw grid lines #TBD
 - DataGrid: Fixed background color regression where TextBlock cells showed white instead of configured colors - now properly wraps in Border #TBD
 - PropertyGrid: Fixed style application issue where implicit styles from Style.Resources were not applied to controls when bound to objects implementing IDataErrorInfo or INotifyDataErrorInfo #455
 

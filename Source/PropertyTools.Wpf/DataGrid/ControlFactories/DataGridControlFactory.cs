@@ -167,23 +167,15 @@ namespace PropertyTools.Wpf
                     return c;
                 }
                 // For elements that don't support Background (like TextBlock), use a Border container
-                // with BorderBrush and BorderThickness to show grid lines
                 var staticContainer = new Border 
                 { 
                     Child = c, 
-                    Background = brush,
-                    BorderBrush = d.GridLineBrush,
-                    BorderThickness = d.BorderThickness
+                    Background = brush
                 };
                 return staticContainer;
             }
 
-            var container = new Border 
-            { 
-                Child = c,
-                BorderBrush = d.GridLineBrush,
-                BorderThickness = d.BorderThickness
-            };
+            var container = new Border { Child = c };
             var binding = new Binding(d.BackgroundBindingPath) { Source = d.BackgroundBindingSource };
             container.SetBinding(Border.BackgroundProperty, binding);
             return container;

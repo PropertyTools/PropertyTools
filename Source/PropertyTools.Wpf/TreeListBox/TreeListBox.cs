@@ -513,14 +513,16 @@ namespace PropertyTools.Wpf
                 // In Single selection mode, we can only set SelectedItem, not modify SelectedItems collection
                 if (this.SelectionMode == SelectionMode.Single)
                 {
-                    // Check if any item in the old source is selected
-                    foreach (var item in oldTreeSource)
+                    // Check if the selected item is in the old source and clear it if found
+                    if (this.SelectedItem != null)
                     {
-                        var container = this.GetContainerFromItem(item);
-                        if (container != null && container.IsSelected)
+                        foreach (var item in oldTreeSource)
                         {
-                            this.SelectedItem = null;
-                            break; // Only one item can be selected in Single mode
+                            if (object.Equals(item, this.SelectedItem))
+                            {
+                                this.SelectedItem = null;
+                                break;
+                            }
                         }
                     }
                 }

@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - TreeListBox: Fixed multiple root items expansion issue where children were incorrectly displayed under the last root item instead of their respective parent #282
+- TreeListBox: Fixed InvalidOperationException in HierarchySourceChanged when SelectionMode is Single - now uses SelectedItem instead of SelectedItems collection #324
 - DataGrid: Fixed thick borders when background is set by using z-index ordering - grid lines now render on top of cells instead of each cell drawing borders #TBD
 - DataGrid: Fixed BackgroundProperty binding not working - now correctly sets BackgroundBindingSource for property-based backgrounds #TBD
 - DataGrid: Fixed background color regression where TextBlock cells showed white instead of configured colors - now properly wraps in Border #TBD

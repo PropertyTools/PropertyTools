@@ -510,17 +510,35 @@ namespace PropertyTools.Wpf
             var oldTreeSource = e.OldValue as IEnumerable;
             if (oldTreeSource != null)
             {
-                foreach (var item in oldTreeSource)
+                // In Single selection mode, we can only set SelectedItem, not modify SelectedItems collection
+                if (this.SelectionMode == SelectionMode.Single)
                 {
-                    var container = this.GetContainerFromItem(item);
-                    if (container == null)
+                    // Check if any item in the old source is selected
+                    foreach (var item in oldTreeSource)
                     {
-                        continue;
+                        var container = this.GetContainerFromItem(item);
+                        if (container != null && container.IsSelected)
+                        {
+                            this.SelectedItem = null;
+                            break; // Only one item can be selected in Single mode
+                        }
                     }
-
-                    if (container.IsSelected)
+                }
+                else
+                {
+                    // For Multiple or Extended selection modes, we can modify SelectedItems collection
+                    foreach (var item in oldTreeSource)
                     {
-                        this.SelectedItems.Remove(item);
+                        var container = this.GetContainerFromItem(item);
+                        if (container == null)
+                        {
+                            continue;
+                        }
+
+                        if (container.IsSelected)
+                        {
+                            this.SelectedItems.Remove(item);
+                        }
                     }
                 }
             }

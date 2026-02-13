@@ -7,9 +7,11 @@
 namespace PropertyTools.Wpf.Tests
 {
     using System.Collections.ObjectModel;
+    using System.Threading;
     using NUnit.Framework;
 
     [TestFixture]
+    [Apartment(ApartmentState.STA)]
     public class PropertyGridTests
     {
         [Test]

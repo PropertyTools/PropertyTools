@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="PropertyGridDemos.SelectedObjectsExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:d="clr-namespace:PropertyGridDemos"
+        Title="SelectedObjects Binding Example" Height="600" Width="900">
+    <Window.DataContext>
+        <d:SelectedObjectsExampleViewModel/>
+    </Window.DataContext>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" FontSize="14" FontWeight="Bold" Margin="0,0,0,10">
+            PropertyGrid SelectedObjects Binding Demo
+        </TextBlock>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Column="0" Header="Selected Items">
+                <StackPanel>
+                    <ListBox ItemsSource="{Binding TestCollection}"
+                             DisplayMemberPath="Name"
+                             Height="150"
+                             Margin="5"/>
+
+                    <StackPanel Margin="5">
+                        <TextBlock FontWeight="Bold" Margin="0,0,0,5">Collection Info:</TextBlock>
+                        <TextBlock>
+                            <Run Text="Item Count: "/>
+                            <Run Text="{Binding TestCollection.Count, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <p:PropertyGrid Grid.Column="2"
+                           SelectedObjects="{Binding TestCollection}"
+                           Margin="0"/>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,0">
+            <Button Content="Add Item" Width="100" Margin="0,0,5,0" Click="AddItem_Click"/>
+            <Button Content="Remove Item" Width="100" Margin="0,0,5,0" Click="RemoveItem_Click"/>
+            <Button Content="Clear All" Width="100" Margin="0,0,5,0" Click="ClearAll_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

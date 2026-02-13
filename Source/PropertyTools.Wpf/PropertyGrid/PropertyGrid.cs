@@ -1814,6 +1814,11 @@ namespace PropertyTools.Wpf
                 if (e.NewValue is INotifyCollectionChanged notifyCollectionChanged)
                 {
                     CollectionChangedEventManager.AddHandler(notifyCollectionChanged, this.OnSelectedObjectsCollectionChanged);
+                    // Initialize CurrentObject with the current items
+                    if (e.NewValue is IEnumerable enumerable)
+                    {
+                        this.SetCurrentObjectFromSelectedObjects(enumerable);
+                    }
                 }
                 else if (e.NewValue is IEnumerable enumerable)
                 {

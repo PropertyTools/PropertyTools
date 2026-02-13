@@ -273,7 +273,7 @@ namespace PropertyTools.Wpf
             nameof(SelectedObject),
             typeof(object),
             typeof(PropertyGrid),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (s, e) => ((PropertyGrid)s).OnSelectedObjectChanged(e)));
+            new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).OnSelectedObjectChanged(e)));
 
         /// <summary>
         /// Identifies the <see cref="SelectedObjects"/> dependency property.
@@ -282,7 +282,7 @@ namespace PropertyTools.Wpf
             nameof(SelectedObjects),
             typeof(IEnumerable),
             typeof(PropertyGrid),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (s, e) => ((PropertyGrid)s).SelectedObjectsChanged(e)));
+            new UIPropertyMetadata(null, (s, e) => ((PropertyGrid)s).SelectedObjectsChanged(e)));
 
         /// <summary>
         /// Identifies the <see cref="SelectedTabIndex"/> dependency property.

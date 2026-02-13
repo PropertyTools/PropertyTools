@@ -79,7 +79,8 @@ namespace PropertyTools
         [Conditional("DEBUG")]
         private void VerifyProperty(string propertyName)
         {
-            var type = this.GetType();
+            var originalType = this.GetType();
+            var type = originalType;
 
             // Look for a public instance property with the specified name.
             // Start with the most derived type and continue checking base classes to handle property shadowing with "new" keyword.
@@ -97,7 +98,7 @@ namespace PropertyTools
             }
 
             // Property not found in any type in the hierarchy
-            Debug.Assert(false, string.Format(CultureInfo.InvariantCulture, "{0} is not a property of {1}", propertyName, this.GetType().FullName));
+            Debug.Assert(false, string.Format(CultureInfo.InvariantCulture, "{0} is not a property of {1}", propertyName, originalType.FullName));
         }
     }
 }

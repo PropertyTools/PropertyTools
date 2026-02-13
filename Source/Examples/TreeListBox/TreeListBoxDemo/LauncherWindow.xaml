@@ -35,6 +35,12 @@
                                TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
                 </StackPanel>
             </ListBoxItem>
+            <ListBoxItem Tag="TabControl">
+                <StackPanel Margin="5">
+                    <TextBlock Text="TabControl Example (Issue #312)" FontWeight="Bold" FontSize="14"/>
+                    <TextBlock Text="Reproduces the crash when TreeListBox is used inside a TabControl. Demonstrates issue #312." TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
+                </StackPanel>
+            </ListBoxItem>
             <ListBoxItem Tag="SingleSelectionMode">
                 <StackPanel Margin="5">
                     <TextBlock Text="Single Selection Mode Example" FontWeight="Bold" FontSize="14"/>

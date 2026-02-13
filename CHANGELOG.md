@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #468
 - TreeListBoxDemo: Restructured to support multiple examples with a launcher window, added MultipleRootsExample demonstrating the fix for issue #282 #282
+- TreeListBoxDemo: Added TabControlExample demonstrating the fix for issue #312 - TreeListBox crash when used in TabControl #312
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
 - DataGrid: Added DynamicBackgroundExample with dismissible explanation panel demonstrating BackgroundProperty for data-driven cell backgrounds #TBD
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
@@ -14,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemos: Added SelectedObjectsExample demonstrating ObservableCollection binding to PropertyGrid.SelectedObjects #267
 
 ### Fixed
+- TreeListBox: Fixed crash when used in TabControl - resolved race condition where collection events fired before parent items were initialized during deferred loading #312
 - PropertyGrid: Fixed SelectedObjects binding not working - initialization logic now properly sets CurrentObject when binding ObservableCollection #267
 - TreeListBox: Fixed multiple root items expansion issue where children were incorrectly displayed under the last root item instead of their respective parent #282
 - TreeListBox: Fixed InvalidOperationException in HierarchySourceChanged when SelectionMode is Single - now uses SelectedItem instead of SelectedItems collection #324

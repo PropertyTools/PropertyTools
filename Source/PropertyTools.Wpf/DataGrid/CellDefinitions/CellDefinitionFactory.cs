@@ -150,12 +150,19 @@ namespace PropertyTools.Wpf
 
             cd.IsEnabledBindingParameter = pd.IsEnabledByValue;
             cd.IsEnabledBindingPath = pd.IsEnabledByProperty;
-            cd.BackgroundBindingPath = pd.BackgroundProperty;
-
+            
+            // Set background binding - either from BackgroundProperty or static Background
             if (pd.Background != null)
             {
+                // Static background brush
                 cd.BackgroundBindingSource = pd.Background;
                 cd.BackgroundBindingPath = string.Empty;
+            }
+            else if (!string.IsNullOrEmpty(pd.BackgroundProperty))
+            {
+                // Dynamic background from property binding
+                cd.BackgroundBindingPath = pd.BackgroundProperty;
+                cd.BackgroundBindingSource = d.BindingSource;
             }
         }
     }

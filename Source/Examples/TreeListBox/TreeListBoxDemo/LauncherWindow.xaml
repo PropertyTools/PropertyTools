@@ -1,0 +1,48 @@
+﻿<Window x:Class="TreeListBoxDemo.LauncherWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TreeListBox Demo Launcher" Height="400" Width="500"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:NullToBooleanConverter x:Key="NullToBooleanConverter" xmlns:local="clr-namespace:TreeListBoxDemo"/>
+    </Window.Resources>
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="TreeListBox Examples" 
+                   FontSize="24" FontWeight="Bold" 
+                   Margin="0,0,0,20"/>
+
+        <ListBox Grid.Row="1" x:Name="ExamplesListBox" 
+                 SelectionMode="Single"
+                 MouseDoubleClick="ExamplesListBox_MouseDoubleClick">
+            <ListBoxItem Tag="SingleRoot">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Single Root Example" FontWeight="Bold" FontSize="14"/>
+                    <TextBlock Text="Demonstrates a tree with one root item and multiple levels of children." 
+                               TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem Tag="MultipleRoots">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Multiple Roots Example" FontWeight="Bold" FontSize="14"/>
+                    <TextBlock Text="Demonstrates a tree with multiple root items, showcasing the fix for issue #282." 
+                               TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
+                </StackPanel>
+            </ListBoxItem>
+        </ListBox>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" 
+                    HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Launch Example" Width="120" Height="30" 
+                    Click="LaunchButton_Click" IsEnabled="{Binding SelectedItem, ElementName=ExamplesListBox, Converter={StaticResource NullToBooleanConverter}}"/>
+            <Button Content="Close" Width="80" Height="30" 
+                    Click="CloseButton_Click" Margin="10,0,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -188,7 +188,10 @@ namespace PropertyTools.Wpf
             {
                 var type = obj.GetType();
                 var pi = type.GetProperty(this.Name, this.defaultDescriptor.PropertyType);
-                pi.SetValue(obj, value, null);
+                if (pi != null)
+                {
+                    pi.SetValue(obj, value, null);
+                }
             }
 
             bag.RaisePropertyChanged(this.Name);

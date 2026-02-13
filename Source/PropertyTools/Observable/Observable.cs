@@ -81,10 +81,23 @@ namespace PropertyTools
         {
             var type = this.GetType();
 
-            // Look for a public instance property with the specified name (including inherited properties).
-            var propertyInfo = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+            // Look for a public instance property with the specified name.
+            // Start with the most derived type and continue checking base classes to handle property shadowing with "new" keyword.
+            // If the property exists anywhere in the inheritance hierarchy, it's valid.
+            while (type != null)
+            {
+                var propertyInfo = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                if (propertyInfo != null)
+                {
+                    // Property found in this type
+                    return;
+                }
 
-            Debug.Assert(propertyInfo != null, string.Format(CultureInfo.InvariantCulture, "{0} is not a property of {1}", propertyName, type.FullName));
+                type = type.BaseType;
+            }
+
+            // Property not found in any type in the hierarchy
+            Debug.Assert(false, string.Format(CultureInfo.InvariantCulture, "{0} is not a property of {1}", propertyName, this.GetType().FullName));
         }
     }
 }

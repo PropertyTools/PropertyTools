@@ -1,0 +1,112 @@
+<Window x:Class="DemoLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:DemoLauncher"
+        Title="PropertyTools Demo Launcher" 
+        Height="600" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:TagsToStringConverter x:Key="TagsToStringConverter"/>
+        <local:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
+        <local:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
+        <local:EmptyCollectionToVisibilityConverter x:Key="EmptyCollectionToVisibilityConverter"/>
+        <Style TargetType="TextBlock" x:Key="TitleStyle">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="DescriptionStyle">
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="TagStyle">
+            <Setter Property="Foreground" Value="DarkBlue"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Margin" Value="0,3,0,0"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Filter row with status -->
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Filter TextBox (50% width) -->
+            <Grid Grid.Column="0">
+                <TextBox x:Name="FilterTextBox"
+                         Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Foreground" Value="Gray"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                
+                <!-- Filter hint -->
+                <TextBlock Text="Type to filter by title, description, or tags..."
+                           Foreground="Gray"
+                           Margin="5,0,0,0"
+                           VerticalAlignment="Center"
+                           IsHitTestVisible="False">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=FilterTextBox, Path=Text}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+            
+            <!-- Status label (50% width, right aligned) -->
+            <TextBlock Grid.Column="1" 
+                       Text="{Binding StatusText}"
+                       Foreground="Gray"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"/>
+        </Grid>
+
+        <!-- Examples ListBox -->
+        <ListBox Grid.Row="1" 
+                 x:Name="ExamplesListBox"
+                 ItemsSource="{Binding FilteredExamples}"
+                 SelectedItem="{Binding SelectedExample}"
+                 SelectionMode="Single"
+                 MouseDoubleClick="ExamplesListBox_MouseDoubleClick"
+                 KeyDown="ExamplesListBox_KeyDown">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5">
+                        <TextBlock Text="{Binding Title}" Style="{StaticResource TitleStyle}"/>
+                        <TextBlock Text="{Binding AssemblyName}" 
+                                   FontSize="11" 
+                                   Foreground="DarkGreen" 
+                                   Margin="0,2,0,0"/>
+                        <TextBlock Text="{Binding Description}" 
+                                   Style="{StaticResource DescriptionStyle}"
+                                   Visibility="{Binding Description, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
+                        <TextBlock Text="{Binding Tags, Converter={StaticResource TagsToStringConverter}}" 
+                                   Style="{StaticResource TagStyle}"
+                                   Visibility="{Binding Tags, Converter={StaticResource EmptyCollectionToVisibilityConverter}}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>

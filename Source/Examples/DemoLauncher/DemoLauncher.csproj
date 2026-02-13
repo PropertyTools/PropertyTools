@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>WinExe</OutputType>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj" />
+    <ProjectReference Include="..\..\PropertyTools\PropertyTools.csproj" />
+    <ProjectReference Include="..\ExampleLibrary\ExampleLibrary.csproj" />
+    <!-- Reference example projects so their assemblies are available for discovery -->
+    <ProjectReference Include="..\Controls\ControlDemos\ControlDemos.csproj" />
+    <ProjectReference Include="..\Controls\DialogDemos\DialogDemos.csproj" />
+    <ProjectReference Include="..\DataGrid\DataGridDemo\DataGridDemo.csproj" />
+    <ProjectReference Include="..\ItemsBag\ItemsBagDemo\ItemsBagDemo.csproj" />
+    <ProjectReference Include="..\PropertyGrid\PropertyGridDemo\PropertyGridDemo.csproj" />
+    <ProjectReference Include="..\PropertyGrid\PropertyGridDemos\PropertyGridDemos.csproj" />
+    <ProjectReference Include="..\PropertyGrid\SimpleDemo\SimpleDemo.csproj" />
+    <ProjectReference Include="..\PropertyGrid\CustomFactoryDemo\CustomFactoryDemo.csproj" />
+    <ProjectReference Include="..\PropertyGrid\UndoRedoDemo\UndoRedoDemo.csproj" />
+    <ProjectReference Include="..\TreeListBox\TreeListBoxDemo\TreeListBoxDemo.csproj" />
+    <ProjectReference Include="..\TreeListBox\DirectoryDemo\DirectoryDemo.csproj" />
+    <ProjectReference Include="..\TreeListBox\AddRemoveDemo\AddRemoveDemo.csproj" />
+  </ItemGroup>
+</Project>

@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <UseWindowsForms>true</UseWindowsForms>
     <OutputType>WinExe</OutputType>
   </PropertyGroup>
@@ -9,6 +10,7 @@
     <ProjectReference Include="..\..\..\PropertyTools.Wpf.ExtendedToolkit\PropertyTools.Wpf.Extended.Toolkit.csproj" />
     <ProjectReference Include="..\..\..\PropertyTools.Wpf\PropertyTools.Wpf.csproj" />
     <ProjectReference Include="..\..\..\PropertyTools\PropertyTools.csproj" />
+    <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resources\Translations.Designer.cs">

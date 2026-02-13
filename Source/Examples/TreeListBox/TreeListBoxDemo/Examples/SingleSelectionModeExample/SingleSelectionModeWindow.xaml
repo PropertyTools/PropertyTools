@@ -1,0 +1,41 @@
+﻿<Window x:Class="TreeListBoxDemo.Examples.SingleSelectionModeExample.SingleSelectionModeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:TreeListBoxDemo"
+        xmlns:pt="http://propertytools.org/wpf"
+        Title="Single Selection Mode Example - Fix for Issue #324" Height="800" Width="600">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:NodeViewModel}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="/folder.png" Margin="0 0 4 0"/>
+                <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Background="LightYellow" Padding="10" TextWrapping="Wrap">
+            <Bold>Single Selection Mode Demo:</Bold> This example demonstrates the TreeListBox with SelectionMode set to Single.
+            Try changing the HierarchySource by clicking "Load New Data" to verify that no InvalidOperationException is thrown.
+            This showcases the fix for issue #324 where changing HierarchySource would throw an exception in Single selection mode.
+        </TextBlock>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock Text="SelectedItem: "/>
+            <TextBlock Text="{Binding SelectedItem.Name, ElementName=tree1}"/>
+            <Separator/>
+            <TextBlock Text="SelectionMode: Single"/>
+            <Separator/>
+            <Button Content="Load New Data" Click="LoadNewDataClick" Margin="5,0"/>
+            <Button Content="Clear Selection" Click="ClearSelectionClick" Margin="5,0"/>
+        </StatusBar>
+        <pt:TreeListBox 
+            x:Name="tree1" 
+            SelectionMode="Single"
+            Indentation="12" 
+            HierarchySource="{Binding Roots}"
+            BorderThickness="0"/>
+    </DockPanel>
+</Window>

@@ -35,6 +35,20 @@
                                TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
                 </StackPanel>
             </ListBoxItem>
+            <ListBoxItem Tag="SingleSelectionMode">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Single Selection Mode Example" FontWeight="Bold" FontSize="14"/>
+                    <TextBlock Text="Demonstrates SelectionMode=Single with dynamic HierarchySource changes, showcasing the fix for issue #324." 
+                               TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem Tag="MultipleSelectionMode">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Multiple Selection Mode Example" FontWeight="Bold" FontSize="14"/>
+                    <TextBlock Text="Demonstrates SelectionMode=Extended allowing multiple item selections with Ctrl+Click and Shift+Click." 
+                               TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
+                </StackPanel>
+            </ListBoxItem>
         </ListBox>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" 

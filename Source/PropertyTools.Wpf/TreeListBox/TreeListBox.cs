@@ -510,17 +510,37 @@ namespace PropertyTools.Wpf
             var oldTreeSource = e.OldValue as IEnumerable;
             if (oldTreeSource != null)
             {
-                foreach (var item in oldTreeSource)
+                // In Single selection mode, we can only set SelectedItem, not modify SelectedItems collection
+                if (this.SelectionMode == SelectionMode.Single)
                 {
-                    var container = this.GetContainerFromItem(item);
-                    if (container == null)
+                    // Check if the selected item is in the old source and clear it if found
+                    if (this.SelectedItem != null)
                     {
-                        continue;
+                        foreach (var item in oldTreeSource)
+                        {
+                            if (object.Equals(item, this.SelectedItem))
+                            {
+                                this.SelectedItem = null;
+                                break;
+                            }
+                        }
                     }
-
-                    if (container.IsSelected)
+                }
+                else
+                {
+                    // For Multiple or Extended selection modes, we can modify SelectedItems collection
+                    foreach (var item in oldTreeSource)
                     {
-                        this.SelectedItems.Remove(item);
+                        var container = this.GetContainerFromItem(item);
+                        if (container == null)
+                        {
+                            continue;
+                        }
+
+                        if (container.IsSelected)
+                        {
+                            this.SelectedItems.Remove(item);
+                        }
                     }
                 }
             }
@@ -535,12 +555,15 @@ namespace PropertyTools.Wpf
                 this.itemLevelMap[this.rootNode] = -1;
                 this.isExpandedMap[this.rootNode] = true;
 
-                this.SubscribeForCollectionChanges(hierarchySource);
-
+                // Fix #312: Add all items BEFORE subscribing to collection changes
+                // to prevent race condition where events fire before parent items are initialized
                 foreach (var item in hierarchySource)
                 {
                     this.AddItem(item);
                 }
+
+                // Subscribe to collection changes AFTER items are added
+                this.SubscribeForCollectionChanges(hierarchySource);
             }
         }
 
@@ -700,6 +723,11 @@ namespace PropertyTools.Wpf
             this.childrenToItemMap.Clear();
             this.itemLevelMap.Clear();
             this.isExpandedMap.Clear();
+
+            // Fix #312: Immediately reinitialize rootNode to prevent race condition
+            // when TabControl deferred loading triggers collection events before setup completes
+            this.itemLevelMap[this.rootNode] = -1;
+            this.isExpandedMap[this.rootNode] = true;
         }
 
         /// <summary>
@@ -735,6 +763,15 @@ namespace PropertyTools.Wpf
             if (item == null)
             {
                 throw new ArgumentNullException(nameof(item));
+            }
+
+            // Fix #312: Defensive check to prevent KeyNotFoundException
+            // when parent (typically rootNode) is not in the dictionary due to race condition
+            if (!this.itemLevelMap.ContainsKey(parent))
+            {
+                throw new InvalidOperationException(
+                    $"Parent item not found in level map. This indicates a race condition during " +
+                    $"control initialization, typically when used in TabControl with deferred loading.");
             }
 
 #if DEBUG

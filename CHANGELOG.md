@@ -4,49 +4,26 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #468
 - TreeListBoxDemo: Restructured to support multiple examples with a launcher window, added MultipleRootsExample demonstrating the fix for issue #282 #282
+- TreeListBoxDemo: Added TabControlExample demonstrating the fix for issue #312 - TreeListBox crash when used in TabControl #312
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
 - DataGrid: Added DynamicBackgroundExample with dismissible explanation panel demonstrating BackgroundProperty for data-driven cell backgrounds #TBD
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
 - Observable: Added comprehensive unit tests for VerifyProperty method including tests for inherited properties #462
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455
+- PropertyGridDemos: Added SelectedObjectsExample demonstrating ObservableCollection binding to PropertyGrid.SelectedObjects #267
 
 ### Fixed
+- TreeListBox: Fixed crash when used in TabControl - resolved race condition where collection events fired before parent items were initialized during deferred loading #312
+- PropertyGrid: Fixed SelectedObjects binding not working - initialization logic now properly sets CurrentObject when binding ObservableCollection #267
 - TreeListBox: Fixed multiple root items expansion issue where children were incorrectly displayed under the last root item instead of their respective parent #282
 - PropertyGrid: Fixed AmbiguousMatchException thrown when a class has a "new" property that shadows a base class property #305
+- TreeListBox: Fixed InvalidOperationException in HierarchySourceChanged when SelectionMode is Single - now uses SelectedItem instead of SelectedItems collection #324
 - DataGrid: Fixed thick borders when background is set by using z-index ordering - grid lines now render on top of cells instead of each cell drawing borders #TBD
 - DataGrid: Fixed BackgroundProperty binding not working - now correctly sets BackgroundBindingSource for property-based backgrounds #TBD
 - DataGrid: Fixed background color regression where TextBlock cells showed white instead of configured colors - now properly wraps in Border #TBD
 - PropertyGrid: Fixed style application issue where implicit styles from Style.Resources were not applied to controls when bound to objects implementing IDataErrorInfo or INotifyDataErrorInfo #455
-
-### Changed
-- Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
-- GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424
-- Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420
-- Documentation: Added CLAUDE.md as a quick reference guide for Claude AI that refers to AGENTS.md #420
-- Support for .NET 10 - Windows #416
-- Support for .NET 8 - Windows #367
-- ProgressAttribute #391
-- DataGrid/PropertyGrid: ILocalizableOperator and ICustomLocalizableOperator interfaces #398
-- DataDialog supporting INotifyDataErrorInfo #405
-- ItemsBag: Added comprehensive unit tests for value type properties (int, double, enum) #355
-- ItemsBag: Added comprehensive unit tests for already-nullable value types to verify PropertyType behavior #355
-
-### Changed
-- GitHub Actions: Configure CodeQL workflow to use security-extended query suite for more comprehensive security scanning #437
-- PropertyGridDemo: Implemented INotifyPropertyChanged in Example base class and all Example classes, removed Fody dependency #TBD
-- Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
-- Updated DotNetProjects.Extended.Wpf.Toolkit package from version 5.0.103 to 5.0.129
-- Tests: Upgraded NUnit from 3.12.0 to 4.4.0 for latest features and improvements
-- Tests: Upgraded Microsoft.NET.Test.SDK from 16.0.1 to 18.0.1 for improved test execution
-- Tests: Upgraded NUnit3TestAdapter from 3.15.1 to 6.0.1 for compatibility with NUnit 4
-- ItemsBag: Improved documentation explaining how it works with type descriptors and property descriptors #355
-
-### Removed
-- AboutDialog: Removed from PropertyTools.Wpf library and moved to DialogDemos example #431
-- PropertyGridDemo: Removed Fody and PropertyChanged.Fody package dependencies #TBD
-
-### Fixed
 - Observable: VerifyProperty now correctly accepts inherited properties in addition to declared properties #462
 - DataGrid: Handle SerializationException gracefully in clipboard operations when non-serializable objects are present #460
 - Security: FilePicker.Explore() - Validate and escape file paths to prevent command injection attacks #459
@@ -71,6 +48,32 @@ All notable changes to this project will be documented in this file.
 - ItemsBag: Ensure that the ItemsBag Property Descriptor does not suppress the property change notifications #354
 - ItemsBag: Propagation of IsReadOnly property to the ItemsBag Property Descriptor #369
 - TreeListBox: Catching the ArgumentException by message title, fails in non english regions #38 #142
+
+### Changed
+- Added EnableWindowsTargeting property to all WPF projects to support building on non-Windows platforms #474
+- Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
+- GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424
+- Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420
+- Documentation: Added CLAUDE.md as a quick reference guide for Claude AI that refers to AGENTS.md #420
+- Support for .NET 10 - Windows #416
+- Support for .NET 8 - Windows #367
+- ProgressAttribute #391
+- DataGrid/PropertyGrid: ILocalizableOperator and ICustomLocalizableOperator interfaces #398
+- DataDialog supporting INotifyDataErrorInfo #405
+- ItemsBag: Added comprehensive unit tests for value type properties (int, double, enum) #355
+- ItemsBag: Added comprehensive unit tests for already-nullable value types to verify PropertyType behavior #355
+- GitHub Actions: Configure CodeQL workflow to use security-extended query suite for more comprehensive security scanning #437
+- PropertyGridDemo: Implemented INotifyPropertyChanged in Example base class and all Example classes, removed Fody dependency #TBD
+- Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
+- Updated DotNetProjects.Extended.Wpf.Toolkit package from version 5.0.103 to 5.0.129
+- Tests: Upgraded NUnit from 3.12.0 to 4.4.0 for latest features and improvements
+- Tests: Upgraded Microsoft.NET.Test.SDK from 16.0.1 to 18.0.1 for improved test execution
+- Tests: Upgraded NUnit3TestAdapter from 3.15.1 to 6.0.1 for compatibility with NUnit 4
+- ItemsBag: Improved documentation explaining how it works with type descriptors and property descriptors #355
+
+### Removed
+- AboutDialog: Removed from PropertyTools.Wpf library and moved to DialogDemos example #431
+- PropertyGridDemo: Removed Fody and PropertyChanged.Fody package dependencies #TBD
 
 ## [3.1.0]
 ### Added

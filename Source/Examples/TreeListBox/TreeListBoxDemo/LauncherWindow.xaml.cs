@@ -51,6 +51,15 @@ namespace TreeListBoxDemo
                     case "MultipleRoots":
                         exampleWindow = new Examples.MultipleRootsExample.MultipleRootsWindow();
                         break;
+                    case "TabControl":
+                        exampleWindow = new Examples.TabControlExample.TabControlWindow();
+                        break;
+                    case "SingleSelectionMode":
+                        exampleWindow = new Examples.SingleSelectionModeExample.SingleSelectionModeWindow();
+                        break;
+                    case "MultipleSelectionMode":
+                        exampleWindow = new Examples.MultipleSelectionModeExample.MultipleSelectionModeWindow();
+                        break;
                 }
 
                 if (exampleWindow != null)

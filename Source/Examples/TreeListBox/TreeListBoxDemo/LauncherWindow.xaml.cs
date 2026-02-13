@@ -53,6 +53,7 @@ namespace TreeListBoxDemo
                         break;
                     case "TabControl":
                         exampleWindow = new Examples.TabControlExample.TabControlWindow();
+                        break;
                     case "SingleSelectionMode":
                         exampleWindow = new Examples.SingleSelectionModeExample.SingleSelectionModeWindow();
                         break;

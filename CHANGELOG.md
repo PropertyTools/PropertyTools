@@ -4,9 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
-- ExampleLibrary: Created shared library for example/demo metadata (ExampleAttribute) to avoid polluting PropertyTools core library #TBD
-- DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #TBD
-- DemoLauncher: Enhanced command-line support - full type names (e.g., DataGridDemo.FilteringExample), single example capture with custom filename, and capture all to custom folder #TBD
+- DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #468
 - TreeListBoxDemo: Restructured to support multiple examples with a launcher window, added MultipleRootsExample demonstrating the fix for issue #282 #282
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
 - DataGrid: Added DynamicBackgroundExample with dismissible explanation panel demonstrating BackgroundProperty for data-driven cell backgrounds #TBD
@@ -22,7 +20,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGrid: Fixed style application issue where implicit styles from Style.Resources were not applied to controls when bound to objects implementing IDataErrorInfo or INotifyDataErrorInfo #455
 
 ### Changed
-- ExampleAttribute: Moved from PropertyTools core library to new ExampleLibrary shared library for examples/demos #TBD
+- Added EnableWindowsTargeting property to all WPF projects to support building on non-Windows platforms #474
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
 - GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424
 - Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420

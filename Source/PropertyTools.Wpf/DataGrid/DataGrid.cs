@@ -1868,7 +1868,6 @@ namespace PropertyTools.Wpf
                 if (!this.HandleAutoInsert(cellRef))
                 {
                     var shift = (Keyboard.Modifiers & ModifierKeys.Shift) != ModifierKeys.None;
-                    this.isRangeSelectionDrag = false;
                     if (!shift)
                     {
                         this.CurrentCell = cellRef;

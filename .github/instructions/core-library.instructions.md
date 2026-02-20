@@ -18,7 +18,8 @@ Ensure code is compatible with both frameworks.
 Use `PropertyTools` namespace for core/shared code (not `PropertyTools.Wpf`).
 
 ## Dependencies
-- Keep dependencies minimal
+- **No dependencies outside System.* libraries**
+- Keep dependencies minimal - only use built-in .NET framework libraries
 - Avoid platform-specific dependencies
 - This library should be WPF-agnostic
 

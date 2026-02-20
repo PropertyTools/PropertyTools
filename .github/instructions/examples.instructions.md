@@ -7,16 +7,16 @@ applyTo: "Source/Examples/**/*.cs,Source/Examples/**/*.xaml"
 When working with example and demo applications:
 
 ## Structure Requirements
-Each demo should follow this structure:
+Most demos should be presented in a separate window and follow this structure:
 ```
 DemoName/
-├── App.xaml
-├── App.xaml.cs
 ├── MainWindow.xaml
 ├── MainWindow.xaml.cs
 ├── MainWindowViewModel.cs  # MVVM pattern with INotifyPropertyChanged
 └── [Model classes].cs
 ```
+
+Note: Do not include App.xaml/App.xaml.cs in demos - normally it is just a window.
 
 ## Code Standards
 - Use MVVM pattern with proper separation of concerns

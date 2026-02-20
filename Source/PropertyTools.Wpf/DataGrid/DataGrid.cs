@@ -645,6 +645,17 @@ namespace PropertyTools.Wpf
         private bool endPressed;
 
         /// <summary>
+        /// The mouse position in screen coordinates when left button was pressed.
+        /// Used to distinguish click from drag even when control coordinates shift during scroll.
+        /// </summary>
+        private Point? mouseDownPositionOnScreen;
+
+        /// <summary>
+        /// Indicates whether a range-selection drag has started for the current mouse capture.
+        /// </summary>
+        private bool isRangeSelectionDrag;
+
+        /// <summary>
         /// The sheet grid control.
         /// </summary>
         private Grid sheetGrid;
@@ -1571,7 +1582,7 @@ namespace PropertyTools.Wpf
             // Use Operator.GetRowCount() instead of this.Rows to work in test environments
             var currentRowCount = this.Operator?.GetRowCount() ?? 0;
             var newRowsNeeded = Math.Max(0, outputRange.BottomRow - currentRowCount + 1);
-            
+
             // Phase 2: Add new rows at the end of the source collection
             for (var rowIndex = 0; rowIndex < newRowsNeeded; rowIndex++)
             {
@@ -1825,6 +1836,9 @@ namespace PropertyTools.Wpf
             this.Focus();
             base.OnMouseLeftButtonDown(e);
 
+            this.mouseDownPositionOnScreen = this.PointToScreen(e.GetPosition(this));
+            this.isRangeSelectionDrag = false;
+
             var pos = e.GetPosition(this.sheetGrid);
             var cellRef = this.GetCell(pos);
 
@@ -1878,6 +1892,9 @@ namespace PropertyTools.Wpf
         {
             this.OnMouseUp(e);
 
+            this.mouseDownPositionOnScreen = null;
+            this.isRangeSelectionDrag = false;
+
             this.ReleaseMouseCapture();
             Mouse.OverrideCursor = null;
 
@@ -1904,6 +1921,26 @@ namespace PropertyTools.Wpf
             }
 
             var isInAutoFillMode = this.autoFillSelection.Visibility == Visibility.Visible;
+
+            if (!isInAutoFillMode)
+            {
+                if (!this.isRangeSelectionDrag)
+                {
+                    var currentPositionOnScreen = this.PointToScreen(e.GetPosition(this));
+                    if (this.mouseDownPositionOnScreen.HasValue)
+                    {
+                        var horizontalDragDistance = Math.Abs(currentPositionOnScreen.X - this.mouseDownPositionOnScreen.Value.X);
+                        var verticalDragDistance = Math.Abs(currentPositionOnScreen.Y - this.mouseDownPositionOnScreen.Value.Y);
+                        if (horizontalDragDistance < SystemParameters.MinimumHorizontalDragDistance
+                            && verticalDragDistance < SystemParameters.MinimumVerticalDragDistance)
+                        {
+                            return;
+                        }
+                    }
+
+                    this.isRangeSelectionDrag = true;
+                }
+            }
 
             var pos = e.GetPosition(this.sheetGrid);
             var cellRef = this.GetCell(pos, isInAutoFillMode, this.CurrentCell);

@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - DataGrid: Fixed selection extending on simple click when hosted in a scrollable container #478
+- DataGrid: Fixed `ToCsv` ignoring the `separator` parameter for data rows — data rows now correctly use the specified separator instead of always using `";"` #479
 - TreeListBox: Fixed crash when used in TabControl - resolved race condition where collection events fired before parent items were initialized during deferred loading #312
 - PropertyGrid: Fixed SelectedObjects binding not working - initialization logic now properly sets CurrentObject when binding ObservableCollection #267
 - TreeListBox: Fixed multiple root items expansion issue where children were incorrectly displayed under the last root item instead of their respective parent #282

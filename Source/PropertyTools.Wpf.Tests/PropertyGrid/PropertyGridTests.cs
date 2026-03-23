@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyTools.Wpf.Tests.PropertyGridTests
+namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
 {
     using System.Collections.ObjectModel;
     using System.Threading;

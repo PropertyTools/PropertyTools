@@ -1805,7 +1805,7 @@ namespace PropertyTools.Wpf
             }
 
             var strings = this.GetCellStrings(range);
-            var csv = this.ConvertToCsv(strings, ";", true);
+            var csv = this.ConvertToCsv(strings, separator, true);
             sb.Append(csv);
 
             return sb.ToString();
@@ -2374,7 +2374,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// An array of cell strings.
         /// </returns>
-        protected string[,] GetCellStrings(CellRange range, object[,] values = null)
+        protected virtual string[,] GetCellStrings(CellRange range, object[,] values = null)
         {
             var result = new string[range.Rows, range.Columns];
             for (var i = 0; i < range.Rows; i++)

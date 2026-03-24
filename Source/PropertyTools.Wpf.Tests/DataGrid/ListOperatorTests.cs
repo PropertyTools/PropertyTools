@@ -6,7 +6,6 @@
 
 namespace PropertyTools.Wpf.Tests
 {
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using NUnit.Framework;
     using PropertyTools.Wpf;

@@ -133,6 +133,31 @@ namespace PropertyTools.Wpf.Tests
             Assert.That(lines[1], Is.EqualTo("r1c0\tr1c1\tr1c2"));
         }
 
+        [Test]
+        public void ClipboardSeparator_DefaultValue_IsCurrentCultureListSeparator()
+        {
+            // The default ClipboardSeparator should match the current culture's list separator
+            Assert.That(
+                this.dataGrid.ClipboardSeparator,
+                Is.EqualTo(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator));
+        }
+
+        [Test]
+        public void ClipboardSeparator_SetToComma_ToCsvUsesComma()
+        {
+            // Arrange
+            this.dataGrid.ClipboardSeparator = ",";
+            var range = new CellRange(new CellRef(0, 0), new CellRef(0, 2)); // 1 row, 3 columns
+
+            // Act - pass the property value just as OnKeyDown would
+            var csv = this.dataGrid.TestToCsv(range, this.dataGrid.ClipboardSeparator, includeHeader: false);
+
+            // Assert
+            var lines = csv.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+            Assert.That(lines.Length, Is.EqualTo(1));
+            Assert.That(lines[0], Is.EqualTo("r0c0,r0c1,r0c2"));
+        }
+
         /// <summary>
         /// Testable DataGrid that exposes protected methods for testing.
         /// Overrides GetCellStrings to supply deterministic cell values without

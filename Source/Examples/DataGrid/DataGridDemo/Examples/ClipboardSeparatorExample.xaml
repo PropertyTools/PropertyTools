@@ -1,0 +1,13 @@
+﻿<Window x:Class="DataGridDemo.ClipboardSeparatorExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="ClipboardSeparator" Height="450" Width="600">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Margin="8" TextWrapping="Wrap">
+            Press <Bold>Ctrl+Alt+C</Bold> to copy the selected cells (including headers) to the clipboard
+            using a comma (<Bold>,</Bold>) as the separator. This overrides the default culture list separator.
+        </TextBlock>
+        <p:DataGrid ItemsSource="{Binding ItemsSource}" ClipboardSeparator=","/>
+    </DockPanel>
+</Window>

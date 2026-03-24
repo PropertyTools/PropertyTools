@@ -189,6 +189,15 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="ClipboardSeparator"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ClipboardSeparatorProperty = DependencyProperty.Register(
+                nameof(ClipboardSeparator),
+                typeof(string),
+                typeof(DataGrid),
+                new UIPropertyMetadata(null));
+
+        /// <summary>
         /// Identifies the <see cref="MultiChangeInChangedColumnOnly"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MultiChangeInChangedColumnOnlyProperty = DependencyProperty.Register(
@@ -890,6 +899,20 @@ namespace PropertyTools.Wpf
         {
             get => (bool)this.GetValue(CanResizeRowsProperty);
             set => this.SetValue(CanResizeRowsProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the separator used when copying cell data to the clipboard via <c>Ctrl+Alt+C</c>.
+        /// When not explicitly set, the current culture's list separator is used
+        /// (<see cref="System.Globalization.CultureInfo.CurrentCulture"/> TextInfo.ListSeparator,
+        /// e.g. <c>","</c> for en-US or <c>";"</c> for de-DE).
+        /// Set this property to override the separator for a specific instance, or subclass and override to apply it globally.
+        /// </summary>
+        /// <value>The clipboard separator string.</value>
+        public string ClipboardSeparator
+        {
+            get => (string)this.GetValue(ClipboardSeparatorProperty) ?? System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
+            set => this.SetValue(ClipboardSeparatorProperty, value);
         }
 
         /// <summary>
@@ -2200,7 +2223,7 @@ namespace PropertyTools.Wpf
                 case Key.C:
                     if (control && alt)
                     {
-                        Clipboard.SetText(this.ToCsv(this.GetSelectionRange()));
+                        Clipboard.SetText(this.ToCsv(this.GetSelectionRange(), this.ClipboardSeparator));
                         e.Handled = true;
                     }
 

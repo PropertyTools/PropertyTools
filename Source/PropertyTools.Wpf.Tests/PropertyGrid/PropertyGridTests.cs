@@ -4,11 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyTools.Wpf.Tests
+namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
 {
     using System.Collections.ObjectModel;
     using System.Threading;
     using NUnit.Framework;
+    using PropertyTools.Wpf;
 
     [TestFixture]
     [Apartment(ApartmentState.STA)]

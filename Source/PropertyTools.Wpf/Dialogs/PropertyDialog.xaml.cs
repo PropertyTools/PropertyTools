@@ -300,7 +300,8 @@ namespace PropertyTools.Wpf
 			
 			this.DialogResult = true;  // also will call Close() method when DialogResult != true
 
-			if (!this.isClosedAlready_ButtonClickScope) // prevent raising Close event twice
+			if (this.DialogResult == true  // check if Closing event was not cancelled.
+                && !this.isClosedAlready_ButtonClickScope) // prevent raising Close event twice
             {
                 this.Close();
             }

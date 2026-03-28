@@ -211,7 +211,7 @@ namespace PropertyTools.Wpf
                     continue;
                 }
 
-                if (oldValue != null && !oldValue.Equals(newValue))
+                if (oldValue != null && !oldValue.Equals(newValue) || oldValue == null)
                 {
                     pi.SetValue(this.DataContext, newValue, null);
                 }

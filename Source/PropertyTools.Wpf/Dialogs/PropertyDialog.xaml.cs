@@ -289,6 +289,8 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         protected override void OnClosing(CancelEventArgs e)
         {
+            base.OnClosing(e);
+
             if (DataContext is INotifyDataErrorInfo nde)
             {
                 nde.ErrorsChanged -= DataErrorsChanged; ;

@@ -6,6 +6,8 @@
 
 namespace ExampleLibrary
 {
+    using System.Collections.ObjectModel;
+
     using PropertyTools.DataAnnotations;
 
     [PropertyGridExample]
@@ -22,5 +24,10 @@ namespace ExampleLibrary
         [FillTab]
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         public string Text2 { get => this.text2; set { this.text2 = value; this.RaisePropertyChanged(nameof(Text2)); } }
+
+        [Category("Header above|Group category is not shown!")]
+        [FillTab]
+        [HeaderPlacement(HeaderPlacement.Above)]
+        public ObservableCollection<string> Items { get; set; } = new ObservableCollection<string> { "Item 1", "Item 2", "Item 3" };
     }
 }

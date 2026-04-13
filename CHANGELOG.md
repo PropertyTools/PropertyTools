@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- GitHub Copilot: Added path-specific custom instructions for tests, examples, WPF controls, and core library to provide contextual guidance based on file types #475
 - DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #468
 - TreeListBoxDemo: Restructured to support multiple examples with a launcher window, added MultipleRootsExample demonstrating the fix for issue #282 #282
 - TreeListBoxDemo: Added TabControlExample demonstrating the fix for issue #312 - TreeListBox crash when used in TabControl #312
@@ -13,13 +14,21 @@ All notable changes to this project will be documented in this file.
 - Observable: Added comprehensive unit tests for VerifyProperty method including tests for inherited properties #462
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455
 - PropertyGridDemos: Added SelectedObjectsExample demonstrating ObservableCollection binding to PropertyGrid.SelectedObjects #267
+- DataGrid: Added `ClipboardSeparator` dependency property that controls the separator used by `Ctrl+Alt+C` (copy with headers). Defaults to the current culture's list separator (`CultureInfo.CurrentCulture.TextInfo.ListSeparator`). Can be set per-instance in XAML or overridden in a subclass #481
 
 ### Fixed
 - PropertyGrid: Fixed ListItemItemsSourceProperty not saving changes - collections with empty PropertyName now use index-based binding for two-way data updates #295
+- PropertyDialog: Fixed Closing event not being raised by calling base.OnClosing(e) #484
+- PropertyDialog: Fixed `CommitChanges` not setting new value when original value is `null` #486
+- PropertyGrid: Fixed FillTab control not stretching to fill available space when HeaderPlacement is Above, including when the model implements IDataErrorInfo or INotifyDataErrorInfo #488
 - DataGrid: Fixed selection extending on simple click when hosted in a scrollable container #478
+- DataGrid: Fixed `ToCsv` ignoring the `separator` parameter for data rows — data rows now correctly use the specified separator instead of always using `";"` #479
 - TreeListBox: Fixed crash when used in TabControl - resolved race condition where collection events fired before parent items were initialized during deferred loading #312
 - PropertyGrid: Fixed SelectedObjects binding not working - initialization logic now properly sets CurrentObject when binding ObservableCollection #267
 - TreeListBox: Fixed multiple root items expansion issue where children were incorrectly displayed under the last root item instead of their respective parent #282
+- PropertyGrid: Fixed AmbiguousMatchException thrown when a class has a "new" property that shadows a base class property #305
+- Observable: Fixed AmbiguousMatchException in VerifyProperty when a class has a "new" property that shadows a base class property #305
+- ItemsBag: Fixed AmbiguousMatchException in ItemsBagPropertyDescriptor.GetValue and SetValue when a class has a "new" property that shadows a base class property #305
 - TreeListBox: Fixed InvalidOperationException in HierarchySourceChanged when SelectionMode is Single - now uses SelectedItem instead of SelectedItems collection #324
 - DataGrid: Fixed thick borders when background is set by using z-index ordering - grid lines now render on top of cells instead of each cell drawing borders #TBD
 - DataGrid: Fixed BackgroundProperty binding not working - now correctly sets BackgroundBindingSource for property-based backgrounds #TBD

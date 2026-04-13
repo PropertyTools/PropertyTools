@@ -1623,6 +1623,20 @@ namespace PropertyTools.Wpf
                                 Grid.SetRow(propertyControl, 1);
                                 Grid.SetColumn(propertyControl, 0);
                                 Grid.SetColumnSpan(propertyControl, 2);
+
+                                if (pi.FillTab)
+                                {
+                                    // Row 0 (label) should size to its natural height.
+                                    // Row 1 (property control) should fill all remaining space.
+                                    // Any additional rows (e.g. validation error rows) should also size to their natural height.
+                                    propertyPanel.RowDefinitions[0].Height = GridLength.Auto;
+                                    propertyPanel.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
+                                    for (var i = 2; i < propertyPanel.RowDefinitions.Count; i++)
+                                    {
+                                        propertyPanel.RowDefinitions[i].Height = GridLength.Auto;
+                                    }
+                                }
+
                                 if (errorControl != null)
                                 {
                                     Grid.SetRow(errorControl, 2);

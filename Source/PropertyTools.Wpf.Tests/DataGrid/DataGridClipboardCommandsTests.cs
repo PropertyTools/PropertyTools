@@ -117,8 +117,51 @@ namespace PropertyTools.Wpf.Tests
             Assert.That(result, Is.False);
         }
 
+        [Test]
+        public void ToCsv_TabSeparator_UsesTabSeparatorForBothHeaderAndDataRows()
+        {
+            // Arrange
+            var range = new CellRange(new CellRef(0, 0), new CellRef(1, 2)); // 2 rows, 3 columns
+
+            // Act
+            var csv = this.dataGrid.TestToCsv(range, "\t", includeHeader: false);
+
+            // Assert: every row in the data section uses tab, not semicolon
+            var lines = csv.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+            Assert.That(lines.Length, Is.EqualTo(2));
+            Assert.That(lines[0], Is.EqualTo("r0c0\tr0c1\tr0c2"));
+            Assert.That(lines[1], Is.EqualTo("r1c0\tr1c1\tr1c2"));
+        }
+
+        [Test]
+        public void ClipboardSeparator_DefaultValue_IsCurrentCultureListSeparator()
+        {
+            // The default ClipboardSeparator should match the current culture's list separator
+            Assert.That(
+                this.dataGrid.ClipboardSeparator,
+                Is.EqualTo(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator));
+        }
+
+        [Test]
+        public void ClipboardSeparator_SetToComma_ToCsvUsesComma()
+        {
+            // Arrange
+            this.dataGrid.ClipboardSeparator = ",";
+            var range = new CellRange(new CellRef(0, 0), new CellRef(0, 2)); // 1 row, 3 columns
+
+            // Act - pass the property value just as OnKeyDown would
+            var csv = this.dataGrid.TestToCsv(range, this.dataGrid.ClipboardSeparator, includeHeader: false);
+
+            // Assert
+            var lines = csv.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+            Assert.That(lines.Length, Is.EqualTo(1));
+            Assert.That(lines[0], Is.EqualTo("r0c0,r0c1,r0c2"));
+        }
+
         /// <summary>
         /// Testable DataGrid that exposes protected methods for testing.
+        /// Overrides GetCellStrings to supply deterministic cell values without
+        /// requiring a WPF visual tree or a configured Operator.
         /// </summary>
         private class TestableDataGrid : DataGrid
         {
@@ -130,6 +173,25 @@ namespace PropertyTools.Wpf.Tests
             public bool TestCanModifySelection()
             {
                 return this.CanModifySelection();
+            }
+
+            public string TestToCsv(CellRange range, string separator = ";", bool includeHeader = true)
+            {
+                return this.ToCsv(range, separator, includeHeader);
+            }
+
+            protected override string[,] GetCellStrings(CellRange range, object[,] values = null)
+            {
+                var result = new string[range.Rows, range.Columns];
+                for (var i = 0; i < range.Rows; i++)
+                {
+                    for (var j = 0; j < range.Columns; j++)
+                    {
+                        result[i, j] = $"r{range.TopRow + i}c{range.LeftColumn + j}";
+                    }
+                }
+
+                return result;
             }
         }
     }

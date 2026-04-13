@@ -206,12 +206,7 @@ namespace PropertyTools.Wpf
                 var newValue = pi.GetValue(clone, null);
                 var oldValue = pi.GetValue(this.DataContext, null);
 
-                if (oldValue == null && newValue == null)
-                {
-                    continue;
-                }
-
-                if (oldValue != null && !oldValue.Equals(newValue))
+                if (!object.Equals(oldValue, newValue))
                 {
                     pi.SetValue(this.DataContext, newValue, null);
                 }

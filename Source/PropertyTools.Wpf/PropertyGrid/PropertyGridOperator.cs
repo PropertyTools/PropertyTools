@@ -391,7 +391,7 @@ namespace PropertyTools.Wpf
 
             // find the declaring type
             var declaringType = pi.Descriptor.ComponentType;
-            var propertyInfo = instance.GetType().GetProperty(pi.Descriptor.Name);
+            var propertyInfo = instance.GetType().GetProperty(pi.Descriptor.Name, pi.Descriptor.PropertyType);
             if (propertyInfo != null)
             {
                 declaringType = propertyInfo.DeclaringType;

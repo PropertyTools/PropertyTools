@@ -207,12 +207,7 @@ namespace PropertyTools.Wpf
                 var newValue = pi.GetValue(clone, null);
                 var oldValue = pi.GetValue(this.DataContext, null);
 
-                if (oldValue == null && newValue == null)
-                {
-                    continue;
-                }
-
-                if (oldValue != null && !oldValue.Equals(newValue))
+                if (!object.Equals(oldValue, newValue))
                 {
                     pi.SetValue(this.DataContext, newValue, null);
                 }
@@ -317,15 +312,15 @@ namespace PropertyTools.Wpf
             this.BeginEdit();
         }
 
-		/// <inheritdoc/>
-		/// <remarks>
-		/// Also calls <see cref="EndEdit"/> or <see cref="CancelEdit"/> methods depending on <see cref="System.Windows.Window.DialogResult"/> value
-		/// </remarks> 
-		protected override void OnClosing(CancelEventArgs e)
-		{
-			base.OnClosing(e);
+        /// <summary>
+        /// Handles the Closing event of the PropertyDialog control.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
 
-            if (!e.Cancel)
+            if (DataContext is INotifyDataErrorInfo nde)
             {
                 if (this.DialogResult == true)
                 {

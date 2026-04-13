@@ -145,7 +145,7 @@ namespace PropertyTools.Wpf
             foreach (var obj in bag.Objects)
             {
                 var type = obj.GetType();
-                var pi = type.GetProperty(this.Name);
+                var pi = type.GetProperty(this.Name, this.defaultDescriptor.PropertyType);
                 if (pi == null)
                 {
                     continue;
@@ -187,8 +187,11 @@ namespace PropertyTools.Wpf
             foreach (var obj in bag.Objects)
             {
                 var type = obj.GetType();
-                var pi = type.GetProperty(this.Name);
-                pi.SetValue(obj, value, null);
+                var pi = type.GetProperty(this.Name, this.defaultDescriptor.PropertyType);
+                if (pi != null)
+                {
+                    pi.SetValue(obj, value, null);
+                }
             }
 
             bag.RaisePropertyChanged(this.Name);

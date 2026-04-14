@@ -43,8 +43,11 @@ namespace PropertyTools.Wpf
                 var name = value as string;
                 if (name != null)
                 {
-                    if (targetType == typeof(FontFamily))
-                    {
+                    if (targetType == typeof(FontFamily)                    
+                        || targetType == typeof(object) // since Selector.SelectedValueProperty dependency property has .PropertyType == typeof(object)
+														// see PropertyGridControlFactory.CreateFontFamilyControl() method
+					)
+					{
                         return new FontFamily(name);
                     }
 

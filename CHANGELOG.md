@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - PropertyGrid/DataGrid: Fixed ListItemItemsSourceProperty not saving changes - collections with empty PropertyName now correctly use index-based binding path and collection as binding source for two-way data updates #295
+- DataGrid: Fixed all cells being rebuilt when a single item is replaced in an ObservableCollection - Replace actions now only update the affected cell(s) #295
 - PropertyDialog: Fixed Closing event not being raised by calling base.OnClosing(e) #484
 - PropertyDialog: Fixed `CommitChanges` not setting new value when original value is `null` #486
 - PropertyGrid: Fixed FillTab control not stretching to fill available space when HeaderPlacement is Above, including when the model implements IDataErrorInfo or INotifyDataErrorInfo #488

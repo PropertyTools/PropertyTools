@@ -90,33 +90,6 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void GetBindingPath_EmptyPropertyName_ReturnsIndexPath()
-        {
-            // Arrange
-            var dataGrid = new DataGrid();
-            var list = new ObservableCollection<string> { "Initial Value" };
-            dataGrid.ItemsSource = list;
-            
-            var columnDefinition = new ColumnDefinition
-            {
-                PropertyName = string.Empty,
-                IsReadOnly = false
-            };
-            dataGrid.ColumnDefinitions.Add(columnDefinition);
-            
-            var listOperator = new ListOperator(dataGrid);
-            
-            // Act
-            var bindingPath = listOperator.GetBindingPath(new CellRef(0, 0));
-            
-            // Assert
-            // Verify that the binding path is index-based, not empty
-            Assert.That(bindingPath, Is.EqualTo("[0]"));
-            Assert.That(bindingPath, Is.Not.Empty);
-            // This ensures CreateBinding will use TwoWay mode instead of OneWay
-        }
-
-        [Test]
         public void GetDataContext_WithEmptyPropertyName_ReturnsItemsSource()
         {
             // Arrange

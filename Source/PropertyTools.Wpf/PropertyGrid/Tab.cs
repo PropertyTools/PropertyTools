@@ -101,14 +101,20 @@ namespace PropertyTools.Wpf
         /// <value>The icon.</value>
         public BitmapSource Icon { get; set; }
 
-        /// <summary>
-        /// Determines whether the tab contains the specified property.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns>
-        /// <c>true</c> if the tab contains the specified property; otherwise, <c>false</c>.
-        /// </returns>
-        public bool Contains(string propertyName)
+		/// <summary>
+		/// Gets or sets the tab sort index.
+		/// </summary>
+		/// <value>The tab sort index.</value>
+		public uint? TabIndex { get; set; }
+
+		/// <summary>
+		/// Determines whether the tab contains the specified property.
+		/// </summary>
+		/// <param name="propertyName">Name of the property.</param>
+		/// <returns>
+		/// <c>true</c> if the tab contains the specified property; otherwise, <c>false</c>.
+		/// </returns>
+		public bool Contains(string propertyName)
         {
             return this.Groups.Any(g => g.Properties.Any(p => p.PropertyName == propertyName));
         }

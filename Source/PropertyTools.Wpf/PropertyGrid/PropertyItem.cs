@@ -533,11 +533,17 @@ namespace PropertyTools.Wpf
         /// <value>The tab.</value>
         public string Tab { get; set; }
 
-        /// <summary>
-        /// Gets or sets the text wrapping.
-        /// </summary>
-        /// <value>The text wrapping.</value>
-        public TextWrapping TextWrapping { get; set; }
+		/// <summary>
+		/// Gets or sets the tab sort index.
+		/// </summary>
+		/// <value>The tab.</value>
+		public uint? TabIndex { get; set; }
+
+		/// <summary>
+		/// Gets or sets the text wrapping.
+		/// </summary>
+		/// <value>The text wrapping.</value>
+		public TextWrapping TextWrapping { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the property should use radio buttons.

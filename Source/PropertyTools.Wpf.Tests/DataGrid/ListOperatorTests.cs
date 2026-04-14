@@ -90,7 +90,7 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void GetBindingPath_EmptyPropertyName_EnablesTwoWayBinding()
+        public void GetBindingPath_EmptyPropertyName_ReturnsIndexPath()
         {
             // Arrange
             var dataGrid = new DataGrid();
@@ -104,7 +104,6 @@ namespace PropertyTools.Wpf.Tests
             };
             dataGrid.ColumnDefinitions.Add(columnDefinition);
             
-            var factory = new DataGridControlFactory();
             var listOperator = new ListOperator(dataGrid);
             
             // Act
@@ -115,6 +114,59 @@ namespace PropertyTools.Wpf.Tests
             Assert.That(bindingPath, Is.EqualTo("[0]"));
             Assert.That(bindingPath, Is.Not.Empty);
             // This ensures CreateBinding will use TwoWay mode instead of OneWay
+        }
+
+        [Test]
+        public void GetDataContext_WithEmptyPropertyName_ReturnsItemsSource()
+        {
+            // Arrange
+            var dataGrid = new DataGrid();
+            var list = new ObservableCollection<string> { "Oslo", "Reykjavik", "New York" };
+            dataGrid.ItemsSource = list;
+            
+            var columnDefinition = new ColumnDefinition
+            {
+                PropertyName = string.Empty
+            };
+            dataGrid.ColumnDefinitions.Add(columnDefinition);
+            
+            var listOperator = new ListOperator(dataGrid);
+            var cell = new CellRef(0, 0);
+
+            // Act
+            var dataContext = listOperator.GetDataContext(cell);
+
+            // Assert
+            // When PropertyName is empty, DataContext should be the collection, not the item
+            Assert.That(dataContext, Is.SameAs(list));
+        }
+
+        [Test]
+        public void GetDataContext_WithNonEmptyPropertyName_ReturnsItem()
+        {
+            // Arrange
+            var dataGrid = new DataGrid();
+            var list = new ObservableCollection<TestItem>
+            {
+                new TestItem { Name = "Item1" }
+            };
+            dataGrid.ItemsSource = list;
+            
+            var columnDefinition = new ColumnDefinition
+            {
+                PropertyName = "Name"
+            };
+            dataGrid.ColumnDefinitions.Add(columnDefinition);
+            
+            var listOperator = new ListOperator(dataGrid);
+            var cell = new CellRef(0, 0);
+
+            // Act
+            var dataContext = listOperator.GetDataContext(cell);
+
+            // Assert
+            // When PropertyName is set, DataContext should be the item
+            Assert.That(dataContext, Is.SameAs(list[0]));
         }
 
         private class TestItem

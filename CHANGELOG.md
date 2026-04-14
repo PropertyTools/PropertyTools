@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Added `ClipboardSeparator` dependency property that controls the separator used by `Ctrl+Alt+C` (copy with headers). Defaults to the current culture's list separator (`CultureInfo.CurrentCulture.TextInfo.ListSeparator`). Can be set per-instance in XAML or overridden in a subclass #481
 
 ### Fixed
+- PropertyGrid: Fixed FontFamilySelector does not restore actual property value #492
 - PropertyDialog: Fixed Closing event not being raised by calling base.OnClosing(e) #484
 - PropertyDialog: Fixed `CommitChanges` not setting new value when original value is `null` #486
 - PropertyGrid: Fixed FillTab control not stretching to fill available space when HeaderPlacement is Above, including when the model implements IDataErrorInfo or INotifyDataErrorInfo #488

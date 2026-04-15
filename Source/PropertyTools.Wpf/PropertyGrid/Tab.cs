@@ -149,5 +149,15 @@ namespace PropertyTools.Wpf
             // validate all properties in this tab
             this.HasErrors = this.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));            
         }
+
+        /// <summary>
+        /// Sort groups by <seealso cref="Group.GroupSortIndex"/>
+        /// </summary>
+        /// <returns></returns>
+        public Tab SortGroups()
+        {
+			this.Groups = this.Groups.OrderBy(x => x.GroupSortIndex ?? 0).ToList();
+            return this;
+		}
     }
 }

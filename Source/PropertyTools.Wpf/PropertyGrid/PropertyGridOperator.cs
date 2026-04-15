@@ -131,26 +131,49 @@ namespace PropertyTools.Wpf
 				var group = tab.Groups.FirstOrDefault(g => g.Header == category);
 				if (group == null)
 				{
-					group = new Group { Header = pi.Category };
+					group = new Group { Header = pi.Category, Name = pi.CategoryIdentifier };
 					tab.Groups.Add(group);
 				}
-				
+
+				#region Set tab sort index
+
 				if (tab.TabIndex == null)
 				{
-					tab.TabIndex = pi.TabIndex;
+					tab.TabIndex = pi.TabSortIndex;
 				}
-				else if (pi.TabIndex != null && pi.TabIndex != tab.TabIndex)
+				else if (pi.TabSortIndex != null && pi.TabSortIndex != tab.TabIndex)
 				{
 					throw new ApplicationException(
-						String.Format("Two or more different tab indecies ({0} and {1}) are set for same tab '{2}'.", 
-							tab.TabIndex, pi.TabIndex, tabHeader
+						String.Format("Two or more different tab indecies ({0} and {1}) are set for same tab '{2}'.",
+							tab.TabIndex, pi.TabSortIndex, tabHeader
 					));
 				}
+
+				#endregion
+
+				#region Set group sort index
+
+				if (group.GroupSortIndex == null)
+				{
+					group.GroupSortIndex = pi.GroupSortIndex;
+				}
+				else if (pi.GroupSortIndex != null && pi.GroupSortIndex != group.GroupSortIndex)
+				{
+					throw new ApplicationException(
+						String.Format("Two or more different group indecies ({0} and {1}) are set for same group '{2}'.",
+							group.GroupSortIndex, pi.GroupSortIndex, group.Name
+					));
+				}
+
+				#endregion
 
 				group.Properties.Add(pi);
 			}
 
-			return tabs.Values.OrderBy(t => t.TabIndex ?? 0).ToList();
+			return tabs.Values
+				.OrderBy(t => t.TabIndex ?? 0) // sorting tabs
+				.Select(t => t.SortGroups()) // sorting groups inside tab
+				.ToList();
 		}
 
 		/// <summary>
@@ -455,8 +478,14 @@ namespace PropertyTools.Wpf
             var displayName = this.GetDisplayName(pi.Descriptor, declaringType);
             var description = this.GetDescription(pi.Descriptor, declaringType);
 
-            // Localize the strings
-            pi.DisplayName = this.GetLocalizedString(displayName, declaringType);
+			pi.CategoryIdentifier = categoryName;
+			
+            // set tab/group sort index
+			pi.TabSortIndex = ca2?.TabSortIndex;
+			pi.GroupSortIndex = ca2?.GroupSortIndex;
+
+			// Localize the strings
+			pi.DisplayName = this.GetLocalizedString(displayName, declaringType);
             pi.Description = this.GetLocalizedDescription(description, declaringType);
             pi.Category = this.GetLocalizedString(categoryName, this.CurrentCategoryDeclaringType);
             pi.Tab = this.GetLocalizedString(tabName, this.CurrentCategoryDeclaringType);
@@ -859,4 +888,7 @@ namespace PropertyTools.Wpf
             }
         }
     }
+
+		
+
 }

@@ -30,11 +30,13 @@ namespace PropertyTools.DataAnnotations
 		/// Initializes a new instance of the <see cref="CategoryAttribute"/> class.
 		/// </summary>
 		/// <param name="category">The category.</param>
-		/// <param name="sortIndex">The category sort index.</param>
-		public CategoryAttribute(string category, uint sortIndex)
+		/// <param name="tabSortIndex">The category sort index (tab scope).</param>
+		/// <param name="groupSortIndex">The category sort index (group scope).</param>
+		public CategoryAttribute(string category, uint tabSortIndex = 0, uint groupSortIndex = 0)
 		{
 			this.Category = category;
-			this.SortIndex = sortIndex;
+			this.TabSortIndex = tabSortIndex;
+			this.GroupSortIndex = groupSortIndex;			
 		}
 
 		/// <summary>
@@ -44,9 +46,15 @@ namespace PropertyTools.DataAnnotations
 		public virtual string Category { get; private set; }
 
 		/// <summary>
-		/// Gets the category sort index
+		/// Gets the category sort index (tab scope)
 		/// </summary>
-		/// <value>The category sort index.</value>
-		public virtual uint? SortIndex { get; private set; }
+		/// <value>The category sort index (tab scope).</value>
+		public virtual uint? TabSortIndex { get; private set; }
+
+		/// <summary>
+		/// Gets the category sort index (group scope)
+		/// </summary>
+		/// <value>The category sort index (group scope).</value>
+		public virtual uint? GroupSortIndex { get; private set; }
 	}
 }

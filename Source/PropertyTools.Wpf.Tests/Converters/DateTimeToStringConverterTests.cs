@@ -37,6 +37,17 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void Convert_DatePickerTargetType_ReturnsDateTimeValue()
+        {
+            var converter = new DateTimeToStringConverter();
+            var dateTime = new DateTime(2014, 10, 4);
+
+            var result = converter.Convert(dateTime, typeof(DateTime?), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+            Assert.That(result, Is.EqualTo(dateTime));
+        }
+
+        [Test]
         public void ConvertBack_DdMmYyyyInputWithFormatString_ReturnsCorrectDate()
         {
             var converter = new DateTimeToStringConverter();
@@ -59,6 +70,17 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void ConvertBack_DatePickerValue_ReturnsDateTimeValue()
+        {
+            var converter = new DateTimeToStringConverter();
+            var dateTime = new DateTime(2014, 10, 4);
+
+            var result = converter.ConvertBack(dateTime, typeof(DateTime?), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+            Assert.That(result, Is.EqualTo(dateTime));
+        }
+
+        [Test]
         public void ConvertBack_EmptyInputAndNullableDateTimeTarget_ReturnsNull()
         {
             var converter = new DateTimeToStringConverter();
@@ -76,6 +98,17 @@ namespace PropertyTools.Wpf.Tests
             var result = converter.ConvertBack("04/10/2014", typeof(TimeSpan), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
             Assert.That(result, Is.EqualTo(DependencyProperty.UnsetValue));
+        }
+
+        [Test]
+        public void ConvertBack_ParseExactFailure_FallsBackToRegularDateTimeParse()
+        {
+            var converter = new DateTimeToStringConverter();
+            var culture = CultureInfo.GetCultureInfo("en-US");
+
+            var result = converter.ConvertBack("2012-03-05 21:34", typeof(DateTime), "yyyy-MM-dd hh:mm", culture);
+
+            Assert.That(result, Is.EqualTo(new DateTime(2012, 3, 5, 21, 34, 0)));
         }
     }
 }

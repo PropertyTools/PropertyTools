@@ -38,6 +38,11 @@ namespace PropertyTools.Wpf
                 return null;
             }
 
+            if (IsDateTimeType(targetType))
+            {
+                return value;
+            }
+
             if (targetType != typeof(string))
             {
                 return DependencyProperty.UnsetValue;
@@ -50,7 +55,14 @@ namespace PropertyTools.Wpf
                 return dateTime.ToString(culture);
             }
 
-            return dateTime.ToString(formatString, culture);
+            try
+            {
+                return dateTime.ToString(formatString, culture);
+            }
+            catch (FormatException)
+            {
+                return dateTime.ToString(culture);
+            }
         }
 
         /// <summary>
@@ -65,14 +77,24 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var input = value as string;
-            if (input == null)
+            if (!IsDateTimeType(targetType))
             {
                 return DependencyProperty.UnsetValue;
             }
 
             var underlyingType = Nullable.GetUnderlyingType(targetType);
-            if (targetType != typeof(DateTime) && underlyingType != typeof(DateTime))
+            if (value == null)
+            {
+                return underlyingType == typeof(DateTime) ? null : DependencyProperty.UnsetValue;
+            }
+
+            if (value is DateTime)
+            {
+                return value;
+            }
+
+            var input = value as string;
+            if (input == null)
             {
                 return DependencyProperty.UnsetValue;
             }
@@ -85,10 +107,19 @@ namespace PropertyTools.Wpf
             var formatString = GetFormatString(parameter);
             if (string.IsNullOrWhiteSpace(formatString))
             {
-                return DateTime.Parse(input, culture);
+                return DateTime.TryParse(input, culture, DateTimeStyles.None, out var parsedValue)
+                    ? parsedValue
+                    : DependencyProperty.UnsetValue;
             }
 
-            return DateTime.ParseExact(input, formatString, culture, DateTimeStyles.None);
+            if (DateTime.TryParseExact(input, formatString, culture, DateTimeStyles.None, out var exactValue))
+            {
+                return exactValue;
+            }
+
+            return DateTime.TryParse(input, culture, DateTimeStyles.None, out var fallbackValue)
+                ? fallbackValue
+                : DependencyProperty.UnsetValue;
         }
 
         /// <summary>
@@ -111,6 +142,21 @@ namespace PropertyTools.Wpf
             }
 
             return formatString;
+        }
+
+        /// <summary>
+        /// Determines whether the target type is <see cref="DateTime"/> or <see cref="Nullable{DateTime}"/>.
+        /// </summary>
+        /// <param name="targetType">The target type.</param>
+        /// <returns><c>true</c> if the target type represents a DateTime value; otherwise, <c>false</c>.</returns>
+        private static bool IsDateTimeType(Type targetType)
+        {
+            if (targetType == null)
+            {
+                return false;
+            }
+
+            return targetType == typeof(DateTime) || Nullable.GetUnderlyingType(targetType) == typeof(DateTime);
         }
     }
 }

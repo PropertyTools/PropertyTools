@@ -20,6 +20,7 @@ namespace ExampleLibrary
         private DateTime dateTime1;
         private DateTime dateTime2;
         private DateTime date;
+        private DateTime date2;
         private DateTime time;
 
         [Category("Double")]
@@ -51,6 +52,9 @@ namespace ExampleLibrary
         [FormatString("yyyy-MM-dd")]
         public DateTime Date { get => this.date; set { this.date = value; this.RaisePropertyChanged(nameof(Date)); } }
 
+        [FormatString("dd/MM/yyyy")]
+        public DateTime Date2 { get => this.date2; set { this.date2 = value; this.RaisePropertyChanged(nameof(Date2)); } }
+
         [FormatString("hh:MM")]
         public DateTime Time { get => this.time; set { this.time = value; this.RaisePropertyChanged(nameof(Time)); } }
 
@@ -61,7 +65,7 @@ namespace ExampleLibrary
 
             this.TimeSpan1 = new TimeSpan(0, 12, 39, 0);
             this.TimeSpan2 = new TimeSpan(0, 0, 12, 39);
-            this.Date = this.Time = this.DateTime1 = this.DateTime2 = new DateTime(2012, 3, 5, 21, 34, 14);
+            this.Date = this.Date2 = this.Time = this.DateTime1 = this.DateTime2 = new DateTime(2012, 3, 5, 21, 34, 14);
         }        
     }
 }

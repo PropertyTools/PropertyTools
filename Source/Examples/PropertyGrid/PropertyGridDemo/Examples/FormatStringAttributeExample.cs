@@ -19,6 +19,8 @@ namespace ExampleLibrary
         private TimeSpan timeSpan2;
         private DateTime dateTime1;
         private DateTime dateTime2;
+        private DateTime dateTime3;
+        private DateTime dateTime4;
         private DateTime date;
         private DateTime date2;
         private DateTime time;
@@ -49,10 +51,20 @@ namespace ExampleLibrary
         [Description("MM/dd/yyyy hh.mm.ss")]
         public DateTime DateTime2 { get => this.dateTime2; set { this.dateTime2 = value; this.RaisePropertyChanged(nameof(DateTime2)); } }
 
+        [FormatString("t")]
+        [Description("t")]
+        public DateTime DateTime3 { get => this.dateTime3; set { this.dateTime3 = value; this.RaisePropertyChanged(nameof(DateTime3)); } }
+
+        [FormatString("tt")]
+        [Description("tt")]
+        public DateTime DateTime4 { get => this.dateTime4; set { this.dateTime4 = value; this.RaisePropertyChanged(nameof(DateTime4)); } }
+
         [FormatString("yyyy-MM-dd")]
+        [Description("yyyy-MM-dd")]
         public DateTime Date { get => this.date; set { this.date = value; this.RaisePropertyChanged(nameof(Date)); } }
 
         [FormatString("dd/MM/yyyy")]
+        [Description("dd/MM/yyyy")]
         public DateTime Date2 { get => this.date2; set { this.date2 = value; this.RaisePropertyChanged(nameof(Date2)); } }
 
         [FormatString("hh:mm")]
@@ -65,7 +77,7 @@ namespace ExampleLibrary
 
             this.TimeSpan1 = new TimeSpan(0, 12, 39, 0);
             this.TimeSpan2 = new TimeSpan(0, 0, 12, 39);
-            this.Date = this.Date2 = this.Time = this.DateTime1 = this.DateTime2 = new DateTime(2012, 3, 5, 21, 34, 14);
-        }        
+            this.Date = this.Date2 = this.Time = this.DateTime1 = this.DateTime2 = this.DateTime3 = this.DateTime4 = new DateTime(2012, 3, 5, 21, 34, 14);
+        }
     }
 }

@@ -101,7 +101,7 @@ namespace PropertyTools.Wpf
             var formatString = parameter as string;
             if (string.IsNullOrWhiteSpace(formatString))
             {
-                return formatString;
+                return null;
             }
 
             const string Prefix = "{0:";

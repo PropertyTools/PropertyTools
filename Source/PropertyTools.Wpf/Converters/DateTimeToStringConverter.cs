@@ -65,30 +65,40 @@ namespace PropertyTools.Wpf
         /// <param name="targetType">The type to convert to.</param>
         /// <param name="parameter">The converter parameter to use.</param>
         /// <param name="culture">The culture to use in the converter.</param>
-        /// <returns>
-        /// A converted value. If the method returns <c>null</c>, the valid <c>null</c> value is used.
-        /// </returns>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (!IsDateTimeType(targetType))
+            var underlyingType = Nullable.GetUnderlyingType(targetType);
+            if (targetType != typeof(DateTime) && underlyingType != typeof(DateTime))
             {
                 return DependencyProperty.UnsetValue;
             }
 
-            var underlyingType = Nullable.GetUnderlyingType(targetType);
             if (value == null)
             {
                 return underlyingType == typeof(DateTime) ? null : DependencyProperty.UnsetValue;
             }
 
-            if (value is DateTime)
+            var input = value as string;
+            if (input != null)
+            {
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    return underlyingType == typeof(DateTime) ? null : DependencyProperty.UnsetValue;
+                }
+
+                var formatString = GetFormatString(parameter);
+                if (string.IsNullOrWhiteSpace(formatString))
+                {
+                    return DateTime.Parse(input, culture);
+                }
+
+                return DateTime.ParseExact(input, formatString, culture, DateTimeStyles.None);
+            }
+
+            if (value is DateTime || value is DateTime?)
             {
                 return value;
             }
 
-            var input = value as string;
-            if (input == null)
-            {
+            return DependencyProperty.UnsetValue;
                 return DependencyProperty.UnsetValue;
             }
 

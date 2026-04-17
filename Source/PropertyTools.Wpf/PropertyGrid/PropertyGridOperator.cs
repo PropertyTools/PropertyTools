@@ -515,6 +515,15 @@ namespace PropertyTools.Wpf
                 pi.Converter = new TimeSpanToStringConverter();
                 pi.ConverterParameter = pi.FormatString;
             }
+
+            var underlyingType = Nullable.GetUnderlyingType(pi.Descriptor.PropertyType);
+            if ((pi.Descriptor.PropertyType == typeof(DateTime) || underlyingType == typeof(DateTime))
+                && pi.Converter == null
+                && !string.IsNullOrWhiteSpace(pi.FormatString))
+            {
+                pi.Converter = new DateTimeToStringConverter();
+                pi.ConverterParameter = pi.FormatString;
+            }
         }
 
         /// <summary>

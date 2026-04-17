@@ -55,7 +55,7 @@ namespace ExampleLibrary
         [FormatString("dd/MM/yyyy")]
         public DateTime Date2 { get => this.date2; set { this.date2 = value; this.RaisePropertyChanged(nameof(Date2)); } }
 
-        [FormatString("hh:MM")]
+        [FormatString("hh:mm")]
         public DateTime Time { get => this.time; set { this.time = value; this.RaisePropertyChanged(nameof(Time)); } }
 
         public FormatStringAttributeExample()

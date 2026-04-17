@@ -55,14 +55,7 @@ namespace PropertyTools.Wpf
                 return dateTime.ToString(culture);
             }
 
-            try
-            {
-                return dateTime.ToString(formatString, culture);
-            }
-            catch (FormatException)
-            {
-                return dateTime.ToString(culture);
-            }
+            return dateTime.ToString(formatString, culture);
         }
 
         /// <summary>

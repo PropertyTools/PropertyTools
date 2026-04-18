@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- PropertyGrid: Added CategoryAttribute .TabSortIndex and .GroupSortIndex properties including CategoryAttributeOrderedExample that demonstates expicit ordering of tabs & groups  #494
 - GitHub Copilot: Added path-specific custom instructions for tests, examples, WPF controls, and core library to provide contextual guidance based on file types #475
 - DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #468
 - TreeListBoxDemo: Restructured to support multiple examples with a launcher window, added MultipleRootsExample demonstrating the fix for issue #282 #282
@@ -17,6 +18,10 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Added `ClipboardSeparator` dependency property that controls the separator used by `Ctrl+Alt+C` (copy with headers). Defaults to the current culture's list separator (`CultureInfo.CurrentCulture.TextInfo.ListSeparator`). Can be set per-instance in XAML or overridden in a subclass #481
 
 ### Fixed
+- PropertyGrid: Fixed DateTime input parsing to honor `FormatString` (for example `dd/MM/yyyy`) and expanded the PropertyGridDemo example with format descriptions and `t`/`tt` DateTime format examples #58
+- PropertyGrid/DataGrid: Fixed ListItemItemsSourceProperty not saving changes - collections with empty PropertyName now correctly use index-based binding path and collection as binding source for two-way data updates #295
+- DataGrid: Fixed all cells being rebuilt when a single item is replaced in an ObservableCollection - Replace actions now only update the affected cell(s) #295
+- PropertyGrid: Fixed FontFamilySelector does not restore actual property value #492
 - PropertyDialog: Fixed Closing event not being raised by calling base.OnClosing(e) #484
 - PropertyDialog: Fixed `CommitChanges` not setting new value when original value is `null` #486
 - PropertyGrid: Fixed FillTab control not stretching to fill available space when HeaderPlacement is Above, including when the model implements IDataErrorInfo or INotifyDataErrorInfo #488

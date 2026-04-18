@@ -3677,6 +3677,32 @@ namespace PropertyTools.Wpf
                 return;
             }
 
+            if (e.Action == NotifyCollectionChangedAction.Replace && e.NewStartingIndex >= 0)
+            {
+                // For Replace actions (e.g. list[i] = newValue), only update the affected cell(s)
+                // instead of rebuilding the entire grid content.
+                this.Dispatcher.Invoke(
+                    new Action(() =>
+                    {
+                        for (int i = 0; i < e.NewItems.Count; i++)
+                        {
+                            var index = e.NewStartingIndex + i;
+
+                            // Update all columns/rows for this item
+                            var count = this.ItemsInRows ? this.Columns : this.Rows;
+                            for (int j = 0; j < count; j++)
+                            {
+                                var cellRef = this.ItemsInRows
+                                    ? new CellRef(index, j)
+                                    : new CellRef(j, index);
+                                this.UpdateCellContent(cellRef);
+                            }
+                        }
+                    }));
+
+                return;
+            }
+
             this.Dispatcher.Invoke(this.UpdateGridContent);
         }
 

@@ -165,7 +165,6 @@ namespace PropertyTools.Wpf
 				this.PropertyControl.DataContext = MemberwiseClone(this.DataContext);
 			}
 
-
 			if (PropertyControl.DataContext is INotifyDataErrorInfo nde)
 			{
 				nde.ErrorsChanged -= DataErrorsChanged;
@@ -217,7 +216,7 @@ namespace PropertyTools.Wpf
 		/// <summary>
 		/// Ends the edit.
 		/// </summary>
-		protected void EndEdit()
+		private void EndEdit()
 		{
 			var editableDataContext = this.DataContext as IEditableObject;
 
@@ -251,17 +250,6 @@ namespace PropertyTools.Wpf
 		}
 
 		/// <summary>
-		/// Flag determines whether or not dialog was closed already.<para/>
-		/// Suffix (scope) indicates that flag value must be checked only in 
-		/// <see cref="OkButtonClick(object, RoutedEventArgs)"/> and <see cref="CloseButtonClick(object, RoutedEventArgs)"/>. <para/>
-		/// Helps to prevent raising the <see cref="System.Windows.Window.Closed"/> event twice.
-		/// </summary>
-		/// <remarks>
-		/// Flag must be set in <see cref="OnClosed(EventArgs)"/> only
-		/// </remarks>
-		private bool isClosedAlready;
-
-		/// <summary>
 		/// Handles the Click event of the Ok button.
 		/// </summary>        
 		/// <param name="sender">The sender.</param>        
@@ -271,15 +259,8 @@ namespace PropertyTools.Wpf
 		/// </remarks>
 		private void OkButtonClick(object sender, RoutedEventArgs e)
 		{
-			this.isClosedAlready = false; // reset flag
-
-			this.DialogResult = true;  // also will call Close() method when DialogResult != true
-
-			if (this.DialogResult == true  // check if Closing event was not cancelled.
-				&& !this.isClosedAlready) // prevent raising Close event twice
-			{
-				this.Close();
-			}
+			this.DialogResult = true;  // also will call Close()
+									   // Window.Close operation may be interrupted in OnClosing event handler
 		}
 
 		/// <summary>
@@ -298,10 +279,16 @@ namespace PropertyTools.Wpf
 		/// <param name="e">The event arguments.</param>
 		protected override void OnClosing(CancelEventArgs e)
 		{
-			base.OnClosing(e);
+			var pdcEventArgs = new PropertyDialogCancelEventArgs(
+				editingContext: this.PropertyControl.DataContext, 
+				dialogResult: this.DialogResult
+			);
+			base.OnClosing(pdcEventArgs);
+			e.Cancel = pdcEventArgs.Cancel;
 
 			if (!e.Cancel)
 			{
+				// diaglog will be closed -> finish editing before .Closed event is raised
 				if (this.DialogResult == true)
 				{
 					this.EndEdit();
@@ -316,14 +303,6 @@ namespace PropertyTools.Wpf
 					nde.ErrorsChanged -= DataErrorsChanged;
 				}
 			}
-		}
-
-		/// <inheritdoc/>
-		protected override void OnClosed(EventArgs e)
-		{
-			base.OnClosed(e);
-
-			this.isClosedAlready = true;
 		}
 
 		/// <summary>

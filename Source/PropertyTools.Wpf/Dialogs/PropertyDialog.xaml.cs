@@ -251,8 +251,8 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// Handles the Click event of the Ok button.
-        /// </summary>        
-        /// <param name="sender">The sender.</param>        
+        /// </summary>
+        /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
         /// <remarks>
         /// The <see cref="EndEdit"/> call has been moved into <see cref="OnClosing(CancelEventArgs)"/> method

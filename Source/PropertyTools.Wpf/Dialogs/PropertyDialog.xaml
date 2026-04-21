@@ -15,7 +15,8 @@
   <DockPanel>
     <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
       <Button Name="OkButton" IsDefault="True" Click="OkButtonClick" Content="OK" />
-      <Button Name="CancelButton" IsCancel="True" Click="CancelButtonClick" Content="Cancel" />
+	  <!-- Click="CancelButtonClick" is not needed when IsCancel="True"  -->
+      <Button Name="CancelButton" IsCancel="True" Content="Cancel" />
       <Button Name="ApplyButton" Click="ApplyButtonClick" Content="Apply" />
       <Button Name="CloseButton" Click="CloseButtonClick" Content="Close" />
       <Button Name="HelpButton" Click="HelpButtonClick" Content="Help" />

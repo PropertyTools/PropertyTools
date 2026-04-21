@@ -20,7 +20,12 @@
             <MenuItem Header="Help">
                 <MenuItem Header="About..." Click="About_Click"/>
             </MenuItem>
-        </Menu>
+
+			<MenuItem Header="Examples">
+				<MenuItem Header="OnClosing Event 1..." Click="OnClosingEventExample1_Click"/>
+			</MenuItem>
+
+		</Menu>
         <pt:PropertyGrid SelectedObject="{Binding}" Margin="4"/>
     </DockPanel>
 </Window>

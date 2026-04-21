@@ -79,9 +79,35 @@ namespace DialogDemos
 
             dlg.ShowDialog();
         }
-    }
 
-    public enum StartupAction
+		private void OnClosingEventExample1_Click(object sender, RoutedEventArgs e)
+		{
+			var model = new OnClosingEventExample1ViewModel();
+			var dlg = new PropertyDialog
+			{
+				Owner = this,
+				DataContext = model,
+				Title = "OnClosing Event Example 1"
+			};
+
+			int closingAttempt = 0;
+
+			dlg.Closing += (s, e) =>
+			{
+				closingAttempt++;
+				e.Cancel = closingAttempt == 2;
+			};
+
+			dlg.Closed += (s, e) =>
+			{
+				MessageBox.Show("Dialog was closed. Total attempts= " + closingAttempt);
+			};
+
+			dlg.ShowDialog();
+		}
+	}
+
+	public enum StartupAction
     {
         NewProject,
         OpenProject,

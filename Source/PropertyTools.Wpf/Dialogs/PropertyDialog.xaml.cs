@@ -232,26 +232,6 @@ namespace PropertyTools.Wpf
 		}
 
 		/// <summary>
-		/// Handles the Click event of the Cancel button.
-		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="e">The e.</param>
-		/// <remarks>
-		/// The <see cref="EndEdit"/> call has been moved into <see cref="OnClosing(CancelEventArgs)"/> method
-		/// </remarks>
-		private void CancelButtonClick(object sender, RoutedEventArgs e)
-		{
-			this.isClosedAlready_ButtonClickScope = false; // reset flag
-
-			this.DialogResult = false; // also will call Close() method when DialogResult != false
-
-			if (!this.isClosedAlready_ButtonClickScope) // prevent raising Close event twice
-			{
-				this.Close();
-			}
-		}
-
-		/// <summary>
 		/// Handles the Click event of the Close button.
 		/// </summary>
 		/// <param name="sender">The sender.</param>
@@ -279,7 +259,7 @@ namespace PropertyTools.Wpf
 		/// <remarks>
 		/// Flag must be set in <see cref="OnClosed(EventArgs)"/> only
 		/// </remarks>
-		private bool isClosedAlready_ButtonClickScope;
+		private bool isClosedAlready;
 
 		/// <summary>
 		/// Handles the Click event of the Ok button.
@@ -291,12 +271,12 @@ namespace PropertyTools.Wpf
 		/// </remarks>
 		private void OkButtonClick(object sender, RoutedEventArgs e)
 		{
-			this.isClosedAlready_ButtonClickScope = false; // reset flag
+			this.isClosedAlready = false; // reset flag
 
 			this.DialogResult = true;  // also will call Close() method when DialogResult != true
 
 			if (this.DialogResult == true  // check if Closing event was not cancelled.
-				&& !this.isClosedAlready_ButtonClickScope) // prevent raising Close event twice
+				&& !this.isClosedAlready) // prevent raising Close event twice
 			{
 				this.Close();
 			}
@@ -343,7 +323,7 @@ namespace PropertyTools.Wpf
 		{
 			base.OnClosed(e);
 
-			this.isClosedAlready_ButtonClickScope = true;
+			this.isClosedAlready = true;
 		}
 
 		/// <summary>

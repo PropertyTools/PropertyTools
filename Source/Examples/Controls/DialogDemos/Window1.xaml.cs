@@ -80,8 +80,6 @@ namespace DialogDemos
             dlg.ShowDialog();
         }
 
-		#region ClosingEvent Examples
-
 		private void ClosingEventExample1_Click(object sender, RoutedEventArgs e)
 		{
 			var model = new ClosingEventExampleViewModels();
@@ -174,8 +172,6 @@ namespace DialogDemos
 
 			dlg.ShowDialog();
 		}
-
-		#endregion
 	}
 
 	public enum StartupAction

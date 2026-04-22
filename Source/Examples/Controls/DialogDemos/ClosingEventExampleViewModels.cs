@@ -1,17 +1,17 @@
-﻿using System.ComponentModel;
-
-namespace DialogDemos
+﻿namespace DialogDemos
 {
-	/// <remarks>
-	/// Properties are not needed for OnClosingEvent example #1
-	/// </remarks>
-	public class ClosingEventExampleViewModels : PropertyTools.Observable
+    using System.ComponentModel;
+
+    /// <remarks>
+    /// Properties are not needed for OnClosingEvent example #1
+    /// </remarks>
+    public class ClosingEventExampleViewModels : PropertyTools.Observable
 	{ 
 	}
 
 	public class ClosingEventExample2ViewModel : PropertyTools.Observable
 	{
-		private bool _cancelOnClosingFlag;
+		private bool cancelOnClosingFlag;
 
 		[Category("Flags|General")]
 		[DisplayName("Cancel On Closing")]
@@ -19,11 +19,11 @@ namespace DialogDemos
 		{
 			get
 			{
-				return _cancelOnClosingFlag;
+				return this.cancelOnClosingFlag;
 			}
 			set
 			{
-				base.SetValue(ref _cancelOnClosingFlag, value);
+				base.SetValue(ref this.cancelOnClosingFlag, value);
 			}
 		}
 	}
@@ -31,7 +31,7 @@ namespace DialogDemos
 
 	public class ClosingEventExample3ViewModel : PropertyTools.Observable, IEditableObject
 	{
-		private string _username;
+		private string username;
 
 		[Category("General|Credentials")]
 		[DisplayName("Username")]
@@ -39,42 +39,38 @@ namespace DialogDemos
 		{
 			get
 			{
-				return _username;
+				return this.username;
 			}
 			set
 			{
-				base.SetValue(ref _username, value);
+				base.SetValue(ref this.username, value);
 			}
 		}
 
-		#region IEditableObject
-
-		private ClosingEventExample3ViewModel _backup;
-		private bool _isEditing;
+		private ClosingEventExample3ViewModel backup;
+		private bool isEditing;
 
 		public void BeginEdit()
 		{
-			if (_isEditing) return;
-			_isEditing = true;
+			if (this.isEditing) return;
+			this.isEditing = true;
 			// Simple snapshot: copy current values
-			_backup = new ClosingEventExample3ViewModel { Username = this.Username };
+			this.backup = new ClosingEventExample3ViewModel { Username = this.Username };
 		}
 
 		public void EndEdit()
 		{
-			if (!_isEditing) return;
-			_isEditing = false;
-			_backup = null; // Discard backup
+			if (!isEditing) return;
+			this.isEditing = false;
+			this.backup = null; // Discard backup
 		}
 
 		public void CancelEdit()
 		{
-			if (!_isEditing) return;
-			_isEditing = false;
+			if (!isEditing) return;
+			this.isEditing = false;
 			// Restore from backup
-			this.Username = _backup.Username;
+			this.Username = this.backup.Username;
 		}
-
-		#endregion
 	}
 }

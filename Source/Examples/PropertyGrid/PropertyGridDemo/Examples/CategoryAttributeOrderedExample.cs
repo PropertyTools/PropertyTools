@@ -29,8 +29,6 @@ namespace ExampleLibrary
 		private int numberX = 10;
 		private int numberL = 50;
 
-		#region Hundreds / D
-
 		[ReadOnly(true)]
 		[PropertyTools.DataAnnotations.Category("Hundreds (Roman)|Category D", tabSortIndex: 1, groupSortIndex: 1)]		
 		public int NumberD { get => this.numberD; set { this.numberD = value; this.RaisePropertyChanged(nameof(NumberD)); } }
@@ -46,10 +44,6 @@ namespace ExampleLibrary
 		[ReadOnly(true)]
 		[PropertyTools.DataAnnotations.Category("Hundreds (Roman)|Category D", tabSortIndex: 1, groupSortIndex: 1)]		
 		public int NumberDCCC { get => this.numberDCCC; set { this.numberDCCC = value; this.RaisePropertyChanged(nameof(NumberDCCC)); } }
-
-		#endregion
-
-		#region Hundreds / C
 
 		[ReadOnly(true)]
 		[PropertyTools.DataAnnotations.Category("Hundreds (Roman)|Category C", tabSortIndex: 1)]		
@@ -71,23 +65,12 @@ namespace ExampleLibrary
 		[PropertyTools.DataAnnotations.Category("Hundreds (Roman)|Category C", tabSortIndex: 1)]
 		public int NumberCM { get => this.numberCM; set { this.numberCM = value; this.RaisePropertyChanged(nameof(NumberCM)); } }
 
-		#endregion
-
-
-		#region Tens / L
-
 		[ReadOnly(true)]
 		[PropertyTools.DataAnnotations.Category("Tens (Roman)|Category L", 0, 1)]
 		public int NumberL { get => this.numberL; set { this.numberL = value; this.RaisePropertyChanged(nameof(NumberL)); } }
 
-		#endregion
-
-		#region Tens / X
-
 		[ReadOnly(true)]
 		[PropertyTools.DataAnnotations.Category("Tens (Roman)|Category X", 0, 0)]
 		public int NumberX { get => this.numberX; set { this.numberX = value; this.RaisePropertyChanged(nameof(NumberX)); } }
-
-		#endregion
 	}
 }

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- DataGrid/PropertyGrid: added EnumFilterAttribute for custom filtering
+- DataGrid/PropertyGrid: new SelectorModeAttribute (Single | Multiple)
+- DataGrid: added mode and style to Selector cell type
+- PropertyGrid: new CheckBoxSelector (inherits RadioButtonSelector) for multi select control (uses ISelectorDefinition)
 - PropertyGrid: Added CategoryAttribute .TabSortIndex and .GroupSortIndex properties including CategoryAttributeOrderedExample that demonstates expicit ordering of tabs & groups  #494
 - GitHub Copilot: Added path-specific custom instructions for tests, examples, WPF controls, and core library to provide contextual guidance based on file types #475
 - DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #468
@@ -64,6 +68,7 @@ All notable changes to this project will be documented in this file.
 - TreeListBox: Catching the ArgumentException by message title, fails in non english regions #38 #142
 
 ### Changed
+- PropertyGrid: Added instance parameter to IPropertyGridControlFactory.CreateControl() method
 - Added EnableWindowsTargeting property to all WPF projects to support building on non-Windows platforms #474
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
 - GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424

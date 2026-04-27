@@ -9,6 +9,10 @@
 
 namespace PropertyTools.Wpf
 {
+    using PropertyTools.DataAnnotations;
+    using PropertyTools.Wpf.Common;
+    using PropertyTools.Wpf.Extensions;
+    using PropertyTools.Wpf.Operators;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -16,10 +20,6 @@ namespace PropertyTools.Wpf
     using System.Globalization;
     using System.Linq;
     using System.Windows;
-
-    using PropertyTools.DataAnnotations;
-
-    using PropertyTools.Wpf.Operators;
     using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
     /// <summary>
@@ -404,15 +404,19 @@ namespace PropertyTools.Wpf
         public CellDescriptor CreateCellDescriptor(CellRef cell)
         {
             var pd = this.GetPropertyDefinition(cell);
+            var cellItem = this.GetItem(cell);
             var d = new CellDescriptor
             {
                 PropertyDefinition = pd,
-                Item = this.GetItem(cell),
+                Item = cellItem,
                 Descriptor = this.GetPropertyDescriptor(pd, null, cell),
                 PropertyType = this.GetPropertyType(cell),
                 BindingPath = this.GetBindingPath(cell),
                 BindingSource = this.GetDataContext(cell)
             };
+
+            d.TrySetEnumMetadata(this, this, cellItem);
+
             return d;
         }
 
@@ -839,6 +843,33 @@ namespace PropertyTools.Wpf
 
             index = -1;
             return false;
+        }
+
+        private IEnumValuesFilterOperator customEnumValuesFilterOperator;
+
+        /// <inheritdoc/>        
+        public void UseEnumValuesFilterOperator(IEnumValuesFilterOperator value)
+        {
+            if (value == this)
+            {
+                throw new ArgumentException("Cannot use itself as custom operator");
+            }
+
+            this.customEnumValuesFilterOperator = value;
+        }
+
+        /// <inheritdoc/>
+        public virtual IEnumerable<Enum> GetEnumValues(IPropertyItem pi, object instance, bool browsableOnly = true)
+        {
+            return (customEnumValuesFilterOperator ?? new DefaultEnumValuesFilterOperator())
+                .GetEnumValues(pi, instance, browsableOnly: true);
+        }
+
+        /// <inheritdoc/>
+        public virtual IEnumerable<object> GetEnumValuesWithNullEntry(IPropertyItem pi, object instance, bool nullAtStart, bool browsableOnly = true)
+        {
+            return (customEnumValuesFilterOperator ?? new DefaultEnumValuesFilterOperator())
+                .GetEnumValuesWithNullEntry(pi, instance, nullAtStart, browsableOnly);
         }
     }
 }

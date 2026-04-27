@@ -9,14 +9,20 @@
 
 namespace PropertyTools.Wpf
 {
+    using PropertyTools.DataAnnotations;
+    using PropertyTools.Wpf.Common;
     using System.Collections;
 
     /// <summary>
     /// Defines a cell that contains a selectable property.
     /// </summary>
     /// <seealso cref="PropertyTools.Wpf.CellDefinition" />
-    public class SelectorCellDefinition : CellDefinition
+    public class SelectorCellDefinition : CellDefinition, ISelectorDefinition
     {
+        public SelectorCellDefinition()
+        { 
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is editable.
         /// </summary>
@@ -56,5 +62,25 @@ namespace PropertyTools.Wpf
         /// The display member path.
         /// </value>
         public string DisplayMemberPath { get; set; }
+
+        /// <summary>
+        /// Indicates whether to display or not the display member text (from <see cref="DisplayMemberPath"/>) in cases:<para/> 
+        /// 1) when NULL item selected. <para/>
+        ///     For example, <see cref="System.Windows.Controls.Primitives.Selector.SelectedValue"/> is NULL, 
+        ///     but <see cref="System.Windows.Controls.Primitives.Selector.SelectedItem"/> is NOT null <para/> 
+        /// 2) no item selected <para/>
+        ///     For example, <see cref="System.Windows.Controls.Primitives.Selector.SelectedItem"/> is NULL<para/>         
+        /// </summary>
+        public bool DisplayTextForNullItem { get; set; }
+
+        /// <summary>
+        /// Gets or sets the selector style
+        /// </summary>
+        public SelectorStyle Style { get; set; }
+
+        /// <summary>
+        /// Gets or sets the selector mode
+        /// </summary>
+        public SelectorMode Mode { get; set; }
     }
 }

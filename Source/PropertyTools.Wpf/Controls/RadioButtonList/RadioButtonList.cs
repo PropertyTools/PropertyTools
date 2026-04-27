@@ -10,6 +10,8 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
@@ -19,12 +21,13 @@ namespace PropertyTools.Wpf
     using System.Windows.Data;
 
     using PropertyTools.DataAnnotations;
+    using PropertyTools.Wpf.Common;
 
     /// <summary>
     /// Represents a control that shows a list of radio buttons.
     /// </summary>
     [TemplatePart(Name = PartPanel, Type = typeof(StackPanel))]
-    public class RadioButtonList : Control
+    public class RadioButtonList : RadioButtonSelector
     {
         /// <summary>
         /// Identifies the <see cref="DescriptionConverter"/> dependency property.
@@ -43,69 +46,6 @@ namespace PropertyTools.Wpf
             typeof(Type),
             typeof(RadioButtonList),
             new UIPropertyMetadata(null, ValueChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="ItemMargin"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ItemMarginProperty = DependencyProperty.Register(
-            nameof(ItemMargin),
-            typeof(Thickness),
-            typeof(RadioButtonList),
-            new UIPropertyMetadata(new Thickness(0, 4, 0, 4)));
-
-        /// <summary>
-        /// Identifies the <see cref="ItemPadding"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ItemPaddingProperty = DependencyProperty.Register(
-            nameof(ItemPadding),
-            typeof(Thickness),
-            typeof(RadioButtonList),
-            new UIPropertyMetadata(new Thickness(4, 0, 0, 0)));
-
-        /// <summary>
-        /// Identifies the <see cref="Orientation"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-            nameof(Orientation),
-            typeof(Orientation),
-            typeof(RadioButtonList),
-            new UIPropertyMetadata(Orientation.Vertical));
-
-        /// <summary>
-        /// Identifies the <see cref="Value"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            nameof(Value),
-            typeof(object),
-            typeof(RadioButtonList),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChanged));
-
-        /// <summary>
-        /// The part panel.
-        /// </summary>
-        private const string PartPanel = "PART_Panel";
-
-        /// <summary>
-        /// The panel.
-        /// </summary>
-        private StackPanel panel;
-
-        /// <summary>
-        /// Initializes static members of the <see cref="RadioButtonList" /> class.
-        /// </summary>
-        static RadioButtonList()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(RadioButtonList), new FrameworkPropertyMetadata(typeof(RadioButtonList)));
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RadioButtonList" /> class.
-        /// </summary>
-        public RadioButtonList()
-        {
-            this.DataContextChanged += this.HandleDataContextChanged;
-        }
 
         /// <summary>
         /// Gets or sets the description converter.
@@ -142,111 +82,23 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the item margin.
+        /// Prepopulated Enum property's metadata
         /// </summary>
-        /// <value>The item margin.</value>
-        public Thickness ItemMargin
-        {
-            get
-            {
-                return (Thickness)this.GetValue(ItemMarginProperty);
-            }
-
-            set
-            {
-                this.SetValue(ItemMarginProperty, value);
-            }
-        }
+        /// <remarks>
+        /// Available only when <see cref="EnumType"/> is Enum or Nullable enum
+        /// </remarks>
+        public EnumPropertyMetadata EnumMetadata { get; set; }
 
         /// <summary>
-        /// Gets or sets the item padding.
+        /// 
         /// </summary>
-        /// <value>The item padding.</value>
-        public Thickness ItemPadding
-        {
-            get
-            {
-                return (Thickness)this.GetValue(ItemPaddingProperty);
-            }
-
-            set
-            {
-                this.SetValue(ItemPaddingProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the orientation.
-        /// </summary>
-        /// <value>The orientation.</value>
-        public Orientation Orientation
-        {
-            get
-            {
-                return (Orientation)this.GetValue(OrientationProperty);
-            }
-
-            set
-            {
-                this.SetValue(OrientationProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        /// <value>The value.</value>
-        public object Value
-        {
-            get
-            {
-                return this.GetValue(ValueProperty);
-            }
-
-            set
-            {
-                this.SetValue(ValueProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes call <see
-        /// cref="M:System.Windows.FrameworkElement.ApplyTemplate" /> .
-        /// </summary>
-        public override void OnApplyTemplate()
-        {
-            if (this.panel == null)
-            {
-                this.panel = this.Template.FindName(PartPanel, this) as StackPanel;
-            }
-
-            this.UpdateContent();
-        }
-
-        /// <summary>
-        /// Called when the <see cref="Value" /> has changed or the <see cref="EnumType" /> has changed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event args.</param>
-        private static void ValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            ((RadioButtonList)sender).UpdateContent();
-        }
-
-        /// <summary>
-        /// Handles data context changes.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event args.</param>
-        private void HandleDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            this.UpdateContent();
-        }
+        /// <remarks>May contain NULL when <see cref="EnumType"/> is Nullable enum </remarks>
+        public object[] EnumValues { get; set; }
 
         /// <summary>
         /// Updates the content.
         /// </summary>
-        private void UpdateContent()
+        protected override void UpdateContent()
         {
             if (this.panel == null)
             {
@@ -255,32 +107,45 @@ namespace PropertyTools.Wpf
 
             this.panel.Children.Clear();
 
-            var enumType = this.EnumType;
-            if (enumType != null)
+            Type enumType = null;
+            if (this.EnumMetadata != null)
             {
-                var ult = Nullable.GetUnderlyingType(enumType);
-                if (ult != null)
-                {
-                    enumType = ult;
-                }
-            }
-
-            if (this.Value != null)
-            {
+                enumType = this.EnumMetadata.EnumType;
+        }
+            else if (this.EnumType != null)
+        {
+                enumType = Nullable.GetUnderlyingType(this.EnumType) ?? this.EnumType;                
+        }
+            else if (this.Value != null)
+        {
                 enumType = this.Value.GetType();
-            }
+        }
 
             if (enumType == null || !typeof(Enum).IsAssignableFrom(enumType))
             {
                 return;
             }
 
-            var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute().ToList();
+            if (this.Value != null && this.Value.GetType() != enumType)
+                {
+                throw new ArgumentOutOfRangeException($"Value type '{Value.GetType().FullName}' is different than enum type not '{enumType.FullName}'.");
+            }
+
+            List<object> enumValues;
+            if (this.EnumValues != null)
+            {
+                enumValues = this.EnumValues.ToList();
+            }
+            else
+            {
+                enumValues = Enum.GetValues(enumType).Cast<Enum>().FilterOnBrowsableAttribute()
+                    .Cast<object>().ToList();
 
             // if the type is nullable, add the null value
             if (Nullable.GetUnderlyingType(enumType) != null)
             {
                 enumValues.Add(null);
+            }
             }
 
             var converter = new EnumToBooleanConverter { EnumType = enumType };
@@ -290,15 +155,13 @@ namespace PropertyTools.Wpf
                 object content;
                 if (itemValue != null)
                 {
-                    content = this.DescriptionConverter.Convert(
-                        itemValue,
-                        typeof(string),
-                        null,
-                        CultureInfo.CurrentUICulture);
+                    content = this.EnumMetadata?.EnumDisplayNames?.TryGetValue((Enum)itemValue, out string enumMemberDisplayText) == true
+                            ? enumMemberDisplayText
+                            : this.DescriptionConverter.Convert(itemValue, typeof(string), null, CultureInfo.CurrentUICulture);
                 }
                 else
                 {
-                    content = "-";
+                    content = this.EnumMetadata?.EnumDisplayNull ?? "-";
                 }
 
                 var rb = new RadioButton

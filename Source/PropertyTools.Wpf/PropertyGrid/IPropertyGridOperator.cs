@@ -15,7 +15,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Defines functionality to build the model for a <see cref="PropertyGrid" />.
     /// </summary>
-    public interface IPropertyGridOperator : ILocalizableOperator, ICustomLocalizableOperator
+    public interface IPropertyGridOperator : ILocalizableOperator, ICustomLocalizableOperator, IEnumValuesFilterOperator
     {
         /// <summary>
         /// Creates the model.

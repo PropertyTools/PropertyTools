@@ -16,7 +16,7 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Specifies DataGrid functionality that depends on the type of items source.
     /// </summary>
-    public interface IDataGridOperator : ILocalizableOperator, ICustomLocalizableOperator
+    public interface IDataGridOperator : ILocalizableOperator, ICustomLocalizableOperator, IEnumValuesFilterOperator, ICustomEnumValuesFilterOperator
     {
         /// <summary>
         /// Auto-generates the columns.

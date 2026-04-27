@@ -9,6 +9,9 @@
 
 namespace PropertyTools.Wpf
 {
+    using PropertyTools.Wpf.Common;
+    using PropertyTools.Wpf.Extensions;
+    using PropertyTools.Wpf.Operators;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -83,10 +86,12 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="property">The property item.</param>
         /// <param name="options">The options.</param>
+        /// <param name="instance">The instance.</param>
         /// <returns>
         /// A element.
         /// </returns>
-        public virtual FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options)
+        public virtual FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options,
+            object instance)
         {
             this.UpdateConverter(property);
 
@@ -98,6 +103,11 @@ namespace PropertyTools.Wpf
                 }
             }
 
+            if (property.ItemsSourceDescriptor != null || property.ItemsSource != null)
+            {
+                return this.CreateSelectorControl(property, options, instance);
+            }
+
             if (property.Is(typeof(bool)))
             {
                 return this.CreateBoolControl(property);
@@ -105,7 +115,7 @@ namespace PropertyTools.Wpf
 
             if (property.Is(typeof(Enum)))
             {
-                return this.CreateEnumControl(property, options);
+                return this.CreateEnumControl(property, options, instance);
             }
 
             if (property.Is(typeof(Color)))
@@ -141,11 +151,6 @@ namespace PropertyTools.Wpf
             if (property.Is(typeof(Uri)))
             {
                 return this.CreateLinkControl(property);
-            }
-
-            if (property.ItemsSourceDescriptor != null || property.ItemsSource != null)
-            {
-                return this.CreateComboBoxControl(property);
             }
 
             if (property.Is(typeof(SecureString)))
@@ -438,6 +443,97 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Creates the selector control.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        protected virtual FrameworkElement CreateSelectorControl(PropertyItem property, PropertyControlFactoryOptions options,
+        	 object instance)
+        {
+            var style = property.SelectorStyle;
+            var mode = property.SelectorMode;
+            var isEditable = property.IsEditable;
+
+            if (style == DataAnnotations.SelectorStyle.Auto)
+            {
+                switch (property.SelectorMode)
+                {
+                    case DataAnnotations.SelectorMode.Single:
+                        style = DataAnnotations.SelectorStyle.ComboBox;
+                        break;
+                    default:
+                        style = DataAnnotations.SelectorStyle.ListBox;
+                        break;
+                }
+            }
+
+            if (style == DataAnnotations.SelectorStyle.RadioButtons
+                && property.GetItemsSourceCount(instance) > options.EnumAsRadioButtonsLimit)
+            {
+                style = (mode == DataAnnotations.SelectorMode.Single)
+                    ? DataAnnotations.SelectorStyle.ComboBox
+                    : DataAnnotations.SelectorStyle.ListBox;
+            }
+
+            Control c = null;
+            switch (style)
+            {
+                case DataAnnotations.SelectorStyle.RadioButtons:
+                    {
+                        RadioButtonSelector btnList = mode == DataAnnotations.SelectorMode.Single
+                            ? new RadioButtonSelector()
+                            : new CheckBoxSelector();
+                        c = btnList;
+                        btnList.ConfigureSelectorDefinition(property);
+                        c.SetBinding(RadioButtonSelector.ValueProperty, property.CreateBinding());
+                        break;
+                    }
+
+                case DataAnnotations.SelectorStyle.ComboBox:
+                    {
+                        var comboBox = new ComboBox()
+                        {
+                            IsEditable = property.IsEditable
+                        };
+                        c = comboBox;
+                        new SelectorWrapper(comboBox, instance).ConfigureSelectorDefinition(property);
+                        c.SetBinding(property.IsEditable
+                                ? ComboBox.TextProperty
+                                : Selector.SelectedValueProperty,
+                                property.CreateBinding()
+                            );
+                        break;
+                    }
+
+                case DataAnnotations.SelectorStyle.ListBox:
+                    {
+                        var listBox = new ListBox()
+                        {
+                            SelectionMode = mode == DataAnnotations.SelectorMode.Multiple
+                               ? SelectionMode.Multiple
+                               : (mode == DataAnnotations.SelectorMode.Extended
+                                       ? SelectionMode.Extended
+                                       : SelectionMode.Single
+                                  )
+                        };
+                        c = listBox;
+                        new SelectorWrapper(listBox, instance).ConfigureSelectorDefinition(property);
+                        c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
+                        break;
+                    }
+            }
+
+            if (c != null)
+            {
+                c.VerticalContentAlignment = VerticalAlignment.Center;
+            }
+
+            return c;
+        }
+
+        /// <summary>
         /// Creates the combo box control.
         /// </summary>
         /// <param name="property">The property.</param>
@@ -446,7 +542,13 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateComboBoxControl(PropertyItem property)
         {
-            var c = new ComboBox { IsEditable = property.IsEditable, ItemsSource = property.ItemsSource, VerticalContentAlignment = VerticalAlignment.Center };
+            var c = new ComboBox
+            {
+                IsEditable = property.IsEditable,
+                ItemsSource = property.ItemsSource,
+                VerticalContentAlignment = VerticalAlignment.Center
+            };
+
             if (property.ItemsSourceDescriptor != null)
             {
                 c.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(property.ItemsSourceDescriptor.Name));
@@ -599,22 +701,38 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="enumType">The enumeration type.</param>
         /// <returns>A sequence of values.</returns>
-        protected virtual IEnumerable<object> GetEnumValues(Type enumType)
+        protected virtual IEnumerable<object> GetEnumValues(PropertyItem property, object instance)
         {
-            var ult = Nullable.GetUnderlyingType(enumType);
-            var isNullable = ult != null;
-            if (isNullable)
+            var nullAtStart = false;
+
+            var result = new List<object>();
+
+            // reuse prepolulated EnumMetadata
+            if (property.EnumMetadata != null)
             {
-                enumType = ult;
+                result.AddRange(property.EnumMetadata.EnumDisplayNames.Keys);
+
+                if (property.EnumMetadata.IsNullableEnum)
+                {
+                    if (nullAtStart)
+                    {
+                        result.Insert(0, null);
+                    }
+                    else
+                    {
+                        result.Add(null);
+                    }
+                }
+            }
+            else
+            {
+                result = new DefaultEnumValuesFilterOperator().GetEnumValuesWithNullEntry(property, 
+                	instance: instance, 
+                	nullAtStart: nullAtStart
+                ).ToList();
             }
 
-            var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute().ToList();
-            if (isNullable)
-            {
-                enumValues.Add(null);
-            }
-
-            return enumValues;
+            return result;
         }
 
         /// <summary>
@@ -622,15 +740,17 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="property">The property.</param>
         /// <param name="options">The options.</param>
+        /// <param name="instance">The instance.</param>
         /// <returns>
         /// The control.
         /// </returns>
         protected virtual FrameworkElement CreateEnumControl(
-            PropertyItem property, PropertyControlFactoryOptions options)
+            PropertyItem property, PropertyControlFactoryOptions options, object instance)
         {
             //// var isBitField = property.Descriptor.PropertyType.GetTypeInfo().GetCustomAttributes<FlagsAttribute>().Any();
 
-            var values = this.GetEnumValues(property.Descriptor.PropertyType).ToArray();
+            var values = this.GetEnumValues(property, instance).ToArray();
+
             var style = property.SelectorStyle;
             if (style == DataAnnotations.SelectorStyle.Auto)
             {
@@ -643,21 +763,28 @@ namespace PropertyTools.Wpf
             {
                 case DataAnnotations.SelectorStyle.RadioButtons:
                     {
-                        var c = new RadioButtonList { EnumType = property.Descriptor.PropertyType };
+                        var c = new RadioButtonList 
+                        { 
+                            EnumType = property.Descriptor.PropertyType, 
+                            EnumMetadata = property.EnumMetadata,
+                            EnumValues = values,
+                        };
                         c.SetBinding(RadioButtonList.ValueProperty, property.CreateBinding());
                         return c;
                     }
 
                 case DataAnnotations.SelectorStyle.ComboBox:
                     {
-                        var c = new ComboBox { ItemsSource = values };
+                        var c = new ComboBox();
+                        InitEnumSelector(c, instance, property, values);
                         c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
                         return c;
                     }
 
                 case DataAnnotations.SelectorStyle.ListBox:
                     {
-                        var c = new ListBox { ItemsSource = values };
+                        var c = new ListBox();
+                        InitEnumSelector(c, instance, property, values);
                         c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
                         return c;
                     }
@@ -665,6 +792,18 @@ namespace PropertyTools.Wpf
                 default:
                     return null;
             }
+        }
+
+        /// <summary>
+        /// Configures the selector to display the enum values of enum property
+        /// </summary>
+        /// <param name="c">The selector control</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="enumProperty">The property item</param>
+        /// <param name="enumValues">The enum values to display in selector</param>
+        protected virtual void InitEnumSelector(Selector c, object instance, PropertyItem enumProperty, object[] enumValues)
+        {
+            new SelectorWrapper(c, instance).ConfigureSelectorDefinitionForEnum(enumProperty, enumValues);
         }
 
         /// <summary>

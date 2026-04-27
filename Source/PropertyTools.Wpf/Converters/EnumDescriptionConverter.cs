@@ -16,7 +16,7 @@ namespace PropertyTools.Wpf
     using System.Windows.Data;
 
     /// <summary>
-    /// Converts <see cref="Enum" /> instances to description <see cref="string" /> instances.
+    /// Converts <see cref="Enum" /> instances to non-localizable description <see cref="string" /> instances.
     /// </summary>
     [ValueConversion(typeof(object), typeof(string))]
     public class EnumDescriptionConverter : IValueConverter

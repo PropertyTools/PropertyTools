@@ -10,7 +10,8 @@
 namespace PropertyTools.Wpf
 {
     using PropertyTools.DataAnnotations;
-
+    using PropertyTools.Wpf.Extensions;
+    using PropertyTools.Wpf.Operators;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -85,21 +86,6 @@ namespace PropertyTools.Wpf
                 return new ColorCellDefinition();
             }
 
-            if (d.PropertyType.Is(typeof(Enum)))
-            {
-                var enumType = Nullable.GetUnderlyingType(d.PropertyType) ?? d.PropertyType;
-                var values = Enum.GetValues(enumType).Cast<object>().ToList();
-                if (Nullable.GetUnderlyingType(d.PropertyType) != null)
-                {
-                    values.Insert(0, null);
-                }
-
-                return new SelectorCellDefinition
-                {
-                    ItemsSource = values
-                };
-            }
-
             if (d.PropertyDefinition.ItemsSourceProperty != null || d.PropertyDefinition.ItemsSource != null)
             {
                 return new SelectorCellDefinition
@@ -108,8 +94,22 @@ namespace PropertyTools.Wpf
                     ItemsSourceProperty = d.PropertyDefinition.ItemsSourceProperty,
                     SelectedValuePath = d.PropertyDefinition.SelectedValuePath,
                     DisplayMemberPath = d.PropertyDefinition.DisplayMemberPath,
-                    IsEditable = d.PropertyDefinition.IsEditable
+                    DisplayTextForNullItem = d.PropertyDefinition.DisplayTextForNullItem,
+                    IsEditable = d.PropertyDefinition.IsEditable,
+                    Style = d.PropertyDefinition.SelectorStyle,
+                    Mode = d.PropertyDefinition.SelectorMode,
                 };
+            }
+			else if (d.PropertyType.IsEnumOrNullableEnum())
+            {
+                var enumValues = new DefaultEnumValuesFilterOperator()
+                    .GetEnumValuesWithNullEntry(d, instance: null, nullAtStart: true);
+
+                return new SelectorCellDefinition()
+                {
+                    IsEditable = d.PropertyDefinition.IsEditable,
+                    DisplayTextForNullItem = d.PropertyDefinition.DisplayTextForNullItem,
+                }.ConfigureSelectorDefinitionForEnum(d, enumValues);                
             }
 
             return new TextCellDefinition();

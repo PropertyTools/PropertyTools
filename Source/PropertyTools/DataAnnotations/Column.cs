@@ -7,12 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections;
+
 namespace PropertyTools.DataAnnotations
 {
     /// <summary>
     /// Defines a column for displaying an item collection. Typically used with <see cref="ColumnsPropertyAttribute"/>.
     /// </summary>
-    public class Column
+    public class Column : IColumnSelectorDefinition
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Column" /> class.
@@ -103,15 +105,34 @@ namespace PropertyTools.DataAnnotations
         public string PropertyName { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the items source property.
+        /// Gets or sets the name of the items source property (ColumnsProperty owner instance)
         /// </summary>
-        /// <value>The name of the item source property.</value>
-        public string ItemsSourcePropertyName{ get; set; }
+        /// <value>The name of the item source property (ColumnsProperty owner context).</value>
+        public string ItemsSourcePropertyName { get; set; }
 
         /// <summary>
         /// Gets or sets the width ("Auto", "0.5*" etc. are ok).
         /// </summary>
         /// <value>The width.</value>
         public string Width { get; set; }
+
+        /// <inheritdoc/>
+        public string ItemsSourceProperty_DataGridItem { get; set; }
+
+        /// <inheritdoc/>
+        public IEnumerable ItemsSource { get; set; }
+
+        /// <inheritdoc/>
+        public string DisplayMemberPath { get; set; }
+
+        /// <inheritdoc/>
+        public string SelectedValuePath { get; set; }
+
+        /// <inheritdoc/>
+        public bool DisplayTextForNullItem { get; set; }
+
+        public SelectorStyle SelectorStyle { get; set; }
+
+        public SelectorMode SelectorMode { get; set; }
     }
 }

@@ -32,7 +32,7 @@ namespace PropertyTools.Wpf.Tests
         public void FilterOnBrowsableAttribute()
         {
             Assert.That(Enum.GetValues(typeof(Enum1)).Length, Is.EqualTo(5));
-            Assert.That(Enum.GetValues(typeof(Enum1)).FilterOnBrowsableAttribute().Count(), Is.EqualTo(3));
+            Assert.That(Enum.GetValues(typeof(Enum1)).Cast<Enum>().FilterOnBrowsableAttribute().Count(), Is.EqualTo(3));
         }
     }
 }

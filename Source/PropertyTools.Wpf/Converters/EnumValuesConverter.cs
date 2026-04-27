@@ -11,6 +11,7 @@ namespace PropertyTools.Wpf
 {
     using System;
     using System.Globalization;
+    using System.Linq;
     using System.Windows.Data;
 
     /// <summary>
@@ -31,14 +32,20 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            Type enumType = null;
+
             if (value != null)
             {
-                return Enum.GetValues(value.GetType()).FilterOnBrowsableAttribute();
+                enumType = value.GetType();                
+            }
+            else if (targetType == typeof(Enum))
+            {
+                enumType = targetType;
             }
 
-            if (targetType == typeof(Enum))
+            if (enumType != null)
             {
-                return Enum.GetValues(targetType).FilterOnBrowsableAttribute();
+                return Enum.GetValues(enumType).Cast<Enum>().FilterOnBrowsableAttribute();
             }
 
             return value;

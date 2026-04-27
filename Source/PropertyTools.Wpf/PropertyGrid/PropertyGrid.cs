@@ -1438,7 +1438,7 @@ namespace PropertyTools.Wpf
             propertyPanel.RowDefinitions.Add(rd);
 
             var propertyLabel = this.CreateLabel(pi);
-            var propertyControl = this.CreatePropertyControl(pi);
+            var propertyControl = this.CreatePropertyControl(pi, instance);
             ContentControl errorControl = null;
             PropertyControlFactoryOptions validationOptions = null;
             
@@ -1794,13 +1794,14 @@ namespace PropertyTools.Wpf
         /// Creates the property control.
         /// </summary>
         /// <param name="pi">The property item.</param>
+        /// <param name="instance">The instance.</param>
         /// <returns>
         /// An element.
         /// </returns>
-        private FrameworkElement CreatePropertyControl(PropertyItem pi)
+        private FrameworkElement CreatePropertyControl(PropertyItem pi, object instance)
         {
             var options = new PropertyControlFactoryOptions { EnumAsRadioButtonsLimit = this.EnumAsRadioButtonsLimit };
-            var control = this.ControlFactory.CreateControl(pi, options);
+            var control = this.ControlFactory.CreateControl(pi, options, instance);
             if (control != null)
             {
                 control.SetValue(AutomationProperties.AutomationIdProperty, pi.PropertyName);

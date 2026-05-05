@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnumMembersAttribute.cs" company="PropertyTools">
+// <copyright file="EnumFilterAttribute.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Base class for all PropertyTools custom attributes.
+//   Defines the enum filter attribute
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -50,18 +50,21 @@ namespace PropertyTools.DataAnnotations
         }
 
         /// <summary>
-        /// 
+        /// The filtering mode
         /// </summary>
         public FilteringMode Mode { get; set; }
 
         /// <summary>
-        /// 
+        /// Array of items for enum filtering criteria
         /// </summary>
         /// <remarks>
         /// May be NULL
         /// </remarks>
         public Enum[] Items { get; set; }
 
+        /// <summary>
+        /// The enum filtering mode enumeration
+        /// </summary>
         public enum FilteringMode
         {
             Include,

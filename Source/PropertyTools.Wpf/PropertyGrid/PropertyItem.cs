@@ -607,16 +607,17 @@ namespace PropertyTools.Wpf
                 formatString = "{0:" + formatString + "}";
             }
 
-            var binding = new Binding(this.PropertyName)
-                {
-                    Mode = bindingMode,
-                    Converter = applyConverter ? this.Converter : null,
-                    ConverterParameter = this.ConverterParameter,
-                    StringFormat = formatString,
-                    UpdateSourceTrigger = trigger,
-                    ValidatesOnDataErrors = true,
-                    ValidatesOnExceptions = true
-                };
+            // Use PropertyPath(descriptor) so that WPF invokes GetValue/SetValue on the
+            // descriptor directly, bypassing any ICustomTypeDescriptor override on the
+            // source object (e.g. DbConnectionStringBuilder — issue #288).
+            var binding = new Binding { Path = new PropertyPath(this.Descriptor) };
+            binding.Mode = bindingMode;
+            binding.Converter = applyConverter ? this.Converter : null;
+            binding.ConverterParameter = this.ConverterParameter;
+            binding.StringFormat = formatString;
+            binding.UpdateSourceTrigger = trigger;
+            binding.ValidatesOnDataErrors = true;
+            binding.ValidatesOnExceptions = true;
             if (this.ConverterCulture != null)
             {
                 binding.ConverterCulture = this.ConverterCulture;

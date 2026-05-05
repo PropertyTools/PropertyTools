@@ -14,9 +14,8 @@ namespace TreeListBoxDemo.Examples.NonEnglishCultureExample
     /// Interaction logic for NonEnglishCultureWindow.xaml.
     /// Demonstrates that the TreeListBox "Height must be non-negative" workaround (#38, #142)
     /// works correctly even when the thread UI culture is set to a non-English locale.
-    /// The fix in TreeListBox.InsertItem temporarily switches to InvariantCulture before
-    /// calling Items.Insert so that the ArgumentException message is always in English,
-    /// enabling a reliable message comparison regardless of the system language.
+    /// The fix in TreeListBox.InsertItem uses non-localized exception signals (TargetSite.Name
+    /// and StackTrace) so it works regardless of the system language.
     /// </summary>
     public partial class NonEnglishCultureWindow : Window
     {
@@ -27,15 +26,20 @@ namespace TreeListBoxDemo.Examples.NonEnglishCultureExample
             this.originalUICulture = Thread.CurrentThread.CurrentUICulture;
 
             // Simulate a non-English system by switching the thread UI culture to German.
-            // On a real German Windows installation the runtime resource strings (including
-            // WPF exception messages) would be in German, which broke the old message-based check.
-            // Only CurrentUICulture is changed here because it is the setting that controls
-            // which language the runtime uses for exception messages — CurrentCulture (which
-            // affects date/number formatting) is intentionally left untouched.
+            // The culture is restored in OnClosed (normal path) or via the try/catch below
+            // if construction fails, so the UI thread culture is never left in the wrong state.
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-DE");
 
-            InitializeComponent();
-            DataContext = new MainViewModel();
+            try
+            {
+                InitializeComponent();
+                DataContext = new MainViewModel();
+            }
+            catch
+            {
+                Thread.CurrentThread.CurrentUICulture = this.originalUICulture;
+                throw;
+            }
         }
 
         protected override void OnClosed(System.EventArgs e)

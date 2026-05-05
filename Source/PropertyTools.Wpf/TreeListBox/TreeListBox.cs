@@ -13,9 +13,7 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Globalization;
     using System.Linq;
-    using System.Threading;
     using System.Windows;
     using System.Windows.Automation.Peers;
     using System.Windows.Controls;
@@ -799,38 +797,27 @@ namespace PropertyTools.Wpf
             this.itemLevelMap[item] = this.itemLevelMap[parent] + 1;
             this.isExpandedMap[item] = false;
 
-            // Workaround for #38 and #142: "Height must be non-negative" thrown by WPF virtualization.
-            // We temporarily switch to InvariantCulture so the ArgumentException message is always in
-            // English, allowing a reliable message-based check on non-English systems (#165).
-            var savedUICulture = Thread.CurrentThread.CurrentUICulture;
             try
             {
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
                 this.Items.Insert(index, item);
             }
             catch (ArgumentException e)
             {
-                if (e.Message == "Height must be non-negative.")
-                {
-                    return;
-                }
-
-                // Belt-and-suspenders: also check TargetSite in case the message differs
-                if (e.TargetSite?.Name == "set_Height")
-                {
-                    return;
-                }
-
-                if (e.TargetSite?.Name == "ExtendViewport")
+                // Workaround for #38, #142, and #165: WPF virtualization can throw an
+                // ArgumentException ("Height must be non-negative") during certain layout
+                // operations.  We detect it using non-localized signals so the check works
+                // correctly on non-English systems regardless of the OS language:
+                //   • e.TargetSite?.Name — method name is never localized (primary check).
+                //   • e.StackTrace       — fallback when TargetSite is null in optimized builds.
+                if (e.TargetSite?.Name == "set_Height" ||
+                    e.TargetSite?.Name == "ExtendViewport" ||
+                    e.StackTrace?.Contains("set_Height") == true ||
+                    e.StackTrace?.Contains("ExtendViewport") == true)
                 {
                     return;
                 }
 
                 throw;
-            }
-            finally
-            {
-                Thread.CurrentThread.CurrentUICulture = savedUICulture;
             }
         }
 

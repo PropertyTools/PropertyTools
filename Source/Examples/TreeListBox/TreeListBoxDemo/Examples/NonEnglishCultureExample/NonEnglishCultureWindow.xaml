@@ -22,10 +22,10 @@
             <Bold>Non-English Culture Fix (Issues #38 &amp; #142):</Bold>
             This window sets the thread UI culture to <Bold>de-DE (German)</Bold> before loading the
             TreeListBox, simulating a non-English Windows installation. The fix in
-            <Italic>TreeListBox.InsertItem</Italic> temporarily switches to
-            <Italic>CultureInfo.InvariantCulture</Italic> before calling
-            <Italic>Items.Insert</Italic>, so the "Height must be non-negative" ArgumentException
-            message is always in English regardless of the system language. Expand and collapse
+            <Italic>TreeListBox.InsertItem</Italic> detects the WPF virtualization
+            ArgumentException using non-localized signals (<Italic>TargetSite.Name</Italic> and
+            <Italic>StackTrace</Italic>) instead of comparing the localized exception message,
+            so it works correctly regardless of the system language. Expand and collapse
             nodes freely — there should be no unhandled exceptions.
         </TextBlock>
 

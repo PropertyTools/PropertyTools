@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGrid: Added CategoryAttribute .TabSortIndex and .GroupSortIndex properties including CategoryAttributeOrderedExample that demonstates expicit ordering of tabs & groups  #494
 - GitHub Copilot: Added path-specific custom instructions for tests, examples, WPF controls, and core library to provide contextual guidance based on file types #475
 - DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #468
+- TreeListBoxDemo: Added DragDropExample demonstrating drag-and-drop between and within folders, and that only the item under the cursor is highlighted as a drop target (fix for stale IsDropTarget state)
 - TreeListBoxDemo: Restructured to support multiple examples with a launcher window, added MultipleRootsExample demonstrating the fix for issue #282 #282
 - TreeListBoxDemo: Added TabControlExample demonstrating the fix for issue #312 - TreeListBox crash when used in TabControl #312
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392

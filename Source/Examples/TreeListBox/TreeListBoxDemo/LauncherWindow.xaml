@@ -62,6 +62,13 @@
                                TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
                 </StackPanel>
             </ListBoxItem>
+            <ListBoxItem Tag="CutPasteExpanded">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Cut/Paste + IsExpanded Example (Issue #292)" FontWeight="Bold" FontSize="14"/>
+                    <TextBlock Text="Reproduces TreeListBox cut/paste behavior when IsExpanded is data-bound and copied nodes keep IsExpanded=true." 
+                               TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
+                </StackPanel>
+            </ListBoxItem>
         </ListBox>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" 

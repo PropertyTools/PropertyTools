@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Added `ClipboardSeparator` dependency property that controls the separator used by `Ctrl+Alt+C` (copy with headers). Defaults to the current culture's list separator (`CultureInfo.CurrentCulture.TextInfo.ListSeparator`). Can be set per-instance in XAML or overridden in a subclass #481
 
 ### Fixed
+- TreeListBox: Fixed drop target items remaining highlighted after drag-drop completes — clear `IsDropTarget` on the previous target at the start of `DecideDropTarget` #496
 - PropertyGrid: Fixed DateTime input parsing to honor `FormatString` (for example `dd/MM/yyyy`) and expanded the PropertyGridDemo example with format descriptions and `t`/`tt` DateTime format examples #58
 - PropertyGrid/DataGrid: Fixed ListItemItemsSourceProperty not saving changes - collections with empty PropertyName now correctly use index-based binding path and collection as binding source for two-way data updates #295
 - DataGrid: Fixed all cells being rebuilt when a single item is replaced in an ObservableCollection - Replace actions now only update the affected cell(s) #295

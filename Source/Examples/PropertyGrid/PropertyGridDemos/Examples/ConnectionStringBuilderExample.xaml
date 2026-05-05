@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         xmlns:d="clr-namespace:PropertyGridDemos"
-        Title="ConnectionStringBuilder PropertyGrid bug reproduction (issue #499)" Height="600" Width="900">
+        Title="ConnectionStringBuilder PropertyGrid (issue #288)" Height="600" Width="900">
     <Window.DataContext>
         <d:ConnectionStringBuilderExampleViewModel/>
     </Window.DataContext>
@@ -14,8 +14,9 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" TextWrapping="Wrap" Margin="0,0,0,10">
-            Reproduces issue #499: PropertyGrid breaks when bound to a class derived from DbConnectionStringBuilder.
-            Observed bugs: bool properties show indeterminate (null) checkbox state, enum properties show no selection, byte[] property causes a StringFormat exception.
+            Demonstrates issue #288 (fixed): PropertyGrid now works correctly when bound to a class
+            derived from DbConnectionStringBuilder. Previously: bool properties showed indeterminate
+            checkboxes, enum properties showed no selection, and byte[] caused a StringFormat exception.
         </TextBlock>
 
         <p:PropertyGrid Grid.Row="1" SelectedObject="{Binding Builder}"/>

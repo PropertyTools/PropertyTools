@@ -3,7 +3,7 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Reproduces issue #499: PropertyGrid breaks when bound to a class derived from DbConnectionStringBuilder.
+//   Reproduces issue #288: PropertyGrid breaks when bound to a class derived from DbConnectionStringBuilder.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ namespace PropertyGridDemos
     /// <summary>
     /// Interaction logic for ConnectionStringBuilderExample.
     /// Demonstrates the broken PropertyGrid behaviour when binding to a <see cref="DbConnectionStringBuilder"/>
-    /// subclass (issue #499, originally reported against FirebirdSql.Data.FirebirdClient.FbConnectionStringBuilder).
+    /// subclass (issue #288, originally reported against FirebirdSql.Data.FirebirdClient.FbConnectionStringBuilder).
     /// </summary>
     public partial class ConnectionStringBuilderExample
     {
@@ -47,7 +47,7 @@ namespace PropertyGridDemos
     }
 
     /// <summary>
-    /// A minimal connection-string builder that reproduces the PropertyGrid bugs reported in issue #499.
+    /// A minimal connection-string builder that reproduces the PropertyGrid bugs reported in issue #288.
     /// It mirrors the structure of <c>FirebirdSql.Data.FirebirdClient.FbConnectionStringBuilder</c>:
     /// the class inherits from <see cref="DbConnectionStringBuilder"/> (which implements
     /// <see cref="ICustomTypeDescriptor"/>) and exposes typed properties whose values are stored

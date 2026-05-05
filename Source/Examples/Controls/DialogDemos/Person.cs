@@ -4,30 +4,29 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.ComponentModel;
-
 namespace DialogDemos
 {
+    using System.ComponentModel;
 
     public class Person : Observable
     {
-        private string _firstName;
+        private string firstName;
         public string FirstName
         {
-            get { return _firstName; }
-            set { _firstName = value; OnPropertyChanged(nameof(FirstName)); }
+            get { return this.firstName; }
+            set { this.firstName = value; OnPropertyChanged(nameof(FirstName)); }
         }
 
-        private string _lastName;
+        private string lastName;
         public string LastName
         {
-            get { return _lastName; }
-            set { _lastName = value; OnPropertyChanged(nameof(LastName)); }
+            get { return this.lastName; }
+            set { this.lastName = value; OnPropertyChanged(nameof(LastName)); }
         }
 
         public override string ToString()
         {
-            return FirstName + " " + LastName;
+            return this.FirstName + " " + this.LastName;
         }
     }
 
@@ -37,7 +36,7 @@ namespace DialogDemos
         {
             if (PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 

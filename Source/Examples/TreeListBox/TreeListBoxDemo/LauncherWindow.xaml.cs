@@ -63,6 +63,9 @@ namespace TreeListBoxDemo
                     case "CutPasteExpanded":
                         exampleWindow = new Examples.CutPasteExample.CutPasteWindow();
                         break;
+                    case "DragDrop":
+                        exampleWindow = new Examples.DragDropExample.DragDropWindow();
+                        break;
                 }
 
                 if (exampleWindow != null)

@@ -29,8 +29,10 @@ namespace TreeListBoxDemo.Examples.NonEnglishCultureExample
             // Simulate a non-English system by switching the thread UI culture to German.
             // On a real German Windows installation the runtime resource strings (including
             // WPF exception messages) would be in German, which broke the old message-based check.
+            // Only CurrentUICulture is changed here because it is the setting that controls
+            // which language the runtime uses for exception messages — CurrentCulture (which
+            // affects date/number formatting) is intentionally left untouched.
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-DE");
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
 
             InitializeComponent();
             DataContext = new MainViewModel();

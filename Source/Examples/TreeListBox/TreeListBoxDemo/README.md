@@ -39,7 +39,7 @@ New example showcasing the TreeListBox with multiple root items. This demonstrat
 Focused repro for issue #292. This example demonstrates:
 
 - Data-bound expansion state via `IsExpandedPath="IsExpanded"`
-- A cut/paste flow that clones nodes and preserves `IsExpanded`
+- A cut/paste flow that pastes under the selected node and preserves `IsExpanded`
 - A repeatable validation path for the upcoming TreeListBox fix
 
 ## Keyboard Shortcuts

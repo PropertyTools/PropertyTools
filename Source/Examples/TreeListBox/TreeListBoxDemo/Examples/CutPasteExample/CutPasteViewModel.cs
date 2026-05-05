@@ -75,15 +75,26 @@ namespace TreeListBoxDemo.Examples.CutPasteExample
             node.Parent.Children.Remove(node);
         }
 
-        public CutPasteNode PasteAsRoot()
+        public CutPasteNode Paste(CutPasteNode targetParent)
         {
             if (this.clipboardNode == null)
             {
                 return null;
             }
 
-            var pasted = this.Clone(this.clipboardNode, null, true);
-            this.RootNodes.Add(pasted);
+            CutPasteNode pasted;
+            if (targetParent == null)
+            {
+                pasted = this.Clone(this.clipboardNode, null, true);
+                this.RootNodes.Add(pasted);
+            }
+            else
+            {
+                pasted = this.Clone(this.clipboardNode, targetParent, true);
+                targetParent.Children.Add(pasted);
+                targetParent.IsExpanded = true;
+            }
+
             return pasted;
         }
 

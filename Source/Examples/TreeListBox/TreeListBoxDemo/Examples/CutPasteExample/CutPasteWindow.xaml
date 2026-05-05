@@ -11,7 +11,7 @@
     </Window.Resources>
     <DockPanel>
         <TextBlock DockPanel.Dock="Top" Background="LightYellow" Padding="10" TextWrapping="Wrap">
-            <Bold>Issue #292 repro steps:</Bold> 1) Reset Scenario, 2) Select Node 1 and expand it to show Node 2, 3) Click Cut, 4) Click Paste.
+            <Bold>Issue #292 repro steps:</Bold> 1) Reset Scenario, 2) Select Node 1 and expand it to show Node 2, 3) Click Cut, 4) Select the parent and click Paste.
             The pasted node intentionally preserves IsExpanded=true to reproduce the original crash condition.
         </TextBlock>
         <ToolBar DockPanel.Dock="Top">

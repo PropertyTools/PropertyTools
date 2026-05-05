@@ -58,7 +58,8 @@ namespace TreeListBoxDemo.Examples.CutPasteExample
 
         private void PasteClick(object sender, RoutedEventArgs e)
         {
-            var pasted = this.ViewModel.PasteAsRoot();
+            var selected = this.tree1.SelectedItem as CutPasteNode;
+            var pasted = this.ViewModel.Paste(selected);
             if (pasted == null)
             {
                 return;

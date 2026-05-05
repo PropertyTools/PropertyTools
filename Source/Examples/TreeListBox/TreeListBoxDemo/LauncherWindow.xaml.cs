@@ -60,6 +60,9 @@ namespace TreeListBoxDemo
                     case "MultipleSelectionMode":
                         exampleWindow = new Examples.MultipleSelectionModeExample.MultipleSelectionModeWindow();
                         break;
+                    case "DragDrop":
+                        exampleWindow = new Examples.DragDropExample.DragDropWindow();
+                        break;
                 }
 
                 if (exampleWindow != null)

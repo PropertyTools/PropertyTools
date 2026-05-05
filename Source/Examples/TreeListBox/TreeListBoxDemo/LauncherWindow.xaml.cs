@@ -60,6 +60,15 @@ namespace TreeListBoxDemo
                     case "MultipleSelectionMode":
                         exampleWindow = new Examples.MultipleSelectionModeExample.MultipleSelectionModeWindow();
                         break;
+                    case "CutPasteExpanded":
+                        exampleWindow = new Examples.CutPasteExample.CutPasteWindow();
+                        break;
+                    case "DragDrop":
+                        exampleWindow = new Examples.DragDropExample.DragDropWindow();
+                        break;
+                    case "NonEnglishCulture":
+                        exampleWindow = new Examples.NonEnglishCultureExample.NonEnglishCultureWindow();
+                        break;
                 }
 
                 if (exampleWindow != null)

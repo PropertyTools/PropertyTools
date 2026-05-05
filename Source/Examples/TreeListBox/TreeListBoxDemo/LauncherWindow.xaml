@@ -55,6 +55,27 @@
                                TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
                 </StackPanel>
             </ListBoxItem>
+            <ListBoxItem Tag="DragDrop">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Drag/Drop Example" FontWeight="Bold" FontSize="14"/>
+                    <TextBlock Text="Demonstrates drag-and-drop between and within folders. Only the item under the cursor should be highlighted — previously hovered items must not retain their highlight (fix for stale IsDropTarget state)." 
+                               TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem Tag="CutPasteExpanded">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Cut/Paste + IsExpanded Example (Issue #292)" FontWeight="Bold" FontSize="14"/>
+                    <TextBlock Text="Reproduces TreeListBox cut/paste behavior when IsExpanded is data-bound and copied nodes keep IsExpanded=true." 
+                               TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem Tag="NonEnglishCulture">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Non-English Culture Example (Issues #38 &amp; #142)" FontWeight="Bold" FontSize="14"/>
+                    <TextBlock Text="Sets the thread UI culture to de-DE (German) and exercises the TreeListBox, demonstrating that the 'Height must be non-negative' workaround works correctly on non-English systems." 
+                               TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"/>
+                </StackPanel>
+            </ListBoxItem>
         </ListBox>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" 

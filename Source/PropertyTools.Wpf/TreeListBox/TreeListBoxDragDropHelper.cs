@@ -329,6 +329,13 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event args.</param>
         private void DecideDropTarget(DragEventArgs e)
         {
+            // Clear the highlight on the previous target before deciding the new one,
+            // so IsDropTarget never lingers on items the mouse has already passed over.
+            if (this.targetItemContainer != null)
+            {
+                this.targetItemContainer.IsDropTarget = false;
+            }
+
             // If the types of the dragged data and ItemsControl's source are compatible,
             // there are 3 situations to have into account when deciding the drop target:
             // 1. mouse is over an items container

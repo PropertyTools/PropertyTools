@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - PropertyGridDemos: Added ConnectionStringBuilderExample demonstrating the fix for issue #288 – PropertyGrid now works correctly when bound to a DbConnectionStringBuilder subclass (fixed: null checkboxes, broken enum radio-buttons, byte[] StringFormat exception) #288
+- TreeListBoxDemo: Added NonEnglishCultureExample demonstrating that the "Height must be non-negative" workaround works on non-English systems #290
 - PropertyGrid: Added CategoryAttribute .TabSortIndex and .GroupSortIndex properties including CategoryAttributeOrderedExample that demonstates expicit ordering of tabs & groups  #494
 - GitHub Copilot: Added path-specific custom instructions for tests, examples, WPF controls, and core library to provide contextual guidance based on file types #475
 - DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #468
@@ -22,6 +23,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - PropertyGrid: Fixed binding to DbConnectionStringBuilder subclasses (e.g. FirebirdSql FbConnectionStringBuilder) — bool properties no longer show indeterminate checkboxes, enum properties no longer lose their selection, and byte[] properties no longer throw a StringFormat exception. Root cause: ICustomTypeDescriptor descriptors are now replaced with reflection-backed ones so GetValue/SetValue use the actual typed CLR property accessors, and PropertyItem.CreateBinding uses PropertyPath(descriptor) to bypass the ICustomTypeDescriptor lookup path #288
+- TreeListBox: Fixed "Height must be non-negative" workaround not working on non-English systems — InsertItem now temporarily switches to InvariantCulture before Items.Insert so the ArgumentException message is always comparable in English, while retaining TargetSite checks as a fallback #38 #142
 - TreeListBox: Fixed drop target items remaining highlighted after drag-drop completes — clear `IsDropTarget` on the previous target at the start of `DecideDropTarget` #496
 - PropertyGrid: Fixed DateTime input parsing to honor `FormatString` (for example `dd/MM/yyyy`) and expanded the PropertyGridDemo example with format descriptions and `t`/`tt` DateTime format examples #58
 - PropertyGrid/DataGrid: Fixed ListItemItemsSourceProperty not saving changes - collections with empty PropertyName now correctly use index-based binding path and collection as binding source for two-way data updates #295

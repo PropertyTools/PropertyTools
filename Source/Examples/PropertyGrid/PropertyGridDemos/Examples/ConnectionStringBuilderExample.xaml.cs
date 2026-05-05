@@ -108,10 +108,10 @@ namespace PropertyGridDemos
         [Category("Source")]
         [DisplayName("Data Source")]
         [Description("The hostname or IP address of the server.")]
-        [DefaultValue("localhost")]
+        [DefaultValue("")]
         public string DataSource
         {
-            get => this.TryGetValue("data source", out var v) ? (string)v : "localhost";
+            get => this.TryGetValue("data source", out var v) ? (string)v : string.Empty;
             set => this["data source"] = value;
         }
 

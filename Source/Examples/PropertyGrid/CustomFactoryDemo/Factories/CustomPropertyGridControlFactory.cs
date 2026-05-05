@@ -23,7 +23,8 @@ namespace CustomFactoryDemo
     /// </summary>
     public class CustomPropertyGridControlFactory : PropertyGridControlFactory
     {
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options, 
+            object instance)
         {
             // Check if the property is of type Range
             if (pi.Is(typeof(Range)))
@@ -32,7 +33,7 @@ namespace CustomFactoryDemo
                 return this.CreateRangeControl(pi, options);
             }
 
-            return base.CreateControl(pi, options);
+            return base.CreateControl(pi, options, instance);
         }
 
         protected virtual FrameworkElement CreateRangeControl(PropertyItem pi, PropertyControlFactoryOptions options)

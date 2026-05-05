@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- TreeListBoxDemo: Added NonEnglishCultureExample demonstrating that the "Height must be non-negative" workaround works on non-English systems #38 #142
 - PropertyGrid: Added CategoryAttribute .TabSortIndex and .GroupSortIndex properties including CategoryAttributeOrderedExample that demonstates expicit ordering of tabs & groups  #494
 - GitHub Copilot: Added path-specific custom instructions for tests, examples, WPF controls, and core library to provide contextual guidance based on file types #475
 - DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #468
@@ -20,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Added `ClipboardSeparator` dependency property that controls the separator used by `Ctrl+Alt+C` (copy with headers). Defaults to the current culture's list separator (`CultureInfo.CurrentCulture.TextInfo.ListSeparator`). Can be set per-instance in XAML or overridden in a subclass #481
 
 ### Fixed
+- TreeListBox: Fixed "Height must be non-negative" workaround not working on non-English systems — InsertItem now temporarily switches to InvariantCulture before Items.Insert so the ArgumentException message is always comparable in English, while retaining TargetSite checks as a fallback #38 #142
 - TreeListBox: Fixed drop target items remaining highlighted after drag-drop completes — clear `IsDropTarget` on the previous target at the start of `DecideDropTarget` #496
 - PropertyGrid: Fixed DateTime input parsing to honor `FormatString` (for example `dd/MM/yyyy`) and expanded the PropertyGridDemo example with format descriptions and `t`/`tt` DateTime format examples #58
 - PropertyGrid/DataGrid: Fixed ListItemItemsSourceProperty not saving changes - collections with empty PropertyName now correctly use index-based binding path and collection as binding source for two-way data updates #295

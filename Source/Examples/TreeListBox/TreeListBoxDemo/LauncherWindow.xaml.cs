@@ -66,6 +66,9 @@ namespace TreeListBoxDemo
                     case "DragDrop":
                         exampleWindow = new Examples.DragDropExample.DragDropWindow();
                         break;
+                    case "NonEnglishCulture":
+                        exampleWindow = new Examples.NonEnglishCultureExample.NonEnglishCultureWindow();
+                        break;
                 }
 
                 if (exampleWindow != null)

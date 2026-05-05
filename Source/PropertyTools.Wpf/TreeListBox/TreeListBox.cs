@@ -13,7 +13,9 @@ namespace PropertyTools.Wpf
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Automation.Peers;
     using System.Windows.Controls;
@@ -796,12 +798,24 @@ namespace PropertyTools.Wpf
             this.SubscribeForCollectionChanges(children);
             this.itemLevelMap[item] = this.itemLevelMap[parent] + 1;
             this.isExpandedMap[item] = false;
+
+            // Workaround for #38 and #142: "Height must be non-negative" thrown by WPF virtualization.
+            // We temporarily switch to InvariantCulture so the ArgumentException message is always in
+            // English, allowing a reliable message-based check on non-English systems (#165).
+            var savedUICulture = Thread.CurrentThread.CurrentUICulture;
             try
             {
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
                 this.Items.Insert(index, item);
             }
             catch (ArgumentException e)
             {
+                if (e.Message == "Height must be non-negative.")
+                {
+                    return;
+                }
+
+                // Belt-and-suspenders: also check TargetSite in case the message differs
                 if (e.TargetSite?.Name == "set_Height")
                 {
                     return;
@@ -813,6 +827,10 @@ namespace PropertyTools.Wpf
                 }
 
                 throw;
+            }
+            finally
+            {
+                Thread.CurrentThread.CurrentUICulture = savedUICulture;
             }
         }
 

@@ -20,9 +20,12 @@ namespace ExampleLibrary
 
         private string name;
 
+        private string lastName;
+
         public NotifyDataErrorInfoExample()
         {
             this.Name = string.Empty;
+            this.LastName = string.Empty;
         }
 
         [AutoUpdateText]
@@ -39,6 +42,23 @@ namespace ExampleLibrary
                 this.name = value;
                 this.RaisePropertyChanged(nameof(Name));
                 this.Validate("Name", !string.IsNullOrEmpty(this.name), "Name should be specified");
+            }
+        }
+
+        [AutoUpdateText]
+        [Description("Should not be empty.")]
+        public string LastName
+        {
+            get
+            {
+                return this.lastName;
+            }
+
+            set
+            {
+                this.lastName = value;
+                this.RaisePropertyChanged(nameof(LastName));
+                this.Validate("LastName", !string.IsNullOrEmpty(this.lastName), "Last name should be specified");
             }
         }
 

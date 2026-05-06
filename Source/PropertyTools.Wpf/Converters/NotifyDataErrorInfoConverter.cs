@@ -59,7 +59,7 @@ namespace PropertyTools.Wpf
             switch (targetType)
             {
                 case object _ when targetType == typeof(bool):
-                    return this.instance.HasErrors;
+                    return propertyErrors.Any();
                 case object _ when targetType == typeof(Visibility):
                     return propertyErrors.Any() ? Visibility.Visible : Visibility.Collapsed;
                 default:

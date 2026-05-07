@@ -1,12 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CustomLocalizableOperator.cs" company="PropertyTools">
-//   Copyright (c) 2014 PropertyTools contributors
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace DataGridDemo.Operators
+﻿
+namespace PropertyGridDemo
 {
-    using DataGridDemo.Resources;
+    using PropertyGridDemo.Resources;
     using PropertyTools.Wpf;
     using PropertyTools.Wpf.Operators;
     using System;
@@ -44,5 +39,5 @@ namespace DataGridDemo.Operators
 
             return value;
         }
-    }   
+    }
 }

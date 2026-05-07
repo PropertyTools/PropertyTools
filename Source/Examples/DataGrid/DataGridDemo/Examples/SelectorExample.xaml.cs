@@ -54,6 +54,9 @@ namespace DataGridDemo
                 private string fruit1;
                 private string fruit2;
 
+                private FruitT? fruit3;
+                private FruitT? fruit4;
+
                 private City city1;
                 private string city2;
                 private City city3;
@@ -91,6 +94,36 @@ namespace DataGridDemo
                 }
 
                 public IEnumerable<string> Fruits { get; } = new[] { "Apple", "Banana", "Orange" };
+
+
+                [Description("Localizable. 'Banana' only ")]
+                [EnumFilter(EnumFilterAttribute.FilteringMode.Include, FruitT.Banana)]
+                public FruitT? Fruit3
+                {
+                    get
+                    {
+                        return this.fruit3;
+                    }
+                    set
+                    {
+                        this.SetValue(ref this.fruit3, value);
+                    }
+                }
+
+                [Description("Localizable. Without 'Banana' ")]
+                [EnumFilter(EnumFilterAttribute.FilteringMode.Exclude, FruitT.Banana)]
+                public FruitT? Fruit4
+                {
+                    get
+                    {
+                        return this.fruit4;
+                    }
+                    set
+                    {
+                        this.SetValue(ref this.fruit4, value);
+                    }
+                }
+
 
                 [ItemsSourceProperty(nameof(Cities))]
                 public City City1
@@ -210,6 +243,18 @@ namespace DataGridDemo
                     }
                 }
             }
+        }
+
+        public enum FruitT
+        {
+            [Description("Apple")]
+            Apple,
+
+            [DisplayName("Pear")]
+            Pear,
+
+            [System.ComponentModel.DescriptionAttribute("Banana")]
+            Banana
         }
     }
 }

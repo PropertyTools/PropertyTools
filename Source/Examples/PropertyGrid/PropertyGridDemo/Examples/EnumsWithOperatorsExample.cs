@@ -52,6 +52,21 @@ namespace PropertyGridDemo.Examples
         [SelectorStyle(SelectorStyle.ListBox)]
         public Fruit1? NullableFruit1FilterL { get => this.nullableFruit1FilterL; set { this.nullableFruit1FilterL = value; this.RaisePropertyChanged(nameof(NullableFruit1FilterL)); } }
 
-        
+        // Example 3: translated enum values (see \Resources\Translations.resx)
+        public enum Fruit2T { [Description("Apple")] Apple, [DisplayName("Pear")] Pear, [System.ComponentModel.DescriptionAttribute("Banana")] Banana }
+
+        [Category("RadioButtonList|")]
+        [Description("With translations (see CustomLocalizableOperator)")]        
+        public Fruit2T? Fruit2 { get; set; }
+
+        [Category("ComboBox|")]
+        [Description("With translations (see CustomLocalizableOperator)")]
+        [SelectorStyle(SelectorStyle.ComboBox)]
+        public Fruit2T? Fruit2C { get; set; }
+
+        [Category("ListBox|")]
+        [Description("With translations (see CustomLocalizableOperator)")]
+        [SelectorStyle(SelectorStyle.ListBox)]
+        public Fruit2T? Fruit2L { get; set; }
     }
 }

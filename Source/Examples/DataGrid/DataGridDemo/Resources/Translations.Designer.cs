@@ -19,7 +19,7 @@ namespace DataGridDemo.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Translations {
@@ -183,6 +183,42 @@ namespace DataGridDemo.Resources {
         internal static string DataGridDemo_ExampleObject_String {
             get {
                 return ResourceManager.GetString("DataGridDemo.ExampleObject.String", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (no seleccionado).
+        /// </summary>
+        internal static string DataGridDemo_SelectorExample_FruitT__ {
+            get {
+                return ResourceManager.GetString("DataGridDemo.SelectorExample+FruitT.-", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manzana.
+        /// </summary>
+        internal static string DataGridDemo_SelectorExample_FruitT_Apple {
+            get {
+                return ResourceManager.GetString("DataGridDemo.SelectorExample+FruitT.Apple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plátano.
+        /// </summary>
+        internal static string DataGridDemo_SelectorExample_FruitT_Banana {
+            get {
+                return ResourceManager.GetString("DataGridDemo.SelectorExample+FruitT.Banana", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pera.
+        /// </summary>
+        internal static string DataGridDemo_SelectorExample_FruitT_Pear {
+            get {
+                return ResourceManager.GetString("DataGridDemo.SelectorExample+FruitT.Pear", resourceCulture);
             }
         }
     }

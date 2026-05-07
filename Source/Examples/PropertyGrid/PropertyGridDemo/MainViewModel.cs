@@ -23,7 +23,7 @@ namespace PropertyGridDemo
 
         public MainViewModel()
         {
-            this.Models = Examples.GetPropertyGridExamples().ToList();
+            this.Models = ExampleProvider.GetPropertyGridExamples().ToList();
             this.SelectedItem = this.Models.FirstOrDefault(o => o.GetType() == typeof(SimpleTypesExample));
             foreach (Example m in this.Models)
             {

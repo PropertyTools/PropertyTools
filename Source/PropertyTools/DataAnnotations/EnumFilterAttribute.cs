@@ -25,28 +25,28 @@ namespace PropertyTools.DataAnnotations
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumFilterAttribute"/> class.
         /// </summary>        
-        public EnumFilterAttribute(FilteringMode mode, Enum value1)
+        public EnumFilterAttribute(FilteringMode mode, object enumValue1)
         {
             this.Mode = mode;
-            this.Items = new[] { value1 };
+            this.Items = new[] { (Enum)enumValue1 };
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumFilterAttribute"/> class.
         /// </summary>        
-        public EnumFilterAttribute(FilteringMode mode, Enum value1, Enum value2)
+        public EnumFilterAttribute(FilteringMode mode, object enumValue1, object enumValue2)
         {
             this.Mode = mode;
-            this.Items = new[] { value1, value2 };
+            this.Items = new[] { (Enum)enumValue1, (Enum)enumValue2 };
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumFilterAttribute"/> class.
         /// </summary>        
-        public EnumFilterAttribute(FilteringMode mode, Enum value1, Enum value2, Enum value3)
+        public EnumFilterAttribute(FilteringMode mode, object enumValue1, object enumValue2, object enumValue3)
         {
             this.Mode = mode;
-            this.Items = new[] { value1, value2, value3 };
+            this.Items = new[] { (Enum)enumValue1, (Enum)enumValue2, (Enum)enumValue3 };
         }
 
         /// <summary>

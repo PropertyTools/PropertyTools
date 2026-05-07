@@ -222,34 +222,70 @@ namespace PropertyTools.Wpf
         {
             var instanceType = instance.GetType();
 
-            // check if the MetadataTypeAttribute is set
-            var metadataTypeAttribute = instanceType.GetCustomAttributes(typeof(MetadataTypeAttribute), true)
-                                     .OfType<MetadataTypeAttribute>().FirstOrDefault();
-            PropertyDescriptorCollection properties;
-            if (metadataTypeAttribute != null)
-            {
-                // use the metadata type for reflection
-                instanceType = metadataTypeAttribute.MetadataClassType;
-                properties = TypeDescriptor.GetProperties(instanceType);
-            }
-            else
-            {
-                properties = TypeDescriptor.GetProperties(instance);
-            }
+			// check if the MetadataTypeAttribute is set
+			var metadataTypeAttribute = instanceType.GetCustomAttributes(typeof(MetadataTypeAttribute), true)
+									 .OfType<MetadataTypeAttribute>().FirstOrDefault();
+			PropertyDescriptorCollection properties;
+			if (metadataTypeAttribute != null)
+			{
+				// use the metadata type for reflection
+				instanceType = metadataTypeAttribute.MetadataClassType;
+				properties = TypeDescriptor.GetProperties(instanceType);
+			}
+			else
+			{
+				properties = TypeDescriptor.GetProperties(instance);
+
+				// When the instance implements ICustomTypeDescriptor (e.g. DbConnectionStringBuilder),
+				// GetProperties() may return descriptors whose GetValue/SetValue read raw dictionary
+				// entries rather than delegating to the typed CLR property accessors.  WPF binding also
+				// routes through ICustomTypeDescriptor, so it receives null or a plain string instead of
+				// the expected bool / enum / byte[] value.  Replacing each such descriptor with the
+				// corresponding reflection-backed descriptor restores correct typed access (issue #288).
+				if (instance is ICustomTypeDescriptor)
+				{
+					properties = ReplaceWithReflectionDescriptors(properties, instanceType);
+				}
+			}
 
             return properties;
         }
 
-        /// <summary>
-        /// Gets the visible properties from the specified property descriptor collection.
-        /// </summary>
-        /// <param name="properties">The property descriptor collection.</param>
-        /// <param name="instance">The object instance.</param>
-        /// <param name="options">The options.</param>
-        /// <returns>A sequence of property descriptors.</returns>
-        protected IEnumerable<PropertyDescriptor> GetVisibleProperties(PropertyDescriptorCollection properties, object instance, IPropertyGridOptions options)
-        {
-            var instanceType = instance.GetType();
+		/// <summary>
+		/// Replaces descriptors obtained from <see cref="ICustomTypeDescriptor" /> with the
+		/// corresponding reflection-based descriptors from <paramref name="instanceType" />.
+		/// Descriptors that have no matching CLR property (e.g. dynamic keys) are kept as-is.
+		/// </summary>
+		/// <param name="properties">The descriptor collection from ICustomTypeDescriptor.</param>
+		/// <param name="instanceType">The concrete type of the source object.</param>
+		/// <returns>A new collection where each descriptor uses CLR reflection for value access.</returns>
+		private static PropertyDescriptorCollection ReplaceWithReflectionDescriptors(
+			PropertyDescriptorCollection properties, Type instanceType)
+		{
+			var typeDescriptors = TypeDescriptor.GetProperties(instanceType);
+			var result = new List<PropertyDescriptor>(properties.Count);
+
+			foreach (PropertyDescriptor pd in properties)
+			{
+				// Prefer the reflection-backed descriptor so that GetValue/SetValue invoke the
+				// actual CLR property getter/setter instead of the ICustomTypeDescriptor override.
+				var reflectPd = typeDescriptors[pd.Name];
+				result.Add(reflectPd ?? pd);
+			}
+
+			return new PropertyDescriptorCollection(result.ToArray());
+		}
+
+		/// <summary>
+		/// Gets the visible properties from the specified property descriptor collection.
+		/// </summary>
+		/// <param name="properties">The property descriptor collection.</param>
+		/// <param name="instance">The object instance.</param>
+		/// <param name="options">The options.</param>
+		/// <returns>A sequence of property descriptors.</returns>
+		protected IEnumerable<PropertyDescriptor> GetVisibleProperties(PropertyDescriptorCollection properties, object instance, IPropertyGridOptions options)
+		{
+			var instanceType = instance.GetType();
 
             foreach (PropertyDescriptor pd in this.GetBrowsableProperties(properties))
             {

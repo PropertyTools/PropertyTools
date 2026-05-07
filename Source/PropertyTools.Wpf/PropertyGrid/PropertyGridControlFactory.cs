@@ -251,6 +251,7 @@ namespace PropertyTools.Wpf
                 notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
                 {
                     tab.UpdateHasErrors(notifyDataErrorInfoInstance);
+                    errorControl.GetBindingExpression(UIElement.VisibilityProperty)?.UpdateTarget();
                 };
             }
 

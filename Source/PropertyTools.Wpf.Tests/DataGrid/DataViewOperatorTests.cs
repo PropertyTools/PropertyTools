@@ -49,10 +49,12 @@ namespace PropertyTools.Wpf.Tests
             dataGrid.ItemsSource = dataView;
             var listOperator = new ListOperator(dataGrid);
 
-            // Act - attempting to append a new row (index -1 means append)
-            var result = listOperator.InsertItem(-1);
+            // Act - attempting to insert at a specific position (mirrors HandleAutoInsert which
+            // calls InsertItem(this.Rows)).  DataView does not support IList.Insert, so this
+            // should fail and return -1.
+            var result = listOperator.InsertItem(dataView.Count);
 
-            // Assert - DataView does not support IList.Add, so insertion should fail
+            // Assert
             Assert.That(result, Is.EqualTo(-1));
         }
 

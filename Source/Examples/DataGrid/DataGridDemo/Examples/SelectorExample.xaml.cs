@@ -96,7 +96,8 @@ namespace DataGridDemo
                 public IEnumerable<string> Fruits { get; } = new[] { "Apple", "Banana", "Orange" };
 
 
-                [Description("Localizable. 'Banana' only ")]
+                [Editable(true)]
+                [Description("Editable + Localizable + Nullable / 'Banana' only ")]
                 [EnumFilter(EnumFilterAttribute.FilteringMode.Include, FruitT.Banana)]
                 public FruitT? Fruit3
                 {
@@ -110,7 +111,8 @@ namespace DataGridDemo
                     }
                 }
 
-                [Description("Localizable. Without 'Banana' ")]
+                [Editable(false)]
+                [Description("Non-editable + Localizable + Nullable / without 'Banana' ")]
                 [EnumFilter(EnumFilterAttribute.FilteringMode.Exclude, FruitT.Banana)]
                 public FruitT? Fruit4
                 {

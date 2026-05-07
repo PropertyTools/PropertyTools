@@ -862,7 +862,7 @@ namespace PropertyTools.Wpf
         public virtual IEnumerable<Enum> GetEnumValues(IPropertyItem pi, object instance, bool browsableOnly = true)
         {
             return (customEnumValuesFilterOperator ?? new DefaultEnumValuesFilterOperator())
-                .GetEnumValues(pi, instance, browsableOnly: true);
+                .GetEnumValues(pi, instance, browsableOnly: browsableOnly);
         }
 
         /// <inheritdoc/>

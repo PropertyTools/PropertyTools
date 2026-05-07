@@ -1,4 +1,9 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IPropertyItem.cs" company="PropertyTools">
+//   Copyright (c) 2026 PropertyTools contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+using System;
 using System.ComponentModel;
 
 namespace PropertyTools.Wpf.Common

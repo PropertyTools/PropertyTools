@@ -20,7 +20,7 @@ namespace PropertyTools.Wpf.Operators
         {
             if (!pi.PropertyType.IsEnumOrNullableEnum())
             {
-                throw new InvalidOperationException($"The PropertyType ({pi.PropertyType.FullName}) must be enumerable type or nullable enumerable type.");
+                throw new InvalidOperationException($"The PropertyType ({pi.PropertyType.FullName}) must be enum / nullable enum type.");
             }
 
             var enumType = pi.PropertyType;
@@ -63,7 +63,7 @@ namespace PropertyTools.Wpf.Operators
         {
             if (!pi.PropertyType.IsEnumOrNullableEnum())
             {
-                throw new InvalidOperationException($"The PropertyType ({pi.PropertyType.FullName}) must be enumerable type or nullable enumerable type.");
+                throw new InvalidOperationException($"The PropertyType ({pi.PropertyType.FullName}) must be enum / nullable enum type.");
             }
             
             var enumValues = GetEnumValues(pi, instance, browsableOnly);

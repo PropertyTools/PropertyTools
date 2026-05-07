@@ -1,4 +1,9 @@
-﻿namespace PropertyTools.Wpf
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ICellPropertyItem.cs" company="PropertyTools">
+//   Copyright (c) 2026 PropertyTools contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+namespace PropertyTools.Wpf
 {
     using PropertyTools.Wpf.Common;
     using System;

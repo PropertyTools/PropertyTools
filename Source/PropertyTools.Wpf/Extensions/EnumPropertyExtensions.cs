@@ -1,4 +1,9 @@
-﻿using PropertyTools.Wpf.Common;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="EnumPropertyExtensions.cs" company="PropertyTools">
+//   Copyright (c) 2026 PropertyTools contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+using PropertyTools.Wpf.Common;
 using PropertyTools.Wpf.Operators;
 using System;
 using System.Linq;

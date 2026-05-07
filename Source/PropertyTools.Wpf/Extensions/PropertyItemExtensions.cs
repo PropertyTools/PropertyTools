@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PropertyItemExtensions.cs" company="PropertyTools">
+//   Copyright (c) 2026 PropertyTools contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+using System.Collections;
 using System.Linq;
 
 namespace PropertyTools.Wpf.Extensions

@@ -1,4 +1,9 @@
-﻿namespace PropertyTools.Wpf.Common
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ISelectorDefinition.cs" company="PropertyTools">
+//   Copyright (c) 2026 PropertyTools contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+namespace PropertyTools.Wpf.Common
 {
     using System.Collections;
 

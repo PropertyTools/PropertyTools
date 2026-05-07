@@ -92,7 +92,6 @@ namespace ExampleLibrary
             {
                 yield return this.errors[propertyName];
             }
-            yield return null;
         }
 
         bool System.ComponentModel.INotifyDataErrorInfo.HasErrors

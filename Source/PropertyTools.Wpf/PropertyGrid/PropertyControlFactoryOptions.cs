@@ -9,6 +9,7 @@
 
 namespace PropertyTools.Wpf
 {
+    using PropertyTools.DataAnnotations;
     using System.Windows;
 
     /// <summary>
@@ -17,10 +18,10 @@ namespace PropertyTools.Wpf
     public class PropertyControlFactoryOptions
     {
         /// <summary>
-        /// Gets or sets the limiting number of values for <c>enum</c> properties that can shown with radio buttons.
+        /// Gets or sets the limiting number of values for properties that have <seealso cref="SelectorStyleAttribute"/> and can shown with radio buttons.
         /// </summary>
         /// <value>The limit. If the number of values exceeds the limit, a selector control will be used.</value>
-        public int EnumAsRadioButtonsLimit { get; set; }
+        public int RadioButtonsLimit { get; set; }
 
         /// <summary>
         /// Gets or sets the validation error template.

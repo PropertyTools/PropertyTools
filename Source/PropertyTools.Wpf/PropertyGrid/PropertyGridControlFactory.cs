@@ -10,6 +10,7 @@
 namespace PropertyTools.Wpf
 {
     using PropertyTools.Wpf.Common;
+    using PropertyTools.Wpf.Controls;
     using PropertyTools.Wpf.Extensions;
     using PropertyTools.Wpf.Operators;
     using System;
@@ -470,7 +471,7 @@ namespace PropertyTools.Wpf
             }
 
             if (style == DataAnnotations.SelectorStyle.RadioButtons
-                && property.GetItemsSourceCount(instance) > options.EnumAsRadioButtonsLimit)
+                && property.GetItemsSourceCount(instance) > options.RadioButtonsLimit)
             {
                 style = (mode == DataAnnotations.SelectorMode.Single)
                     ? DataAnnotations.SelectorStyle.ComboBox
@@ -509,18 +510,28 @@ namespace PropertyTools.Wpf
 
                 case DataAnnotations.SelectorStyle.ListBox:
                     {
-                        var listBox = new ListBox()
-                        {
-                            SelectionMode = mode == DataAnnotations.SelectorMode.Multiple
-                               ? SelectionMode.Multiple
-                               : (mode == DataAnnotations.SelectorMode.Extended
-                                       ? SelectionMode.Extended
-                                       : SelectionMode.Single
-                                  )
-                        };
+                        ListBox listBox = mode == DataAnnotations.SelectorMode.Single
+                            ? new ListBox()
+                            : new MultipleSelectListBox()
+                            {
+                                SelectionMode = mode == DataAnnotations.SelectorMode.Multiple
+                                        ? SelectionMode.Multiple
+                                        : SelectionMode.Extended
+                            };
                         c = listBox;
-                        new SelectorWrapper(listBox, instance).ConfigureSelectorDefinition(property);
-                        c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
+                        var selectorDefinition = new SelectorWrapper(listBox, instance);
+                        selectorDefinition.ConfigureSelectorDefinition(property);
+
+                        var binding = property.CreateBinding();
+                        if (listBox.SelectionMode != SelectionMode.Single)
+                        {
+                            binding.Converter = new MultipleSelectListBox.ListToBindableSelectedItemsConverter(selectorDefinition);
+                            c.SetBinding(MultipleSelectListBox.BindableSelectedItemsProperty, binding);
+                        }
+                        else
+                        {
+                            c.SetBinding(Selector.SelectedValueProperty, binding);
+                        }
                         break;
                     }
             }
@@ -726,9 +737,9 @@ namespace PropertyTools.Wpf
             }
             else
             {
-                result = new DefaultEnumValuesFilterOperator().GetEnumValuesWithNullEntry(property, 
-                	instance: instance, 
-                	nullAtStart: nullAtStart
+                result = new DefaultEnumValuesFilterOperator().GetEnumValuesWithNullEntry(property,
+                    instance: instance,
+                    nullAtStart: nullAtStart
                 ).ToList();
             }
 
@@ -754,7 +765,7 @@ namespace PropertyTools.Wpf
             var style = property.SelectorStyle;
             if (style == DataAnnotations.SelectorStyle.Auto)
             {
-                style = values.Length > options.EnumAsRadioButtonsLimit
+                style = values.Length > options.RadioButtonsLimit
                             ? DataAnnotations.SelectorStyle.ComboBox
                             : DataAnnotations.SelectorStyle.RadioButtons;
             }
@@ -763,9 +774,9 @@ namespace PropertyTools.Wpf
             {
                 case DataAnnotations.SelectorStyle.RadioButtons:
                     {
-                        var c = new RadioButtonList 
-                        { 
-                            EnumType = property.Descriptor.PropertyType, 
+                        var c = new RadioButtonList
+                        {
+                            EnumType = property.Descriptor.PropertyType,
                             EnumMetadata = property.EnumMetadata,
                             EnumValues = values,
                         };

@@ -1,8 +1,19 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="EnumPropertyMetadata.cs" company="PropertyTools">
+//   Copyright (c) 2025 PropertyTools contributors
+// </copyright>
+// <summary>
+//   Contains prepopulated metadata for enum control
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 
 namespace PropertyTools.Wpf.Common
 {
+    /// <summary>
+    /// Contains prepopulated metadata for enum control (RadioButtonList / Selector / etc.) 
+    /// </summary>
     public class EnumPropertyMetadata
     {
         /// <summary>
@@ -17,12 +28,15 @@ namespace PropertyTools.Wpf.Common
         /// Applicable for Nullable&lt;EnumType&gt; property only
         /// </remarks>
         public string EnumDisplayNull { get; set; }
-        
-        public bool IsNullableEnum { get; set; }
-        
+
         /// <summary>
-        /// Enum type (non-nullable)
+        /// Determines whether enum is nullable or not
         /// </summary>
-        public Type EnumType { get;  set; }
+        public bool IsNullableEnum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Enum type (non-nullable)
+        /// </summary>
+        public Type EnumType { get; set; }
     }
 }

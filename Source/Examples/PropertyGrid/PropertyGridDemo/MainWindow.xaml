@@ -194,7 +194,8 @@
                 TabPageHeaderTemplate="{StaticResource PageHeaderTemplate1}"
                 SelectedObject="{Binding SelectedItem}" Margin="8" DescriptionIcon="Images\lightbulb.png"
                 FontSize="{Binding ElementName=FontSizeControl, Path=Value}"
-                VerticalPropertySpacing="{Binding ElementName=VerticalPropertySpacing, Path=Value}">
+                VerticalPropertySpacing="{Binding ElementName=VerticalPropertySpacing, Path=Value}"
+				RadioButtonsLimit="6" >
        
             </pt:PropertyGrid>
             <TextBox AcceptsReturn="True" IsReadOnly="True" Grid.Column="2" Padding="8" Text="{Binding Output, Mode=OneWay}" BorderThickness="1 0 0 0"/>

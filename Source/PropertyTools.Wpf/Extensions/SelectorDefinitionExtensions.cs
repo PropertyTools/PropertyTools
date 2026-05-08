@@ -1,4 +1,12 @@
-﻿using PropertyTools.DataAnnotations;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SelectorDefinitionExtensions.cs" company="PropertyTools">
+//   Copyright (c) 2025 PropertyTools contributors
+// </copyright>
+// <summary>
+//   Extensions class to configure ISelectorDefinition instance.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+using PropertyTools.DataAnnotations;
 using PropertyTools.Wpf.Common;
 using System;
 using System.Collections;
@@ -7,9 +15,14 @@ using System.Linq;
 
 namespace PropertyTools.Wpf.Extensions
 {
-
+    /// <summary>
+    /// Extensions class to configure <seealso cref="ISelectorDefinition"/> instance
+    /// </summary>
     public static class SelectorDefinitionExtensions
     {
+        /// <summary>
+        /// Initializes the <paramref name="selectorDefinition"/> from <seealso cref="PropertyItem"/>
+        /// </summary>
         public static T ConfigureSelectorDefinition<T>(this T selectorDefinition, PropertyItem property)
             where T : ISelectorDefinition
         {
@@ -21,18 +34,24 @@ namespace PropertyTools.Wpf.Extensions
             return selectorDefinition;
         }
 
-        public static T ConfigureSelectorDefinition<T>(this T selectorDefinition, SelectorCellDefinition property)
+        /// <summary>
+        /// Initializes the <paramref name="selectorDefinition"/> from <seealso cref="SelectorCellDefinition"/>
+        /// </summary>
+        public static T ConfigureSelectorDefinition<T>(this T selectorDefinition, SelectorCellDefinition cellDefinition)
             where T : ISelectorDefinition
         {
-            selectorDefinition.ItemsSource = property.ItemsSource; // May be NULL
-            selectorDefinition.ItemsSourceProperty = property.ItemsSourceProperty; // May be NULL
-            selectorDefinition.DisplayMemberPath = property.DisplayMemberPath;
-            selectorDefinition.SelectedValuePath = property.SelectedValuePath;
-            selectorDefinition.DisplayTextForNullItem = property.DisplayTextForNullItem;
+            selectorDefinition.ItemsSource = cellDefinition.ItemsSource; // May be NULL
+            selectorDefinition.ItemsSourceProperty = cellDefinition.ItemsSourceProperty; // May be NULL
+            selectorDefinition.DisplayMemberPath = cellDefinition.DisplayMemberPath;
+            selectorDefinition.SelectedValuePath = cellDefinition.SelectedValuePath;
+            selectorDefinition.DisplayTextForNullItem = cellDefinition.DisplayTextForNullItem;
 
             return selectorDefinition;
         }
 
+        /// <summary>
+        /// Initializes the <paramref name="selectorDefinition"/> from <seealso cref="IColumnSelectorDefinition"/>
+        /// </summary>
         public static T ConfigureSelectorDefinition<T>(this T selectorDefinition, IColumnSelectorDefinition column)
             where T : ISelectorDefinition
         {
@@ -54,7 +73,7 @@ namespace PropertyTools.Wpf.Extensions
         /// <param name="selectorDefinition">The selectorDefinition instance</param>
         /// <param name="enumValues"></param>
         /// <returns>The configured <paramref name="selectorDefinition"/> instance </returns>
-        public static T ConfigureSelectorDefinitionForEnum<T>(this T selectorDefinition, IPropertyItem enumPI, 
+        public static T ConfigureSelectorDefinitionForEnum<T>(this T selectorDefinition, IPropertyItem enumPI,
                 IEnumerable<object> enumValues)
             where T : ISelectorDefinition
         {

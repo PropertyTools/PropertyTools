@@ -20,7 +20,7 @@ namespace PropertyTools.Wpf.Common
         private readonly object _selectorBindingSource;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref = "SelectorWrapper" /> class.
         /// </summary>
         /// <param name="selector"></param>
         /// <param name="bindingSource">The binding source.</param>
@@ -45,7 +45,7 @@ namespace PropertyTools.Wpf.Common
 
                 if (_itemsSourceProperty != null)
                 {
-                    _selector.DataContext = _selectorBindingSource; // 
+                    _selector.DataContext = _selectorBindingSource;
 
                     var itemsSourceBinding = new Binding(_itemsSourceProperty);
                     _selector.SetBinding(ItemsControl.ItemsSourceProperty, itemsSourceBinding);
@@ -75,13 +75,6 @@ namespace PropertyTools.Wpf.Common
         }
 
         /// <inheritdoc/>
-        public bool DisplayTextForNullItem
-        {
-            get => throw new System.NotImplementedException();
-            set => throw new System.NotImplementedException();
-        }
-        
+        public bool DisplayTextForNullItem { get; set; }        
     }
-
-
 }

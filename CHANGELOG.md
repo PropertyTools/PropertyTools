@@ -4,8 +4,9 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- PropertyGrid: added MultipleSelectListbox to support the case when SelectorStyle=ListBox and SelectorMode=Multiple #498
 - DataGrid/PropertyGrid: added EnumFilterAttribute for custom filtering with new EnumsWithOperatorsExample (PropertyGridDemo) and updated SelectorExample (DataGridDemo) #498
-- DataGrid/PropertyGrid: new SelectorModeAttribute (Single | Multiple) #498
+- DataGrid/PropertyGrid: added new SelectorModeAttribute (Single | Multiple) and SelectorModeAttributeExample (PropertyGridDemo)  #498
 - DataGrid: added mode and style to Selector cell type #498
 - PropertyGrid: new CheckBoxSelector (inherits RadioButtonSelector) for multi select control (uses ISelectorDefinition) #498
 - PropertyGridDemos: Added ConnectionStringBuilderExample demonstrating the fix for issue #288 – PropertyGrid now works correctly when bound to a DbConnectionStringBuilder subclass (fixed: null checkboxes, broken enum radio-buttons, byte[] StringFormat exception) #288

@@ -797,7 +797,7 @@ namespace PropertyTools.Wpf
                         // SelectorMode is ignored.
                         RadioButtonSelector c;
 
-                        // for Flags or nullable enum with signle value use checkboxes
+                        // for Flags or nullable enum with single value use checkboxes
                         if (property.EnumMetadata.Flags || values.Count(x => x != null) == 1 && property.EnumMetadata.IsNullableEnum)
                         {
                             values = values.Where(x => x != null).ToArray(); // exclude 'null'

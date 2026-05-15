@@ -14,8 +14,8 @@ namespace PropertyTools.Wpf.Common
         /// </summary>
         /// <value>
         /// The items source property.
-        /// </value>        
-        string ItemsSourceProperty { get; set; }
+        /// </value>
+        string ItemsSourcePropertyName { get; set; }
 
         /// <summary>
         /// Gets or sets the items source.

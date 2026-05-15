@@ -86,12 +86,12 @@ namespace PropertyTools.Wpf
                 return new ColorCellDefinition();
             }
 
-            if (d.PropertyDefinition.ItemsSourceProperty != null || d.PropertyDefinition.ItemsSource != null)
+            if (d.PropertyDefinition.ItemsSourcePropertyName != null || d.PropertyDefinition.ItemsSource != null)
             {
                 return new SelectorCellDefinition
                 {
                     ItemsSource = d.PropertyDefinition.ItemsSource,
-                    ItemsSourceProperty = d.PropertyDefinition.ItemsSourceProperty,
+                    ItemsSourcePropertyName = d.PropertyDefinition.ItemsSourcePropertyName,
                     SelectedValuePath = d.PropertyDefinition.SelectedValuePath,
                     DisplayMemberPath = d.PropertyDefinition.DisplayMemberPath,
                     DisplayTextForNullItem = d.PropertyDefinition.DisplayTextForNullItem,
@@ -112,7 +112,11 @@ namespace PropertyTools.Wpf
                 }.ConfigureSelectorDefinitionForEnum(d, enumValues);                
             }
 
-            return new TextCellDefinition();
+            return new TextCellDefinition()
+            {
+                AutoUpdateText = d.PropertyDefinition.AutoUpdateText,
+                MaxLength = d.PropertyDefinition.MaxLength,
+            };
         }
 
         /// <summary>

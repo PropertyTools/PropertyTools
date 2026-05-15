@@ -45,7 +45,7 @@ namespace PropertyTools.Wpf
         /// <value>
         /// The items source property.
         /// </value>
-        public string ItemsSourceProperty { get; set; }
+        public string ItemsSourcePropertyName { get; set; }
 
         /// <summary>
         /// Gets or sets the selected value path.

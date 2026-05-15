@@ -669,7 +669,7 @@ namespace PropertyTools.Wpf
             var ispa = descriptor.GetFirstAttributeOrDefault<ItemsSourcePropertyAttribute>();
             if (ispa != null)
             {
-                pd.ItemsSourceProperty = ispa.PropertyName;
+                pd.ItemsSourcePropertyName = ispa.PropertyName;
             }
 
             var svpa = descriptor.GetFirstAttributeOrDefault<SelectedValuePathAttribute>();

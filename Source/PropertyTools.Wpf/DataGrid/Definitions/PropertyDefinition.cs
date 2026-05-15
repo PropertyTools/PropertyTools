@@ -92,7 +92,7 @@ namespace PropertyTools.Wpf
         /// Gets or sets the property name of an items source (for ComboBox).
         /// </summary>
         /// <value>The items source property.</value>
-        public string ItemsSourceProperty { get; set; }
+        public string ItemsSourcePropertyName { get; set; }
 
         /// <summary>
         /// Gets or sets the selected value path (for ComboBox).
@@ -123,6 +123,11 @@ namespace PropertyTools.Wpf
         /// Gets or sets the max length (for TextBox).
         /// </summary>
         public int MaxLength { get; set; }
+
+        /// <summary>
+        /// Specifies that the text binding should be triggered at every change. (for TextBox).
+        /// </summary>
+        public bool AutoUpdateText { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the property.

@@ -12,6 +12,7 @@ namespace PropertyTools.Wpf
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
 
@@ -207,7 +208,7 @@ namespace PropertyTools.Wpf
         {
             value = null;
 
-            if (target != null)
+            if (target != null && memberName != null)
             {
                 var targetType = target.GetType();
 
@@ -232,5 +233,87 @@ namespace PropertyTools.Wpf
 
             return false;
         }
+
+        public static T GetEnumDefaultValue<T>()
+            where T : struct, Enum
+        {
+            return (T)GetEnumDefaultValue(typeof(T));
+        }
+
+        public static Enum GetEnumDefaultValue(Type enumType)
+        {
+            if (!enumType.IsEnum)
+                throw new ArgumentException($"'{enumType.FullName}' must be an enum type", paramName: nameof(enumType));
+
+            var attribute = enumType.GetCustomAttribute<DefaultValueAttribute>(inherit: false);
+            if (attribute != null)
+                return (Enum)Enum.ToObject(enumType, attribute.Value);
+
+            var innerType = enumType.GetEnumUnderlyingType();
+            var zero = Activator.CreateInstance(innerType);
+            if (enumType.IsEnumDefined(zero))
+                return (Enum)Enum.ToObject(enumType, zero);
+
+            var values = enumType.GetEnumValues();
+            return (Enum)values.GetValue(0);
+        }
+
+
+        public static object GetEnumZeroNumber(Type enumType)
+        {
+            if (!enumType.IsEnum)
+                throw new ArgumentException($"'{enumType.FullName}' must be an enum type", paramName: nameof(enumType));
+
+            var innerType = enumType.GetEnumUnderlyingType();
+            var zero = Activator.CreateInstance(innerType);
+            return zero;
+        }
+
+
+
+        /// <typeparam name="T">defined enum type or 'Sytem.Enum' type</typeparam>
+        public static bool IsZeroFlag<T>(this T flag)
+             where T : Enum
+        {
+            var enumType = flag.GetType();
+
+            // 'long' can hold all possible values, except those which 'ulong' can hold.
+            if (Enum.GetUnderlyingType(enumType) == typeof(ulong))
+            {
+                return System.Convert.ToUInt64(flag) == 0UL;
+            }
+            else
+            {
+                return System.Convert.ToInt64(flag) == 0L;
+            }   
+        }
+
+
+        /// <summary>
+        /// Sets flag in enum value
+        /// </summary>
+        /// <typeparam name="T">defined enum type or 'Sytem.Enum' type</typeparam>
+        /// <param name="value">the enum value to be changed</param>
+        /// <param name="flag">the flag to be set</param>        
+        public static void SetFlag<T>(ref T value, T flag) 
+            where T : Enum 
+        {
+            var enumType = value.GetType();
+
+            // 'long' can hold all possible values, except those which 'ulong' can hold.
+            if (Enum.GetUnderlyingType(enumType) == typeof(ulong))
+            {
+                ulong numericValue = Convert.ToUInt64(value);
+                numericValue |= Convert.ToUInt64(flag);
+                value = (T)Enum.ToObject(enumType, numericValue);
+            }
+            else
+            {
+                long numericValue = Convert.ToInt64(value);
+                numericValue |= Convert.ToInt64(flag);
+                value = (T)Enum.ToObject(enumType, numericValue);
+            }
+        }
+
     }
 }

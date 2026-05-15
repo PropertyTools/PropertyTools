@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace PropertyTools.Wpf.Common
 {
@@ -38,5 +39,17 @@ namespace PropertyTools.Wpf.Common
         /// Gets or sets the Enum type (non-nullable)
         /// </summary>
         public Type EnumType { get; set; }
+
+        public bool Flags => EnumType.GetCustomAttribute<FlagsAttribute>() != null;
+
+        /// <summary>
+        /// Indicates whether to initialize property with default value when zero is not available in enum type.
+        /// </summary>        
+        public bool? InitializeWithDefault { get; set; }
+
+        /// <summary>
+        /// Indicates whether to reset property to default value when all other enum values are unset and zero is not available in enum type.
+        /// </summary>
+        public bool? ResetToDefault { get; set; }
     }
 }

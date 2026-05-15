@@ -20,7 +20,7 @@ namespace PropertyTools.DataAnnotations
         Auto,
 
         /// <summary>
-        /// Use radio buttons.
+        /// Use radio buttons (SelectorMode=Single) or checkbox items (SelectorMode=Multiple)
         /// </summary>
         RadioButtons,
 

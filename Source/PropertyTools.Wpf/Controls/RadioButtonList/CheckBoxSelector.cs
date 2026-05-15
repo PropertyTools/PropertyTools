@@ -28,56 +28,16 @@ namespace PropertyTools.Wpf
     [TemplatePart(Name = PartPanel, Type = typeof(StackPanel))]
     public class CheckBoxSelector : RadioButtonSelector
     {
-        /// <summary>
-        /// Updates the content.
-        /// </summary>
-        protected override void UpdateContent()
+        protected override ToggleButton CreateControl()
         {
-            if (this.panel == null)
-            {
-                return;
-            }
-
-            this.panel.Children.Clear();
-
-
-            IEnumerable itemValues = PopulateItems();
-            if (itemValues == null)
-            {
-                return;
-            }
-
-            var converter = new SelectorItemsToBooleanConverter(this.Value as IList, selectorDefinition: this);
-
-            foreach (var itemValue in itemValues)
-            {
-                object content;
-                if (itemValue == null || !ReflectionExtensions.TryGetFieldOrPropertyValue(itemValue, this.DisplayMemberPath, out content))
-                {
-                    content = "-";
-                }
-
-                var rb = new CheckBox
-                {
-                    Content = content,
-                    Padding = this.ItemPadding,
-                };
-
-                var isCheckedBinding = new Binding(nameof(this.Value))
-                {
-                    Converter = converter,
-                    ConverterParameter = itemValue,
-                    Source = this,
-                    Mode = BindingMode.TwoWay
-                };
-
-                rb.SetBinding(ToggleButton.IsCheckedProperty, isCheckedBinding);
-
-                rb.SetBinding(MarginProperty, new Binding(nameof(this.ItemMargin)) { Source = this });
-
-                this.panel.Children.Add(rb);
-            }
+            return new CheckBox();
         }
 
+        protected override IValueConverter CreateConverter()
+        {
+            return (this.EnumMetadata != null)
+                ? (IValueConverter)new EnumFlagSelectorItemsToBooleanConverter(this.Value as IList, selectorDefinition: this, this.EnumMetadata)
+                : new MultiStateSelectorItemsToBooleanConverter(this.Value as IList, selectorDefinition: this);
+        }
     }
 }

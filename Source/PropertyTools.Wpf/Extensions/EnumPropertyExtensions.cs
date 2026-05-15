@@ -3,6 +3,7 @@
 //   Copyright (c) 2026 PropertyTools contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using PropertyTools.DataAnnotations;
 using PropertyTools.Wpf.Common;
 using PropertyTools.Wpf.Operators;
 using System;
@@ -30,6 +31,10 @@ namespace PropertyTools.Wpf.Extensions
             {
                 var enumType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
                 var enumValues = enumValuesFilterOperator.GetEnumValues(pi, instance, browsableOnly: true);
+
+                var enumMissingZeroBehaviorAttribute = pi.Descriptor.GetFirstAttributeOrDefault<EnumMissingZeroBehaviorAttribute>();
+                pi.EnumMetadata.InitializeWithDefault = enumMissingZeroBehaviorAttribute?.InitializeWithDefault;
+                pi.EnumMetadata.ResetToDefault = enumMissingZeroBehaviorAttribute?.ResetToDefault;
 
                 pi.EnumMetadata.EnumType = enumType;
 

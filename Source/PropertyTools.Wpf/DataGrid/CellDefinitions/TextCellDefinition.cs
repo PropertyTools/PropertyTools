@@ -22,5 +22,10 @@ namespace PropertyTools.Wpf
         /// The maximum length.
         /// </value>
         public int MaxLength { get; set; }
+
+        /// <summary>
+        /// Specifies that the text binding should be triggered at every change.
+        /// </summary>
+        public bool AutoUpdateText { get; set; }
     }
 }

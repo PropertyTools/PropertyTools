@@ -29,6 +29,8 @@ namespace PropertyTools.Wpf
     using System.Windows.Input;
     using System.Windows.Media;
 
+    using SelectorMode = PropertyTools.DataAnnotations.SelectorMode;
+
     /// <summary>
     /// Provides a control factory for the <see cref="PropertyGrid" /> control.
     /// </summary>
@@ -451,7 +453,7 @@ namespace PropertyTools.Wpf
         /// The control.
         /// </returns>
         protected virtual FrameworkElement CreateSelectorControl(PropertyItem property, PropertyControlFactoryOptions options,
-        	 object instance)
+             object instance)
         {
             var style = property.SelectorStyle;
             var mode = property.SelectorMode;
@@ -510,28 +512,8 @@ namespace PropertyTools.Wpf
 
                 case DataAnnotations.SelectorStyle.ListBox:
                     {
-                        ListBox listBox = mode == DataAnnotations.SelectorMode.Single
-                            ? new ListBox()
-                            : new MultipleSelectListBox()
-                            {
-                                SelectionMode = mode == DataAnnotations.SelectorMode.Multiple
-                                        ? SelectionMode.Multiple
-                                        : SelectionMode.Extended
-                            };
-                        c = listBox;
-                        var selectorDefinition = new SelectorWrapper(listBox, instance);
+                        c = CreateListBox(property, instance, mode, out ISelectorDefinition selectorDefinition);
                         selectorDefinition.ConfigureSelectorDefinition(property);
-
-                        var binding = property.CreateBinding();
-                        if (listBox.SelectionMode != SelectionMode.Single)
-                        {
-                            binding.Converter = new MultipleSelectListBox.ListToBindableSelectedItemsConverter(selectorDefinition);
-                            c.SetBinding(MultipleSelectListBox.BindableSelectedItemsProperty, binding);
-                        }
-                        else
-                        {
-                            c.SetBinding(Selector.SelectedValueProperty, binding);
-                        }
                         break;
                     }
             }
@@ -539,6 +521,44 @@ namespace PropertyTools.Wpf
             if (c != null)
             {
                 c.VerticalContentAlignment = VerticalAlignment.Center;
+            }
+
+            return c;
+        }
+
+        /// <summary>
+        /// Creates the listbox control and setups its bindings
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        private ListBox CreateListBox(PropertyItem property, object instance, SelectorMode mode,
+            out ISelectorDefinition selectorDefinition)
+        {
+            ListBox c = mode == SelectorMode.Single
+                ? new ListBox()
+                : new MultipleSelectListBox()
+                {
+                    SelectionMode = mode == SelectorMode.Multiple
+                            ? SelectionMode.Multiple
+                            : SelectionMode.Extended
+                };
+
+            selectorDefinition = new SelectorWrapper(c, instance);
+
+            var binding = property.CreateBinding();
+            if (c.SelectionMode != SelectionMode.Single)
+            {
+                binding.Converter = property.EnumMetadata.Flags
+                    ? (IValueConverter)new EnumValueToMultiStateSelectorItemsConverter(property.EnumMetadata)
+                    : new MultipleSelectListBox.ListToBindableSelectedItemsConverter(selectorDefinition);
+
+                c.SetBinding(MultipleSelectListBox.BindableSelectedItemsProperty, binding);
+            }
+            else
+            {
+                c.SetBinding(Selector.SelectedValueProperty, binding);
             }
 
             return c;
@@ -747,7 +767,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Creates the select control.
+        /// Creates the enum control.
         /// </summary>
         /// <param name="property">The property.</param>
         /// <param name="options">The options.</param>
@@ -774,29 +794,45 @@ namespace PropertyTools.Wpf
             {
                 case DataAnnotations.SelectorStyle.RadioButtons:
                     {
-                        var c = new RadioButtonList
+                        // SelectorMode is ignored.
+                        RadioButtonSelector c;
+
+                        // for Flags or nullable enum with signle value use checkboxes
+                        if (property.EnumMetadata.Flags || values.Count(x => x != null) == 1 && property.EnumMetadata.IsNullableEnum)
                         {
-                            EnumType = property.Descriptor.PropertyType,
-                            EnumMetadata = property.EnumMetadata,
-                            EnumValues = values,
-                        };
-                        c.SetBinding(RadioButtonList.ValueProperty, property.CreateBinding());
+                            values = values.Where(x => x != null).ToArray(); // exclude 'null'
+                            c = new CheckBoxSelector();
+                            property.Converter = new EnumValueToMultiStateSelectorItemsConverter(property.EnumMetadata); // set converter before creating binding
+                        }
+                        else
+                        {
+                            // otherwise use radiobuttons
+                            c = new RadioButtonSelector();
+                        }
+
+                        c.EnumMetadata = property.EnumMetadata;
+
+                        // RadioButtonSelector already implements ISelectorDefinition. No need to create a wrapper
+                        c.ConfigureSelectorDefinitionForEnum(property, values);
+
+                        c.SetBinding(RadioButtonSelector.ValueProperty, property.CreateBinding());
                         return c;
                     }
 
                 case DataAnnotations.SelectorStyle.ComboBox:
                     {
+                        // SelectorMode is ignored
                         var c = new ComboBox();
-                        InitEnumSelector(c, instance, property, values);
+                        var selectorWrapper = new SelectorWrapper(c, instance);
+                        selectorWrapper.ConfigureSelectorDefinitionForEnum(property, values);
                         c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
                         return c;
                     }
 
                 case DataAnnotations.SelectorStyle.ListBox:
                     {
-                        var c = new ListBox();
-                        InitEnumSelector(c, instance, property, values);
-                        c.SetBinding(Selector.SelectedValueProperty, property.CreateBinding());
+                        var c = CreateListBox(property, instance, property.SelectorMode, out ISelectorDefinition selectorDefinition);
+                        selectorDefinition.ConfigureSelectorDefinitionForEnum(property, values);
                         return c;
                     }
 
@@ -812,9 +848,15 @@ namespace PropertyTools.Wpf
         /// <param name="instance">The instance.</param>
         /// <param name="enumProperty">The property item</param>
         /// <param name="enumValues">The enum values to display in selector</param>
-        protected virtual void InitEnumSelector(Selector c, object instance, PropertyItem enumProperty, object[] enumValues)
+        protected virtual void InitEnumItemsControl(ItemsControl c, object instance, PropertyItem enumProperty, object[] enumValues)
         {
-            new SelectorWrapper(c, instance).ConfigureSelectorDefinitionForEnum(enumProperty, enumValues);
+            ISelectorDefinition sd = c is Selector selector
+                ? (ISelectorDefinition)new SelectorWrapper(selector, instance)
+                : (c is RadioButtonSelector radioButtonSelector)
+                    ? radioButtonSelector
+                    : throw new ArgumentException($"The corresponding ISelectorDefinition is not defined for '{c.GetType().FullName}' type.");
+
+            sd.ConfigureSelectorDefinitionForEnum(enumProperty, enumValues);
         }
 
         /// <summary>

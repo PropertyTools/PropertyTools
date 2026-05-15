@@ -9,19 +9,22 @@
 
 namespace PropertyTools.Wpf
 {
+    using PropertyTools.DataAnnotations;
+    using PropertyTools.Wpf.Common;
+    using System;
     using System.Collections;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
-    using PropertyTools.Wpf.Common;
 
     /// <summary>
     /// Represents a control that shows a list of radio buttons.
     /// </summary>
     [TemplatePart(Name = PartPanel, Type = typeof(StackPanel))]
-    public class RadioButtonSelector : Control, ISelectorDefinition
+    public class RadioButtonSelector : ItemsControl, ISelectorDefinition
     {
         /// <summary>
         /// Identifies the <see cref="ItemMargin"/> dependency property.
@@ -156,6 +159,14 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Prepopulated Enum property's metadata
+        /// </summary>
+        /// <remarks>
+        /// Available only when <see cref="EnumType"/> is Enum or Nullable enum
+        /// </remarks>
+        public EnumPropertyMetadata EnumMetadata { get; set; }
+
+        /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see
         /// cref="M:System.Windows.FrameworkElement.ApplyTemplate" /> .
         /// </summary>
@@ -202,42 +213,56 @@ namespace PropertyTools.Wpf
 
             this.panel.Children.Clear();
 
-            IEnumerable itemValues = PopulateItems();
-            if (itemValues == null)
+            IEnumerable items = PopulateItems();
+            if (items == null)
             {
                 return;
             }
 
-            var converter = new SelectorItemToBooleanConverter() { SelectorDefinition = this };
+            var converter = CreateConverter();
 
-            foreach (var itemValue in itemValues)
+            foreach (var item in items)
             {
-                object content;                
-                if (itemValue == null || !ReflectionExtensions.TryGetFieldOrPropertyValue(itemValue, this.DisplayMemberPath, out content))
+                object content;
+                if (item == null || !ReflectionExtensions.TryGetFieldOrPropertyValue(item, this.DisplayMemberPath, out content))
                 {
                     content = "-";
                 }
 
-                var rb = new RadioButton
+                var ctrl = CreateControl();
+                ctrl.Content = content;
+                ctrl.Padding = this.ItemPadding;
+
+                var isEnabledBinding = CreateBindingFromOptionEnableByAttribute(item, this.EnumMetadata?.EnumType);
+                if (isEnabledBinding != null)
                 {
-                    Content = content,
-                    Padding = this.ItemPadding,
-                };
+                    ctrl.SetBinding(UIElement.IsEnabledProperty, isEnabledBinding);
+                }
 
                 var isCheckedBinding = new Binding(nameof(this.Value))
                 {
                     Converter = converter,
-                    ConverterParameter = itemValue,
+                    ConverterParameter = item,
                     Source = this,
                     Mode = BindingMode.TwoWay
                 };
 
-                rb.SetBinding(ToggleButton.IsCheckedProperty, isCheckedBinding);
+                ctrl.SetBinding(ToggleButton.IsCheckedProperty, isCheckedBinding);
 
-                rb.SetBinding(MarginProperty, new Binding(nameof(this.ItemMargin)) { Source = this });
+                ctrl.SetBinding(MarginProperty, new Binding(nameof(this.ItemMargin)) { Source = this });
 
-                this.panel.Children.Add(rb);
+                this.panel.Children.Add(ctrl);
             }
+        }
+
+        protected virtual ToggleButton CreateControl()
+        {
+            return new RadioButton();
+        }
+
+        protected virtual IValueConverter CreateConverter()
+        {
+            return new SingleStateSelectorItemToBooleanConverter() { SelectorDefinition = this };
         }
 
         protected virtual IEnumerable PopulateItems()
@@ -248,13 +273,13 @@ namespace PropertyTools.Wpf
             {
                 itemValues = this.ItemsSource;
             }
-            else if (this.ItemsSourceProperty != null)
+            else if (this.ItemsSourcePropertyName != null)
             {
                 var instance = this.DataContext;
                 if (instance != null)
                 {
                     // use instance.GetType to be able to fetch static properties also
-                    var p = instance.GetType().GetProperties().FirstOrDefault(x => x.Name == this.ItemsSourceProperty);
+                    var p = instance.GetType().GetProperties().FirstOrDefault(x => x.Name == this.ItemsSourcePropertyName);
                     itemValues = p?.GetValue(instance) as IEnumerable;
                 }
             }
@@ -262,23 +287,62 @@ namespace PropertyTools.Wpf
             return itemValues;
         }
 
-        #region ISelectorDefinition
+        /// <summary>
+        /// Creates a data binding for a WPF control based on the <see cref="OptionEnableByAttribute"/> applied to an enum value.
+        /// </summary>
+        /// <param name="itemValue">The value of the enum item to create the binding for.</param>
+        /// <param name="enumType">The type of the enum containing the item.</param>
+        /// <returns>
+        /// A data binding instance if the enum item has an <see cref="OptionEnableByAttribute"/>; otherwise, null.
+        /// </returns>
+        protected Binding CreateBindingFromOptionEnableByAttribute(object itemValue, Type enumType)
+        {
+            if (enumType == null || !enumType.IsEnum || itemValue == null)
+                return null;
+
+            string enumMember = null;
+
+            if (itemValue.GetType().IsEnum && enumType.IsEnumDefined(itemValue))
+            {
+                enumMember = itemValue.ToString();
+            }
+            else if (ReflectionExtensions.TryGetFieldOrPropertyValue(itemValue, this.SelectedValuePath, out object enumValue)
+                && enumType.IsEnumDefined(enumValue))
+            {
+                enumMember = enumValue.ToString();
+            }
+
+            if (enumMember == null)
+            {
+                return null;
+            }
+
+            var fieldInfo = enumType.GetField(enumMember);
+            if (fieldInfo == null)
+            {
+                return null;
+            }
+
+            var attribute = fieldInfo.GetCustomAttribute<OptionEnableByAttribute>();
+            if (attribute != null)
+            {
+                // Create and return the binding using the property name from the attribute
+                return new Binding(attribute.PropertyName)
+                {
+                    Source = this.DataContext
+                };
+            }
+
+            return null;
+        }
 
         /// <inheritdoc/>        
-        public string ItemsSourceProperty {get;set;}
-        
-        /// <inheritdoc/>
-        public IEnumerable ItemsSource { get; set; }
-        
+        public string ItemsSourcePropertyName { get; set; }
+
         /// <inheritdoc/>
         public string SelectedValuePath { get; set; }
-        
-        /// <inheritdoc/>
-        public string DisplayMemberPath { get; set; }
-        
+
         /// <inheritdoc/>
         public bool DisplayTextForNullItem { get; set; }
-
-        #endregion
     }
 }

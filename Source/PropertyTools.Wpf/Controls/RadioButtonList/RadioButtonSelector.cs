@@ -224,7 +224,15 @@ namespace PropertyTools.Wpf
             foreach (var item in items)
             {
                 object content;
-                if (item == null || !ReflectionExtensions.TryGetFieldOrPropertyValue(item, this.DisplayMemberPath, out content))
+                if (item == null)
+                {
+                    content = "-";
+                }
+                else if (string.IsNullOrWhiteSpace(this.DisplayMemberPath))
+                {
+                    content = item?.ToString();
+                }
+                else if (!ReflectionExtensions.TryGetFieldOrPropertyValue(item, this.DisplayMemberPath, out content))
                 {
                     content = "-";
                 }

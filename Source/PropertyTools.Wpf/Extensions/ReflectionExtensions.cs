@@ -208,7 +208,7 @@ namespace PropertyTools.Wpf
         {
             value = null;
 
-            if (target != null && memberName != null)
+            if (target != null && !string.IsNullOrEmpty(memberName))
             {
                 var targetType = target.GetType();
 
@@ -234,13 +234,36 @@ namespace PropertyTools.Wpf
             return false;
         }
 
+        /// <summary>
+        /// Gets the default enum value.
+        /// </summary>
+        /// <remarks>
+        /// Enum value is resolved in following order:<para/>
+        /// 1) enum member that corresponds to the <see cref="DefaultValueAttribute.Value"/> <para/>
+        /// 2) enum member that has explicitly assigned the 0 value <para/>
+        /// 3) first enum member
+        /// </remarks>
+        /// <typeparam name="T">defined enum type or 'Sytem.Enum' type</typeparam>
+        /// <returns>The default enum value</returns>
         public static T GetEnumDefaultValue<T>()
             where T : struct, Enum
         {
             return (T)GetEnumDefaultValue(typeof(T));
         }
 
-        public static Enum GetEnumDefaultValue(Type enumType)
+        /// <summary>
+        /// Gets the default enum value.
+        /// </summary>
+        /// <remarks>
+        /// Enum value is resolved in following order:<para/>
+        /// 1) enum member that corresponds to the <see cref="DefaultValueAttribute.Value"/> <para/>
+        /// 2) enum member that has explicitly assigned the 0 value <para/>
+        /// 3) first enum member
+        /// </remarks>
+        /// <param name="enumType">The enum type</param>
+        /// <returns>The default enum value</returns>
+        /// <exception cref="ArgumentException">When <paramref name="enumType"/> is not an enum type</exception>
+        public static Enum GetEnumDefaultValue(this Type enumType)
         {
             if (!enumType.IsEnum)
                 throw new ArgumentException($"'{enumType.FullName}' must be an enum type", paramName: nameof(enumType));
@@ -258,8 +281,16 @@ namespace PropertyTools.Wpf
             return (Enum)values.GetValue(0);
         }
 
-
-        public static object GetEnumZeroNumber(Type enumType)
+        /// <summary>
+        /// Gets 0 number for enum type.
+        /// </summary>
+        /// <remarks>
+        /// The enum type may not have enum member with explicitly assigned the 0 value.
+        /// </remarks>
+        /// <param name="enumType">The enum type</param>
+        /// <returns> 0 number. The type may be one of integer types (<seealso cref="System.Int32"/>/<seealso cref="System.Int64"/>/<seealso cref="System.UInt64"/>)</returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static object GetEnumZeroNumber(this Type enumType)
         {
             if (!enumType.IsEnum)
                 throw new ArgumentException($"'{enumType.FullName}' must be an enum type", paramName: nameof(enumType));
@@ -269,8 +300,9 @@ namespace PropertyTools.Wpf
             return zero;
         }
 
-
-
+        /// <summary>
+        /// Checks if enum member has explicitly assigned the 0 value.
+        /// </summary>
         /// <typeparam name="T">defined enum type or 'Sytem.Enum' type</typeparam>
         public static bool IsZeroFlag<T>(this T flag)
              where T : Enum

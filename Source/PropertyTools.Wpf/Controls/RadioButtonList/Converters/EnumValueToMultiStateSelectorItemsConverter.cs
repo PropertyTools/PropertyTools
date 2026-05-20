@@ -114,7 +114,7 @@ namespace PropertyTools.Wpf
                 }
                 else
                 {
-                    // two or more value are not allowed without Flags
+                    // two or more values are not allowed without Flags
                 }
             }
 

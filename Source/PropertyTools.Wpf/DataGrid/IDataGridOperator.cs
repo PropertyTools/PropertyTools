@@ -16,6 +16,34 @@ namespace PropertyTools.Wpf
     /// <summary>
     /// Specifies DataGrid functionality that depends on the type of items source.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// An <b>operator</b> in PropertyTools is a strategy object that encapsulates data-access and data-manipulation
+    /// logic for a control. It acts as an intermediary between the control and its data source, adapting the control's
+    /// behavior to different data structures without requiring the control itself to be modified.
+    /// </para>
+    /// <para>
+    /// The <see cref="IDataGridOperator"/> is the operator interface for the <see cref="DataGrid"/> control. It is
+    /// responsible for reading and writing cell values, managing row and column counts, auto-generating column
+    /// definitions, and performing structural operations such as inserting and deleting rows or columns. Because
+    /// different <see cref="DataGrid.ItemsSource"/> types (e.g., <c>IList&lt;T&gt;</c>, 2-D arrays, <c>DataTable</c>)
+    /// require different data-access strategies, the operator pattern allows each data source type to be supported
+    /// through a dedicated operator implementation.
+    /// </para>
+    /// <para>
+    /// The <see cref="DataGrid"/> selects or creates an appropriate operator automatically when its
+    /// <see cref="DataGrid.ItemsSource"/> changes, but consumers can also supply a custom operator by setting the
+    /// <see cref="DataGrid.Operator"/> property. This follows the <i>Strategy</i> design pattern (GoF), enabling
+    /// open/closed extensibility — new data source types can be supported by implementing this interface without
+    /// modifying the <see cref="DataGrid"/> itself.
+    /// </para>
+    /// <para>
+    /// This interface also extends <see cref="ILocalizableOperator"/> and <see cref="ICustomLocalizableOperator"/>,
+    /// which provide localization support for translating display strings and descriptions within the control.
+    /// </para>
+    /// </remarks>
+    /// <seealso cref="DataGridOperator"/>
+    /// <seealso cref="IDataGridControlFactory"/>
     public interface IDataGridOperator : ILocalizableOperator, ICustomLocalizableOperator
     {
         /// <summary>

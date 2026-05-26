@@ -4071,9 +4071,15 @@ namespace PropertyTools.Wpf
                 if (cell.Row >= this.Rows)
                 {
                     var actualIndex = this.Rows;
-                    this.Operator.InsertRows(actualIndex, 1);
+                    var insertedSourceIndex = this.Operator.InsertItem(actualIndex);
+                    if (insertedSourceIndex < 0)
+                    {
+                        // Insertion failed (e.g., the data source does not support adding items via IList)
+                        return false;
+                    }
+
                     this.CollectionView?.Refresh();
-                    actualIndex = this.Operator.GetCollectionViewIndex(actualIndex);
+                    actualIndex = this.Operator.GetCollectionViewIndex(insertedSourceIndex);
                     actualCell = new CellRef(actualIndex, cell.Column);
                 }
 

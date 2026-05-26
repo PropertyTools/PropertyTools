@@ -42,3 +42,13 @@
 - Microsoft .NET 8 - Windows
 - Microsoft .NET 9 - Windows
 - Microsoft .NET 10 - Windows
+
+### Star History
+
+<a href="https://www.star-history.com/?repos=propertytools%2Fpropertytools&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=propertytools/propertytools&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=propertytools/propertytools&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=propertytools/propertytools&type=date&legend=top-left" />
+ </picture>
+</a>

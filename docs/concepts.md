@@ -107,7 +107,7 @@ using System.Windows;
 public class MyControlFactory : PropertyGridControlFactory
 {
     public override FrameworkElement CreateControl(
-        PropertyItem pi, PropertyControlFactoryOptions options)
+        PropertyItem pi, PropertyControlFactoryOptions options, object instance = null)
     {
         // Provide a custom editor for a specific property type or attribute.
         if (pi.Is(typeof(MySpecialType)))
@@ -116,7 +116,7 @@ public class MyControlFactory : PropertyGridControlFactory
         }
 
         // Fall back to the default behavior for everything else.
-        return base.CreateControl(pi, options);
+        return base.CreateControl(pi, options, instance);
     }
 
     private FrameworkElement CreateMySpecialEditor(PropertyItem pi)

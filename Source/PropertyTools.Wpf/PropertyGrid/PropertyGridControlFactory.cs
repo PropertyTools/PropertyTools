@@ -83,10 +83,11 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="property">The property item.</param>
         /// <param name="options">The options.</param>
+        /// <param name="instance">The instance that owns the property.</param>
         /// <returns>
         /// A element.
         /// </returns>
-        public virtual FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options)
+        public virtual FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options, object instance = null)
         {
             this.UpdateConverter(property);
 

@@ -251,6 +251,7 @@ namespace PropertyTools.Wpf
                 notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
                 {
                     tab.UpdateHasErrors(notifyDataErrorInfoInstance);
+                    errorControl.GetBindingExpression(UIElement.VisibilityProperty)?.UpdateTarget();
                 };
             }
 
@@ -310,7 +311,7 @@ namespace PropertyTools.Wpf
         {
             if (errorInfo is INotifyDataErrorInfo ndei)
             {
-                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.GetErrors(p.PropertyName).Cast<object>().Any(e => e != null)));
             }
             else if (errorInfo is IDataErrorInfo dei)
             {

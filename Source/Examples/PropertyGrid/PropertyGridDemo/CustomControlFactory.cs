@@ -77,6 +77,7 @@ namespace PropertyGridDemo
                     UpdateTabForValidationResults(tab, notifyDataErrorInfoInstance);
                     //needed to refresh error control's binding also when error changes (i.e from Error to Warning)
                     errorControl.GetBindingExpression(ContentControl.ContentProperty).UpdateTarget();
+                    errorControl.GetBindingExpression(UIElement.VisibilityProperty)?.UpdateTarget();
                 };
 
             }

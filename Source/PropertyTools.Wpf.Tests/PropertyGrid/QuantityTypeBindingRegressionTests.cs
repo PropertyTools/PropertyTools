@@ -68,7 +68,7 @@ namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
                     "Radius",
                     new Attribute[]
                     {
-                        new ConverterAttribute(typeof(FakeLengthConverter)),
+                        new ConverterAttribute(typeof(TestLengthConverter)),
                         new System.ComponentModel.CategoryAttribute("Geometry"),
                     })
             {
@@ -89,8 +89,8 @@ namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
                 => ((SectionModel)component).Radius = ((Length)value).Value;
         }
 
-        // Placeholder converter type referenced by the ConverterAttribute above.
-        private class FakeLengthConverter : System.Windows.Data.IValueConverter
+        // Converter type referenced by the ConverterAttribute above.
+        private class TestLengthConverter : System.Windows.Data.IValueConverter
         {
             public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
                 => value is Length l ? $"{l.Value} m" : System.Windows.DependencyProperty.UnsetValue;

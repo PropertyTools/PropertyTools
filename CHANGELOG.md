@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- PropertyGridDemos: Added QuantityTypeRegressionExample reproducing issue #511 — demonstrates that ICustomTypeDescriptor models with quantity-type properties (Length, Angle) backed by a different CLR type have their custom descriptors silently replaced by reflection descriptors, causing the PropertyGrid to show the wrong control type and discard keyboard input #511
+- PropertyTools.Wpf.Tests: Added QuantityTypeBindingRegressionTests reproducing issue #511 in code — verifies that ReplaceWithReflectionDescriptors substitutes the custom Length descriptor with the CLR double descriptor, and that SetValue subsequently throws when the LengthConverter's ConvertBack returns a Length value #511
 - PropertyGridDemos: Added ConnectionStringBuilderExample demonstrating the fix for issue #288 – PropertyGrid now works correctly when bound to a DbConnectionStringBuilder subclass (fixed: null checkboxes, broken enum radio-buttons, byte[] StringFormat exception) #288
 - TreeListBoxDemo: Added NonEnglishCultureExample demonstrating that the "Height must be non-negative" workaround works on non-English systems #290
 - PropertyGrid: Added CategoryAttribute .TabSortIndex and .GroupSortIndex properties including CategoryAttributeOrderedExample that demonstates expicit ordering of tabs & groups  #494

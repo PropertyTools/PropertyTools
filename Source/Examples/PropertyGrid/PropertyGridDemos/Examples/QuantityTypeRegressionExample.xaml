@@ -1,0 +1,29 @@
+﻿<Window x:Class="PropertyGridDemos.QuantityTypeRegressionExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:d="clr-namespace:PropertyGridDemos"
+        Title="Quantity-type PropertyGrid regression (issue #511)" Height="520" Width="900">
+    <Window.DataContext>
+        <d:QuantityTypeRegressionExampleViewModel/>
+    </Window.DataContext>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" TextWrapping="Wrap" Margin="0,0,0,10">
+            Reproduces issue #511 (regression from commit cf4106b):
+            The "Radius" property of SectionModel is backed by a CLR double field but exposed via
+            ICustomTypeDescriptor as a Length type with a LengthToStringConverter.
+            EXPECTED: the PropertyGrid shows "10 m" in a text box and accepts "15 m" as input.
+            ACTUAL (bug): ReplaceWithReflectionDescriptors substitutes the custom Length descriptor
+            with the CLR double descriptor, so the PropertyGrid shows a numeric spinbox showing "10"
+            and the LengthToStringConverter is never applied.  Typing "15 m" is silently discarded
+            because the double descriptor's SetValue rejects a Length value.
+        </TextBlock>
+
+        <p:PropertyGrid Grid.Row="1" SelectedObject="{Binding SectionModel}"/>
+    </Grid>
+</Window>

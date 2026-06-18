@@ -52,7 +52,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// A element.
         /// </returns>
-        FrameworkElement CreateControl(PropertyItem propertyItem, PropertyControlFactoryOptions options, object instance = null);
+        FrameworkElement CreateControl(PropertyItem propertyItem, PropertyControlFactoryOptions options, object instance);
 
         /// <summary>
         /// Creates the error control.

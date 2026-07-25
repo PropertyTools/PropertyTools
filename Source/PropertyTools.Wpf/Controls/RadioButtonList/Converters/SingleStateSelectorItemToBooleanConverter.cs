@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SelectorItemToBooleanConverter.cs" company="PropertyTools">
+// <copyright file="SingleStateSelectorItemToBooleanConverter.cs" company="PropertyTools">
 //   Copyright (c) 2025 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Represents a control that shows a list of radio buttons.
+//  single-select control item to selected state converter (for example, radiobutton list)
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,12 +17,14 @@ namespace PropertyTools.Wpf
     using PropertyTools.Wpf.Common;
 
     /// <summary>
-    /// single-select control item to selected state converter (for example, radiobutton list)
+    /// single-select control item to selected state converter (for example, radiobutton list).
+    /// If source type is a simple type  (string, int, decimal, boolean, DateTime, etc) then <see cref="SelectorDefinition.SelectedValuePath"/> must be null. <para/>
+    /// If source type is a class then <see cref="SelectorDefinition.SelectedValuePath"/> must be a property of source class.
     /// </summary>
-    /// <summary>
-    /// Enum to Boolean converter
-    /// Usage 'Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static value...}'
-    /// </summary>
+    /// <remarks>
+    ///  Object to Boolean converter
+    /// Usage 'Converter={StaticResource SingleStateSelectorItemToBooleanConverter}, ConverterParameter={x:Static value...}' <para/>    
+    /// </remarks>
     [ValueConversion(typeof(object), typeof(bool))]
     public class SingleStateSelectorItemToBooleanConverter : IValueConverter
     {
@@ -56,7 +58,11 @@ namespace PropertyTools.Wpf
                 return DependencyProperty.UnsetValue;
             }
 
-            if (ReflectionExtensions.TryGetFieldOrPropertyValue(parameter, SelectorDefinition.SelectedValuePath, out object objTargetValue))
+            if (string.IsNullOrEmpty(SelectorDefinition.SelectedValuePath))
+            {
+                return object.Equals(value, parameter);
+            }
+            else if (ReflectionExtensions.TryGetFieldOrPropertyValue(parameter, SelectorDefinition.SelectedValuePath, out object objTargetValue))
             {
                 if (value == null)
                 {
@@ -90,12 +96,11 @@ namespace PropertyTools.Wpf
                 bool boolValue = System.Convert.ToBoolean(value, culture);
                 if (boolValue)
                 {
-                    if (parameter == null)
+                    if (string.IsNullOrEmpty(SelectorDefinition.SelectedValuePath))
                     {
                         return parameter;
                     }
-
-                    if (ReflectionExtensions.TryGetFieldOrPropertyValue(parameter, SelectorDefinition.SelectedValuePath, out object objTargetValue))
+                    else if (ReflectionExtensions.TryGetFieldOrPropertyValue(parameter, SelectorDefinition.SelectedValuePath, out object objTargetValue))
                     {
                         return objTargetValue;
                     }

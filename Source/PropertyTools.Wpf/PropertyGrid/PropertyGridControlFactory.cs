@@ -252,6 +252,7 @@ namespace PropertyTools.Wpf
                 {
                     tab.UpdateHasErrors(notifyDataErrorInfoInstance);
                     errorControl.GetBindingExpression(UIElement.VisibilityProperty)?.UpdateTarget();
+                    errorControl.GetBindingExpression(ContentControl.ContentProperty)?.UpdateTarget();
                 };
             }
 

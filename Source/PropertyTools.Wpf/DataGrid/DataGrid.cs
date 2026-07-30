@@ -700,6 +700,11 @@ namespace PropertyTools.Wpf
         private INotifyCollectionChanged subscribedCollection;
 
         /// <summary>
+        /// References to the item collections (e.g. rows or columns of a list of lists) that have subscribed to the INotifyCollectionChanged event.
+        /// </summary>
+        private readonly List<INotifyCollectionChanged> subscribedItemCollections = new List<INotifyCollectionChanged>();
+
+        /// <summary>
         /// The top/left control.
         /// </summary>
         private Border topLeft;
@@ -1459,6 +1464,13 @@ namespace PropertyTools.Wpf
             if (managerType == typeof(CollectionChangedEventManager) && sender == this.subscribedCollection)
             {
                 this.OnItemsCollectionChanged(e as NotifyCollectionChangedEventArgs);
+
+                return true;
+            }
+
+            if (managerType == typeof(CollectionChangedEventManager) && sender is INotifyCollectionChanged itemCollection && this.subscribedItemCollections.Contains(itemCollection))
+            {
+                this.OnItemCollectionChanged(e as NotifyCollectionChangedEventArgs);
 
                 return true;
             }
@@ -3679,6 +3691,10 @@ namespace PropertyTools.Wpf
 
             if (e.Action == NotifyCollectionChangedAction.Replace && e.NewStartingIndex >= 0)
             {
+                // The replaced item(s) may be new collection instances (e.g. a new row/column collection),
+                // so the item collection subscriptions need to be updated.
+                this.SyncItemCollectionSubscriptions();
+
                 // For Replace actions (e.g. list[i] = newValue), only update the affected cell(s)
                 // instead of rebuilding the entire grid content.
                 this.Dispatcher.Invoke(
@@ -3703,7 +3719,53 @@ namespace PropertyTools.Wpf
                 return;
             }
 
+            // Rows/columns may have been added or removed, so the item collection subscriptions need to be updated.
+            this.SyncItemCollectionSubscriptions();
+
             this.Dispatcher.Invoke(this.UpdateGridContent);
+        }
+
+        /// <summary>
+        /// Handles changes to one of the item collections (e.g. a row or column of a list of lists).
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        private void OnItemCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            if (this.suspendCollectionChangedNotifications)
+            {
+                return;
+            }
+
+            // The number of columns/rows may have changed, so the grid content needs to be rebuilt.
+            this.Dispatcher.Invoke(this.UpdateGridContent);
+        }
+
+        /// <summary>
+        /// Subscribes to the <see cref="INotifyCollectionChanged" /> event of every item in the <see cref="ItemsSource" />
+        /// (e.g. the rows or columns of a list of lists), so that changes to the number of columns/rows are detected.
+        /// </summary>
+        private void SyncItemCollectionSubscriptions()
+        {
+            foreach (var collection in this.subscribedItemCollections)
+            {
+                CollectionChangedEventManager.RemoveListener(collection, this);
+            }
+
+            this.subscribedItemCollections.Clear();
+
+            if (this.ItemsSource == null)
+            {
+                return;
+            }
+
+            foreach (var item in this.ItemsSource)
+            {
+                if (item is INotifyCollectionChanged itemCollection)
+                {
+                    CollectionChangedEventManager.AddListener(itemCollection, this);
+                    this.subscribedItemCollections.Add(itemCollection);
+                }
+            }
         }
 
         /// <summary>
@@ -4581,6 +4643,10 @@ namespace PropertyTools.Wpf
                 CollectionChangedEventManager.AddListener(this.CollectionView, this);
                 this.subscribedCollection = this.CollectionView;
             }
+
+            // Subscribe to the item collections (e.g. the rows or columns of a list of lists) so that
+            // changes to the number of columns/rows are detected, see https://github.com/PropertyTools/PropertyTools/issues/234
+            this.SyncItemCollectionSubscriptions();
         }
 
         /// <summary>
@@ -4603,8 +4669,9 @@ namespace PropertyTools.Wpf
 
             this.Operator = this.CreateOperator();
 
-            if (this.AutoGenerateColumns && this.ColumnDefinitions.Count == 0)
+            if (this.AutoGenerateColumns && (this.ColumnDefinitions.Count == 0 || this.Operator.ShouldRegenerateColumns()))
             {
+                this.ColumnDefinitions.Clear();
                 this.Operator.AutoGenerateColumns();
             }
 

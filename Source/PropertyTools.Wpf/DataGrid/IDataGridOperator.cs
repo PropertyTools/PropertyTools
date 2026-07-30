@@ -52,6 +52,15 @@ namespace PropertyTools.Wpf
         void AutoGenerateColumns();
 
         /// <summary>
+        /// Determines whether the auto-generated columns are out of sync with the <see cref="DataGrid.ItemsSource" />
+        /// and should be regenerated, e.g. because the number of columns has changed.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the auto-generated columns should be regenerated; otherwise <c>false</c>.
+        /// </returns>
+        bool ShouldRegenerateColumns();
+
+        /// <summary>
         /// Updates the property definitions.
         /// </summary>
         void UpdatePropertyDefinitions();

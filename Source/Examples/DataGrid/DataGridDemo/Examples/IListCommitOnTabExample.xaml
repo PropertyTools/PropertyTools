@@ -1,0 +1,27 @@
+<Window x:Class="DataGridDemo.IListCommitOnTabExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="Issue #81: IList TAB commit"
+        Width="450"
+        Height="260">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Margin="0,0,0,8" TextWrapping="Wrap">
+            Repro steps: edit the first value (for example from 0 kg to 5), then press TAB.
+            This example uses an IList source that raises CollectionChanged(Replace) from the indexer setter.
+        </TextBlock>
+
+        <p:DataGrid Grid.Row="1"
+                    ItemsSource="{Binding ItemsSource}"
+                    CellDefinitionFactory="{Binding CellDefinitionFactory}">
+            <p:DataGrid.ColumnDefinitions>
+                <p:ColumnDefinition PropertyName="" Header="Mass" />
+            </p:DataGrid.ColumnDefinitions>
+        </p:DataGrid>
+    </Grid>
+</Window>

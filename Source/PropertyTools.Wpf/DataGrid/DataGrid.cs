@@ -2278,6 +2278,11 @@ namespace PropertyTools.Wpf
                 return null;
             }
 
+            if (list is System.Data.DataView)
+            {
+                return new DataViewOperator(this);
+            }
+
             if (TypeHelper.IsIListIList(list))
             {
                 return new ListListOperator(this);

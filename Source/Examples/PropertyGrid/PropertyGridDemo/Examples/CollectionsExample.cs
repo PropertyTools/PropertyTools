@@ -125,9 +125,9 @@ namespace ExampleLibrary
 
     /// <summary>
     /// An item type where the properties have <see cref="System.ComponentModel.DisplayNameAttribute"/> and
-    /// <see cref="PropertyTools.DataAnnotations.DisplayNameAttribute"/> applied, used to reproduce
-    /// https://github.com/PropertyTools/PropertyTools/issues/191 (it should be possible to change the column
-    /// header text of an auto-generated collection column, but the DisplayName attributes are currently ignored).
+    /// <see cref="PropertyTools.DataAnnotations.DisplayNameAttribute"/> applied, demonstrating the fix for
+    /// https://github.com/PropertyTools/PropertyTools/issues/191 - auto-generated collection column headers
+    /// now use the DisplayName attributes instead of falling back to the raw property name.
     /// </summary>
     public class ItemWithDisplayName : Observable
     {

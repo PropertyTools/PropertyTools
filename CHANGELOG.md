@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Added new examples for `List<bool>`, `bool[]`, `string[]`, `ObservableCollection<bool>`, `ObservableCollection<Fruit>`, `ObservableCollection<Color>`, and `ObservableCollection<Vector3D>` #157
 
 ### Fixed
+- PropertyGrid/TreeListBox/DataGrid: Fixed reflection-based attribute, sort, and tree-child lookups plus hardened TimeSpan parsing for invalid edit input #TBD
 - PropertyGrid: Fixed `[AutoUpdateText]` on floating-point properties so decimal separators can be entered while typing; added `AutoUpdateFloatingPointExample` to PropertyGridDemo for manual verification #89
 - DataGrid: Fixed cells not refreshing after editing in non-observable collections (`double[]`, `int[][]`, `List<int>`, `List<string>`, `List<Vector3D>`, WrapItems variants) — `CurrentCellSourceUpdated` now calls `UpdateCellContent` for the changed cell when the source does not implement `INotifyCollectionChanged` #157
 - DataGrid: Fixed `List<string>` showing `Length` column instead of the string value — `GenerateColumnDefinitions` now skips Strategy 2 (property-based columns) for simple scalar types such as `string`, `bool`, numeric primitives, `DateTime`, `enum`, etc. #157

@@ -80,7 +80,34 @@ namespace PropertyTools.Wpf
         /// </returns>
         public TimeSpan Parse(string value)
         {
+            TimeSpan result;
+            if (this.TryParse(value, out result))
+            {
+                return result;
+            }
+
+            throw new FormatException(string.Format("Invalid TimeSpan value '{0}'.", value));
+        }
+
+        /// <summary>
+        /// Tries to parse the specified time span string.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="result">The parsed time span.</param>
+        /// <returns><c>true</c> if parsing succeeded; otherwise, <c>false</c>.</returns>
+        public bool TryParse(string value, out TimeSpan result)
+        {
+            result = default(TimeSpan);
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return false;
+            }
+
             var r = this.Expression.Match(value);
+            if (!r.Success)
+            {
+                return false;
+            }
 
             int days = 0;
             int hours = 0;
@@ -132,7 +159,8 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            return new TimeSpan(days, hours, minutes, seconds, milliseconds);
+            result = new TimeSpan(days, hours, minutes, seconds, milliseconds);
+            return true;
         }
     }
 }

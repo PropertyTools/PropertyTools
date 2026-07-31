@@ -14,6 +14,7 @@ namespace PropertyTools.Wpf
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Automation.Peers;
     using System.Windows.Controls;
@@ -79,6 +80,11 @@ namespace PropertyTools.Wpf
         /// A map from item to children. This is used to show the child items.
         /// </summary>
         private readonly Dictionary<object, IList> itemToChildrenMap = new Dictionary<object, IList>();
+
+        /// <summary>
+        /// A cache of children properties resolved by reflection.
+        /// </summary>
+        private readonly Dictionary<Tuple<Type, string>, PropertyInfo> childrenPropertyCache = new Dictionary<Tuple<Type, string>, PropertyInfo>();
 
         /// <summary>
         /// The is expanded map.
@@ -837,8 +843,26 @@ namespace PropertyTools.Wpf
         /// <returns>A list of children.</returns>
         private IList GetChildrenCollectionByReflection(object item)
         {
-            var pi = item.GetType().GetProperty(this.ChildrenPath);
-            var children = pi?.GetValue(item, null) as IList ?? new List<object>();
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var key = Tuple.Create(item.GetType(), this.ChildrenPath);
+            PropertyInfo property;
+            if (!this.childrenPropertyCache.TryGetValue(key, out property))
+            {
+                property = item.GetType().GetProperty(this.ChildrenPath);
+                if (property == null)
+                {
+                    throw new InvalidOperationException(
+                        string.Format("Property '{0}' not found on type '{1}'.", this.ChildrenPath, item.GetType()));
+                }
+
+                this.childrenPropertyCache[key] = property;
+            }
+
+            var children = property.GetValue(item, null) as IList ?? new List<object>();
             return children;
         }
     }

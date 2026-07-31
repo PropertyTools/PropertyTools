@@ -511,6 +511,13 @@ namespace PropertyTools.Wpf
                 if (descriptor != null)
                 {
                     descriptor.SetValue(item, convertedValue);
+
+                    // For value types (structs), descriptor.SetValue modifies the boxed copy but not the
+                    // original item in the collection. Write the modified value back to the collection.
+                    if (item.GetType().IsValueType)
+                    {
+                        this.SetValue(cell, item);
+                    }
                 }
                 else
                 {

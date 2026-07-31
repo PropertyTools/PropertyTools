@@ -1,36 +1,38 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WrapItemsExample.xaml.cs" company="PropertyTools">
+// <copyright file="ListOfBoolExample.xaml.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for WrapItemsExample.xaml
+//   Interaction logic for ListOfBoolExample.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace DataGridDemo
 {
+    using System.Collections.Generic;
+
     /// <summary>
-    /// Interaction logic for WrapItemsExample.xaml
+    /// Interaction logic for ListOfBoolExample.
     /// </summary>
-    public partial class WrapItemsExample
+    public partial class ListOfBoolExample
     {
         /// <summary>
-        /// The static items source.
+        /// The items source
         /// </summary>
-        private static readonly double[] itemsSource = { 11.0, 12, 13, 21, 22, 23, 31, 32, 33 };
+        private static readonly List<bool> itemsSource = new List<bool> { true, false, true, false, true };
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WrapItemsExample" /> class.
+        /// Initializes a new instance of the <see cref="ListOfBoolExample" /> class.
         /// </summary>
-        public WrapItemsExample()
+        public ListOfBoolExample()
         {
             this.InitializeComponent();
             this.DataContext = this;
         }
 
         /// <summary>
-        /// Gets or sets the items.
+        /// Gets the items.
         /// </summary>
-        public double[] ItemsSource => itemsSource;
+        public IList<bool> ItemsSource => itemsSource;
     }
 }

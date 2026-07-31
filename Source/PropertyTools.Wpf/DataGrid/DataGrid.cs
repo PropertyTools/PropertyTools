@@ -3019,7 +3019,14 @@ namespace PropertyTools.Wpf
 
                 if (cell.Equals(changedCell))
                 {
-                    // the current cell should already be set
+                    // The binding has already updated the source for the changed cell.
+                    // For non-observable collections that don't raise change notifications,
+                    // explicitly refresh the display control to show the updated value.
+                    if (!(this.ItemsSource is INotifyCollectionChanged))
+                    {
+                        this.UpdateCellContent(changedCell);
+                    }
+
                     continue;
                 }
 

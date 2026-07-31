@@ -73,46 +73,69 @@ namespace PropertyTools.Wpf
             }
 
             // Strategy 2: get properties from type descriptor
+            // Skip strategy 2 for simple/primitive types (e.g. string, int, double) that should
+            // be displayed as a single value rather than via their properties. For example,
+            // string has a Length property that would incorrectly be shown as a column.
             var itemType = this.GetItemType(list);
-            var properties = TypeDescriptor.GetProperties(itemType);
-            if (properties.Count == 0)
+            if (!IsSimpleType(itemType))
             {
-                // Otherwise try to get the property descriptors from an instance
-                properties = GetPropertiesFromInstance(list, itemType);
-            }
-
-            if (properties.Count > 0)
-            {
-                foreach (PropertyDescriptor descriptor in properties)
+                var properties = TypeDescriptor.GetProperties(itemType);
+                if (properties.Count == 0)
                 {
-                    if (!descriptor.IsBrowsable)
-                    {
-                        continue;
-                    }
-
-                    var cd = new ColumnDefinition
-                    {
-                        PropertyName = descriptor.Name,
-                        Header = this.GetLocalizedString(descriptor.Name, declaringType: descriptor.ComponentType),
-                        HorizontalAlignment = this.DefaultHorizontalAlignment,
-                        Width = this.DefaultColumnWidth
-                    };
-
-                    yield return cd;
+                    // Otherwise try to get the property descriptors from an instance
+                    properties = GetPropertiesFromInstance(list, itemType);
                 }
 
-                yield break;
+                if (properties.Count > 0)
+                {
+                    foreach (PropertyDescriptor descriptor in properties)
+                    {
+                        if (!descriptor.IsBrowsable)
+                        {
+                            continue;
+                        }
+
+                        var cd = new ColumnDefinition
+                        {
+                            PropertyName = descriptor.Name,
+                            Header = this.GetLocalizedString(descriptor.Name, declaringType: descriptor.ComponentType),
+                            HorizontalAlignment = this.DefaultHorizontalAlignment,
+                            Width = this.DefaultColumnWidth
+                        };
+
+                        yield return cd;
+                    }
+
+                    yield break;
+                }
             }
 
             // Strategy 3: create a single column
-            var itemsType = this.GetItemType(list);
             yield return
                 new ColumnDefinition
                 {
-                    Header = this.GetLocalizedString(itemsType.Name, itemsType),
+                    Header = this.GetLocalizedString(itemType.Name, itemType),
                     HorizontalAlignment = this.DefaultHorizontalAlignment,
                     Width = this.DefaultColumnWidth
                 };
+        }
+
+        /// <summary>
+        /// Determines whether the specified type is a simple scalar type that should be displayed
+        /// as a single value rather than via its properties.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns><c>true</c> if the type is simple; otherwise <c>false</c>.</returns>
+        private static bool IsSimpleType(Type type)
+        {
+            return type.IsPrimitive
+                || type == typeof(string)
+                || type == typeof(decimal)
+                || type == typeof(DateTime)
+                || type == typeof(DateTimeOffset)
+                || type == typeof(TimeSpan)
+                || type == typeof(Guid)
+                || type.IsEnum;
         }
 
         /// <summary>

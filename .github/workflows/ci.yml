@@ -7,7 +7,45 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  build:
+  # Layer 1: build verification and cross-platform (non-WPF) tests on Linux.
+  # WPF cannot be executed on Linux, but the whole solution can be compiled
+  # thanks to EnableWindowsTargeting, and the PropertyTools.Tests project
+  # (Category=CrossPlatform) runs everywhere.
+  linux:
+    name: Build and cross-platform tests (Linux)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: |
+          8.0.x
+          10.0.x
+
+    - name: Build solution
+      run: dotnet build Source/PropertyTools.sln
+
+    - name: Execute cross-platform unit tests
+      run: dotnet test Source/PropertyTools.Tests/PropertyTools.Tests.csproj --logger trx --results-directory TestResults
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-linux
+        path: TestResults
+
+  # Layers 1-3: full test suite on Windows, including headless in-process WPF
+  # component tests (Category=WpfHeadless), example-driven smoke tests
+  # (Category=ExampleSmoke) and visual snapshot tests (Category=Visual).
+  windows:
+    name: Build, tests and packaging (Windows)
     runs-on: windows-latest
 
     steps:
@@ -31,7 +69,24 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Execute unit tests
-      run: dotnet test Source\PropertyTools.sln
+      run: dotnet test Source\PropertyTools.sln --logger trx --results-directory TestResults
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-windows
+        path: TestResults
+
+    - name: Upload visual snapshots
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: visual-snapshots
+        path: |
+          **/bin/**/Snapshots/*.png
+          **/TestResults/**/Snapshots/*.png
+        if-no-files-found: ignore
 
     - name: Restore the application
       run: msbuild Source\PropertyTools.sln /t:Restore /p:Configuration=Release

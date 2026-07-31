@@ -1,0 +1,41 @@
+name: UI Tests (E2E)
+
+# End-to-end UI automation tests (FlaUI/UIA3) driving the DemoLauncher app.
+# These are slower and more sensitive to the desktop environment than the
+# headless test layers, so they run nightly and on demand instead of on
+# every pull request.
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  ui-tests:
+    name: End-to-end UI tests (Windows)
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: |
+          8.0.x
+          10.0.x
+
+    - name: Build DemoLauncher
+      run: dotnet build Source\Examples\DemoLauncher\DemoLauncher.csproj --configuration Release
+
+    - name: Execute end-to-end UI tests
+      run: dotnet test Source\PropertyTools.Wpf.UITests\PropertyTools.Wpf.UITests.csproj --configuration Release --filter TestCategory=E2E --logger trx --results-directory TestResults
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ui-test-results
+        path: TestResults

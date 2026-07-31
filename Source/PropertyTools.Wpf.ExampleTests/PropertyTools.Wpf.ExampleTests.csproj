@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PropertyTools.Wpf\PropertyTools.Wpf.csproj" />
+    <ProjectReference Include="..\PropertyTools\PropertyTools.csproj" />
+    <ProjectReference Include="..\Examples\ExampleLibrary\ExampleLibrary.csproj" />
+    <!-- Reference the example projects so their assemblies are available for smoke testing -->
+    <ProjectReference Include="..\Examples\Controls\ControlDemos\ControlDemos.csproj" />
+    <ProjectReference Include="..\Examples\Controls\DialogDemos\DialogDemos.csproj" />
+    <ProjectReference Include="..\Examples\DataGrid\DataGridDemo\DataGridDemo.csproj" />
+    <ProjectReference Include="..\Examples\ItemsBag\ItemsBagDemo\ItemsBagDemo.csproj" />
+    <ProjectReference Include="..\Examples\PropertyGrid\PropertyGridDemo\PropertyGridDemo.csproj" />
+    <ProjectReference Include="..\Examples\PropertyGrid\PropertyGridDemos\PropertyGridDemos.csproj" />
+    <ProjectReference Include="..\Examples\PropertyGrid\SimpleDemo\SimpleDemo.csproj" />
+    <ProjectReference Include="..\Examples\PropertyGrid\CustomFactoryDemo\CustomFactoryDemo.csproj" />
+    <ProjectReference Include="..\Examples\PropertyGrid\UndoRedoDemo\UndoRedoDemo.csproj" />
+    <ProjectReference Include="..\Examples\TreeListBox\TreeListBoxDemo\TreeListBoxDemo.csproj" />
+    <ProjectReference Include="..\Examples\TreeListBox\DirectoryDemo\DirectoryDemo.csproj" />
+    <ProjectReference Include="..\Examples\TreeListBox\AddRemoveDemo\AddRemoveDemo.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="4.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.SDK" Version="18.0.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.0.1" />
+  </ItemGroup>
+</Project>

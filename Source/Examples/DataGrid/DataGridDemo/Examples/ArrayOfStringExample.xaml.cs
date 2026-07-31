@@ -15,18 +15,22 @@ namespace DataGridDemo
     public partial class ArrayOfStringExample
     {
         /// <summary>
+        /// The items source.
+        /// </summary>
+        private static readonly string[] itemsSource = { "Peugeot", "Volvo", "Tesla", "Renault", "Audi" };
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ArrayOfStringExample" /> class.
         /// </summary>
         public ArrayOfStringExample()
         {
             this.InitializeComponent();
-            this.ItemsSource = new[] { "Peugeot", "Volvo", "Tesla", "Renault", "Audi" };
             this.DataContext = this;
         }
 
         /// <summary>
-        /// Gets or sets the items.
+        /// Gets the items.
         /// </summary>
-        public string[] ItemsSource { get; set; }
+        public string[] ItemsSource => itemsSource;
     }
 }

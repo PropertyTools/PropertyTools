@@ -15,18 +15,22 @@ namespace DataGridDemo
     public partial class ArrayOfBoolExample
     {
         /// <summary>
+        /// The items source.
+        /// </summary>
+        private static readonly bool[] itemsSource = { true, false, true, false, true };
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ArrayOfBoolExample" /> class.
         /// </summary>
         public ArrayOfBoolExample()
         {
             this.InitializeComponent();
-            this.ItemsSource = new[] { true, false, true, false, true };
             this.DataContext = this;
         }
 
         /// <summary>
-        /// Gets or sets the items.
+        /// Gets the items.
         /// </summary>
-        public bool[] ItemsSource { get; set; }
+        public bool[] ItemsSource => itemsSource;
     }
 }

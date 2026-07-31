@@ -1,0 +1,13 @@
+﻿<Window x:Class="DataGridDemo.ObservableCollectionOfColorExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="ObservableCollection&lt;Color&gt;" Height="450" Width="300">
+    <Grid>
+        <p:DataGrid ItemsSource="{Binding Items}">
+            <p:DataGrid.ColumnDefinitions>
+                <p:ColumnDefinition Header="Color"/>
+            </p:DataGrid.ColumnDefinitions>
+        </p:DataGrid>
+    </Grid>
+</Window>

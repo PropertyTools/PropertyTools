@@ -158,6 +158,40 @@ namespace PropertyTools.Wpf.Tests
             Assert.That(lines[0], Is.EqualTo("r0c0,r0c1,r0c2"));
         }
 
+        [Test]
+        public void ShouldToggleCheckOnMouseUp_BooleanCellSingleClickWithoutShift_ReturnsTrue()
+        {
+            // Arrange
+            var method = typeof(DataGrid).GetMethod(
+                "ShouldToggleCheckOnMouseUp",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+            // Act
+            var result = (bool)method.Invoke(null, new object[] { false, 1, true });
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void ShouldToggleCheckOnMouseUp_NonBooleanOrShiftOrDoubleClick_ReturnsFalse()
+        {
+            // Arrange
+            var method = typeof(DataGrid).GetMethod(
+                "ShouldToggleCheckOnMouseUp",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+            // Act
+            var shiftedResult = (bool)method.Invoke(null, new object[] { true, 1, true });
+            var doubleClickResult = (bool)method.Invoke(null, new object[] { false, 2, true });
+            var nonBooleanResult = (bool)method.Invoke(null, new object[] { false, 1, "true" });
+
+            // Assert
+            Assert.That(shiftedResult, Is.False);
+            Assert.That(doubleClickResult, Is.False);
+            Assert.That(nonBooleanResult, Is.False);
+        }
+
         /// <summary>
         /// Testable DataGrid that exposes protected methods for testing.
         /// Overrides GetCellStrings to supply deterministic cell values without

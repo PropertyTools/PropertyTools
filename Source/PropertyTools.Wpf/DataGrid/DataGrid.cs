@@ -665,6 +665,16 @@ namespace PropertyTools.Wpf
         private bool isRangeSelectionDrag;
 
         /// <summary>
+        /// The cell where the current mouse interaction started.
+        /// </summary>
+        private CellRef mouseDownCell;
+
+        /// <summary>
+        /// Indicates whether the current mouse interaction should toggle a boolean cell on mouse up.
+        /// </summary>
+        private bool shouldToggleCheckOnMouseUp;
+
+        /// <summary>
         /// The sheet grid control.
         /// </summary>
         private Grid sheetGrid;
@@ -1861,6 +1871,8 @@ namespace PropertyTools.Wpf
 
             this.mouseDownPositionOnScreen = this.PointToScreen(e.GetPosition(this));
             this.isRangeSelectionDrag = false;
+            this.mouseDownCell = new CellRef(-1, -1);
+            this.shouldToggleCheckOnMouseUp = false;
 
             var pos = e.GetPosition(this.sheetGrid);
             var cellRef = this.GetCell(pos);
@@ -1898,6 +1910,8 @@ namespace PropertyTools.Wpf
 
                     this.SelectionCell = cellRef;
                     this.ScrollIntoView(cellRef);
+                    this.mouseDownCell = cellRef;
+                    this.shouldToggleCheckOnMouseUp = ShouldToggleCheckOnMouseUp(shift, e.ClickCount, this.GetCellValue(cellRef));
                 }
 
                 Mouse.OverrideCursor = this.sheetGrid.Cursor;
@@ -1915,8 +1929,18 @@ namespace PropertyTools.Wpf
         {
             this.OnMouseUp(e);
 
+            if (this.shouldToggleCheckOnMouseUp && !this.isRangeSelectionDrag)
+            {
+                var cellRef = this.GetCell(e.GetPosition(this.sheetGrid));
+                if (cellRef.Equals(this.mouseDownCell))
+                {
+                    this.ToggleCheck();
+                }
+            }
+
             this.mouseDownPositionOnScreen = null;
             this.isRangeSelectionDrag = false;
+            this.shouldToggleCheckOnMouseUp = false;
 
             this.ReleaseMouseCapture();
             Mouse.OverrideCursor = null;
@@ -4029,6 +4053,11 @@ namespace PropertyTools.Wpf
             }
 
             return this.SetCheckInSelectedCells(value);
+        }
+
+        private static bool ShouldToggleCheckOnMouseUp(bool shiftPressed, int clickCount, object cellValue)
+        {
+            return !shiftPressed && clickCount == 1 && cellValue is bool;
         }
 
         /// <summary>

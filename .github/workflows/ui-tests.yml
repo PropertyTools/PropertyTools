@@ -9,6 +9,9 @@ on:
     - cron: '0 3 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   ui-tests:
     name: End-to-end UI tests (Windows)

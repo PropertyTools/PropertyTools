@@ -6,7 +6,6 @@
 
 namespace PropertyTools.Wpf.Tests
 {
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
 
@@ -15,10 +14,7 @@ namespace PropertyTools.Wpf.Tests
     using PropertyTools.Wpf;
 
     /// <summary>
-    /// Tests for DataGrid behavior when the items source is a <see cref="DataView" />.
-    /// Covers the bug where pasting into a sorted DataView-backed DataGrid threw
-    /// <see cref="System.InvalidOperationException" /> from <c>GetCollectionViewIndex</c>
-    /// because <c>HandleAutoInsert</c> did not check whether row insertion succeeded.
+    /// Tests for <see cref="DataViewOperator" /> and DataGrid behavior when the items source is a <see cref="DataView" />.
     /// </summary>
     [TestFixture]
     [Apartment(System.Threading.ApartmentState.STA)]
@@ -41,37 +37,206 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void InsertItem_DataViewItemsSource_ReturnsMinus1()
+        public void CreateOperator_DataViewItemsSource_ReturnsDataViewOperator()
+        {
+            // Arrange
+            var dataView = CreateSampleDataTable().DefaultView;
+            var dataGrid = new DataGrid();
+
+            // Act
+            dataGrid.ItemsSource = dataView;
+
+            // Assert
+            Assert.That(dataGrid.Operator, Is.InstanceOf<DataViewOperator>());
+        }
+
+        [Test]
+        public void InsertItem_DataViewItemsSource_AppendsRow()
         {
             // Arrange
             var dataView = CreateSampleDataTable().DefaultView;
             var dataGrid = new DataGrid();
             dataGrid.ItemsSource = dataView;
-            var listOperator = new ListOperator(dataGrid);
+            var initialCount = dataView.Count;
+            var op = new DataViewOperator(dataGrid);
 
-            // Act - attempting to insert at a specific position (mirrors HandleAutoInsert which
-            // calls InsertItem(this.Rows)).  DataView does not support IList.Insert, so this
-            // should fail and return -1.
-            var result = listOperator.InsertItem(dataView.Count);
+            // Act
+            var result = op.InsertItem(-1);
+
+            // Assert
+            Assert.That(result, Is.GreaterThanOrEqualTo(0));
+            Assert.That(dataView.Count, Is.EqualTo(initialCount + 1));
+        }
+
+        [Test]
+        public void InsertItem_DataViewWithAllowNewFalse_ReturnsMinus1()
+        {
+            // Arrange
+            var dataView = CreateSampleDataTable().DefaultView;
+            dataView.AllowNew = false;
+            var dataGrid = new DataGrid();
+            dataGrid.ItemsSource = dataView;
+            var op = new DataViewOperator(dataGrid);
+
+            // Act
+            var result = op.InsertItem(-1);
 
             // Assert
             Assert.That(result, Is.EqualTo(-1));
         }
 
         [Test]
-        public void InsertItem_DataViewItemsSource_WithSpecificIndex_ReturnsMinus1()
+        public void CanDeleteRows_AllowDeleteTrue_ReturnsTrue()
+        {
+            // Arrange
+            var dataView = CreateSampleDataTable().DefaultView;
+            dataView.AllowDelete = true;
+            var dataGrid = new DataGrid();
+            dataGrid.CanDelete = true;
+            dataGrid.ItemsSource = dataView;
+            var op = new DataViewOperator(dataGrid);
+
+            // Act
+            var result = op.CanDeleteRows();
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void CanDeleteRows_AllowDeleteFalse_ReturnsFalse()
+        {
+            // Arrange
+            var dataView = CreateSampleDataTable().DefaultView;
+            dataView.AllowDelete = false;
+            var dataGrid = new DataGrid();
+            dataGrid.CanDelete = true;
+            dataGrid.ItemsSource = dataView;
+            var op = new DataViewOperator(dataGrid);
+
+            // Act
+            var result = op.CanDeleteRows();
+
+            // Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void CanInsertRows_AllowNewTrue_ReturnsTrue()
+        {
+            // Arrange
+            var dataView = CreateSampleDataTable().DefaultView;
+            dataView.AllowNew = true;
+            var dataGrid = new DataGrid();
+            dataGrid.CanInsert = true;
+            dataGrid.ItemsSource = dataView;
+            var op = new DataViewOperator(dataGrid);
+
+            // Act
+            var result = op.CanInsertRows();
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void CanInsertColumns_Always_ReturnsFalse()
         {
             // Arrange
             var dataView = CreateSampleDataTable().DefaultView;
             var dataGrid = new DataGrid();
             dataGrid.ItemsSource = dataView;
-            var listOperator = new ListOperator(dataGrid);
+            var op = new DataViewOperator(dataGrid);
 
-            // Act - attempting to insert at specific index
-            var result = listOperator.InsertItem(0);
+            // Act
+            var result = op.CanInsertColumns();
 
-            // Assert - DataView does not support IList.Insert, so insertion should fail
-            Assert.That(result, Is.EqualTo(-1));
+            // Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void CanDeleteColumns_Always_ReturnsFalse()
+        {
+            // Arrange
+            var dataView = CreateSampleDataTable().DefaultView;
+            var dataGrid = new DataGrid();
+            dataGrid.ItemsSource = dataView;
+            var op = new DataViewOperator(dataGrid);
+
+            // Act
+            var result = op.CanDeleteColumns();
+
+            // Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void GetItem_ValidCell_ReturnsDataRowView()
+        {
+            // Arrange
+            var dataView = CreateSampleDataTable().DefaultView;
+            var dataGrid = new DataGrid();
+            dataGrid.ItemsSource = dataView;
+            var op = new DataViewOperator(dataGrid);
+
+            // Act
+            var item = op.GetItem(new CellRef(0, 0));
+
+            // Assert
+            Assert.That(item, Is.InstanceOf<DataRowView>());
+        }
+
+        [Test]
+        public void GetItem_OutOfRangeCell_ReturnsNull()
+        {
+            // Arrange
+            var dataView = CreateSampleDataTable().DefaultView;
+            var dataGrid = new DataGrid();
+            dataGrid.ItemsSource = dataView;
+            var op = new DataViewOperator(dataGrid);
+
+            // Act
+            var item = op.GetItem(new CellRef(100, 0));
+
+            // Assert
+            Assert.That(item, Is.Null);
+        }
+
+        [Test]
+        public void GetBindingPath_WithPropertyDefinition_ReturnsColumnName()
+        {
+            // Arrange
+            var dataView = CreateSampleDataTable().DefaultView;
+            var dataGrid = new DataGrid();
+            dataGrid.ItemsSource = dataView;
+            dataGrid.ColumnDefinitions.Add(new ColumnDefinition { PropertyName = "StringColumn" });
+            var op = new DataViewOperator(dataGrid);
+
+            // Act
+            var path = op.GetBindingPath(new CellRef(0, 0));
+
+            // Assert
+            Assert.That(path, Is.EqualTo("StringColumn"));
+        }
+
+        [Test]
+        public void AutoGenerateColumns_DataViewItemsSource_GeneratesCorrectColumns()
+        {
+            // Arrange
+            var dataView = CreateSampleDataTable().DefaultView;
+            var dataGrid = new DataGrid();
+            dataGrid.ItemsSource = dataView;
+            var op = new DataViewOperator(dataGrid);
+
+            // Act
+            op.AutoGenerateColumns();
+
+            // Assert
+            Assert.That(dataGrid.ColumnDefinitions.Count, Is.EqualTo(3));
+            Assert.That(dataGrid.ColumnDefinitions[0].PropertyName, Is.EqualTo("BoolColumn"));
+            Assert.That(dataGrid.ColumnDefinitions[1].PropertyName, Is.EqualTo("StringColumn"));
+            Assert.That(dataGrid.ColumnDefinitions[2].PropertyName, Is.EqualTo("IntColumn"));
         }
 
         [Test]

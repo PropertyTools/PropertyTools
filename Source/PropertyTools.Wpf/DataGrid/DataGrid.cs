@@ -2723,13 +2723,22 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Removes the current editor control.
         /// </summary>
-        private void RemoveEditControl()
+        /// <param name="updateTextBindingSource">
+        /// if set to <c>true</c>, updates the source binding for text editors before removal.
+        /// </param>
+        private void RemoveEditControl(bool updateTextBindingSource = true)
         {
             if (this.currentEditControl != null/* && this.currentEditControl.Visibility == Visibility.Visible*/)
             {
                 var textEditor = this.currentEditControl as TextBox;
                 if (textEditor != null)
                 {
+                    if (updateTextBindingSource)
+                    {
+                        var textBinding = textEditor.GetBindingExpression(TextBox.TextProperty);
+                        textBinding?.UpdateSource();
+                    }
+
                     textEditor.PreviewKeyDown -= this.TextEditorPreviewKeyDown;
                 }
 
@@ -3954,7 +3963,7 @@ namespace PropertyTools.Wpf
                     break;
                 case Key.Escape:
                     BindingOperations.ClearBinding(this.currentEditControl, TextBox.TextProperty);
-                    this.RemoveEditControl();
+                    this.RemoveEditControl(false);
                     e.Handled = true;
                     break;
             }

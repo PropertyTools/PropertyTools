@@ -44,6 +44,14 @@ namespace ExampleLibrary
         [HeaderPlacement(HeaderPlacement.Collapsed)]
         public List<Item> List { get; } = new List<Item>();
 
+        [Category("Lists|List of items with DisplayName attributes (issue #191)")]
+        [HeaderPlacement(HeaderPlacement.Collapsed)]
+        public List<ItemWithDisplayName> ListWithDisplayNames { get; } = new List<ItemWithDisplayName>
+        {
+            new ItemWithDisplayName { Name = "Carl", Number = 1, Fraction = 0.1 },
+            new ItemWithDisplayName { Name = "Hugo", Number = 2, Fraction = 0.2 },
+        };
+
         [Browsable(false)]
         public IEnumerable<Column> CollectionItemsSourcePropertyColumns { get; } = new[]
         {
@@ -111,6 +119,59 @@ namespace ExampleLibrary
             for (int i = 0; i < this.ItemArray1.Length; i++)
             {
                 this.ItemArray1[i] = new Item();
+            }
+        }
+    }
+
+    /// <summary>
+    /// An item type where the properties have <see cref="System.ComponentModel.DisplayNameAttribute"/> and
+    /// <see cref="PropertyTools.DataAnnotations.DisplayNameAttribute"/> applied, used to reproduce
+    /// https://github.com/PropertyTools/PropertyTools/issues/191 (it should be possible to change the column
+    /// header text of an auto-generated collection column, but the DisplayName attributes are currently ignored).
+    /// </summary>
+    public class ItemWithDisplayName : Observable
+    {
+        private string name;
+
+        private int number;
+
+        private double fraction;
+
+        [System.ComponentModel.DisplayName("Custom name (System.ComponentModel)")]
+        public string Name
+        {
+            get
+            {
+                return this.name;
+            }
+            set
+            {
+                this.SetValue(ref this.name, value);
+            }
+        }
+
+        [DisplayName("Custom number (PropertyTools.DataAnnotations)")]
+        public int Number
+        {
+            get
+            {
+                return this.number;
+            }
+            set
+            {
+                this.SetValue(ref this.number, value);
+            }
+        }
+
+        public double Fraction
+        {
+            get
+            {
+                return this.fraction;
+            }
+            set
+            {
+                this.SetValue(ref this.fraction, value);
             }
         }
     }

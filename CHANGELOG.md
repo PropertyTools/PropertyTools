@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455
 - PropertyGridDemos: Added SelectedObjectsExample demonstrating ObservableCollection binding to PropertyGrid.SelectedObjects #267
 - DataGrid: Added `ClipboardSeparator` dependency property that controls the separator used by `Ctrl+Alt+C` (copy with headers). Defaults to the current culture's list separator (`CultureInfo.CurrentCulture.TextInfo.ListSeparator`). Can be set per-instance in XAML or overridden in a subclass #481
+- PropertyGridDemos: Added `ItemWithDisplayName` to `CollectionsExample` reproducing issue #191 - auto-generated collection column headers ignore `DisplayNameAttribute` on the item's properties #191
 
 ### Fixed
 - PropertyGrid: Fixed error messages not displayed correctly for `NotifyDataErrorInfo` when multiple properties have errors — per-property error checking now used instead of global `HasErrors` flag in `NotifyDataErrorInfoConverter`, `Tab.UpdateHasErrors`, and `PropertyGridControlFactory.UpdateTabForValidationResults`; also added `LastName` property to `NotifyDataErrorInfoExample` to demonstrate the fix #228

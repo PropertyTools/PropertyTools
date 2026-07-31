@@ -162,6 +162,26 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Determines whether the auto-generated columns are out of sync with the number of items in the first row
+        /// of the <see cref="DataGrid.ItemsSource" />, and should therefore be regenerated.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the auto-generated columns should be regenerated; otherwise <c>false</c>.
+        /// </returns>
+        public override bool ShouldRegenerateColumns()
+        {
+            var list = this.Owner.ItemsSource;
+            if (list == null)
+            {
+                return false;
+            }
+
+            var firstRow = list.Cast<object>().OfType<IList>().FirstOrDefault();
+            var columns = firstRow?.Count ?? 0;
+            return columns != this.Owner.PropertyDefinitions.Count;
+        }
+
+        /// <summary>
         /// Gets the item in cell.
         /// </summary>
         /// <param name="cell">The cell reference.</param>

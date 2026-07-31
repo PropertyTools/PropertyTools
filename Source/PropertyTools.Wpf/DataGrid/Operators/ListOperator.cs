@@ -45,40 +45,41 @@ namespace PropertyTools.Wpf
                 yield break;
             }
 
-            // Strategy 1: get properties from IItemProperties
-            var view = CollectionViewSource.GetDefaultView(list);
-            var itemPropertiesView = view as IItemProperties;
-            if (itemPropertiesView?.ItemProperties != null && itemPropertiesView.ItemProperties.Count > 0)
-            {
-                foreach (var info in itemPropertiesView.ItemProperties)
-                {
-                    var descriptor = info.Descriptor as PropertyDescriptor;
-                    if (descriptor == null || !descriptor.IsBrowsable)
-                    {
-                        continue;
-                    }
-
-                    var cd = new ColumnDefinition
-                    {
-                        PropertyName = descriptor.Name,
-                        Header = this.GetLocalizedString(info.Name, declaringType: descriptor.ComponentType),
-                        HorizontalAlignment = this.DefaultHorizontalAlignment,
-                        Width = this.DefaultColumnWidth
-                    };
-
-                    yield return cd;
-                }
-
-                yield break;
-            }
-
-            // Strategy 2: get properties from type descriptor
-            // Skip strategy 2 for simple/primitive types (e.g. string, int, double) that should
-            // be displayed as a single value rather than via their properties. For example,
-            // string has a Length property that would incorrectly be shown as a column.
             var itemType = this.GetItemType(list);
+
+            // For simple/scalar types (string, primitives, enums, etc.) skip property-based strategies
+            // and go directly to Strategy 3. Strategies 1 and 2 would otherwise expose internal
+            // properties as columns (e.g. string.Length appearing as a column header).
             if (!IsSimpleType(itemType))
             {
+                // Strategy 1: get properties from IItemProperties
+                var view = CollectionViewSource.GetDefaultView(list);
+                var itemPropertiesView = view as IItemProperties;
+                if (itemPropertiesView?.ItemProperties != null && itemPropertiesView.ItemProperties.Count > 0)
+                {
+                    foreach (var info in itemPropertiesView.ItemProperties)
+                    {
+                        var descriptor = info.Descriptor as PropertyDescriptor;
+                        if (descriptor == null || !descriptor.IsBrowsable)
+                        {
+                            continue;
+                        }
+
+                        var cd = new ColumnDefinition
+                        {
+                            PropertyName = descriptor.Name,
+                            Header = this.GetLocalizedString(info.Name, declaringType: descriptor.ComponentType),
+                            HorizontalAlignment = this.DefaultHorizontalAlignment,
+                            Width = this.DefaultColumnWidth
+                        };
+
+                        yield return cd;
+                    }
+
+                    yield break;
+                }
+
+                // Strategy 2: get properties from type descriptor
                 var properties = TypeDescriptor.GetProperties(itemType);
                 if (properties.Count == 0)
                 {

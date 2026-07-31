@@ -18,18 +18,27 @@ namespace DataGridDemo
     public partial class ListOfVectorExample
     {
         /// <summary>
+        /// The static items source.
+        /// </summary>
+        private static readonly List<Vector3D> itemsSource = new List<Vector3D>
+        {
+            new Vector3D(1, 0, 0),
+            new Vector3D(0, 1, 0),
+            new Vector3D(0, 0, 1)
+        };
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ListOfVectorExample" /> class.
         /// </summary>
         public ListOfVectorExample()
         {
             this.InitializeComponent();
-            this.ItemsSource = new List<Vector3D> { new Vector3D(1, 0, 0), new Vector3D(0, 1, 0), new Vector3D(0, 0, 1) };
             this.DataContext = this;
         }
 
         /// <summary>
         /// Gets or sets the items.
         /// </summary>
-        public IList<Vector3D> ItemsSource { get; set; }
+        public IList<Vector3D> ItemsSource => itemsSource;
     }
 }

@@ -4,12 +4,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace PropertyTools.Wpf.Tests
+namespace PropertyTools.Tests
 {
     using NUnit.Framework;
     using PropertyTools;
 
     [TestFixture]
+    [Category("CrossPlatform")]
     public class ObservableTests
     {
         /// <summary>

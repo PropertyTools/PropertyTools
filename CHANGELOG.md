@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - PropertyGridDemos: Added SelectedObjectsExample demonstrating ObservableCollection binding to PropertyGrid.SelectedObjects #267
 - DataGrid: Added `ClipboardSeparator` dependency property that controls the separator used by `Ctrl+Alt+C` (copy with headers). Defaults to the current culture's list separator (`CultureInfo.CurrentCulture.TextInfo.ListSeparator`). Can be set per-instance in XAML or overridden in a subclass #481
 - PropertyGridDemos: Added `ItemWithDisplayName` to `CollectionsExample` reproducing issue #191 - auto-generated collection column headers ignore `DisplayNameAttribute` on the item's properties #191
+- DataGridDemo: Added `DisplayNameAttributeExample` demonstrating that auto-generated `List<T>` column headers use `DisplayNameAttribute` (both `System.ComponentModel` and `PropertyTools.DataAnnotations`) #191
 
 ### Fixed
 - DataGrid: `ListOperator.GenerateColumnDefinitions` now uses `DisplayNameAttribute` (both `System.ComponentModel` and `PropertyTools.DataAnnotations`) as the auto-generated column header when present, falling back to the property name otherwise; this applies when `Column`/`ColumnDefinition` headers have not been explicitly specified #191

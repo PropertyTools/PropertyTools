@@ -67,8 +67,17 @@ dotnet build Source/PropertyTools.sln --configuration Release
 
 ### Testing
 ```bash
+# All tests (Windows only - includes headless WPF tests)
 dotnet test Source/PropertyTools.sln
+
+# Cross-platform tests (the only tests runnable in a Linux sandbox)
+dotnet test Source/PropertyTools.Tests/PropertyTools.Tests.csproj
 ```
+
+See [AGENTS.md](AGENTS.md#building-and-testing) for the full layered test
+architecture (cross-platform, headless WPF, example smoke/snapshot, and
+end-to-end UI automation layers) and their NUnit categories
+(`CrossPlatform`, `WpfHeadless`, `ExampleSmoke`, `Visual`, `E2E`).
 
 ## Key Files to Update
 

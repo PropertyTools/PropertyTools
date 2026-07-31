@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- Testing: Added layered automated UI testing infrastructure — cross-platform `PropertyTools.Tests` project (runs on Linux/CI sandboxes), `WpfTestBase` harness for headless in-process WPF component tests, `PropertyTools.Wpf.ExampleTests` with example-driven smoke tests and visual snapshot regression tests, and `PropertyTools.Wpf.UITests` with FlaUI end-to-end tests run by a nightly workflow; CI now builds and tests on both ubuntu-latest and windows-latest
 - DataGrid: Added `DataViewOperator` — a dedicated operator for `DataView` ItemsSources that enables add/delete rows and copy using the DataTable's column metadata #169
 - PropertyGridDemos: Added ConnectionStringBuilderExample demonstrating the fix for issue #288 – PropertyGrid now works correctly when bound to a DbConnectionStringBuilder subclass (fixed: null checkboxes, broken enum radio-buttons, byte[] StringFormat exception) #288
 - TreeListBoxDemo: Added NonEnglishCultureExample demonstrating that the "Height must be non-negative" workaround works on non-English systems #290

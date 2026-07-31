@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - TreeListBoxDemo: Added CutPasteExample to reproduce cut/paste behavior when IsExpanded is bound and preserved on pasted nodes #292
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
 - DataGrid: Added DynamicBackgroundExample with dismissible explanation panel demonstrating BackgroundProperty for data-driven cell backgrounds #TBD
+- DataGridDemo: Added CloseWindowOnCellClickExample demonstrating that clicking a cell no longer throws when the click handler closes the window (#510)
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
 - Observable: Added comprehensive unit tests for VerifyProperty method including tests for inherited properties #462
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455
@@ -22,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Added `ClipboardSeparator` dependency property that controls the separator used by `Ctrl+Alt+C` (copy with headers). Defaults to the current culture's list separator (`CultureInfo.CurrentCulture.TextInfo.ListSeparator`). Can be set per-instance in XAML or overridden in a subclass #481
 
 ### Fixed
+- DataGrid: Fixed `InvalidOperationException` ("This Visual is not connected to a PresentationSource") thrown from `OnMouseLeftButtonDown`/`OnMouseMove` when a left-click handler (e.g. opening a window) causes the DataGrid to be disconnected from its `PresentationSource` while the click is being processed — `PointToScreen` is now only called when the control is still connected to a `PresentationSource` #510
 - PropertyGrid: Fixed error messages not displayed correctly for `NotifyDataErrorInfo` when multiple properties have errors — per-property error checking now used instead of global `HasErrors` flag in `NotifyDataErrorInfoConverter`, `Tab.UpdateHasErrors`, and `PropertyGridControlFactory.UpdateTabForValidationResults`; also added `LastName` property to `NotifyDataErrorInfoExample` to demonstrate the fix #228
 - DataGrid: Fixed `InvalidOperationException` thrown when navigating to the add-item row (or pasting rows that extend beyond the last row) in a DataView-backed DataGrid while sorting is active — `HandleAutoInsert` now checks whether row insertion succeeded before calling `GetCollectionViewIndex` #258
 - PropertyGrid: Fixed binding to DbConnectionStringBuilder subclasses (e.g. FirebirdSql FbConnectionStringBuilder) — bool properties no longer show indeterminate checkboxes, enum properties no longer lose their selection, and byte[] properties no longer throw a StringFormat exception. Root cause: ICustomTypeDescriptor descriptors are now replaced with reflection-backed ones so GetValue/SetValue use the actual typed CLR property accessors, and PropertyItem.CreateBinding uses PropertyPath(descriptor) to bypass the ICustomTypeDescriptor lookup path #288

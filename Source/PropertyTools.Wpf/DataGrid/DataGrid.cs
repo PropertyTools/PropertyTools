@@ -1859,7 +1859,7 @@ namespace PropertyTools.Wpf
             this.Focus();
             base.OnMouseLeftButtonDown(e);
 
-            this.mouseDownPositionOnScreen = this.PointToScreen(e.GetPosition(this));
+            this.mouseDownPositionOnScreen = PresentationSource.FromVisual(this) != null ? this.PointToScreen(e.GetPosition(this)) : (Point?)null;
             this.isRangeSelectionDrag = false;
 
             var pos = e.GetPosition(this.sheetGrid);
@@ -1949,9 +1949,9 @@ namespace PropertyTools.Wpf
             {
                 if (!this.isRangeSelectionDrag)
                 {
-                    var currentPositionOnScreen = this.PointToScreen(e.GetPosition(this));
-                    if (this.mouseDownPositionOnScreen.HasValue)
+                    if (this.mouseDownPositionOnScreen.HasValue && PresentationSource.FromVisual(this) != null)
                     {
+                        var currentPositionOnScreen = this.PointToScreen(e.GetPosition(this));
                         var horizontalDragDistance = Math.Abs(currentPositionOnScreen.X - this.mouseDownPositionOnScreen.Value.X);
                         var verticalDragDistance = Math.Abs(currentPositionOnScreen.Y - this.mouseDownPositionOnScreen.Value.Y);
                         if (horizontalDragDistance < SystemParameters.MinimumHorizontalDragDistance

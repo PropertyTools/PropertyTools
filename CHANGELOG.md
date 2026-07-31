@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
 - DataGrid: Added DynamicBackgroundExample with dismissible explanation panel demonstrating BackgroundProperty for data-driven cell backgrounds #TBD
 - DataGridDemo: Added CloseWindowOnCellClickExample demonstrating that clicking a cell no longer throws when the click handler closes the window (#510)
+- DataGridDemo: Added SelectCellsAndToggleCheckBoxExample showing boolean checkbox toggling with a related reflected string value after cell/row selection #40
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
 - Observable: Added comprehensive unit tests for VerifyProperty method including tests for inherited properties #462
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455
@@ -24,7 +25,6 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Added new examples for `List<bool>`, `bool[]`, `string[]`, `ObservableCollection<bool>`, `ObservableCollection<Fruit>`, `ObservableCollection<Color>`, and `ObservableCollection<Vector3D>` #157
 
 ### Fixed
-- DataGrid: Fixed click toggling of checkbox cells after row/cell selection so related string properties update immediately, and added a DataGridDemo example for the scenario #40
 - PropertyGrid: Fixed `[AutoUpdateText]` on floating-point properties so decimal separators can be entered while typing; added `AutoUpdateFloatingPointExample` to PropertyGridDemo for manual verification #89
 - DataGrid: Fixed cells not refreshing after editing in non-observable collections (`double[]`, `int[][]`, `List<int>`, `List<string>`, `List<Vector3D>`, WrapItems variants) — `CurrentCellSourceUpdated` now calls `UpdateCellContent` for the changed cell when the source does not implement `INotifyCollectionChanged` #157
 - DataGrid: Fixed `List<string>` showing `Length` column instead of the string value — `GenerateColumnDefinitions` now skips Strategy 2 (property-based columns) for simple scalar types such as `string`, `bool`, numeric primitives, `DateTime`, `enum`, etc. #157

@@ -1,0 +1,17 @@
+﻿<Window x:Class="DataGridDemo.ListOfListColumnSyncExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="List&lt;List&gt; column sync" Height="450" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
+            <Button Content="Add item to first row" Command="{Binding AddItemToFirstRowCommand}" Margin="0,0,5,0"/>
+            <Button Content="Remove item from first row" Command="{Binding RemoveItemFromFirstRowCommand}"/>
+        </StackPanel>
+        <p:DataGrid ItemsSource="{Binding ItemsSource}" Grid.Row="1"/>
+    </Grid>
+</Window>

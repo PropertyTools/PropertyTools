@@ -6,7 +6,7 @@
     <ScrollViewer 
         Height="Auto" 
         Width="Auto"
-        HorizontalScrollBarVisibility="Auto"
+        HorizontalScrollBarVisibility="Disabled"
         VerticalScrollBarVisibility="Auto">
         <p:DataGrid ItemsSource="{Binding ItemsSource}"/>
         <!--<Border Background="LightBlue" BorderBrush="Black" BorderThickness="2"/>-->

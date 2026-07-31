@@ -1,0 +1,45 @@
+<Window x:Class="DataGridDemo.DataViewExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="DataView" Height="500" Width="900">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- DataView filter / sort controls -->
+        <GroupBox Header="DataView controls" Padding="8" Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="RowFilter:" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,5,0"/>
+                <TextBox Text="{Binding RowFilter, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="e.g.  Category = 'B'  or  Value &gt; 30"
+                         Grid.Column="1" VerticalAlignment="Center"/>
+
+                <TextBlock Text="Sort:" VerticalAlignment="Center" Grid.Column="3" Margin="0,0,5,0"/>
+                <TextBox Text="{Binding Sort, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="e.g.  Value DESC"
+                         Grid.Column="4" VerticalAlignment="Center"/>
+
+                <Button Content="Clear" Command="{Binding ClearCommand}"
+                        Grid.Column="6" Padding="10,4" VerticalAlignment="Center"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- DataGrid bound directly to a DataView -->
+        <p:DataGrid ItemsSource="{Binding View}"
+                    CanInsert="True" CanDelete="True"
+                    Grid.Row="1" Margin="0,8,0,0"/>
+    </Grid>
+</Window>

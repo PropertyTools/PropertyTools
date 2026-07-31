@@ -19,6 +19,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Security;
@@ -89,12 +90,11 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="property">The property item.</param>
         /// <param name="options">The options.</param>
-        /// <param name="instance">The instance.</param>
+        /// <param name="instance">The instance that owns the property.</param>
         /// <returns>
         /// A element.
         /// </returns>
-        public virtual FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options,
-            object instance)
+        public virtual FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options, object instance = null)
         {
             this.UpdateConverter(property);
 
@@ -259,6 +259,7 @@ namespace PropertyTools.Wpf
                 notifyDataErrorInfoInstance.ErrorsChanged += (s, e) =>
                 {
                     tab.UpdateHasErrors(notifyDataErrorInfoInstance);
+                    errorControl.GetBindingExpression(UIElement.VisibilityProperty)?.UpdateTarget();
                 };
             }
 
@@ -318,7 +319,7 @@ namespace PropertyTools.Wpf
         {
             if (errorInfo is INotifyDataErrorInfo ndei)
             {
-                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.HasErrors));
+                tab.HasErrors = tab.Groups.Any(g => g.Properties.Any(p => ndei.GetErrors(p.PropertyName).Cast<object>().Any(e => e != null)));
             }
             else if (errorInfo is IDataErrorInfo dei)
             {
@@ -691,6 +692,20 @@ namespace PropertyTools.Wpf
                 // Empty values should set the source to null
                 // Set the value that is used in the target when the value of the source is null.
                 binding.TargetNullValue = string.Empty;
+            }
+
+            if (property.AutoUpdateText && IsFloatingPointType(property.ActualPropertyType))
+            {
+                binding.UpdateSourceTrigger = UpdateSourceTrigger.Explicit;
+                c.TextChanged += (s, e) =>
+                {
+                    if (ShouldDeferFloatingPointUpdate(c.Text, CultureInfo.CurrentCulture.NumberFormat))
+                    {
+                        return;
+                    }
+
+                    c.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+                };
             }
 
             c.SetBinding(TextBox.TextProperty, binding);
@@ -1226,6 +1241,29 @@ namespace PropertyTools.Wpf
 
             // Value type
             return false;
+        }
+
+        private static bool IsFloatingPointType(Type type)
+        {
+            var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
+            return underlyingType == typeof(float) || underlyingType == typeof(double) || underlyingType == typeof(decimal);
+        }
+
+        private static bool ShouldDeferFloatingPointUpdate(string text, NumberFormatInfo numberFormat)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return false;
+            }
+
+            var trimmedText = text.Trim();
+            var decimalSeparator = numberFormat.NumberDecimalSeparator;
+            if (!string.IsNullOrEmpty(decimalSeparator) && trimmedText.EndsWith(decimalSeparator, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            return trimmedText.EndsWith(".", StringComparison.Ordinal) || trimmedText.EndsWith(",", StringComparison.Ordinal);
         }
 
         /// <summary>

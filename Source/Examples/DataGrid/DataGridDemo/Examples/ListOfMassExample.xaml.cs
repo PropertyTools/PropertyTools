@@ -17,24 +17,27 @@ namespace DataGridDemo
     public partial class ListOfMassExample
     {
         /// <summary>
+        /// The static items source.
+        /// </summary>
+        private static readonly ObservableCollection<Mass> itemsSource = new ObservableCollection<Mass>
+        {
+            100 * Mass.Kilogram,
+            101 * Mass.Kilogram,
+            102 * Mass.Kilogram
+        };
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ListOfMassExample" /> class.
         /// </summary>
         public ListOfMassExample()
         {
             this.InitializeComponent();
-
             this.DataContext = this;
-            this.ItemsSource = new ObservableCollection<Mass>
-                                    {
-                                        100 * Mass.Kilogram,
-                                        101 * Mass.Kilogram,
-                                        102 * Mass.Kilogram
-                                    };
         }
 
         /// <summary>
         /// Gets the items source.
         /// </summary>
-        public ObservableCollection<Mass> ItemsSource { get; private set; }
+        public ObservableCollection<Mass> ItemsSource => itemsSource;
     }
 }

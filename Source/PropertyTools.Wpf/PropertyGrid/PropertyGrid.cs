@@ -1794,13 +1794,13 @@ namespace PropertyTools.Wpf
         /// Creates the property control.
         /// </summary>
         /// <param name="pi">The property item.</param>
-        /// <param name="instance">The instance.</param>
+        /// <param name="instance">The instance that owns the property.</param>
         /// <returns>
         /// An element.
         /// </returns>
-        private FrameworkElement CreatePropertyControl(PropertyItem pi, object instance)
+        private FrameworkElement CreatePropertyControl(PropertyItem pi, object instance = null)
         {
-            var options = new PropertyControlFactoryOptions { RadioButtonsLimit = this.RadioButtonsLimit };
+            var options = new PropertyControlFactoryOptions { EnumAsRadioButtonsLimit = this.EnumAsRadioButtonsLimit };
             var control = this.ControlFactory.CreateControl(pi, options, instance);
             if (control != null)
             {

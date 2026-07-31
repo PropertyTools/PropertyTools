@@ -1,36 +1,36 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WrapItemsExample.xaml.cs" company="PropertyTools">
+// <copyright file="ArrayOfStringExample.xaml.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for WrapItemsExample.xaml
+//   Interaction logic for ArrayOfStringExample.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace DataGridDemo
 {
     /// <summary>
-    /// Interaction logic for WrapItemsExample.xaml
+    /// Interaction logic for ArrayOfStringExample.
     /// </summary>
-    public partial class WrapItemsExample
+    public partial class ArrayOfStringExample
     {
         /// <summary>
-        /// The static items source.
+        /// The items source.
         /// </summary>
-        private static readonly double[] itemsSource = { 11.0, 12, 13, 21, 22, 23, 31, 32, 33 };
+        private static readonly string[] itemsSource = { "Peugeot", "Volvo", "Tesla", "Renault", "Audi" };
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WrapItemsExample" /> class.
+        /// Initializes a new instance of the <see cref="ArrayOfStringExample" /> class.
         /// </summary>
-        public WrapItemsExample()
+        public ArrayOfStringExample()
         {
             this.InitializeComponent();
             this.DataContext = this;
         }
 
         /// <summary>
-        /// Gets or sets the items.
+        /// Gets the items.
         /// </summary>
-        public double[] ItemsSource => itemsSource;
+        public string[] ItemsSource => itemsSource;
     }
 }

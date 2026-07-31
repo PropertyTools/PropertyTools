@@ -55,14 +55,15 @@ namespace PropertyTools.Wpf
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            var propertyErrors = this.instance.GetErrors(this.columnName).Cast<object>().Where(e => e != null);
             switch (targetType)
             {
                 case object _ when targetType == typeof(bool):
-                    return this.instance.HasErrors;
+                    return propertyErrors.Any();
                 case object _ when targetType == typeof(Visibility):
-                    return this.instance.HasErrors ? Visibility.Visible : Visibility.Collapsed;
+                    return propertyErrors.Any() ? Visibility.Visible : Visibility.Collapsed;
                 default:
-                    return this.instance.GetErrors(this.columnName).Cast<object>().FirstOrDefault();
+                    return propertyErrors.FirstOrDefault();
             }
         }
 

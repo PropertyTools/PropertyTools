@@ -15,23 +15,27 @@ namespace DataGridDemo
     public partial class WrapItemsOfMassExample
     {
         /// <summary>
+        /// The static items source.
+        /// </summary>
+        private static readonly Mass[] itemsSource =
+        {
+            11.0 * Mass.Kilogram, 12 * Mass.Kilogram, 13 * Mass.Kilogram,
+            21 * Mass.Kilogram, 22 * Mass.Kilogram, 23 * Mass.Kilogram,
+            31 * Mass.Kilogram, 32 * Mass.Kilogram, 33 * Mass.Kilogram
+        };
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="WrapItemsExample" /> class.
         /// </summary>
         public WrapItemsOfMassExample()
         {
             this.InitializeComponent();
-            this.ItemsSource = new[]
-                                {
-                                    11.0 * Mass.Kilogram, 12 * Mass.Kilogram, 13 * Mass.Kilogram, 21 * Mass.Kilogram,
-                                    22 * Mass.Kilogram, 23 * Mass.Kilogram, 31 * Mass.Kilogram, 32 * Mass.Kilogram,
-                                    33 * Mass.Kilogram
-                                };
             this.DataContext = this;
         }
 
         /// <summary>
         /// Gets or sets the items.
         /// </summary>
-        public Mass[] ItemsSource { get; set; }
+        public Mass[] ItemsSource => itemsSource;
     }
 }

@@ -17,18 +17,22 @@ namespace DataGridDemo
     public partial class ListOfPlainObjectCustomColumnsExample
     {
         /// <summary>
+        /// The static items source.
+        /// </summary>
+        private static readonly List<PlainOldObject> itemsSource = new List<PlainOldObject>();
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ListOfPlainObjectCustomColumnsExample" /> class.
         /// </summary>
         public ListOfPlainObjectCustomColumnsExample()
         {
             this.InitializeComponent();
-            this.ItemsSource = new List<PlainOldObject>();
             this.DataContext = this;
         }
 
         /// <summary>
         /// Gets or sets the items.
         /// </summary>
-        public IList<PlainOldObject> ItemsSource { get; set; }
+        public IList<PlainOldObject> ItemsSource => itemsSource;
     }
 }

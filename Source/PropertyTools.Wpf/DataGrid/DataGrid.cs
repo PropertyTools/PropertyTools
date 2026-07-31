@@ -240,7 +240,7 @@ namespace PropertyTools.Wpf
             nameof(ControlFactory),
             typeof(IDataGridControlFactory),
             typeof(DataGrid),
-            new UIPropertyMetadata(new DataGridControlFactory()));
+            new UIPropertyMetadata(new DataGridControlFactory(), (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
         /// Identifies the <see cref="CellDefinitionFactory"/> dependency property.
@@ -249,7 +249,7 @@ namespace PropertyTools.Wpf
             nameof(CellDefinitionFactory),
             typeof(ICellDefinitionFactory),
             typeof(DataGrid),
-            new UIPropertyMetadata(new CellDefinitionFactory()));
+            new UIPropertyMetadata(new CellDefinitionFactory(), (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
         /// Identifies the <see cref="CurrentCell"/> dependency property.

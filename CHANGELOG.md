@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - TreeListBoxDemo: Added CutPasteExample to reproduce cut/paste behavior when IsExpanded is bound and preserved on pasted nodes #292
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
 - DataGrid: Added DynamicBackgroundExample with dismissible explanation panel demonstrating BackgroundProperty for data-driven cell backgrounds #TBD
+- DataGridDemo: Added CloseWindowOnCellClickExample demonstrating that clicking a cell no longer throws when the click handler closes the window (#510)
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
 - Observable: Added comprehensive unit tests for VerifyProperty method including tests for inherited properties #462
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455

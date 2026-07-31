@@ -4370,7 +4370,12 @@ namespace PropertyTools.Wpf
                 }
             }
 
-            var availableWidth = this.sheetScrollViewer.ViewportWidth;
+            // Use ActualWidth (rather than ViewportWidth) and subtract the width of the extra column
+            // reserved for the vertical scrollbar to avoid an infinite resizing loop, see #176.
+            var scrollBarColumnWidth = this.columnGrid.ColumnDefinitions.Count > 0
+                ? this.columnGrid.ColumnDefinitions[this.columnGrid.ColumnDefinitions.Count - 1].Width.Value
+                : 0;
+            var availableWidth = this.sheetScrollViewer.ActualWidth - scrollBarColumnWidth;
 
             var widthPerStar = Math.Max((availableWidth - usedWidth) / starsToDistribute, 0);
             for (var i = 0; i < this.Columns; i++)

@@ -45,74 +45,98 @@ namespace PropertyTools.Wpf
                 yield break;
             }
 
-            // Strategy 1: get properties from IItemProperties
-            var view = CollectionViewSource.GetDefaultView(list);
-            var itemPropertiesView = view as IItemProperties;
-            if (itemPropertiesView?.ItemProperties != null && itemPropertiesView.ItemProperties.Count > 0)
-            {
-                foreach (var info in itemPropertiesView.ItemProperties)
-                {
-                    var descriptor = info.Descriptor as PropertyDescriptor;
-                    if (descriptor == null || !descriptor.IsBrowsable)
-                    {
-                        continue;
-                    }
-
-                    var cd = new ColumnDefinition
-                    {
-                        PropertyName = descriptor.Name,
-                        Header = this.GetLocalizedString(info.Name, declaringType: descriptor.ComponentType),
-                        HorizontalAlignment = this.DefaultHorizontalAlignment,
-                        Width = this.DefaultColumnWidth
-                    };
-
-                    yield return cd;
-                }
-
-                yield break;
-            }
-
-            // Strategy 2: get properties from type descriptor
             var itemType = this.GetItemType(list);
-            var properties = TypeDescriptor.GetProperties(itemType);
-            if (properties.Count == 0)
-            {
-                // Otherwise try to get the property descriptors from an instance
-                properties = GetPropertiesFromInstance(list, itemType);
-            }
 
-            if (properties.Count > 0)
+            // For simple/scalar types (string, primitives, enums, etc.) skip property-based strategies
+            // and go directly to Strategy 3. Strategies 1 and 2 would otherwise expose internal
+            // properties as columns (e.g. string.Length appearing as a column header).
+            if (!IsSimpleType(itemType))
             {
-                foreach (PropertyDescriptor descriptor in properties)
+                // Strategy 1: get properties from IItemProperties
+                var view = CollectionViewSource.GetDefaultView(list);
+                var itemPropertiesView = view as IItemProperties;
+                if (itemPropertiesView?.ItemProperties != null && itemPropertiesView.ItemProperties.Count > 0)
                 {
-                    if (!descriptor.IsBrowsable)
+                    foreach (var info in itemPropertiesView.ItemProperties)
                     {
-                        continue;
-                    }
+                        var descriptor = info.Descriptor as PropertyDescriptor;
+                        if (descriptor == null || !descriptor.IsBrowsable)
+                        {
+                            continue;
+                        }
 
                     var cd = new ColumnDefinition
                     {
                         PropertyName = descriptor.Name,
-                        Header = this.GetLocalizedString(descriptor.Name, declaringType: descriptor.ComponentType),
+                        Header = this.GetLocalizedString(descriptor.GetDisplayName(), declaringType: descriptor.ComponentType),
                         HorizontalAlignment = this.DefaultHorizontalAlignment,
                         Width = this.DefaultColumnWidth
                     };
 
-                    yield return cd;
+                        yield return cd;
+                    }
+
+                    yield break;
                 }
 
-                yield break;
+                // Strategy 2: get properties from type descriptor
+                var properties = TypeDescriptor.GetProperties(itemType);
+                if (properties.Count == 0)
+                {
+                    // Otherwise try to get the property descriptors from an instance
+                    properties = GetPropertiesFromInstance(list, itemType);
+                }
+
+                if (properties.Count > 0)
+                {
+                    foreach (PropertyDescriptor descriptor in properties)
+                    {
+                        if (!descriptor.IsBrowsable)
+                        {
+                            continue;
+                        }
+
+                    var cd = new ColumnDefinition
+                    {
+                        PropertyName = descriptor.Name,
+                        Header = this.GetLocalizedString(descriptor.GetDisplayName(), declaringType: descriptor.ComponentType),
+                        HorizontalAlignment = this.DefaultHorizontalAlignment,
+                        Width = this.DefaultColumnWidth
+                    };
+
+                        yield return cd;
+                    }
+
+                    yield break;
+                }
             }
 
             // Strategy 3: create a single column
-            var itemsType = this.GetItemType(list);
             yield return
                 new ColumnDefinition
                 {
-                    Header = this.GetLocalizedString(itemsType.Name, itemsType),
+                    Header = this.GetLocalizedString(itemType.Name, itemType),
                     HorizontalAlignment = this.DefaultHorizontalAlignment,
                     Width = this.DefaultColumnWidth
                 };
+        }
+
+        /// <summary>
+        /// Determines whether the specified type is a simple scalar type that should be displayed
+        /// as a single value rather than via its properties.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns><c>true</c> if the type is simple; otherwise <c>false</c>.</returns>
+        private static bool IsSimpleType(Type type)
+        {
+            return type.IsPrimitive
+                || type == typeof(string)
+                || type == typeof(decimal)
+                || type == typeof(DateTime)
+                || type == typeof(DateTimeOffset)
+                || type == typeof(TimeSpan)
+                || type == typeof(Guid)
+                || type.IsEnum;
         }
 
         /// <summary>

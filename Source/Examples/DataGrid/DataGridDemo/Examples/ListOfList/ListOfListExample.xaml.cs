@@ -19,25 +19,28 @@ namespace DataGridDemo
     public partial class ListOfListExample
     {
         /// <summary>
+        /// The static items source.
+        /// </summary>
+        private static readonly List<object> itemsSource = new List<object>
+        {
+            new List<int> { 1, 2, 3 },
+            new List<bool?> { true, false, null },
+            new List<object> { 21, Math.PI, "Hello World" },
+            new List<object> { true, Colors.Aquamarine, Fruit.Apple }
+        };
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ListOfListExample" /> class.
         /// </summary>
         public ListOfListExample()
         {
             this.InitializeComponent();
-
-            this.ItemsSource = new List<object> {
-                new List<int> { 1,2,3},
-                new List<bool?> { true,false,null},
-                new List<object> { 21, Math.PI, "Hello World" },
-                new List<object> { true, Colors.Aquamarine, Fruit.Apple }
-            };
-
             this.DataContext = this;
         }
 
         /// <summary>
         /// Gets or sets the items.
         /// </summary>
-        public object ItemsSource { get; set; }
+        public object ItemsSource => itemsSource;
     }
 }

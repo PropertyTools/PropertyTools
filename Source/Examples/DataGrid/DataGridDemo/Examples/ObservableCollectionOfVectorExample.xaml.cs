@@ -1,44 +1,44 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ListOfVectorExample.xaml.cs" company="PropertyTools">
+// <copyright file="ObservableCollectionOfVectorExample.xaml.cs" company="PropertyTools">
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Interaction logic for ListOfVectorExample.
+//   Interaction logic for ObservableCollectionOfVectorExample.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace DataGridDemo
 {
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Windows.Media.Media3D;
 
     /// <summary>
-    /// Interaction logic for ListOfVectorExample.
+    /// Interaction logic for ObservableCollectionOfVectorExample.
     /// </summary>
-    public partial class ListOfVectorExample
+    public partial class ObservableCollectionOfVectorExample
     {
         /// <summary>
-        /// The static items source.
+        /// The static items.
         /// </summary>
-        private static readonly List<Vector3D> itemsSource = new List<Vector3D>
+        private static readonly ObservableCollection<Vector3D> StaticItems = new ObservableCollection<Vector3D>
         {
             new Vector3D(1, 0, 0),
             new Vector3D(0, 1, 0),
-            new Vector3D(0, 0, 1)
+            new Vector3D(0, 0, 1),
         };
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListOfVectorExample" /> class.
+        /// Initializes a new instance of the <see cref="ObservableCollectionOfVectorExample" /> class.
         /// </summary>
-        public ListOfVectorExample()
+        public ObservableCollectionOfVectorExample()
         {
             this.InitializeComponent();
             this.DataContext = this;
         }
 
         /// <summary>
-        /// Gets or sets the items.
+        /// Gets the items.
         /// </summary>
-        public IList<Vector3D> ItemsSource => itemsSource;
+        public ObservableCollection<Vector3D> Items => StaticItems;
     }
 }

@@ -376,6 +376,18 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Determines whether the auto-generated columns are out of sync with the <see cref="DataGrid.ItemsSource" />
+        /// and should be regenerated, e.g. because the number of columns has changed.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the auto-generated columns should be regenerated; otherwise <c>false</c>.
+        /// </returns>
+        public virtual bool ShouldRegenerateColumns()
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Updates the property definitions.
         /// </summary>
         public virtual void UpdatePropertyDefinitions()
@@ -499,6 +511,13 @@ namespace PropertyTools.Wpf
                 if (descriptor != null)
                 {
                     descriptor.SetValue(item, convertedValue);
+
+                    // For value types (structs), descriptor.SetValue modifies the boxed copy but not the
+                    // original item in the collection. Write the modified value back to the collection.
+                    if (item.GetType().IsValueType)
+                    {
+                        this.SetValue(cell, item);
+                    }
                 }
                 else
                 {

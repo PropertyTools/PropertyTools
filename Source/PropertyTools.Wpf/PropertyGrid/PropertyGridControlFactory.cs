@@ -15,6 +15,7 @@ namespace PropertyTools.Wpf
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Security;
@@ -561,6 +562,20 @@ namespace PropertyTools.Wpf
                 binding.TargetNullValue = string.Empty;
             }
 
+            if (property.AutoUpdateText && IsFloatingPointType(property.ActualPropertyType))
+            {
+                binding.UpdateSourceTrigger = UpdateSourceTrigger.Explicit;
+                c.TextChanged += (s, e) =>
+                {
+                    if (ShouldDeferFloatingPointUpdate(c.Text, CultureInfo.CurrentCulture.NumberFormat))
+                    {
+                        return;
+                    }
+
+                    c.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+                };
+            }
+
             c.SetBinding(TextBox.TextProperty, binding);
 
             return c;
@@ -1035,6 +1050,29 @@ namespace PropertyTools.Wpf
 
             // Value type
             return false;
+        }
+
+        private static bool IsFloatingPointType(Type type)
+        {
+            var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
+            return underlyingType == typeof(float) || underlyingType == typeof(double) || underlyingType == typeof(decimal);
+        }
+
+        private static bool ShouldDeferFloatingPointUpdate(string text, NumberFormatInfo numberFormat)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return false;
+            }
+
+            var trimmedText = text.Trim();
+            var decimalSeparator = numberFormat.NumberDecimalSeparator;
+            if (!string.IsNullOrEmpty(decimalSeparator) && trimmedText.EndsWith(decimalSeparator, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            return trimmedText.EndsWith(".", StringComparison.Ordinal) || trimmedText.EndsWith(",", StringComparison.Ordinal);
         }
 
         /// <summary>

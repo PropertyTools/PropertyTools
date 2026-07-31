@@ -65,13 +65,13 @@ namespace PropertyTools.Wpf
                             continue;
                         }
 
-                        var cd = new ColumnDefinition
-                        {
-                            PropertyName = descriptor.Name,
-                            Header = this.GetLocalizedString(info.Name, declaringType: descriptor.ComponentType),
-                            HorizontalAlignment = this.DefaultHorizontalAlignment,
-                            Width = this.DefaultColumnWidth
-                        };
+                    var cd = new ColumnDefinition
+                    {
+                        PropertyName = descriptor.Name,
+                        Header = this.GetLocalizedString(descriptor.GetDisplayName(), declaringType: descriptor.ComponentType),
+                        HorizontalAlignment = this.DefaultHorizontalAlignment,
+                        Width = this.DefaultColumnWidth
+                    };
 
                         yield return cd;
                     }
@@ -96,13 +96,13 @@ namespace PropertyTools.Wpf
                             continue;
                         }
 
-                        var cd = new ColumnDefinition
-                        {
-                            PropertyName = descriptor.Name,
-                            Header = this.GetLocalizedString(descriptor.Name, declaringType: descriptor.ComponentType),
-                            HorizontalAlignment = this.DefaultHorizontalAlignment,
-                            Width = this.DefaultColumnWidth
-                        };
+                    var cd = new ColumnDefinition
+                    {
+                        PropertyName = descriptor.Name,
+                        Header = this.GetLocalizedString(descriptor.GetDisplayName(), declaringType: descriptor.ComponentType),
+                        HorizontalAlignment = this.DefaultHorizontalAlignment,
+                        Width = this.DefaultColumnWidth
+                    };
 
                         yield return cd;
                     }

@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- DataGridDemo: Added IListCommitOnTabExample to reproduce the IList cell edit/tab commit scenario using CollectionChanged(Replace) notifications #81
 - DataGrid: Added `DataViewOperator` — a dedicated operator for `DataView` ItemsSources that enables add/delete rows and copy using the DataTable's column metadata #169
 - PropertyGridDemos: Added ConnectionStringBuilderExample demonstrating the fix for issue #288 – PropertyGrid now works correctly when bound to a DbConnectionStringBuilder subclass (fixed: null checkboxes, broken enum radio-buttons, byte[] StringFormat exception) #288
 - TreeListBoxDemo: Added NonEnglishCultureExample demonstrating that the "Height must be non-negative" workaround works on non-English systems #290
@@ -26,6 +27,8 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Added new examples for `List<bool>`, `bool[]`, `string[]`, `ObservableCollection<bool>`, `ObservableCollection<Fruit>`, `ObservableCollection<Color>`, and `ObservableCollection<Vector3D>` #157
 
 ### Fixed
+- DataGrid: Fixed first cell edit failing (validation error/reverted value) when `CellDefinitionFactory` or `ControlFactory` is set after the grid content was built (e.g. bound via DataContext) — the grid content is now rebuilt when these properties change #81
+- DataGrid: Fixed text cell edits being reverted when leaving a cell (TAB/ENTER/mouse navigation) by committing the active text editor binding before removing the editor control #81
 - PropertyGrid: Fixed `[AutoUpdateText]` on floating-point properties so decimal separators can be entered while typing; added `AutoUpdateFloatingPointExample` to PropertyGridDemo for manual verification #89
 - DataGrid: Fixed cells not refreshing after editing in non-observable collections (`double[]`, `int[][]`, `List<int>`, `List<string>`, `List<Vector3D>`, WrapItems variants) — `CurrentCellSourceUpdated` now calls `UpdateCellContent` for the changed cell when the source does not implement `INotifyCollectionChanged` #157
 - DataGrid: Fixed `List<string>` showing `Length` column instead of the string value — `GenerateColumnDefinitions` now skips Strategy 2 (property-based columns) for simple scalar types such as `string`, `bool`, numeric primitives, `DateTime`, `enum`, etc. #157

@@ -6,6 +6,7 @@
 
 namespace PropertyTools.Wpf.Tests
 {
+    using System;
     using System.ComponentModel;
 
     using NUnit.Framework;

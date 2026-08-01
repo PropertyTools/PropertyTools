@@ -208,7 +208,7 @@ namespace PropertyTools.Wpf.Tests
         {
             // Arrange
             var dataView = CreateSampleDataTable().DefaultView;
-            var dataGrid = new DataGrid();
+            var dataGrid = new DataGrid { AutoGenerateColumns = false };
             dataGrid.ItemsSource = dataView;
             dataGrid.ColumnDefinitions.Add(new ColumnDefinition { PropertyName = "StringColumn" });
             var op = new DataViewOperator(dataGrid);
@@ -225,7 +225,7 @@ namespace PropertyTools.Wpf.Tests
         {
             // Arrange
             var dataView = CreateSampleDataTable().DefaultView;
-            var dataGrid = new DataGrid();
+            var dataGrid = new DataGrid { AutoGenerateColumns = false };
             dataGrid.ItemsSource = dataView;
             var op = new DataViewOperator(dataGrid);
 

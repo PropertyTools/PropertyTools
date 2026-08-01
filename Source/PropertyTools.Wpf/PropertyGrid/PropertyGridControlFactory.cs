@@ -574,7 +574,7 @@ namespace PropertyTools.Wpf
                     }
 
                     var bindingExpression = c.GetBindingExpression(TextBox.TextProperty);
-                    if (bindingExpression != null)
+                    if (bindingExpression != null && bindingExpression.Status == BindingStatus.Active)
                     {
                         bindingExpression.UpdateSource();
                         return;

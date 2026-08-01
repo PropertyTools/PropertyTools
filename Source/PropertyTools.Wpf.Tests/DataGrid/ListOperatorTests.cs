@@ -147,7 +147,7 @@ namespace PropertyTools.Wpf.Tests
         public void AutoGenerateColumns_PropertyWithSystemComponentModelDisplayName_UsesDisplayNameAsHeader()
         {
             // Arrange
-            var dataGrid = new DataGrid { AutoGenerateColumns = true };
+            var dataGrid = new DataGrid { AutoGenerateColumns = false };
             var list = new ObservableCollection<ItemWithDisplayName> { new ItemWithDisplayName { Name = "Item1" } };
             dataGrid.ItemsSource = list;
 
@@ -165,7 +165,7 @@ namespace PropertyTools.Wpf.Tests
         public void AutoGenerateColumns_PropertyWithPropertyToolsDisplayName_UsesDisplayNameAsHeader()
         {
             // Arrange
-            var dataGrid = new DataGrid { AutoGenerateColumns = true };
+            var dataGrid = new DataGrid { AutoGenerateColumns = false };
             var list = new ObservableCollection<ItemWithDisplayName> { new ItemWithDisplayName { Number = 1 } };
             dataGrid.ItemsSource = list;
 
@@ -183,7 +183,7 @@ namespace PropertyTools.Wpf.Tests
         public void AutoGenerateColumns_PropertyWithoutDisplayName_UsesPropertyNameAsHeader()
         {
             // Arrange
-            var dataGrid = new DataGrid { AutoGenerateColumns = true };
+            var dataGrid = new DataGrid { AutoGenerateColumns = false };
             var list = new ObservableCollection<ItemWithDisplayName> { new ItemWithDisplayName() };
             dataGrid.ItemsSource = list;
 

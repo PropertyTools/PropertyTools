@@ -3009,6 +3009,11 @@ namespace PropertyTools.Wpf
         /// <param name="cellRef">The cell reference.</param>
         private void UpdateCellContent(CellRef cellRef)
         {
+            if (this.sheetGrid == null)
+            {
+                return;
+            }
+
             var c = this.GetCellElement(cellRef);
             if (c != null)
             {

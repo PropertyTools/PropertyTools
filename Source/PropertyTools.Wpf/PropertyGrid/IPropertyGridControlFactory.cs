@@ -48,10 +48,11 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="propertyItem">The property item.</param>
         /// <param name="options">The options.</param>
+        /// <param name="instance">The instance that owns the property.</param>
         /// <returns>
         /// A element.
         /// </returns>
-        FrameworkElement CreateControl(PropertyItem propertyItem, PropertyControlFactoryOptions options);
+        FrameworkElement CreateControl(PropertyItem propertyItem, PropertyControlFactoryOptions options, object instance);
 
         /// <summary>
         /// Creates the error control.

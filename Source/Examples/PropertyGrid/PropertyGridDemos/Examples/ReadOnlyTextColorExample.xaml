@@ -1,0 +1,51 @@
+<Window x:Class="PropertyGridDemos.ReadOnlyTextColorExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:d="clr-namespace:PropertyGridDemos"
+        Title="ReadOnly Text Color (issue #307)" Height="500" Width="900">
+    <Window.DataContext>
+        <d:ReadOnlyTextColorExampleViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="10" Background="LightYellow">
+            <TextBlock TextWrapping="Wrap" FontWeight="Bold" Margin="5">
+                ReadOnly Text Color Example (issue #307)
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" Margin="5">
+                The left PropertyGrid uses the default ReadOnlyForeground (RoyalBlue).
+                The right PropertyGrid uses a custom ReadOnlyForeground (DarkGreen).
+                Read-only properties are displayed using the configured foreground color.
+            </TextBlock>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Default readonly foreground (RoyalBlue) -->
+            <DockPanel Grid.Column="0" Margin="0 0 5 0">
+                <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Margin="0 0 0 4">
+                    Default ReadOnlyForeground (RoyalBlue)
+                </TextBlock>
+                <pt:PropertyGrid SelectedObject="{Binding Item}"/>
+            </DockPanel>
+
+            <!-- Custom readonly foreground (DarkGreen) -->
+            <DockPanel Grid.Column="1" Margin="5 0 0 0">
+                <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Margin="0 0 0 4">
+                    Custom ReadOnlyForeground (DarkGreen)
+                </TextBlock>
+                <pt:PropertyGrid SelectedObject="{Binding Item}"
+                                 ReadOnlyForeground="DarkGreen"/>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

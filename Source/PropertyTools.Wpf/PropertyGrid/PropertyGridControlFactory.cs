@@ -42,6 +42,11 @@ namespace PropertyTools.Wpf
         private static FontFamily[] cachedFontFamilies;
 
         /// <summary>
+        /// The options for the current control creation call.
+        /// </summary>
+        private PropertyControlFactoryOptions currentOptions;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PropertyGridControlFactory" /> class.
         /// </summary>
         public PropertyGridControlFactory()
@@ -90,6 +95,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options, object instance = null)
         {
+            this.currentOptions = options;
             this.UpdateConverter(property);
 
             foreach (var editor in this.Editors)
@@ -552,7 +558,7 @@ namespace PropertyTools.Wpf
 
             if (property.IsReadOnly)
             {
-                c.Foreground = Brushes.RoyalBlue;
+                c.Foreground = this.currentOptions?.ReadOnlyForeground ?? Brushes.RoyalBlue;
             }
 
             var binding = property.CreateBinding(trigger);

@@ -2761,7 +2761,8 @@ namespace PropertyTools.Wpf
         /// Removes the current editor control.
         /// </summary>
         /// <param name="updateTextBindingSource">
-        /// if set to <c>true</c>, updates the source binding for text editors before removal.
+        /// if set to <c>true</c>, updates the source binding for text editors that are currently visible
+        /// (i.e. actively being edited) before removal. Hidden pre-created text editors are not committed.
         /// </param>
         private void RemoveEditControl(bool updateTextBindingSource = true)
         {
@@ -2770,7 +2771,7 @@ namespace PropertyTools.Wpf
                 var textEditor = this.currentEditControl as TextBox;
                 if (textEditor != null)
                 {
-                    if (updateTextBindingSource)
+                    if (updateTextBindingSource && textEditor.Visibility == Visibility.Visible)
                     {
                         var textBinding = textEditor.GetBindingExpression(TextBox.TextProperty);
                         textBinding?.UpdateSource();

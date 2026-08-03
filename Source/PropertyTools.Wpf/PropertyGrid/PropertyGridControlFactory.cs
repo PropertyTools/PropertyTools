@@ -317,10 +317,30 @@ namespace PropertyTools.Wpf
         /// <param name="options">The options.</param>
         public virtual void SetReadOnlyControlStyle(FrameworkElement control, PropertyControlFactoryOptions options)
         {
-            if (options?.ReadOnlyControlStyle != null && control.Style == null)
+            if (control.Style != null)
             {
-                control.Style = options.ReadOnlyControlStyle;
+                return;
             }
+
+            var style = options?.ReadOnlyControlStyle ?? DefaultReadOnlyControlStyle;
+            if (style != null)
+            {
+                control.Style = style;
+            }
+        }
+
+        /// <summary>
+        /// Gets the default style applied to read-only controls when no <see cref="PropertyControlFactoryOptions.ReadOnlyControlStyle"/> is set.
+        /// The default sets the foreground to <see cref="Brushes.RoyalBlue"/> to match the original behavior.
+        /// </summary>
+        protected virtual Style DefaultReadOnlyControlStyle { get; } = CreateDefaultReadOnlyStyle();
+
+        private static Style CreateDefaultReadOnlyStyle()
+        {
+            var style = new Style();
+            style.Setters.Add(new Setter(Control.ForegroundProperty, Brushes.RoyalBlue));
+            style.Seal();
+            return style;
         }
 
         /// <summary>

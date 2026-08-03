@@ -18,8 +18,8 @@
                 ReadOnly Control Style Example (issue #307)
             </TextBlock>
             <TextBlock TextWrapping="Wrap" Margin="5">
-                The left PropertyGrid uses no ReadOnlyControlStyle (default WPF appearance).
-                The right PropertyGrid uses a custom ReadOnlyControlStyle with DarkGreen foreground.
+                The left PropertyGrid uses no ReadOnlyControlStyle (default: RoyalBlue foreground).
+                The right PropertyGrid uses a custom ReadOnlyControlStyle with DarkGreen foreground and italic font.
                 Any style properties can be applied to read-only controls via ReadOnlyControlStyle.
             </TextBlock>
         </StackPanel>
@@ -30,10 +30,10 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <!-- No ReadOnlyControlStyle (default WPF appearance) -->
+            <!-- No ReadOnlyControlStyle (default RoyalBlue foreground) -->
             <DockPanel Grid.Column="0" Margin="0 0 5 0">
                 <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Margin="0 0 0 4">
-                    No ReadOnlyControlStyle (default)
+                    No ReadOnlyControlStyle (default: RoyalBlue)
                 </TextBlock>
                 <pt:PropertyGrid SelectedObject="{Binding Item}"/>
             </DockPanel>
@@ -41,7 +41,7 @@
             <!-- Custom ReadOnlyControlStyle (DarkGreen foreground) -->
             <DockPanel Grid.Column="1" Margin="5 0 0 0">
                 <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Margin="0 0 0 4">
-                    Custom ReadOnlyControlStyle (DarkGreen)
+                    Custom ReadOnlyControlStyle (DarkGreen, Italic)
                 </TextBlock>
                 <pt:PropertyGrid SelectedObject="{Binding Item}">
                     <pt:PropertyGrid.ReadOnlyControlStyle>

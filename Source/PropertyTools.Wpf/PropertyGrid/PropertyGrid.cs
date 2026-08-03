@@ -339,6 +339,15 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="ReadOnlyControlStyle"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ReadOnlyControlStyleProperty = DependencyProperty.Register(
+            nameof(ReadOnlyControlStyle),
+            typeof(Style),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
         /// Identifies the <see cref="TabHeaderTemplate"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TabHeaderTemplateProperty = DependencyProperty.Register(
@@ -1042,6 +1051,23 @@ namespace PropertyTools.Wpf
             set
             {
                 this.SetValue(ShowReadOnlyPropertiesProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the style applied to read-only property controls.
+        /// </summary>
+        /// <value>The style for read-only controls, or <c>null</c> to leave the control unstyled.</value>
+        public Style ReadOnlyControlStyle
+        {
+            get
+            {
+                return (Style)this.GetValue(ReadOnlyControlStyleProperty);
+            }
+
+            set
+            {
+                this.SetValue(ReadOnlyControlStyleProperty, value);
             }
         }
 
@@ -1800,7 +1826,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         private FrameworkElement CreatePropertyControl(PropertyItem pi, object instance = null)
         {
-            var options = new PropertyControlFactoryOptions { EnumAsRadioButtonsLimit = this.EnumAsRadioButtonsLimit };
+            var options = new PropertyControlFactoryOptions
+            {
+                EnumAsRadioButtonsLimit = this.EnumAsRadioButtonsLimit,
+                ReadOnlyControlStyle = this.ReadOnlyControlStyle
+            };
             var control = this.ControlFactory.CreateControl(pi, options, instance);
             if (control != null)
             {

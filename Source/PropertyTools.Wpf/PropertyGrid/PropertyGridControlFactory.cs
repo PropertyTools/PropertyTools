@@ -42,6 +42,11 @@ namespace PropertyTools.Wpf
         private static FontFamily[] cachedFontFamilies;
 
         /// <summary>
+        /// The options for the current control creation call.
+        /// </summary>
+        private PropertyControlFactoryOptions currentOptions;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PropertyGridControlFactory" /> class.
         /// </summary>
         public PropertyGridControlFactory()
@@ -90,6 +95,7 @@ namespace PropertyTools.Wpf
         /// </returns>
         public virtual FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options, object instance = null)
         {
+            this.currentOptions = options;
             this.UpdateConverter(property);
 
             foreach (var editor in this.Editors)
@@ -302,6 +308,39 @@ namespace PropertyTools.Wpf
                 control.Style = options.ValidationErrorStyle;
             }
             //return control;
+        }
+
+        /// <summary>
+        /// Applies the read-only control style to the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="options">The options.</param>
+        public virtual void SetReadOnlyControlStyle(FrameworkElement control, PropertyControlFactoryOptions options)
+        {
+            if (control.Style != null)
+            {
+                return;
+            }
+
+            var style = options?.ReadOnlyControlStyle ?? DefaultReadOnlyControlStyle;
+            if (style != null)
+            {
+                control.Style = style;
+            }
+        }
+
+        /// <summary>
+        /// Gets the default style applied to read-only controls when no <see cref="PropertyControlFactoryOptions.ReadOnlyControlStyle"/> is set.
+        /// The default sets the foreground to <see cref="Brushes.RoyalBlue"/> to match the original behavior.
+        /// </summary>
+        protected virtual Style DefaultReadOnlyControlStyle { get; } = CreateDefaultReadOnlyStyle();
+
+        private static Style CreateDefaultReadOnlyStyle()
+        {
+            var style = new Style();
+            style.Setters.Add(new Setter(Control.ForegroundProperty, Brushes.RoyalBlue));
+            style.Seal();
+            return style;
         }
 
         /// <summary>
@@ -552,7 +591,7 @@ namespace PropertyTools.Wpf
 
             if (property.IsReadOnly)
             {
-                c.Foreground = Brushes.RoyalBlue;
+                this.SetReadOnlyControlStyle(c, this.currentOptions);
             }
 
             var binding = property.CreateBinding(trigger);

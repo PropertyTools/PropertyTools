@@ -57,14 +57,14 @@ namespace PropertyGridDemos
 
     public class CustomControlFactory : PropertyGridControlFactory
     {
-        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options)
+        public override FrameworkElement CreateControl(PropertyItem pi, PropertyControlFactoryOptions options, object instance = null)
         {
             if (pi is BigCollectionPropertyItem)
             {
                 return this.CreateBigCollectionControl(pi, options);
             }
 
-            return base.CreateControl(pi, options);
+            return base.CreateControl(pi, options, instance);
         }
 
         protected virtual FrameworkElement CreateBigCollectionControl(PropertyItem property, PropertyControlFactoryOptions options)

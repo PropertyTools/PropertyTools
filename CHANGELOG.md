@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- PropertyGrid: Added `ReadOnlyControlStyle` dependency property (`Style`) to allow customizing the appearance of read-only property controls #307
+- PropertyGridDemos: Added ReadOnlyTextColorExample demonstrating how to use the new `ReadOnlyControlStyle` property #307
 - DataGridDemo: Added IListCommitOnTabExample to reproduce the IList cell edit/tab commit scenario using CollectionChanged(Replace) notifications #81
 - DataGrid: Added `DataViewOperator` — a dedicated operator for `DataView` ItemsSources that enables add/delete rows and copy using the DataTable's column metadata #169
 - PropertyGridDemos: Added ConnectionStringBuilderExample demonstrating the fix for issue #288 – PropertyGrid now works correctly when bound to a DbConnectionStringBuilder subclass (fixed: null checkboxes, broken enum radio-buttons, byte[] StringFormat exception) #288

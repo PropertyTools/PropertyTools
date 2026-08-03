@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Added new examples for `List<bool>`, `bool[]`, `string[]`, `ObservableCollection<bool>`, `ObservableCollection<Fruit>`, `ObservableCollection<Color>`, and `ObservableCollection<Vector3D>` #157
 
 ### Fixed
+- DataGrid: Fixed both the edited cell and the navigation-target cell appearing in edit mode simultaneously when pressing Enter or an arrow key — `RemoveEditControl` no longer commits hidden (pre-created) text editors, only visible ones #520
 - DataGrid: Fixed first cell edit failing (validation error/reverted value) when `CellDefinitionFactory` or `ControlFactory` is set after the grid content was built (e.g. bound via DataContext) — the grid content is now rebuilt when these properties change #81
 - DataGrid: Fixed text cell edits being reverted when leaving a cell (TAB/ENTER/mouse navigation) by committing the active text editor binding before removing the editor control #81
 - PropertyGrid: Fixed `[AutoUpdateText]` on floating-point properties so decimal separators can be entered while typing; added `AutoUpdateFloatingPointExample` to PropertyGridDemo for manual verification #89

@@ -27,7 +27,7 @@ All notable changes to this project will be documented in this file.
 - DataGrid: Added new examples for `List<bool>`, `bool[]`, `string[]`, `ObservableCollection<bool>`, `ObservableCollection<Fruit>`, `ObservableCollection<Color>`, and `ObservableCollection<Vector3D>` #157
 
 ### Fixed
-- PropertyGrid/TreeListBox/DataGrid: Fixed reflection-based attribute, sort, and tree-child lookups plus hardened TimeSpan parsing for invalid edit input #TBD
+- PropertyGrid/TreeListBox/DataGrid: Fixed reflection-based attribute, sort, and tree-child lookups plus hardened TimeSpan parsing for invalid edit input #526 #527 #528 #529
 - DataGrid/PropertyGrid: Fixed disconnected or non-templated control state so DataView operators, dynamic list-of-lists columns, click handling, and floating-point auto-update work correctly in unit tests #89 #234 #510
 - DataGrid: Fixed both the edited cell and the navigation-target cell appearing in edit mode simultaneously when pressing Enter or an arrow key — `RemoveEditControl` no longer commits hidden (pre-created) text editors, only visible ones #520
 - DataGrid: Fixed first cell edit failing (validation error/reverted value) when `CellDefinitionFactory` or `ControlFactory` is set after the grid content was built (e.g. bound via DataContext) — the grid content is now rebuilt when these properties change #81

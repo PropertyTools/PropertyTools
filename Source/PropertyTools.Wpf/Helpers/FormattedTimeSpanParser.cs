@@ -80,59 +80,98 @@ namespace PropertyTools.Wpf
         /// </returns>
         public TimeSpan Parse(string value)
         {
-            var r = this.Expression.Match(value);
-
-            int days = 0;
-            int hours = 0;
-            int minutes = 0;
-            int seconds = 0;
-            int milliseconds = 0;
-
-            for (int groupNumber = 1; groupNumber < r.Groups.Count; groupNumber++)
+            TimeSpan result;
+            if (this.TryParse(value, out result))
             {
-                var group = r.Groups[groupNumber];
-                var name = this.Expression.GroupNameFromNumber(groupNumber);
-
-                if (group.Success)
-                {
-                    // Console.WriteLine("Match on " + name + ": '" + group.Value + "'");
-                    int v = int.Parse(group.Value);
-                    switch (name)
-                    {
-                        case "DD":
-                        case "D":
-                        case "dd":
-                        case "d":
-                            days = v;
-                            break;
-                        case "HH":
-                        case "H":
-                        case "hh":
-                        case "h":
-                            hours = v;
-                            break;
-                        case "MM":
-                        case "M":
-                        case "mm":
-                        case "m":
-                            minutes = v;
-                            break;
-                        case "SS":
-                        case "S":
-                        case "ss":
-                        case "s":
-                            seconds = v;
-                            break;
-                        case "fff":
-                        case "ff":
-                        case "f":
-                            milliseconds = v;
-                            break;
-                    }
-                }
+                return result;
             }
 
-            return new TimeSpan(days, hours, minutes, seconds, milliseconds);
+            throw new FormatException(string.Format("Invalid TimeSpan value '{0}'.", value));
+        }
+
+        /// <summary>
+        /// Tries to parse the specified time span string.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="result">The parsed time span.</param>
+        /// <returns><c>true</c> if parsing succeeded; otherwise, <c>false</c>.</returns>
+        public bool TryParse(string value, out TimeSpan result)
+        {
+            result = default(TimeSpan);
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return false;
+            }
+
+            try
+            {
+                var r = this.Expression.Match(value);
+                if (!r.Success)
+                {
+                    return false;
+                }
+
+                int days = 0;
+                int hours = 0;
+                int minutes = 0;
+                int seconds = 0;
+                int milliseconds = 0;
+
+                for (int groupNumber = 1; groupNumber < r.Groups.Count; groupNumber++)
+                {
+                    var group = r.Groups[groupNumber];
+                    var name = this.Expression.GroupNameFromNumber(groupNumber);
+
+                    if (group.Success)
+                    {
+                        // Console.WriteLine("Match on " + name + ": '" + group.Value + "'");
+                        int v = int.Parse(group.Value);
+                        switch (name)
+                        {
+                            case "DD":
+                            case "D":
+                            case "dd":
+                            case "d":
+                                days = v;
+                                break;
+                            case "HH":
+                            case "H":
+                            case "hh":
+                            case "h":
+                                hours = v;
+                                break;
+                            case "MM":
+                            case "M":
+                            case "mm":
+                            case "m":
+                                minutes = v;
+                                break;
+                            case "SS":
+                            case "S":
+                            case "ss":
+                            case "s":
+                                seconds = v;
+                                break;
+                            case "fff":
+                            case "ff":
+                            case "f":
+                                milliseconds = v;
+                                break;
+                        }
+                    }
+                }
+
+                result = new TimeSpan(days, hours, minutes, seconds, milliseconds);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+            catch (OverflowException)
+            {
+                return false;
+            }
         }
     }
 }

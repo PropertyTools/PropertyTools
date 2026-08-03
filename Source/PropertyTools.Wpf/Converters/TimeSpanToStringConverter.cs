@@ -87,13 +87,13 @@ namespace PropertyTools.Wpf
             }
 
             var formatString = parameter as string;
-            if (string.IsNullOrWhiteSpace(formatString))
+            TimeSpan result;
+            if (TimeSpanParser.TryParse(input, formatString, out result))
             {
-                return TimeSpan.Parse(input);
+                return result;
             }
 
-            var parser = new FormattedTimeSpanParser(formatString);
-            return parser.Parse(input);
+            return DependencyProperty.UnsetValue;
         }
     }
 }

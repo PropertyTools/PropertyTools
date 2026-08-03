@@ -10,8 +10,9 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Implements an item comparer that uses reflection and a list of sort descriptions.
@@ -19,9 +20,14 @@ namespace PropertyTools.Wpf
     public class NaturalSortDescriptionComparer : ISortDescriptionComparer
     {
         /// <summary>
-        /// The enumerable comparer.
+        /// The object comparer.
         /// </summary>
-        private readonly EnumerableComparer<object> enumerableComparer = new EnumerableComparer<object>(new NaturalObjectComparer());
+        private readonly NaturalObjectComparer objectComparer = new NaturalObjectComparer();
+
+        /// <summary>
+        /// The property cache.
+        /// </summary>
+        private readonly Dictionary<Tuple<Type, string>, PropertyInfo> propertyCache = new Dictionary<Tuple<Type, string>, PropertyInfo>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NaturalSortDescriptionComparer" /> class.
@@ -49,18 +55,63 @@ namespace PropertyTools.Wpf
         /// </returns>
         public int Compare(object x, object y)
         {
-            Func<SortDescription, object, object, object> getValue = (s, o1, o2) =>
+            foreach (SortDescription sortDescription in this.SortDescriptions)
+            {
+                var xValue = this.GetValue(x, sortDescription.PropertyName);
+                var yValue = this.GetValue(y, sortDescription.PropertyName);
+
+                var result = this.objectComparer.Compare(xValue, yValue);
+                if (result == 0)
                 {
-                    var o = s.Direction == ListSortDirection.Ascending ? o1 : o2;
-                    return o.GetType().GetProperty(s.PropertyName).GetValue(o);
-                };
+                    continue;
+                }
 
-            // Get the sequences of values for each object
-            var values1 = this.SortDescriptions.Select(s => getValue(s, x, y));
-            var values2 = this.SortDescriptions.Select(s => getValue(s, y, x));
+                return sortDescription.Direction == ListSortDirection.Ascending ? result : -result;
+            }
 
-            // Compare the sequences
-            return this.enumerableComparer.Compare(values1, values2);
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets a sort value for the specified object.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The property value, or <c>null</c> if the item is <c>null</c>.</returns>
+        private object GetValue(object item, string propertyName)
+        {
+            if (item == null)
+            {
+                return null;
+            }
+
+            var property = this.GetProperty(item.GetType(), propertyName);
+            return property.GetValue(item);
+        }
+
+        /// <summary>
+        /// Gets the cached property info for a sort property.
+        /// </summary>
+        /// <param name="itemType">Type of the item.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The property info.</returns>
+        private PropertyInfo GetProperty(Type itemType, string propertyName)
+        {
+            var key = Tuple.Create(itemType, propertyName);
+            PropertyInfo property;
+            if (!this.propertyCache.TryGetValue(key, out property))
+            {
+                property = itemType.GetProperty(propertyName);
+                if (property == null)
+                {
+                    throw new InvalidOperationException(
+                        string.Format("Property '{0}' was not found on type '{1}'.", propertyName, itemType.FullName));
+                }
+
+                this.propertyCache[key] = property;
+            }
+
+            return property;
         }
     }
 }

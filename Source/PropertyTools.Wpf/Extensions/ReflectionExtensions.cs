@@ -129,7 +129,7 @@ namespace PropertyTools.Wpf
         /// <returns>The first attribute of the specified type.</returns>
         public static Attribute GetFirstAttributeOrDefault(this System.ComponentModel.PropertyDescriptor descriptor, Type attributeType)
         {
-            return descriptor.Attributes.Cast<Attribute>().FirstOrDefault(attribute => attribute.GetType().IsAssignableFrom(attributeType));
+            return descriptor.Attributes.Cast<Attribute>().FirstOrDefault(attributeType.IsInstanceOfType);
         }
 
         /// <summary>

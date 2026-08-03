@@ -573,7 +573,14 @@ namespace PropertyTools.Wpf
                         return;
                     }
 
-                    c.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+                    var bindingExpression = c.GetBindingExpression(TextBox.TextProperty);
+                    if (bindingExpression != null && bindingExpression.Status == BindingStatus.Active)
+                    {
+                        bindingExpression.UpdateSource();
+                        return;
+                    }
+
+                    UpdateFloatingPointPropertyFromText(c, property);
                 };
             }
 
@@ -1074,6 +1081,29 @@ namespace PropertyTools.Wpf
             }
 
             return trimmedText.EndsWith(".", StringComparison.Ordinal) || trimmedText.EndsWith(",", StringComparison.Ordinal);
+        }
+
+        private static void UpdateFloatingPointPropertyFromText(TextBox textBox, PropertyItem property)
+        {
+            if (textBox?.DataContext == null || property?.Descriptor == null)
+            {
+                return;
+            }
+
+            var typeConverter = TypeDescriptor.GetConverter(property.ActualPropertyType);
+            if (typeConverter == null || !typeConverter.CanConvertFrom(typeof(string)))
+            {
+                return;
+            }
+
+            try
+            {
+                var value = typeConverter.ConvertFrom(null, CultureInfo.CurrentCulture, textBox.Text);
+                property.Descriptor.SetValue(textBox.DataContext, value);
+            }
+            catch
+            {
+            }
         }
 
         /// <summary>

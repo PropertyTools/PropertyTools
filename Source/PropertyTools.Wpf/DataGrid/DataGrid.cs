@@ -715,6 +715,16 @@ namespace PropertyTools.Wpf
         private bool suspendCollectionChangedNotifications;
 
         /// <summary>
+        /// The logical number of columns when the template has not been applied.
+        /// </summary>
+        private int logicalColumns;
+
+        /// <summary>
+        /// The logical number of rows when the template has not been applied.
+        /// </summary>
+        private int logicalRows;
+
+        /// <summary>
         /// The synchronized collection
         /// </summary>
         private IList synchronizedCollection;
@@ -1278,12 +1288,12 @@ namespace PropertyTools.Wpf
         /// Gets the number of columns.
         /// </summary>
         /// <value>The number of columns.</value>
-        public int Columns => this.sheetGrid != null ? this.sheetGrid.ColumnDefinitions.Count : 0;
+        public int Columns => this.sheetGrid != null ? this.sheetGrid.ColumnDefinitions.Count : this.logicalColumns;
 
         /// <summary>
         /// Gets the number of rows.</summary>
         /// <value>The number of rows.</value>
-        public int Rows => this.sheetGrid != null ? this.sheetGrid.RowDefinitions.Count - 1 : 0;
+        public int Rows => this.sheetGrid != null ? this.sheetGrid.RowDefinitions.Count - 1 : this.logicalRows;
 
         /// <summary>
         /// Gets a value indicating whether to use columns for the items.
@@ -1870,6 +1880,11 @@ namespace PropertyTools.Wpf
         {
             this.Focus();
             base.OnMouseLeftButtonDown(e);
+
+            if (this.sheetGrid == null)
+            {
+                return;
+            }
 
             this.mouseDownPositionOnScreen = PresentationSource.FromVisual(this) != null ? this.PointToScreen(e.GetPosition(this)) : (Point?)null;
             this.isRangeSelectionDrag = false;
@@ -2591,6 +2606,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         private CellRef GetCell(Point position, bool isInAutoFillMode = false, CellRef relativeTo = default(CellRef))
         {
+            if (this.sheetGrid == null)
+            {
+                return new CellRef(-1, -1);
+            }
+
             var w = 0d;
             var column = -1;
             var row = -1;
@@ -2741,7 +2761,8 @@ namespace PropertyTools.Wpf
         /// Removes the current editor control.
         /// </summary>
         /// <param name="updateTextBindingSource">
-        /// if set to <c>true</c>, updates the source binding for text editors before removal.
+        /// if set to <c>true</c>, updates the source binding for text editors that are currently visible
+        /// (i.e. actively being edited) before removal. Hidden pre-created text editors are not committed.
         /// </param>
         private void RemoveEditControl(bool updateTextBindingSource = true)
         {
@@ -2750,7 +2771,7 @@ namespace PropertyTools.Wpf
                 var textEditor = this.currentEditControl as TextBox;
                 if (textEditor != null)
                 {
-                    if (updateTextBindingSource)
+                    if (updateTextBindingSource && textEditor.Visibility == Visibility.Visible)
                     {
                         var textBinding = textEditor.GetBindingExpression(TextBox.TextProperty);
                         textBinding?.UpdateSource();
@@ -2989,6 +3010,11 @@ namespace PropertyTools.Wpf
         /// <param name="cellRef">The cell reference.</param>
         private void UpdateCellContent(CellRef cellRef)
         {
+            if (this.sheetGrid == null)
+            {
+                return;
+            }
+
             var c = this.GetCellElement(cellRef);
             if (c != null)
             {
@@ -4675,6 +4701,16 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void UpdateGridContent()
         {
+            if (!this.UpdateLogicalGridState())
+            {
+                if (this.sheetGrid != null)
+                {
+                    this.ClearContent();
+                }
+
+                return;
+            }
+
             if (this.sheetGrid == null)
             {
                 // return if the template has not yet been applied
@@ -4682,27 +4718,8 @@ namespace PropertyTools.Wpf
             }
 
             this.ClearContent();
-
-            if (this.ItemsSource == null)
-            {
-                return;
-            }
-
-            this.Operator = this.CreateOperator();
-
-            if (this.AutoGenerateColumns && (this.ColumnDefinitions.Count == 0 || this.Operator.ShouldRegenerateColumns()))
-            {
-                this.ColumnDefinitions.Clear();
-                this.Operator.AutoGenerateColumns();
-            }
-
-            this.Operator.UpdatePropertyDefinitions();
-
-            // Determine if columns or rows are defined
-            this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
-
-            var rows = this.Operator.GetRowCount();
-            var columns = this.Operator.GetColumnCount();
+            var rows = this.logicalRows;
+            var columns = this.logicalColumns;
 
             var visibility = rows >= 0 ? Visibility.Visible : Visibility.Hidden;
 
@@ -4725,6 +4742,43 @@ namespace PropertyTools.Wpf
 
             // Update column width when all the controls are loaded.
             this.Dispatcher.BeginInvoke(new Action(this.UpdateGridSize), DispatcherPriority.Loaded);
+        }
+
+        /// <summary>
+        /// Updates the logical operator, column definitions and dimensions even when the template is not applied.
+        /// </summary>
+        /// <returns><c>true</c> if an operator could be created; otherwise <c>false</c>.</returns>
+        private bool UpdateLogicalGridState()
+        {
+            this.logicalRows = 0;
+            this.logicalColumns = 0;
+            this.Operator = null;
+            this.ItemsInColumns = false;
+
+            if (this.ItemsSource == null)
+            {
+                return false;
+            }
+
+            var dataGridOperator = this.CreateOperator();
+            if (dataGridOperator == null)
+            {
+                return false;
+            }
+
+            this.Operator = dataGridOperator;
+
+            if (this.AutoGenerateColumns && (this.ColumnDefinitions.Count == 0 || this.Operator.ShouldRegenerateColumns()))
+            {
+                this.ColumnDefinitions.Clear();
+                this.Operator.AutoGenerateColumns();
+            }
+
+            this.Operator.UpdatePropertyDefinitions();
+            this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
+            this.logicalRows = this.Operator.GetRowCount();
+            this.logicalColumns = this.Operator.GetColumnCount();
+            return true;
         }
 
         /// <summary>

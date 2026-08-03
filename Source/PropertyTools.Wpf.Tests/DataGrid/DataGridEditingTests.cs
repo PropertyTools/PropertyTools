@@ -7,6 +7,7 @@
 namespace PropertyTools.Wpf.Tests
 {
     using System.Reflection;
+    using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
 
@@ -19,12 +20,13 @@ namespace PropertyTools.Wpf.Tests
     public class DataGridEditingTests
     {
         [Test]
-        public void RemoveEditControl_TextEditorAndUpdateRequested_UpdatesSourceBeforeRemovingEditor()
+        public void RemoveEditControl_VisibleTextEditorAndUpdateRequested_UpdatesSourceBeforeRemovingEditor()
         {
             // Arrange
             var source = new TextEditSource { Value = "0" };
             var textEditor = this.CreateTextEditor(source);
             textEditor.Text = "5";
+            textEditor.Visibility = Visibility.Visible;
 
             var dataGrid = new PropertyTools.Wpf.DataGrid();
             var sheetGrid = new Grid();
@@ -42,12 +44,37 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void RemoveEditControl_HiddenTextEditorAndUpdateRequested_DoesNotUpdateSource()
+        {
+            // Arrange — simulates the pre-created hidden editor created by ShowEditControl()
+            var source = new TextEditSource { Value = "0" };
+            var textEditor = this.CreateTextEditor(source);
+            textEditor.Text = "5";
+            textEditor.Visibility = Visibility.Hidden;
+
+            var dataGrid = new PropertyTools.Wpf.DataGrid();
+            var sheetGrid = new Grid();
+            sheetGrid.Children.Add(textEditor);
+
+            SetPrivateField(dataGrid, "sheetGrid", sheetGrid);
+            SetPrivateField(dataGrid, "currentEditControl", textEditor);
+
+            // Act
+            InvokeRemoveEditControl(dataGrid, true);
+
+            // Assert — hidden editor must not commit: it was never actively edited
+            Assert.That(source.Value, Is.EqualTo("0"));
+            Assert.That(sheetGrid.Children.Contains(textEditor), Is.False);
+        }
+
+        [Test]
         public void RemoveEditControl_TextEditorAndNoUpdateRequested_DoesNotUpdateSource()
         {
             // Arrange
             var source = new TextEditSource { Value = "0" };
             var textEditor = this.CreateTextEditor(source);
             textEditor.Text = "5";
+            textEditor.Visibility = Visibility.Visible;
 
             var dataGrid = new PropertyTools.Wpf.DataGrid();
             var sheetGrid = new Grid();

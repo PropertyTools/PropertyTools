@@ -151,11 +151,6 @@ namespace PropertyTools.Wpf.Tests
             var list = new ObservableCollection<ItemWithDisplayName> { new ItemWithDisplayName { Name = "Item1" } };
             dataGrid.ItemsSource = list;
 
-            var listOperator = new ListOperator(dataGrid);
-
-            // Act
-            listOperator.AutoGenerateColumns();
-
             // Assert
             var nameColumn = dataGrid.ColumnDefinitions.Single(c => c.PropertyName == nameof(ItemWithDisplayName.Name));
             Assert.That(nameColumn.Header, Is.EqualTo("Custom name (System.ComponentModel)"));
@@ -169,11 +164,6 @@ namespace PropertyTools.Wpf.Tests
             var list = new ObservableCollection<ItemWithDisplayName> { new ItemWithDisplayName { Number = 1 } };
             dataGrid.ItemsSource = list;
 
-            var listOperator = new ListOperator(dataGrid);
-
-            // Act
-            listOperator.AutoGenerateColumns();
-
             // Assert
             var numberColumn = dataGrid.ColumnDefinitions.Single(c => c.PropertyName == nameof(ItemWithDisplayName.Number));
             Assert.That(numberColumn.Header, Is.EqualTo("Custom number (PropertyTools.DataAnnotations)"));
@@ -186,11 +176,6 @@ namespace PropertyTools.Wpf.Tests
             var dataGrid = new DataGrid { AutoGenerateColumns = true };
             var list = new ObservableCollection<ItemWithDisplayName> { new ItemWithDisplayName() };
             dataGrid.ItemsSource = list;
-
-            var listOperator = new ListOperator(dataGrid);
-
-            // Act
-            listOperator.AutoGenerateColumns();
 
             // Assert
             var fractionColumn = dataGrid.ColumnDefinitions.Single(c => c.PropertyName == nameof(ItemWithDisplayName.Fraction));

@@ -209,8 +209,8 @@ namespace PropertyTools.Wpf.Tests
             // Arrange
             var dataView = CreateSampleDataTable().DefaultView;
             var dataGrid = new DataGrid();
-            dataGrid.ItemsSource = dataView;
             dataGrid.ColumnDefinitions.Add(new ColumnDefinition { PropertyName = "StringColumn" });
+            dataGrid.ItemsSource = dataView;
             var op = new DataViewOperator(dataGrid);
 
             // Act
@@ -227,10 +227,6 @@ namespace PropertyTools.Wpf.Tests
             var dataView = CreateSampleDataTable().DefaultView;
             var dataGrid = new DataGrid();
             dataGrid.ItemsSource = dataView;
-            var op = new DataViewOperator(dataGrid);
-
-            // Act
-            op.AutoGenerateColumns();
 
             // Assert
             Assert.That(dataGrid.ColumnDefinitions.Count, Is.EqualTo(3));

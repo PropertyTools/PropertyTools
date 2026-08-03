@@ -339,13 +339,13 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(true, AppearanceChanged));
 
         /// <summary>
-        /// Identifies the <see cref="ReadOnlyForeground"/> dependency property.
+        /// Identifies the <see cref="ReadOnlyControlStyle"/> dependency property.
         /// </summary>
-        public static readonly DependencyProperty ReadOnlyForegroundProperty = DependencyProperty.Register(
-            nameof(ReadOnlyForeground),
-            typeof(Brush),
+        public static readonly DependencyProperty ReadOnlyControlStyleProperty = DependencyProperty.Register(
+            nameof(ReadOnlyControlStyle),
+            typeof(Style),
             typeof(PropertyGrid),
-            new UIPropertyMetadata(Brushes.RoyalBlue, AppearanceChanged));
+            new UIPropertyMetadata(null, AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="TabHeaderTemplate"/> dependency property.
@@ -1055,19 +1055,19 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Gets or sets the foreground brush used for read-only property controls.
+        /// Gets or sets the style applied to read-only property controls.
         /// </summary>
-        /// <value>The foreground brush for read-only controls. Defaults to <see cref="Brushes.RoyalBlue"/>.</value>
-        public Brush ReadOnlyForeground
+        /// <value>The style for read-only controls, or <c>null</c> to leave the control unstyled.</value>
+        public Style ReadOnlyControlStyle
         {
             get
             {
-                return (Brush)this.GetValue(ReadOnlyForegroundProperty);
+                return (Style)this.GetValue(ReadOnlyControlStyleProperty);
             }
 
             set
             {
-                this.SetValue(ReadOnlyForegroundProperty, value);
+                this.SetValue(ReadOnlyControlStyleProperty, value);
             }
         }
 
@@ -1829,7 +1829,7 @@ namespace PropertyTools.Wpf
             var options = new PropertyControlFactoryOptions
             {
                 EnumAsRadioButtonsLimit = this.EnumAsRadioButtonsLimit,
-                ReadOnlyForeground = this.ReadOnlyForeground
+                ReadOnlyControlStyle = this.ReadOnlyControlStyle
             };
             var control = this.ControlFactory.CreateControl(pi, options, instance);
             if (control != null)

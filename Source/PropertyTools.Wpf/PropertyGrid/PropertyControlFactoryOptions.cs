@@ -10,7 +10,6 @@
 namespace PropertyTools.Wpf
 {
     using System.Windows;
-    using System.Windows.Media;
 
     /// <summary>
     /// Represents options for the property control factory.
@@ -24,10 +23,10 @@ namespace PropertyTools.Wpf
         public int EnumAsRadioButtonsLimit { get; set; }
 
         /// <summary>
-        /// Gets or sets the foreground brush used for read-only property controls.
+        /// Gets or sets the style applied to read-only property controls.
         /// </summary>
-        /// <value>The foreground brush for read-only controls, or <c>null</c> to use the default color.</value>
-        public Brush ReadOnlyForeground { get; set; }
+        /// <value>The style for read-only controls, or <c>null</c> to leave the control unstyled.</value>
+        public Style ReadOnlyControlStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the validation error template.

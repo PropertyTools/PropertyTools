@@ -311,6 +311,19 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Applies the read-only control style to the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="options">The options.</param>
+        public virtual void SetReadOnlyControlStyle(FrameworkElement control, PropertyControlFactoryOptions options)
+        {
+            if (options?.ReadOnlyControlStyle != null && control.Style == null)
+            {
+                control.Style = options.ReadOnlyControlStyle;
+            }
+        }
+
+        /// <summary>
         /// Updates the tab for validation results.
         /// </summary>
         /// <param name="tab">The tab.</param>
@@ -558,7 +571,7 @@ namespace PropertyTools.Wpf
 
             if (property.IsReadOnly)
             {
-                c.Foreground = this.currentOptions?.ReadOnlyForeground ?? Brushes.RoyalBlue;
+                this.SetReadOnlyControlStyle(c, this.currentOptions);
             }
 
             var binding = property.CreateBinding(trigger);

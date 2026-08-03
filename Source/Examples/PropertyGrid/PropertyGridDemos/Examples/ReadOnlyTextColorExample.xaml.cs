@@ -3,8 +3,8 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Demonstrates how to customize the foreground color of read-only properties using the
-//   ReadOnlyForeground property on PropertyGrid (issue #307).
+//   Demonstrates how to customize the style of read-only properties using the
+//   ReadOnlyControlStyle property on PropertyGrid (issue #307).
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -53,7 +53,7 @@ namespace PropertyGridDemos
     }
 
     /// <summary>
-    /// A model with both editable and read-only properties for demonstrating read-only text color.
+    /// A model with both editable and read-only properties for demonstrating the read-only control style.
     /// </summary>
     public class ReadOnlyTextColorItem
     {
@@ -66,7 +66,7 @@ namespace PropertyGridDemos
         /// <summary>
         /// Gets the identifier (read-only).
         /// </summary>
-        [Description("This property is read-only. Its text color is controlled by ReadOnlyForeground.")]
+        [Description("This property is read-only. Its appearance is controlled by ReadOnlyControlStyle.")]
         public string Id { get; } = "ID-12345";
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace PropertyGridDemos
         /// <summary>
         /// Gets the creation date (read-only).
         /// </summary>
-        [Description("This property is read-only. Its text color is controlled by ReadOnlyForeground.")]
+        [Description("This property is read-only. Its appearance is controlled by ReadOnlyControlStyle.")]
         public string CreatedAt { get; } = "2024-01-01";
     }
 }

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         xmlns:d="clr-namespace:PropertyGridDemos"
-        Title="ReadOnly Text Color (issue #307)" Height="500" Width="900">
+        Title="ReadOnly Control Style (issue #307)" Height="500" Width="900">
     <Window.DataContext>
         <d:ReadOnlyTextColorExampleViewModel/>
     </Window.DataContext>
@@ -15,12 +15,12 @@
 
         <StackPanel Grid.Row="0" Margin="10" Background="LightYellow">
             <TextBlock TextWrapping="Wrap" FontWeight="Bold" Margin="5">
-                ReadOnly Text Color Example (issue #307)
+                ReadOnly Control Style Example (issue #307)
             </TextBlock>
             <TextBlock TextWrapping="Wrap" Margin="5">
-                The left PropertyGrid uses the default ReadOnlyForeground (RoyalBlue).
-                The right PropertyGrid uses a custom ReadOnlyForeground (DarkGreen).
-                Read-only properties are displayed using the configured foreground color.
+                The left PropertyGrid uses no ReadOnlyControlStyle (default WPF appearance).
+                The right PropertyGrid uses a custom ReadOnlyControlStyle with DarkGreen foreground.
+                Any style properties can be applied to read-only controls via ReadOnlyControlStyle.
             </TextBlock>
         </StackPanel>
 
@@ -30,21 +30,27 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <!-- Default readonly foreground (RoyalBlue) -->
+            <!-- No ReadOnlyControlStyle (default WPF appearance) -->
             <DockPanel Grid.Column="0" Margin="0 0 5 0">
                 <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Margin="0 0 0 4">
-                    Default ReadOnlyForeground (RoyalBlue)
+                    No ReadOnlyControlStyle (default)
                 </TextBlock>
                 <pt:PropertyGrid SelectedObject="{Binding Item}"/>
             </DockPanel>
 
-            <!-- Custom readonly foreground (DarkGreen) -->
+            <!-- Custom ReadOnlyControlStyle (DarkGreen foreground) -->
             <DockPanel Grid.Column="1" Margin="5 0 0 0">
                 <TextBlock DockPanel.Dock="Top" FontWeight="Bold" Margin="0 0 0 4">
-                    Custom ReadOnlyForeground (DarkGreen)
+                    Custom ReadOnlyControlStyle (DarkGreen)
                 </TextBlock>
-                <pt:PropertyGrid SelectedObject="{Binding Item}"
-                                 ReadOnlyForeground="DarkGreen"/>
+                <pt:PropertyGrid SelectedObject="{Binding Item}">
+                    <pt:PropertyGrid.ReadOnlyControlStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Foreground" Value="DarkGreen"/>
+                            <Setter Property="FontStyle" Value="Italic"/>
+                        </Style>
+                    </pt:PropertyGrid.ReadOnlyControlStyle>
+                </pt:PropertyGrid>
             </DockPanel>
         </Grid>
     </Grid>

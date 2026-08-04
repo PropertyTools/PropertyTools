@@ -142,6 +142,12 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the enum filter that restricts which enum values are shown.
+        /// </summary>
+        /// <value>The enum filter, or <c>null</c> to show all values.</value>
+        public EnumFilterAttribute EnumFilter { get; set; }
+
+        /// <summary>
         /// Gets or sets the item margin.
         /// </summary>
         /// <value>The item margin.</value>
@@ -275,7 +281,7 @@ namespace PropertyTools.Wpf
                 return;
             }
 
-            var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute().ToList();
+            var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute().FilterOnEnumFilterAttribute(this.EnumFilter).ToList();
 
             // if the type is nullable, add the null value
             if (Nullable.GetUnderlyingType(enumType) != null)

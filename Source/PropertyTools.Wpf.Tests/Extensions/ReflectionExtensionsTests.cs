@@ -54,6 +54,36 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void FilterOnEnumFilterAttribute_ExcludeMode_ExcludesSpecifiedValues()
+        {
+            var values = Enum.GetValues(typeof(Enum1)).FilterOnBrowsableAttribute();
+            var filter = new DataAnnotations.EnumFilterAttribute(DataAnnotations.EnumFilterAttribute.FilteringMode.Exclude, Enum1.Value1);
+            var result = values.FilterOnEnumFilterAttribute(filter);
+            Assert.That(result, Does.Not.Contain(Enum1.Value1));
+            Assert.That(result, Contains.Item(Enum1.Value2));
+            Assert.That(result, Contains.Item(Enum1.Value3));
+        }
+
+        [Test]
+        public void FilterOnEnumFilterAttribute_IncludeMode_IncludesOnlySpecifiedValues()
+        {
+            var values = Enum.GetValues(typeof(Enum1)).FilterOnBrowsableAttribute();
+            var filter = new DataAnnotations.EnumFilterAttribute(DataAnnotations.EnumFilterAttribute.FilteringMode.Include, Enum1.Value1);
+            var result = values.FilterOnEnumFilterAttribute(filter);
+            Assert.That(result, Contains.Item(Enum1.Value1));
+            Assert.That(result, Does.Not.Contain(Enum1.Value2));
+            Assert.That(result, Does.Not.Contain(Enum1.Value3));
+        }
+
+        [Test]
+        public void FilterOnEnumFilterAttribute_NullFilter_ReturnsAllValues()
+        {
+            var values = Enum.GetValues(typeof(Enum1)).FilterOnBrowsableAttribute();
+            var result = values.FilterOnEnumFilterAttribute(null);
+            Assert.That(result.Count, Is.EqualTo(values.Count));
+        }
+
+        [Test]
         public void GetFirstAttributeOrDefault_ExactAttributeType_ReturnsAttribute()
         {
             var descriptor = TypeDescriptor.GetProperties(typeof(ReflectionTestModel))[nameof(ReflectionTestModel.Values)];

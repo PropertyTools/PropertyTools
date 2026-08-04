@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
-- PropertyGrid: Added `PropertyPanelStyle` and `LabelPanelStyle` dependency properties to allow full XAML styling of the inner property row Grid and label DockPanel (e.g. background, foreground, borders for dark themes) #275
+- PropertyGrid: Added `PropertyPanelStyle` and `LabelPanelStyle` dependency properties to allow full XAML styling of the inner property row `Grid` and label `DockPanel` (e.g. background color for dark themes or compact layouts) #275
 - PropertyGrid: Added `ReadOnlyControlStyle` dependency property (`Style`) to allow customizing the appearance of read-only property controls #307
 - PropertyGridDemos: Added ReadOnlyTextColorExample demonstrating how to use the new `ReadOnlyControlStyle` property #307
 - DataGridDemo: Added IListCommitOnTabExample to reproduce the IList cell edit/tab commit scenario using CollectionChanged(Replace) notifications #81

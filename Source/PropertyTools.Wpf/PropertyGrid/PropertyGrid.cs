@@ -1108,7 +1108,7 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// Gets or sets the style applied to the <see cref="Grid"/> panel that wraps each property row.
-        /// Use this to customize the appearance (e.g. background, margin, padding) of each property's container panel.
+        /// Use this to customize the appearance (e.g. background, margin) of each property's container panel.
         /// </summary>
         public Style PropertyPanelStyle
         {
@@ -1125,7 +1125,8 @@ namespace PropertyTools.Wpf
 
         /// <summary>
         /// Gets or sets the style applied to the <see cref="DockPanel"/> that contains the property label and description icon.
-        /// Use this to customize the appearance (e.g. background, foreground) of the label area within each property row.
+        /// Use this to customize the appearance (e.g. background) of the label area within each property row.
+        /// To inherit text color, set <c>TextElement.Foreground</c> via a setter in this style.
         /// </summary>
         public Style LabelPanelStyle
         {

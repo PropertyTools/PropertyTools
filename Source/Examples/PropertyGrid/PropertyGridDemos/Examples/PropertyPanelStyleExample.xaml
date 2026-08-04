@@ -3,29 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         xmlns:d="clr-namespace:PropertyGridDemos"
-        Title="PropertyPanelStyle and LabelPanelStyle (issue #275)" Height="600" Width="1100"
+        Title="PropertyPanelStyle and LabelPanelStyle (issue #275)" Height="620" Width="1100"
         Background="#1E1E1E" TextElement.Foreground="#F1F1F1">
     <Window.DataContext>
         <d:PropertyPanelStyleExampleViewModel/>
     </Window.DataContext>
-    <Window.Resources>
-        <!-- Dark TextBox style for the right-side PropertyGrid -->
-        <Style x:Key="DarkTextBox" TargetType="TextBox">
-            <Setter Property="Background" Value="#3C3C3C"/>
-            <Setter Property="Foreground" Value="#F1F1F1"/>
-            <Setter Property="BorderBrush" Value="#555555"/>
-            <Setter Property="CaretBrush" Value="#F1F1F1"/>
-        </Style>
-        <Style x:Key="DarkTextBoxEx" TargetType="pt:TextBoxEx" BasedOn="{StaticResource DarkTextBox}"/>
-        <Style x:Key="DarkComboBox" TargetType="ComboBox">
-            <Setter Property="Background" Value="#3C3C3C"/>
-            <Setter Property="Foreground" Value="#F1F1F1"/>
-            <Setter Property="BorderBrush" Value="#555555"/>
-        </Style>
-        <Style x:Key="DarkCheckBox" TargetType="CheckBox">
-            <Setter Property="Foreground" Value="#F1F1F1"/>
-        </Style>
-    </Window.Resources>
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -76,13 +58,51 @@
                         <pt:PropertyGrid.LabelPanelStyle>
                             <Style TargetType="DockPanel">
                                 <Setter Property="Background" Value="#252526"/>
-                                <Setter Property="TextElement.Foreground" Value="#CCCCCC"/>
                             </Style>
                         </pt:PropertyGrid.LabelPanelStyle>
                         <pt:PropertyGrid.Resources>
-                            <Style TargetType="pt:TextBoxEx" BasedOn="{StaticResource DarkTextBoxEx}"/>
-                            <Style TargetType="ComboBox" BasedOn="{StaticResource DarkComboBox}"/>
-                            <Style TargetType="CheckBox" BasedOn="{StaticResource DarkCheckBox}"/>
+                            <!-- Input controls -->
+                            <Style TargetType="pt:TextBoxEx">
+                                <Setter Property="Background" Value="#3C3C3C"/>
+                                <Setter Property="Foreground" Value="#F1F1F1"/>
+                                <Setter Property="BorderBrush" Value="#555555"/>
+                                <Setter Property="CaretBrush" Value="#F1F1F1"/>
+                            </Style>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="Background" Value="#3C3C3C"/>
+                                <Setter Property="Foreground" Value="#F1F1F1"/>
+                                <Setter Property="BorderBrush" Value="#555555"/>
+                            </Style>
+                            <!-- Property labels -->
+                            <Style TargetType="Label">
+                                <Setter Property="Foreground" Value="#D4D4D4"/>
+                            </Style>
+                            <!-- CheckBox and RadioButton labels (optional properties and radio-button enums) -->
+                            <Style TargetType="CheckBox">
+                                <Setter Property="Foreground" Value="#D4D4D4"/>
+                            </Style>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Foreground" Value="#D4D4D4"/>
+                            </Style>
+                            <!-- Tab strip: dark background with light headers -->
+                            <Style TargetType="TabControl">
+                                <Setter Property="Background" Value="#252526"/>
+                                <Setter Property="BorderBrush" Value="#3F3F46"/>
+                            </Style>
+                            <Style TargetType="TabItem">
+                                <Setter Property="Background" Value="#2D2D30"/>
+                                <Setter Property="Foreground" Value="#AAAAAA"/>
+                                <Setter Property="BorderBrush" Value="#3F3F46"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#252526"/>
+                                        <Setter Property="Foreground" Value="#F1F1F1"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="#F1F1F1"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
                         </pt:PropertyGrid.Resources>
                     </pt:PropertyGrid>
                 </DockPanel>

@@ -1,0 +1,13 @@
+<Window x:Class="PropertyGridDemos.EnumFilterAttributeExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:d="clr-namespace:PropertyGridDemos"
+        Title="EnumFilterAttribute" Height="450" Width="500">
+    <Window.DataContext>
+        <d:EnumFilterAttributeExampleViewModel/>
+    </Window.DataContext>
+    <Grid Margin="4">
+        <pt:PropertyGrid SelectedObject="{Binding SelectedObject}"/>
+    </Grid>
+</Window>

@@ -428,6 +428,24 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(2, AppearanceChanged));
 
         /// <summary>
+        /// Identifies the <see cref="PropertyPanelStyle"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty PropertyPanelStyleProperty = DependencyProperty.Register(
+            nameof(PropertyPanelStyle),
+            typeof(Style),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
+        /// Identifies the <see cref="LabelPanelStyle"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LabelPanelStyleProperty = DependencyProperty.Register(
+            nameof(LabelPanelStyle),
+            typeof(Style),
+            typeof(PropertyGrid),
+            new UIPropertyMetadata(null, AppearanceChanged));
+
+        /// <summary>
         /// The panel part name.
         /// </summary>
         private const string PartPanel = "PART_Panel";
@@ -1089,6 +1107,41 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the style applied to the <see cref="Grid"/> panel that wraps each property row.
+        /// Use this to customize the appearance (e.g. background, margin) of each property's container panel.
+        /// </summary>
+        public Style PropertyPanelStyle
+        {
+            get
+            {
+                return (Style)this.GetValue(PropertyPanelStyleProperty);
+            }
+
+            set
+            {
+                this.SetValue(PropertyPanelStyleProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the style applied to the <see cref="DockPanel"/> that contains the property label and description icon.
+        /// Use this to customize the appearance (e.g. background) of the label area within each property row.
+        /// To inherit text color, set <c>TextElement.Foreground</c> via a setter in this style.
+        /// </summary>
+        public Style LabelPanelStyle
+        {
+            get
+            {
+                return (Style)this.GetValue(LabelPanelStyleProperty);
+            }
+
+            set
+            {
+                this.SetValue(LabelPanelStyleProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Creates the controls.
         /// </summary>
         /// <param name="instance">The instance.</param>
@@ -1442,6 +1495,11 @@ namespace PropertyTools.Wpf
         private void AddPropertyPanel(Panel panel, PropertyItem pi, object instance, Tab tab)
         {
             var propertyPanel = new Grid();
+            if (this.PropertyPanelStyle != null)
+            {
+                propertyPanel.Style = this.PropertyPanelStyle;
+            }
+
             if (!pi.FillTab)
             {
                 propertyPanel.Margin = new Thickness(VerticalPropertySpacing);
@@ -1636,6 +1694,11 @@ namespace PropertyTools.Wpf
                     {
                         // create the label panel
                         var labelPanel = new DockPanel();
+                        if (this.LabelPanelStyle != null)
+                        {
+                            labelPanel.Style = this.LabelPanelStyle;
+                        }
+
                         if (pi.HeaderPlacement == HeaderPlacement.Left)
                         {
                             DockPanel.SetDock(labelPanel, Dock.Left);

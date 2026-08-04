@@ -664,6 +664,17 @@ namespace PropertyTools.Wpf
         /// <returns>A sequence of values.</returns>
         protected virtual IEnumerable<object> GetEnumValues(Type enumType)
         {
+            return this.GetEnumValues(enumType, null);
+        }
+
+        /// <summary>
+        /// Gets the values for the specified enumeration type, applying an optional <see cref="DataAnnotations.EnumFilterAttribute"/>.
+        /// </summary>
+        /// <param name="enumType">The enumeration type.</param>
+        /// <param name="enumFilter">The optional filter attribute.</param>
+        /// <returns>A sequence of values.</returns>
+        protected virtual IEnumerable<object> GetEnumValues(Type enumType, DataAnnotations.EnumFilterAttribute enumFilter)
+        {
             var ult = Nullable.GetUnderlyingType(enumType);
             var isNullable = ult != null;
             if (isNullable)
@@ -671,7 +682,7 @@ namespace PropertyTools.Wpf
                 enumType = ult;
             }
 
-            var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute().ToList();
+            var enumValues = Enum.GetValues(enumType).FilterOnBrowsableAttribute().FilterOnEnumFilterAttribute(enumFilter).ToList();
             if (isNullable)
             {
                 enumValues.Add(null);
@@ -693,7 +704,8 @@ namespace PropertyTools.Wpf
         {
             //// var isBitField = property.Descriptor.PropertyType.GetTypeInfo().GetCustomAttributes<FlagsAttribute>().Any();
 
-            var values = this.GetEnumValues(property.Descriptor.PropertyType).ToArray();
+            var enumFilter = property.Descriptor.GetFirstAttributeOrDefault<DataAnnotations.EnumFilterAttribute>();
+            var values = this.GetEnumValues(property.Descriptor.PropertyType, enumFilter).ToArray();
             var style = property.SelectorStyle;
             if (style == DataAnnotations.SelectorStyle.Auto)
             {
@@ -706,7 +718,7 @@ namespace PropertyTools.Wpf
             {
                 case DataAnnotations.SelectorStyle.RadioButtons:
                     {
-                        var c = new RadioButtonList { EnumType = property.Descriptor.PropertyType };
+                        var c = new RadioButtonList { EnumType = property.Descriptor.PropertyType, EnumFilter = enumFilter };
                         c.SetBinding(RadioButtonList.ValueProperty, property.CreateBinding());
                         return c;
                     }

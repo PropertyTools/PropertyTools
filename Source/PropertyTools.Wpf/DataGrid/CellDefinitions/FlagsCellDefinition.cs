@@ -10,6 +10,7 @@
 namespace PropertyTools.Wpf
 {
     using System;
+    using System.Windows.Controls;
 
     using PropertyTools.DataAnnotations;
 
@@ -27,5 +28,11 @@ namespace PropertyTools.Wpf
         /// Gets or sets an optional filter that restricts which enum values are shown.
         /// </summary>
         public EnumFilterAttribute EnumFilter { get; set; }
+
+        /// <summary>
+        /// Gets or sets the orientation of the <see cref="CheckBoxList"/> shown in the edit cell.
+        /// Defaults to <see cref="Orientation.Horizontal"/>.
+        /// </summary>
+        public Orientation Orientation { get; set; } = Orientation.Horizontal;
     }
 }

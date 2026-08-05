@@ -368,6 +368,7 @@ namespace PropertyTools.Wpf
             {
                 EnumType = d.EnumType,
                 EnumFilter = d.EnumFilter,
+                Orientation = d.Orientation,
                 Margin = new Thickness(1, 1, 0, 0),
             };
 

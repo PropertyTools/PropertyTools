@@ -32,22 +32,13 @@ namespace PropertyGridDemos
     /// </summary>
     public class FlagsEnumExampleViewModel : Observable
     {
-        private object selectedObject;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="FlagsEnumExampleViewModel"/> class.
+        /// The shared model instance — static so all open windows bind to the same object.
         /// </summary>
-        public FlagsEnumExampleViewModel()
-        {
-            this.SelectedObject = new FlagsEnumExampleModel();
-        }
+        private static readonly FlagsEnumExampleModel SharedModel = new FlagsEnumExampleModel();
 
-        /// <summary>Gets or sets the selected object shown in the PropertyGrid.</summary>
-        public object SelectedObject
-        {
-            get => this.selectedObject;
-            set => this.SetValue(ref this.selectedObject, value);
-        }
+        /// <summary>Gets the selected object shown in the PropertyGrid (shared across all windows).</summary>
+        public object SelectedObject => SharedModel;
     }
 
     /// <summary>File-system access permissions flags enum.</summary>

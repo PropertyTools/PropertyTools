@@ -71,13 +71,22 @@ namespace PropertyTools.Wpf
             new UIPropertyMetadata(new Thickness(4, 0, 0, 0)));
 
         /// <summary>
+        /// Identifies the <see cref="HorizontalSpacing"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
+            nameof(HorizontalSpacing),
+            typeof(double),
+            typeof(CheckBoxList),
+            new UIPropertyMetadata(10.0, EnumTypeChanged));
+
+        /// <summary>
         /// Identifies the <see cref="Orientation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
             nameof(Orientation),
             typeof(Orientation),
             typeof(CheckBoxList),
-            new UIPropertyMetadata(Orientation.Vertical));
+            new UIPropertyMetadata(Orientation.Vertical, EnumTypeChanged));
 
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property.
@@ -140,6 +149,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the horizontal spacing between check box items when <see cref="Orientation"/> is <see cref="System.Windows.Controls.Orientation.Horizontal"/>.
+        /// </summary>
+        public double HorizontalSpacing
+        {
+            get => (double)this.GetValue(HorizontalSpacingProperty);
+            set => this.SetValue(HorizontalSpacingProperty, value);
+        }
+
+        /// <summary>
         /// Gets or sets the margin applied to each check box item.
         /// </summary>
         public Thickness ItemMargin
@@ -192,7 +210,7 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
-        /// Called when <see cref="EnumType"/> or <see cref="EnumFilter"/> changes. Rebuilds the item list.
+        /// Called when any property that requires rebuilding the item list changes.
         /// </summary>
         private static void EnumTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -246,15 +264,14 @@ namespace PropertyTools.Wpf
                 .Cast<object>()
                 .ToList();
 
-            foreach (var itemValue in enumValues)
-            {
-                var flagValue = Convert.ToInt64(itemValue);
+            var atomicValues = enumValues
+                .Where(v => { var f = Convert.ToInt64(v); return f != 0 && (f & (f - 1)) == 0; })
+                .ToList();
 
-                // Skip composite values (e.g. "All = A | B | C") and zero values
-                if (flagValue == 0 || (flagValue & (flagValue - 1)) != 0)
-                {
-                    continue;
-                }
+            for (int i = 0; i < atomicValues.Count; i++)
+            {
+                var itemValue = atomicValues[i];
+                var isLast = i == atomicValues.Count - 1;
 
                 var label = this.DescriptionConverter.Convert(
                     itemValue,
@@ -262,12 +279,18 @@ namespace PropertyTools.Wpf
                     null,
                     CultureInfo.CurrentUICulture) as string ?? itemValue.ToString();
 
+                var margin = this.ItemMargin;
+                if (this.Orientation == Orientation.Horizontal && !isLast)
+                {
+                    margin = new Thickness(margin.Left, margin.Top, margin.Right + this.HorizontalSpacing, margin.Bottom);
+                }
+
                 var cb = new CheckBox
                 {
                     Content = label,
                     Tag = itemValue,
                     Padding = this.ItemPadding,
-                    Margin = this.ItemMargin,
+                    Margin = margin,
                 };
 
                 cb.Checked += this.OnCheckBoxChanged;

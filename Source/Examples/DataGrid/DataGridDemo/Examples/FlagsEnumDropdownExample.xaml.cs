@@ -84,13 +84,25 @@ namespace DataGridDemo
             };
             toggle.SetBinding(ContentControl.ContentProperty, labelBinding);
 
-            // Wire toggle ↔ popup
-            toggle.Checked += (s, e) =>
+            // Wire toggle ↔ popup, and clean up on unload to avoid memory leaks
+            RoutedEventHandler checkedHandler = null;
+            EventHandler popupClosedHandler = null;
+
+            checkedHandler = (s, e) =>
             {
                 popup.PlacementTarget = toggle;
                 popup.IsOpen = true;
             };
-            popup.Closed += (s, e) => toggle.IsChecked = false;
+            popupClosedHandler = (s, e) => toggle.IsChecked = false;
+
+            toggle.Checked += checkedHandler;
+            popup.Closed += popupClosedHandler;
+
+            toggle.Unloaded += (s, e) =>
+            {
+                toggle.Checked -= checkedHandler;
+                popup.Closed -= popupClosedHandler;
+            };
 
             // Put popup in the same visual tree as the toggle
             var host = new Grid();
@@ -102,7 +114,9 @@ namespace DataGridDemo
     }
 
     /// <summary>
-    /// Converts a flags enum value to a comma-separated list of flag names for display.
+    /// Converts a flags enum value to its string representation for display in the dropdown toggle button.
+    /// Delegates to the enum's default <c>ToString()</c>, which for <see cref="FlagsAttribute"/> enums
+    /// produces a comma-separated list of active flag names (e.g. <c>"Read, Write"</c>).
     /// </summary>
     public class FlagsEnumToStringConverter : System.Windows.Data.IValueConverter
     {

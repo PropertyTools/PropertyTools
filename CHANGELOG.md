@@ -5,7 +5,6 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - PropertyTools.Wpf: Added `CheckBoxList` control for editing `[Flags]` enums; `PropertyGridControlFactory` now automatically uses `CheckBoxList` for flags enums in Auto mode #6
-- PropertyTools.Wpf: Added `HorizontalSpacing` dependency property to `CheckBoxList` for controlling spacing between check boxes in horizontal orientation (default: 10) #6
 - PropertyGrid/DataGrid: Added `EnumFilterAttribute` to allow restricting which enum values are shown in RadioButtonList, ComboBox, and ListBox controls, with demo examples in PropertyGridDemos and DataGridDemo #498
 - PropertyGrid: Added `PropertyPanelStyle` and `LabelPanelStyle` dependency properties to allow full XAML styling of the inner property row `Grid` and label `DockPanel` (e.g. background color for dark themes or compact layouts) #275
 - PropertyGrid: Added `ReadOnlyControlStyle` dependency property (`Style`) to allow customizing the appearance of read-only property controls #307

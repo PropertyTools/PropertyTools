@@ -11,10 +11,10 @@
         <TextBlock Text="Select permissions:" Margin="0,0,0,4"/>
         <p:CheckBoxList Value="{Binding SelectedPermissions, Mode=TwoWay}" Margin="10"/>
         <TextBlock Text="{Binding SelectedPermissions, StringFormat='Value: {0}'}" Margin="10,4"/>
-        <TextBlock Text="Horizontal orientation (spacing=10):" Margin="0,8,0,4"/>
+        <TextBlock Text="Horizontal orientation:" Margin="0,8,0,4"/>
         <p:CheckBoxList Value="{Binding SelectedPermissions, Mode=TwoWay}"
                         Orientation="Horizontal"
-                        HorizontalSpacing="10"
+                        ItemMargin="0 0 10 0"
                         Margin="10"/>
     </StackPanel>
 </Page>

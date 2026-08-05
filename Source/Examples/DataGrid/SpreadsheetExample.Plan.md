@@ -344,7 +344,12 @@ Formulas/
 ```
 
 Operator precedence (lowest → highest): comparison `= <> < > <= >=` · concat `&` · `+ -` ·
-`* /` · `^` · unary `- +` · postfix `%` · range `:`.
+`* /` · unary `- +` · `^` · postfix `%` · range `:`.
+
+Correction from an earlier draft of this line: unary `- +` is lower precedence than `^`, not
+higher — `^`'s right operand still allows a leading unary sign so `2^-2` parses. This matches
+Excel's actual (if inconsistently documented) behaviour and standard mathematical convention:
+`-2^2` evaluates to `-4`, not `4`. See `FormulaParser`'s remarks for the exact grammar.
 
 Built-in functions for v1: `SUM AVERAGE MIN MAX COUNT COUNTA` · `IF AND OR NOT IFERROR` ·
 `ABS ROUND ROUNDUP ROUNDDOWN SQRT POWER MOD INT` · `CONCAT LEN LEFT RIGHT MID UPPER LOWER TRIM` ·

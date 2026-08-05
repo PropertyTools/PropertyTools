@@ -69,6 +69,12 @@ namespace PropertyTools.Wpf
         /// <returns>The display control.</returns>
         protected virtual FrameworkElement CreateDisplayControlOverride(CellDefinition d)
         {
+            var fcd = d as FlagsCellDefinition;
+            if (fcd != null)
+            {
+                return this.CreateTextBlockControl(d);
+            }
+
             var scd = d as SelectorCellDefinition;
             if (scd != null)
             {
@@ -111,6 +117,12 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateEditControlOverride(CellDefinition d)
         {
+            var fcd = d as FlagsCellDefinition;
+            if (fcd != null)
+            {
+                return this.CreateCheckBoxList(fcd);
+            }
+
             var co = d as SelectorCellDefinition;
             if (co != null)
             {
@@ -343,6 +355,25 @@ namespace PropertyTools.Wpf
 
             // Create a container to support background binding
             return this.CreateContainer(d, grid);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="CheckBoxList"/> edit control for a <see cref="FlagsCellDefinition"/>.
+        /// </summary>
+        /// <param name="d">The flags cell definition.</param>
+        /// <returns>A <see cref="CheckBoxList"/> bound to the cell value.</returns>
+        protected virtual FrameworkElement CreateCheckBoxList(FlagsCellDefinition d)
+        {
+            var c = new CheckBoxList
+            {
+                EnumType = d.EnumType,
+                EnumFilter = d.EnumFilter,
+                Margin = new Thickness(1, 1, 0, 0),
+            };
+
+            var binding = new Binding(d.BindingPath) { Mode = BindingMode.TwoWay };
+            c.SetBinding(CheckBoxList.ValueProperty, binding);
+            return this.CreateContainer(d, c);
         }
 
         /// <summary>

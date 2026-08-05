@@ -13,6 +13,7 @@ namespace DataGridDemo.Spreadsheet.Model
     using System.Collections.Generic;
     using System.Globalization;
 
+    using DataGridDemo.Spreadsheet.Model.Calculation;
     using DataGridDemo.Spreadsheet.Model.Formulas;
 
     /// <summary>
@@ -25,6 +26,16 @@ namespace DataGridDemo.Spreadsheet.Model
         /// The materialized cells, keyed by address.
         /// </summary>
         private readonly Dictionary<CellAddress, Cell> cells = new Dictionary<CellAddress, Cell>();
+
+        /// <summary>
+        /// Tracks which cells each formula reads, so a changed cell can find its dependents.
+        /// </summary>
+        private readonly DependencyGraph dependencyGraph = new DependencyGraph();
+
+        /// <summary>
+        /// Recomputes formula values in dependency order after an edit.
+        /// </summary>
+        private readonly RecalculationEngine recalculationEngine;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sheet" /> class.
@@ -47,6 +58,7 @@ namespace DataGridDemo.Spreadsheet.Model
             this.Name = name;
             this.RowCount = rowCount;
             this.ColumnCount = columnCount;
+            this.recalculationEngine = new RecalculationEngine(this, this.dependencyGraph);
         }
 
         /// <summary>
@@ -75,16 +87,18 @@ namespace DataGridDemo.Spreadsheet.Model
         public CultureInfo Culture { get; set; } = CultureInfo.CurrentCulture;
 
         /// <summary>
-        /// Gets or sets the parser used for cell input starting with '='. When <c>null</c>, formula
-        /// input is preserved as unparsed text and evaluates to an error.
+        /// Gets or sets the parser used for cell input starting with '='. Defaults to
+        /// <see cref="Formulas.FormulaParser" />; set to <c>null</c> to preserve formula input as
+        /// unparsed text (evaluating to <see cref="CellError.Name" />) without a working formula engine.
         /// </summary>
-        public IFormulaParser FormulaParser { get; set; }
+        public IFormulaParser FormulaParser { get; set; } = new FormulaParser();
 
         /// <summary>
-        /// Gets or sets the evaluator used to compute formula values. When <c>null</c>, formulas
-        /// evaluate to <see cref="CellError.NotAvailable" />.
+        /// Gets or sets the evaluator used to compute formula values. Defaults to
+        /// <see cref="Formulas.FormulaEvaluator" />; set to <c>null</c> to make every formula evaluate
+        /// to <see cref="CellError.NotAvailable" /> without a working formula engine.
         /// </summary>
-        public IFormulaEvaluator FormulaEvaluator { get; set; }
+        public IFormulaEvaluator FormulaEvaluator { get; set; } = new FormulaEvaluator();
 
         /// <summary>
         /// Gets the cell at the specified address, creating and caching it if this is the first time
@@ -132,13 +146,12 @@ namespace DataGridDemo.Spreadsheet.Model
         }
 
         /// <summary>
-        /// Sets the content of the cell at the specified address and recomputes its value.
+        /// Sets the content of the cell at the specified address and recomputes its value together
+        /// with everything that depends on it.
         /// </summary>
         public void SetContent(CellAddress address, CellContent content)
         {
-            var cell = this.GetCell(address);
-            cell.SetContentCore(content);
-            cell.SetValueCore(this.Evaluate(content));
+            this.ApplyContent(address, content);
             this.OnCellChanged(address);
         }
 
@@ -155,11 +168,44 @@ namespace DataGridDemo.Spreadsheet.Model
                 throw new ArgumentNullException(nameof(source));
             }
 
-            var target = this.GetCell(targetAddress);
-            target.SetContentCore(source.Content);
-            target.SetValueCore(this.Evaluate(source.Content));
-            target.SetStyleCore(source.Style);
+            this.ApplyContent(targetAddress, source.Content);
+            this.GetCell(targetAddress).SetStyleCore(source.Style);
             this.OnCellChanged(targetAddress);
+        }
+
+        /// <summary>
+        /// Defers recalculation until the returned scope is disposed, so that many edits (paste, a
+        /// bulk clear, loading a file) trigger one recalculation pass instead of one per cell.
+        /// </summary>
+        /// <remarks>
+        /// Within the scope, <see cref="CellChanged" /> still fires per edited cell as usual, but the
+        /// recomputed <see cref="Cell.Value" /> for cells affected only indirectly (as a dependent, not
+        /// edited directly) does not settle until the scope is disposed. Callers that need every
+        /// touched cell's value to be current the moment <see cref="CellChanged" /> fires should not
+        /// use this for edits with formula dependents; it is intended for bulk operations (paste, load)
+        /// where only the end-of-batch state matters.
+        /// </remarks>
+        public IDisposable DeferRecalculation()
+        {
+            return this.recalculationEngine.Defer();
+        }
+
+        /// <summary>
+        /// Sets a cell's content, updates its formula dependencies, and marks it (and everything
+        /// depending on it) for recalculation.
+        /// </summary>
+        private void ApplyContent(CellAddress address, CellContent content)
+        {
+            var cell = this.GetCell(address);
+            cell.SetContentCore(content);
+
+            var hasValidFormula = content.IsFormula && !content.Formula.HasSyntaxError;
+            this.dependencyGraph.SetPrecedents(
+                address,
+                hasValidFormula ? content.Formula.Precedents : Array.Empty<CellAddress>(),
+                hasValidFormula ? content.Formula.RangePrecedents : Array.Empty<CellRange>());
+
+            this.recalculationEngine.MarkDirty(address);
         }
 
         /// <summary>

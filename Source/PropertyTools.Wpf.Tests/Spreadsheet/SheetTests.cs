@@ -32,15 +32,27 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
-        public void SetCellText_FormulaWithoutParser_EvaluatesToNameError()
+        public void SetCellText_FormulaWithParserExplicitlyDisabled_EvaluatesToNameError()
         {
             var sheet = CreateSheet();
+            sheet.FormulaParser = null;
 
-            sheet.SetCellText(new CellAddress(0, 0), "=A1+1");
+            sheet.SetCellText(new CellAddress(1, 1), "=A1+1");
 
-            var value = sheet.GetValue(new CellAddress(0, 0));
+            var value = sheet.GetValue(new CellAddress(1, 1));
             Assert.That(value.IsError, Is.True);
             Assert.That(value.Error, Is.EqualTo(CellError.Name));
+        }
+
+        [Test]
+        public void SetCellText_Formula_UsesDefaultParserAndEvaluatorByDefault()
+        {
+            var sheet = CreateSheet();
+            sheet.SetCellText(new CellAddress(0, 0), "1");
+
+            sheet.SetCellText(new CellAddress(1, 1), "=A1+1");
+
+            Assert.That(sheet.GetValue(new CellAddress(1, 1)), Is.EqualTo(CellValue.FromNumber(2)));
         }
 
         [Test]

@@ -371,6 +371,8 @@ namespace PropertyTools.Wpf
                 Orientation = d.Orientation,
                 Margin = new Thickness(1, 1, 0, 0),
                 Background = SystemColors.WindowBrush,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = d.HorizontalAlignment,
             };
 
             var binding = new Binding(d.BindingPath) { Mode = BindingMode.TwoWay };
@@ -622,7 +624,7 @@ namespace PropertyTools.Wpf
         /// Focuses on the parent data grid.
         /// </summary>
         /// <param name="obj">The <see cref="DependencyObject" />.</param>
-        private static void FocusParentDataGrid(DependencyObject obj)
+        protected static void FocusParentDataGrid(DependencyObject obj)
         {
             var parent = VisualTreeHelper.GetParent(obj);
             while (parent != null && !(parent is DataGrid))

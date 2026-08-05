@@ -221,9 +221,18 @@ namespace DataGridDemo.Spreadsheet.Model
             foreach (var address in range)
             {
                 var cell = this.GetCell(address);
-                cell.SetStyleCore(transform(cell.Style));
-                this.OnCellChanged(address);
+                this.SetCellStyle(address, transform(cell.Style));
             }
+        }
+
+        /// <summary>
+        /// Sets the style of a single cell directly.
+        /// </summary>
+        public void SetCellStyle(CellAddress address, CellStyle style)
+        {
+            var cell = this.GetCell(address);
+            cell.SetStyleCore(style);
+            this.OnCellChanged(address);
         }
 
         /// <summary>

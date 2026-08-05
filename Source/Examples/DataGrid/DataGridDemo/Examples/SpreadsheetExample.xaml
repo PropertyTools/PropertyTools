@@ -2,14 +2,65 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:s="clr-namespace:DataGridDemo.Spreadsheet"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
         Title="Spreadsheet" Height="450" Width="900">
-    <Grid>
-        <s:SpreadsheetDataGrid ItemsSource="{Binding Rows}"
+    <Window.Resources>
+        <p:CellRefConverter x:Key="CellRefConverter" />
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="F" Modifiers="Control" Command="ApplicationCommands.Find" />
+    </Window.InputBindings>
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Find" Executed="Find_Executed" />
+    </Window.CommandBindings>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" Click="New_Click" InputGestureText="Ctrl+N" />
+                <MenuItem Header="_Open..." Click="Open_Click" InputGestureText="Ctrl+O" />
+                <Separator />
+                <MenuItem Header="_Save" Click="Save_Click" InputGestureText="Ctrl+S" />
+                <MenuItem Header="Save _As..." Click="SaveAs_Click" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Find..." Click="Find_Click" InputGestureText="Ctrl+F" />
+                <MenuItem Header="_Replace..." Click="Replace_Click" />
+            </MenuItem>
+            <MenuItem Header="F_ormat">
+                <MenuItem Header="_Bold" IsCheckable="True" IsChecked="{Binding IsCurrentCellBold, Mode=TwoWay}" />
+                <MenuItem Header="_Italic" IsCheckable="True" IsChecked="{Binding IsCurrentCellItalic, Mode=TwoWay}" />
+                <Separator />
+                <MenuItem Header="Align _Left" Click="AlignLeft_Click" />
+                <MenuItem Header="Align _Center" Click="AlignCenter_Click" />
+                <MenuItem Header="Align _Right" Click="AlignRight_Click" />
+            </MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Top" Margin="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="NameBox"
+                     Grid.Column="0"
+                     VerticalContentAlignment="Center"
+                     KeyDown="NameBox_KeyDown"
+                     Text="{Binding CurrentCell, Mode=TwoWay, Converter={StaticResource CellRefConverter}, ValidatesOnExceptions=True}" />
+            <TextBlock Grid.Column="1" Text="fx" Margin="6,0" VerticalAlignment="Center" FontStyle="Italic" Foreground="Gray" />
+            <TextBox x:Name="FormulaBox"
+                     Grid.Column="2"
+                     VerticalContentAlignment="Center"
+                     KeyDown="FormulaBox_KeyDown"
+                     Text="{Binding CurrentCellText, Mode=TwoWay}" />
+        </Grid>
+        <s:SpreadsheetDataGrid x:Name="SheetGrid"
+            ItemsSource="{Binding Rows}"
             RowHeadersSource="{Binding RowHeaders}"
             ColumnHeadersSource="{Binding ColumnHeaders}"
             ControlFactory="{Binding ControlFactory}"
+            CurrentCell="{Binding CurrentCell, Mode=TwoWay}"
             CanInsert="False"
             CanDelete="False">
         </s:SpreadsheetDataGrid>
-    </Grid>
+    </DockPanel>
 </Window>

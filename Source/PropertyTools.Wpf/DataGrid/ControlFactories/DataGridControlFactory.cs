@@ -369,7 +369,6 @@ namespace PropertyTools.Wpf
                 EnumType = d.EnumType,
                 EnumFilter = d.EnumFilter,
                 Orientation = d.Orientation,
-                Margin = new Thickness(1, 1, 0, 0),
                 Background = SystemColors.WindowBrush,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = d.HorizontalAlignment,
@@ -377,7 +376,15 @@ namespace PropertyTools.Wpf
 
             var binding = new Binding(d.BindingPath) { Mode = BindingMode.TwoWay };
             c.SetBinding(CheckBoxList.ValueProperty, binding);
-            return this.CreateContainer(d, c);
+
+            // Wrap in a cell-filling container so that CreateEditControl's forced Stretch
+            // alignment applies to the Border, while the CheckBoxList stays centered inside.
+            var border = new Border
+            {
+                Background = SystemColors.WindowBrush,
+                Child = c,
+            };
+            return this.CreateContainer(d, border);
         }
 
         /// <summary>

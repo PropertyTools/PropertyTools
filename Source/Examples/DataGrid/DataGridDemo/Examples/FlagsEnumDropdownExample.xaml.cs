@@ -9,9 +9,11 @@
 
 namespace DataGridDemo
 {
+    using System;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
+    using System.Windows.Media;
 
     using PropertyTools.Wpf;
 
@@ -82,7 +84,29 @@ namespace DataGridDemo
             popupBox.PopupTemplate = popupTemplate;
 
             // Restore DataGrid keyboard navigation after the dropdown closes.
-            popupBox.DropDownOpened += (s, e) => popupBox.Focusable = true;
+            popupBox.DropDownOpened += (s, e) =>
+            {
+                popupBox.Focusable = true;
+
+                // Move keyboard focus to the first checkbox in the popup so the user
+                // can Tab between checkboxes and toggle them with Space.
+                popupBox.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.Input,
+                    new Action(() =>
+                    {
+                        // The Popup is in a separate visual tree; find it through the template.
+                        var popup = popupBox.Template?.FindName("PART_Popup", popupBox) as System.Windows.Controls.Primitives.Popup;
+                        if (popup?.Child != null)
+                        {
+                            var checkBoxList = FindVisualDescendant<CheckBoxList>(popup.Child);
+                            if (checkBoxList != null)
+                            {
+                                checkBoxList.MoveFocus(new System.Windows.Input.TraversalRequest(
+                                    System.Windows.Input.FocusNavigationDirection.First));
+                            }
+                        }
+                    }));
+            };
             popupBox.DropDownClosed += (s, e) =>
             {
                 popupBox.Focusable = false;
@@ -90,6 +114,35 @@ namespace DataGridDemo
             };
 
             return this.CreateContainer(d, popupBox);
+        }
+
+        /// <summary>
+        /// Walks the visual tree rooted at <paramref name="root"/> and returns the first
+        /// descendant of type <typeparamref name="T"/>, or <c>null</c> if none is found.
+        /// </summary>
+        private static T FindVisualDescendant<T>(DependencyObject root) where T : DependencyObject
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(root); i++)
+            {
+                var child = VisualTreeHelper.GetChild(root, i);
+                if (child is T result)
+                {
+                    return result;
+                }
+
+                var descendant = FindVisualDescendant<T>(child);
+                if (descendant != null)
+                {
+                    return descendant;
+                }
+            }
+
+            return null;
         }
     }
 }

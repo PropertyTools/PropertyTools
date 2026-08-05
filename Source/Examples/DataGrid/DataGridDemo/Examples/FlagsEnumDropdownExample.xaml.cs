@@ -15,6 +15,8 @@ namespace DataGridDemo
     using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
+    using System.Windows.Input;
+    using System.Windows.Media;
 
     using PropertyTools;
     using PropertyTools.Wpf;
@@ -36,7 +38,7 @@ namespace DataGridDemo
 
     /// <summary>
     /// A <see cref="DataGridControlFactory"/> that renders flags cells as a vertical
-    /// <see cref="CheckBoxList"/> inside a dropdown popup.
+    /// <see cref="CheckBoxList"/> inside a dropdown popup with a ComboBox-style arrow indicator.
     /// </summary>
     public class FlagsDropdownControlFactory : DataGridControlFactory
     {
@@ -69,39 +71,109 @@ namespace DataGridDemo
                 },
             };
 
-            // ToggleButton that shows the current value and opens the popup
-            var toggle = new ToggleButton
+            // ComboBox-style dropdown arrow path
+            var arrowPath = new System.Windows.Shapes.Path
             {
-                HorizontalContentAlignment = HorizontalAlignment.Left,
-                Padding = new Thickness(4, 1, 4, 1),
-                Margin = new Thickness(1, 1, 0, 0),
+                Data = Geometry.Parse("M 0 0 L 4 4 L 8 0 Z"),
+                Fill = SystemColors.ControlTextBrush,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Margin = new Thickness(0, 1, 0, 0),
+                IsHitTestVisible = false,
             };
 
+            // Content area (label + arrow) laid out like a ComboBox
+            var contentGrid = new Grid();
+            contentGrid.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            contentGrid.ColumnDefinitions.Add(new System.Windows.Controls.ColumnDefinition { Width = new GridLength(16) });
+
+            var labelBlock = new TextBlock
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(2, 0, 0, 0),
+            };
             var labelBinding = new Binding(d.BindingPath)
             {
                 Mode = BindingMode.OneWay,
                 Converter = new FlagsEnumToStringConverter(),
             };
-            toggle.SetBinding(ContentControl.ContentProperty, labelBinding);
+            labelBlock.SetBinding(TextBlock.TextProperty, labelBinding);
+
+            // Vertical separator between text and arrow
+            var separator = new Border
+            {
+                Width = 1,
+                Background = SystemColors.ControlDarkBrush,
+                Margin = new Thickness(0, 2, 0, 2),
+                HorizontalAlignment = HorizontalAlignment.Left,
+            };
+            Grid.SetColumn(separator, 1);
+
+            var arrowHost = new Grid();
+            arrowHost.Children.Add(separator);
+            arrowHost.Children.Add(arrowPath);
+            Grid.SetColumn(arrowHost, 1);
+
+            contentGrid.Children.Add(labelBlock);
+            contentGrid.Children.Add(arrowHost);
+
+            // ToggleButton with the ComboBox-style content
+            var toggle = new ToggleButton
+            {
+                HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                Padding = new Thickness(2, 1, 2, 1),
+                Margin = new Thickness(1, 1, 0, 0),
+                Content = contentGrid,
+            };
+
+            // Open dropdown: mouse click or F4 / Alt+Down
+            void OpenDropdown()
+            {
+                popup.PlacementTarget = toggle;
+                popup.IsOpen = true;
+
+                // Move keyboard focus into the popup so checkboxes are keyboard-navigable
+                toggle.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.Input,
+                    new Action(() => checkBoxList.MoveFocus(new TraversalRequest(FocusNavigationDirection.First))));
+            }
 
             // Wire toggle ↔ popup, and clean up on unload to avoid memory leaks
             RoutedEventHandler checkedHandler = null;
             EventHandler popupClosedHandler = null;
+            KeyEventHandler keyHandler = null;
 
-            checkedHandler = (s, e) =>
+            checkedHandler = (s, e) => OpenDropdown();
+            popupClosedHandler = (s, e) =>
             {
-                popup.PlacementTarget = toggle;
-                popup.IsOpen = true;
+                toggle.IsChecked = false;
+                toggle.Focus();
             };
-            popupClosedHandler = (s, e) => toggle.IsChecked = false;
+            keyHandler = (s, e) =>
+            {
+                if ((e.Key == Key.F4) ||
+                    (e.Key == Key.Down && (Keyboard.Modifiers & ModifierKeys.Alt) != 0) ||
+                    (e.Key == Key.Space && popup.IsOpen == false))
+                {
+                    toggle.IsChecked = true;
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Escape && popup.IsOpen)
+                {
+                    popup.IsOpen = false;
+                    e.Handled = true;
+                }
+            };
 
             toggle.Checked += checkedHandler;
             popup.Closed += popupClosedHandler;
+            toggle.PreviewKeyDown += keyHandler;
 
             toggle.Unloaded += (s, e) =>
             {
                 toggle.Checked -= checkedHandler;
                 popup.Closed -= popupClosedHandler;
+                toggle.PreviewKeyDown -= keyHandler;
             };
 
             // Put popup in the same visual tree as the toggle

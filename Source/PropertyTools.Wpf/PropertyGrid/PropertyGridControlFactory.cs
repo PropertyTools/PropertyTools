@@ -710,7 +710,7 @@ namespace PropertyTools.Wpf
 
             if (isFlagsEnum && property.SelectorStyle == DataAnnotations.SelectorStyle.Auto)
             {
-                var c = new CheckBoxList { EnumType = enumType, EnumFilter = enumFilter, Margin = new Thickness(0, 10, 0, 10) };
+                var c = new CheckBoxList { EnumType = enumType, EnumFilter = enumFilter, Margin = new Thickness(0, 4, 0, 4) };
                 c.SetBinding(CheckBoxList.ValueProperty, property.CreateBinding());
                 return c;
             }

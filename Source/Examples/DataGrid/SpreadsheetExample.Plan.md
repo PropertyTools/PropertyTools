@@ -1,7 +1,9 @@
 # SpreadsheetExample — data model and UI implementation plan
 
 Status: proposal / design document
-Scope: `Source/Examples/DataGrid/DataGridDemo/Examples/SpreadsheetExample.*` and a new spreadsheet model library.
+Scope: `Source/Examples/DataGrid/DataGridDemo/Examples/SpreadsheetExample.*` and a new
+`Examples/Spreadsheet/` folder (model + UI) inside the same `DataGridDemo` project — no new
+`.csproj` or solution entries.
 
 ---
 
@@ -87,34 +89,35 @@ These were verified against the library source and drive several design decision
 ## 4. Architecture
 
 ```
-┌────────────────────────────── DataGridDemo (WPF) ───────────────────────────────┐
-│  SpreadsheetExample.xaml            menu bar + formula bar + p:DataGrid          │
-│  SpreadsheetViewModel               commands, current cell, dirty/file state     │
-│  SheetGridAdapter / SheetRowAdapter IList<IList> bridge for the DataGrid         │
-│  SpreadsheetControlFactory          display TextBlock + edit TextBox per cell    │
-│  Converters, Find/Replace dialogs                                                │
-└──────────────────────────────────────┬──────────────────────────────────────────┘
-                                       │ (no WPF types cross this line)
-┌──────────────────────── PropertyTools.Examples.Spreadsheet ─────────────────────┐
-│  Workbook ─ Sheet ─ Cell            document model, sparse storage               │
-│  CellValue, CellAddress, CellRange, CellStyle, CellContent   value types         │
-│  Formulas: Lexer → Parser → AST → Evaluator → FunctionRegistry                   │
-│  DependencyGraph + RecalculationEngine                                           │
-│  CellInputParser / CellFormatter    text ⇄ typed value                           │
-│  UndoStack + commands, ISheetSerializer (JSON, CSV), FindService                 │
-└─────────────────────────────────────────────────────────────────────────────────┘
+┌───────────────────── DataGridDemo (single WinExe project) ──────────────────────┐
+│  Examples/Spreadsheet/                                                          │
+│  ├─ SpreadsheetExample.xaml         menu bar + formula bar + p:DataGrid         │
+│  │  SpreadsheetViewModel            commands, current cell, dirty/file state    │
+│  │  SheetGridAdapter / SheetRowAdapter   IList<IList> bridge for the DataGrid   │
+│  │  SpreadsheetControlFactory       display TextBlock + edit TextBox per cell   │
+│  │  Converters, Find/Replace dialog                    (WPF, namespace ...Ui)   │
+│  │                                  ┄┄┄┄┄┄┄┄┄┄ no WPF types cross this line ┄┄┄┄ │
+│  └─ Model/                          Workbook ─ Sheet ─ Cell, sparse storage     │
+│       CellValue, CellAddress, CellRange, CellStyle, CellContent  (value types)  │
+│       Formulas/  Lexer → Parser → AST → Evaluator → FunctionRegistry            │
+│       Calculation/  DependencyGraph + RecalculationEngine                       │
+│       CellInputParser / CellFormatter   text ⇄ typed value                      │
+│       Commands/ UndoStack, Serialization/ ISheetSerializer (JSON, CSV), Search/ │
+└───────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Project layout decision.** Put the model in its own class library
-`Source/Examples/DataGrid/Spreadsheet/PropertyTools.Examples.Spreadsheet.csproj`
-(`<TargetFrameworks>net8.0;net10.0</TargetFrameworks>`, no `UseWPF`) with a sibling NUnit project
-`Source/Examples/DataGrid/Spreadsheet.Tests/`. Rationale: the existing
-`PropertyTools.Wpf.Tests` project would otherwise need a `ProjectReference` to a `WinExe` demo, and
-a WPF-free model is what makes the "best practice" claim real.
-*Lower-friction alternative if adding two projects is unwanted:* keep the model in
-`DataGridDemo/Examples/Spreadsheet/Model/` (still WPF-free) and add
-`PropertyTools.Wpf.Tests` → `DataGridDemo` project reference. Everything below is unaffected apart
-from namespaces.
+**Project layout decision.** No new projects. The model lives inside the existing demo project, as
+plain C# with no WPF types anywhere in its namespace:
+`Source/Examples/DataGrid/DataGridDemo/Examples/Spreadsheet/Model/`, namespace
+`DataGridDemo.Spreadsheet.Model`. It has no reference to `System.Windows.*`, so it stays testable
+and could be lifted into its own library later without rewrites — the folder boundary is the
+enforced seam, not a project boundary.
+
+For unit tests, add a `ProjectReference` from `PropertyTools.Wpf.Tests` to
+`DataGridDemo.csproj`. `DataGridDemo` is `OutputType=WinExe`, which a normal test project can
+reference without issue (it just pulls in the compiled types); the test project itself stays
+`net10.0-windows` and does not need `UseWPF`. Model tests live under
+`PropertyTools.Wpf.Tests/Spreadsheet/` alongside the existing fixtures.
 
 ---
 
@@ -583,10 +586,12 @@ cell moves.
 
 ## 7. File inventory
 
-**New — model library** (`Source/Examples/DataGrid/Spreadsheet/`)
+No new `.csproj` and no new solution entries — everything lands inside the existing
+`DataGridDemo` project.
+
+**New — model** (`DataGridDemo/Examples/Spreadsheet/Model/`, namespace `DataGridDemo.Spreadsheet.Model`, no WPF references)
 
 ```
-PropertyTools.Examples.Spreadsheet.csproj
 CellValue.cs  CellValueType.cs  CellError.cs
 CellAddress.cs  CellRange.cs
 CellStyle.cs  CellHorizontalAlignment.cs  CellStylePool.cs
@@ -600,9 +605,10 @@ Serialization/ISheetSerializer.cs  JsonSheetSerializer.cs  CsvSheetSerializer.cs
 Search/FindOptions.cs  Search/FindService.cs
 ```
 
-**New — tests** (`Source/Examples/DataGrid/Spreadsheet.Tests/`) — see §9.
+**New — tests** (`PropertyTools.Wpf.Tests/Spreadsheet/`) — see §9. Requires adding a
+`ProjectReference` from `PropertyTools.Wpf.Tests.csproj` to `DataGridDemo.csproj`.
 
-**New — demo** (`DataGridDemo/Examples/Spreadsheet/`)
+**New — demo UI** (`DataGridDemo/Examples/Spreadsheet/`, namespace `DataGridDemo.Spreadsheet`)
 
 ```
 SheetGridAdapter.cs  SheetRowAdapter.cs  CellConverter.cs  CellRefExtensions.cs
@@ -615,12 +621,14 @@ FindReplaceDialog.xaml(.cs)
 **Modified**
 
 ```
-SpreadsheetExample.xaml       menu bar, formula bar, DataGrid wiring
-SpreadsheetExample.xaml.cs    code-behind reduced to InitializeComponent + command bindings
-Source/PropertyTools.sln      two new projects
-CHANGELOG.md                  ### Added entry (needs an issue number)
-README.md                     mention the spreadsheet example (optional)
+SpreadsheetExample.xaml            menu bar, formula bar, DataGrid wiring
+SpreadsheetExample.xaml.cs         code-behind reduced to InitializeComponent + command bindings
+PropertyTools.Wpf.Tests.csproj     add ProjectReference to DataGridDemo.csproj
+README.md                          mention the spreadsheet example (optional)
 ```
+
+CHANGELOG.md is intentionally left untouched by this plan document itself; the entry belongs to
+the implementation PR (see §11.6).
 
 No changes to `PropertyTools.Wpf` are required.
 
@@ -688,8 +696,10 @@ the WPF window itself is verified manually via `DataGridDemo.exe SpreadsheetExam
 
 ## 11. Risks and decisions to confirm
 
-1. **Two new projects** in `PropertyTools.sln` vs keeping the model inside `DataGridDemo` (§4).
-   Recommendation: separate library; the alternative is a one-line change of plan.
+1. **Model lives inside `DataGridDemo`, not a separate library** (decided — §4). The `Model/`
+   folder has no WPF references, so the seam is enforced by convention rather than the compiler;
+   if that ever becomes a problem, lifting it into its own project later is a mechanical move
+   (namespaces stay the same modulo the root).
 2. **Formula culture split** — invariant inside formulas, current culture for literals. This matches
    how most .NET spreadsheet libraries behave but is worth an explicit sign-off.
 3. **Paste via `TypeConverter`** (§3.5) keeps `PropertyTools.Wpf` untouched. If it proves too

@@ -125,8 +125,8 @@ namespace PropertyTools.Wpf.Tests
         {
             var value = CellValue.FromNumber(3);
 
-            // An unterminated literal-string delimiter is a malformed custom numeric format string.
-            var style = CellStyle.Default.WithFormat("'unterminated");
+            // A standard format specifier with a precision beyond what .NET accepts throws FormatException.
+            var style = CellStyle.Default.WithFormat("F99999999999");
 
             Assert.That(CellFormatter.ToDisplayText(value, style, Invariant), Is.EqualTo("3"));
         }

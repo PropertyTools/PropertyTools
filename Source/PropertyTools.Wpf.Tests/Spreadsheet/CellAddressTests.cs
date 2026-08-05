@@ -33,7 +33,7 @@ namespace PropertyTools.Wpf.Tests
         [TestCase("B", 1)]
         [TestCase("Z", 25)]
         [TestCase("AA", 26)]
-        [TestCase("az", 26)]
+        [TestCase("aa", 26)]
         [TestCase("ZZ", 701)]
         [TestCase("AAA", 702)]
         public void ParseColumnName_KnownName_ReturnsExpectedIndex(string name, int expected)

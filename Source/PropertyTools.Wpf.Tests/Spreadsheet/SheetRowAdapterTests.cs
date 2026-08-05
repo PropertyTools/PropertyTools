@@ -40,7 +40,7 @@ namespace PropertyTools.Wpf.Tests
             var sheet = CreateSheet();
             var row = new SheetRowAdapter(sheet, 0);
 
-            row[0] = "42";
+            ((IList)row)[0] = "42";
 
             Assert.That(sheet.GetValue(new CellAddress(0, 0)), Is.EqualTo(CellValue.FromNumber(42)));
         }
@@ -50,7 +50,7 @@ namespace PropertyTools.Wpf.Tests
         {
             var sheet = CreateSheet();
             var row = new SheetRowAdapter(sheet, 0);
-            row[0] = "42";
+            ((IList)row)[0] = "42";
 
             ((IList)row)[0] = null;
 
@@ -62,7 +62,7 @@ namespace PropertyTools.Wpf.Tests
         {
             var sheet = CreateSheet();
             var row = new SheetRowAdapter(sheet, 0);
-            row[0] = "42";
+            ((IList)row)[0] = "42";
             var source = sheet.GetCell(new CellAddress(0, 0));
 
             row[1] = source;

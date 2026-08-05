@@ -370,6 +370,7 @@ namespace PropertyTools.Wpf
                 EnumFilter = d.EnumFilter,
                 Orientation = d.Orientation,
                 Margin = new Thickness(1, 1, 0, 0),
+                Background = SystemColors.WindowBrush,
             };
 
             var binding = new Binding(d.BindingPath) { Mode = BindingMode.TwoWay };

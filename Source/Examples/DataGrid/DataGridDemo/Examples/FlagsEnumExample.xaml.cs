@@ -48,6 +48,15 @@ namespace DataGridDemo
             /// <summary>
             /// Initializes a new instance of the <see cref="Item"/> class.
             /// </summary>
+            public Item()
+            {
+                this.name = string.Empty;
+                this.access = Permission.None;
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Item"/> class.
+            /// </summary>
             /// <param name="name">The file name.</param>
             /// <param name="access">The initial permissions.</param>
             public Item(string name, Permission access)
@@ -74,19 +83,17 @@ namespace DataGridDemo
         /// <summary>View model that provides sample items for the <see cref="FlagsEnumExample"/> window.</summary>
         public class ViewModel
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ViewModel"/> class with sample data.
-            /// </summary>
-            public ViewModel()
+            /// <summary>Shared static collection so all open windows observe the same data.</summary>
+            private static readonly ObservableCollection<Item> sharedItems = new ObservableCollection<Item>
             {
-                this.Items.Add(new Item("file.txt", Permission.Read));
-                this.Items.Add(new Item("script.sh", Permission.Read | Permission.Execute));
-                this.Items.Add(new Item("data.bin", Permission.Read | Permission.Write));
-                this.Items.Add(new Item("secret.key", Permission.None));
-            }
+                new Item("file.txt", Permission.Read),
+                new Item("script.sh", Permission.Read | Permission.Execute),
+                new Item("data.bin", Permission.Read | Permission.Write),
+                new Item("secret.key", Permission.None),
+            };
 
             /// <summary>Gets the collection of items displayed in the DataGrid.</summary>
-            public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>();
+            public ObservableCollection<Item> Items => sharedItems;
         }
     }
 }

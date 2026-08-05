@@ -1,0 +1,211 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CellValueTests.cs" company="PropertyTools">
+//   Copyright (c) 2014 PropertyTools contributors
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace PropertyTools.Wpf.Tests
+{
+    using System;
+
+    using DataGridDemo.Spreadsheet.Model;
+
+    using NUnit.Framework;
+
+    [TestFixture]
+    public class CellValueTests
+    {
+        [Test]
+        public void Empty_DefaultValue_IsEmpty()
+        {
+            var value = CellValue.Empty;
+
+            Assert.That(value.IsEmpty, Is.True);
+            Assert.That(value.Type, Is.EqualTo(CellValueType.Empty));
+        }
+
+        [Test]
+        public void FromText_NullOrEmpty_ReturnsEmpty()
+        {
+            Assert.That(CellValue.FromText(null).IsEmpty, Is.True);
+            Assert.That(CellValue.FromText(string.Empty).IsEmpty, Is.True);
+        }
+
+        [Test]
+        public void FromNumber_ValidNumber_AsNumberReturnsIt()
+        {
+            var value = CellValue.FromNumber(3.14);
+
+            Assert.That(value.Type, Is.EqualTo(CellValueType.Number));
+            Assert.That(value.AsNumber(), Is.EqualTo(3.14));
+        }
+
+        [Test]
+        public void FromBoolean_True_AsBooleanReturnsTrue()
+        {
+            var value = CellValue.FromBoolean(true);
+
+            Assert.That(value.Type, Is.EqualTo(CellValueType.Boolean));
+            Assert.That(value.AsBoolean(), Is.True);
+        }
+
+        [Test]
+        public void FromDateTime_RoundTrips_AsDateTimeReturnsSameDate()
+        {
+            var date = new DateTime(2026, 8, 5, 13, 30, 0);
+
+            var value = CellValue.FromDateTime(date);
+
+            Assert.That(value.Type, Is.EqualTo(CellValueType.DateTime));
+            Assert.That(value.AsDateTime(), Is.EqualTo(date));
+        }
+
+        [Test]
+        public void FromError_DivideByZero_ErrorPropertyReturnsIt()
+        {
+            var value = CellValue.FromError(CellError.DivideByZero);
+
+            Assert.That(value.IsError, Is.True);
+            Assert.That(value.Error, Is.EqualTo(CellError.DivideByZero));
+        }
+
+        [Test]
+        public void AsNumber_TextValue_Throws()
+        {
+            var value = CellValue.FromText("hello");
+
+            Assert.That(() => value.AsNumber(), Throws.InvalidOperationException);
+        }
+
+        [Test]
+        public void AsText_NumberValue_Throws()
+        {
+            var value = CellValue.FromNumber(1);
+
+            Assert.That(() => value.AsText(), Throws.InvalidOperationException);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void TryGetNumber_Boolean_ReturnsZeroOrOne(bool input)
+        {
+            var value = CellValue.FromBoolean(input);
+
+            var result = value.TryGetNumber(out var number);
+
+            Assert.That(result, Is.True);
+            Assert.That(number, Is.EqualTo(input ? 1 : 0));
+        }
+
+        [Test]
+        public void TryGetNumber_NumericText_ParsesUsingInvariantCulture()
+        {
+            var value = CellValue.FromText("42.5");
+
+            var result = value.TryGetNumber(out var number);
+
+            Assert.That(result, Is.True);
+            Assert.That(number, Is.EqualTo(42.5));
+        }
+
+        [Test]
+        public void TryGetNumber_NonNumericText_ReturnsFalse()
+        {
+            var value = CellValue.FromText("hello");
+
+            var result = value.TryGetNumber(out _);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void TryGetNumber_Empty_ReturnsZero()
+        {
+            var result = CellValue.Empty.TryGetNumber(out var number);
+
+            Assert.That(result, Is.True);
+            Assert.That(number, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TryGetText_Error_ReturnsFalse()
+        {
+            var value = CellValue.FromError(CellError.Value);
+
+            var result = value.TryGetText(out _);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void TryGetText_Boolean_ReturnsTrueOrFalseText()
+        {
+            var result = CellValue.FromBoolean(true).TryGetText(out var text);
+
+            Assert.That(result, Is.True);
+            Assert.That(text, Is.EqualTo("TRUE"));
+        }
+
+        [Test]
+        public void ToObject_Empty_ReturnsNull()
+        {
+            Assert.That(CellValue.Empty.ToObject(), Is.Null);
+        }
+
+        [Test]
+        public void ToObject_Number_ReturnsBoxedDouble()
+        {
+            Assert.That(CellValue.FromNumber(2.5).ToObject(), Is.EqualTo(2.5));
+        }
+
+        [Test]
+        public void ToObject_Error_ReturnsDisplayText()
+        {
+            Assert.That(CellValue.FromError(CellError.DivideByZero).ToObject(), Is.EqualTo("#DIV/0!"));
+        }
+
+        [Test]
+        public void Equals_SameNumber_ReturnsTrue()
+        {
+            var a = CellValue.FromNumber(1.5);
+            var b = CellValue.FromNumber(1.5);
+
+            Assert.That(a.Equals(b), Is.True);
+            Assert.That(a == b, Is.True);
+            Assert.That(a.GetHashCode(), Is.EqualTo(b.GetHashCode()));
+        }
+
+        [Test]
+        public void Equals_DifferentType_ReturnsFalse()
+        {
+            var a = CellValue.FromNumber(1);
+            var b = CellValue.FromText("1");
+
+            Assert.That(a.Equals(b), Is.False);
+            Assert.That(a != b, Is.True);
+        }
+
+        [Test]
+        public void Equals_SameText_ReturnsTrue()
+        {
+            var a = CellValue.FromText("hello");
+            var b = CellValue.FromText("hello");
+
+            Assert.That(a.Equals(b), Is.True);
+        }
+
+        [Test]
+        public void ToString_Error_ReturnsDisplayText()
+        {
+            var value = CellValue.FromError(CellError.Reference);
+
+            Assert.That(value.ToString(), Is.EqualTo("#REF!"));
+        }
+
+        [Test]
+        public void ToString_Empty_ReturnsEmptyString()
+        {
+            Assert.That(CellValue.Empty.ToString(), Is.EqualTo(string.Empty));
+        }
+    }
+}

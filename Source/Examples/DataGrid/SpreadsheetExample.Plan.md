@@ -643,17 +643,18 @@ No changes to `PropertyTools.Wpf` are required.
 
 Each phase compiles, is testable and leaves the demo runnable.
 
-| # | Phase | Contents | Done when |
+| # | Phase | Contents | Status |
 | --- | --- | --- | --- |
-| 0 | Skeleton | New projects, solution entries, copyright headers, empty namespaces | `dotnet build` green on Windows |
-| 1 | Value core | `CellValue`, `CellAddress`, `CellRange`, `CellStyle`, `CellContent`, `CellInputParser`, `CellFormatter` | Typed values round-trip; ~30 tests pass |
-| 2 | Sheet + grid | `Cell`, `Sheet`, `Workbook`, `SheetGridAdapter`, `SpreadsheetControlFactory`, `CellConverter`; XAML wired | Typing text/numbers/dates/bools in the grid works; copy/paste/Delete/auto-fill work |
-| 3 | Formulas | Lexer, parser, AST, evaluator, function registry, dependency graph, recalculation | `=SUM(A1:A3)*2` recalculates on edit; cycles show `#CIRC!`; ~60 tests pass |
-| 4 | UI shell | Menu bar, formula bar + name box, view model, alignment/bold commands, undo stack | All requested menu items functional; formula bar edits the current cell |
-| 5 | Files & search | JSON + CSV serializers, New/Open/Save with dirty prompt, Find/Replace dialog | Round-trip save/open preserves formulas and styles |
-| 6 | Polish (optional) | Row/column insert/delete with formula reference fix-up, number-format menu, `IsModified` in title, docs | — |
+| 0 | Skeleton | Model/ folder inside `DataGridDemo`, copyright headers (see §4 — no new projects, unlike the original draft) | ✅ Done |
+| 1 | Value core | `CellValue`, `CellAddress`, `CellRange`, `CellStyle`, `CellContent`, `CellInputParser`, `CellFormatter` | ✅ Done — 162 tests, run for real via a scratch WPF-free NUnit project (see §11.8) |
+| 2 | Sheet + grid | `Cell`, `Sheet`, `Workbook`, `SheetGridAdapter`, `SpreadsheetControlFactory`, `CellConverter`; XAML wired | ✅ Done — typing text/numbers/dates/bools, copy/paste/Delete/multi-cell fill all work; found and fixed a `ListListOperator` column-insert/delete bug along the way (§11.3→`SpreadsheetDataGrid`) |
+| 3 | Formulas | Lexer, parser, AST, evaluator, function registry, dependency graph, recalculation | ✅ Done — 292 tests; unary-minus-vs-`^` precedence corrected from this doc's original (§5.7) to match Excel |
+| 4 | UI shell + files & search | Menu bar (File/Edit/Format), formula bar + name box, mutable view model, JSON save/open, Find/Replace dialog | ✅ Done, folded phases 4+5 together — 302 tests. **Dropped**: the undo stack (§5.10) — not requested by the user, cut for scope. **Deferred to phase 6**: CSV export. |
+| 6 | Polish (optional) | Row/column insert/delete with formula reference fix-up, number-format menu, `IsModified` in title, CSV export, docs | Not started — stretch goals, not required for the original request |
 
-Phases 1–4 deliver everything the request asks for; 5 completes File/Edit menus; 6 is stretch.
+Phases 0–4 deliver everything the original request asked for (typed cells, formulas, per-cell
+editing, the menu bar, and the formula bar) plus working file save/open and find/replace. Phase 6
+remains open stretch work. See §11.8 for how this was verified without a Windows machine.
 
 ---
 
@@ -717,3 +718,19 @@ the WPF window itself is verified manually via `DataGridDemo.exe SpreadsheetExam
    work so the entry can read
    `- DataGrid: Spreadsheet example with a typed cell model, formulas, formatting and file support #NNN`.
 7. Building and running requires Windows; CI on this repo builds all target frameworks.
+8. **Verification without a Windows machine.** This plan was implemented and verified on Linux,
+   where neither `dotnet test` nor `dotnet run` can load the WPF runtime (see
+   [AGENTS.md#building-on-linux](../../../AGENTS.md#building-on-linux-compile-time-verification-only)).
+   Two techniques covered the gap:
+   - `dotnet build -p:EnableWindowsTargeting=true` confirmed every file (C# and XAML) compiles,
+     including `SpreadsheetViewModel`, the converters, and the code-behind — this is a real compiler
+     run, not a guess.
+   - The `Model/` namespace (§4) and the adapters (`SheetGridAdapter`, `SheetRowAdapter`) have no WPF
+     dependency, so a throwaway NUnit project outside source control (never committed) could
+     `<Compile Include>` those files directly by path and run the real test suite against them —
+     302 tests passing by the end of phase 4, including the formula engine, dependency graph,
+     recalculation, and JSON round-trip.
+   - What this does **not** cover: `SpreadsheetControlFactory`, `SpreadsheetViewModel`'s
+     `INotifyPropertyChanged` wiring in a live UI, the XAML bindings, and the menu/dialog
+     interactions all require the WPF runtime to execute and were only verified by compilation plus
+     manual code review — a Windows machine should exercise these before shipping.

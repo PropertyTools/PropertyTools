@@ -379,11 +379,13 @@ namespace PropertyTools.Wpf
 
             // Wrap in a cell-filling container so that CreateEditControl's forced Stretch
             // alignment applies to the Border, while the CheckBoxList stays centered inside.
+            // The Border is transparent so the selection-border overlay (PART_Selection, which
+            // bleeds 2 px into the cell on left/top and 1 px on right/bottom) remains visible.
+            // Padding reserves the same gap so the CheckBoxList does not obscure it.
             var border = new Border
             {
-                Background = SystemColors.WindowBrush,
+                Padding = new Thickness(2, 2, 1, 1),
                 Child = c,
-                Margin = new Thickness(1, 1, 0, 0),
             };
             return this.CreateContainer(d, border);
         }

@@ -91,7 +91,7 @@ namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
 
         private enum FakeServer { Default = 0, Embedded = 1 }
 
-        private class TestOptions : IPropertyGridOptions
+        private class InheritedCategoryTestOptions : IPropertyGridOptions
         {
             public Type RequiredAttribute => null;
 
@@ -286,7 +286,7 @@ namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
             var model = new OrderedDerivedModel();
 
             // Act
-            var tabs = op.CreateModel(model, false, new TestOptions()).ToList();
+            var tabs = op.CreateModel(model, false, new InheritedCategoryTestOptions()).ToList();
 
             // Assert
             Assert.That(tabs, Has.Count.EqualTo(1));

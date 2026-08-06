@@ -136,5 +136,59 @@ namespace PropertyTools.Wpf.Tests
         {
             Assert.That(CellFormatter.ToDisplayText(CellValue.FromBoolean(false), null, Invariant), Is.EqualTo("FALSE"));
         }
+
+        [Test]
+        public void ToEditText_Duration_ReturnsUnpaddedHoursMinutesSeconds()
+        {
+            var content = CellContent.FromValue(CellValue.FromDuration(new TimeSpan(1, 5, 3)));
+
+            Assert.That(CellFormatter.ToEditText(content, Invariant), Is.EqualTo("1:05:03"));
+        }
+
+        [Test]
+        public void ToEditText_ThenParse_RoundTripsForDuration()
+        {
+            var content = CellContent.FromValue(CellValue.FromDuration(TimeSpan.FromHours(30)));
+
+            var text = CellFormatter.ToEditText(content, Invariant);
+            var reparsed = CellInputParser.Parse(text, null, Invariant);
+
+            Assert.That(reparsed.Value, Is.EqualTo(content.Value));
+        }
+
+        [Test]
+        public void ToDisplayText_DurationWithoutFormat_ReturnsUnpaddedHoursMinutesSeconds()
+        {
+            var value = CellValue.FromDuration(new TimeSpan(1, 5, 3));
+
+            Assert.That(CellFormatter.ToDisplayText(value, null, Invariant), Is.EqualTo("1:05:03"));
+        }
+
+        [Test]
+        public void ToDisplayText_DurationOverTwentyFourHours_ShowsTotalHoursNotWrapped()
+        {
+            var value = CellValue.FromDuration(TimeSpan.FromHours(30));
+
+            Assert.That(CellFormatter.ToDisplayText(value, null, Invariant), Is.EqualTo("30:00:00"));
+        }
+
+        [TestCase("hh:mm:ss", "01:05:03")]
+        [TestCase("m:ss", "65:03")]
+        [TestCase("mm:ss", "65:03")]
+        public void ToDisplayText_DurationWithFormatString_AppliesFormat(string format, string expected)
+        {
+            var value = CellValue.FromDuration(new TimeSpan(1, 5, 3));
+            var style = CellStyle.Default.WithFormat(format);
+
+            Assert.That(CellFormatter.ToDisplayText(value, style, Invariant), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void ToDisplayText_NegativeDuration_IsPrefixedWithMinus()
+        {
+            var value = CellValue.FromDuration(-(TimeSpan.FromMinutes(1) + TimeSpan.FromSeconds(15)));
+
+            Assert.That(CellFormatter.ToDisplayText(value, null, Invariant), Is.EqualTo("-0:01:15"));
+        }
     }
 }

@@ -84,6 +84,19 @@ namespace DataGridDemo.Spreadsheet.Model
         }
 
         /// <summary>
+        /// Creates a duration (elapsed time) value.
+        /// </summary>
+        /// <remarks>
+        /// Stored as <see cref="TimeSpan.TotalDays" /> — the same unit <see cref="FromDateTime" /> uses
+        /// (an OLE Automation date is also a day count, just anchored to an epoch), so a duration added
+        /// to a date shifts it by that many days, and summing durations in a formula adds correctly.
+        /// </remarks>
+        public static CellValue FromDuration(TimeSpan value)
+        {
+            return new CellValue(CellValueType.Duration, value.TotalDays, null);
+        }
+
+        /// <summary>
         /// Creates an error value.
         /// </summary>
         public static CellValue FromError(CellError error)
@@ -112,7 +125,7 @@ namespace DataGridDemo.Spreadsheet.Model
         public CellError Error => this.type == CellValueType.Error ? (CellError)(int)this.number : CellError.None;
 
         /// <summary>
-        /// Gets the number. Throws for values that are not numbers, booleans or dates.
+        /// Gets the number. Throws for values that are not numbers, booleans, dates or durations.
         /// </summary>
         public double AsNumber()
         {
@@ -121,6 +134,7 @@ namespace DataGridDemo.Spreadsheet.Model
                 case CellValueType.Number:
                 case CellValueType.Boolean:
                 case CellValueType.DateTime:
+                case CellValueType.Duration:
                     return this.number;
                 default:
                     throw new InvalidOperationException($"Cannot get a number from a {this.type} value.");
@@ -167,9 +181,22 @@ namespace DataGridDemo.Spreadsheet.Model
         }
 
         /// <summary>
+        /// Gets the duration. Throws for values that are not durations.
+        /// </summary>
+        public TimeSpan AsDuration()
+        {
+            if (this.type != CellValueType.Duration)
+            {
+                throw new InvalidOperationException($"Cannot get a duration from a {this.type} value.");
+            }
+
+            return TimeSpan.FromDays(this.number);
+        }
+
+        /// <summary>
         /// Tries to coerce this value to a number, following spreadsheet conventions: booleans become
-        /// 0/1, dates become their OLE Automation value, an empty cell becomes 0, and numeric-looking
-        /// text is parsed using the invariant culture.
+        /// 0/1, dates and durations become their day-count value, an empty cell becomes 0, and
+        /// numeric-looking text is parsed using the invariant culture.
         /// </summary>
         /// <param name="value">The resulting number.</param>
         /// <returns><c>true</c> if the value could be coerced to a number.</returns>
@@ -180,6 +207,7 @@ namespace DataGridDemo.Spreadsheet.Model
                 case CellValueType.Number:
                 case CellValueType.Boolean:
                 case CellValueType.DateTime:
+                case CellValueType.Duration:
                     value = this.number;
                     return true;
                 case CellValueType.Empty:
@@ -223,6 +251,9 @@ namespace DataGridDemo.Spreadsheet.Model
                 case CellValueType.DateTime:
                     value = DateTime.FromOADate(this.number).ToString(CultureInfo.InvariantCulture);
                     return true;
+                case CellValueType.Duration:
+                    value = TimeSpan.FromDays(this.number).ToString("c", CultureInfo.InvariantCulture);
+                    return true;
                 default:
                     value = null;
                     return false;
@@ -248,6 +279,8 @@ namespace DataGridDemo.Spreadsheet.Model
                     return this.number != 0;
                 case CellValueType.DateTime:
                     return DateTime.FromOADate(this.number);
+                case CellValueType.Duration:
+                    return TimeSpan.FromDays(this.number);
                 case CellValueType.Error:
                     return CellErrorText.ToDisplayText((CellError)(int)this.number);
                 default:
@@ -281,10 +314,10 @@ namespace DataGridDemo.Spreadsheet.Model
         }
 
         /// <summary>
-        /// Compares two values using spreadsheet ordering rules: empty &lt; numbers/dates &lt; text
-        /// &lt; booleans when the types differ (used by formula comparison operators and sorting);
-        /// otherwise a natural same-type comparison (numeric for numbers/dates, case-insensitive for
-        /// text).
+        /// Compares two values using spreadsheet ordering rules: empty &lt; numbers/dates/durations
+        /// &lt; text &lt; booleans when the types differ (used by formula comparison operators and
+        /// sorting); otherwise a natural same-type comparison (numeric for numbers/dates/durations,
+        /// case-insensitive for text).
         /// </summary>
         public int CompareTo(CellValue other)
         {
@@ -299,6 +332,7 @@ namespace DataGridDemo.Spreadsheet.Model
             {
                 case CellValueType.Number:
                 case CellValueType.DateTime:
+                case CellValueType.Duration:
                     return this.number.CompareTo(other.number);
                 case CellValueType.Boolean:
                     return this.number.CompareTo(other.number);
@@ -317,6 +351,7 @@ namespace DataGridDemo.Spreadsheet.Model
                     return 0;
                 case CellValueType.Number:
                 case CellValueType.DateTime:
+                case CellValueType.Duration:
                     return 1;
                 case CellValueType.Text:
                     return 2;

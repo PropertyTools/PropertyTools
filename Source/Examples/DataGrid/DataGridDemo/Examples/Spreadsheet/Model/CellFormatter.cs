@@ -48,6 +48,8 @@ namespace DataGridDemo.Spreadsheet.Model
                     return value.AsBoolean() ? "TRUE" : "FALSE";
                 case CellValueType.DateTime:
                     return value.AsDateTime().ToString(culture);
+                case CellValueType.Duration:
+                    return DurationParser.Format(value.AsDuration(), null);
                 case CellValueType.Text:
                     var text = value.AsText();
                     return RequiresTextPrefix(text, culture) ? "'" + text : text;
@@ -60,7 +62,7 @@ namespace DataGridDemo.Spreadsheet.Model
 
         /// <summary>
         /// Determines whether the text needs a leading apostrophe to round-trip as text (i.e. it would
-        /// otherwise be parsed as a formula, a boolean, a number or a date).
+        /// otherwise be parsed as a formula, a boolean, a number, a duration or a date).
         /// </summary>
         private static bool RequiresTextPrefix(string text, CultureInfo culture)
         {
@@ -77,6 +79,7 @@ namespace DataGridDemo.Spreadsheet.Model
             return string.Equals(text, "TRUE", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(text, "FALSE", StringComparison.OrdinalIgnoreCase)
                 || double.TryParse(text, NumberStyles.Float | NumberStyles.AllowThousands, culture, out _)
+                || DurationParser.TryParse(text, out _)
                 || DateTime.TryParse(text, culture, DateTimeStyles.None, out _);
         }
 
@@ -109,6 +112,8 @@ namespace DataGridDemo.Spreadsheet.Model
                     return string.IsNullOrEmpty(style.FormatString)
                         ? value.AsDateTime().ToString(culture)
                         : value.AsDateTime().ToString(style.FormatString, culture);
+                case CellValueType.Duration:
+                    return DurationParser.Format(value.AsDuration(), style.FormatString);
                 case CellValueType.Text:
                     return value.AsText();
                 default:

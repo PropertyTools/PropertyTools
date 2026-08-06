@@ -20,7 +20,7 @@ namespace DataGridDemo.Spreadsheet.Converters
     /// <summary>
     /// Resolves a cell's effective horizontal alignment from its <see cref="CellStyle.HorizontalAlignment" />
     /// and, when that is <see cref="CellHorizontalAlignment.General" />, its <see cref="CellValue.Type" />
-    /// (numbers/dates right, booleans center, text left).
+    /// (numbers/dates/durations right, booleans center, text left).
     /// </summary>
     /// <remarks>
     /// Bindings: [0] = the cell's <see cref="CellStyle.HorizontalAlignment" />, [1] = the cell's
@@ -50,6 +50,7 @@ namespace DataGridDemo.Spreadsheet.Converters
             {
                 case CellValueType.Number:
                 case CellValueType.DateTime:
+                case CellValueType.Duration:
                     return HorizontalAlignment.Right;
                 case CellValueType.Boolean:
                     return HorizontalAlignment.Center;

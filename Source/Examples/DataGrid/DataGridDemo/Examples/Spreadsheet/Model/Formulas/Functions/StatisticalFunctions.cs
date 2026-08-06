@@ -93,7 +93,7 @@ namespace DataGridDemo.Spreadsheet.Model.Formulas.Functions
                 var count = 0;
                 foreach (var value in context.GetAllArgumentValues())
                 {
-                    if (value.Type == CellValueType.Number || value.Type == CellValueType.DateTime)
+                    if (value.Type == CellValueType.Number || value.Type == CellValueType.DateTime || value.Type == CellValueType.Duration)
                     {
                         count++;
                     }

@@ -29,6 +29,9 @@ namespace DataGridDemo.Spreadsheet.Model
         /// <summary>A date/time value.</summary>
         DateTime,
 
+        /// <summary>A duration (elapsed time) value.</summary>
+        Duration,
+
         /// <summary>A formula evaluation error.</summary>
         Error
     }

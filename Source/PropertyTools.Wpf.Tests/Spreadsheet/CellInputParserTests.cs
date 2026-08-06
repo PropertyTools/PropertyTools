@@ -106,6 +106,42 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void Parse_HoursMinutesSeconds_ReturnsDurationValue()
+        {
+            var content = CellInputParser.Parse("1:30:00", null, Invariant);
+
+            Assert.That(content.Value.Type, Is.EqualTo(CellValueType.Duration));
+            Assert.That(content.Value.AsDuration(), Is.EqualTo(new TimeSpan(1, 30, 0)));
+        }
+
+        [Test]
+        public void Parse_MinutesSeconds_ReturnsDurationValue()
+        {
+            // A single colon means minutes:seconds (not hours:minutes, unlike TimeSpan.Parse), matching
+            // the "typically entered as h:mm:ss or m:ss" convention this feature was built around.
+            var content = CellInputParser.Parse("5:30", null, Invariant);
+
+            Assert.That(content.Value.Type, Is.EqualTo(CellValueType.Duration));
+            Assert.That(content.Value.AsDuration(), Is.EqualTo(TimeSpan.FromMinutes(5) + TimeSpan.FromSeconds(30)));
+        }
+
+        [Test]
+        public void Parse_DurationOverTwentyFourHours_DoesNotWrap()
+        {
+            var content = CellInputParser.Parse("30:00:00", null, Invariant);
+
+            Assert.That(content.Value.AsDuration(), Is.EqualTo(TimeSpan.FromHours(30)));
+        }
+
+        [Test]
+        public void Parse_NegativeDuration_ReturnsNegativeTimeSpan()
+        {
+            var content = CellInputParser.Parse("-1:15", null, Invariant);
+
+            Assert.That(content.Value.AsDuration(), Is.EqualTo(-(TimeSpan.FromMinutes(1) + TimeSpan.FromSeconds(15))));
+        }
+
+        [Test]
         public void Parse_PlainWord_ReturnsTextValue()
         {
             var content = CellInputParser.Parse("Hello", null, Invariant);

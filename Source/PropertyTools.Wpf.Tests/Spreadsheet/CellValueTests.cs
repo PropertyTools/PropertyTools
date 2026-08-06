@@ -209,6 +209,58 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void FromDuration_AsDuration_RoundTrips()
+        {
+            var value = CellValue.FromDuration(new TimeSpan(1, 30, 15));
+
+            Assert.That(value.Type, Is.EqualTo(CellValueType.Duration));
+            Assert.That(value.AsDuration(), Is.EqualTo(new TimeSpan(1, 30, 15)));
+        }
+
+        [Test]
+        public void Duration_AsNumber_ReturnsTotalDays()
+        {
+            var value = CellValue.FromDuration(TimeSpan.FromHours(12));
+
+            Assert.That(value.AsNumber(), Is.EqualTo(0.5));
+        }
+
+        [Test]
+        public void Duration_TryGetNumber_ReturnsTotalDays()
+        {
+            var value = CellValue.FromDuration(TimeSpan.FromHours(6));
+
+            Assert.That(value.TryGetNumber(out var number), Is.True);
+            Assert.That(number, Is.EqualTo(0.25));
+        }
+
+        [Test]
+        public void Duration_AsText_Throws()
+        {
+            var value = CellValue.FromDuration(TimeSpan.FromMinutes(90));
+
+            Assert.That(() => value.AsText(), Throws.TypeOf<InvalidOperationException>());
+        }
+
+        [Test]
+        public void Duration_Equals_SameSpan_IsTrue()
+        {
+            var a = CellValue.FromDuration(TimeSpan.FromMinutes(90));
+            var b = CellValue.FromDuration(TimeSpan.FromHours(1.5));
+
+            Assert.That(a.Equals(b), Is.True);
+        }
+
+        [Test]
+        public void Duration_DoesNotEqualNumberWithSameDayValue()
+        {
+            var duration = CellValue.FromDuration(TimeSpan.FromDays(1));
+            var number = CellValue.FromNumber(1);
+
+            Assert.That(duration.Equals(number), Is.False);
+        }
+
+        [Test]
         public void CompareTo_SameTypeNumbers_ComparesNumerically()
         {
             Assert.That(CellValue.FromNumber(1).CompareTo(CellValue.FromNumber(2)), Is.LessThan(0));
@@ -238,6 +290,24 @@ namespace PropertyTools.Wpf.Tests
 
             Assert.That(Make(lesser).CompareTo(Make(greater)), Is.LessThan(0));
             Assert.That(Make(greater).CompareTo(Make(lesser)), Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void CompareTo_DurationVsText_OrdersDurationBeforeText()
+        {
+            var duration = CellValue.FromDuration(TimeSpan.FromMinutes(1));
+            var text = CellValue.FromText("a");
+
+            Assert.That(duration.CompareTo(text), Is.LessThan(0));
+        }
+
+        [Test]
+        public void CompareTo_DurationVsDuration_ComparesNumerically()
+        {
+            var shorter = CellValue.FromDuration(TimeSpan.FromMinutes(1));
+            var longer = CellValue.FromDuration(TimeSpan.FromMinutes(2));
+
+            Assert.That(shorter.CompareTo(longer), Is.LessThan(0));
         }
     }
 }

@@ -60,6 +60,12 @@
                     <MenuItem Header="Time (HH:mm:ss)" Click="DateFormatTime_Click" />
                     <MenuItem Header="Date and Time (yyyy-MM-dd HH:mm)" Click="DateFormatDateTime_Click" />
                 </MenuItem>
+                <MenuItem Header="Duration Format">
+                    <MenuItem Header="h:mm:ss" Click="DurationFormatHms_Click" />
+                    <MenuItem Header="hh:mm:ss" Click="DurationFormatHhMmSs_Click" />
+                    <MenuItem Header="m:ss" Click="DurationFormatMs_Click" />
+                    <MenuItem Header="mm:ss" Click="DurationFormatMmSs_Click" />
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_Data">
                 <MenuItem Header="Sort _Ascending" Click="SortAscending_Click" />

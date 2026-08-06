@@ -6,6 +6,7 @@
 
 namespace PropertyTools.Wpf.Tests
 {
+    using System;
     using System.Globalization;
 
     using DataGridDemo.Spreadsheet.Model;
@@ -126,6 +127,27 @@ namespace PropertyTools.Wpf.Tests
         public void Average_NoNumericValues_ReturnsDivideByZeroError()
         {
             Assert.That(this.Eval("AVERAGE(\"a\")").Error, Is.EqualTo(CellError.DivideByZero));
+        }
+
+        [Test]
+        public void Sum_RangeOfDurations_AddsTheirDayFractions()
+        {
+            this.sheet.SetCellText(new CellAddress(0, 0), "1:30:00");
+            this.sheet.SetCellText(new CellAddress(1, 0), "0:30:00");
+
+            var sum = this.Eval("SUM(A1:A2)");
+
+            Assert.That(sum.AsNumber(), Is.EqualTo(TimeSpan.FromHours(2).TotalDays).Within(1e-9));
+        }
+
+        [Test]
+        public void Count_RangeIncludingADuration_CountsIt()
+        {
+            this.sheet.SetCellText(new CellAddress(0, 0), "1:30:00");
+            this.sheet.SetCellText(new CellAddress(1, 0), "hello");
+            this.sheet.SetCellText(new CellAddress(2, 0), "5");
+
+            Assert.That(this.Eval("COUNT(A1:A3)").AsNumber(), Is.EqualTo(2));
         }
 
         [Test]

@@ -139,6 +139,7 @@ namespace DataGridDemo.Spreadsheet.Model.Formulas.Functions
                     case CellValueType.Number:
                     case CellValueType.Boolean:
                     case CellValueType.DateTime:
+                    case CellValueType.Duration:
                         numbers.Add(value.AsNumber());
                         continue;
                 }

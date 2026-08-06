@@ -39,8 +39,9 @@ namespace DataGridDemo.Spreadsheet.Model
         /// <remarks>
         /// Rules, in order: <c>null</c>/empty is <see cref="CellContent.Empty" />; a leading <c>'</c>
         /// forces text; a leading <c>=</c> starts a formula; <c>TRUE</c>/<c>FALSE</c> (any case) is a
-        /// boolean; a trailing <c>%</c> on a number divides by 100; otherwise a number, then a date,
-        /// then plain text, in that order.
+        /// boolean; a trailing <c>%</c> on a number divides by 100; otherwise a number, then a duration
+        /// ("h:mm:ss" or "m:ss" — this takes priority over a bare time-of-day reading, since this
+        /// application has no separate "time" type), then a date, then plain text, in that order.
         /// </remarks>
         public static CellContent Parse(string input, IFormulaParser parser, CultureInfo culture)
         {
@@ -85,6 +86,11 @@ namespace DataGridDemo.Spreadsheet.Model
             if (double.TryParse(input, NumberStyle, culture, out var numberValue))
             {
                 return CellContent.FromValue(CellValue.FromNumber(numberValue));
+            }
+
+            if (DurationParser.TryParse(input, out var durationValue))
+            {
+                return CellContent.FromValue(CellValue.FromDuration(durationValue));
             }
 
             if (DateTime.TryParse(input, culture, DateTimeStyles.None, out var dateValue))

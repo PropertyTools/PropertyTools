@@ -396,6 +396,18 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void SetCurrentCellFormat_DurationPreset_FormatsDisplayText()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5) { Culture = System.Globalization.CultureInfo.InvariantCulture };
+            sheet.SetCellText(new CellAddress(0, 0), "1:05:03");
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0) };
+
+            viewModel.SetCurrentCellFormat("m:ss");
+
+            Assert.That(sheet.GetCell(new CellAddress(0, 0)).DisplayText, Is.EqualTo("65:03"));
+        }
+
+        [Test]
         public void SortSelection_SingleColumnAscending_SortsValues()
         {
             var sheet = new Sheet("Sheet1", 5, 5) { Culture = System.Globalization.CultureInfo.InvariantCulture };

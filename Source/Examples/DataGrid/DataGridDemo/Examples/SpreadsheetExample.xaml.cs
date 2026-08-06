@@ -367,6 +367,26 @@ namespace DataGridDemo
             this.viewModel.SetCurrentCellFormat("yyyy-MM-dd HH:mm");
         }
 
+        private void DurationFormatHms_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellFormat("h:mm:ss");
+        }
+
+        private void DurationFormatHhMmSs_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellFormat("hh:mm:ss");
+        }
+
+        private void DurationFormatMs_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellFormat("m:ss");
+        }
+
+        private void DurationFormatMmSs_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellFormat("mm:ss");
+        }
+
         private void SortAscending_Click(object sender, RoutedEventArgs e)
         {
             this.viewModel.SortSelection(ascending: true);

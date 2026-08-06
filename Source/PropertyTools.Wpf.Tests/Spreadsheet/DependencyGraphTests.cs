@@ -9,8 +9,8 @@ namespace PropertyTools.Wpf.Tests
     using System;
     using System.Linq;
 
-    using DataGridDemo.Spreadsheet.Model;
-    using DataGridDemo.Spreadsheet.Model.Calculation;
+    using SpreadsheetDemo.Spreadsheet.Model;
+    using SpreadsheetDemo.Spreadsheet.Model.Calculation;
 
     using NUnit.Framework;
 

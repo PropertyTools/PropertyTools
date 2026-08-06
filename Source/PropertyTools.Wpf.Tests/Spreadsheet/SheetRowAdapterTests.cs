@@ -10,8 +10,8 @@ namespace PropertyTools.Wpf.Tests
     using System.Collections;
     using System.Globalization;
 
-    using DataGridDemo.Spreadsheet;
-    using DataGridDemo.Spreadsheet.Model;
+    using SpreadsheetDemo.Spreadsheet;
+    using SpreadsheetDemo.Spreadsheet.Model;
 
     using NUnit.Framework;
 

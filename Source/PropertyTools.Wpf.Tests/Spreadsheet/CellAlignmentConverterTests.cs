@@ -8,8 +8,8 @@ namespace PropertyTools.Wpf.Tests
 {
     using System;
 
-    using DataGridDemo.Spreadsheet.Converters;
-    using DataGridDemo.Spreadsheet.Model;
+    using SpreadsheetDemo.Spreadsheet.Converters;
+    using SpreadsheetDemo.Spreadsheet.Model;
 
     using NUnit.Framework;
 

@@ -6,7 +6,7 @@
 
 namespace PropertyTools.Wpf.Tests
 {
-    using DataGridDemo.Spreadsheet.Model;
+    using SpreadsheetDemo.Spreadsheet.Model;
 
     using NUnit.Framework;
 

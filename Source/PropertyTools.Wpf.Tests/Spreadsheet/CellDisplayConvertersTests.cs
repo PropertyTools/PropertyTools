@@ -9,7 +9,7 @@ namespace PropertyTools.Wpf.Tests
     using System.Windows;
     using System.Windows.Media;
 
-    using DataGridDemo.Spreadsheet.Converters;
+    using SpreadsheetDemo.Spreadsheet.Converters;
 
     using NUnit.Framework;
 

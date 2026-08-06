@@ -4,48 +4,72 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- PropertyGrid/DataGrid: Added `EnumFilterAttribute` to allow restricting which enum values are shown in RadioButtonList, ComboBox, and ListBox controls, with demo examples in PropertyGridDemos and DataGridDemo #498
+- PropertyGrid: Added `PropertyPanelStyle` and `LabelPanelStyle` dependency properties to allow full XAML styling of the inner property row `Grid` and label `DockPanel` (e.g. background color for dark themes or compact layouts) #275
+- PropertyGrid: Added `ReadOnlyControlStyle` dependency property (`Style`) to allow customizing the appearance of read-only property controls #307
+- PropertyGridDemos: Added ReadOnlyTextColorExample demonstrating how to use the new `ReadOnlyControlStyle` property #307
+- DataGridDemo: Added IListCommitOnTabExample to reproduce the IList cell edit/tab commit scenario using CollectionChanged(Replace) notifications #81
+- DataGrid: Added `DataViewOperator` — a dedicated operator for `DataView` ItemsSources that enables add/delete rows and copy using the DataTable's column metadata #169
+- PropertyGridDemos: Added ConnectionStringBuilderExample demonstrating the fix for issue #288 – PropertyGrid now works correctly when bound to a DbConnectionStringBuilder subclass (fixed: null checkboxes, broken enum radio-buttons, byte[] StringFormat exception) #288
+- TreeListBoxDemo: Added NonEnglishCultureExample demonstrating that the "Height must be non-negative" workaround works on non-English systems #290
+- PropertyGrid: Added CategoryAttribute .TabSortIndex and .GroupSortIndex properties including CategoryAttributeOrderedExample that demonstates expicit ordering of tabs & groups  #494
+- GitHub Copilot: Added path-specific custom instructions for tests, examples, WPF controls, and core library to provide contextual guidance based on file types #475
+- DemoLauncher: Created centralized demo launcher application that discovers and launches all example windows from any assembly, with text/tag filtering, command-line support, and screenshot capture functionality #468
+- TreeListBoxDemo: Added DragDropExample demonstrating drag-and-drop between and within folders, and that only the item under the cursor is highlighted as a drop target (fix for stale IsDropTarget state) #496
 - TreeListBoxDemo: Restructured to support multiple examples with a launcher window, added MultipleRootsExample demonstrating the fix for issue #282 #282
+- TreeListBoxDemo: Added TabControlExample demonstrating the fix for issue #312 - TreeListBox crash when used in TabControl #312
+- TreeListBoxDemo: Added CutPasteExample to reproduce cut/paste behavior when IsExpanded is bound and preserved on pasted nodes #292
 - DataGrid: Added FilteringExample demonstrating how to filter DataGrid items using CollectionViewSource with search text, enum, and boolean filters #392
 - DataGrid: Added DynamicBackgroundExample with dismissible explanation panel demonstrating BackgroundProperty for data-driven cell backgrounds #TBD
+- DataGridDemo: Added CloseWindowOnCellClickExample demonstrating that clicking a cell no longer throws when the click handler closes the window (#510)
+- DataGridDemo: Added SelectCellsAndToggleCheckBoxExample showing boolean checkbox toggling with a related reflected string value after cell/row selection #40
 - Created GitHub issue templates (bug report and feature request) and pull request template following best practices #448 #452
 - Observable: Added comprehensive unit tests for VerifyProperty method including tests for inherited properties #462
 - PropertyGridDemos: Added ValidationErrorStyleExample demonstrating how to use ValidationErrorStyle with a custom ControlFactory #455
+- PropertyGridDemos: Added SelectedObjectsExample demonstrating ObservableCollection binding to PropertyGrid.SelectedObjects #267
+- DataGrid: Added `ClipboardSeparator` dependency property that controls the separator used by `Ctrl+Alt+C` (copy with headers). Defaults to the current culture's list separator (`CultureInfo.CurrentCulture.TextInfo.ListSeparator`). Can be set per-instance in XAML or overridden in a subclass #481
+- DataGrid: Added new examples for `List<bool>`, `bool[]`, `string[]`, `ObservableCollection<bool>`, `ObservableCollection<Fruit>`, `ObservableCollection<Color>`, and `ObservableCollection<Vector3D>` #157
 
 ### Fixed
+- PropertyGrid/TreeListBox/DataGrid: Fixed reflection-based attribute, sort, and tree-child lookups plus hardened TimeSpan parsing for invalid edit input #526 #527 #528 #529
+- DataGrid/PropertyGrid: Fixed disconnected or non-templated control state so DataView operators, dynamic list-of-lists columns, click handling, and floating-point auto-update work correctly in unit tests #89 #234 #510
+- DataGrid: Fixed both the edited cell and the navigation-target cell appearing in edit mode simultaneously when pressing Enter or an arrow key — `RemoveEditControl` no longer commits hidden (pre-created) text editors, only visible ones #520
+- DataGrid: Fixed first cell edit failing (validation error/reverted value) when `CellDefinitionFactory` or `ControlFactory` is set after the grid content was built (e.g. bound via DataContext) — the grid content is now rebuilt when these properties change #81
+- DataGrid: Fixed text cell edits being reverted when leaving a cell (TAB/ENTER/mouse navigation) by committing the active text editor binding before removing the editor control #81
+- PropertyGrid: Fixed `[AutoUpdateText]` on floating-point properties so decimal separators can be entered while typing; added `AutoUpdateFloatingPointExample` to PropertyGridDemo for manual verification #89
+- DataGrid: Fixed cells not refreshing after editing in non-observable collections (`double[]`, `int[][]`, `List<int>`, `List<string>`, `List<Vector3D>`, WrapItems variants) — `CurrentCellSourceUpdated` now calls `UpdateCellContent` for the changed cell when the source does not implement `INotifyCollectionChanged` #157
+- DataGrid: Fixed `List<string>` showing `Length` column instead of the string value — `GenerateColumnDefinitions` now skips Strategy 2 (property-based columns) for simple scalar types such as `string`, `bool`, numeric primitives, `DateTime`, `enum`, etc. #157
+- DataGrid: Fixed editing a property of a struct (value type) in a collection not updating the collection item — after `PropertyDescriptor.SetValue`, the modified boxed value is now written back to the collection via `SetValue` #157
+- PropertyGridDemos: Added `ItemWithDisplayName` to `CollectionsExample` reproducing issue #191 - auto-generated collection column headers ignore `DisplayNameAttribute` on the item's properties #191
+- DataGridDemo: Added `DisplayNameAttributeExample` demonstrating that auto-generated `List<T>` column headers use `DisplayNameAttribute` (both `System.ComponentModel` and `PropertyTools.DataAnnotations`) #191
+- DataGrid: `ListOperator.GenerateColumnDefinitions` now uses `DisplayNameAttribute` (both `System.ComponentModel` and `PropertyTools.DataAnnotations`) as the auto-generated column header when present, falling back to the property name otherwise; this applies when `Column`/`ColumnDefinition` headers have not been explicitly specified #191
+- DataGrid: Fixed columns not updating when the `ItemsSource` is an `ObservableCollection<ObservableCollection<T>>` (list of lists) and the inner collections change size — the grid now subscribes to `INotifyCollectionChanged` on the inner row/column collections and regenerates auto-generated columns when their count no longer matches the data #234
+- DataGrid: Fixed `InvalidOperationException` ("This Visual is not connected to a PresentationSource") thrown from `OnMouseLeftButtonDown`/`OnMouseMove` when a left-click handler (e.g. opening a window) causes the DataGrid to be disconnected from its `PresentationSource` while the click is being processed — `PointToScreen` is now only called when the control is still connected to a `PresentationSource` #510
+- PropertyGrid: Fixed error messages not displayed correctly for `NotifyDataErrorInfo` when multiple properties have errors — per-property error checking now used instead of global `HasErrors` flag in `NotifyDataErrorInfoConverter`, `Tab.UpdateHasErrors`, and `PropertyGridControlFactory.UpdateTabForValidationResults`; also added `LastName` property to `NotifyDataErrorInfoExample` to demonstrate the fix #228
+- DataGrid: Fixed `InvalidOperationException` thrown when navigating to the add-item row (or pasting rows that extend beyond the last row) in a DataView-backed DataGrid while sorting is active — `HandleAutoInsert` now checks whether row insertion succeeded before calling `GetCollectionViewIndex` #258
+- PropertyGrid: Fixed binding to DbConnectionStringBuilder subclasses (e.g. FirebirdSql FbConnectionStringBuilder) — bool properties no longer show indeterminate checkboxes, enum properties no longer lose their selection, and byte[] properties no longer throw a StringFormat exception. Root cause: ICustomTypeDescriptor descriptors are now replaced with reflection-backed ones so GetValue/SetValue use the actual typed CLR property accessors, and PropertyItem.CreateBinding uses PropertyPath(descriptor) to bypass the ICustomTypeDescriptor lookup path #288
+- TreeListBox: Fixed "Height must be non-negative" workaround not working on non-English systems — InsertItem now temporarily switches to InvariantCulture before Items.Insert so the ArgumentException message is always comparable in English, while retaining TargetSite checks as a fallback #38 #142
+- TreeListBox: Fixed drop target items remaining highlighted after drag-drop completes — clear `IsDropTarget` on the previous target at the start of `DecideDropTarget` #496
+- PropertyGrid: Fixed DateTime input parsing to honor `FormatString` (for example `dd/MM/yyyy`) and expanded the PropertyGridDemo example with format descriptions and `t`/`tt` DateTime format examples #58
+- PropertyGrid/DataGrid: Fixed ListItemItemsSourceProperty not saving changes - collections with empty PropertyName now correctly use index-based binding path and collection as binding source for two-way data updates #295
+- DataGrid: Fixed all cells being rebuilt when a single item is replaced in an ObservableCollection - Replace actions now only update the affected cell(s) #295
+- PropertyGrid: Fixed FontFamilySelector does not restore actual property value #492
+- PropertyDialog: Fixed Closing event not being raised by calling base.OnClosing(e) #484
+- PropertyDialog: Fixed `CommitChanges` not setting new value when original value is `null` #486
+- PropertyGrid: Fixed FillTab control not stretching to fill available space when HeaderPlacement is Above, including when the model implements IDataErrorInfo or INotifyDataErrorInfo #488
+- DataGrid: Fixed selection extending on simple click when hosted in a scrollable container #478
+- DataGrid: Fixed `ToCsv` ignoring the `separator` parameter for data rows — data rows now correctly use the specified separator instead of always using `";"` #479
+- TreeListBox: Fixed crash when used in TabControl - resolved race condition where collection events fired before parent items were initialized during deferred loading #312
+- PropertyGrid: Fixed SelectedObjects binding not working - initialization logic now properly sets CurrentObject when binding ObservableCollection #267
 - TreeListBox: Fixed multiple root items expansion issue where children were incorrectly displayed under the last root item instead of their respective parent #282
+- PropertyGrid: Fixed AmbiguousMatchException thrown when a class has a "new" property that shadows a base class property #305
+- Observable: Fixed AmbiguousMatchException in VerifyProperty when a class has a "new" property that shadows a base class property #305
+- ItemsBag: Fixed AmbiguousMatchException in ItemsBagPropertyDescriptor.GetValue and SetValue when a class has a "new" property that shadows a base class property #305
+- TreeListBox: Fixed InvalidOperationException in HierarchySourceChanged when SelectionMode is Single - now uses SelectedItem instead of SelectedItems collection #324
 - DataGrid: Fixed thick borders when background is set by using z-index ordering - grid lines now render on top of cells instead of each cell drawing borders #TBD
 - DataGrid: Fixed BackgroundProperty binding not working - now correctly sets BackgroundBindingSource for property-based backgrounds #TBD
 - DataGrid: Fixed background color regression where TextBlock cells showed white instead of configured colors - now properly wraps in Border #TBD
 - PropertyGrid: Fixed style application issue where implicit styles from Style.Resources were not applied to controls when bound to objects implementing IDataErrorInfo or INotifyDataErrorInfo #455
-
-### Changed
-- Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
-- GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424
-- Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420
-- Documentation: Added CLAUDE.md as a quick reference guide for Claude AI that refers to AGENTS.md #420
-- Support for .NET 10 - Windows #416
-- Support for .NET 8 - Windows #367
-- ProgressAttribute #391
-- DataGrid/PropertyGrid: ILocalizableOperator and ICustomLocalizableOperator interfaces #398
-- DataDialog supporting INotifyDataErrorInfo #405
-- ItemsBag: Added comprehensive unit tests for value type properties (int, double, enum) #355
-- ItemsBag: Added comprehensive unit tests for already-nullable value types to verify PropertyType behavior #355
-
-### Changed
-- GitHub Actions: Configure CodeQL workflow to use security-extended query suite for more comprehensive security scanning #437
-- PropertyGridDemo: Implemented INotifyPropertyChanged in Example base class and all Example classes, removed Fody dependency #TBD
-- Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
-- Updated DotNetProjects.Extended.Wpf.Toolkit package from version 5.0.103 to 5.0.129
-- Tests: Upgraded NUnit from 3.12.0 to 4.4.0 for latest features and improvements
-- Tests: Upgraded Microsoft.NET.Test.SDK from 16.0.1 to 18.0.1 for improved test execution
-- Tests: Upgraded NUnit3TestAdapter from 3.15.1 to 6.0.1 for compatibility with NUnit 4
-- ItemsBag: Improved documentation explaining how it works with type descriptors and property descriptors #355
-
-### Removed
-- AboutDialog: Removed from PropertyTools.Wpf library and moved to DialogDemos example #431
-- PropertyGridDemo: Removed Fody and PropertyChanged.Fody package dependencies #TBD
-
-### Fixed
 - Observable: VerifyProperty now correctly accepts inherited properties in addition to declared properties #462
 - DataGrid: Handle SerializationException gracefully in clipboard operations when non-serializable objects are present #460
 - Security: FilePicker.Explore() - Validate and escape file paths to prevent command injection attacks #459
@@ -70,6 +94,33 @@ All notable changes to this project will be documented in this file.
 - ItemsBag: Ensure that the ItemsBag Property Descriptor does not suppress the property change notifications #354
 - ItemsBag: Propagation of IsReadOnly property to the ItemsBag Property Descriptor #369
 - TreeListBox: Catching the ArgumentException by message title, fails in non english regions #38 #142
+
+### Changed
+- PropertyGrid: Added optional `instance` parameter to `IPropertyGridControlFactory.CreateControl()`, allowing custom control factories to vary behavior based on the object instance being edited — aligns with `CreateErrorControl()` which already accepted `instance` #506
+- Added EnableWindowsTargeting property to all WPF projects to support building on non-Windows platforms #474
+- Custom GitHub Copilot agent for updating package dependencies and target frameworks #422
+- GitHub Actions workflows: Support for building with .NET 10 SDK in all workflows #424
+- Documentation: Added AGENTS.md with comprehensive coding agent guidelines including code style, test coverage requirements, how to write tests, how to implement demos, and documentation update requirements #420
+- Documentation: Added CLAUDE.md as a quick reference guide for Claude AI that refers to AGENTS.md #420
+- Support for .NET 10 - Windows #416
+- Support for .NET 8 - Windows #367
+- ProgressAttribute #391
+- DataGrid/PropertyGrid: ILocalizableOperator and ICustomLocalizableOperator interfaces #398
+- DataDialog supporting INotifyDataErrorInfo #405
+- ItemsBag: Added comprehensive unit tests for value type properties (int, double, enum) #355
+- ItemsBag: Added comprehensive unit tests for already-nullable value types to verify PropertyType behavior #355
+- GitHub Actions: Configure CodeQL workflow to use security-extended query suite for more comprehensive security scanning #437
+- PropertyGridDemo: Implemented INotifyPropertyChanged in Example base class and all Example classes, removed Fody dependency #TBD
+- Tests: Updated NUnit tests to use constraint syntax (Assert.That with Is.EqualTo) instead of classic assertions (Assert.AreEqual) #417
+- Updated DotNetProjects.Extended.Wpf.Toolkit package from version 5.0.103 to 5.0.129
+- Tests: Upgraded NUnit from 3.12.0 to 4.4.0 for latest features and improvements
+- Tests: Upgraded Microsoft.NET.Test.SDK from 16.0.1 to 18.0.1 for improved test execution
+- Tests: Upgraded NUnit3TestAdapter from 3.15.1 to 6.0.1 for compatibility with NUnit 4
+- ItemsBag: Improved documentation explaining how it works with type descriptors and property descriptors #355
+
+### Removed
+- AboutDialog: Removed from PropertyTools.Wpf library and moved to DialogDemos example #431
+- PropertyGridDemo: Removed Fody and PropertyChanged.Fody package dependencies #TBD
 
 ## [3.1.0]
 ### Added

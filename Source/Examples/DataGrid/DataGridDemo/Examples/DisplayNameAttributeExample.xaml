@@ -1,0 +1,9 @@
+﻿<Window x:Class="DataGridDemo.DisplayNameAttributeExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="DisplayName attributes (issue #191)" Height="200" Width="500">
+    <Grid>
+        <p:DataGrid ItemsSource="{Binding ItemsSource}"/>
+    </Grid>
+</Window>

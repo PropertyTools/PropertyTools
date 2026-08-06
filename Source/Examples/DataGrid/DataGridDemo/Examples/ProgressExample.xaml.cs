@@ -10,6 +10,7 @@
 using PropertyTools;
 using PropertyTools.DataAnnotations;
 using PropertyTools.Wpf;
+using ExampleLibrary;
 
 using System;
 using System.Collections.ObjectModel;
@@ -24,6 +25,7 @@ namespace DataGridDemo
     /// <summary>
     /// Interaction logic for ProgressExample.
     /// </summary>
+    [Example("Progress Bar Example", "Demonstrates how to display progress bars in DataGrid cells using custom control factories and cell definitions.", Tags = new[] { "DataGrid", "Progress", "Custom Control" })]
     public partial class ProgressExample
     {
         /// <summary>

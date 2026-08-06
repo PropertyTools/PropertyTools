@@ -189,6 +189,15 @@ namespace PropertyTools.Wpf
                 new UIPropertyMetadata(true));
 
         /// <summary>
+        /// Identifies the <see cref="ClipboardSeparator"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ClipboardSeparatorProperty = DependencyProperty.Register(
+                nameof(ClipboardSeparator),
+                typeof(string),
+                typeof(DataGrid),
+                new UIPropertyMetadata(null));
+
+        /// <summary>
         /// Identifies the <see cref="MultiChangeInChangedColumnOnly"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MultiChangeInChangedColumnOnlyProperty = DependencyProperty.Register(
@@ -231,7 +240,7 @@ namespace PropertyTools.Wpf
             nameof(ControlFactory),
             typeof(IDataGridControlFactory),
             typeof(DataGrid),
-            new UIPropertyMetadata(new DataGridControlFactory()));
+            new UIPropertyMetadata(new DataGridControlFactory(), (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
         /// Identifies the <see cref="CellDefinitionFactory"/> dependency property.
@@ -240,7 +249,7 @@ namespace PropertyTools.Wpf
             nameof(CellDefinitionFactory),
             typeof(ICellDefinitionFactory),
             typeof(DataGrid),
-            new UIPropertyMetadata(new CellDefinitionFactory()));
+            new UIPropertyMetadata(new CellDefinitionFactory(), (d, e) => ((DataGrid)d).UpdateGridContent()));
 
         /// <summary>
         /// Identifies the <see cref="CurrentCell"/> dependency property.
@@ -645,6 +654,17 @@ namespace PropertyTools.Wpf
         private bool endPressed;
 
         /// <summary>
+        /// The mouse position in screen coordinates when left button was pressed.
+        /// Used to distinguish click from drag even when control coordinates shift during scroll.
+        /// </summary>
+        private Point? mouseDownPositionOnScreen;
+
+        /// <summary>
+        /// Indicates whether a range-selection drag has started for the current mouse capture.
+        /// </summary>
+        private bool isRangeSelectionDrag;
+
+        /// <summary>
         /// The sheet grid control.
         /// </summary>
         private Grid sheetGrid;
@@ -680,6 +700,11 @@ namespace PropertyTools.Wpf
         private INotifyCollectionChanged subscribedCollection;
 
         /// <summary>
+        /// References to the item collections (e.g. rows or columns of a list of lists) that have subscribed to the INotifyCollectionChanged event.
+        /// </summary>
+        private readonly List<INotifyCollectionChanged> subscribedItemCollections = new List<INotifyCollectionChanged>();
+
+        /// <summary>
         /// The top/left control.
         /// </summary>
         private Border topLeft;
@@ -688,6 +713,16 @@ namespace PropertyTools.Wpf
         /// Flag used for collection changed notification suspension.
         /// </summary>
         private bool suspendCollectionChangedNotifications;
+
+        /// <summary>
+        /// The logical number of columns when the template has not been applied.
+        /// </summary>
+        private int logicalColumns;
+
+        /// <summary>
+        /// The logical number of rows when the template has not been applied.
+        /// </summary>
+        private int logicalRows;
 
         /// <summary>
         /// The synchronized collection
@@ -879,6 +914,20 @@ namespace PropertyTools.Wpf
         {
             get => (bool)this.GetValue(CanResizeRowsProperty);
             set => this.SetValue(CanResizeRowsProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the separator used when copying cell data to the clipboard via <c>Ctrl+Alt+C</c>.
+        /// When not explicitly set, the current culture's list separator is used
+        /// (<see cref="System.Globalization.CultureInfo.CurrentCulture"/> TextInfo.ListSeparator,
+        /// e.g. <c>","</c> for en-US or <c>";"</c> for de-DE).
+        /// Set this property to override the separator for a specific instance, or subclass and override to apply it globally.
+        /// </summary>
+        /// <value>The clipboard separator string.</value>
+        public string ClipboardSeparator
+        {
+            get => (string)this.GetValue(ClipboardSeparatorProperty) ?? System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
+            set => this.SetValue(ClipboardSeparatorProperty, value);
         }
 
         /// <summary>
@@ -1239,12 +1288,12 @@ namespace PropertyTools.Wpf
         /// Gets the number of columns.
         /// </summary>
         /// <value>The number of columns.</value>
-        public int Columns => this.sheetGrid != null ? this.sheetGrid.ColumnDefinitions.Count : 0;
+        public int Columns => this.sheetGrid != null ? this.sheetGrid.ColumnDefinitions.Count : this.logicalColumns;
 
         /// <summary>
         /// Gets the number of rows.</summary>
         /// <value>The number of rows.</value>
-        public int Rows => this.sheetGrid != null ? this.sheetGrid.RowDefinitions.Count - 1 : 0;
+        public int Rows => this.sheetGrid != null ? this.sheetGrid.RowDefinitions.Count - 1 : this.logicalRows;
 
         /// <summary>
         /// Gets a value indicating whether to use columns for the items.
@@ -1429,6 +1478,13 @@ namespace PropertyTools.Wpf
                 return true;
             }
 
+            if (managerType == typeof(CollectionChangedEventManager) && sender is INotifyCollectionChanged itemCollection && this.subscribedItemCollections.Contains(itemCollection))
+            {
+                this.OnItemCollectionChanged(e as NotifyCollectionChangedEventArgs);
+
+                return true;
+            }
+
             return false;
         }
 
@@ -1571,7 +1627,7 @@ namespace PropertyTools.Wpf
             // Use Operator.GetRowCount() instead of this.Rows to work in test environments
             var currentRowCount = this.Operator?.GetRowCount() ?? 0;
             var newRowsNeeded = Math.Max(0, outputRange.BottomRow - currentRowCount + 1);
-            
+
             // Phase 2: Add new rows at the end of the source collection
             for (var rowIndex = 0; rowIndex < newRowsNeeded; rowIndex++)
             {
@@ -1794,7 +1850,7 @@ namespace PropertyTools.Wpf
             }
 
             var strings = this.GetCellStrings(range);
-            var csv = this.ConvertToCsv(strings, ";", true);
+            var csv = this.ConvertToCsv(strings, separator, true);
             sb.Append(csv);
 
             return sb.ToString();
@@ -1824,6 +1880,14 @@ namespace PropertyTools.Wpf
         {
             this.Focus();
             base.OnMouseLeftButtonDown(e);
+
+            if (this.sheetGrid == null)
+            {
+                return;
+            }
+
+            this.mouseDownPositionOnScreen = PresentationSource.FromVisual(this) != null ? this.PointToScreen(e.GetPosition(this)) : (Point?)null;
+            this.isRangeSelectionDrag = false;
 
             var pos = e.GetPosition(this.sheetGrid);
             var cellRef = this.GetCell(pos);
@@ -1878,6 +1942,9 @@ namespace PropertyTools.Wpf
         {
             this.OnMouseUp(e);
 
+            this.mouseDownPositionOnScreen = null;
+            this.isRangeSelectionDrag = false;
+
             this.ReleaseMouseCapture();
             Mouse.OverrideCursor = null;
 
@@ -1904,6 +1971,26 @@ namespace PropertyTools.Wpf
             }
 
             var isInAutoFillMode = this.autoFillSelection.Visibility == Visibility.Visible;
+
+            if (!isInAutoFillMode)
+            {
+                if (!this.isRangeSelectionDrag)
+                {
+                    if (this.mouseDownPositionOnScreen.HasValue && PresentationSource.FromVisual(this) != null)
+                    {
+                        var currentPositionOnScreen = this.PointToScreen(e.GetPosition(this));
+                        var horizontalDragDistance = Math.Abs(currentPositionOnScreen.X - this.mouseDownPositionOnScreen.Value.X);
+                        var verticalDragDistance = Math.Abs(currentPositionOnScreen.Y - this.mouseDownPositionOnScreen.Value.Y);
+                        if (horizontalDragDistance < SystemParameters.MinimumHorizontalDragDistance
+                            && verticalDragDistance < SystemParameters.MinimumVerticalDragDistance)
+                        {
+                            return;
+                        }
+                    }
+
+                    this.isRangeSelectionDrag = true;
+                }
+            }
 
             var pos = e.GetPosition(this.sheetGrid);
             var cellRef = this.GetCell(pos, isInAutoFillMode, this.CurrentCell);
@@ -2163,7 +2250,7 @@ namespace PropertyTools.Wpf
                 case Key.C:
                     if (control && alt)
                     {
-                        Clipboard.SetText(this.ToCsv(this.GetSelectionRange()));
+                        Clipboard.SetText(this.ToCsv(this.GetSelectionRange(), this.ClipboardSeparator));
                         e.Handled = true;
                     }
 
@@ -2204,6 +2291,11 @@ namespace PropertyTools.Wpf
             if (list == null)
             {
                 return null;
+            }
+
+            if (list is System.Data.DataView)
+            {
+                return new DataViewOperator(this);
             }
 
             if (TypeHelper.IsIListIList(list))
@@ -2337,7 +2429,7 @@ namespace PropertyTools.Wpf
         /// <returns>
         /// An array of cell strings.
         /// </returns>
-        protected string[,] GetCellStrings(CellRange range, object[,] values = null)
+        protected virtual string[,] GetCellStrings(CellRange range, object[,] values = null)
         {
             var result = new string[range.Rows, range.Columns];
             for (var i = 0; i < range.Rows; i++)
@@ -2514,6 +2606,11 @@ namespace PropertyTools.Wpf
         /// </returns>
         private CellRef GetCell(Point position, bool isInAutoFillMode = false, CellRef relativeTo = default(CellRef))
         {
+            if (this.sheetGrid == null)
+            {
+                return new CellRef(-1, -1);
+            }
+
             var w = 0d;
             var column = -1;
             var row = -1;
@@ -2663,13 +2760,23 @@ namespace PropertyTools.Wpf
         /// <summary>
         /// Removes the current editor control.
         /// </summary>
-        private void RemoveEditControl()
+        /// <param name="updateTextBindingSource">
+        /// if set to <c>true</c>, updates the source binding for text editors that are currently visible
+        /// (i.e. actively being edited) before removal. Hidden pre-created text editors are not committed.
+        /// </param>
+        private void RemoveEditControl(bool updateTextBindingSource = true)
         {
             if (this.currentEditControl != null/* && this.currentEditControl.Visibility == Visibility.Visible*/)
             {
                 var textEditor = this.currentEditControl as TextBox;
                 if (textEditor != null)
                 {
+                    if (updateTextBindingSource && textEditor.Visibility == Visibility.Visible)
+                    {
+                        var textBinding = textEditor.GetBindingExpression(TextBox.TextProperty);
+                        textBinding?.UpdateSource();
+                    }
+
                     textEditor.PreviewKeyDown -= this.TextEditorPreviewKeyDown;
                 }
 
@@ -2903,6 +3010,11 @@ namespace PropertyTools.Wpf
         /// <param name="cellRef">The cell reference.</param>
         private void UpdateCellContent(CellRef cellRef)
         {
+            if (this.sheetGrid == null)
+            {
+                return;
+            }
+
             var c = this.GetCellElement(cellRef);
             if (c != null)
             {
@@ -2947,7 +3059,14 @@ namespace PropertyTools.Wpf
 
                 if (cell.Equals(changedCell))
                 {
-                    // the current cell should already be set
+                    // The binding has already updated the source for the changed cell.
+                    // For non-observable collections that don't raise change notifications,
+                    // explicitly refresh the display control to show the updated value.
+                    if (!(this.ItemsSource is INotifyCollectionChanged))
+                    {
+                        this.UpdateCellContent(changedCell);
+                    }
+
                     continue;
                 }
 
@@ -3617,7 +3736,83 @@ namespace PropertyTools.Wpf
                 return;
             }
 
+            if (e.Action == NotifyCollectionChangedAction.Replace && e.NewStartingIndex >= 0)
+            {
+                // The replaced item(s) may be new collection instances (e.g. a new row/column collection),
+                // so the item collection subscriptions need to be updated.
+                this.SyncItemCollectionSubscriptions();
+
+                // For Replace actions (e.g. list[i] = newValue), only update the affected cell(s)
+                // instead of rebuilding the entire grid content.
+                this.Dispatcher.Invoke(
+                    new Action(() =>
+                    {
+                        for (int i = 0; i < e.NewItems.Count; i++)
+                        {
+                            var index = e.NewStartingIndex + i;
+
+                            // Update all columns/rows for this item
+                            var count = this.ItemsInRows ? this.Columns : this.Rows;
+                            for (int j = 0; j < count; j++)
+                            {
+                                var cellRef = this.ItemsInRows
+                                    ? new CellRef(index, j)
+                                    : new CellRef(j, index);
+                                this.UpdateCellContent(cellRef);
+                            }
+                        }
+                    }));
+
+                return;
+            }
+
+            // Rows/columns may have been added or removed, so the item collection subscriptions need to be updated.
+            this.SyncItemCollectionSubscriptions();
+
             this.Dispatcher.Invoke(this.UpdateGridContent);
+        }
+
+        /// <summary>
+        /// Handles changes to one of the item collections (e.g. a row or column of a list of lists).
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        private void OnItemCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            if (this.suspendCollectionChangedNotifications)
+            {
+                return;
+            }
+
+            // The number of columns/rows may have changed, so the grid content needs to be rebuilt.
+            this.Dispatcher.Invoke(this.UpdateGridContent);
+        }
+
+        /// <summary>
+        /// Subscribes to the <see cref="INotifyCollectionChanged" /> event of every item in the <see cref="ItemsSource" />
+        /// (e.g. the rows or columns of a list of lists), so that changes to the number of columns/rows are detected.
+        /// </summary>
+        private void SyncItemCollectionSubscriptions()
+        {
+            foreach (var collection in this.subscribedItemCollections)
+            {
+                CollectionChangedEventManager.RemoveListener(collection, this);
+            }
+
+            this.subscribedItemCollections.Clear();
+
+            if (this.ItemsSource == null)
+            {
+                return;
+            }
+
+            foreach (var item in this.ItemsSource)
+            {
+                if (item is INotifyCollectionChanged itemCollection)
+                {
+                    CollectionChangedEventManager.AddListener(itemCollection, this);
+                    this.subscribedItemCollections.Add(itemCollection);
+                }
+            }
         }
 
         /// <summary>
@@ -3868,7 +4063,7 @@ namespace PropertyTools.Wpf
                     break;
                 case Key.Escape:
                     BindingOperations.ClearBinding(this.currentEditControl, TextBox.TextProperty);
-                    this.RemoveEditControl();
+                    this.RemoveEditControl(false);
                     e.Handled = true;
                     break;
             }
@@ -3985,9 +4180,15 @@ namespace PropertyTools.Wpf
                 if (cell.Row >= this.Rows)
                 {
                     var actualIndex = this.Rows;
-                    this.Operator.InsertRows(actualIndex, 1);
+                    var insertedSourceIndex = this.Operator.InsertItem(actualIndex);
+                    if (insertedSourceIndex < 0)
+                    {
+                        // Insertion failed (e.g., the data source does not support adding items via IList)
+                        return false;
+                    }
+
                     this.CollectionView?.Refresh();
-                    actualIndex = this.Operator.GetCollectionViewIndex(actualIndex);
+                    actualIndex = this.Operator.GetCollectionViewIndex(insertedSourceIndex);
                     actualCell = new CellRef(actualIndex, cell.Column);
                 }
 
@@ -4489,6 +4690,10 @@ namespace PropertyTools.Wpf
                 CollectionChangedEventManager.AddListener(this.CollectionView, this);
                 this.subscribedCollection = this.CollectionView;
             }
+
+            // Subscribe to the item collections (e.g. the rows or columns of a list of lists) so that
+            // changes to the number of columns/rows are detected, see https://github.com/PropertyTools/PropertyTools/issues/234
+            this.SyncItemCollectionSubscriptions();
         }
 
         /// <summary>
@@ -4496,6 +4701,16 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void UpdateGridContent()
         {
+            if (!this.UpdateLogicalGridState())
+            {
+                if (this.sheetGrid != null)
+                {
+                    this.ClearContent();
+                }
+
+                return;
+            }
+
             if (this.sheetGrid == null)
             {
                 // return if the template has not yet been applied
@@ -4503,26 +4718,8 @@ namespace PropertyTools.Wpf
             }
 
             this.ClearContent();
-
-            if (this.ItemsSource == null)
-            {
-                return;
-            }
-
-            this.Operator = this.CreateOperator();
-
-            if (this.AutoGenerateColumns && this.ColumnDefinitions.Count == 0)
-            {
-                this.Operator.AutoGenerateColumns();
-            }
-
-            this.Operator.UpdatePropertyDefinitions();
-
-            // Determine if columns or rows are defined
-            this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
-
-            var rows = this.Operator.GetRowCount();
-            var columns = this.Operator.GetColumnCount();
+            var rows = this.logicalRows;
+            var columns = this.logicalColumns;
 
             var visibility = rows >= 0 ? Visibility.Visible : Visibility.Hidden;
 
@@ -4545,6 +4742,43 @@ namespace PropertyTools.Wpf
 
             // Update column width when all the controls are loaded.
             this.Dispatcher.BeginInvoke(new Action(this.UpdateGridSize), DispatcherPriority.Loaded);
+        }
+
+        /// <summary>
+        /// Updates the logical operator, column definitions and dimensions even when the template is not applied.
+        /// </summary>
+        /// <returns><c>true</c> if an operator could be created; otherwise <c>false</c>.</returns>
+        private bool UpdateLogicalGridState()
+        {
+            this.logicalRows = 0;
+            this.logicalColumns = 0;
+            this.Operator = null;
+            this.ItemsInColumns = false;
+
+            if (this.ItemsSource == null)
+            {
+                return false;
+            }
+
+            var dataGridOperator = this.CreateOperator();
+            if (dataGridOperator == null)
+            {
+                return false;
+            }
+
+            this.Operator = dataGridOperator;
+
+            if (this.AutoGenerateColumns && (this.ColumnDefinitions.Count == 0 || this.Operator.ShouldRegenerateColumns()))
+            {
+                this.ColumnDefinitions.Clear();
+                this.Operator.AutoGenerateColumns();
+            }
+
+            this.Operator.UpdatePropertyDefinitions();
+            this.ItemsInColumns = this.PropertyDefinitions.FirstOrDefault(pd => pd is RowDefinition) != null;
+            this.logicalRows = this.Operator.GetRowCount();
+            this.logicalColumns = this.Operator.GetColumnCount();
+            return true;
         }
 
         /// <summary>

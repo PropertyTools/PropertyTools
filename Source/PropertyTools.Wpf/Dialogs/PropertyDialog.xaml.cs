@@ -165,9 +165,9 @@ namespace PropertyTools.Wpf
                 this.PropertyControl.DataContext = MemberwiseClone(this.DataContext);
             }
 
-            
             if (PropertyControl.DataContext is INotifyDataErrorInfo nde)
             {
+                nde.ErrorsChanged -= DataErrorsChanged;
                 nde.ErrorsChanged += DataErrorsChanged;
                 this.SetDataErrorAwareButtons();
             }
@@ -206,12 +206,7 @@ namespace PropertyTools.Wpf
                 var newValue = pi.GetValue(clone, null);
                 var oldValue = pi.GetValue(this.DataContext, null);
 
-                if (oldValue == null && newValue == null)
-                {
-                    continue;
-                }
-
-                if (oldValue != null && !oldValue.Equals(newValue))
+                if (!object.Equals(oldValue, newValue))
                 {
                     pi.SetValue(this.DataContext, newValue, null);
                 }
@@ -233,18 +228,6 @@ namespace PropertyTools.Wpf
             {
                 this.CommitChanges();
             }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the Cancel button.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The e.</param>
-        private void CancelButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult = false;
-            this.CancelEdit();
-            this.Close();
         }
 
         /// <summary>
@@ -271,11 +254,13 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
+        /// <remarks>
+        /// The <see cref="EndEdit"/> call has been moved into <see cref="OnClosing(CancelEventArgs)"/> method
+        /// </remarks>
         private void OkButtonClick(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
-            this.EndEdit();
-            this.Close();
+            this.DialogResult = true;  // also will call Close()
+                                       // Window.Close operation may be interrupted in OnClosing event handler
         }
 
         /// <summary>
@@ -294,9 +279,29 @@ namespace PropertyTools.Wpf
         /// <param name="e">The event arguments.</param>
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (DataContext is INotifyDataErrorInfo nde)
+            var pdcEventArgs = new PropertyDialogCancelEventArgs(
+                editingContext: this.PropertyControl.DataContext,
+                dialogResult: this.DialogResult
+            );
+            base.OnClosing(pdcEventArgs);
+            e.Cancel = pdcEventArgs.Cancel;
+
+            if (!e.Cancel)
             {
-                nde.ErrorsChanged -= DataErrorsChanged; ;
+                // diaglog will be closed -> finish editing before .Closed event is raised
+                if (this.DialogResult == true)
+                {
+                    this.EndEdit();
+                }
+                else
+                {
+                    this.CancelEdit();
+                }
+
+                if (DataContext is INotifyDataErrorInfo nde)
+                {
+                    nde.ErrorsChanged -= DataErrorsChanged;
+                }
             }
         }
 

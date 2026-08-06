@@ -1,0 +1,170 @@
+<Window x:Class="PropertyGridDemos.PropertyPanelStyleExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:d="clr-namespace:PropertyGridDemos"
+        Title="PropertyPanelStyle and LabelPanelStyle (issue #275)" Height="620" Width="1100"
+        Background="#1E1E1E" TextElement.Foreground="#F1F1F1">
+    <Window.DataContext>
+        <d:PropertyPanelStyleExampleViewModel/>
+    </Window.DataContext>
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Page heading -->
+        <TextBlock Grid.Row="0" Text="PropertyPanelStyle / LabelPanelStyle"
+                   FontSize="18" FontWeight="SemiBold" Foreground="#F1F1F1" Margin="0 0 0 4"/>
+        <TextBlock Grid.Row="1" TextWrapping="Wrap" Foreground="#AAAAAA" Margin="0 0 0 16">
+            Both grids share the same view-model. The left grid uses the default light appearance; the right grid
+            applies <Run FontWeight="SemiBold" Foreground="#F1F1F1">PropertyPanelStyle</Run> and
+            <Run FontWeight="SemiBold" Foreground="#F1F1F1">LabelPanelStyle</Run>
+            together with matching control styles for a cohesive dark theme.
+        </TextBlock>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: default light appearance -->
+            <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="4">
+                <DockPanel>
+                    <Border DockPanel.Dock="Top" Background="#F5F5F5" BorderBrush="#CCCCCC" BorderThickness="0 0 0 1" Padding="10 6">
+                        <TextBlock Text="Default (light)" FontWeight="SemiBold" Foreground="#333333"/>
+                    </Border>
+                    <pt:PropertyGrid SelectedObject="{Binding Item}" VerticalPropertySpacing="1" Margin="4"/>
+                </DockPanel>
+            </Border>
+
+            <!-- Right: professional dark theme -->
+            <Border Grid.Column="2" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4">
+                <DockPanel>
+                    <Border DockPanel.Dock="Top" Background="#2D2D30" BorderBrush="#3F3F46" BorderThickness="0 0 0 1" Padding="10 6">
+                        <TextBlock Text="Dark theme (PropertyPanelStyle + LabelPanelStyle)" FontWeight="SemiBold" Foreground="#F1F1F1"/>
+                    </Border>
+                    <pt:PropertyGrid SelectedObject="{Binding Item}" VerticalPropertySpacing="0" Margin="4"
+                                     Background="#252526" Foreground="#F1F1F1">
+                        <pt:PropertyGrid.PropertyPanelStyle>
+                            <Style TargetType="Grid">
+                                <Setter Property="Background" Value="#2D2D30"/>
+                            </Style>
+                        </pt:PropertyGrid.PropertyPanelStyle>
+                        <pt:PropertyGrid.LabelPanelStyle>
+                            <Style TargetType="DockPanel">
+                                <Setter Property="Background" Value="#252526"/>
+                            </Style>
+                        </pt:PropertyGrid.LabelPanelStyle>
+                        <pt:PropertyGrid.Resources>
+                            <!-- Input controls -->
+                            <Style TargetType="pt:TextBoxEx">
+                                <Setter Property="Background" Value="#3C3C3C"/>
+                                <Setter Property="Foreground" Value="#F1F1F1"/>
+                                <Setter Property="BorderBrush" Value="#555555"/>
+                                <Setter Property="CaretBrush" Value="#F1F1F1"/>
+                            </Style>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="Background" Value="#3C3C3C"/>
+                                <Setter Property="Foreground" Value="#F1F1F1"/>
+                                <Setter Property="BorderBrush" Value="#555555"/>
+                            </Style>
+                            <!-- Property labels -->
+                            <Style TargetType="Label">
+                                <Setter Property="Foreground" Value="#D4D4D4"/>
+                            </Style>
+                            <!-- CheckBox and RadioButton labels (optional properties and radio-button enums) -->
+                            <Style TargetType="CheckBox">
+                                <Setter Property="Foreground" Value="#D4D4D4"/>
+                            </Style>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Foreground" Value="#D4D4D4"/>
+                            </Style>
+                            <!-- Tab strip: full ControlTemplate for dark tab headers and content area -->
+                            <Style TargetType="TabControl">
+                                <Setter Property="Background" Value="#252526"/>
+                                <Setter Property="BorderBrush" Value="#3F3F46"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TabControl">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <Border Grid.Row="0" Background="#2D2D30"
+                                                        BorderBrush="#3F3F46" BorderThickness="1 1 1 0">
+                                                    <TabPanel IsItemsHost="True"/>
+                                                </Border>
+                                                <Border Grid.Row="1" Background="#252526"
+                                                        BorderBrush="#3F3F46" BorderThickness="1">
+                                                    <ContentPresenter ContentSource="SelectedContent"/>
+                                                </Border>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                            <Style TargetType="TabItem">
+                                <Setter Property="Foreground" Value="#AAAAAA"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="TabItem">
+                                            <Border x:Name="TabBorder" Background="#2D2D30"
+                                                    BorderBrush="#3F3F46" BorderThickness="1 1 1 0"
+                                                    Padding="10 4" Margin="0 0 2 0">
+                                                <ContentPresenter x:Name="TabContent"
+                                                                  ContentSource="Header"
+                                                                  TextElement.Foreground="#AAAAAA"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="TabBorder" Property="Background" Value="#252526"/>
+                                                    <Setter TargetName="TabBorder" Property="BorderThickness" Value="1 1 1 0"/>
+                                                    <Setter TargetName="TabContent" Property="TextElement.Foreground" Value="#F1F1F1"/>
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="TabContent" Property="TextElement.Foreground" Value="#F1F1F1"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                            <!-- GroupBox: full ControlTemplate for dark border and header -->
+                            <Style TargetType="GroupBox">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="GroupBox">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <Border Grid.Row="0" Grid.RowSpan="2"
+                                                        BorderBrush="#3F3F46" BorderThickness="1"
+                                                        Background="#252526" CornerRadius="3"/>
+                                                <Border Grid.Row="0" Background="#2D2D30"
+                                                        BorderBrush="#3F3F46" BorderThickness="0 0 0 1"
+                                                        CornerRadius="3 3 0 0" Padding="8 4">
+                                                    <ContentPresenter ContentSource="Header"
+                                                                      TextElement.Foreground="#D4D4D4"
+                                                                      TextElement.FontWeight="SemiBold"/>
+                                                </Border>
+                                                <ContentPresenter Grid.Row="1" Margin="4"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </pt:PropertyGrid.Resources>
+                    </pt:PropertyGrid>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

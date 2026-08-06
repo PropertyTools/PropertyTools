@@ -88,7 +88,8 @@ namespace PropertyTools.Wpf
             if (d.PropertyType.Is(typeof(Enum)))
             {
                 var enumType = Nullable.GetUnderlyingType(d.PropertyType) ?? d.PropertyType;
-                var values = Enum.GetValues(enumType).Cast<object>().ToList();
+                var enumFilter = d.Attributes.OfType<EnumFilterAttribute>().FirstOrDefault();
+                var values = Enum.GetValues(enumType).FilterOnBrowsableAttribute().FilterOnEnumFilterAttribute(enumFilter).ToList();
                 if (Nullable.GetUnderlyingType(d.PropertyType) != null)
                 {
                     values.Insert(0, null);

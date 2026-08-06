@@ -1,0 +1,40 @@
+<Window x:Class="TreeListBoxDemo.Examples.DragDropExample.DragDropWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:TreeListBoxDemo"
+        xmlns:pt="http://propertytools.org/wpf"
+        Title="Drag/Drop Example" Height="600" Width="500">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:NodeViewModel}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="/folder.png" Margin="0 0 4 0"/>
+                <pt:EditableTextBlock Grid.Column="1" Text="{Binding Name}" IsEditing="{Binding IsEditing}"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Background="LightYellow" Padding="10" TextWrapping="Wrap">
+            <Bold>Drag/Drop Demo:</Bold> Drag items between folders or reorder them within a folder.
+            Only the item currently under the cursor should be highlighted as a drop target —
+            previously hovered items must not retain their highlight (fix for stale IsDropTarget state).
+        </TextBlock>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock Text="SelectedItem: "/>
+            <TextBlock Text="{Binding SelectedItem.Name, ElementName=tree1}"/>
+            <Separator/>
+            <Button Content="Expand All" Click="ExpandAllClick"/>
+            <Button Content="Collapse All" Click="CollapseAllClick"/>
+        </StatusBar>
+        <pt:TreeListBox
+            x:Name="tree1"
+            Indentation="16"
+            HierarchySource="{Binding Roots}"
+            BorderThickness="0"
+            pt:TreeListBoxDragDropHelper.IsDragSource="True"
+            pt:TreeListBoxDragDropHelper.IsDropTarget="True"/>
+    </DockPanel>
+</Window>

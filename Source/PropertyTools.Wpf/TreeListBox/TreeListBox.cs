@@ -14,6 +14,7 @@ namespace PropertyTools.Wpf
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Automation.Peers;
     using System.Windows.Controls;
@@ -79,6 +80,11 @@ namespace PropertyTools.Wpf
         /// A map from item to children. This is used to show the child items.
         /// </summary>
         private readonly Dictionary<object, IList> itemToChildrenMap = new Dictionary<object, IList>();
+
+        /// <summary>
+        /// A cache of children properties resolved by reflection.
+        /// </summary>
+        private readonly Dictionary<Tuple<Type, string>, PropertyInfo> childrenPropertyCache = new Dictionary<Tuple<Type, string>, PropertyInfo>();
 
         /// <summary>
         /// The is expanded map.
@@ -510,17 +516,37 @@ namespace PropertyTools.Wpf
             var oldTreeSource = e.OldValue as IEnumerable;
             if (oldTreeSource != null)
             {
-                foreach (var item in oldTreeSource)
+                // In Single selection mode, we can only set SelectedItem, not modify SelectedItems collection
+                if (this.SelectionMode == SelectionMode.Single)
                 {
-                    var container = this.GetContainerFromItem(item);
-                    if (container == null)
+                    // Check if the selected item is in the old source and clear it if found
+                    if (this.SelectedItem != null)
                     {
-                        continue;
+                        foreach (var item in oldTreeSource)
+                        {
+                            if (object.Equals(item, this.SelectedItem))
+                            {
+                                this.SelectedItem = null;
+                                break;
+                            }
+                        }
                     }
-
-                    if (container.IsSelected)
+                }
+                else
+                {
+                    // For Multiple or Extended selection modes, we can modify SelectedItems collection
+                    foreach (var item in oldTreeSource)
                     {
-                        this.SelectedItems.Remove(item);
+                        var container = this.GetContainerFromItem(item);
+                        if (container == null)
+                        {
+                            continue;
+                        }
+
+                        if (container.IsSelected)
+                        {
+                            this.SelectedItems.Remove(item);
+                        }
                     }
                 }
             }
@@ -535,12 +561,15 @@ namespace PropertyTools.Wpf
                 this.itemLevelMap[this.rootNode] = -1;
                 this.isExpandedMap[this.rootNode] = true;
 
-                this.SubscribeForCollectionChanges(hierarchySource);
-
+                // Fix #312: Add all items BEFORE subscribing to collection changes
+                // to prevent race condition where events fire before parent items are initialized
                 foreach (var item in hierarchySource)
                 {
                     this.AddItem(item);
                 }
+
+                // Subscribe to collection changes AFTER items are added
+                this.SubscribeForCollectionChanges(hierarchySource);
             }
         }
 
@@ -700,6 +729,11 @@ namespace PropertyTools.Wpf
             this.childrenToItemMap.Clear();
             this.itemLevelMap.Clear();
             this.isExpandedMap.Clear();
+
+            // Fix #312: Immediately reinitialize rootNode to prevent race condition
+            // when TabControl deferred loading triggers collection events before setup completes
+            this.itemLevelMap[this.rootNode] = -1;
+            this.isExpandedMap[this.rootNode] = true;
         }
 
         /// <summary>
@@ -737,6 +771,15 @@ namespace PropertyTools.Wpf
                 throw new ArgumentNullException(nameof(item));
             }
 
+            // Fix #312: Defensive check to prevent KeyNotFoundException
+            // when parent (typically rootNode) is not in the dictionary due to race condition
+            if (!this.itemLevelMap.ContainsKey(parent))
+            {
+                throw new InvalidOperationException(
+                    $"Parent item not found in level map. This indicates a race condition during " +
+                    $"control initialization, typically when used in TabControl with deferred loading.");
+            }
+
 #if DEBUG
             if (this.Items.Contains(item))
             {
@@ -759,18 +802,23 @@ namespace PropertyTools.Wpf
             this.SubscribeForCollectionChanges(children);
             this.itemLevelMap[item] = this.itemLevelMap[parent] + 1;
             this.isExpandedMap[item] = false;
+
             try
             {
                 this.Items.Insert(index, item);
             }
             catch (ArgumentException e)
             {
-                if (e.TargetSite?.Name == "set_Height")
-                {
-                    return;
-                }
-
-                if (e.TargetSite?.Name == "ExtendViewport")
+                // Workaround for #38, #142, and #165: WPF virtualization can throw an
+                // ArgumentException ("Height must be non-negative") during certain layout
+                // operations.  We detect it using non-localized signals so the check works
+                // correctly on non-English systems regardless of the OS language:
+                //   • e.TargetSite?.Name — method name is never localized (primary check).
+                //   • e.StackTrace       — fallback when TargetSite is null in optimized builds.
+                if (e.TargetSite?.Name == "set_Height" ||
+                    e.TargetSite?.Name == "ExtendViewport" ||
+                    e.StackTrace?.Contains("set_Height") == true ||
+                    e.StackTrace?.Contains("ExtendViewport") == true)
                 {
                     return;
                 }
@@ -795,8 +843,26 @@ namespace PropertyTools.Wpf
         /// <returns>A list of children.</returns>
         private IList GetChildrenCollectionByReflection(object item)
         {
-            var pi = item.GetType().GetProperty(this.ChildrenPath);
-            var children = pi?.GetValue(item, null) as IList ?? new List<object>();
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var key = Tuple.Create(item.GetType(), this.ChildrenPath);
+            PropertyInfo property;
+            if (!this.childrenPropertyCache.TryGetValue(key, out property))
+            {
+                property = item.GetType().GetProperty(this.ChildrenPath);
+                if (property == null)
+                {
+                    throw new InvalidOperationException(
+                        string.Format("Property '{0}' not found on type '{1}'.", this.ChildrenPath, item.GetType()));
+                }
+
+                this.childrenPropertyCache[key] = property;
+            }
+
+            var children = property.GetValue(item, null) as IList ?? new List<object>();
             return children;
         }
     }

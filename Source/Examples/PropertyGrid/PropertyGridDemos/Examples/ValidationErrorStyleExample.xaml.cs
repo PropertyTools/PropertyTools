@@ -59,9 +59,9 @@ namespace PropertyGridDemos
     {
         public Style ValidationErrorStyle { get; set; }
 
-        public override System.Windows.FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options)
+        public override System.Windows.FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options, object instance = null)
         {
-            var control = base.CreateControl(property, options);
+            var control = base.CreateControl(property, options, instance);
             
             // Apply ValidationErrorStyle if specified and the control doesn't have a style
             if (control != null && this.ValidationErrorStyle != null && control.Style == null)

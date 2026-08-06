@@ -18,6 +18,7 @@ namespace PropertyTools.Wpf.Tests
     using System.Windows.Media;
 
     using NUnit.Framework;
+    using PropertyGrid = PropertyTools.Wpf.PropertyGrid;
 
     [TestFixture]
     public class TypeHelperTests

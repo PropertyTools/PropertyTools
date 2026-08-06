@@ -70,5 +70,48 @@ namespace PropertyTools.Wpf.Tests
             Assert.That(TimeSpanParser.Parse("7,5s"), Is.EqualTo(TimeSpan.FromSeconds(7.5)));
             Assert.That(TimeSpanParser.Parse("3s+4s"), Is.EqualTo(TimeSpan.FromSeconds(7)));
         }
+
+        [Test]
+        public void TryParse_InvalidText_ReturnsFalse()
+        {
+            TimeSpan result;
+
+            var success = TimeSpanParser.TryParse("not-a-time-span", out result);
+
+            Assert.That(success, Is.False);
+            Assert.That(result, Is.EqualTo(default(TimeSpan)));
+        }
+
+        [Test]
+        public void Parse_CommaDecimal_ReturnsCorrectValue()
+        {
+            var result = TimeSpanParser.Parse("7,5h");
+
+            Assert.That(result, Is.EqualTo(TimeSpan.FromHours(7.5)));
+        }
+
+        [Test]
+        public void Parse_ColonFormat_ReturnsCorrectValue()
+        {
+            var result = TimeSpanParser.Parse("0:07:00");
+
+            Assert.That(result, Is.EqualTo(TimeSpan.FromMinutes(7)));
+        }
+
+        [Test]
+        public void Parse_InvalidText_ThrowsFormatException()
+        {
+            var exception = Assert.Throws<FormatException>(() => TimeSpanParser.Parse("not-a-time-span"));
+
+            Assert.That(exception.Message, Does.Contain("not-a-time-span"));
+        }
+
+        [Test]
+        public void Parse_FormatString_ReturnsCorrectValue()
+        {
+            var result = TimeSpanParser.Parse("91:12", "mm:ss");
+
+            Assert.That(result, Is.EqualTo(TimeSpan.FromMinutes(91).Add(TimeSpan.FromSeconds(12))));
+        }
     }
 }

@@ -171,5 +171,69 @@ namespace PropertyTools.Wpf.Tests
 
             public string TestProperty { get; set; }
         }
+
+        /// <summary>
+        /// Base class with a Gender property.
+        /// </summary>
+        private class AnimalBase : Observable
+        {
+            private string gender;
+
+            public string Gender
+            {
+                get => this.gender;
+                set => this.SetValue(ref this.gender, value);
+            }
+        }
+
+        /// <summary>
+        /// Derived class that shadows Gender property with "new" keyword.
+        /// </summary>
+        private class PersonDerived : AnimalBase
+        {
+            private GenderEnum gender;
+
+            public new GenderEnum Gender
+            {
+                get => this.gender;
+                set => this.SetValue(ref this.gender, value);
+            }
+        }
+
+        /// <summary>
+        /// Gender enumeration for testing property shadowing.
+        /// </summary>
+        private enum GenderEnum
+        {
+            Male,
+            Female
+        }
+
+        [Test]
+        public void SetValue_ShadowedProperty_DoesNotThrowAmbiguousMatchException()
+        {
+            // Arrange
+            var obj = new PersonDerived();
+            
+            // Act & Assert
+            Assert.DoesNotThrow(() =>
+            {
+                obj.Gender = GenderEnum.Female;
+            }, "SetValue should handle shadowed properties without throwing AmbiguousMatchException");
+        }
+
+        [Test]
+        public void SetValue_ShadowedProperty_SetsValueSuccessfully()
+        {
+            // Arrange
+            var obj = new PersonDerived();
+            var newValue = GenderEnum.Male;
+
+            // Act
+            obj.Gender = newValue;
+
+            // Assert
+            Assert.That(obj.Gender, Is.EqualTo(newValue));
+        }
     }
 }

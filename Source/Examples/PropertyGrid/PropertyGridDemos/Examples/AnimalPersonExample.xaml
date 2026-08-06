@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="PropertyGridDemos.AnimalPersonExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:d="clr-namespace:PropertyGridDemos"
+        Title="Animal and Person Example - Property Shadowing Demo" Height="600" Width="900">
+    <Window.DataContext>
+        <d:AnimalPersonExampleViewModel/>
+    </Window.DataContext>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock FontSize="14" FontWeight="Bold" Margin="0,0,0,5">
+                Property Shadowing with "new" Keyword Demo
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" Margin="0,0,0,5">
+                This example demonstrates PropertyGrid handling of property shadowing with the "new" keyword.
+                Animal has a Gender property of type string, while Person (inheriting from Animal) shadows it with a Gender property of type enum.
+            </TextBlock>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Column="0" Header="Animals">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <ListBox Grid.Row="0"
+                             x:Name="AnimalListBox"
+                             ItemsSource="{Binding Animals}"
+                             SelectionMode="Extended"
+                             SelectionChanged="AnimalListBox_SelectionChanged"
+                             Margin="5">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding TypeName}" FontWeight="Bold" Width="60"/>
+                                    <TextBlock Text=" - " Margin="5,0"/>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <StackPanel Grid.Row="1" Margin="5">
+                        <TextBlock FontWeight="Bold" Margin="0,0,0,5">Collection Info:</TextBlock>
+                        <TextBlock>
+                            <Run Text="Total Items: "/>
+                            <Run Text="{Binding Animals.Count, Mode=OneWay}"/>
+                        </TextBlock>
+                        <TextBlock>
+                            <Run Text="Selected Items: "/>
+                            <Run Text="{Binding SelectedAnimals.Count, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Grid.Column="2" Header="Properties (Selected Items)">
+                <p:PropertyGrid x:Name="PropertyGridControl"
+                               SelectedObjects="{Binding SelectedAnimals}"
+                               Margin="5"/>
+            </GroupBox>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,0">
+            <Button Content="Add Animal" Width="100" Margin="0,0,5,0" Click="AddAnimal_Click"/>
+            <Button Content="Add Person" Width="100" Margin="0,0,5,0" Click="AddPerson_Click"/>
+            <Button Content="Remove Selected" Width="120" Margin="0,0,5,0" Click="RemoveSelected_Click"/>
+            <Button Content="Clear All" Width="100" Margin="0,0,5,0" Click="ClearAll_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

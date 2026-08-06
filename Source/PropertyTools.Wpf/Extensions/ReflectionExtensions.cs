@@ -21,6 +21,50 @@ namespace PropertyTools.Wpf
     public static class ReflectionExtensions
     {
         /// <summary>
+        /// Filters enum values based on the <see cref="DataAnnotations.EnumFilterAttribute" />.
+        /// </summary>
+        /// <param name="values">The enum values to filter.</param>
+        /// <param name="filter">The filter attribute, or <c>null</c> to return all values unchanged.</param>
+        /// <returns>The filtered values.</returns>
+        public static List<object> FilterOnEnumFilterAttribute(this IEnumerable values, DataAnnotations.EnumFilterAttribute filter)
+        {
+            if (filter == null)
+            {
+                var result = new List<object>();
+                foreach (var v in values)
+                {
+                    result.Add(v);
+                }
+
+                return result;
+            }
+
+            var items = filter.Items ?? new Enum[0];
+            var res = new List<object>();
+
+            foreach (var o in values)
+            {
+                var isListed = Array.Exists(items, item => item.Equals(o));
+                if (filter.Mode == DataAnnotations.EnumFilterAttribute.FilteringMode.Include)
+                {
+                    if (isListed)
+                    {
+                        res.Add(o);
+                    }
+                }
+                else
+                {
+                    if (!isListed)
+                    {
+                        res.Add(o);
+                    }
+                }
+            }
+
+            return res;
+        }
+
+        /// <summary>
         /// Filters on the <see cref="System.ComponentModel.BrowsableAttribute" /> and <see cref="PropertyTools.DataAnnotations.BrowsableAttribute" />.
         /// </summary>
         /// <typeparam name="T">The enumeration type.</typeparam>
@@ -129,7 +173,7 @@ namespace PropertyTools.Wpf
         /// <returns>The first attribute of the specified type.</returns>
         public static Attribute GetFirstAttributeOrDefault(this System.ComponentModel.PropertyDescriptor descriptor, Type attributeType)
         {
-            return descriptor.Attributes.Cast<Attribute>().FirstOrDefault(attribute => attribute.GetType().IsAssignableFrom(attributeType));
+            return descriptor.Attributes.Cast<Attribute>().FirstOrDefault(attributeType.IsInstanceOfType);
         }
 
         /// <summary>

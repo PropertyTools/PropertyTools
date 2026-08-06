@@ -28,7 +28,7 @@ namespace PropertyGridDemo
         }
 
         /// <inheritdoc />
-        public override FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options)
+        public override FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options, object instance = null)
         {
             if (property.Is(typeof(DateTime)))
             {
@@ -38,7 +38,7 @@ namespace PropertyGridDemo
                 return dp;
             }
 
-            return base.CreateControl(property, options);
+            return base.CreateControl(property, options, instance);
         }
 
         /// <inheritdoc />
@@ -77,6 +77,7 @@ namespace PropertyGridDemo
                     UpdateTabForValidationResults(tab, notifyDataErrorInfoInstance);
                     //needed to refresh error control's binding also when error changes (i.e from Error to Warning)
                     errorControl.GetBindingExpression(ContentControl.ContentProperty).UpdateTarget();
+                    errorControl.GetBindingExpression(UIElement.VisibilityProperty)?.UpdateTarget();
                 };
 
             }

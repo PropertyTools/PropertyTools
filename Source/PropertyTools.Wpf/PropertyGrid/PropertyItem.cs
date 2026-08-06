@@ -101,17 +101,23 @@ namespace PropertyTools.Wpf
         /// </value>
         public int IndentationLevel { get; set; }
 
-        /// <summary>
-        /// Gets or sets the category.
-        /// </summary>
-        /// <value>The category.</value>
-        public string Category { get; set; }
+		/// <summary>
+		/// Gets or sets the category (localizable).
+		/// </summary>
+		/// <value>The category.</value>
+		public string Category { get; set; }
 
-        /// <summary>
-        /// Gets the columns.
-        /// </summary>
-        /// <value>The columns.</value>
-        public List<ColumnDefinition> Columns { get; private set; }
+		/// <summary>
+		/// Gets or sets the category identifier (non-localizable).
+		/// </summary>
+		/// <value>The category identifier.</value>
+		public string CategoryIdentifier { get; set; }
+
+		/// <summary>
+		/// Gets the columns.
+		/// </summary>
+		/// <value>The columns.</value>
+		public List<ColumnDefinition> Columns { get; private set; }
 
         /// <summary>
         /// Gets or sets the converter.
@@ -533,11 +539,23 @@ namespace PropertyTools.Wpf
         /// <value>The tab.</value>
         public string Tab { get; set; }
 
-        /// <summary>
-        /// Gets or sets the text wrapping.
-        /// </summary>
-        /// <value>The text wrapping.</value>
-        public TextWrapping TextWrapping { get; set; }
+		/// <summary>
+		/// Gets or sets the tab sort index.
+		/// </summary>
+		/// <value>The tab sort index.</value>
+		public uint? TabSortIndex { get; set; }
+
+		/// <summary>
+		/// Gets or sets the group sort index.
+		/// </summary>
+		/// <value>The group sort index.</value>
+		public uint? GroupSortIndex { get; set; }
+
+		/// <summary>
+		/// Gets or sets the text wrapping.
+		/// </summary>
+		/// <value>The text wrapping.</value>
+		public TextWrapping TextWrapping { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the property should use radio buttons.
@@ -589,16 +607,17 @@ namespace PropertyTools.Wpf
                 formatString = "{0:" + formatString + "}";
             }
 
-            var binding = new Binding(this.PropertyName)
-                {
-                    Mode = bindingMode,
-                    Converter = applyConverter ? this.Converter : null,
-                    ConverterParameter = this.ConverterParameter,
-                    StringFormat = formatString,
-                    UpdateSourceTrigger = trigger,
-                    ValidatesOnDataErrors = true,
-                    ValidatesOnExceptions = true
-                };
+            // Use PropertyPath(descriptor) so that WPF invokes GetValue/SetValue on the
+            // descriptor directly, bypassing any ICustomTypeDescriptor override on the
+            // source object (e.g. DbConnectionStringBuilder — issue #288).
+            var binding = new Binding { Path = new PropertyPath(this.Descriptor) };
+            binding.Mode = bindingMode;
+            binding.Converter = applyConverter ? this.Converter : null;
+            binding.ConverterParameter = this.ConverterParameter;
+            binding.StringFormat = formatString;
+            binding.UpdateSourceTrigger = trigger;
+            binding.ValidatesOnDataErrors = true;
+            binding.ValidatesOnExceptions = true;
             if (this.ConverterCulture != null)
             {
                 binding.ConverterCulture = this.ConverterCulture;

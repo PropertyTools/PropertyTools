@@ -50,6 +50,27 @@ namespace SpreadsheetDemo
         /// </summary>
         public static readonly RoutedCommand AlignRightCommand = new RoutedCommand();
 
+        /// <summary>
+        /// Bound to Ctrl+], the Format menu's "Increase Decimal".
+        /// </summary>
+        public static readonly RoutedCommand IncreaseDecimalCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Bound to Ctrl+[, the Format menu's "Decrease Decimal".
+        /// </summary>
+        public static readonly RoutedCommand DecreaseDecimalCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Bound to Ctrl+Shift+A, the Data menu's "Sort Ascending". Excel has no fixed default
+        /// shortcut for sorting (it's a ribbon/menu action there), so this is this app's own choice.
+        /// </summary>
+        public static readonly RoutedCommand SortAscendingCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Bound to Ctrl+Shift+D, the Data menu's "Sort Descending".
+        /// </summary>
+        public static readonly RoutedCommand SortDescendingCommand = new RoutedCommand();
+
         private const string FileFilter = "Spreadsheet files (*.ptsheet)|*.ptsheet|All files (*.*)|*.*";
 
         private const string CsvFileFilter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
@@ -244,6 +265,11 @@ namespace SpreadsheetDemo
             this.ShowReplaceDialog();
         }
 
+        private void Replace_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.ShowReplaceDialog();
+        }
+
         private void ShowFindDialog()
         {
             if (this.findDialog == null)
@@ -393,6 +419,26 @@ namespace SpreadsheetDemo
         }
 
         private void SortDescending_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SortSelection(ascending: false);
+        }
+
+        private void IncreaseDecimal_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.viewModel.IncreaseDecimalPlaces();
+        }
+
+        private void DecreaseDecimal_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.viewModel.DecreaseDecimalPlaces();
+        }
+
+        private void SortAscending_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.viewModel.SortSelection(ascending: true);
+        }
+
+        private void SortDescending_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             this.viewModel.SortSelection(ascending: false);
         }

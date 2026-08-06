@@ -158,10 +158,22 @@ namespace SpreadsheetDemo.Spreadsheet
         /// <summary>
         /// Gets or sets the round-trippable edit text of the current cell — the formula bar's edit box.
         /// </summary>
+        /// <remarks>
+        /// Setting this applies the same text to every cell in the selection (parsed independently per
+        /// cell, so a formula's references are not adjusted per target), matching how typing into one
+        /// cell of a multi-cell selection and committing already fills the whole selection when editing
+        /// inline in the grid.
+        /// </remarks>
         public string CurrentCellText
         {
             get => this.subscribedCell?.Text ?? string.Empty;
-            set => this.sheet.SetCellText(this.currentCell.ToCellAddress(), value);
+            set
+            {
+                foreach (var address in this.SelectionRange)
+                {
+                    this.sheet.SetCellText(address, value);
+                }
+            }
         }
 
         /// <summary>

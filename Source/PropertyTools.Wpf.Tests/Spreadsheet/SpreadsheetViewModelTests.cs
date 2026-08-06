@@ -105,6 +105,20 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void CurrentCellText_SetWithRangeSelected_EditsEveryCellInTheRange()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(1, 1) };
+
+            viewModel.CurrentCellText = "42";
+
+            Assert.That(sheet.GetValue(new CellAddress(0, 0)), Is.EqualTo(CellValue.FromNumber(42)));
+            Assert.That(sheet.GetValue(new CellAddress(0, 1)), Is.EqualTo(CellValue.FromNumber(42)));
+            Assert.That(sheet.GetValue(new CellAddress(1, 0)), Is.EqualTo(CellValue.FromNumber(42)));
+            Assert.That(sheet.GetValue(new CellAddress(1, 1)), Is.EqualTo(CellValue.FromNumber(42)));
+        }
+
+        [Test]
         public void CurrentCellText_Get_ReflectsTheUnderlyingCell()
         {
             var sheet = new Sheet("Sheet1", 5, 5);

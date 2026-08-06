@@ -54,6 +54,16 @@ namespace DataGridDemo
 
         private const string CsvFileFilter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
 
+        /// <summary>
+        /// The default column width, in pixels. Set in code (not XAML) because
+        /// <see cref="System.Windows.GridLength" /> has no simple constant syntax, and applied before
+        /// <see cref="DataContext" /> is set so it's in place before the grid's <c>ItemsSource</c>
+        /// binding resolves and generates columns from it (see
+        /// <see cref="Spreadsheet.SpreadsheetDataGridOperator" /> for why the grid's own
+        /// <c>DefaultColumnWidth</c> otherwise has no effect).
+        /// </summary>
+        private const double DefaultColumnWidth = 140;
+
         private readonly SpreadsheetViewModel viewModel = new SpreadsheetViewModel();
 
         private FindDialog findDialog;
@@ -66,6 +76,7 @@ namespace DataGridDemo
         public SpreadsheetExample()
         {
             this.InitializeComponent();
+            this.SheetGrid.DefaultColumnWidth = new GridLength(DefaultColumnWidth);
             this.DataContext = this.viewModel;
             this.Closing += this.SpreadsheetExample_Closing;
         }
@@ -309,6 +320,61 @@ namespace DataGridDemo
         private void Sum_Click(object sender, RoutedEventArgs e)
         {
             this.viewModel.InsertSum();
+        }
+
+        private void IncreaseDecimal_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.IncreaseDecimalPlaces();
+        }
+
+        private void DecreaseDecimal_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.DecreaseDecimalPlaces();
+        }
+
+        private void NumberFormatGeneral_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellFormat(null);
+        }
+
+        private void NumberFormatNumber_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellFormat("0.00");
+        }
+
+        private void NumberFormatInteger_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellFormat("0");
+        }
+
+        private void DateFormatShort_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellFormat("yyyy-MM-dd");
+        }
+
+        private void DateFormatLong_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellFormat("dddd, MMMM d, yyyy");
+        }
+
+        private void DateFormatTime_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellFormat("HH:mm:ss");
+        }
+
+        private void DateFormatDateTime_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellFormat("yyyy-MM-dd HH:mm");
+        }
+
+        private void SortAscending_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SortSelection(ascending: true);
+        }
+
+        private void SortDescending_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.SortSelection(ascending: false);
         }
 
         private void NameBox_KeyDown(object sender, KeyEventArgs e)

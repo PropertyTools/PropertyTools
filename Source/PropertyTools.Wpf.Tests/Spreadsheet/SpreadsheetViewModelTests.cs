@@ -306,6 +306,173 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void InsertSum_RectangularRange_InsertsSumBelowEachColumnAndRightOfEachRow()
+        {
+            var sheet = new Sheet("Sheet1", 10, 10) { Culture = System.Globalization.CultureInfo.InvariantCulture };
+            sheet.SetCellText(new CellAddress(0, 0), "1");
+            sheet.SetCellText(new CellAddress(0, 1), "2");
+            sheet.SetCellText(new CellAddress(1, 0), "3");
+            sheet.SetCellText(new CellAddress(1, 1), "4");
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(1, 1) };
+
+            var inserted = viewModel.InsertSum();
+
+            Assert.That(inserted, Is.True);
+            // Below each column (row 2): column 0 = 1+3 = 4, column 1 = 2+4 = 6.
+            Assert.That(sheet.GetValue(new CellAddress(2, 0)), Is.EqualTo(CellValue.FromNumber(4)));
+            Assert.That(sheet.GetValue(new CellAddress(2, 1)), Is.EqualTo(CellValue.FromNumber(6)));
+            // To the right of each row (column 2): row 0 = 1+2 = 3, row 1 = 3+4 = 7.
+            Assert.That(sheet.GetValue(new CellAddress(0, 2)), Is.EqualTo(CellValue.FromNumber(3)));
+            Assert.That(sheet.GetValue(new CellAddress(1, 2)), Is.EqualTo(CellValue.FromNumber(7)));
+        }
+
+        [Test]
+        public void InsertSum_RectangularRangeInsertingMultipleSums_DoesNotMoveCurrentCell()
+        {
+            var sheet = new Sheet("Sheet1", 10, 10);
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(1, 1) };
+
+            viewModel.InsertSum();
+
+            Assert.That(viewModel.CurrentCell, Is.EqualTo(new CellRef(0, 0)));
+        }
+
+        [Test]
+        public void IncreaseDecimalPlaces_FromGeneral_SetsOneDecimalPlace()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0) };
+
+            viewModel.IncreaseDecimalPlaces();
+
+            Assert.That(sheet.GetCell(new CellAddress(0, 0)).Style.FormatString, Is.EqualTo("0.0"));
+        }
+
+        [Test]
+        public void IncreaseDecimalPlaces_AppliesAcrossTheWholeSelection()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(0, 1) };
+
+            viewModel.IncreaseDecimalPlaces();
+
+            Assert.That(sheet.GetCell(new CellAddress(0, 0)).Style.FormatString, Is.EqualTo("0.0"));
+            Assert.That(sheet.GetCell(new CellAddress(0, 1)).Style.FormatString, Is.EqualTo("0.0"));
+        }
+
+        [Test]
+        public void DecreaseDecimalPlaces_FromTwoDecimals_RemovesOneDigit()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            sheet.SetCellStyle(new CellAddress(0, 0), CellStyle.Default.WithFormat("0.00"));
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0) };
+
+            viewModel.DecreaseDecimalPlaces();
+
+            Assert.That(sheet.GetCell(new CellAddress(0, 0)).Style.FormatString, Is.EqualTo("0.0"));
+        }
+
+        [Test]
+        public void DecreaseDecimalPlaces_FromZeroDecimals_StaysAtZero()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0) };
+
+            viewModel.DecreaseDecimalPlaces();
+
+            Assert.That(sheet.GetCell(new CellAddress(0, 0)).Style.FormatString, Is.EqualTo("0"));
+        }
+
+        [Test]
+        public void SetCurrentCellFormat_AppliesToSelection()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(1, 0) };
+
+            viewModel.SetCurrentCellFormat("yyyy-MM-dd");
+
+            Assert.That(sheet.GetCell(new CellAddress(0, 0)).Style.FormatString, Is.EqualTo("yyyy-MM-dd"));
+            Assert.That(sheet.GetCell(new CellAddress(1, 0)).Style.FormatString, Is.EqualTo("yyyy-MM-dd"));
+        }
+
+        [Test]
+        public void SortSelection_SingleColumnAscending_SortsValues()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5) { Culture = System.Globalization.CultureInfo.InvariantCulture };
+            sheet.SetCellText(new CellAddress(0, 0), "3");
+            sheet.SetCellText(new CellAddress(1, 0), "1");
+            sheet.SetCellText(new CellAddress(2, 0), "2");
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(2, 0) };
+
+            viewModel.SortSelection(ascending: true);
+
+            Assert.That(sheet.GetValue(new CellAddress(0, 0)), Is.EqualTo(CellValue.FromNumber(1)));
+            Assert.That(sheet.GetValue(new CellAddress(1, 0)), Is.EqualTo(CellValue.FromNumber(2)));
+            Assert.That(sheet.GetValue(new CellAddress(2, 0)), Is.EqualTo(CellValue.FromNumber(3)));
+        }
+
+        [Test]
+        public void SortSelection_SingleColumnDescending_SortsValuesInReverse()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5) { Culture = System.Globalization.CultureInfo.InvariantCulture };
+            sheet.SetCellText(new CellAddress(0, 0), "1");
+            sheet.SetCellText(new CellAddress(1, 0), "3");
+            sheet.SetCellText(new CellAddress(2, 0), "2");
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(2, 0) };
+
+            viewModel.SortSelection(ascending: false);
+
+            Assert.That(sheet.GetValue(new CellAddress(0, 0)), Is.EqualTo(CellValue.FromNumber(3)));
+            Assert.That(sheet.GetValue(new CellAddress(1, 0)), Is.EqualTo(CellValue.FromNumber(2)));
+            Assert.That(sheet.GetValue(new CellAddress(2, 0)), Is.EqualTo(CellValue.FromNumber(1)));
+        }
+
+        [Test]
+        public void SortSelection_MultiColumnRange_KeepsRowsTogetherKeyedByLeftmostColumn()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5) { Culture = System.Globalization.CultureInfo.InvariantCulture };
+            sheet.SetCellText(new CellAddress(0, 0), "b");
+            sheet.SetCellText(new CellAddress(0, 1), "2");
+            sheet.SetCellText(new CellAddress(1, 0), "a");
+            sheet.SetCellText(new CellAddress(1, 1), "1");
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(1, 1) };
+
+            viewModel.SortSelection(ascending: true);
+
+            Assert.That(sheet.GetValue(new CellAddress(0, 0)), Is.EqualTo(CellValue.FromText("a")));
+            Assert.That(sheet.GetValue(new CellAddress(0, 1)), Is.EqualTo(CellValue.FromNumber(1)));
+            Assert.That(sheet.GetValue(new CellAddress(1, 0)), Is.EqualTo(CellValue.FromText("b")));
+            Assert.That(sheet.GetValue(new CellAddress(1, 1)), Is.EqualTo(CellValue.FromNumber(2)));
+        }
+
+        [Test]
+        public void SortSelection_SingleWideRow_SortsCellsLeftToRight()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5) { Culture = System.Globalization.CultureInfo.InvariantCulture };
+            sheet.SetCellText(new CellAddress(0, 0), "3");
+            sheet.SetCellText(new CellAddress(0, 1), "1");
+            sheet.SetCellText(new CellAddress(0, 2), "2");
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(0, 2) };
+
+            viewModel.SortSelection(ascending: true);
+
+            Assert.That(sheet.GetValue(new CellAddress(0, 0)), Is.EqualTo(CellValue.FromNumber(1)));
+            Assert.That(sheet.GetValue(new CellAddress(0, 1)), Is.EqualTo(CellValue.FromNumber(2)));
+            Assert.That(sheet.GetValue(new CellAddress(0, 2)), Is.EqualTo(CellValue.FromNumber(3)));
+        }
+
+        [Test]
+        public void SortSelection_SingleCellSelected_DoesNothing()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            sheet.SetCellText(new CellAddress(0, 0), "5");
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0) };
+
+            Assert.That(() => viewModel.SortSelection(ascending: true), Throws.Nothing);
+            Assert.That(sheet.GetValue(new CellAddress(0, 0)), Is.EqualTo(CellValue.FromNumber(5)));
+        }
+
+        [Test]
         public void FindNext_TextOnlyInFormula_FindsTheCell()
         {
             var sheet = new Sheet("Sheet1", 5, 5);

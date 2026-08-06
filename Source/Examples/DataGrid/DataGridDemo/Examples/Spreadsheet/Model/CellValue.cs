@@ -18,7 +18,7 @@ namespace DataGridDemo.Spreadsheet.Model
     /// <remarks>
     /// This is a readonly struct so that numbers, booleans, dates and errors do not allocate.
     /// </remarks>
-    public readonly struct CellValue : IEquatable<CellValue>
+    public readonly struct CellValue : IEquatable<CellValue>, IComparable<CellValue>
     {
         /// <summary>
         /// The numeric payload: the number itself, 0/1 for a boolean, an OLE Automation date for a
@@ -278,6 +278,53 @@ namespace DataGridDemo.Spreadsheet.Model
         public override bool Equals(object obj)
         {
             return obj is CellValue other && this.Equals(other);
+        }
+
+        /// <summary>
+        /// Compares two values using spreadsheet ordering rules: empty &lt; numbers/dates &lt; text
+        /// &lt; booleans when the types differ (used by formula comparison operators and sorting);
+        /// otherwise a natural same-type comparison (numeric for numbers/dates, case-insensitive for
+        /// text).
+        /// </summary>
+        public int CompareTo(CellValue other)
+        {
+            var rank = TypeRank(this);
+            var otherRank = TypeRank(other);
+            if (rank != otherRank)
+            {
+                return rank.CompareTo(otherRank);
+            }
+
+            switch (this.type)
+            {
+                case CellValueType.Number:
+                case CellValueType.DateTime:
+                    return this.number.CompareTo(other.number);
+                case CellValueType.Boolean:
+                    return this.number.CompareTo(other.number);
+                case CellValueType.Text:
+                    return string.Compare(this.text, other.text, StringComparison.OrdinalIgnoreCase);
+                default:
+                    return 0;
+            }
+        }
+
+        private static int TypeRank(CellValue value)
+        {
+            switch (value.type)
+            {
+                case CellValueType.Empty:
+                    return 0;
+                case CellValueType.Number:
+                case CellValueType.DateTime:
+                    return 1;
+                case CellValueType.Text:
+                    return 2;
+                case CellValueType.Boolean:
+                    return 3;
+                default:
+                    return 4;
+            }
         }
 
         /// <inheritdoc />

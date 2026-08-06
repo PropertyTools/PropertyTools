@@ -207,5 +207,37 @@ namespace PropertyTools.Wpf.Tests
         {
             Assert.That(CellValue.Empty.ToString(), Is.EqualTo(string.Empty));
         }
+
+        [Test]
+        public void CompareTo_SameTypeNumbers_ComparesNumerically()
+        {
+            Assert.That(CellValue.FromNumber(1).CompareTo(CellValue.FromNumber(2)), Is.LessThan(0));
+            Assert.That(CellValue.FromNumber(2).CompareTo(CellValue.FromNumber(1)), Is.GreaterThan(0));
+            Assert.That(CellValue.FromNumber(1).CompareTo(CellValue.FromNumber(1)), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void CompareTo_SameTypeText_ComparesCaseInsensitively()
+        {
+            Assert.That(CellValue.FromText("a").CompareTo(CellValue.FromText("B")), Is.LessThan(0));
+        }
+
+        [TestCase("Empty", "Number")]
+        [TestCase("Number", "Text")]
+        [TestCase("Text", "Boolean")]
+        public void CompareTo_DifferentTypes_OrdersEmptyBeforeNumberBeforeTextBeforeBoolean(string lesser, string greater)
+        {
+            CellValue Make(string kind) => kind switch
+            {
+                "Empty" => CellValue.Empty,
+                "Number" => CellValue.FromNumber(1),
+                "Text" => CellValue.FromText("a"),
+                "Boolean" => CellValue.FromBoolean(true),
+                _ => throw new System.ArgumentException(kind)
+            };
+
+            Assert.That(Make(lesser).CompareTo(Make(greater)), Is.LessThan(0));
+            Assert.That(Make(greater).CompareTo(Make(lesser)), Is.GreaterThan(0));
+        }
     }
 }

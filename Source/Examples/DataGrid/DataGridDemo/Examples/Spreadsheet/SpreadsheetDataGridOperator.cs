@@ -22,9 +22,18 @@ namespace DataGridDemo.Spreadsheet
         /// Initializes a new instance of the <see cref="SpreadsheetDataGridOperator" /> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
+        /// <remarks>
+        /// <see cref="DataGridOperator.DefaultColumnWidth" /> is a separate property from
+        /// <see cref="DataGrid.DefaultColumnWidth" /> — nothing in the base library ever copies the
+        /// owner's value into it, so it stays at its own default (star-sized) forever, and
+        /// <see cref="ListListOperator.GenerateColumnDefinitions" /> reads the operator's copy. Without
+        /// this assignment, setting <see cref="DataGrid.DefaultColumnWidth" /> on the grid has no
+        /// effect at all for a list-of-lists items source.
+        /// </remarks>
         public SpreadsheetDataGridOperator(DataGrid owner)
             : base(owner)
         {
+            this.DefaultColumnWidth = owner.DefaultColumnWidth;
         }
 
         /// <inheritdoc />

@@ -185,52 +185,7 @@ namespace DataGridDemo.Spreadsheet.Model.Formulas
 
         private static CellValue Compare(CellValue left, CellValue right, Func<int, bool> predicate)
         {
-            return CellValue.FromBoolean(predicate(CompareValues(left, right)));
-        }
-
-        /// <summary>
-        /// Compares two values using spreadsheet ordering rules: empty &lt; numbers/dates &lt; text
-        /// &lt; booleans when the types differ; otherwise a natural same-type comparison.
-        /// </summary>
-        private static int CompareValues(CellValue left, CellValue right)
-        {
-            var leftRank = TypeRank(left);
-            var rightRank = TypeRank(right);
-            if (leftRank != rightRank)
-            {
-                return leftRank.CompareTo(rightRank);
-            }
-
-            switch (left.Type)
-            {
-                case CellValueType.Number:
-                case CellValueType.DateTime:
-                    return left.AsNumber().CompareTo(right.AsNumber());
-                case CellValueType.Boolean:
-                    return left.AsBoolean().CompareTo(right.AsBoolean());
-                case CellValueType.Text:
-                    return string.Compare(left.AsText(), right.AsText(), StringComparison.OrdinalIgnoreCase);
-                default:
-                    return 0;
-            }
-        }
-
-        private static int TypeRank(CellValue value)
-        {
-            switch (value.Type)
-            {
-                case CellValueType.Empty:
-                    return 0;
-                case CellValueType.Number:
-                case CellValueType.DateTime:
-                    return 1;
-                case CellValueType.Text:
-                    return 2;
-                case CellValueType.Boolean:
-                    return 3;
-                default:
-                    return 4;
-            }
+            return CellValue.FromBoolean(predicate(left.CompareTo(right)));
         }
 
         private CellValue EvaluateFunction(FunctionNode node, IEvaluationContext context)

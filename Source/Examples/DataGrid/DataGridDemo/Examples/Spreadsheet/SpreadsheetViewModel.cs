@@ -13,6 +13,7 @@ namespace DataGridDemo.Spreadsheet
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
+    using System.Linq;
 
     using DataGridDemo.Spreadsheet.Model;
     using DataGridDemo.Spreadsheet.Model.Serialization;
@@ -194,10 +195,12 @@ namespace DataGridDemo.Spreadsheet
         }
 
         /// <summary>
-        /// Inserts a <c>SUM</c> formula totalling the current selection, placed in the row below it (for
-        /// a selection that is as tall as or taller than it is wide) or the column to its right
-        /// (otherwise), moving <see cref="CurrentCell" /> there. Does nothing — and returns <c>false</c>
-        /// — for a single-cell selection, or if there is no room to place the sum.
+        /// Inserts <c>SUM</c> formulas totalling the current selection: one below each column of the
+        /// selection (when it spans more than one row) and one to the right of each row (when it spans
+        /// more than one column) — for a rectangular multi-row, multi-column selection, both are
+        /// inserted. A column/row sum is skipped if there's no room for it. If exactly one sum ends up
+        /// being inserted, <see cref="CurrentCell" /> moves there. Does nothing — and returns
+        /// <c>false</c> — for a single-cell selection, or if nothing could be placed.
         /// </summary>
         public bool InsertSum()
         {
@@ -207,31 +210,200 @@ namespace DataGridDemo.Spreadsheet
                 return false;
             }
 
-            CellAddress target;
-            if (range.RowCount >= range.ColumnCount)
+            var insertedAddresses = new List<CellAddress>();
+
+            if (range.RowCount > 1)
             {
                 var targetRow = range.BottomRight.Row + 1;
-                if (targetRow >= this.sheet.RowCount)
+                if (targetRow < this.sheet.RowCount)
                 {
-                    return false;
+                    for (var column = range.TopLeft.Column; column <= range.BottomRight.Column; column++)
+                    {
+                        var columnRange = new CellRange(
+                            new CellAddress(range.TopLeft.Row, column),
+                            new CellAddress(range.BottomRight.Row, column));
+                        var target = new CellAddress(targetRow, column);
+                        this.sheet.SetCellText(target, "=SUM(" + columnRange + ")");
+                        insertedAddresses.Add(target);
+                    }
                 }
+            }
 
-                target = new CellAddress(targetRow, range.TopLeft.Column);
+            if (range.ColumnCount > 1)
+            {
+                var targetColumn = range.BottomRight.Column + 1;
+                if (targetColumn < this.sheet.ColumnCount)
+                {
+                    for (var row = range.TopLeft.Row; row <= range.BottomRight.Row; row++)
+                    {
+                        var rowRange = new CellRange(
+                            new CellAddress(row, range.TopLeft.Column),
+                            new CellAddress(row, range.BottomRight.Column));
+                        var target = new CellAddress(row, targetColumn);
+                        this.sheet.SetCellText(target, "=SUM(" + rowRange + ")");
+                        insertedAddresses.Add(target);
+                    }
+                }
+            }
+
+            if (insertedAddresses.Count == 1)
+            {
+                this.CurrentCell = insertedAddresses[0].ToCellRef();
+            }
+
+            return insertedAddresses.Count > 0;
+        }
+
+        /// <summary>
+        /// Increases the number of decimal digits shown for every cell in the selection by one
+        /// (starting from "General" goes to one decimal place).
+        /// </summary>
+        public void IncreaseDecimalPlaces()
+        {
+            this.sheet.SetStyle(this.SelectionRange, style => style.WithFormat(AdjustDecimalPlaces(style.FormatString, 1)));
+        }
+
+        /// <summary>
+        /// Decreases the number of decimal digits shown for every cell in the selection by one (floors
+        /// at zero decimal places — it never returns to "General").
+        /// </summary>
+        public void DecreaseDecimalPlaces()
+        {
+            this.sheet.SetStyle(this.SelectionRange, style => style.WithFormat(AdjustDecimalPlaces(style.FormatString, -1)));
+        }
+
+        /// <summary>
+        /// Sets the .NET format string (see <see cref="CellStyle.FormatString" />) of every cell in the
+        /// selection — used for the Format menu's number and date/time format presets. Pass <c>null</c>
+        /// to restore the general format.
+        /// </summary>
+        public void SetCurrentCellFormat(string formatString)
+        {
+            this.sheet.SetStyle(this.SelectionRange, style => style.WithFormat(formatString));
+        }
+
+        /// <summary>
+        /// Sorts the current selection in place: a selection spanning more than one row sorts whole
+        /// rows (every column moves together) keyed by the leftmost column's value; a single row
+        /// spanning more than one column sorts that row's cells left-to-right. Does nothing for a
+        /// single-cell selection.
+        /// </summary>
+        /// <remarks>
+        /// Cell content moves as-is, including formula text — relative references inside a moved
+        /// formula are not adjusted (the same simplification already made for row/column insert and
+        /// delete, which this project's plan defers along with the reference fix-up they'd all need).
+        /// </remarks>
+        public void SortSelection(bool ascending)
+        {
+            var range = this.SelectionRange;
+            if (range.IsSingleCell)
+            {
+                return;
+            }
+
+            if (range.RowCount == 1)
+            {
+                this.SortRowCells(range.TopLeft.Row, range.TopLeft.Column, range.BottomRight.Column, ascending);
             }
             else
             {
-                var targetColumn = range.BottomRight.Column + 1;
-                if (targetColumn >= this.sheet.ColumnCount)
-                {
-                    return false;
-                }
+                this.SortRowsByLeftmostColumn(range, ascending);
+            }
+        }
 
-                target = new CellAddress(range.TopLeft.Row, targetColumn);
+        /// <summary>
+        /// Sorts the cells of a single row, left to right.
+        /// </summary>
+        private void SortRowCells(int row, int fromColumn, int toColumn, bool ascending)
+        {
+            var count = toColumn - fromColumn + 1;
+            var cells = new (CellValue Key, CellContent Content, CellStyle Style)[count];
+            for (var i = 0; i < count; i++)
+            {
+                var cell = this.sheet.GetCell(new CellAddress(row, fromColumn + i));
+                cells[i] = (cell.Value, cell.Content, cell.Style);
             }
 
-            this.sheet.SetCellText(target, "=SUM(" + range + ")");
-            this.CurrentCell = target.ToCellRef();
-            return true;
+            var ordered = ascending ? cells.OrderBy(c => c.Key) : cells.OrderByDescending(c => c.Key);
+            var sorted = ordered.ToArray();
+
+            for (var i = 0; i < count; i++)
+            {
+                var address = new CellAddress(row, fromColumn + i);
+                this.sheet.SetContent(address, sorted[i].Content);
+                this.sheet.SetCellStyle(address, sorted[i].Style);
+            }
+        }
+
+        /// <summary>
+        /// Sorts whole rows within <paramref name="range" />, keyed by the value in its leftmost
+        /// column, keeping every column's cells in a row together.
+        /// </summary>
+        private void SortRowsByLeftmostColumn(CellRange range, bool ascending)
+        {
+            var columnCount = range.ColumnCount;
+            var rows = new List<(CellValue Key, CellContent[] Contents, CellStyle[] Styles)>();
+
+            for (var row = range.TopLeft.Row; row <= range.BottomRight.Row; row++)
+            {
+                var contents = new CellContent[columnCount];
+                var styles = new CellStyle[columnCount];
+                for (var i = 0; i < columnCount; i++)
+                {
+                    var cell = this.sheet.GetCell(new CellAddress(row, range.TopLeft.Column + i));
+                    contents[i] = cell.Content;
+                    styles[i] = cell.Style;
+                }
+
+                rows.Add((this.sheet.GetValue(new CellAddress(row, range.TopLeft.Column)), contents, styles));
+            }
+
+            var ordered = ascending ? rows.OrderBy(r => r.Key) : rows.OrderByDescending(r => r.Key);
+            var sorted = ordered.ToList();
+
+            for (var i = 0; i < sorted.Count; i++)
+            {
+                var row = range.TopLeft.Row + i;
+                for (var column = 0; column < columnCount; column++)
+                {
+                    var address = new CellAddress(row, range.TopLeft.Column + column);
+                    this.sheet.SetContent(address, sorted[i].Contents[column]);
+                    this.sheet.SetCellStyle(address, sorted[i].Styles[column]);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adjusts a "0.00"-style decimal format string's digit count by <paramref name="delta" />,
+        /// treating a missing/empty format (the general format) as zero decimal places, and never going
+        /// below zero.
+        /// </summary>
+        private static string AdjustDecimalPlaces(string currentFormat, int delta)
+        {
+            var digits = Math.Max(0, CountDecimalDigits(currentFormat) + delta);
+            return digits == 0 ? "0" : "0." + new string('0', digits);
+        }
+
+        private static int CountDecimalDigits(string formatString)
+        {
+            if (string.IsNullOrEmpty(formatString))
+            {
+                return 0;
+            }
+
+            var dotIndex = formatString.IndexOf('.');
+            if (dotIndex < 0)
+            {
+                return 0;
+            }
+
+            var digits = 0;
+            for (var i = dotIndex + 1; i < formatString.Length && (formatString[i] == '0' || formatString[i] == '#'); i++)
+            {
+                digits++;
+            }
+
+            return digits;
         }
 
         /// <summary>

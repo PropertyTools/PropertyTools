@@ -45,6 +45,25 @@
                 <MenuItem Header="Align _Left" Click="AlignLeft_Click" InputGestureText="Ctrl+L" />
                 <MenuItem Header="Align _Center" Click="AlignCenter_Click" InputGestureText="Ctrl+E" />
                 <MenuItem Header="Align _Right" Click="AlignRight_Click" InputGestureText="Ctrl+R" />
+                <Separator />
+                <MenuItem Header="Increase _Decimal" Click="IncreaseDecimal_Click" />
+                <MenuItem Header="Decrease Decimal" Click="DecreaseDecimal_Click" />
+                <Separator />
+                <MenuItem Header="_Number Format">
+                    <MenuItem Header="General" Click="NumberFormatGeneral_Click" />
+                    <MenuItem Header="Number (0.00)" Click="NumberFormatNumber_Click" />
+                    <MenuItem Header="Integer (0)" Click="NumberFormatInteger_Click" />
+                </MenuItem>
+                <MenuItem Header="Date/Time Format">
+                    <MenuItem Header="Short Date (yyyy-MM-dd)" Click="DateFormatShort_Click" />
+                    <MenuItem Header="Long Date (dddd, MMMM d, yyyy)" Click="DateFormatLong_Click" />
+                    <MenuItem Header="Time (HH:mm:ss)" Click="DateFormatTime_Click" />
+                    <MenuItem Header="Date and Time (yyyy-MM-dd HH:mm)" Click="DateFormatDateTime_Click" />
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Data">
+                <MenuItem Header="Sort _Ascending" Click="SortAscending_Click" />
+                <MenuItem Header="Sort _Descending" Click="SortDescending_Click" />
             </MenuItem>
         </Menu>
         <ToolBarTray DockPanel.Dock="Top">
@@ -74,7 +93,13 @@
                     </Canvas>
                 </Button>
                 <Separator />
-                <Button Content="Σ" FontSize="16" Width="28" Click="Sum_Click" ToolTip="Sum: insert a SUM formula below or to the right of the selected range" />
+                <Button Content="Σ" FontSize="16" Width="28" Click="Sum_Click" ToolTip="Sum: insert SUM formulas below/right of the selected range" />
+                <Separator />
+                <Button Content=".00→" Width="34" Click="IncreaseDecimal_Click" ToolTip="Increase Decimal" />
+                <Button Content="←.0" Width="34" Click="DecreaseDecimal_Click" ToolTip="Decrease Decimal" />
+                <Separator />
+                <Button Content="A→Z" Width="34" Click="SortAscending_Click" ToolTip="Sort Ascending" />
+                <Button Content="Z→A" Width="34" Click="SortDescending_Click" ToolTip="Sort Descending" />
             </ToolBar>
         </ToolBarTray>
         <Grid DockPanel.Dock="Top" Margin="4">
@@ -103,7 +128,6 @@
             ControlFactory="{Binding ControlFactory}"
             CurrentCell="{Binding CurrentCell, Mode=TwoWay}"
             SelectionCell="{Binding SelectionCell, Mode=TwoWay}"
-            DefaultColumnWidth="320"
             CanInsert="False"
             CanDelete="False">
         </s:SpreadsheetDataGrid>

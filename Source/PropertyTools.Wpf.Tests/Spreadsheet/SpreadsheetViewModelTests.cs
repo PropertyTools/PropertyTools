@@ -6,6 +6,8 @@
 
 namespace PropertyTools.Wpf.Tests
 {
+    using System.IO;
+
     using DataGridDemo.Spreadsheet;
     using DataGridDemo.Spreadsheet.Model;
 
@@ -261,6 +263,29 @@ namespace PropertyTools.Wpf.Tests
             viewModel.CurrentCellText = "42";
 
             Assert.That(viewModel.Workbook.IsModified, Is.True);
+        }
+
+        [Test]
+        public void ExportCsv_ThenImportCsv_RoundTripsValuesAndDoesNotSetFilePath()
+        {
+            var path = Path.GetTempFileName();
+            try
+            {
+                var viewModel = new SpreadsheetViewModel { CurrentCell = new CellRef(0, 0) };
+                viewModel.CurrentCellText = "hello";
+
+                viewModel.ExportCsv(path);
+                Assert.That(viewModel.Workbook.FilePath, Is.Null);
+
+                viewModel.ImportCsv(path);
+
+                Assert.That(viewModel.Workbook.FilePath, Is.Null);
+                Assert.That(viewModel.Sheet.GetValue(new CellAddress(0, 0)).AsText(), Is.EqualTo("hello"));
+            }
+            finally
+            {
+                File.Delete(path);
+            }
         }
     }
 }

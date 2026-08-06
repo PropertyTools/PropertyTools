@@ -26,6 +26,8 @@ namespace DataGridDemo
     {
         private const string FileFilter = "Spreadsheet files (*.ptsheet)|*.ptsheet|All files (*.*)|*.*";
 
+        private const string CsvFileFilter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+
         private readonly SpreadsheetViewModel viewModel = new SpreadsheetViewModel();
 
         private FindDialog findDialog;
@@ -107,6 +109,47 @@ namespace DataGridDemo
             catch (Exception ex)
             {
                 MessageBox.Show(this, "Could not open the file.\n\n" + ex.Message, "Spreadsheet", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ImportCsv_Click(object sender, RoutedEventArgs e)
+        {
+            if (!this.ConfirmDiscardChanges())
+            {
+                return;
+            }
+
+            var dialog = new OpenFileDialog { Filter = CsvFileFilter };
+            if (dialog.ShowDialog(this) != true)
+            {
+                return;
+            }
+
+            try
+            {
+                this.viewModel.ImportCsv(dialog.FileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Could not import the file.\n\n" + ex.Message, "Spreadsheet", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ExportCsv_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new SaveFileDialog { Filter = CsvFileFilter };
+            if (dialog.ShowDialog(this) != true)
+            {
+                return;
+            }
+
+            try
+            {
+                this.viewModel.ExportCsv(dialog.FileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Could not export the file.\n\n" + ex.Message, "Spreadsheet", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

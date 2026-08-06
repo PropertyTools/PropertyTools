@@ -3,7 +3,8 @@
 //   Copyright (c) 2014 PropertyTools contributors
 // </copyright>
 // <summary>
-//   Built-in arithmetic functions: SUM, ABS, ROUND, ROUNDUP, ROUNDDOWN, SQRT, POWER, MOD, INT.
+//   Built-in arithmetic functions: SUM, ABS, ROUND, ROUNDUP, ROUNDDOWN, SQRT, POWER, MOD, INT,
+//   SIN, COS, TAN.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +14,8 @@ namespace DataGridDemo.Spreadsheet.Model.Formulas.Functions
 
     /// <summary>
     /// Built-in arithmetic functions: <c>SUM</c>, <c>ABS</c>, <c>ROUND</c>, <c>ROUNDUP</c>,
-    /// <c>ROUNDDOWN</c>, <c>SQRT</c>, <c>POWER</c>, <c>MOD</c>, <c>INT</c>.
+    /// <c>ROUNDDOWN</c>, <c>SQRT</c>, <c>POWER</c>, <c>MOD</c>, <c>INT</c>, <c>SIN</c>, <c>COS</c>,
+    /// <c>TAN</c>.
     /// </summary>
     internal static class MathFunctions
     {
@@ -106,6 +108,20 @@ namespace DataGridDemo.Spreadsheet.Model.Formulas.Functions
             registry.Register("ROUND", 2, 2, context => Round(context, RoundMode.Nearest));
             registry.Register("ROUNDUP", 2, 2, context => Round(context, RoundMode.Up));
             registry.Register("ROUNDDOWN", 2, 2, context => Round(context, RoundMode.Down));
+
+            registry.Register("SIN", 1, 1, context => Trig(context, Math.Sin));
+            registry.Register("COS", 1, 1, context => Trig(context, Math.Cos));
+            registry.Register("TAN", 1, 1, context => Trig(context, Math.Tan));
+        }
+
+        private static CellValue Trig(FunctionCallContext context, Func<double, double> function)
+        {
+            if (!FunctionHelpers.TryGetNumber(context.GetArgument(0), out var n, out var error))
+            {
+                return error;
+            }
+
+            return CellValue.FromNumber(function(n));
         }
 
         private enum RoundMode

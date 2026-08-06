@@ -84,6 +84,14 @@ namespace PropertyTools.Wpf.Tests
             Assert.That(this.Eval("MOD(1,0)").Error, Is.EqualTo(CellError.DivideByZero));
         }
 
+        [TestCase("SIN(0)", 0.0)]
+        [TestCase("COS(0)", 1.0)]
+        [TestCase("TAN(0)", 0.0)]
+        public void TrigFunction_KnownInput_ReturnsExpectedValue(string formulaText, double expected)
+        {
+            Assert.That(this.Eval(formulaText).AsNumber(), Is.EqualTo(expected).Within(1e-9));
+        }
+
         // ----- Statistical -----
 
         [Test]

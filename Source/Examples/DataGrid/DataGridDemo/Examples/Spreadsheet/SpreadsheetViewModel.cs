@@ -214,6 +214,35 @@ namespace DataGridDemo.Spreadsheet
         }
 
         /// <summary>
+        /// Replaces the current sheet with one imported from a CSV file, sized to fit the data. Unlike
+        /// <see cref="Open" />, this does not set <see cref="Workbook.FilePath" /> — CSV is not this
+        /// application's native format, so "Save" should still prompt for a <c>.ptsheet</c> file.
+        /// </summary>
+        public void ImportCsv(string path)
+        {
+            Sheet imported;
+            using (var stream = File.OpenRead(path))
+            {
+                imported = CsvSerializer.Load(stream);
+            }
+
+            this.SetSheet(imported);
+        }
+
+        /// <summary>
+        /// Exports the current sheet's used range to a CSV file. This does not affect
+        /// <see cref="Workbook.FilePath" /> or <see cref="Workbook.IsModified" /> — it is a one-off
+        /// export, not a save of the workbook's native format.
+        /// </summary>
+        public void ExportCsv(string path)
+        {
+            using (var stream = File.Create(path))
+            {
+                CsvSerializer.Save(this.sheet, stream);
+            }
+        }
+
+        /// <summary>
         /// Searches for text in the sheet's displayed cell text, starting just after the current cell
         /// and wrapping around, and moves <see cref="CurrentCell" /> to the first match.
         /// </summary>

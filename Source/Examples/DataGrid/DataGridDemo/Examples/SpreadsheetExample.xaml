@@ -22,6 +22,9 @@
                 <MenuItem Header="_Save" Click="Save_Click" InputGestureText="Ctrl+S" />
                 <MenuItem Header="Save _As..." Click="SaveAs_Click" />
                 <Separator />
+                <MenuItem Header="Import _CSV..." Click="ImportCsv_Click" />
+                <MenuItem Header="Export CS_V..." Click="ExportCsv_Click" />
+                <Separator />
                 <MenuItem Header="E_xit" Click="Exit_Click" InputGestureText="Alt+F4" />
             </MenuItem>
             <MenuItem Header="_Edit">

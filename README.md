@@ -8,6 +8,7 @@
 | TreeListBox       | A `ListBox` that looks and feels like a `TreeView` (supports multi-select and drag-drop) | Stable |
 | ColorPicker       | A color picker                                                                           | Stable |
 | RadioButtonList   | A collection of radio buttons that binds to an enum                                      | Stable |
+| CheckBoxList      | A collection of check boxes for editing `[Flags]` enum bit fields                        | Stable |
 | EnumMenuItem      | A collection of checkable menuitems that binds to an enum                                | Stable |
 | EditableTextBlock | A `TextBlock` that can be changed into a `TextBox`, useful for in-place editing in `TreeView`s | Stable |
 | FilePicker        | A `TextBox` with browse for file button                                                  | Stable |

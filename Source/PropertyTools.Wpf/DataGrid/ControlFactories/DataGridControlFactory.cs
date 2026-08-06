@@ -69,6 +69,12 @@ namespace PropertyTools.Wpf
         /// <returns>The display control.</returns>
         protected virtual FrameworkElement CreateDisplayControlOverride(CellDefinition d)
         {
+            var fcd = d as FlagsCellDefinition;
+            if (fcd != null)
+            {
+                return this.CreateTextBlockControl(d);
+            }
+
             var scd = d as SelectorCellDefinition;
             if (scd != null)
             {
@@ -111,6 +117,12 @@ namespace PropertyTools.Wpf
         /// </returns>
         protected virtual FrameworkElement CreateEditControlOverride(CellDefinition d)
         {
+            var fcd = d as FlagsCellDefinition;
+            if (fcd != null)
+            {
+                return this.CreateCheckBoxList(fcd);
+            }
+
             var co = d as SelectorCellDefinition;
             if (co != null)
             {
@@ -343,6 +355,39 @@ namespace PropertyTools.Wpf
 
             // Create a container to support background binding
             return this.CreateContainer(d, grid);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="CheckBoxList"/> edit control for a <see cref="FlagsCellDefinition"/>.
+        /// </summary>
+        /// <param name="d">The flags cell definition.</param>
+        /// <returns>A <see cref="CheckBoxList"/> bound to the cell value.</returns>
+        protected virtual FrameworkElement CreateCheckBoxList(FlagsCellDefinition d)
+        {
+            var c = new CheckBoxList
+            {
+                EnumType = d.EnumType,
+                EnumFilter = d.EnumFilter,
+                Orientation = d.Orientation,
+                Background = SystemColors.WindowBrush,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = d.HorizontalAlignment,
+            };
+
+            var binding = new Binding(d.BindingPath) { Mode = BindingMode.TwoWay, NotifyOnSourceUpdated = true };
+            c.SetBinding(CheckBoxList.ValueProperty, binding);
+
+            // Wrap in a cell-filling container so that CreateEditControl's forced Stretch
+            // alignment applies to the Border, while the CheckBoxList stays centered inside.
+            // The Border is transparent so the selection-border overlay (PART_Selection, which
+            // bleeds 2 px into the cell on left/top and 1 px on right/bottom) remains visible.
+            // Padding reserves the same gap so the CheckBoxList does not obscure it.
+            var border = new Border
+            {
+                Padding = new Thickness(2, 2, 1, 1),
+                Child = c,
+            };
+            return this.CreateContainer(d, border);
         }
 
         /// <summary>
@@ -589,7 +634,7 @@ namespace PropertyTools.Wpf
         /// Focuses on the parent data grid.
         /// </summary>
         /// <param name="obj">The <see cref="DependencyObject" />.</param>
-        private static void FocusParentDataGrid(DependencyObject obj)
+        protected static void FocusParentDataGrid(DependencyObject obj)
         {
             var parent = VisualTreeHelper.GetParent(obj);
             while (parent != null && !(parent is DataGrid))

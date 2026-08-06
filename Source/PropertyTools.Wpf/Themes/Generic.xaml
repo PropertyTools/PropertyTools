@@ -4,6 +4,7 @@
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/ColorPicker/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/FilePicker/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/RadioButtonList/Generic.xaml" />
+        <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/CheckBoxList/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/DockPanelSplitter/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/SpinControl/Generic.xaml" />
         <ResourceDictionary Source="/PropertyTools.Wpf;component/Controls/HeaderedEntrySlider/Generic.xaml" />

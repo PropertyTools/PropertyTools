@@ -1,0 +1,14 @@
+﻿<Window x:Class="DataGridDemo.FlagsEnumDropdownExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        xmlns:local="clr-namespace:DataGridDemo"
+        Title="Flags Enum — Vertical CheckBoxList in Dropdown" Height="450" Width="600">
+    <Grid>
+        <p:DataGrid ItemsSource="{Binding Items}">
+            <p:DataGrid.ControlFactory>
+                <local:FlagsDropdownControlFactory/>
+            </p:DataGrid.ControlFactory>
+        </p:DataGrid>
+    </Grid>
+</Window>

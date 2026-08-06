@@ -5,7 +5,7 @@
 |-------------------|------------------------------------------------------------------------------------------|--------|
 | PropertyGrid      | A control that shows properties of an object or a collection of objects.                 | Stable |
 | DataGrid          | A data grid with an "Excel feel" (note that the control is not virtualized)              | Stable |
-| TreeListBox       | A `ListBox` that looks and feels like a `TreeView` (supports multi-select and drag-drop) | Stable |
+| TreeListBox       | A single-column hierarchical `ListBox` that looks and feels like a `TreeView` (supports multi-select and drag-drop) | Stable |
 | ColorPicker       | A color picker                                                                           | Stable |
 | RadioButtonList   | A collection of radio buttons that binds to an enum                                      | Stable |
 | CheckBoxList      | A collection of check boxes for editing `[Flags]` enum bit fields                        | Stable |
@@ -32,6 +32,8 @@
 ### TreeListBox
 
 ![TreeListBox](/Images/TreeListBox.png)
+
+`TreeListBox` does not currently provide a built-in `Columns` collection or tree-grid style headers. If you only need a richer row layout, define a custom `DataTemplate` for each item (for example, a `Grid` with multiple elements, as shown in the TreeListBox demos). If you need true columns, `DataGrid` is currently the better fit and tree-grid support would need to be added as a new feature.
 
 ### ColorPicker
 

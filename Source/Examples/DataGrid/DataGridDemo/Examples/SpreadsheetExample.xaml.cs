@@ -28,7 +28,9 @@ namespace DataGridDemo
 
         private readonly SpreadsheetViewModel viewModel = new SpreadsheetViewModel();
 
-        private FindReplaceDialog findReplaceDialog;
+        private FindDialog findDialog;
+
+        private ReplaceDialog replaceDialog;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpreadsheetExample" /> class.
@@ -149,31 +151,50 @@ namespace DataGridDemo
 
         private void Find_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            this.ShowFindReplaceDialog();
+            this.ShowFindDialog();
         }
 
         private void Find_Click(object sender, RoutedEventArgs e)
         {
-            this.ShowFindReplaceDialog();
+            this.ShowFindDialog();
         }
 
         private void Replace_Click(object sender, RoutedEventArgs e)
         {
-            this.ShowFindReplaceDialog();
+            this.ShowReplaceDialog();
         }
 
-        private void ShowFindReplaceDialog()
+        private void ShowFindDialog()
         {
-            if (this.findReplaceDialog == null)
+            if (this.findDialog == null)
             {
-                this.findReplaceDialog = new FindReplaceDialog(this.viewModel) { Owner = this };
-                this.findReplaceDialog.Closed += (s, e) => this.findReplaceDialog = null;
-                this.findReplaceDialog.Show();
+                this.findDialog = new FindDialog(this.viewModel) { Owner = this };
+                this.findDialog.Closed += (s, e) => this.findDialog = null;
+                this.findDialog.Show();
             }
             else
             {
-                this.findReplaceDialog.Activate();
+                this.findDialog.Activate();
             }
+        }
+
+        private void ShowReplaceDialog()
+        {
+            if (this.replaceDialog == null)
+            {
+                this.replaceDialog = new ReplaceDialog(this.viewModel) { Owner = this };
+                this.replaceDialog.Closed += (s, e) => this.replaceDialog = null;
+                this.replaceDialog.Show();
+            }
+            else
+            {
+                this.replaceDialog.Activate();
+            }
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         private void AlignLeft_Click(object sender, RoutedEventArgs e)

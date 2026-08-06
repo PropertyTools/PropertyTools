@@ -28,6 +28,14 @@ namespace DataGridDemo.Spreadsheet
     /// <c>DataGrid</c> special-cases <c>currentEditControl is TextBox</c> for type-to-edit, committing
     /// on Enter and cancelling on Escape.
     /// </remarks>
+    /// <remarks>
+    /// All bindings here use an explicit <c>Source</c> (see <see cref="CreateCellBinding" />) rather
+    /// than the element's inherited <see cref="FrameworkElement.DataContext" />: after
+    /// <c>ControlFactory.CreateDisplayControl</c>/<c>CreateEditControl</c> returns, <c>DataGrid</c>
+    /// unconditionally sets <c>element.DataContext = cd.BindingSource</c> (the whole row collection,
+    /// not the individual cell), which would silently break a binding that depended on a per-cell
+    /// <c>DataContext</c> rebind.
+    /// </remarks>
     public class SpreadsheetControlFactory : DataGridControlFactory
     {
         /// <inheritdoc />
@@ -39,26 +47,24 @@ namespace DataGridDemo.Spreadsheet
                 VerticalAlignment = VerticalAlignment.Center
             };
 
-            BindDataContextToCell(textBlock, d);
-
-            textBlock.SetBinding(TextBlock.TextProperty, new Binding(nameof(Cell.DisplayText)));
+            textBlock.SetBinding(TextBlock.TextProperty, CreateCellBinding(d, nameof(Cell.DisplayText)));
 
             var alignmentBinding = new MultiBinding { Converter = CellAlignmentConverter.Instance, Mode = BindingMode.OneWay };
-            alignmentBinding.Bindings.Add(new Binding($"{nameof(Cell.Style)}.{nameof(CellStyle.HorizontalAlignment)}"));
-            alignmentBinding.Bindings.Add(new Binding(nameof(Cell.Value)));
+            alignmentBinding.Bindings.Add(CreateCellBinding(d, $"{nameof(Cell.Style)}.{nameof(CellStyle.HorizontalAlignment)}"));
+            alignmentBinding.Bindings.Add(CreateCellBinding(d, nameof(Cell.Value)));
             textBlock.SetBinding(FrameworkElement.HorizontalAlignmentProperty, alignmentBinding);
 
             textBlock.SetBinding(
                 TextBlock.FontWeightProperty,
-                new Binding($"{nameof(Cell.Style)}.{nameof(CellStyle.Bold)}") { Converter = BoolToFontWeightConverter.Instance });
+                CreateCellBinding(d, $"{nameof(Cell.Style)}.{nameof(CellStyle.Bold)}", BoolToFontWeightConverter.Instance));
 
             textBlock.SetBinding(
                 TextBlock.FontStyleProperty,
-                new Binding($"{nameof(Cell.Style)}.{nameof(CellStyle.Italic)}") { Converter = BoolToFontStyleConverter.Instance });
+                CreateCellBinding(d, $"{nameof(Cell.Style)}.{nameof(CellStyle.Italic)}", BoolToFontStyleConverter.Instance));
 
             textBlock.SetBinding(
                 TextBlock.ForegroundProperty,
-                new Binding($"{nameof(Cell.Value)}.{nameof(CellValue.IsError)}") { Converter = ErrorForegroundConverter.Instance });
+                CreateCellBinding(d, $"{nameof(Cell.Value)}.{nameof(CellValue.IsError)}", ErrorForegroundConverter.Instance));
 
             return textBlock;
         }
@@ -79,39 +85,35 @@ namespace DataGridDemo.Spreadsheet
                 tb.SelectAll();
             };
 
-            var textBinding = new Binding(d.BindingPath + "." + nameof(Cell.Text))
-            {
-                Source = d.BindingSource,
-                Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.LostFocus,
-                NotifyOnSourceUpdated = true,
-                ValidatesOnExceptions = true,
-                ValidatesOnDataErrors = true
-            };
+            var textBinding = CreateCellBinding(d, nameof(Cell.Text));
+            textBinding.Mode = BindingMode.TwoWay;
+            textBinding.UpdateSourceTrigger = UpdateSourceTrigger.LostFocus;
+            textBinding.NotifyOnSourceUpdated = true;
+            textBinding.ValidatesOnExceptions = true;
+            textBinding.ValidatesOnDataErrors = true;
             textBox.SetBinding(TextBox.TextProperty, textBinding);
 
             var alignmentBinding = new MultiBinding { Converter = CellAlignmentConverter.Instance, Mode = BindingMode.OneWay };
-            alignmentBinding.Bindings.Add(
-                new Binding(d.BindingPath + "." + nameof(Cell.Style) + "." + nameof(CellStyle.HorizontalAlignment))
-                {
-                    Source = d.BindingSource
-                });
-            alignmentBinding.Bindings.Add(
-                new Binding(d.BindingPath + "." + nameof(Cell.Value)) { Source = d.BindingSource });
+            alignmentBinding.Bindings.Add(CreateCellBinding(d, $"{nameof(Cell.Style)}.{nameof(CellStyle.HorizontalAlignment)}"));
+            alignmentBinding.Bindings.Add(CreateCellBinding(d, nameof(Cell.Value)));
             textBox.SetBinding(TextBox.HorizontalContentAlignmentProperty, alignmentBinding);
 
             return textBox;
         }
 
         /// <summary>
-        /// Rebinds <paramref name="element" />'s <see cref="FrameworkElement.DataContext" /> from the
-        /// sheet adapter (the cell definition's binding source) to the individual <see cref="Cell" />,
-        /// so that the element's other bindings can use plain property names.
+        /// Creates a <see cref="Binding" /> to a property of the <see cref="Cell" /> at <paramref name="d" />,
+        /// using an explicit <see cref="Binding.Source" /> (see the class remarks for why this is required
+        /// instead of a <see cref="FrameworkElement.DataContext" />-relative binding).
         /// </summary>
-        private static void BindDataContextToCell(FrameworkElement element, CellDefinition d)
+        private static Binding CreateCellBinding(CellDefinition d, string cellPropertyPath, IValueConverter converter = null)
         {
-            var binding = new Binding(d.BindingPath) { Source = d.BindingSource, Mode = BindingMode.OneWay };
-            element.SetBinding(FrameworkElement.DataContextProperty, binding);
+            return new Binding(d.BindingPath + "." + cellPropertyPath)
+            {
+                Source = d.BindingSource,
+                Mode = BindingMode.OneWay,
+                Converter = converter
+            };
         }
     }
 }

@@ -62,6 +62,35 @@ namespace PropertyTools.Wpf.Tests
         }
 
         [Test]
+        public void SelectionCell_Default_IsA1()
+        {
+            var viewModel = new SpreadsheetViewModel(new Sheet("Sheet1", 5, 5));
+
+            Assert.That(viewModel.SelectionCell, Is.EqualTo(new CellRef(0, 0)));
+        }
+
+        [Test]
+        public void CurrentCell_Set_CollapsesSelectionCellToTheSameCell()
+        {
+            var viewModel = new SpreadsheetViewModel(new Sheet("Sheet1", 5, 5)) { SelectionCell = new CellRef(3, 3) };
+
+            viewModel.CurrentCell = new CellRef(1, 1);
+
+            Assert.That(viewModel.SelectionCell, Is.EqualTo(new CellRef(1, 1)));
+        }
+
+        [Test]
+        public void SelectionCell_SetIndependentlyOfCurrentCell_DoesNotMoveCurrentCell()
+        {
+            var viewModel = new SpreadsheetViewModel(new Sheet("Sheet1", 5, 5)) { CurrentCell = new CellRef(0, 0) };
+
+            viewModel.SelectionCell = new CellRef(2, 3);
+
+            Assert.That(viewModel.CurrentCell, Is.EqualTo(new CellRef(0, 0)));
+            Assert.That(viewModel.SelectionCell, Is.EqualTo(new CellRef(2, 3)));
+        }
+
+        [Test]
         public void CurrentCellText_Set_EditsTheUnderlyingCell()
         {
             var sheet = new Sheet("Sheet1", 5, 5);
@@ -129,6 +158,18 @@ namespace PropertyTools.Wpf.Tests
 
             Assert.That(found, Is.True);
             Assert.That(viewModel.CurrentCell, Is.EqualTo(new CellRef(2, 0)));
+        }
+
+        [Test]
+        public void FindNext_MatchWithAPreviousRangeSelected_CollapsesSelectionToTheFoundCell()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            sheet.SetCellText(new CellAddress(2, 0), "needle");
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(4, 4) };
+
+            viewModel.FindNext("needle", matchCase: false);
+
+            Assert.That(viewModel.SelectionCell, Is.EqualTo(new CellRef(2, 0)));
         }
 
         [Test]

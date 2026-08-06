@@ -21,6 +21,8 @@
                 <Separator />
                 <MenuItem Header="_Save" Click="Save_Click" InputGestureText="Ctrl+S" />
                 <MenuItem Header="Save _As..." Click="SaveAs_Click" />
+                <Separator />
+                <MenuItem Header="E_xit" Click="Exit_Click" InputGestureText="Alt+F4" />
             </MenuItem>
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Find..." Click="Find_Click" InputGestureText="Ctrl+F" />
@@ -35,6 +37,16 @@
                 <MenuItem Header="Align _Right" Click="AlignRight_Click" />
             </MenuItem>
         </Menu>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <ToggleButton Content="B" FontWeight="Bold" Width="24" IsChecked="{Binding IsCurrentCellBold, Mode=TwoWay}" ToolTip="Bold" />
+                <ToggleButton Content="I" FontStyle="Italic" Width="24" IsChecked="{Binding IsCurrentCellItalic, Mode=TwoWay}" ToolTip="Italic" />
+                <Separator />
+                <Button Content="L" Width="24" Click="AlignLeft_Click" ToolTip="Align Left" />
+                <Button Content="C" Width="24" Click="AlignCenter_Click" ToolTip="Align Center" />
+                <Button Content="R" Width="24" Click="AlignRight_Click" ToolTip="Align Right" />
+            </ToolBar>
+        </ToolBarTray>
         <Grid DockPanel.Dock="Top" Margin="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="70" />
@@ -59,6 +71,8 @@
             ColumnHeadersSource="{Binding ColumnHeaders}"
             ControlFactory="{Binding ControlFactory}"
             CurrentCell="{Binding CurrentCell, Mode=TwoWay}"
+            SelectionCell="{Binding SelectionCell, Mode=TwoWay}"
+            DefaultColumnWidth="80"
             CanInsert="False"
             CanDelete="False">
         </s:SpreadsheetDataGrid>

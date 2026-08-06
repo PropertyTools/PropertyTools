@@ -38,6 +38,7 @@ namespace DataGridDemo.Spreadsheet
         private IList<string> rowHeaders;
         private IList<string> columnHeaders;
         private CellRef currentCell;
+        private CellRef selectionCell;
         private Cell subscribedCell;
 
         /// <summary>
@@ -94,7 +95,11 @@ namespace DataGridDemo.Spreadsheet
 
         /// <summary>
         /// Gets or sets the currently selected cell, in the grid's own reference type. Two-way bound
-        /// to <see cref="DataGrid.CurrentCell" />.
+        /// to <see cref="DataGrid.CurrentCell" />. Setting this also collapses <see cref="SelectionCell" />
+        /// to the same cell, so that a programmatic move (Find, the name box, the formula bar) selects
+        /// a single cell instead of extending the previous range. A user drag-selecting a range in the
+        /// grid does not go through this setter — <c>DataGrid</c> only re-assigns <c>CurrentCell</c> at
+        /// the start of a selection, moving <c>SelectionCell</c> alone while dragging.
         /// </summary>
         public CellRef CurrentCell
         {
@@ -107,11 +112,33 @@ namespace DataGridDemo.Spreadsheet
                 }
 
                 this.currentCell = value;
+                this.selectionCell = value;
                 this.UpdateCurrentCellSubscription();
                 this.OnPropertyChanged(nameof(this.CurrentCell));
+                this.OnPropertyChanged(nameof(this.SelectionCell));
                 this.OnPropertyChanged(nameof(this.CurrentCellText));
                 this.OnPropertyChanged(nameof(this.IsCurrentCellBold));
                 this.OnPropertyChanged(nameof(this.IsCurrentCellItalic));
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the cell defining the other corner of the selection range. Two-way bound to
+        /// <see cref="DataGrid.SelectionCell" />; kept independent of <see cref="CurrentCell" /> so a
+        /// user's drag-selected range survives round-tripping through this view model.
+        /// </summary>
+        public CellRef SelectionCell
+        {
+            get => this.selectionCell;
+            set
+            {
+                if (this.selectionCell.Equals(value))
+                {
+                    return;
+                }
+
+                this.selectionCell = value;
+                this.OnPropertyChanged(nameof(this.SelectionCell));
             }
         }
 
@@ -312,6 +339,7 @@ namespace DataGridDemo.Spreadsheet
             this.rowHeaders = BuildRowHeaders(newSheet.RowCount);
             this.columnHeaders = BuildColumnHeaders(newSheet.ColumnCount);
             this.currentCell = new CellRef(0, 0);
+            this.selectionCell = new CellRef(0, 0);
 
             this.workbook.Sheets.Clear();
             this.workbook.Sheets.Add(newSheet);
@@ -325,6 +353,7 @@ namespace DataGridDemo.Spreadsheet
             this.OnPropertyChanged(nameof(this.RowHeaders));
             this.OnPropertyChanged(nameof(this.ColumnHeaders));
             this.OnPropertyChanged(nameof(this.CurrentCell));
+            this.OnPropertyChanged(nameof(this.SelectionCell));
             this.OnPropertyChanged(nameof(this.CurrentCellText));
             this.OnPropertyChanged(nameof(this.IsCurrentCellBold));
             this.OnPropertyChanged(nameof(this.IsCurrentCellItalic));

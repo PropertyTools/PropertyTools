@@ -53,16 +53,22 @@ namespace DataGridDemo
                 Focusable = false,
             };
 
-            // Display binding: shows the flags value as a string in the collapsed button.
-            // The default enum ToString() for [Flags] enums yields "Read, Write" etc.
-            var displayBinding = new Binding(d.BindingPath) { Mode = BindingMode.OneWay };
-            popupBox.SetBinding(PopupBox.SelectedValueProperty, displayBinding);
+            // Main binding: popupBox.Value <-> row item's flags property.
+            // NotifyOnSourceUpdated = true ensures the DataGrid's SourceUpdated handler fires
+            // when the CheckBoxList (inside the popup) changes Value, so all selected cells
+            // are updated in sync.
+            var mainBinding = new Binding(d.BindingPath)
+            {
+                Mode = BindingMode.TwoWay,
+                NotifyOnSourceUpdated = true,
+            };
+            popupBox.SetBinding(PopupBox.ValueProperty, mainBinding);
 
             // ItemTemplate: how the collapsed value looks inside the button area.
             var displayFactory = new FrameworkElementFactory(typeof(TextBlock));
             displayFactory.SetValue(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Center);
             displayFactory.SetValue(TextBlock.MarginProperty, new Thickness(2, 0, 0, 0));
-            // Inside ItemTemplate the DataContext is SelectedValue (the boxed flags value).
+            // Inside ItemTemplate the DataContext is Value (the boxed flags value).
             // Bind Text to "." (the value itself) so it renders via ToString().
             displayFactory.SetBinding(TextBlock.TextProperty, new Binding("."));
             var itemTemplate = new DataTemplate { VisualTree = displayFactory };
@@ -70,8 +76,8 @@ namespace DataGridDemo
 
             // PopupTemplate: content shown when the dropdown is open.
             // Inside the popup template the DataContext is the PopupBox itself (set by
-            // the ContentPresenter in the PopupBox control template).  We navigate through
-            // DataContext to reach the row item and then to the flags property.
+            // the ContentPresenter in the PopupBox control template). Bind CheckBoxList.Value
+            // to PopupBox.Value (TwoWay) so edits propagate back through the main binding.
             var popupFactory = new FrameworkElementFactory(typeof(CheckBoxList));
             popupFactory.SetValue(CheckBoxList.EnumTypeProperty, d.EnumType);
             popupFactory.SetValue(CheckBoxList.EnumFilterProperty, d.EnumFilter);
@@ -79,7 +85,7 @@ namespace DataGridDemo
             popupFactory.SetValue(CheckBoxList.MarginProperty, new Thickness(4));
             popupFactory.SetBinding(
                 CheckBoxList.ValueProperty,
-                new Binding($"DataContext.{d.BindingPath}") { Mode = BindingMode.TwoWay });
+                new Binding(nameof(PopupBox.Value)) { Mode = BindingMode.TwoWay });
             var popupTemplate = new DataTemplate { VisualTree = popupFactory };
             popupBox.PopupTemplate = popupTemplate;
 

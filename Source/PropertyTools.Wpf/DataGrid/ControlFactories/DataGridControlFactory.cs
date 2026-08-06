@@ -374,7 +374,7 @@ namespace PropertyTools.Wpf
                 HorizontalAlignment = d.HorizontalAlignment,
             };
 
-            var binding = new Binding(d.BindingPath) { Mode = BindingMode.TwoWay };
+            var binding = new Binding(d.BindingPath) { Mode = BindingMode.TwoWay, NotifyOnSourceUpdated = true };
             c.SetBinding(CheckBoxList.ValueProperty, binding);
 
             // Wrap in a cell-filling container so that CreateEditControl's forced Stretch
@@ -383,6 +383,7 @@ namespace PropertyTools.Wpf
             {
                 Background = SystemColors.WindowBrush,
                 Child = c,
+                Margin = new Thickness(1, 1, 0, 0),
             };
             return this.CreateContainer(d, border);
         }

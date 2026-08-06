@@ -1,0 +1,17 @@
+﻿<Window x:Class="PropertyGridDemos.InheritedCategoryOrderingExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="clr-namespace:PropertyGridDemos"
+        xmlns:p="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+        Title="Inherited category ordering" Height="450" Width="600">
+    <Window.DataContext>
+        <d:InheritedCategoryOrderingExampleViewModel />
+    </Window.DataContext>
+    <DockPanel Margin="8">
+        <TextBlock DockPanel.Dock="Top"
+                   Margin="0,0,0,8"
+                   TextWrapping="Wrap"
+                   Text="This example shows how to keep superclass categories ahead of subclass categories by using PropertyTools.DataAnnotations.CategoryAttribute groupSortIndex values." />
+        <p:PropertyGrid SelectedObject="{Binding SelectedObject}" />
+    </DockPanel>
+</Window>

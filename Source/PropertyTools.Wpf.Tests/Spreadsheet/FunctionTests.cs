@@ -87,9 +87,31 @@ namespace PropertyTools.Wpf.Tests
         [TestCase("SIN(0)", 0.0)]
         [TestCase("COS(0)", 1.0)]
         [TestCase("TAN(0)", 0.0)]
-        public void TrigFunction_KnownInput_ReturnsExpectedValue(string formulaText, double expected)
+        [TestCase("ASIN(1)", System.Math.PI / 2)]
+        [TestCase("ACOS(1)", 0.0)]
+        [TestCase("ATAN(0)", 0.0)]
+        [TestCase("ATAN2(1,1)", System.Math.PI / 4)]
+        [TestCase("LN(1)", 0.0)]
+        [TestCase("LOG10(100)", 2.0)]
+        [TestCase("LOG(8,2)", 3.0)]
+        [TestCase("LOG(100)", 2.0)]
+        [TestCase("EXP(0)", 1.0)]
+        [TestCase("PI()", System.Math.PI)]
+        public void ScientificFunction_KnownInput_ReturnsExpectedValue(string formulaText, double expected)
         {
             Assert.That(this.Eval(formulaText).AsNumber(), Is.EqualTo(expected).Within(1e-9));
+        }
+
+        [Test]
+        public void Ln_NonPositiveNumber_ReturnsNumberError()
+        {
+            Assert.That(this.Eval("LN(0)").Error, Is.EqualTo(CellError.Number));
+        }
+
+        [Test]
+        public void Atan2_BothArgumentsZero_ReturnsDivideByZeroError()
+        {
+            Assert.That(this.Eval("ATAN2(0,0)").Error, Is.EqualTo(CellError.DivideByZero));
         }
 
         // ----- Statistical -----
@@ -228,6 +250,48 @@ namespace PropertyTools.Wpf.Tests
             // CellValue.FromText("") collapses to CellValue.Empty by design (see CellValueTests),
             // so an empty MID result comes back as Empty rather than a zero-length Text value.
             Assert.That(this.Eval("MID(\"hi\",10,2)").IsEmpty, Is.True);
+        }
+
+        [Test]
+        public void Find_TextPresent_ReturnsOneBasedPosition()
+        {
+            Assert.That(this.Eval("FIND(\"lo\",\"hello\")").AsNumber(), Is.EqualTo(4));
+        }
+
+        [Test]
+        public void Find_TextAbsent_ReturnsValueError()
+        {
+            Assert.That(this.Eval("FIND(\"z\",\"hello\")").Error, Is.EqualTo(CellError.Value));
+        }
+
+        [Test]
+        public void Find_WithStartNum_SearchesFromThatPosition()
+        {
+            Assert.That(this.Eval("FIND(\"l\",\"hello\",4)").AsNumber(), Is.EqualTo(4));
+        }
+
+        [Test]
+        public void Substitute_AllOccurrences_ReplacesEveryMatch()
+        {
+            Assert.That(this.Eval("SUBSTITUTE(\"a-b-c\",\"-\",\"+\")").AsText(), Is.EqualTo("a+b+c"));
+        }
+
+        [Test]
+        public void Substitute_WithInstanceNumber_ReplacesOnlyThatOccurrence()
+        {
+            Assert.That(this.Eval("SUBSTITUTE(\"a-b-c\",\"-\",\"+\",2)").AsText(), Is.EqualTo("a-b+c"));
+        }
+
+        [Test]
+        public void Rept_RepeatsTextGivenNumberOfTimes()
+        {
+            Assert.That(this.Eval("REPT(\"ab\",3)").AsText(), Is.EqualTo("ababab"));
+        }
+
+        [Test]
+        public void Proper_CapitalizesEachWord()
+        {
+            Assert.That(this.Eval("PROPER(\"hello WORLD\")").AsText(), Is.EqualTo("Hello World"));
         }
 
         // ----- Date -----

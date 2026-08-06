@@ -24,6 +24,32 @@ namespace DataGridDemo
     /// </summary>
     public partial class SpreadsheetExample
     {
+        /// <summary>
+        /// Bound to Ctrl+B, toggling <see cref="SpreadsheetViewModel.IsCurrentCellBold" />.
+        /// </summary>
+        public static readonly RoutedCommand BoldCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Bound to Ctrl+I, toggling <see cref="SpreadsheetViewModel.IsCurrentCellItalic" />.
+        /// </summary>
+        public static readonly RoutedCommand ItalicCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Bound to Ctrl+L, the Format menu's "Align Left".
+        /// </summary>
+        public static readonly RoutedCommand AlignLeftCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Bound to Ctrl+E (Excel's convention, since Ctrl+C is already Copy), the Format menu's
+        /// "Align Center".
+        /// </summary>
+        public static readonly RoutedCommand AlignCenterCommand = new RoutedCommand();
+
+        /// <summary>
+        /// Bound to Ctrl+R, the Format menu's "Align Right".
+        /// </summary>
+        public static readonly RoutedCommand AlignRightCommand = new RoutedCommand();
+
         private const string FileFilter = "Spreadsheet files (*.ptsheet)|*.ptsheet|All files (*.*)|*.*";
 
         private const string CsvFileFilter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
@@ -255,6 +281,36 @@ namespace DataGridDemo
             this.viewModel.SetCurrentCellAlignment(CellHorizontalAlignment.Right);
         }
 
+        private void Bold_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.viewModel.IsCurrentCellBold = !this.viewModel.IsCurrentCellBold;
+        }
+
+        private void Italic_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.viewModel.IsCurrentCellItalic = !this.viewModel.IsCurrentCellItalic;
+        }
+
+        private void AlignLeft_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellAlignment(CellHorizontalAlignment.Left);
+        }
+
+        private void AlignCenter_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellAlignment(CellHorizontalAlignment.Center);
+        }
+
+        private void AlignRight_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.viewModel.SetCurrentCellAlignment(CellHorizontalAlignment.Right);
+        }
+
+        private void Sum_Click(object sender, RoutedEventArgs e)
+        {
+            this.viewModel.InsertSum();
+        }
+
         private void NameBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter)
@@ -262,7 +318,17 @@ namespace DataGridDemo
                 return;
             }
 
+            // UpdateSource() catches exceptions from the SelectionReferenceText setter itself
+            // (ValidatesOnExceptions="True" in the binding) and reports them as a validation error
+            // instead of throwing, so an invalid reference can never crash or corrupt the selection.
             this.NameBox.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty)?.UpdateSource();
+            if (System.Windows.Controls.Validation.GetHasError(this.NameBox))
+            {
+                this.NameBox.SelectAll();
+                e.Handled = true;
+                return;
+            }
+
             Keyboard.Focus(this.SheetGrid);
             e.Handled = true;
         }

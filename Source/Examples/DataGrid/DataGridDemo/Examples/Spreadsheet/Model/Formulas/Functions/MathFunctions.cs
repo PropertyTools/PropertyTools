@@ -4,7 +4,7 @@
 // </copyright>
 // <summary>
 //   Built-in arithmetic functions: SUM, ABS, ROUND, ROUNDUP, ROUNDDOWN, SQRT, POWER, MOD, INT,
-//   SIN, COS, TAN.
+//   SIN, COS, TAN, ASIN, ACOS, ATAN, ATAN2, LN, LOG, LOG10, EXP, PI.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,8 @@ namespace DataGridDemo.Spreadsheet.Model.Formulas.Functions
     /// <summary>
     /// Built-in arithmetic functions: <c>SUM</c>, <c>ABS</c>, <c>ROUND</c>, <c>ROUNDUP</c>,
     /// <c>ROUNDDOWN</c>, <c>SQRT</c>, <c>POWER</c>, <c>MOD</c>, <c>INT</c>, <c>SIN</c>, <c>COS</c>,
-    /// <c>TAN</c>.
+    /// <c>TAN</c>, <c>ASIN</c>, <c>ACOS</c>, <c>ATAN</c>, <c>ATAN2</c>, <c>LN</c>, <c>LOG</c>,
+    /// <c>LOG10</c>, <c>EXP</c>, <c>PI</c>.
     /// </summary>
     internal static class MathFunctions
     {
@@ -112,6 +113,95 @@ namespace DataGridDemo.Spreadsheet.Model.Formulas.Functions
             registry.Register("SIN", 1, 1, context => Trig(context, Math.Sin));
             registry.Register("COS", 1, 1, context => Trig(context, Math.Cos));
             registry.Register("TAN", 1, 1, context => Trig(context, Math.Tan));
+            registry.Register("ATAN", 1, 1, context => Trig(context, Math.Atan));
+
+            registry.Register("ASIN", 1, 1, context =>
+            {
+                if (!FunctionHelpers.TryGetNumber(context.GetArgument(0), out var n, out var error))
+                {
+                    return error;
+                }
+
+                return n < -1 || n > 1 ? CellValue.FromError(CellError.Number) : CellValue.FromNumber(Math.Asin(n));
+            });
+
+            registry.Register("ACOS", 1, 1, context =>
+            {
+                if (!FunctionHelpers.TryGetNumber(context.GetArgument(0), out var n, out var error))
+                {
+                    return error;
+                }
+
+                return n < -1 || n > 1 ? CellValue.FromError(CellError.Number) : CellValue.FromNumber(Math.Acos(n));
+            });
+
+            registry.Register("ATAN2", 2, 2, context =>
+            {
+                if (!FunctionHelpers.TryGetNumber(context.GetArgument(0), out var x, out var error))
+                {
+                    return error;
+                }
+
+                if (!FunctionHelpers.TryGetNumber(context.GetArgument(1), out var y, out error))
+                {
+                    return error;
+                }
+
+                return x == 0 && y == 0 ? CellValue.FromError(CellError.DivideByZero) : CellValue.FromNumber(Math.Atan2(y, x));
+            });
+
+            registry.Register("LN", 1, 1, context =>
+            {
+                if (!FunctionHelpers.TryGetNumber(context.GetArgument(0), out var n, out var error))
+                {
+                    return error;
+                }
+
+                return n <= 0 ? CellValue.FromError(CellError.Number) : CellValue.FromNumber(Math.Log(n));
+            });
+
+            registry.Register("LOG10", 1, 1, context =>
+            {
+                if (!FunctionHelpers.TryGetNumber(context.GetArgument(0), out var n, out var error))
+                {
+                    return error;
+                }
+
+                return n <= 0 ? CellValue.FromError(CellError.Number) : CellValue.FromNumber(Math.Log10(n));
+            });
+
+            registry.Register("LOG", 1, 2, context =>
+            {
+                if (!FunctionHelpers.TryGetNumber(context.GetArgument(0), out var n, out var error))
+                {
+                    return error;
+                }
+
+                var logBase = 10.0;
+                if (context.ArgumentCount > 1)
+                {
+                    if (!FunctionHelpers.TryGetNumber(context.GetArgument(1), out logBase, out error))
+                    {
+                        return error;
+                    }
+                }
+
+                return n <= 0 || logBase <= 0 || logBase == 1
+                    ? CellValue.FromError(CellError.Number)
+                    : CellValue.FromNumber(Math.Log(n, logBase));
+            });
+
+            registry.Register("EXP", 1, 1, context =>
+            {
+                if (!FunctionHelpers.TryGetNumber(context.GetArgument(0), out var n, out var error))
+                {
+                    return error;
+                }
+
+                return CellValue.FromNumber(Math.Exp(n));
+            });
+
+            registry.Register("PI", 0, 0, context => CellValue.FromNumber(Math.PI));
         }
 
         private static CellValue Trig(FunctionCallContext context, Func<double, double> function)

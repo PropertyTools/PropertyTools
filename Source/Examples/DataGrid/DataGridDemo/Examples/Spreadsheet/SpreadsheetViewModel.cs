@@ -19,6 +19,8 @@ namespace DataGridDemo.Spreadsheet
 
     using PropertyTools.Wpf;
 
+    using CellRange = DataGridDemo.Spreadsheet.Model.CellRange;
+
     /// <summary>
     /// View model for the <see cref="SpreadsheetExample" /> window.
     /// </summary>
@@ -104,22 +106,7 @@ namespace DataGridDemo.Spreadsheet
         public CellRef CurrentCell
         {
             get => this.currentCell;
-            set
-            {
-                if (this.currentCell.Equals(value))
-                {
-                    return;
-                }
-
-                this.currentCell = value;
-                this.selectionCell = value;
-                this.UpdateCurrentCellSubscription();
-                this.OnPropertyChanged(nameof(this.CurrentCell));
-                this.OnPropertyChanged(nameof(this.SelectionCell));
-                this.OnPropertyChanged(nameof(this.CurrentCellText));
-                this.OnPropertyChanged(nameof(this.IsCurrentCellBold));
-                this.OnPropertyChanged(nameof(this.IsCurrentCellItalic));
-            }
+            set => this.SelectRange(new CellRange(value.ToCellAddress()));
         }
 
         /// <summary>
@@ -139,8 +126,33 @@ namespace DataGridDemo.Spreadsheet
 
                 this.selectionCell = value;
                 this.OnPropertyChanged(nameof(this.SelectionCell));
+                this.OnPropertyChanged(nameof(this.SelectionReferenceText));
             }
         }
+
+        /// <summary>
+        /// Gets or sets the selection as A1-style reference text — "A1" for a single cell, "A1:B2" for
+        /// a range — the name box's edit text. Setting an out-of-range or malformed reference throws
+        /// (<see cref="FormatException" />/<see cref="ArgumentOutOfRangeException" />) rather than
+        /// changing the selection, so <c>ValidatesOnExceptions</c> can surface it without corrupting
+        /// state or crashing.
+        /// </summary>
+        public string SelectionReferenceText
+        {
+            get
+            {
+                var range = this.SelectionRange;
+                return range.IsSingleCell ? range.TopLeft.ToString() : range.ToString();
+            }
+
+            set => this.SelectRange(this.ParseReference(value));
+        }
+
+        /// <summary>
+        /// Gets the current selection as a range spanning <see cref="CurrentCell" /> and
+        /// <see cref="SelectionCell" />.
+        /// </summary>
+        private CellRange SelectionRange => new CellRange(this.currentCell.ToCellAddress(), this.selectionCell.ToCellAddress());
 
         /// <summary>
         /// Gets or sets the round-trippable edit text of the current cell — the formula bar's edit box.
@@ -152,30 +164,74 @@ namespace DataGridDemo.Spreadsheet
         }
 
         /// <summary>
-        /// Gets or sets whether the current cell is bold — the Format menu's Bold toggle.
+        /// Gets or sets whether the current cell is bold — the Format menu's Bold toggle. Setting this
+        /// applies to every cell in the selection (see <see cref="SelectionRange" />), each keeping its
+        /// own style otherwise.
         /// </summary>
         public bool IsCurrentCellBold
         {
             get => this.subscribedCell?.Style.Bold ?? false;
-            set => this.sheet.SetCellStyle(this.currentCell.ToCellAddress(), (this.subscribedCell?.Style ?? CellStyle.Default).WithBold(value));
+            set => this.sheet.SetStyle(this.SelectionRange, style => style.WithBold(value));
         }
 
         /// <summary>
-        /// Gets or sets whether the current cell is italic.
+        /// Gets or sets whether the current cell is italic. Setting this applies to every cell in the
+        /// selection, each keeping its own style otherwise.
         /// </summary>
         public bool IsCurrentCellItalic
         {
             get => this.subscribedCell?.Style.Italic ?? false;
-            set => this.sheet.SetCellStyle(this.currentCell.ToCellAddress(), (this.subscribedCell?.Style ?? CellStyle.Default).WithItalic(value));
+            set => this.sheet.SetStyle(this.SelectionRange, style => style.WithItalic(value));
         }
 
         /// <summary>
-        /// Sets the horizontal alignment of the current cell — the Format menu's alignment commands.
+        /// Sets the horizontal alignment of every cell in the selection — the Format menu's alignment
+        /// commands.
         /// </summary>
         public void SetCurrentCellAlignment(CellHorizontalAlignment alignment)
         {
-            var style = this.subscribedCell?.Style ?? CellStyle.Default;
-            this.sheet.SetCellStyle(this.currentCell.ToCellAddress(), style.WithHorizontalAlignment(alignment));
+            this.sheet.SetStyle(this.SelectionRange, style => style.WithHorizontalAlignment(alignment));
+        }
+
+        /// <summary>
+        /// Inserts a <c>SUM</c> formula totalling the current selection, placed in the row below it (for
+        /// a selection that is as tall as or taller than it is wide) or the column to its right
+        /// (otherwise), moving <see cref="CurrentCell" /> there. Does nothing — and returns <c>false</c>
+        /// — for a single-cell selection, or if there is no room to place the sum.
+        /// </summary>
+        public bool InsertSum()
+        {
+            var range = this.SelectionRange;
+            if (range.IsSingleCell)
+            {
+                return false;
+            }
+
+            CellAddress target;
+            if (range.RowCount >= range.ColumnCount)
+            {
+                var targetRow = range.BottomRight.Row + 1;
+                if (targetRow >= this.sheet.RowCount)
+                {
+                    return false;
+                }
+
+                target = new CellAddress(targetRow, range.TopLeft.Column);
+            }
+            else
+            {
+                var targetColumn = range.BottomRight.Column + 1;
+                if (targetColumn >= this.sheet.ColumnCount)
+                {
+                    return false;
+                }
+
+                target = new CellAddress(range.TopLeft.Row, targetColumn);
+            }
+
+            this.sheet.SetCellText(target, "=SUM(" + range + ")");
+            this.CurrentCell = target.ToCellRef();
+            return true;
         }
 
         /// <summary>
@@ -243,8 +299,10 @@ namespace DataGridDemo.Spreadsheet
         }
 
         /// <summary>
-        /// Searches for text in the sheet's displayed cell text, starting just after the current cell
-        /// and wrapping around, and moves <see cref="CurrentCell" /> to the first match.
+        /// Searches for text in the sheet's cells, starting just after the current cell and wrapping
+        /// around, and moves <see cref="CurrentCell" /> to the first match. Matches both a cell's
+        /// displayed value and, for formula cells, the formula text itself (e.g. searching "A1" finds
+        /// a cell containing <c>=A1+1</c> even though its displayed value doesn't mention "A1").
         /// </summary>
         /// <returns><c>true</c> if a match was found.</returns>
         public bool FindNext(string text, bool matchCase)
@@ -265,8 +323,8 @@ namespace DataGridDemo.Spreadsheet
             {
                 var index = (startIndex + offset) % totalCells;
                 var address = new CellAddress(index / columnCount, index % columnCount);
-                var displayText = this.sheet.GetCell(address).DisplayText;
-                if (displayText.IndexOf(text, comparison) >= 0)
+                var cell = this.sheet.GetCell(address);
+                if (cell.DisplayText.IndexOf(text, comparison) >= 0 || cell.Text.IndexOf(text, comparison) >= 0)
                 {
                     this.CurrentCell = address.ToCellRef();
                     return true;
@@ -383,9 +441,58 @@ namespace DataGridDemo.Spreadsheet
             this.OnPropertyChanged(nameof(this.ColumnHeaders));
             this.OnPropertyChanged(nameof(this.CurrentCell));
             this.OnPropertyChanged(nameof(this.SelectionCell));
+            this.OnPropertyChanged(nameof(this.SelectionReferenceText));
             this.OnPropertyChanged(nameof(this.CurrentCellText));
             this.OnPropertyChanged(nameof(this.IsCurrentCellBold));
             this.OnPropertyChanged(nameof(this.IsCurrentCellItalic));
+        }
+
+        /// <summary>
+        /// Sets <see cref="CurrentCell" /> to <paramref name="range" />'s top-left corner and
+        /// <see cref="SelectionCell" /> to its bottom-right corner in one step, so a genuine two-corner
+        /// range (from <see cref="SelectionReferenceText" /> or <see cref="InsertSum" />'s target) isn't
+        /// immediately collapsed by <see cref="CurrentCell" />'s own single-cell-selecting setter.
+        /// </summary>
+        private void SelectRange(CellRange range)
+        {
+            var newCurrentCell = range.TopLeft.ToCellRef();
+            var newSelectionCell = range.BottomRight.ToCellRef();
+
+            if (this.currentCell.Equals(newCurrentCell) && this.selectionCell.Equals(newSelectionCell))
+            {
+                return;
+            }
+
+            this.currentCell = newCurrentCell;
+            this.selectionCell = newSelectionCell;
+            this.UpdateCurrentCellSubscription();
+            this.OnPropertyChanged(nameof(this.CurrentCell));
+            this.OnPropertyChanged(nameof(this.SelectionCell));
+            this.OnPropertyChanged(nameof(this.SelectionReferenceText));
+            this.OnPropertyChanged(nameof(this.CurrentCellText));
+            this.OnPropertyChanged(nameof(this.IsCurrentCellBold));
+            this.OnPropertyChanged(nameof(this.IsCurrentCellItalic));
+        }
+
+        /// <summary>
+        /// Parses a name-box reference ("A1" or "A1:B2") into a range, throwing a
+        /// <see cref="FormatException" /> for unparsable text or an
+        /// <see cref="ArgumentOutOfRangeException" /> for a reference outside the sheet — both caught
+        /// gracefully by the name box's <c>ValidatesOnExceptions</c> binding.
+        /// </summary>
+        private CellRange ParseReference(string value)
+        {
+            if (!CellRange.TryParse(value?.Trim(), out var range))
+            {
+                throw new FormatException($"\"{value}\" is not a valid cell reference. Use \"A1\" or \"A1:B2\".");
+            }
+
+            if (range.BottomRight.Row >= this.sheet.RowCount || range.BottomRight.Column >= this.sheet.ColumnCount)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), $"\"{value}\" is outside the sheet.");
+            }
+
+            return range;
         }
 
         private void UpdateCurrentCellSubscription()

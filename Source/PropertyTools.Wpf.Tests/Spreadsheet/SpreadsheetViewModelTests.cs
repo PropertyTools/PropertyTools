@@ -6,6 +6,7 @@
 
 namespace PropertyTools.Wpf.Tests
 {
+    using System;
     using System.IO;
 
     using DataGridDemo.Spreadsheet;
@@ -147,6 +148,174 @@ namespace PropertyTools.Wpf.Tests
             viewModel.SetCurrentCellAlignment(CellHorizontalAlignment.Right);
 
             Assert.That(sheet.GetCell(new CellAddress(0, 0)).Style.HorizontalAlignment, Is.EqualTo(CellHorizontalAlignment.Right));
+        }
+
+        [Test]
+        public void IsCurrentCellBold_SetWithRangeSelected_AppliesToEveryCellInTheRange()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(1, 1) };
+
+            viewModel.IsCurrentCellBold = true;
+
+            Assert.That(sheet.GetCell(new CellAddress(0, 0)).Style.Bold, Is.True);
+            Assert.That(sheet.GetCell(new CellAddress(0, 1)).Style.Bold, Is.True);
+            Assert.That(sheet.GetCell(new CellAddress(1, 0)).Style.Bold, Is.True);
+            Assert.That(sheet.GetCell(new CellAddress(1, 1)).Style.Bold, Is.True);
+        }
+
+        [Test]
+        public void IsCurrentCellBold_SetWithRangeSelected_PreservesEachCellsOtherStyling()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            sheet.SetCellStyle(new CellAddress(0, 1), CellStyle.Default.WithItalic(true));
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(0, 1) };
+
+            viewModel.IsCurrentCellBold = true;
+
+            Assert.That(sheet.GetCell(new CellAddress(0, 1)).Style.Italic, Is.True);
+            Assert.That(sheet.GetCell(new CellAddress(0, 1)).Style.Bold, Is.True);
+        }
+
+        [Test]
+        public void SetCurrentCellAlignment_WithRangeSelected_AppliesToEveryCellInTheRange()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(0, 2) };
+
+            viewModel.SetCurrentCellAlignment(CellHorizontalAlignment.Right);
+
+            Assert.That(sheet.GetCell(new CellAddress(0, 0)).Style.HorizontalAlignment, Is.EqualTo(CellHorizontalAlignment.Right));
+            Assert.That(sheet.GetCell(new CellAddress(0, 1)).Style.HorizontalAlignment, Is.EqualTo(CellHorizontalAlignment.Right));
+            Assert.That(sheet.GetCell(new CellAddress(0, 2)).Style.HorizontalAlignment, Is.EqualTo(CellHorizontalAlignment.Right));
+        }
+
+        [Test]
+        public void SelectionReferenceText_SingleCellSelected_ReturnsA1StyleReference()
+        {
+            var viewModel = new SpreadsheetViewModel(new Sheet("Sheet1", 5, 5)) { CurrentCell = new CellRef(1, 1) };
+
+            Assert.That(viewModel.SelectionReferenceText, Is.EqualTo("B2"));
+        }
+
+        [Test]
+        public void SelectionReferenceText_RangeSelected_ReturnsRangeReference()
+        {
+            var viewModel = new SpreadsheetViewModel(new Sheet("Sheet1", 5, 5))
+            {
+                CurrentCell = new CellRef(0, 0),
+                SelectionCell = new CellRef(1, 1)
+            };
+
+            Assert.That(viewModel.SelectionReferenceText, Is.EqualTo("A1:B2"));
+        }
+
+        [Test]
+        public void SelectionReferenceText_SetToSingleCell_MovesSelectionThere()
+        {
+            var viewModel = new SpreadsheetViewModel(new Sheet("Sheet1", 5, 5));
+
+            viewModel.SelectionReferenceText = "C3";
+
+            Assert.That(viewModel.CurrentCell, Is.EqualTo(new CellRef(2, 2)));
+            Assert.That(viewModel.SelectionCell, Is.EqualTo(new CellRef(2, 2)));
+        }
+
+        [Test]
+        public void SelectionReferenceText_SetToRange_SelectsTheWholeRange()
+        {
+            var viewModel = new SpreadsheetViewModel(new Sheet("Sheet1", 5, 5));
+
+            viewModel.SelectionReferenceText = "A1:B2";
+
+            Assert.That(viewModel.CurrentCell, Is.EqualTo(new CellRef(0, 0)));
+            Assert.That(viewModel.SelectionCell, Is.EqualTo(new CellRef(1, 1)));
+        }
+
+        [Test]
+        public void SelectionReferenceText_SetToMalformedText_ThrowsFormatExceptionAndLeavesSelectionUnchanged()
+        {
+            var viewModel = new SpreadsheetViewModel(new Sheet("Sheet1", 5, 5)) { CurrentCell = new CellRef(0, 0) };
+
+            Assert.That(() => viewModel.SelectionReferenceText = "not a reference", Throws.TypeOf<FormatException>());
+            Assert.That(viewModel.CurrentCell, Is.EqualTo(new CellRef(0, 0)));
+        }
+
+        [Test]
+        public void SelectionReferenceText_SetOutsideSheetBounds_ThrowsArgumentOutOfRangeException()
+        {
+            var viewModel = new SpreadsheetViewModel(new Sheet("Sheet1", 5, 5)) { CurrentCell = new CellRef(0, 0) };
+
+            Assert.That(() => viewModel.SelectionReferenceText = "Z99", Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(viewModel.CurrentCell, Is.EqualTo(new CellRef(0, 0)));
+        }
+
+        [Test]
+        public void InsertSum_SingleCellSelected_DoesNothingAndReturnsFalse()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0) };
+
+            var inserted = viewModel.InsertSum();
+
+            Assert.That(inserted, Is.False);
+        }
+
+        [Test]
+        public void InsertSum_TallerThanWideRange_InsertsSumBelow()
+        {
+            var sheet = new Sheet("Sheet1", 10, 10) { Culture = System.Globalization.CultureInfo.InvariantCulture };
+            sheet.SetCellText(new CellAddress(0, 0), "1");
+            sheet.SetCellText(new CellAddress(1, 0), "2");
+            sheet.SetCellText(new CellAddress(2, 0), "3");
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(2, 0) };
+
+            var inserted = viewModel.InsertSum();
+
+            Assert.That(inserted, Is.True);
+            Assert.That(viewModel.CurrentCell, Is.EqualTo(new CellRef(3, 0)));
+            Assert.That(sheet.GetCell(new CellAddress(3, 0)).Content.IsFormula, Is.True);
+            Assert.That(sheet.GetValue(new CellAddress(3, 0)), Is.EqualTo(CellValue.FromNumber(6)));
+        }
+
+        [Test]
+        public void InsertSum_WiderThanTallRange_InsertsSumToTheRight()
+        {
+            var sheet = new Sheet("Sheet1", 10, 10) { Culture = System.Globalization.CultureInfo.InvariantCulture };
+            sheet.SetCellText(new CellAddress(0, 0), "1");
+            sheet.SetCellText(new CellAddress(0, 1), "2");
+            sheet.SetCellText(new CellAddress(0, 2), "3");
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(0, 2) };
+
+            var inserted = viewModel.InsertSum();
+
+            Assert.That(inserted, Is.True);
+            Assert.That(viewModel.CurrentCell, Is.EqualTo(new CellRef(0, 3)));
+            Assert.That(sheet.GetValue(new CellAddress(0, 3)), Is.EqualTo(CellValue.FromNumber(6)));
+        }
+
+        [Test]
+        public void InsertSum_NoRoomBelow_DoesNothingAndReturnsFalse()
+        {
+            var sheet = new Sheet("Sheet1", 2, 5);
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0), SelectionCell = new CellRef(1, 0) };
+
+            var inserted = viewModel.InsertSum();
+
+            Assert.That(inserted, Is.False);
+        }
+
+        [Test]
+        public void FindNext_TextOnlyInFormula_FindsTheCell()
+        {
+            var sheet = new Sheet("Sheet1", 5, 5);
+            sheet.SetCellText(new CellAddress(2, 0), "=A1+1");
+            var viewModel = new SpreadsheetViewModel(sheet) { CurrentCell = new CellRef(0, 0) };
+
+            var found = viewModel.FindNext("A1+1", matchCase: false);
+
+            Assert.That(found, Is.True);
+            Assert.That(viewModel.CurrentCell, Is.EqualTo(new CellRef(2, 0)));
         }
 
         [Test]

@@ -6,8 +6,10 @@
 
 namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
 {
+    using System;
     using System.ComponentModel;
     using System.Data.Common;
+    using System.Linq;
     using System.Threading;
 
     using NUnit.Framework;
@@ -88,6 +90,27 @@ namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
         }
 
         private enum FakeServer { Default = 0, Embedded = 1 }
+
+        private class InheritedCategoryTestOptions : IPropertyGridOptions
+        {
+            public Type RequiredAttribute => null;
+
+            public bool ShowDeclaredOnly => false;
+
+            public bool ShowReadOnlyProperties => true;
+        }
+
+        private class OrderedBaseModel
+        {
+            [PropertyTools.DataAnnotations.Category("Inherited|Base category", groupSortIndex: 0)]
+            public int BaseValue { get; set; }
+        }
+
+        private class OrderedDerivedModel : OrderedBaseModel
+        {
+            [PropertyTools.DataAnnotations.Category("Inherited|Derived category", groupSortIndex: 1)]
+            public int DerivedValue { get; set; }
+        }
 
         // -----------------------------------------------------------------------
         // Tests for GetPropertyCollection with ICustomTypeDescriptor objects
@@ -253,6 +276,21 @@ namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
 
             // Assert
             Assert.That((int)pd.GetValue(model), Is.EqualTo(42));
+        }
+
+        [Test]
+        public void CreateModel_InheritedCategorySortIndexesSpecified_GroupsFollowExplicitOrder()
+        {
+            // Arrange
+            var op = new PropertyGridOperator();
+            var model = new OrderedDerivedModel();
+
+            // Act
+            var tabs = op.CreateModel(model, false, new InheritedCategoryTestOptions()).ToList();
+
+            // Assert
+            Assert.That(tabs, Has.Count.EqualTo(1));
+            Assert.That(tabs[0].Groups.Select(g => g.Name).ToArray(), Is.EqualTo(new[] { "Base category", "Derived category" }));
         }
     }
 }

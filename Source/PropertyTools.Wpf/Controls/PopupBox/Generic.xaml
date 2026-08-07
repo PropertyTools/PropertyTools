@@ -112,7 +112,7 @@
                           BorderBrush="{TemplateBinding BorderBrush}" Style="{StaticResource ComboBoxReadonlyToggleButton}"
                           IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" />
                         <ContentPresenter IsHitTestVisible="false" Margin="{TemplateBinding Padding}"
-                              Content="{TemplateBinding SelectedValue}" ContentTemplate="{TemplateBinding ItemTemplate}"
+                              Content="{TemplateBinding Value}" ContentTemplate="{TemplateBinding ItemTemplate}"
                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                               ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"

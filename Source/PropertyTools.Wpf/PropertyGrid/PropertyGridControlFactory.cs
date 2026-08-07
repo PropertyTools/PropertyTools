@@ -702,9 +702,19 @@ namespace PropertyTools.Wpf
         protected virtual FrameworkElement CreateEnumControl(
             PropertyItem property, PropertyControlFactoryOptions options)
         {
-            //// var isBitField = property.Descriptor.PropertyType.GetTypeInfo().GetCustomAttributes<FlagsAttribute>().Any();
+            var enumType = property.Descriptor.PropertyType;
+            var underlyingType = Nullable.GetUnderlyingType(enumType) ?? enumType;
+            var isFlagsEnum = underlyingType.GetCustomAttributes(typeof(FlagsAttribute), false).Length > 0;
 
             var enumFilter = property.Descriptor.GetFirstAttributeOrDefault<DataAnnotations.EnumFilterAttribute>();
+
+            if (isFlagsEnum && property.SelectorStyle == DataAnnotations.SelectorStyle.Auto)
+            {
+                var c = new CheckBoxList { EnumType = enumType, EnumFilter = enumFilter, Margin = new Thickness(0, 4, 0, 4) };
+                c.SetBinding(CheckBoxList.ValueProperty, property.CreateBinding());
+                return c;
+            }
+
             var values = this.GetEnumValues(property.Descriptor.PropertyType, enumFilter).ToArray();
             var style = property.SelectorStyle;
             if (style == DataAnnotations.SelectorStyle.Auto)

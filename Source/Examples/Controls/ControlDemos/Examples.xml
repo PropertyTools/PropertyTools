@@ -5,6 +5,7 @@
   <Example Page="Pages\PopupBoxPage.xaml" Title="PopupBox" Description=""/>
   <Example Page="Pages\FilePickerPage.xaml" Title="FilePicker" Description=""/>
   <Example Page="Pages\DirectoryPickerPage.xaml" Title="DirectoryPicker" Description=""/>
+  <Example Page="Pages\CheckBoxListPage.xaml" Title="CheckBoxList" Description="A list of check boxes for editing [Flags] enum bit fields."/>
   <Example Page="Pages\RadioButtonListPage.xaml" Title="RadioButtonList" Description=""/>
   <Example Page="Pages\FormattingTextBoxPage.xaml" Title="FormattingTextBox" Description=""/>
   <Example Page="Pages\DockPanelSplitterPage.xaml" Title="DockPanelSplitter" Description=""/>

@@ -89,6 +89,16 @@ namespace PropertyTools.Wpf
             {
                 var enumType = Nullable.GetUnderlyingType(d.PropertyType) ?? d.PropertyType;
                 var enumFilter = d.Attributes.OfType<EnumFilterAttribute>().FirstOrDefault();
+
+                if (enumType.GetCustomAttributes(typeof(FlagsAttribute), false).Length > 0)
+                {
+                    return new FlagsCellDefinition
+                    {
+                        EnumType = enumType,
+                        EnumFilter = enumFilter
+                    };
+                }
+
                 var values = Enum.GetValues(enumType).FilterOnBrowsableAttribute().FilterOnEnumFilterAttribute(enumFilter).ToList();
                 if (Nullable.GetUnderlyingType(d.PropertyType) != null)
                 {

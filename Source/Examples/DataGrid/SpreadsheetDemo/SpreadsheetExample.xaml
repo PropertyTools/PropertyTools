@@ -1,0 +1,152 @@
+<Window x:Class="SpreadsheetDemo.SpreadsheetExample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:s="clr-namespace:SpreadsheetDemo.Spreadsheet"
+        xmlns:local="clr-namespace:SpreadsheetDemo"
+        Title="Spreadsheet" Height="450" Width="900"
+        UseLayoutRounding="True">
+    <Window.InputBindings>
+        <KeyBinding Key="F" Modifiers="Control" Command="ApplicationCommands.Find" />
+        <KeyBinding Key="H" Modifiers="Control" Command="ApplicationCommands.Replace" />
+        <KeyBinding Key="B" Modifiers="Control" Command="{x:Static local:SpreadsheetExample.BoldCommand}" />
+        <KeyBinding Key="I" Modifiers="Control" Command="{x:Static local:SpreadsheetExample.ItalicCommand}" />
+        <KeyBinding Key="L" Modifiers="Control" Command="{x:Static local:SpreadsheetExample.AlignLeftCommand}" />
+        <KeyBinding Key="E" Modifiers="Control" Command="{x:Static local:SpreadsheetExample.AlignCenterCommand}" />
+        <KeyBinding Key="R" Modifiers="Control" Command="{x:Static local:SpreadsheetExample.AlignRightCommand}" />
+        <KeyBinding Key="OemCloseBrackets" Modifiers="Control" Command="{x:Static local:SpreadsheetExample.IncreaseDecimalCommand}" />
+        <KeyBinding Key="OemOpenBrackets" Modifiers="Control" Command="{x:Static local:SpreadsheetExample.DecreaseDecimalCommand}" />
+        <KeyBinding Key="A" Modifiers="Control+Shift" Command="{x:Static local:SpreadsheetExample.SortAscendingCommand}" />
+        <KeyBinding Key="D" Modifiers="Control+Shift" Command="{x:Static local:SpreadsheetExample.SortDescendingCommand}" />
+    </Window.InputBindings>
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Find" Executed="Find_Executed" />
+        <CommandBinding Command="ApplicationCommands.Replace" Executed="Replace_Executed" />
+        <CommandBinding Command="{x:Static local:SpreadsheetExample.BoldCommand}" Executed="Bold_Executed" />
+        <CommandBinding Command="{x:Static local:SpreadsheetExample.ItalicCommand}" Executed="Italic_Executed" />
+        <CommandBinding Command="{x:Static local:SpreadsheetExample.AlignLeftCommand}" Executed="AlignLeft_Executed" />
+        <CommandBinding Command="{x:Static local:SpreadsheetExample.AlignCenterCommand}" Executed="AlignCenter_Executed" />
+        <CommandBinding Command="{x:Static local:SpreadsheetExample.AlignRightCommand}" Executed="AlignRight_Executed" />
+        <CommandBinding Command="{x:Static local:SpreadsheetExample.IncreaseDecimalCommand}" Executed="IncreaseDecimal_Executed" />
+        <CommandBinding Command="{x:Static local:SpreadsheetExample.DecreaseDecimalCommand}" Executed="DecreaseDecimal_Executed" />
+        <CommandBinding Command="{x:Static local:SpreadsheetExample.SortAscendingCommand}" Executed="SortAscending_Executed" />
+        <CommandBinding Command="{x:Static local:SpreadsheetExample.SortDescendingCommand}" Executed="SortDescending_Executed" />
+    </Window.CommandBindings>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" Click="New_Click" InputGestureText="Ctrl+N" />
+                <MenuItem Header="_Open..." Click="Open_Click" InputGestureText="Ctrl+O" />
+                <Separator />
+                <MenuItem Header="_Save" Click="Save_Click" InputGestureText="Ctrl+S" />
+                <MenuItem Header="Save _As..." Click="SaveAs_Click" />
+                <Separator />
+                <MenuItem Header="Import _CSV..." Click="ImportCsv_Click" />
+                <MenuItem Header="Export CS_V..." Click="ExportCsv_Click" />
+                <Separator />
+                <MenuItem Header="E_xit" Click="Exit_Click" InputGestureText="Alt+F4" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Find..." Click="Find_Click" InputGestureText="Ctrl+F" />
+                <MenuItem Header="_Replace..." Click="Replace_Click" InputGestureText="Ctrl+H" />
+            </MenuItem>
+            <MenuItem Header="F_ormat">
+                <MenuItem Header="_Bold" IsCheckable="True" IsChecked="{Binding IsCurrentCellBold, Mode=TwoWay}" InputGestureText="Ctrl+B" />
+                <MenuItem Header="_Italic" IsCheckable="True" IsChecked="{Binding IsCurrentCellItalic, Mode=TwoWay}" InputGestureText="Ctrl+I" />
+                <Separator />
+                <MenuItem Header="Align _Left" Click="AlignLeft_Click" InputGestureText="Ctrl+L" />
+                <MenuItem Header="Align _Center" Click="AlignCenter_Click" InputGestureText="Ctrl+E" />
+                <MenuItem Header="Align _Right" Click="AlignRight_Click" InputGestureText="Ctrl+R" />
+                <Separator />
+                <MenuItem Header="Increase _Decimal" Click="IncreaseDecimal_Click" InputGestureText="Ctrl+]" />
+                <MenuItem Header="Decrease Decimal" Click="DecreaseDecimal_Click" InputGestureText="Ctrl+[" />
+                <Separator />
+                <MenuItem Header="_Number Format">
+                    <MenuItem Header="General" Click="NumberFormatGeneral_Click" />
+                    <MenuItem Header="Number (0.00)" Click="NumberFormatNumber_Click" />
+                    <MenuItem Header="Integer (0)" Click="NumberFormatInteger_Click" />
+                </MenuItem>
+                <MenuItem Header="Date/Time Format">
+                    <MenuItem Header="Short Date (yyyy-MM-dd)" Click="DateFormatShort_Click" />
+                    <MenuItem Header="Long Date (dddd, MMMM d, yyyy)" Click="DateFormatLong_Click" />
+                    <MenuItem Header="Time (HH:mm:ss)" Click="DateFormatTime_Click" />
+                    <MenuItem Header="Date and Time (yyyy-MM-dd HH:mm)" Click="DateFormatDateTime_Click" />
+                </MenuItem>
+                <MenuItem Header="Duration Format">
+                    <MenuItem Header="h:mm:ss" Click="DurationFormatHms_Click" />
+                    <MenuItem Header="hh:mm:ss" Click="DurationFormatHhMmSs_Click" />
+                    <MenuItem Header="m:ss" Click="DurationFormatMs_Click" />
+                    <MenuItem Header="mm:ss" Click="DurationFormatMmSs_Click" />
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Data">
+                <MenuItem Header="Sort _Ascending" Click="SortAscending_Click" InputGestureText="Ctrl+Shift+A" />
+                <MenuItem Header="Sort _Descending" Click="SortDescending_Click" InputGestureText="Ctrl+Shift+D" />
+            </MenuItem>
+        </Menu>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <ToggleButton Content="B" FontWeight="Bold" FontSize="14" Width="28" Height="28" IsChecked="{Binding IsCurrentCellBold, Mode=TwoWay}" ToolTip="Bold (Ctrl+B)" />
+                <ToggleButton Content="I" FontStyle="Italic" FontSize="14" Width="28" Height="28" IsChecked="{Binding IsCurrentCellItalic, Mode=TwoWay}" ToolTip="Italic (Ctrl+I)" />
+                <Separator />
+                <Button Width="28" Height="28" SnapsToDevicePixels="True" Click="AlignLeft_Click" ToolTip="Align Left (Ctrl+L)">
+                    <Canvas Width="16" Height="12" SnapsToDevicePixels="True">
+                        <Rectangle Canvas.Left="0" Canvas.Top="0" Width="16" Height="2" Fill="#FF404040" SnapsToDevicePixels="True" />
+                        <Rectangle Canvas.Left="0" Canvas.Top="5" Width="10" Height="2" Fill="#FF404040" SnapsToDevicePixels="True" />
+                        <Rectangle Canvas.Left="0" Canvas.Top="10" Width="14" Height="2" Fill="#FF404040" SnapsToDevicePixels="True" />
+                    </Canvas>
+                </Button>
+                <Button Width="28" Height="28" SnapsToDevicePixels="True" Click="AlignCenter_Click" ToolTip="Align Center (Ctrl+E)">
+                    <Canvas Width="16" Height="12" SnapsToDevicePixels="True">
+                        <Rectangle Canvas.Left="0" Canvas.Top="0" Width="16" Height="2" Fill="#FF404040" SnapsToDevicePixels="True" />
+                        <Rectangle Canvas.Left="3" Canvas.Top="5" Width="10" Height="2" Fill="#FF404040" SnapsToDevicePixels="True" />
+                        <Rectangle Canvas.Left="1" Canvas.Top="10" Width="14" Height="2" Fill="#FF404040" SnapsToDevicePixels="True" />
+                    </Canvas>
+                </Button>
+                <Button Width="28" Height="28" SnapsToDevicePixels="True" Click="AlignRight_Click" ToolTip="Align Right (Ctrl+R)">
+                    <Canvas Width="16" Height="12" SnapsToDevicePixels="True">
+                        <Rectangle Canvas.Left="0" Canvas.Top="0" Width="16" Height="2" Fill="#FF404040" SnapsToDevicePixels="True" />
+                        <Rectangle Canvas.Left="6" Canvas.Top="5" Width="10" Height="2" Fill="#FF404040" SnapsToDevicePixels="True" />
+                        <Rectangle Canvas.Left="2" Canvas.Top="10" Width="14" Height="2" Fill="#FF404040" SnapsToDevicePixels="True" />
+                    </Canvas>
+                </Button>
+                <Separator />
+                <Button Content="Σ" FontSize="16" Width="28" Click="Sum_Click" ToolTip="Sum: insert SUM formulas below/right of the selected range" />
+                <Separator />
+                <Button Content=".00→" Width="34" Click="IncreaseDecimal_Click" ToolTip="Increase Decimal (Ctrl+])" />
+                <Button Content="←.0" Width="34" Click="DecreaseDecimal_Click" ToolTip="Decrease Decimal (Ctrl+[)" />
+                <Separator />
+                <Button Content="A→Z" Width="34" Click="SortAscending_Click" ToolTip="Sort Ascending (Ctrl+Shift+A)" />
+                <Button Content="Z→A" Width="34" Click="SortDescending_Click" ToolTip="Sort Descending (Ctrl+Shift+D)" />
+            </ToolBar>
+        </ToolBarTray>
+        <Grid DockPanel.Dock="Top" Margin="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="NameBox"
+                     Grid.Column="0"
+                     VerticalContentAlignment="Center"
+                     KeyDown="NameBox_KeyDown"
+                     ToolTip="A cell (&quot;A1&quot;) or a range (&quot;A1:B2&quot;)"
+                     Text="{Binding SelectionReferenceText, Mode=TwoWay, ValidatesOnExceptions=True}" />
+            <TextBlock Grid.Column="1" Text="fx" Margin="6,0" VerticalAlignment="Center" FontStyle="Italic" Foreground="Gray" />
+            <TextBox x:Name="FormulaBox"
+                     Grid.Column="2"
+                     VerticalContentAlignment="Center"
+                     KeyDown="FormulaBox_KeyDown"
+                     Text="{Binding CurrentCellText, Mode=TwoWay}" />
+        </Grid>
+        <s:SpreadsheetDataGrid x:Name="SheetGrid"
+            ItemsSource="{Binding Rows}"
+            RowHeadersSource="{Binding RowHeaders}"
+            ColumnHeadersSource="{Binding ColumnHeaders}"
+            ControlFactory="{Binding ControlFactory}"
+            CurrentCell="{Binding CurrentCell, Mode=TwoWay}"
+            SelectionCell="{Binding SelectionCell, Mode=TwoWay}"
+            CanInsert="False"
+            CanDelete="False">
+        </s:SpreadsheetDataGrid>
+    </DockPanel>
+</Window>

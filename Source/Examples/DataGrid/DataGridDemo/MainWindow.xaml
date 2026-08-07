@@ -1,9 +1,13 @@
 ﻿<Window x:Class="DataGridDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Title="DataGrid demos"
-        SizeToContent="WidthAndHeight"
-        MinWidth="300" MinHeight="300">
+        Left="0"
+        Top="0"
+        Width="240"
+        Height="{x:Static SystemParameters.PrimaryScreenHeight}"
+        SizeToContent="Manual">
     <Grid>
         <ListBox ItemsSource="{Binding Examples}" MouseDoubleClick="OpenExample" BorderThickness="0"/>
     </Grid>

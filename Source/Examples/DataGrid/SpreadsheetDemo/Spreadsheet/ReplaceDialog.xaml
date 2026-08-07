@@ -1,0 +1,33 @@
+<Window x:Class="SpreadsheetDemo.Spreadsheet.ReplaceDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Replace"
+        Width="360"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+    <StackPanel Margin="12">
+        <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Find what:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
+            <TextBox x:Name="FindTextBox" Grid.Row="0" Grid.Column="1" Margin="0,2" />
+            <TextBlock Text="Replace with:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
+            <TextBox x:Name="ReplaceTextBox" Grid.Row="1" Grid.Column="1" Margin="0,2" />
+        </Grid>
+        <CheckBox x:Name="MatchCaseCheckBox" Content="Match case" Margin="0,0,0,8" />
+        <TextBlock x:Name="StatusTextBlock" Margin="0,0,0,8" Foreground="Gray" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Find Next" Width="90" Margin="0,0,6,0" Click="FindNext_Click" IsDefault="True" />
+            <Button Content="Replace" Width="90" Margin="0,0,6,0" Click="Replace_Click" />
+            <Button Content="Replace All" Width="90" Click="ReplaceAll_Click" />
+        </StackPanel>
+    </StackPanel>
+</Window>

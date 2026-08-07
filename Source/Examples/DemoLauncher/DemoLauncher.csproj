@@ -13,6 +13,7 @@
     <ProjectReference Include="..\Controls\ControlDemos\ControlDemos.csproj" />
     <ProjectReference Include="..\Controls\DialogDemos\DialogDemos.csproj" />
     <ProjectReference Include="..\DataGrid\DataGridDemo\DataGridDemo.csproj" />
+    <ProjectReference Include="..\DataGrid\SpreadsheetDemo\SpreadsheetDemo.csproj" />
     <ProjectReference Include="..\ItemsBag\ItemsBagDemo\ItemsBagDemo.csproj" />
     <ProjectReference Include="..\PropertyGrid\PropertyGridDemo\PropertyGridDemo.csproj" />
     <ProjectReference Include="..\PropertyGrid\PropertyGridDemos\PropertyGridDemos.csproj" />

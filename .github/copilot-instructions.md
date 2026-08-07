@@ -2,7 +2,9 @@
 
 ## Project Overview
 
-PropertyTools is a collection of custom controls for WPF applications that provide enhanced property editing, data grid, and tree list capabilities. The project targets .NET 4.6.2 and .NET 8 - Windows platforms.
+PropertyTools is a collection of custom controls for WPF applications that provide enhanced property editing, data grid, and tree list capabilities. The project targets .NET Framework 4.6.2 and .NET 8/9/10 - Windows (the core `PropertyTools` library additionally targets `netstandard2.0`).
+
+Claude Code reads the same project facts from [AGENTS.md](../AGENTS.md) (and [CLAUDE.md](../CLAUDE.md)) at the repo root — keep this file consistent with those if either changes.
 
 ## Key Components
 
@@ -89,13 +91,18 @@ PropertyTools is a collection of custom controls for WPF applications that provi
 2. **Build Command**: Use Visual Studio or `dotnet build` for the solution
 3. **Test Framework**: NUnit
 4. **Test Project**: `PropertyTools.Wpf.Tests`
+5. **On Linux**: full build/run/test requires Windows (WPF). To at least verify compilation, add
+   `-p:EnableWindowsTargeting=true` to `dotnet build` — see
+   [AGENTS.md](../AGENTS.md#building-on-linux-compile-time-verification-only) for details and limits.
 
 ### Target Frameworks
 
 - .NET Framework 4.6.2
 - .NET 8 - Windows
+- .NET 9 - Windows
+- .NET 10 - Windows
 
-Ensure changes are compatible with both target frameworks unless explicitly targeting a specific version.
+Ensure changes are compatible with all target frameworks unless explicitly targeting a specific version.
 
 ### Git and Version Control
 
@@ -209,4 +216,4 @@ Ensure changes are compatible with both target frameworks unless explicitly targ
 - ✅ Write and run tests
 - ✅ Follow existing code style
 - ✅ Update documentation
-- ✅ Test with both .NET 4.6.2 and .NET 8 when possible
+- ✅ Test against all target frameworks when possible

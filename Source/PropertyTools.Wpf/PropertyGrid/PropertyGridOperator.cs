@@ -538,7 +538,7 @@ namespace PropertyTools.Wpf
 
             pi.IsOptional = pi.IsOptional || pi.OptionalDescriptor != null;
 
-            if (pi.Descriptor.PropertyType == typeof(TimeSpan) && pi.Converter == null)
+            if ((pi.Descriptor.PropertyType == typeof(TimeSpan) || Nullable.GetUnderlyingType(pi.Descriptor.PropertyType) == typeof(TimeSpan)) && pi.Converter == null)
             {
                 pi.Converter = new TimeSpanToStringConverter();
                 pi.ConverterParameter = pi.FormatString;

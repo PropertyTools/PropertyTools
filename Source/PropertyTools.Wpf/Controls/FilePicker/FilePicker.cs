@@ -112,6 +112,15 @@ namespace PropertyTools.Wpf
             new PropertyMetadata(null));
 
         /// <summary>
+        /// Identifies the <see cref="SaveButtonContent"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SaveButtonContentProperty = DependencyProperty.Register(
+            nameof(SaveButtonContent),
+            typeof(object),
+            typeof(FilePicker),
+            new PropertyMetadata(null));
+
+        /// <summary>
         /// Identifies the <see cref="BrowseButtonToolTip"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BrowseButtonToolTipProperty = DependencyProperty.Register(
@@ -139,6 +148,15 @@ namespace PropertyTools.Wpf
             new PropertyMetadata(null));
 
         /// <summary>
+        /// Identifies the <see cref="SaveButtonToolTip"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SaveButtonToolTipProperty = DependencyProperty.Register(
+            nameof(SaveButtonToolTip),
+            typeof(object),
+            typeof(FilePicker),
+            new PropertyMetadata(null));
+
+        /// <summary>
         /// Initializes static members of the <see cref="FilePicker" /> class.
         /// </summary>
         static FilePicker()
@@ -155,6 +173,7 @@ namespace PropertyTools.Wpf
             this.BrowseCommand = new DelegateCommand(this.Browse);
             this.ExploreCommand = new DelegateCommand(this.Explore, this.CanExplore);
             this.OpenCommand = new DelegateCommand(this.Open, this.CanOpen);
+            this.SaveCommand = new DelegateCommand(this.Save);
         }
 
         /// <summary>
@@ -174,6 +193,12 @@ namespace PropertyTools.Wpf
         /// </summary>
         /// <value>The open command.</value>
         public ICommand OpenCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the save command.
+        /// </summary>
+        /// <value>The save command.</value>
+        public ICommand SaveCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the default extension.
@@ -352,6 +377,15 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Gets or sets the content on the "save" button.
+        /// </summary>
+        public object SaveButtonContent
+        {
+            get { return this.GetValue(SaveButtonContentProperty); }
+            set { this.SetValue(SaveButtonContentProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or sets the ToolTip on the "browse" button.
         /// </summary>
         public object BrowseButtonToolTip
@@ -376,6 +410,15 @@ namespace PropertyTools.Wpf
         {
             get { return this.GetValue(OpenButtonToolTipProperty); }
             set { this.SetValue(OpenButtonToolTipProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the ToolTip on the "save" button.
+        /// </summary>
+        public object SaveButtonToolTip
+        {
+            get { return this.GetValue(SaveButtonToolTipProperty); }
+            set { this.SetValue(SaveButtonToolTipProperty, value); }
         }
 
         /// <summary>
@@ -416,6 +459,21 @@ namespace PropertyTools.Wpf
         /// </summary>
         private void Browse()
         {
+            if (this.UseOpenDialog)
+            {
+                this.BrowseOpen();
+            }
+            else
+            {
+                this.BrowseSave();
+            }
+        }
+
+        /// <summary>
+        /// Shows the open file dialog.
+        /// </summary>
+        private void BrowseOpen()
+        {
             string filename = null;
             string[] filenames = null;
 
@@ -431,26 +489,16 @@ namespace PropertyTools.Wpf
             var ok = false;
             if (this.FileDialogService != null)
             {
-                if (this.UseOpenDialog)
+                if (!this.Multiselect)
                 {
-                    if (!this.Multiselect)
+                    if (this.FileDialogService.ShowOpenFileDialog(ref filename, this.Filter, this.DefaultExtension))
                     {
-                        if (this.FileDialogService.ShowOpenFileDialog(ref filename, this.Filter, this.DefaultExtension))
-                        {
-                            ok = true;
-                        }
-                    }
-                    else
-                    {
-                        if (this.FileDialogService.ShowOpenFilesDialog(ref filenames, this.Filter, this.DefaultExtension))
-                        {
-                            ok = true;
-                        }
+                        ok = true;
                     }
                 }
                 else
                 {
-                    if (this.FileDialogService.ShowSaveFileDialog(ref filename, this.Filter, this.DefaultExtension))
+                    if (this.FileDialogService.ShowOpenFilesDialog(ref filenames, this.Filter, this.DefaultExtension))
                     {
                         ok = true;
                     }
@@ -459,42 +507,25 @@ namespace PropertyTools.Wpf
             else
             {
                 // use Microsoft.Win32 dialogs
-                if (this.UseOpenDialog)
+                var d = new OpenFileDialog
                 {
-                    var d = new OpenFileDialog
+                    FileName = this.FilePath,
+                    Filter = this.Filter,
+                    DefaultExt = this.DefaultExtension,
+                    Multiselect = this.Multiselect
+                };
+                if (true == d.ShowDialog())
+                {
+                    if (this.Multiselect)
                     {
-                        FileName = this.FilePath,
-                        Filter = this.Filter,
-                        DefaultExt = this.DefaultExtension,
-                        Multiselect = this.Multiselect
-                    };
-                    if (true == d.ShowDialog())
-                    {
-                        if (this.Multiselect)
-                        {
-                            filenames = d.FileNames;
-                        }
-                        else
-                        {
-                            filename = d.FileName;
-                        }
-
-                        ok = true;
+                        filenames = d.FileNames;
                     }
-                }
-                else
-                {
-                    var d = new SaveFileDialog
-                    {
-                        FileName = this.FilePath,
-                        Filter = this.Filter,
-                        DefaultExt = this.DefaultExtension
-                    };
-                    if (true == d.ShowDialog())
+                    else
                     {
                         filename = d.FileName;
-                        ok = true;
                     }
+
+                    ok = true;
                 }
             }
 
@@ -507,6 +538,50 @@ namespace PropertyTools.Wpf
                 else
                 {
                     this.FilePath = this.GetRelativePath(filename);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Shows the save file dialog.
+        /// </summary>
+        private void BrowseSave()
+        {
+            var filename = this.GetAbsolutePath(this.SelectedFilePaths.FirstOrDefault() ?? this.FilePath);
+            var ok = false;
+
+            if (this.FileDialogService != null)
+            {
+                if (this.FileDialogService.ShowSaveFileDialog(ref filename, this.Filter, this.DefaultExtension))
+                {
+                    ok = true;
+                }
+            }
+            else
+            {
+                var d = new SaveFileDialog
+                {
+                    FileName = filename,
+                    Filter = this.Filter,
+                    DefaultExt = this.DefaultExtension
+                };
+                if (true == d.ShowDialog())
+                {
+                    filename = d.FileName;
+                    ok = true;
+                }
+            }
+
+            if (ok)
+            {
+                var relativePath = this.GetRelativePath(filename);
+                if (this.Multiselect)
+                {
+                    this.FilePaths = new[] { relativePath };
+                }
+                else
+                {
+                    this.FilePath = relativePath;
                 }
             }
         }
@@ -618,6 +693,14 @@ namespace PropertyTools.Wpf
                     return;
                 }
             }
+        }
+
+        /// <summary>
+        /// Opens the save file dialog.
+        /// </summary>
+        private void Save()
+        {
+            this.BrowseSave();
         }
 
         /// <summary>

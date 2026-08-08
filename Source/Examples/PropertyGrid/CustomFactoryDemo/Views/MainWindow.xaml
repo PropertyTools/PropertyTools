@@ -5,7 +5,7 @@
     <Grid Margin="4">
         <p:PropertyGrid 
             Operator="{Binding CustomPropertyGridOperator}" 
-            ControlFactory="{Binding CustomPropertyGridControlFactory}" 
-            SelectedObject="{Binding TestObject}"/>
+            SelectedObject="{Binding TestObject}"
+            ControlFactory="{Binding CustomPropertyGridControlFactory}" />
     </Grid>
 </Window>

@@ -10,6 +10,7 @@ namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
     using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Markup;
     using System.Windows.Media;
     using NUnit.Framework;
     using PropertyTools.Wpf;
@@ -18,6 +19,19 @@ namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
     [Apartment(ApartmentState.STA)]
     public class PropertyGridTests
     {
+        private const string TemplateXaml = @"
+<ControlTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
+                 xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""
+                 xmlns:pt=""clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf""
+                 TargetType=""{x:Type pt:PropertyGrid}"">
+    <Grid>
+        <TabControl x:Name=""PART_Tabs"" />
+        <ScrollViewer x:Name=""PART_ScrollViewer"">
+            <StackPanel x:Name=""PART_Panel"" />
+        </ScrollViewer>
+    </Grid>
+</ControlTemplate>";
+
         [Test]
         public void PropertyPanelStyle_DefaultValue_IsNull()
         {
@@ -167,9 +181,43 @@ namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
             Assert.That(propertyGrid.CurrentObject, Is.Null, "CurrentObject should be null when SelectedObjects is set to null");
         }
 
+        [Test]
+        public void ControlFactory_SelectedObjectSetBeforeFactory_UsesUpdatedFactory()
+        {
+            // Arrange
+            var propertyGrid = CreateTemplatedPropertyGrid();
+            propertyGrid.SelectedObject = new TestObject { TestProperty = "TestValue" };
+            var factory = new CountingControlFactory();
+
+            // Act
+            propertyGrid.ControlFactory = factory;
+
+            // Assert
+            Assert.That(factory.CreateControlCallCount, Is.GreaterThan(0));
+        }
+
+        private static PropertyGrid CreateTemplatedPropertyGrid()
+        {
+            var template = (ControlTemplate)XamlReader.Parse(TemplateXaml);
+            var propertyGrid = new PropertyGrid { Template = template };
+            propertyGrid.ApplyTemplate();
+            return propertyGrid;
+        }
+
         private class TestObject
         {
             public string TestProperty { get; set; }
+        }
+
+        private class CountingControlFactory : PropertyGridControlFactory
+        {
+            public int CreateControlCallCount { get; private set; }
+
+            public override FrameworkElement CreateControl(PropertyItem property, PropertyControlFactoryOptions options, object instance = null)
+            {
+                this.CreateControlCallCount++;
+                return base.CreateControl(property, options, instance);
+            }
         }
     }
 }

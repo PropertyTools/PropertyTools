@@ -219,7 +219,7 @@ namespace PropertyTools.Wpf
             nameof(ControlFactory),
             typeof(IPropertyGridControlFactory),
             typeof(PropertyGrid),
-            new UIPropertyMetadata(new PropertyGridControlFactory()));
+            new UIPropertyMetadata(new PropertyGridControlFactory(), AppearanceChanged));
 
         /// <summary>
         /// Identifies the <see cref="LocalizableOperator"/> dependency property.

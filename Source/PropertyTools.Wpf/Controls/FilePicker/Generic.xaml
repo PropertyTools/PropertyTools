@@ -13,6 +13,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBox Text="{Binding FilePath, RelativeSource={RelativeSource TemplatedParent}}" IsEnabled="{Binding IsInputEnabled, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Button Grid.Column="1" MinWidth="40" Margin="4 0 0 0" 
@@ -32,6 +33,12 @@
                                 Content="{TemplateBinding OpenButtonContent}" 
                                 ToolTip="{TemplateBinding OpenButtonToolTip}" ToolTipService.ShowOnDisabled="True"
                                 Command="{Binding OpenCommand,RelativeSource={RelativeSource TemplatedParent}}" 
+                                />
+                        <Button Grid.Column="4" MinWidth="40" Margin="4 0 0 0" 
+                                Visibility="{TemplateBinding SaveButtonContent, Converter={StaticResource NullToVisibilityConverter}}" 
+                                Content="{TemplateBinding SaveButtonContent}" 
+                                ToolTip="{TemplateBinding SaveButtonToolTip}" ToolTipService.ShowOnDisabled="True"
+                                Command="{Binding SaveCommand,RelativeSource={RelativeSource TemplatedParent}}" 
                                 />
                     </Grid>
                 </ControlTemplate>

@@ -226,6 +226,12 @@ namespace PropertyTools.Wpf
                 return this.CreateGridControl(property);
             }
 
+            if (property.Descriptor.PropertyType == typeof(TimeSpan) ||
+                Nullable.GetUnderlyingType(property.Descriptor.PropertyType) == typeof(TimeSpan))
+            {
+                return this.CreateTimeSpanControl(property);
+            }
+
             return this.CreateDefaultControl(property);
         }
 
@@ -556,6 +562,30 @@ namespace PropertyTools.Wpf
         {
             var c = new DatePicker();
             c.SetBinding(DatePicker.SelectedDateProperty, property.CreateBinding());
+            return c;
+        }
+
+        /// <summary>
+        /// Creates the time span control.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>
+        /// The control.
+        /// </returns>
+        protected virtual FrameworkElement CreateTimeSpanControl(PropertyItem property)
+        {
+            var c = new TextBoxEx
+            {
+                IsReadOnly = property.IsReadOnly,
+                VerticalContentAlignment = VerticalAlignment.Center
+            };
+
+            if (property.IsReadOnly)
+            {
+                this.SetReadOnlyControlStyle(c, this.currentOptions);
+            }
+
+            c.SetBinding(TextBox.TextProperty, property.CreateBinding());
             return c;
         }
 

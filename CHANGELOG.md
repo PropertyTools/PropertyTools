@@ -99,6 +99,7 @@ All notable changes to this project will be documented in this file.
 - TreeListBox: Catching the ArgumentException by message title, fails in non english regions #38 #142
 
 ### Changed
+- README: The broken Star History chart (affected by GitHub stargazer API restrictions) now uses a working rendering hosted at star-history.dera.page #TBD
 - PropertyGrid: Added optional `instance` parameter to `IPropertyGridControlFactory.CreateControl()`, allowing custom control factories to vary behavior based on the object instance being edited — aligns with `CreateErrorControl()` which already accepted `instance` #506
 - Added EnableWindowsTargeting property to all WPF projects to support building on non-Windows platforms #474
 - Custom GitHub Copilot agent for updating package dependencies and target frameworks #422

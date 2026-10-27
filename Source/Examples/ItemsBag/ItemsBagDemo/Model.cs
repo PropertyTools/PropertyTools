@@ -91,6 +91,7 @@ namespace ItemsBagDemo
                 {
                     // Get the generic type argument T from the target type
                     var targetType = context?.PropertyDescriptor?.PropertyType;
+                    targetType = targetType != null ? Nullable.GetUnderlyingType(targetType) ?? targetType : null;
                     if (targetType != null && targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(R<>))
                     {
                         var innerType = targetType.GetGenericArguments()[0];

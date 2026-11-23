@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- PropertyGrid: Added public `Refresh()` method to rebuild the property controls when properties are added to or removed from the selected object at runtime (e.g. via `ICustomTypeDescriptor`) #323
 - PropertyGridDemos: Added InheritedCategoryOrderingExample demonstrating category ordering across superclass and subclass properties with `PropertyTools.DataAnnotations.CategoryAttribute` sort indexes #194
 - PropertyTools.Wpf: Added `CheckBoxList` control for editing `[Flags]` enums; `PropertyGridControlFactory` now automatically uses `CheckBoxList` for flags enums in Auto mode #6
 - PropertyTools.Wpf: Added `Orientation` property to `FlagsCellDefinition`; DataGrid flags cells now use horizontal layout by default; added `FlagsEnumDropdownExample` showing vertical `CheckBoxList` inside a dropdown popup #6

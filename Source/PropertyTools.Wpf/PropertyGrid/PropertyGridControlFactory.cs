@@ -37,6 +37,11 @@ namespace PropertyTools.Wpf
         private static readonly FontFamilyConverter FontFamilyConverter = new FontFamilyConverter();
 
         /// <summary>
+        /// The font family name converter (displays localized font family names).
+        /// </summary>
+        private static readonly FontFamilyNameConverter FontFamilyNameConverter = new FontFamilyNameConverter();
+
+        /// <summary>
         /// The cached font families.
         /// </summary>
         private static FontFamily[] cachedFontFamilies;
@@ -800,17 +805,21 @@ namespace PropertyTools.Wpf
         {
             var c = new ComboBox { ItemsSource = GetFontFamilies() };
 
+            // Display the font family names localized for the current UI culture (e.g. "宋体" instead of "SimSun").
+            // The converter culture is set explicitly, since the default binding culture is the element language (en-US).
+            var dt = new DataTemplate { DataType = typeof(ComboBox) };
+            var factory = new FrameworkElementFactory(typeof(TextBlock));
+            factory.SetBinding(TextBlock.TextProperty, new Binding { Converter = FontFamilyNameConverter, ConverterCulture = CultureInfo.CurrentUICulture });
+
             if (property.PreviewFonts)
             {
-                var dt = new DataTemplate { DataType = typeof(ComboBox) };
-                var factory = new FrameworkElementFactory(typeof(TextBlock));
                 factory.SetValue(TextBlock.FontSizeProperty, property.FontSize);
                 factory.SetValue(TextBlock.FontWeightProperty, FontWeight.FromOpenTypeWeight(property.FontWeight));
-                factory.SetBinding(TextBlock.TextProperty, new Binding());
                 factory.SetBinding(TextBlock.FontFamilyProperty, new Binding { Converter = FontFamilyConverter });
-                dt.VisualTree = factory;
-                c.ItemTemplate = dt;
             }
+
+            dt.VisualTree = factory;
+            c.ItemTemplate = dt;
 
             var binding = property.CreateBinding();
             if (property.ActualPropertyType == typeof(string))

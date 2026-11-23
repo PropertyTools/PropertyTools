@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 ### Added
+- PropertyGrid: Font family selector now displays font family names localized for the current UI culture (e.g. "宋体" instead of "SimSun"), using the new `FontFamilyNameConverter` #310
 - PropertyGridDemos: Added InheritedCategoryOrderingExample demonstrating category ordering across superclass and subclass properties with `PropertyTools.DataAnnotations.CategoryAttribute` sort indexes #194
 - PropertyTools.Wpf: Added `CheckBoxList` control for editing `[Flags]` enums; `PropertyGridControlFactory` now automatically uses `CheckBoxList` for flags enums in Auto mode #6
 - PropertyTools.Wpf: Added `Orientation` property to `FlagsCellDefinition`; DataGrid flags cells now use horizontal layout by default; added `FlagsEnumDropdownExample` showing vertical `CheckBoxList` inside a dropdown popup #6

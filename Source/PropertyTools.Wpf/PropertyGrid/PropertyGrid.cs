@@ -1302,6 +1302,19 @@ namespace PropertyTools.Wpf
         }
 
         /// <summary>
+        /// Rebuilds the property model and the controls for the current object.
+        /// </summary>
+        /// <remarks>
+        /// Call this method when the set of properties exposed by the current object has changed, e.g. when
+        /// the object implements <see cref="System.ComponentModel.ICustomTypeDescriptor" /> and properties are
+        /// added to or removed from it at runtime.
+        /// </remarks>
+        public void Refresh()
+        {
+            this.UpdateControls();
+        }
+
+        /// <summary>
         /// Creates a tool tip.
         /// </summary>
         /// <param name="content">The content.</param>

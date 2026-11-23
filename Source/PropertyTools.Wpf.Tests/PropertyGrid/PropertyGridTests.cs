@@ -167,9 +167,51 @@ namespace PropertyTools.Wpf.Tests.PropertyGridNamespace
             Assert.That(propertyGrid.CurrentObject, Is.Null, "CurrentObject should be null when SelectedObjects is set to null");
         }
 
+        [Test]
+        public void Refresh_WithSelectedObject_RecreatesModel()
+        {
+            // Arrange
+            var countingOperator = new CountingOperator();
+            var propertyGrid = new PropertyGrid { Operator = countingOperator };
+            var testObject = new TestObject { TestProperty = "TestValue" };
+            propertyGrid.SelectedObject = testObject;
+            var callsBeforeRefresh = countingOperator.CreateModelCount;
+
+            // Act
+            propertyGrid.Refresh();
+
+            // Assert
+            Assert.That(countingOperator.CreateModelCount, Is.EqualTo(callsBeforeRefresh + 1));
+            Assert.That(countingOperator.LastInstance, Is.SameAs(testObject));
+        }
+
+        [Test]
+        public void Refresh_WithoutSelectedObject_DoesNotThrow()
+        {
+            // Arrange
+            var propertyGrid = new PropertyGrid();
+
+            // Act & Assert
+            Assert.That(() => propertyGrid.Refresh(), Throws.Nothing);
+        }
+
         private class TestObject
         {
             public string TestProperty { get; set; }
+        }
+
+        private class CountingOperator : PropertyGridOperator
+        {
+            public int CreateModelCount { get; private set; }
+
+            public object LastInstance { get; private set; }
+
+            public override System.Collections.Generic.IEnumerable<Tab> CreateModel(object instance, bool isEnumerable, IPropertyGridOptions options)
+            {
+                this.CreateModelCount++;
+                this.LastInstance = instance;
+                return base.CreateModel(instance, isEnumerable, options);
+            }
         }
     }
 }
